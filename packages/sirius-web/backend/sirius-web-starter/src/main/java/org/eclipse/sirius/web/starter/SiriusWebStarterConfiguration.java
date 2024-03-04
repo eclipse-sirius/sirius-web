@@ -51,6 +51,7 @@ import reactor.core.publisher.Flux;
     "org.eclipse.sirius.components.graphql",
     "org.eclipse.sirius.components.web",
     "org.eclipse.sirius.components.portals",
+    "org.eclipse.sirius.components.trees",
     "org.eclipse.sirius.web.domain",
     "org.eclipse.sirius.web.application",
     "org.eclipse.sirius.web.infrastructure",

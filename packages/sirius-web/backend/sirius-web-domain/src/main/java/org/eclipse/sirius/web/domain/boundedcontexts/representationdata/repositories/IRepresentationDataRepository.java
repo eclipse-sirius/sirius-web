@@ -42,4 +42,18 @@ public interface IRepresentationDataRepository extends ListPagingAndSortingRepos
         WHERE representationData.id = :representationId
         """)
     Optional<UUID> findProjectIdFromRepresentationId(UUID representationId);
+
+    @Query("""
+        SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+        FROM representation_data representationData
+        WHERE representationData.target_object_id = :targetObjectId
+        """)
+    boolean existAnyRepresentationForTargetObjectId(String targetObjectId);
+
+    @Query("""
+        SELECT *
+        FROM representation_data representationData
+        WHERE representationData.target_object_id = :targetObjectId
+        """)
+    List<RepresentationData> findAllByTargetObjectId(String targetObjectId);
 }

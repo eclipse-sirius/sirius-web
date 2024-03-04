@@ -54,8 +54,13 @@ public class RepresentationDataSearchService implements IRepresentationDataSearc
     }
 
     @Override
+    public boolean existAnyRepresentationForTargetObjectId(String targetObjectId) {
+        return this.representationDataRepository.existAnyRepresentationForTargetObjectId(targetObjectId);
+    }
+
+    @Override
     public List<RepresentationData> findAllByTargetObjectId(String targetObjectId) {
-        return List.of();
+        return this.representationDataRepository.findAllByTargetObjectId(targetObjectId);
     }
 
     @Override
