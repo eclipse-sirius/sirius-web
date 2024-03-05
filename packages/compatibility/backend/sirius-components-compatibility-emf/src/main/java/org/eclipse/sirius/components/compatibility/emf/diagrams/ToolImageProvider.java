@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.sirius.components.compatibility.emf.EPackageService;
+import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.compatibility.services.diagrams.api.IToolImageProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;

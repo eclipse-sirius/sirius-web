@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.compatibility.emf.DomainClassPredicate;
+import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.deck.DeckElementStyle;

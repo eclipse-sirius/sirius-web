@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
-import org.eclipse.sirius.components.compatibility.emf.EPackageService;
+import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;

@@ -21,7 +21,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.sirius.components.compatibility.emf.EPackageService;
+import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.compatibility.emf.compatibility.services.EditingDomainFactory;
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.CreateInstanceOperationHandler;

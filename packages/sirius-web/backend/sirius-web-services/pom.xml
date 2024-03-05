@@ -66,6 +66,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-compatibility</artifactId>
+			<version>2024.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-compatibility-emf</artifactId>
+			<version>2024.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
 			<version>2024.1.4</version>
 		</dependency>

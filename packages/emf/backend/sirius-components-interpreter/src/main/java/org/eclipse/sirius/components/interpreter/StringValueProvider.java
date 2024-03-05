@@ -10,13 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.compatibility.utils;
+package org.eclipse.sirius.components.interpreter;
 
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**

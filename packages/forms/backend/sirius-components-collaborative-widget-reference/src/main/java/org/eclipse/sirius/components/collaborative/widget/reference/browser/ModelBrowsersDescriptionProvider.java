@@ -32,7 +32,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.sirius.components.compatibility.services.ImageConstants;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -290,7 +289,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
         if (self instanceof EObject) {
             imageURL = this.objectService.getImagePath(self);
         } else if (self instanceof Resource) {
-            imageURL = List.of(ImageConstants.RESOURCE_SVG);
+            imageURL = List.of("/icons/svg/Resource.svg");
         }
         return imageURL;
     }

@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
-import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
+import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;

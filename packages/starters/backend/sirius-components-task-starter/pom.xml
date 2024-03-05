@@ -29,6 +29,7 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<sirius.version>7.2.0-SNAPSHOT</sirius.version>
 	</properties>
 
 	<distributionManagement>
@@ -38,6 +39,21 @@
 			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
 		</repository>
 	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>Eclipse Sirius</id>
+			<name>Sirius Repository - Snapshots</name>
+			<url>https://repo.eclipse.org/content/repositories/sirius-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>Central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -112,6 +128,11 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-persistence</artifactId>
 			<version>2024.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>org.eclipse.sirius.ext.emf.edit</artifactId>
+			<version>${sirius.version}</version>
 		</dependency>
 	</dependencies>
 

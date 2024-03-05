@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.compatibility.emf.compatibility;
+package org.eclipse.sirius.components.emf.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.sirius.components.compatibility.emf.DomainClassPredicate;
+import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.junit.jupiter.api.Test;
 
 /**
