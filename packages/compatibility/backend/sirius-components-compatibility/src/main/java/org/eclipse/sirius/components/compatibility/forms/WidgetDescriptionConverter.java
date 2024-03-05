@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.compatibility.utils.BooleanValueProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.RadioComponent;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;

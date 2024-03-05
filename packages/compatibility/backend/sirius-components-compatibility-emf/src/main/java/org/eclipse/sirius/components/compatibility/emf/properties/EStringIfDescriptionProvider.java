@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
-import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.representations.Failure;
