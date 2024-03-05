@@ -20,6 +20,7 @@ import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { GQLDropNodeCompatibility } from '../../representation/DiagramRepresentation.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { isDescendantOf } from '../layout/layoutNode';
 import { ListNodeData } from '../node/ListNode.types';
 import { DropNodeContext } from './DropNodeContext';
 import { DropNodeContextValue } from './DropNodeContext.types';
@@ -123,15 +124,6 @@ const useDropNodeMutation = () => {
   );
 
   return invokeMutation;
-};
-
-const isDescendantOf = (parent: Node, candidate: Node, nodeById: (string) => Node | undefined): boolean => {
-  if (parent.id === candidate.id) {
-    return true;
-  } else {
-    const candidateParent = nodeById(candidate.parentNode);
-    return candidateParent !== undefined && isDescendantOf(parent, candidateParent, nodeById);
-  }
 };
 
 export const useDropNode = (): UseDropNodeValue => {
