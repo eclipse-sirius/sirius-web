@@ -23,7 +23,7 @@ import {
   ListLayoutStrategy,
 } from '../graphql/subscription/nodeFragment.types';
 import { Diagram, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
-import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
+import { EdgeWrapperData } from '../renderer/edge/EdgeWrapper.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
@@ -142,7 +142,7 @@ export const convertDiagram = (
   const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
     const sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
     const targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
-    const data: MultiLabelEdgeData = {
+    const data: EdgeWrapperData = {
       targetObjectId: gqlEdge.targetObjectId,
       targetObjectKind: gqlEdge.targetObjectKind,
       targetObjectLabel: gqlEdge.targetObjectLabel,

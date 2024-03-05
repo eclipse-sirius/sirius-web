@@ -10,12 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { useContext } from 'react';
-import { Handle, Position, ReactFlowState, useStore } from 'reactflow';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { ConnectionHandle, ConnectionHandlesProps } from './ConnectionHandles.types';
+import React from 'react';
+import { Handle, Position } from 'reactflow';
+import { ConnectionHandlesProps } from './ConnectionHandles.types';
 
 const borderHandlesStyle = (position: Position): React.CSSProperties => {
   const style: React.CSSProperties = {
@@ -53,13 +50,7 @@ const borderHandlesStyle = (position: Position): React.CSSProperties => {
   return style;
 };
 
-const handleStyle = (
-  theme: Theme,
-  position: Position,
-  isEdgeSelected: boolean,
-  isVirtualHandle: boolean,
-  readOnly: boolean
-): React.CSSProperties => {
+const handleStyle = (position: Position, isVirtualHandle: boolean): React.CSSProperties => {
   const style: React.CSSProperties = {
     position: 'relative',
     transform: 'none',
@@ -76,10 +67,6 @@ const handleStyle = (
       style.left = 'auto';
       break;
   }
-  if (isEdgeSelected && !readOnly) {
-    style.opacity = 1;
-    style.outline = `${theme.palette.selected} solid 1px`;
-  }
   if (isVirtualHandle) {
     style.position = 'absolute';
     style.display = 'none';
@@ -87,21 +74,7 @@ const handleStyle = (
   return style;
 };
 
-const handleSelectedSelector = (state: ReactFlowState) =>
-  Array.from(state.edges.values())
-    .filter((edge) => edge.selected)
-    .flatMap((edge) => [edge.sourceHandle, edge.targetHandle])
-    .join('#');
-
 export const ConnectionHandles = ({ connectionHandles }: ConnectionHandlesProps) => {
-  const theme = useTheme();
-  const handleSourceSelected = useStore(handleSelectedSelector);
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-
-  const isHandleSelected = (connectionHandle: ConnectionHandle): boolean => {
-    return !!connectionHandle.id && handleSourceSelected.includes(connectionHandle.id);
-  };
-
   return (
     <>
       {Object.values(Position).map((position) => {
@@ -114,13 +87,7 @@ export const ConnectionHandles = ({ connectionHandles }: ConnectionHandlesProps)
               return (
                 <Handle
                   id={connectionHandle.id ?? ''}
-                  style={handleStyle(
-                    theme,
-                    connectionHandle.position,
-                    isHandleSelected(connectionHandle),
-                    connectionHandle.hidden,
-                    readOnly
-                  )}
+                  style={handleStyle(connectionHandle.position, connectionHandle.hidden)}
                   type={connectionHandle.type}
                   position={connectionHandle.position}
                   key={connectionHandle.id}

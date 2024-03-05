@@ -14,7 +14,7 @@
 import { Edge, Node } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
-import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
+import { EdgeWrapperData } from './edge/EdgeWrapper.types';
 import { ConnectionHandle } from './handles/ConnectionHandles.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
 
@@ -25,7 +25,7 @@ export interface DiagramRendererProps {
 export interface Diagram {
   metadata: DiagramMetadata;
   nodes: Node<NodeData, DiagramNodeType>[];
-  edges: Edge<MultiLabelEdgeData>[];
+  edges: Edge<EdgeWrapperData>[];
 }
 
 export interface DiagramMetadata {
