@@ -139,7 +139,7 @@ export const convertDiagram = (
   const nodeId2Depth = new Map<string, number>();
   nodes.forEach((node) => nodeId2Depth.set(node.id, nodeDepth(nodeId2node, node.id)));
   let usedHandles: string[] = [];
-  const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
+  const edges: Edge[] = gqlDiagram.edges.map((gqlEdge, index) => {
     const sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
     const targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
     const data: MultiLabelEdgeData = {
@@ -149,6 +149,7 @@ export const convertDiagram = (
       label: null,
       faded: gqlEdge.state === GQLViewModifier.Faded,
       centerLabelEditable: gqlEdge.centerLabelEditable,
+      index,
     };
 
     if (gqlEdge.beginLabel) {

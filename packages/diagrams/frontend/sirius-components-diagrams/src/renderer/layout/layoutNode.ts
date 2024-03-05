@@ -475,12 +475,25 @@ export const applyRatioOnNewNodeSizeValue = (node: Node<NodeData>) => {
 export const isDescendantOf = (
   parent: Node,
   candidate: Node,
-  nodeById: (arg0: string | undefined) => Node | undefined
+  nodeById: (arg0: string) => Node | undefined
 ): boolean => {
   if (parent.id === candidate.id) {
     return true;
   } else {
-    const candidateParent: Node | undefined = nodeById(candidate.parentNode);
+    const candidateParent: Node | undefined = candidate.parentNode ? nodeById(candidate.parentNode) : undefined;
     return candidateParent !== undefined && isDescendantOf(parent, candidateParent, nodeById);
+  }
+};
+
+export const isDescendantOfId = (
+  parent: string,
+  candidate: Node,
+  nodeById: (arg0: string) => Node | undefined
+): boolean => {
+  if (parent === candidate.id) {
+    return true;
+  } else {
+    const candidateParent: Node | undefined = candidate.parentNode ? nodeById(candidate.parentNode) : undefined;
+    return candidateParent !== undefined && isDescendantOfId(parent, candidateParent, nodeById);
   }
 };

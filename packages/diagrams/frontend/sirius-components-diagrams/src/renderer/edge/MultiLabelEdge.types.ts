@@ -16,4 +16,5 @@ import { EdgeData, EdgeLabel } from '../DiagramRenderer.types';
 export interface MultiLabelEdgeData extends EdgeData {
   beginLabel?: EdgeLabel;
   endLabel?: EdgeLabel;
+  index?: number;
 }
