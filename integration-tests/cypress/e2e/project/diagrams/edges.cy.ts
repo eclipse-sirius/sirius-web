@@ -22,37 +22,37 @@ describe('Diagram - edges', () => {
     let domainName: string = '';
 
     before(() =>
-        new Studio().createStudioProject().then((createdProjectData) => {
-          studioProjectId = createdProjectData.projectId;
-          new Project().visit(createdProjectData.projectId);
-          const explorer = new Explorer();
-          explorer.expand('DomainNewModel');
-          cy.get('[title="domain::Domain"]').then(($div) => {
-            domainName = $div.data().testid;
-            explorer.expand(`${domainName}`);
-            explorer.createObject('Entity1', 'Relation');
-            const details = new Details();
-            details.getCheckBox('Containment').check();
-            details.openReferenceWidgetOptions('Target Type');
-            details.selectReferenceWidgetOption('Entity2');
+      new Studio().createStudioProject().then((createdProjectData) => {
+        studioProjectId = createdProjectData.projectId;
+        new Project().visit(createdProjectData.projectId);
+        const explorer = new Explorer();
+        explorer.expand('DomainNewModel');
+        cy.get('[title="domain::Domain"]').then(($div) => {
+          domainName = $div.data().testid;
+          explorer.expand(`${domainName}`);
+          explorer.createObject('Entity1', 'Relation');
+          const details = new Details();
+          details.getCheckBox('Containment').check();
+          details.openReferenceWidgetOptions('Target Type');
+          details.selectReferenceWidgetOption('Entity2');
 
-            explorer.expand('ViewNewModel');
-            explorer.expand('View');
-            explorer.expand(`${domainName} Diagram Description`);
-            explorer.expand('Entity1 Node');
-            details.openReferenceWidgetOptions('Reused Child Node Descriptions');
-            details.selectReferenceWidgetOption('Entity2 Node');
-            details.getTextField('Default Width Expression').type('300{enter}');
-            details.getTextField('Default Height Expression').type('300{enter}');
-          });
-        })
+          explorer.expand('ViewNewModel');
+          explorer.expand('View');
+          explorer.expand(`${domainName} Diagram Description`);
+          explorer.expand('Entity1 Node');
+          details.openReferenceWidgetOptions('Reused Child Node Descriptions');
+          details.selectReferenceWidgetOption('Entity2 Node');
+          details.getTextField('Default Width Expression').type('290{enter}');
+          details.getTextField('Default Height Expression').type('290{enter}');
+        });
+      })
     );
 
     after(() => cy.deleteProject(studioProjectId));
     context('When we create a new instance project', () => {
       let instanceProjectId: string = '';
 
-      beforeEach(()=> {
+      beforeEach(() => {
         const studio = new Studio();
         studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
           instanceProjectId = res.projectId;
@@ -77,11 +77,16 @@ describe('Diagram - edges', () => {
         details.openReferenceWidgetOptions('Linked To');
         details.selectReferenceWidgetOption('Entity2');
         diagram.fitToScreen();
-        diagram.getEdgePaths('diagram').should('have.length',1);
-        diagram.getEdgePaths('diagram').eq(0).invoke('attr', 'd')
-            .then((dValue) => {
-             expect(diagram.roundSvgPathData(dValue?? '')).to.equal('M150.00L150.00Q150.00L88.00Q83.00L83.00L83.00');
-            });
+        diagram.getEdgePaths('diagram').should('have.length', 1);
+        diagram
+          .getEdgePaths('diagram')
+          .eq(0)
+          .invoke('attr', 'd')
+          .then((dValue) => {
+            expect(diagram.roundSvgPathData(dValue ?? '')).to.equal(
+              'M140.00L140.00L140.00L120.00L100.00L80.00L80.00L80.00'
+            );
+          });
       });
     });
   });

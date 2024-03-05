@@ -67,6 +67,7 @@ Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IE
 - Move to docker compose v2 for our GitHub Actions workflow.
 - [test] Switch to ArchUnit 1.3.0 to restore architectural tests which were failing recently
 - https://github.com/eclipse-sirius/sirius-web/issues/3277[#3277] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.9 to benefit for enhancements
+- https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagrams] Add dependency to @tisoap/react-flow-smart-edge 3.0.0
 
 === Bug fixes
 
@@ -138,6 +139,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [core] Image URLs are now sanitized in a similar manner in all datafetchers, as a result absolute URLs to external images are better supported and a leading slash is now required anymore.
 - https://github.com/eclipse-sirius/sirius-web/issues/3296[#3296] [diagram] Add a hook `useStore` to retrieve local `setNodes`, `setEdges`, `onEdgesChange` and `onNodesChange`, this hook is used to align how nodes and edges are manipulated during processing of ReactFlow events.
 - https://github.com/eclipse-sirius/sirius-web/issues/3397[#3397] [diagram] Add helper lines when resizing nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagram] Prevent edge from passing through another node
 
 == v2024.3.0
 
