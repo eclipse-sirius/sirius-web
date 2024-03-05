@@ -135,7 +135,9 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, nodeInternals, l
   }
   const horizontalDifference = Math.abs(centerA.x - centerB.x);
   const verticalDifference = Math.abs(centerA.y - centerB.y);
-  const isDescendant = isDescendantOf(nodeB, nodeA, nodeInternals);
+  const isDescendant = nodeA.data.isBorderNode
+    ? isDescendantOf(nodeA, nodeB, nodeInternals)
+    : isDescendantOf(nodeB, nodeA, nodeInternals);
   let position: Position;
   if (isVerticalLayoutDirection(layoutDirection)) {
     if (Math.abs(centerA.y - centerB.y) < verticalLayoutDirectionGap) {

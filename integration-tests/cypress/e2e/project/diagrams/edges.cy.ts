@@ -42,8 +42,8 @@ describe('Diagram - edges', () => {
           explorer.expand('Entity1 Node');
           details.openReferenceWidgetOptions('Reused Child Node Descriptions');
           details.selectReferenceWidgetOption('Entity2 Node');
-          details.getTextField('Default Width Expression').type('300{enter}');
-          details.getTextField('Default Height Expression').type('300{enter}');
+          details.getTextField('Default Width Expression').type('290{enter}');
+          details.getTextField('Default Height Expression').type('290{enter}');
         });
       })
     );
@@ -83,7 +83,7 @@ describe('Diagram - edges', () => {
           .eq(0)
           .invoke('attr', 'd')
           .then((dValue) => {
-            expect(diagram.roundSvgPathData(dValue ?? '')).to.equal('M150.00L150.00Q150.00L88.00Q83.00L83.00L83.00');
+            expect(diagram.roundSvgPathData(dValue ?? '')).to.equal('M145.00L145.00Q145.00L88.00Q83.00L83.00L83.00');
           });
       });
     });
@@ -159,7 +159,7 @@ describe('Diagram - edges', () => {
           .invoke('attr', 'd')
           .then((dValue) => {
             expect(diagram.roundSvgPathData(dValue ?? '')).to.equal(
-              'M300.13L320.13L354.89Q355.56L355.56Q355.56L391.00L411.00'
+              'M300.13L320.13L384.89Q385.56L385.56Q385.56L451.00L471.00'
             );
           });
       });

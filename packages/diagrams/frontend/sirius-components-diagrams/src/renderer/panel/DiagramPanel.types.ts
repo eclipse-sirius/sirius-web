@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DiagramEdgeType } from '../edge/EdgeTypes.types';
 
 export interface DiagramPanelProps {
   snapToGrid: boolean;
@@ -17,6 +18,8 @@ export interface DiagramPanelProps {
   helperLines: boolean;
   onHelperLines: (helperLines: boolean) => void;
   reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>;
+  edgeType: DiagramEdgeType;
+  onEdgeType: (edgeType: DiagramEdgeType) => void;
 }
 
 export interface DiagramPanelState {

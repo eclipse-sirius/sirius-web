@@ -23,6 +23,7 @@ import {
   ListLayoutStrategy,
 } from '../graphql/subscription/nodeFragment.types';
 import { Diagram, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
+import { DiagramEdgeType } from '../renderer/edge/EdgeTypes.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
@@ -87,7 +88,8 @@ const defaultNodeConverters: INodeConverter[] = [
 export const convertDiagram = (
   gqlDiagram: GQLDiagram,
   nodeConverterContributions: INodeConverter[],
-  diagramDescription: GQLDiagramDescription
+  diagramDescription: GQLDiagramDescription,
+  edgeType: DiagramEdgeType
 ): Diagram => {
   const nodes: Node<NodeData, DiagramNodeType>[] = [];
   const convertEngine: IConvertEngine = {
@@ -183,7 +185,7 @@ export const convertDiagram = (
 
     return {
       id: gqlEdge.id,
-      type: 'multiLabelEdge',
+      type: edgeType,
       source: gqlEdge.sourceId,
       target: gqlEdge.targetId,
       markerEnd: `${gqlEdge.style.targetArrow}--${gqlEdge.id}--markerEnd`,
