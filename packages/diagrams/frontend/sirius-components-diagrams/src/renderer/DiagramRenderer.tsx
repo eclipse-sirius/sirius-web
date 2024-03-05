@@ -50,6 +50,7 @@ import { useDropDiagramStyle } from './dropNode/useDropDiagramStyle';
 import { useDropNode } from './dropNode/useDropNode';
 import { ConnectionLine } from './edge/ConnectionLine';
 import { edgeTypes } from './edge/EdgeTypes';
+import { useEdgeType } from './edge/useEdgeType';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { HelperLines } from './helper-lines/HelperLines';
@@ -122,10 +123,11 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const { fitToScreen } = useInitialFitToScreen();
   const { setSelection } = useSelection();
+  const { edgeType, setEdgeType } = useEdgeType();
 
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
-    const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription);
+    const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription, edgeType);
 
     const selectedNodeIds = nodes.filter((node) => node.selected).map((node) => node.id);
     const selectedEdgeIds = edges.filter((edge) => edge.selected).map((edge) => edge.id);
@@ -160,7 +162,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
       });
     }
-  }, [diagramRefreshedEventPayload, diagramDescription]);
+  }, [diagramRefreshedEventPayload, diagramDescription, edgeType]);
 
   useEffect(() => {
     setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, updatable: !!edge.selected })));
@@ -359,6 +361,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           helperLines={helperLinesEnabled}
           onHelperLines={setHelperLinesEnabled}
           reactFlowWrapper={ref}
+          edgeType={edgeType}
+          onEdgeType={setEdgeType}
         />
         <GroupPalette
           x={groupPalettePosition?.x}

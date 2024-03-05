@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
-import { memo, useContext, useMemo } from 'react';
-import { BaseEdge, EdgeLabelRenderer, EdgeProps, Node, Position, getSmoothStepPath, useStoreApi } from 'reactflow';
-import { NodeTypeContext } from '../../contexts/NodeContext';
-import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
-import { NodeData } from '../DiagramRenderer.types';
+import { memo, useMemo } from 'react';
+import { BaseEdge, EdgeLabelRenderer, Position } from 'reactflow';
 import { Label } from '../Label';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
-import { getHandleCoordinatesByPosition } from './EdgeLayout';
-import { MultiLabelEdgeData } from './MultiLabelEdge.types';
+import { MultiLabelEdgeProps } from './MultiLabelEdge.types';
 
 const multiLabelEdgeStyle = (
   theme: Theme,
@@ -67,8 +63,6 @@ const labelContainerStyle = (transform: string): React.CSSProperties => {
 export const MultiLabelEdge = memo(
   ({
     id,
-    source,
-    target,
     data,
     style,
     markerEnd,
@@ -76,95 +70,26 @@ export const MultiLabelEdge = memo(
     selected,
     sourcePosition,
     targetPosition,
-    sourceHandleId,
-    targetHandleId,
-  }: EdgeProps<MultiLabelEdgeData>) => {
+    sourceX,
+    sourceY,
+    targetX,
+    targetY,
+    edgeCenterX,
+    edgeCenterY,
+    svgPathString,
+  }: MultiLabelEdgeProps) => {
     const { beginLabel, endLabel, label, faded } = data || {};
     const theme = useTheme();
-    const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
-
-    const { nodeInternals } = useStoreApi().getState();
-
-    const sourceNode = nodeInternals.get(source);
-    const targetNode = nodeInternals.get(target);
 
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
     const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
     const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
 
-    if (!sourceNode || !targetNode) {
-      return null;
-    }
-
-    const sourceLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
-      nodeLayoutHandler.canHandle(sourceNode as Node<NodeData, DiagramNodeType>)
-    );
-    const targetLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
-      nodeLayoutHandler.canHandle(targetNode as Node<NodeData, DiagramNodeType>)
-    );
-
-    let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(
-      sourceNode,
-      sourcePosition,
-      sourceHandleId ?? '',
-      sourceLayoutHandler?.calculateCustomNodeEdgeHandlePosition
-    );
-    let { x: targetX, y: targetY } = getHandleCoordinatesByPosition(
-      targetNode,
-      targetPosition,
-      targetHandleId ?? '',
-      targetLayoutHandler?.calculateCustomNodeEdgeHandlePosition
-    );
-
-    // trick to have the source of the edge positioned at the very border of a node
-    // if the edge has a marker, then only the marker need to touch the node
-    const handleSourceRadius = markerStart == undefined || markerStart.includes('None') ? 2 : 3;
-    switch (sourcePosition) {
-      case Position.Right:
-        sourceX = sourceX + handleSourceRadius;
-        break;
-      case Position.Left:
-        sourceX = sourceX - handleSourceRadius;
-        break;
-      case Position.Top:
-        sourceY = sourceY - handleSourceRadius;
-        break;
-      case Position.Bottom:
-        sourceY = sourceY + handleSourceRadius;
-        break;
-    }
-    // trick to have the target of the edge positioned at the very border of a node
-    // if the edge has a marker, then only the marker need to touch the node
-    const handleTargetRadius = markerEnd == undefined || markerEnd.includes('None') ? 2 : 3;
-    switch (targetPosition) {
-      case Position.Right:
-        targetX = targetX + handleTargetRadius;
-        break;
-      case Position.Left:
-        targetX = targetX - handleTargetRadius;
-        break;
-      case Position.Top:
-        targetY = targetY - handleTargetRadius;
-        break;
-      case Position.Bottom:
-        targetY = targetY + handleTargetRadius;
-        break;
-    }
-
-    const [edgePath, labelX, labelY] = getSmoothStepPath({
-      sourceX,
-      sourceY,
-      sourcePosition,
-      targetX,
-      targetY,
-      targetPosition,
-    });
-
     return (
       <>
         <BaseEdge
           id={id}
-          path={edgePath}
+          path={svgPathString}
           style={edgeStyle}
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 1)}--selected)` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 1)}--selected)` : markerStart}
@@ -183,7 +108,7 @@ export const MultiLabelEdge = memo(
             </div>
           )}
           {label && (
-            <div style={labelContainerStyle(`translate(${labelX}px,${labelY}px)`)}>
+            <div style={labelContainerStyle(`translate(${edgeCenterX}px,${edgeCenterY}px)`)}>
               <Label diagramElementId={id} label={label} faded={!!faded} />
             </div>
           )}

@@ -58,6 +58,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - [releng] Switch to Spring Boot 3.3.1
 - [releng] Add a dependency to CycloneDX to compute the software bill of materials during the build
 - https://github.com/eclipse-sirius/sirius-web/issues/3437[#3437] [core] Migrate frontend to MUI 5
+- https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagram] Add a dependency to `pathfinding`
 
 === Bug fixes
 
@@ -102,7 +103,7 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3557[#3550] [sirius-web] Add an extension point to contribute setting pages
 - https://github.com/eclipse-sirius/sirius-web/issues/3776[#3776] [trees] Remove unwanted dependency from the reference widget in the explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/3777[#3777] [sirius-web] Add support for any kind of object as semantic element in the tree representation
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagram] Prevent edge from passing through another node
 
 == v2024.7.0
 

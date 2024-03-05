@@ -33,6 +33,7 @@ import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
 import { getNewlyAddedBorderNodePosition, isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { getChildren } from './layoutNode';
+import { gap } from './layoutParams';
 
 const emptyNodeProps = {
   selected: false,
@@ -206,8 +207,6 @@ export const cleanLayoutArea = (container: HTMLDivElement) => {
     container.parentNode.removeChild(container);
   }
 };
-
-const gap = 20;
 
 export const layout = (
   previousDiagram: RawDiagram | null,
