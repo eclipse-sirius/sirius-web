@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { Node, NodeChange, NodePositionChange, useReactFlow } from 'reactflow';
 import { UseHelperLinesState, UseHelperLinesValue, HelperLines } from './useHelperLines.types';
 import { NodeData, EdgeData } from '../DiagramRenderer.types';
+import { isDescendantOf } from '../layout/layoutNode';
 
 const isMove = (change: NodeChange): change is NodePositionChange =>
   change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
@@ -24,6 +25,7 @@ const getHelperLines = (
   nodes: Node<NodeData>[]
 ): HelperLines => {
   const noHelperLines: HelperLines = { horizontal: null, vertical: null, snapX: 0, snapY: 0 };
+  const getNodeById = (id: string | undefined) => nodes.find((n) => n.id === id);
   if (change.positionAbsolute) {
     const movingNodeBounds = {
       x1: change.positionAbsolute.x,
@@ -35,6 +37,7 @@ const getHelperLines = (
     let horizontalSnapGap: number = 10;
     return nodes
       .filter((node) => node.id != movingNode.id)
+      .filter((node) => !isDescendantOf(movingNode, node, getNodeById))
       .reduce<HelperLines>((helperLines, otherNode) => {
         if (otherNode.positionAbsolute) {
           const otherNodeBounds = {

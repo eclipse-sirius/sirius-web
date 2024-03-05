@@ -96,6 +96,7 @@ The implemented fix does not allow to evaluate an AQL expression, but only to re
 - https://github.com/eclipse-sirius/sirius-web/issues/3166[#3166] [diagram] Fix an issue where label edit tool did nothing on nodes with outside label.
 - https://github.com/eclipse-sirius/sirius-web/issues/1707[#1707] [diagram] Fix an issue where changing cursor position through a click while editing a tree item label lead to the end of the edition.
 - https://github.com/eclipse-sirius/sirius-web/issues/2825[#2825] [diagram] Fix an issue where a click on the text during direct edit opened the palette instead of change the caret position.
+- https://github.com/eclipse-sirius/sirius-web/issues/3185[#3185] [diagram] Fix an issue where child nodes were used in helper lines computation of container.
 
 === New Features
 
