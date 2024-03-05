@@ -31,7 +31,7 @@ import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
-import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
+import { isEastBorderNode, isWestBorderNode, getNewlyAddedBorderNodePosition } from './layoutBorderNodes';
 import { getChildren } from './layoutNode';
 
 const emptyNodeProps = {
@@ -246,6 +246,13 @@ const layoutDiagram = (
       });
     if (newlyAddedNode) {
       newlyAddedNode = { ...newlyAddedNode, position: referencePosition.position };
+      if (newlyAddedNode.data.isBorderNode) {
+        getNewlyAddedBorderNodePosition(
+          newlyAddedNode,
+          allVisibleNodes.find((node) => node.id === newlyAddedNode?.parentNode),
+          referencePosition
+        );
+      }
     }
   }
 

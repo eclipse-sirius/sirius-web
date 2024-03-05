@@ -13,7 +13,8 @@
 import { CoordinateExtent, Node, XYPosition } from 'reactflow';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { borderNodeOffset } from './layoutParams';
+import { borderNodeOffset, borderNodeReferencePositionRatio } from './layoutParams';
+import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 
 export const isEastBorderNode = (borderNode: Node<NodeData>): boolean => {
   return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePosition.EAST;
@@ -85,4 +86,22 @@ export const findBorderNodePosition = (
     }
   }
   return null;
+};
+
+export const getNewlyAddedBorderNodePosition = (
+  newlyAddedNode: Node<NodeData, DiagramNodeType>,
+  parentNode: Node<NodeData, string> | undefined,
+  referencePosition: GQLReferencePosition
+): void => {
+  if (parentNode) {
+    if (referencePosition.position.x < (parentNode.width ?? 0) * borderNodeReferencePositionRatio) {
+      newlyAddedNode.data.borderNodePosition = BorderNodePosition.WEST;
+    } else if (referencePosition.position.x > (parentNode.width ?? 0) * (1 - borderNodeReferencePositionRatio)) {
+      newlyAddedNode.data.borderNodePosition = BorderNodePosition.EAST;
+    } else if (referencePosition.position.y < (parentNode.height ?? 0) * borderNodeReferencePositionRatio) {
+      newlyAddedNode.data.borderNodePosition = BorderNodePosition.NORTH;
+    } else if (referencePosition.position.y > (parentNode.height ?? 0) * (1 - borderNodeReferencePositionRatio)) {
+      newlyAddedNode.data.borderNodePosition = BorderNodePosition.SOUTH;
+    }
+  }
 };
