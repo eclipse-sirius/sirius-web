@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,6 +80,14 @@ public class VariableManager {
             value = this.parent.get(name);
         }
         return value;
+    }
+
+    public VariableManager getParent() {
+        return this.parent;
+    }
+
+    public boolean hasVariable(String name) {
+        return this.variables.containsKey(name);
     }
 
     public VariableManager createChild() {

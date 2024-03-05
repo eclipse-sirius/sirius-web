@@ -47,6 +47,8 @@ public final class FormDescription implements IRepresentationDescription {
 
     private List<PageDescription> pageDescriptions;
 
+    private Function<VariableManager, VariableManager> variableManagerInitializer;
+
     private FormDescription() {
         // Prevent instantiation
     }
@@ -80,6 +82,10 @@ public final class FormDescription implements IRepresentationDescription {
 
     public List<PageDescription> getPageDescriptions() {
         return this.pageDescriptions;
+    }
+
+    public Function<VariableManager, VariableManager> getVariableManagerInitializer() {
+        return this.variableManagerInitializer;
     }
 
     public static Builder newFormDescription(String id) {
@@ -117,6 +123,8 @@ public final class FormDescription implements IRepresentationDescription {
         private Predicate<VariableManager> canCreatePredicate;
 
         private List<PageDescription> pageDescriptions;
+
+        private Function<VariableManager, VariableManager> variableManagerInitializer = Function.identity();
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -167,6 +175,11 @@ public final class FormDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder variableManagerInitializer(Function<VariableManager, VariableManager> variableManagerInitializer) {
+            this.variableManagerInitializer = Objects.requireNonNull(variableManagerInitializer);
+            return this;
+        }
+
         public FormDescription build() {
             FormDescription formDescription = new FormDescription();
             formDescription.id = Objects.requireNonNull(this.id);
@@ -176,6 +189,7 @@ public final class FormDescription implements IRepresentationDescription {
             formDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             formDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             formDescription.pageDescriptions = Objects.requireNonNull(this.pageDescriptions);
+            formDescription.variableManagerInitializer = Objects.requireNonNull(this.variableManagerInitializer);
             return formDescription;
         }
     }

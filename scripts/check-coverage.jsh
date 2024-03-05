@@ -47,9 +47,9 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-deck", 0.0),
   new ModuleCoverage("sirius-components-collaborative-deck", 15.0),
   new ModuleCoverage("sirius-components-deck-graphql", 36.0),
-  new ModuleCoverage("sirius-components-forms", 78.0),
+  new ModuleCoverage("sirius-components-forms", 81.0),
   new ModuleCoverage("sirius-components-collaborative-forms", 82.0),
-  new ModuleCoverage("sirius-components-forms-graphql", 47.0),
+  new ModuleCoverage("sirius-components-forms-graphql", 53.0),
   new ModuleCoverage("sirius-components-widget-reference", 62.0),
   new ModuleCoverage("sirius-components-collaborative-widget-reference", 49.0),
   new ModuleCoverage("sirius-components-widget-reference-graphql", 28.0),
@@ -102,7 +102,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-web-customnodes", 12.0),
   new ModuleCoverage("sirius-web-customnodes-edit", 5.0),
   new ModuleCoverage("sirius-web-domain", 80.0),
-  new ModuleCoverage("sirius-web-application", 89.0),
+  new ModuleCoverage("sirius-web-application", 90.0),
   new ModuleCoverage("sirius-web-infrastructure", 85.0),
   new ModuleCoverage("sirius-web-starter", 98.0),
   new ModuleCoverage("sirius-web", 37.0)
@@ -135,7 +135,7 @@ System.out.println();
 
 // Check global code coverage
 double global = checkCoverage("");
-double expectedGlobalCoverage = 48.0;
+double expectedGlobalCoverage = 49.0;
 boolean isValidCoverage = global >= expectedGlobalCoverage;
 display("total", global, expectedGlobalCoverage);
 
