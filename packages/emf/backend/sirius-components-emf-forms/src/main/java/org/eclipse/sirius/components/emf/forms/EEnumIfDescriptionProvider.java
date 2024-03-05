@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.compatibility.emf.properties;
+package org.eclipse.sirius.components.emf.forms;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EAttribute;
@@ -29,7 +28,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.IfDescription;
@@ -67,28 +66,23 @@ public class EEnumIfDescriptionProvider {
     }
 
     public IfDescription getIfDescription() {
-        // @formatter:off
         return IfDescription.newIfDescription(IF_DESCRIPTION_ID)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .predicate(this.getPredicate())
                 .controlDescriptions(List.of(this.getRadioDescription()))
                 .build();
-        // @formatter:on
     }
 
     private Function<VariableManager, Boolean> getPredicate() {
         return variableManager -> {
-            var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
-            // @formatter:off
+            var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
             return optionalEAttribute.map(EAttribute::getEType)
                     .filter(EEnum.class::isInstance)
                     .isPresent();
-            // @formatter:on
         };
     }
 
     private RadioDescription getRadioDescription() {
-        // @formatter:off
         return RadioDescription.newRadioDescription(RADIO_DESCRIPTION_ID)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new WidgetIdProvider())
@@ -102,24 +96,21 @@ public class EEnumIfDescriptionProvider {
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .build();
-        // @formatter:on
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 
     private Function<VariableManager, List<?>> getOptionsProvider() {
         return variableManager -> {
-            Object feature = variableManager.getVariables().get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
+            Object feature = variableManager.getVariables().get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE);
             if (feature instanceof EAttribute) {
                 EDataType eEnum = ((EAttribute) feature).getEAttributeType();
                 if (eEnum instanceof EEnum) {
-                    // @formatter:off
                     return ((EEnum) eEnum).getELiterals().stream()
                             .map(EEnumLiteral::getInstance)
-                            .collect(Collectors.toUnmodifiableList());
-                    // @formatter:on
+                            .toList();
                 }
             }
             return new ArrayList<>();
@@ -154,7 +145,7 @@ public class EEnumIfDescriptionProvider {
                 String optionLitteralId = Integer.valueOf(enumerator.getValue()).toString();
 
                 var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-                var optionalEStructuralFeature = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EStructuralFeature.class);
+                var optionalEStructuralFeature = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EStructuralFeature.class);
                 if (optionalEObject.isPresent() && optionalEStructuralFeature.isPresent()) {
                     EObject eObject = optionalEObject.get();
                     EStructuralFeature eStructuralFeature = optionalEStructuralFeature.get();
@@ -173,7 +164,7 @@ public class EEnumIfDescriptionProvider {
     private BiFunction<VariableManager, String, IStatus> getNewValueHandler() {
         return (variableManager, newValue) -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
+            var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
 
             try {
                 int id = Integer.valueOf(newValue).intValue();

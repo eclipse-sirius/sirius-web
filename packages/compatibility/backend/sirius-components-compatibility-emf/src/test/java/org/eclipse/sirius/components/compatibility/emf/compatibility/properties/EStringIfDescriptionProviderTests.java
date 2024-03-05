@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,9 +21,9 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
-import org.eclipse.sirius.components.compatibility.emf.properties.EStringIfDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.PropertiesDefaultDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.forms.EMFFormDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.EStringIfDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.viewpoint.description.DescriptionPackage;
@@ -75,7 +75,7 @@ public class EStringIfDescriptionProviderTests {
         IfDescription ifDescription = descriptionProvider.getIfDescription();
 
         VariableManager variableManager = new VariableManager();
-        variableManager.put(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, attribute);
+        variableManager.put(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, attribute);
         Boolean predicateResult = ifDescription.getPredicate().apply(variableManager);
         return predicateResult;
     }

@@ -1,0 +1,10 @@
+= sirius-components-emf-forms
+
+== Goal
+
+This project provides support for the default integration of EMF in forms.
+
+== Dependencies
+
+- sirius-components-emf
+- sirius-components-forms

@@ -30,14 +30,13 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.compatibility.emf.properties.EBooleanIfDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.EEnumIfDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.EStringIfDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.NonContainmentReferenceIfDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.NumberIfDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.forms.EBooleanIfDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.EEnumIfDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.NonContainmentReferenceIfDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.NumberIfDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
@@ -59,7 +58,7 @@ import org.springframework.stereotype.Service;
  * <li>it only {@link #handles(VariableManager) applies} to elements from the View DSL which do not have
  * {@link #TYPES_WITH_CUSTOM_PROPERTIES their own even more specific properties definition}.</li>
  * <li>it uses a {@link CustomizableEStringIfDescriptionProvider customizable variant} of the generic
- * {@link EStringIfDescriptionProvider} so that specific text fields can get special treatment (a specific style and
+ * EStringIfDescriptionProvider so that specific text fields can get special treatment (a specific style and
  * completion proposal provider).</li>
  * </ol>
  *

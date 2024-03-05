@@ -33,6 +33,7 @@
 
 	<modules>
 		<module>sirius-components-emf</module>
+		<module>sirius-components-emf-forms</module>
 		<module>sirius-components-interpreter</module>
 	</modules>
 </project>

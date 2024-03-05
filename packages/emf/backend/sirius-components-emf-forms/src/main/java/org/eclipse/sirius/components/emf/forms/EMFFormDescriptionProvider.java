@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.compatibility.emf.properties;
+package org.eclipse.sirius.components.emf.forms;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,11 +26,10 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.sirius.components.collaborative.forms.PropertiesEventProcessorFactory;
-import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.forms.api.IEMFFormDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
@@ -48,7 +47,7 @@ import org.springframework.stereotype.Service;
  * @author lfasani
  */
 @Service
-public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultDescriptionProvider {
+public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
 
     public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature";
 
@@ -66,15 +65,19 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public PropertiesDefaultDescriptionProvider(IObjectService objectService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
-            IEMFMessageService emfMessageService) {
+    public EMFFormDescriptionProvider(IObjectService objectService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService,
+                                      ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
+                                      IEMFMessageService emfMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
-        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
+
+        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(objectService::getId)
+                .orElse(null);
     }
 
     @Override
@@ -88,16 +91,13 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
         PageDescription firstPageDescription = this.getPageDescription(groupDescriptions);
         pageDescriptions.add(firstPageDescription);
 
-        // @formatter:off
         Function<VariableManager, String> labelProvider = variableManager -> "Properties";
-        // @formatter:on
 
-        // @formatter:off
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.objectService::getId)
                 .orElse(null);
 
-        return FormDescription.newFormDescription(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
+        return FormDescription.newFormDescription(IEMFFormDescriptionProvider.DESCRIPTION_ID)
                 .label("Default form description")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
@@ -105,7 +105,6 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(pageDescriptions)
                 .build();
-        // @formatter:on
     }
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
@@ -127,7 +126,6 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
             return UUID.randomUUID().toString();
         };
 
-        // @formatter:off
         return PageDescription.newPageDescription("firstPageId")
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
@@ -135,7 +133,6 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
                 .groupDescriptions(groupDescriptions)
                 .canCreatePredicate(variableManager -> true)
                 .build();
-        // @formatter:on
     }
 
     private GroupDescription getGroupDescription() {
@@ -147,7 +144,6 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
             Object self = variableManager.getVariables().get(VariableManager.SELF);
             if (self instanceof EObject eObject) {
 
-                // @formatter:off
                 List<IItemPropertyDescriptor> propertyDescriptors = Optional.ofNullable(this.composedAdapterFactory.adapt(eObject, IItemPropertySource.class))
                         .filter(IItemPropertySource.class::isInstance)
                         .map(IItemPropertySource.class::cast)
@@ -159,7 +155,6 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
                         .filter(EStructuralFeature.class::isInstance)
                         .map(EStructuralFeature.class::cast)
                         .forEach(objects::add);
-                // @formatter:on
             }
             return objects;
         };
@@ -171,7 +166,6 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
 
         ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.emfKindService, this.feedbackMessageService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
-        // @formatter:off
         var numericDataTypes = List.of(
                 EcorePackage.Literals.EINT,
                 EcorePackage.Literals.EINTEGER_OBJECT,
@@ -184,30 +178,26 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
                 EcorePackage.Literals.ESHORT,
                 EcorePackage.Literals.ESHORT_OBJECT
                 );
-        // @formatter:on
+
         for (var dataType : numericDataTypes) {
             ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, this.semanticTargetIdProvider).getIfDescription());
         }
 
-        // @formatter:off
         ForDescription forDescription = ForDescription.newForDescription("forId")
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .iterator(ESTRUCTURAL_FEATURE)
                 .iterableProvider(iterableProvider)
                 .controlDescriptions(ifDescriptions)
                 .build();
-        // @formatter:on
 
         controlDescriptions.add(forDescription);
 
-        // @formatter:off
         return GroupDescription.newGroupDescription("groupId")
                 .idProvider(variableManager -> "Core Properties")
                 .labelProvider(variableManager -> "Core Properties")
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .controlDescriptions(controlDescriptions)
                 .build();
-        // @formatter:on
     }
 
 }

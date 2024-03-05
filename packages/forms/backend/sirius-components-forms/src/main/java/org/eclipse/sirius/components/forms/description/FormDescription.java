@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,6 +86,10 @@ public final class FormDescription implements IRepresentationDescription {
         return new Builder(id);
     }
 
+    public static Builder newFormDescription(FormDescription formDescription) {
+        return new Builder(formDescription);
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -116,6 +120,21 @@ public final class FormDescription implements IRepresentationDescription {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        private Builder(FormDescription formDescription) {
+            this.id = formDescription.getId();
+            this.label = formDescription.getLabel();
+            this.idProvider = formDescription.getIdProvider();
+            this.labelProvider = formDescription.getLabelProvider();
+            this.targetObjectIdProvider = formDescription.getTargetObjectIdProvider();
+            this.canCreatePredicate = formDescription.getCanCreatePredicate();
+            this.pageDescriptions = formDescription.getPageDescriptions();
+        }
+
+        public Builder id(String id) {
+            this.id = Objects.requireNonNull(id);
+            return this;
         }
 
         public Builder label(String label) {

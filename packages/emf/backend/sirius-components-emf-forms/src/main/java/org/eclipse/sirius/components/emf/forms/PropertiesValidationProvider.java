@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.validation;
+package org.eclipse.sirius.components.emf.forms;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,8 +20,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.core.api.IValidationService;
-import org.eclipse.sirius.components.compatibility.emf.properties.PropertiesDefaultDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ public class PropertiesValidationProvider implements IPropertiesValidationProvid
     public Function<VariableManager, List<?>> getDiagnosticsProvider() {
         return variableManager -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EStructuralFeature.class);
+            var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EStructuralFeature.class);
             if (optionalEObject.isPresent() && optionalEAttribute.isPresent()) {
                 return this.validationService.validate(optionalEObject.get(), optionalEAttribute.get());
             }

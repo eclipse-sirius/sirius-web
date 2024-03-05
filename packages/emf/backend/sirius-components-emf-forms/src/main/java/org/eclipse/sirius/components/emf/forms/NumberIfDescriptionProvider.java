@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.compatibility.emf.properties;
+package org.eclipse.sirius.components.emf.forms;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
@@ -61,24 +61,21 @@ public class NumberIfDescriptionProvider {
     }
 
     public IfDescription getIfDescription() {
-        // @formatter:off
         return IfDescription.newIfDescription(this.eDataType.getName())
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .predicate(this.getPredicate())
                 .controlDescriptions(List.of(this.getTextfieldDescription()))
                 .build();
-        // @formatter:on
     }
 
     private Function<VariableManager, Boolean> getPredicate() {
         return variableManager -> {
-            var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
+            var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
             return optionalEAttribute.filter(eAttribute -> eAttribute.getEType().equals(this.eDataType)).isPresent();
         };
     }
 
     private TextfieldDescription getTextfieldDescription() {
-        // @formatter:off
         return TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(this.getIdProvider())
@@ -89,33 +86,30 @@ public class NumberIfDescriptionProvider {
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .build();
-        // @formatter:on
     }
 
     private Function<VariableManager, String> getIdProvider() {
         return variableManager -> {
             var eObjectPart = variableManager.get(VariableManager.SELF, EObject.class);
-            var featurePart = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EObject.class);
+            var featurePart = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EObject.class);
             return this.getEObjectId(eObjectPart) + this.getEObjectId(featurePart);
         };
     }
 
     private String getEObjectId(Optional<EObject> potentialEObject) {
-        // @formatter:off
         return potentialEObject.map(EcoreUtil::getURI)
                 .map(Object::toString)
                 .orElse("");
-        // @formatter:on
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 
     private Function<VariableManager, String> getValueProvider() {
         return variableManager -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
+            var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
             if (optionalEObject.isPresent() && optionalEAttribute.isPresent()) {
                 EObject eObject = optionalEObject.get();
                 EAttribute eAttribute = optionalEAttribute.get();
@@ -131,7 +125,7 @@ public class NumberIfDescriptionProvider {
     private BiFunction<VariableManager, String, IStatus> getNewValueHandler() {
         return (variableManager, newValue) -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
+            var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
 
             IStatus result = new Failure("");
             if (optionalEObject.isPresent() && optionalEAttribute.isPresent()) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,12 +28,12 @@ public class StringValueProvider implements Function<VariableManager, String> {
 
     private static final String EMPTY_STRING = "";
 
-    private AQLInterpreter interpreter;
+    private final AQLInterpreter interpreter;
 
-    private String expression;
+    private final String expression;
 
     public StringValueProvider(AQLInterpreter interpreter, String expression) {
-        this.interpreter = interpreter;
+        this.interpreter = Objects.requireNonNull(interpreter);
         this.expression = Objects.requireNonNull(expression);
     }
 
