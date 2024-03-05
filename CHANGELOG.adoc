@@ -158,6 +158,11 @@ Thanks to this capability, a specifier can easily retrieve a variable overriden 
 - https://github.com/eclipse-sirius/sirius-web/issues/3141[#3141] [portal] Make the header of embedded representations sticky so that it (and its icon) are always visible.
 - https://github.com/eclipse-sirius/sirius-web/issues/2713[#2713] [diagram] Enhances resize support for list nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/3120[#3120] [deck] Provide styles customization in the Deck representation
+- https://github.com/eclipse-sirius/sirius-web/issues/3187[#3187] [diagram] BorderNode creation now considers the click position to define the border.
++
+image:doc/screenshots/borderNodeCreationArea.png[BorderNode creation area,50%]
++
+In other scenarios, the default creation position border remains the eastern one.
 
 == v2024.1.0
 
