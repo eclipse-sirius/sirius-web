@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -145,9 +147,15 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Autowired
     private IDomainEventCollector domainEventCollector;
 
+    @Autowired
+    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
     @BeforeEach
     public void beforeEach() {
         this.domainEventCollector.clear();
+        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
+                .map(IEditingContextEventProcessor::getEditingContextId)
+                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
     }
 
     @Test

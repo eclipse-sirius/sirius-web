@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.graphql.datafetchers.mutation;
+package org.eclipse.sirius.components.forms.graphql.datafetchers.mutation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.forms.dto.UpdateWidgetFocusInput;
-import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -49,14 +47,11 @@ public class MutationUpdateWidgetFocusDataFetcher implements IDataFetcherWithFie
 
     private final ObjectMapper objectMapper;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
-    private final IGraphQLMessageService messageService;
-
-    public MutationUpdateWidgetFocusDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IGraphQLMessageService messageService) {
+    public MutationUpdateWidgetFocusDataFetcher(ObjectMapper objectMapper, IEditingContextDispatcher editingContextDispatcher) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
-        this.messageService = Objects.requireNonNull(messageService);
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
@@ -64,11 +59,7 @@ public class MutationUpdateWidgetFocusDataFetcher implements IDataFetcherWithFie
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, UpdateWidgetFocusInput.class);
 
-        // @formatter:off
-        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
-                .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
-                .toFuture();
-        // @formatter:on
+        return this.editingContextDispatcher.dispatchMutation(input.editingContextId(), input).toFuture();
     }
 
 }

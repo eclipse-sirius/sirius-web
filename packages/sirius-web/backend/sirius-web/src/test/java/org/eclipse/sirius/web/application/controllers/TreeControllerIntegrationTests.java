@@ -26,6 +26,8 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.collaborative.trees.dto.DeleteTreeItemInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeEventInput;
@@ -39,6 +41,7 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,6 +120,16 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IIdentityService identityService;
+
+    @Autowired
+    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
+                .map(IEditingContextEventProcessor::getEditingContextId)
+                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
+    }
 
     @Test
     @DisplayName("Given a project, when we subscribe to the tree events of its explorer, then the tree of the explorer is sent")
