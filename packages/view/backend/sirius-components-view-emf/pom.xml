@@ -29,12 +29,21 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<sirius.version>7.2.0-SNAPSHOT</sirius.version>
 	</properties>
 
 	<repositories>
 		<repository>
 			<id>Central</id>
 			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+		<repository>
+			<id>Eclipse Sirius</id>
+			<name>Sirius Repository - Snapshots</name>
+			<url>https://repo.eclipse.org/content/repositories/sirius-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>github-sirius-emfjson</id>
@@ -63,6 +72,26 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-diagrams</artifactId>
+			<version>2024.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-forms</artifactId>
+			<version>2024.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-selection</artifactId>
+			<version>2024.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>org.eclipse.sirius.ecore.extender</artifactId>
+			<version>${sirius.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram</artifactId>
 			<version>2024.1.4</version>
 		</dependency>
@@ -80,11 +109,6 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-deck</artifactId>
              <version>2024.1.4</version>
-		</dependency> 
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-compatibility-emf</artifactId>
-			<version>2024.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
