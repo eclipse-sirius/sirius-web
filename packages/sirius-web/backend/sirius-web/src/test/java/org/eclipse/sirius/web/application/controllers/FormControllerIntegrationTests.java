@@ -13,14 +13,15 @@
 package org.eclipse.sirius.web.application.controllers;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
-import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
@@ -37,17 +38,17 @@ import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests of the portal controllers.
+ * Integration tests of the form controllers.
  *
  * @author sbegaudeau
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
+public class FormControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String GET_PORTAL_EVENT_SUBSCRIPTION = """
-            subscription portalEvent($input: PortalEventInput!) {
-              portalEvent(input: $input) {
+    private static final String GET_PROPERTIES_EVENT_SUBSCRIPTION = """
+            subscription propertiesEvent($input: PropertiesEventInput!) {
+              propertiesEvent(input: $input) {
                 __typename
               }
             }
@@ -67,22 +68,22 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a portal, when we subscribe to portal events, then the current state of the portal is sent")
+    @DisplayName("Given a semantic object, when we subscribe to its properties events, then the form is sent")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenPortalWhenWeSubscribeToPortalEventsThenCurrentStateOfThePortalIsSent() {
-        var input = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-        var flux = this.graphQLRequestor.subscribe(GET_PORTAL_EVENT_SUBSCRIPTION, input);
+    public void givenSemanticObjectWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
+        var input = new PropertiesEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
+        var flux = this.graphQLRequestor.subscribe(GET_PROPERTIES_EVENT_SUBSCRIPTION, input);
 
-        Predicate<Object> portalRefreshedEventPayloadMatcher = object -> Optional.of(object)
+        Predicate<Object> formContentMatcher = object -> Optional.of(object)
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
+                .filter(FormRefreshedEventPayload.class::isInstance)
                 .isPresent();
 
         StepVerifier.create(flux)
-                .expectNextMatches(portalRefreshedEventPayloadMatcher)
+                .expectNextMatches(formContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

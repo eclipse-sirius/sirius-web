@@ -19,14 +19,19 @@ import com.jayway.jsonpath.JsonPath;
 import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
 import org.eclipse.sirius.components.collaborative.dto.InvokeEditingContextActionInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.application.project.services.DefaultEditingContextActionProvider;
 import org.eclipse.sirius.web.application.studio.services.StudioEditingContextActionProvider;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +120,16 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     @Autowired
     private IGraphQLRequestor graphQLRequestor;
 
+    @Autowired
+    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
+                .map(IEditingContextEventProcessor::getEditingContextId)
+                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
+    }
+
     @Test
     @DisplayName("Given an editing context id, when a query is performed, then the editing context is returned")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -171,19 +186,25 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), TestIdentifiers.STUDIO_PROJECT.toString());
         var flux = this.graphQLRequestor.subscribe(GET_EDITING_CONTEXT_EVENT_SUBSCRIPTION, editingContextEventInput);
 
-        var input = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_DOMAIN_ID);
-        Runnable invokeEditingContextActionTask = () -> {
+
+        Consumer<InvokeEditingContextActionInput> invokeEditingContextActionTask = (input) -> {
             var result = this.graphQLRequestor.execute(INVOKE_EDITING_CONTEXT_ACTION, input);
 
             TestTransaction.flagForCommit();
             TestTransaction.end();
+            TestTransaction.start();
 
             String typename = JsonPath.read(result, "$.data.invokeEditingContextAction.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
+        var createEmptyDomainInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_DOMAIN_ID);
+        var createEmptyViewInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_VIEW_ID);
+        var createEmptyDocumentInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.STUDIO_PROJECT.toString(), DefaultEditingContextActionProvider.EMPTY_ACTION_ID);
         StepVerifier.create(flux)
-                .then(invokeEditingContextActionTask)
+                .then(() -> invokeEditingContextActionTask.accept(createEmptyDomainInput))
+                .then(() -> invokeEditingContextActionTask.accept(createEmptyViewInput))
+                .then(() -> invokeEditingContextActionTask.accept(createEmptyDocumentInput))
                 .thenCancel()
                 .verify(Duration.ofSeconds(5));
     }

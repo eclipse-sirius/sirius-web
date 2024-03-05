@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -27,6 +29,7 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateI
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateSuccessPayload;
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +92,16 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
+
+    @Autowired
+    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
+                .map(IEditingContextEventProcessor::getEditingContextId)
+                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
+    }
 
     @Test
     @DisplayName("Given a set of project templates, when a query is performed, then the project templates are returned")

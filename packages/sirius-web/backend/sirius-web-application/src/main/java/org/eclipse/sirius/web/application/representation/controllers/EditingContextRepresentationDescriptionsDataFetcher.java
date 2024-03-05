@@ -30,7 +30,6 @@ import graphql.relay.ConnectionCursor;
 import graphql.relay.DefaultConnection;
 import graphql.relay.DefaultConnectionCursor;
 import graphql.relay.DefaultEdge;
-import graphql.relay.DefaultPageInfo;
 import graphql.relay.Edge;
 import graphql.relay.PageInfo;
 import graphql.relay.Relay;
@@ -65,7 +64,7 @@ public class EditingContextRepresentationDescriptionsDataFetcher implements IDat
                 .filter(EditingContextRepresentationDescriptionsPayload.class::isInstance)
                 .map(EditingContextRepresentationDescriptionsPayload.class::cast)
                 .map(this::toConnection)
-                .switchIfEmpty(Mono.just(new DefaultConnection<>(List.of(), new DefaultPageInfo(null, null, false, false))))
+                .switchIfEmpty(Mono.just(new DefaultConnection<>(List.of(), new PageInfoWithCount(null, null, false, false, 0))))
                 .toFuture();
     }
 

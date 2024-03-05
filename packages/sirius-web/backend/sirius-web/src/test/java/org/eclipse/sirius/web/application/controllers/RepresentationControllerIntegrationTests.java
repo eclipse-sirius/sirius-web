@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
@@ -146,9 +148,15 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @Autowired
     private IDomainEventCollector domainEventCollector;
 
+    @Autowired
+    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
     @BeforeEach
     public void beforeEach() {
         this.domainEventCollector.clear();
+        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
+                .map(IEditingContextEventProcessor::getEditingContextId)
+                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
     }
 
     @Test
