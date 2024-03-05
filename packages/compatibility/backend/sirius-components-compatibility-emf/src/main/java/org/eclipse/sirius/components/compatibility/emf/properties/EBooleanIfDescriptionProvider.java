@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
-import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.representations.Failure;

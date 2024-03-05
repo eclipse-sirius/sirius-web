@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
 import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.BooleanValueProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;

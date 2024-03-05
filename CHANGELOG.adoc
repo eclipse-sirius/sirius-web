@@ -66,6 +66,8 @@ Having `Viewer` as a type did not bring any additional value and it created some
 - [sirius-web] The field `ChangeKind.PROJECT_RENAMING` has been deleted since it does not make any sense in Sirius Components.
 - https://github.com/eclipse-sirius/sirius-web/issues/2713[#2713] [diagram] Add the attribute `growableNodeIds` to graphql `ListLayoutStrategy`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [core] Add `CoreImageConstants.DEFAULT_SVG` to retrieve the default svg image from `sirius-components-core` instead of the now deleted `ImageConstants.DEFAULT_SVG` from `sirius-components-compatibility`
+- https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [core] Move the `WidgetIdProvider` from `sirius-components-compatibility` to `sirius-components-forms` to remove unnecessary dependencies to the Sirius Desktop compatibility layer.
+
 
 === Dependency update
 

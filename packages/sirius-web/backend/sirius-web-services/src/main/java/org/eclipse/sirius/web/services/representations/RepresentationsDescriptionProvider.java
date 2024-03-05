@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IRepresentationsDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
