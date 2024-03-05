@@ -124,6 +124,9 @@ image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,
 - https://github.com/eclipse-sirius/sirius-web/issues/3133[#3133] [deck] Add OKR and Kanban samples in the Task template and Deck view stereotype.
 - https://github.com/eclipse-sirius/sirius-web/issues/3145[#3145] [diagram] Add support for helper lines to facilitate the alignment of nodes with each other.
 - https://github.com/eclipse-sirius/sirius-web/issues/3084[#3084] [form] Add SplitButton Widget.
+- https://github.com/eclipse-sirius/sirius-web/issues/3193[#3193] [form] Allow the use of custom variables in the `VariableManager` initialized by the FormDescription.
+- https://github.com/eclipse-sirius/sirius-web/issues/3193[#3193] [core] Added the methods `hasVariable(String name)` and `getParent()` in VariableManager to, respectively, detect if a variable manager defines a variable (it returns `false`, if the variable is defined by a parent `VariableManager`) and to navigate to a parent `VariableManager`.
+Thanks to this capability, a specifier can easily retrieve a variable overriden by a child `VariableManager`.
 
 === Improvements
 
