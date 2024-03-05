@@ -23,7 +23,7 @@ import {
   ListLayoutStrategy,
 } from '../graphql/subscription/nodeFragment.types';
 import { Diagram, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
-import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
+import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdgeWrapper.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';

@@ -42,8 +42,8 @@ describe('Diagram - edges', () => {
           explorer.expand('Entity1 Node');
           details.openReferenceWidgetOptions('Reused Child Node Descriptions');
           details.selectReferenceWidgetOption('Entity2 Node');
-          details.getTextField('Default Width Expression').type('300{enter}');
-          details.getTextField('Default Height Expression').type('300{enter}');
+          details.getTextField('Default Width Expression').type('290{enter}');
+          details.getTextField('Default Height Expression').type('290{enter}');
         });
       })
     );
@@ -83,7 +83,9 @@ describe('Diagram - edges', () => {
           .eq(0)
           .invoke('attr', 'd')
           .then((dValue) => {
-            expect(diagram.roundSvgPathData(dValue ?? '')).to.equal('M150.00L150.00Q150.00L88.00Q83.00L83.00L83.00');
+            expect(diagram.roundSvgPathData(dValue ?? '')).to.equal(
+              'M140.00L140.00L140.00L120.00L100.00L80.00L80.00L80.00'
+          );
           });
       });
     });
