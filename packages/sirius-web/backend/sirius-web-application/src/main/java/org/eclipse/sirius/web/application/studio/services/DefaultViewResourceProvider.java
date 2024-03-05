@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.studio.services;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -114,7 +115,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         edgeStyle.setColor(this.getColorFromPalette(view, "color_dark"));
         linkedToEdge.setStyle(edgeStyle);
 
-        JsonResource resource = new JSONResourceFactory().createResourceFromPath("inmemory");
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
         resource.eAdapters().add(new ResourceMetadataAdapter(VIEW_DOCUMENT_NAME));
         resource.getContents().add(view);
 
