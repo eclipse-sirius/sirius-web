@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services;
 
+import java.util.UUID;
+
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.domain.Attribute;
 import org.eclipse.sirius.components.domain.DataType;
@@ -81,7 +83,7 @@ public class DefaultDomainResourceProvider implements IDefaultDomainResourceProv
         this.addAttribute(entity1, "attribute3", DataType.NUMBER);
         this.addAttribute(entity2, "name", DataType.STRING);
 
-        JsonResource resource = new JSONResourceFactory().createResourceFromPath("inmemory");
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
         resource.eAdapters().add(new ResourceMetadataAdapter(DOMAIN_DOCUMENT_NAME));
         resource.getContents().add(domain);
 
