@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.compatibility.emf.properties;
+package org.eclipse.sirius.components.emf.forms;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -30,9 +30,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class EStructuralFeatureLabelProvider implements Function<VariableManager, String> {
 
-    private String featureVariableName;
+    private final String featureVariableName;
 
-    private AdapterFactory adapterFactory;
+    private final AdapterFactory adapterFactory;
 
     public EStructuralFeatureLabelProvider(String featureVariableName, AdapterFactory adapterFactory) {
         this.featureVariableName = Objects.requireNonNull(featureVariableName);
@@ -44,17 +44,13 @@ public class EStructuralFeatureLabelProvider implements Function<VariableManager
         Object object = variableManager.getVariables().get(VariableManager.SELF);
         Object feature = variableManager.getVariables().get(this.featureVariableName);
 
-        if (object instanceof EObject && feature instanceof EStructuralFeature) {
-            EObject eObject = (EObject) object;
-            EStructuralFeature eStructuralFeature = (EStructuralFeature) feature;
-
+        if (object instanceof EObject eObject && feature instanceof EStructuralFeature eStructuralFeature) {
             Adapter adapter = this.adapterFactory.adapt(eObject, IItemPropertySource.class);
-            if (adapter instanceof IItemPropertySource) {
-                IItemPropertySource itemPropertySource = (IItemPropertySource) adapter;
+
+            if (adapter instanceof IItemPropertySource itemPropertySource) {
                 IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eStructuralFeature);
                 if (descriptor != null) {
-                    String displayName = descriptor.getDisplayName(eStructuralFeature);
-                    return displayName;
+                    return descriptor.getDisplayName(eStructuralFeature);
                 }
             }
         }
