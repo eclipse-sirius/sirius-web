@@ -1,0 +1,27 @@
+= [ADR-136] Add variables in FormDescription entity in the view form dsl.
+
+== Context
+
+Following [ADR-109] Link widgets together in forms, a first implementation allows the specifiers to add variables to the `VariableManager` used by `FormDescription`.
+
+We want to allow specifiers to leverage this new mechanism in the view form dsl.
+
+== Decision
+
+We will add the ability for specifiers to create variables in the form view dsl.
+
+=== FormVariable entity
+
+We will need to add an entity `FormVariable` contained in `FormDescription`.
+
+`FormVariable` will have 2 attributes : 
+
+- name : EString 
+- defaultValueExpression: InterpretedExpression
+
+== Status
+
+Work in progress
+
+== Consequences
+
