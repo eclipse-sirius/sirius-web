@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.FormFactory;
 import org.eclipse.sirius.components.view.form.FormPackage;
+import org.eclipse.sirius.components.view.form.FormVariable;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.PageDescription;
 import org.eclipse.sirius.components.view.provider.RepresentationDescriptionItemProvider;
@@ -70,6 +71,7 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(FormPackage.Literals.FORM_DESCRIPTION__PAGES);
+            this.childrenFeatures.add(FormPackage.Literals.FORM_DESCRIPTION__FORM_VARIABLES);
         }
         return this.childrenFeatures;
     }
@@ -131,6 +133,7 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
 
         switch (notification.getFeatureID(FormDescription.class)) {
             case FormPackage.FORM_DESCRIPTION__PAGES:
+            case FormPackage.FORM_DESCRIPTION__FORM_VARIABLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -148,9 +151,11 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         PageDescription pageDescription = FormFactory.eINSTANCE.createPageDescription();
+        FormVariable formVariable = FormFactory.eINSTANCE.createFormVariable();
         GroupDescription groupDescription = FormFactory.eINSTANCE.createGroupDescription();
         pageDescription.getGroups().add(groupDescription);
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_DESCRIPTION__PAGES, pageDescription));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_DESCRIPTION__FORM_VARIABLES, formVariable));
     }
 
 }

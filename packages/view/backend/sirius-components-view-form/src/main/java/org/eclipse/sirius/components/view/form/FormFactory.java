@@ -38,6 +38,14 @@ public interface FormFactory extends EFactory {
     FormDescription createFormDescription();
 
     /**
+     * Returns a new object of class '<em>Variable</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Variable</em>'.
+     * @generated
+     */
+    FormVariable createFormVariable();
+
+    /**
      * Returns a new object of class '<em>Page Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Page Description</em>'.

@@ -144,6 +144,8 @@ Thanks to this capability, a specifier can easily retrieve a variable overriden 
 - https://github.com/eclipse-sirius/sirius-web/issues/3096[#3096] [tree] Tree representations can now support filters
 - https://github.com/eclipse-sirius/sirius-web/issues/3158[#3158] [diagram] Add a new tool to apply adjust-size on diagram node.
 - https://github.com/eclipse-sirius/sirius-web/issues/3201[#3201] [diagram] Add support for tools on multiple diagram elements selection (hide, fade and pin).
+- https://github.com/eclipse-sirius/sirius-web/issues/3197[#3197] [form] Add the `FormVariable` concept to the view form DSL.
+Form variables declared in a form description will thus be added in the FormDescription `VariableManager`.
 
 === Improvements
 

@@ -123,6 +123,29 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FormVariable}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FormVariableItemProvider formVariableItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.form.FormVariable}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createFormVariableAdapter() {
+        if (this.formVariableItemProvider == null) {
+            this.formVariableItemProvider = new FormVariableItemProvider(this);
+        }
+
+        return this.formVariableItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.PageDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1377,6 +1400,8 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     public void dispose() {
         if (this.formDescriptionItemProvider != null)
             this.formDescriptionItemProvider.dispose();
+        if (this.formVariableItemProvider != null)
+            this.formVariableItemProvider.dispose();
         if (this.pageDescriptionItemProvider != null)
             this.pageDescriptionItemProvider.dispose();
         if (this.groupDescriptionItemProvider != null)

@@ -48,6 +48,7 @@ import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormFactory;
 import org.eclipse.sirius.components.view.form.FormPackage;
+import org.eclipse.sirius.components.view.form.FormVariable;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.ImageDescription;
@@ -89,6 +90,13 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     private EClass formDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass formVariableEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -550,6 +558,46 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EReference getFormDescription_Pages() {
         return (EReference) this.formDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getFormDescription_FormVariables() {
+        return (EReference) this.formDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getFormVariable() {
+        return this.formVariableEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFormVariable_Name() {
+        return (EAttribute) this.formVariableEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFormVariable_DefaultValueExpression() {
+        return (EAttribute) this.formVariableEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2483,6 +2531,11 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         // Create classes and their features
         this.formDescriptionEClass = this.createEClass(FORM_DESCRIPTION);
         this.createEReference(this.formDescriptionEClass, FORM_DESCRIPTION__PAGES);
+        this.createEReference(this.formDescriptionEClass, FORM_DESCRIPTION__FORM_VARIABLES);
+
+        this.formVariableEClass = this.createEClass(FORM_VARIABLE);
+        this.createEAttribute(this.formVariableEClass, FORM_VARIABLE__NAME);
+        this.createEAttribute(this.formVariableEClass, FORM_VARIABLE__DEFAULT_VALUE_EXPRESSION);
 
         this.pageDescriptionEClass = this.createEClass(PAGE_DESCRIPTION);
         this.createEAttribute(this.pageDescriptionEClass, PAGE_DESCRIPTION__NAME);
@@ -2833,6 +2886,14 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEClass(this.formDescriptionEClass, FormDescription.class, "FormDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getFormDescription_Pages(), this.getPageDescription(), null, "pages", null, 0, -1, FormDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getFormDescription_FormVariables(), this.getFormVariable(), null, "formVariables", null, 0, -1, FormDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.formVariableEClass, FormVariable.class, "FormVariable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getFormVariable_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, FormVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getFormVariable_DefaultValueExpression(), theViewPackage.getInterpretedExpression(), "defaultValueExpression", null, 0, 1, FormVariable.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.pageDescriptionEClass, PageDescription.class, "PageDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getPageDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, PageDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
