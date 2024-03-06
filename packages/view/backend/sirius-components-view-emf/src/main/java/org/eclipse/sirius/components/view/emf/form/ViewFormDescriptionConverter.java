@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -41,6 +42,8 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.view.form.FormVariable;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -100,6 +103,16 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .map(this.objectService::getId)
                 .orElse(null);
 
+        UnaryOperator<VariableManager> variableManagerInitializer = variableManager -> {
+            for (FormVariable formVariable : viewFormDescription.getFormVariables()) {
+                Result result = interpreter.evaluateExpression(variableManager.getVariables(), formVariable.getDefaultValueExpression());
+                if (result.asObject().isPresent()) {
+                    variableManager.put(formVariable.getName(), result.asObject().get());
+                }
+            }
+            return variableManager;
+        };
+
         return FormDescription.newFormDescription(this.formIdProvider.getId(viewFormDescription))
                 .label(Optional.ofNullable(viewFormDescription.getName()).orElse(DEFAULT_FORM_LABEL))
                 .idProvider(new GetOrCreateRandomIdProvider())
@@ -107,6 +120,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .canCreatePredicate(variableManager -> this.canCreate(viewFormDescription.getDomainType(), viewFormDescription.getPreconditionExpression(), variableManager, interpreter))
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .pageDescriptions(pageDescriptions)
+                .variableManagerInitializer(variableManagerInitializer)
                 .build();
     }
 

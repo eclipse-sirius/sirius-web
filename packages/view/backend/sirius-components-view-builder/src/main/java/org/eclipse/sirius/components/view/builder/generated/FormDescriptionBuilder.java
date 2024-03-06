@@ -90,6 +90,18 @@ public class FormDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for FormVariables.
+     *
+     * @generated
+     */
+    public FormDescriptionBuilder formVariables(org.eclipse.sirius.components.view.form.FormVariable ... values) {
+        for (org.eclipse.sirius.components.view.form.FormVariable value : values) {
+            this.getFormDescription().getFormVariables().add(value);
+        }
+        return this;
+    }
+
 
 }
 

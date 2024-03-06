@@ -46,6 +46,7 @@ import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormFactory;
 import org.eclipse.sirius.components.view.form.FormPackage;
+import org.eclipse.sirius.components.view.form.FormVariable;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.ImageDescription;
@@ -115,6 +116,8 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
         switch (eClass.getClassifierID()) {
             case FormPackage.FORM_DESCRIPTION:
                 return this.createFormDescription();
+            case FormPackage.FORM_VARIABLE:
+                return this.createFormVariable();
             case FormPackage.PAGE_DESCRIPTION:
                 return this.createPageDescription();
             case FormPackage.GROUP_DESCRIPTION:
@@ -265,6 +268,17 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
     public FormDescription createFormDescription() {
         FormDescriptionImpl formDescription = new FormDescriptionImpl();
         return formDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public FormVariable createFormVariable() {
+        FormVariableImpl formVariable = new FormVariableImpl();
+        return formVariable;
     }
 
     /**

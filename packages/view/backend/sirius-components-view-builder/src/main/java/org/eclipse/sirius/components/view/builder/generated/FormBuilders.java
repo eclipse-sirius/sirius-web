@@ -30,6 +30,16 @@ public class FormBuilders {
     }
 
     /**
+     * Instantiate a FormVariableBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public FormVariableBuilder newFormVariable() {
+        return new FormVariableBuilder();
+    }
+
+    /**
      * Instantiate a PageDescriptionBuilder .
      *
      * @author BuilderGenerator

@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormPackage;
+import org.eclipse.sirius.components.view.form.FormVariable;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.ImageDescription;
 import org.eclipse.sirius.components.view.form.LabelDescription;
@@ -127,6 +128,13 @@ public class FormSwitch<T> extends Switch<T> {
                 T result = this.caseFormDescription(formDescription);
                 if (result == null)
                     result = this.caseRepresentationDescription(formDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case FormPackage.FORM_VARIABLE: {
+                FormVariable formVariable = (FormVariable) theEObject;
+                T result = this.caseFormVariable(formVariable);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -715,6 +723,20 @@ public class FormSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseFormDescription(FormDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Variable</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Variable</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFormVariable(FormVariable object) {
         return null;
     }
 

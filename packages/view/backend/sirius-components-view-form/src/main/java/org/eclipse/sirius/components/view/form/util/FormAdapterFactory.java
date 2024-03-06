@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormPackage;
+import org.eclipse.sirius.components.view.form.FormVariable;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.ImageDescription;
 import org.eclipse.sirius.components.view.form.LabelDescription;
@@ -126,6 +127,11 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseFormDescription(FormDescription object) {
             return FormAdapterFactory.this.createFormDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseFormVariable(FormVariable object) {
+            return FormAdapterFactory.this.createFormVariableAdapter();
         }
 
         @Override
@@ -423,6 +429,20 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFormDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.FormVariable
+     * <em>Variable</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.FormVariable
+     * @generated
+     */
+    public Adapter createFormVariableAdapter() {
         return null;
     }
 

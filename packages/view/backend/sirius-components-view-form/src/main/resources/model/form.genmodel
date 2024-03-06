@@ -37,6 +37,11 @@
     </genEnums>
     <genClasses ecoreClass="form.ecore#//FormDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FormDescription/pages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FormDescription/formVariables"/>
+    </genClasses>
+    <genClasses ecoreClass="form.ecore#//FormVariable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FormVariable/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FormVariable/defaultValueExpression"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//PageDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//PageDescription/name"/>
