@@ -15,13 +15,14 @@ package org.eclipse.sirius.web.application.editingcontext.services.api;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.sirius.web.application.editingcontext.services.DocumentData;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 
 /**
- * Used to transform an EMF resource into a document.
+ * Used to load documents as EMF resources.
  *
  * @author sbegaudeau
  */
-public interface IResourceToDocumentService {
-    Optional<DocumentData> toDocument(Resource resource);
+public interface IDocumentToResourceService {
+    Optional<Resource> toResource(ResourceSet resourceSet, Document document);
 }

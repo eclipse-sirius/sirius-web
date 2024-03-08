@@ -13,12 +13,13 @@
 package org.eclipse.sirius.web.application.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.sirius.components.core.api.IDomainSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,48 +29,57 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Integration tests of the domain search service.
+ * Integration tests of the lifecycle of the studios.
  *
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DomainSearchServiceTests extends AbstractIntegrationTests {
+public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
+
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
 
-    @Autowired
-    private IDomainSearchService domainSearchService;
-
     @Test
-    @DisplayName("Given some semantic data, when the editing context is loaded, then domains can be retrieved")
+    @DisplayName("Given a regular project, when it is loaded, then the domains from all studios are available")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenSemanticDataWhenEditingContextIsLoadedThenDomainsCanBeRetrieved() {
+    public void givenRegularProjectWhenItIsLoadedThenTheDomainsFromAllStudiosAreAvailable() {
         var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
-        var domains = this.domainSearchService.findAllByEditingContext(editingContext);
-        assertThat(domains).isNotEmpty();
-
-        var hasEcore = domains.stream().anyMatch(domain -> domain.getId().equals(EcorePackage.eNS_URI));
-        assertThat(hasEcore).isTrue();
+        if (editingContext instanceof EditingContext siriusWebEditingContext) {
+            var ePackageRegistry = siriusWebEditingContext.getDomain().getResourceSet().getPackageRegistry();
+            var ePackage = ePackageRegistry.get("domain://buck");
+            assertThat(ePackage).isNotNull();
+        } else {
+            fail("Invalid editing context");
+        }
     }
 
     @Test
-    @DisplayName("Given some semantic data, when the editing context is loaded, then root domains can be retrieved")
+    @DisplayName("Given a regularProject, when it is loaded, then the views from all studios are available")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenSemanticDataWhenEditingContextIsLoadedThenRootDomainsCanBeRetrieved() {
+    public void givenRegularProjectWhenItIsLoadedThenTheViewsFromAllStudiosAreAvailable() {
         var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
-        var rootDomains = this.domainSearchService.findRootDomainsByEditingContext(editingContext);
-        assertThat(rootDomains).isNotEmpty();
+        if (editingContext instanceof EditingContext siriusWebEditingContext) {
+            var views = siriusWebEditingContext.getViews();
+            assertThat(views).hasSize(1);
 
-        var hasEcore = rootDomains.stream().anyMatch(domain -> domain.getId().equals(EcorePackage.eNS_URI));
-        assertThat(hasEcore).isTrue();
+            var view = views.get(0);
+            assertThat(view.getDescriptions()).hasSize(1);
+
+            var viewRepresentationDescription = view.getDescriptions().get(0);
+            assertThat(viewRepresentationDescription).isInstanceOf(FormDescription.class);
+            assertThat(viewRepresentationDescription.getName()).isEqualTo("Human Form");
+        } else {
+            fail("Invalid editing context");
+        }
     }
 }

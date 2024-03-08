@@ -10,18 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata;
 
-import java.util.Optional;
+import java.util.Objects;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.sirius.web.application.editingcontext.services.DocumentData;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
- * Used to transform an EMF resource into a document.
+ * A domain used by semantic data.
  *
  * @author sbegaudeau
  */
-public interface IResourceToDocumentService {
-    Optional<DocumentData> toDocument(Resource resource);
+@Table("semantic_data_domain")
+public record SemanticDataDomain(String uri) {
+    public SemanticDataDomain {
+        Objects.requireNonNull(uri);
+    }
 }

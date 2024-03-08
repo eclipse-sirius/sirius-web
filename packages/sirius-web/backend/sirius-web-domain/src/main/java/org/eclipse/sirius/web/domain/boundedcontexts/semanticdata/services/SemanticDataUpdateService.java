@@ -38,9 +38,9 @@ public class SemanticDataUpdateService implements ISemanticDataUpdateService {
     }
 
     @Override
-    public void updateDocuments(AggregateReference<Project, UUID> project, Set<Document> documents) {
+    public void updateDocuments(AggregateReference<Project, UUID> project, Set<Document> documents, Set<String> domainUris) {
         this.semanticDataRepository.findByProjectId(project.getId()).ifPresent(semanticData -> {
-            semanticData.updateDocuments(documents);
+            semanticData.updateDocuments(documents, domainUris);
             this.semanticDataRepository.save(semanticData);
         });
     }

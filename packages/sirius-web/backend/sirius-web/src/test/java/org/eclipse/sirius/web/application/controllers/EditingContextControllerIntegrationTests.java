@@ -183,7 +183,7 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenAnEditingContextActionIsInvokedThenTheEditingContextIsModified() {
-        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), TestIdentifiers.STUDIO_PROJECT.toString());
+        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), TestIdentifiers.EMPTY_STUDIO_PROJECT.toString());
         var flux = this.graphQLRequestor.subscribe(GET_EDITING_CONTEXT_EVENT_SUBSCRIPTION, editingContextEventInput);
 
 
@@ -198,9 +198,9 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        var createEmptyDomainInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_DOMAIN_ID);
-        var createEmptyViewInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_VIEW_ID);
-        var createEmptyDocumentInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.STUDIO_PROJECT.toString(), DefaultEditingContextActionProvider.EMPTY_ACTION_ID);
+        var createEmptyDomainInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_DOMAIN_ID);
+        var createEmptyViewInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_VIEW_ID);
+        var createEmptyDocumentInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.EMPTY_STUDIO_PROJECT.toString(), DefaultEditingContextActionProvider.EMPTY_ACTION_ID);
         StepVerifier.create(flux)
                 .then(() -> invokeEditingContextActionTask.accept(createEmptyDomainInput))
                 .then(() -> invokeEditingContextActionTask.accept(createEmptyViewInput))

@@ -40,12 +40,15 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
     private final Logger logger = LoggerFactory.getLogger(ResourceToDocumentService.class);
 
     @Override
-    public Optional<Document> toDocument(Resource resource) {
+    public Optional<DocumentData> toDocument(Resource resource) {
+        var serializationListener = new JsonResourceSerializationListener();
+
         HashMap<Object, Object> options = new HashMap<>();
         options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
         options.put(JsonResource.OPTION_SCHEMA_LOCATION, true);
+        options.put(JsonResource.OPTION_SERIALIZATION_LISTENER, serializationListener);
 
-        Optional<Document> optionalDocument = Optional.empty();
+        Optional<DocumentData> optionalDocumentData = Optional.empty();
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             resource.save(outputStream, options);
 
@@ -71,10 +74,11 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
                     .name(name)
                     .content(content)
                     .build();
-            optionalDocument = Optional.of(document);
+            var documentData = new DocumentData(document, serializationListener.getePackageEntries());
+            optionalDocumentData = Optional.of(documentData);
         } catch (IllegalArgumentException | IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
-        return optionalDocument;
+        return optionalDocumentData;
     }
 }
