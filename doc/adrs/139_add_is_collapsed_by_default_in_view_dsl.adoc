@@ -1,0 +1,29 @@
+= ADR-139 Add Is Collapsed By Default Expression in NodeDescription entity in the view DSL
+
+== Context
+
+Sirius Web doesn't provide a way for specifiers to set the default collapsible state of a node. 
+We will add new field _Is Collapsed By Default Expression_ in NodeDescription to handle it. 
+The field contains an boolean expression which is evaluated on the first rendering of the node to set its initial collapsed/expanded state.
+
+== Decision
+
+We will add a new field `isCollapsedByDefaultExpression : InterpretedExpression` in the `NodeDescription` element of the diagram metamodel. 
+This expression should return a boolean value, where `true` means collapsed, and `false` means expanded.
+This field is empty by default, which is evaluated to `false` (expanded) to keep the existing default behavior of Sirius Web.
+
+We will add the field `Predicate<VariableManager> collapsedByDefaultPredicate` in `org.eclipse.sirius.components.diagrams.description.NodeDescription` and its builder, and update the `ViewDiagramDescriptionConverter` to handle it. 
+
+We will update the `NodeComponent#doRender` and `NodeComponent#computeCollapsingState` methods to evaluate this expression as part of the rendering process. 
+The `isCollapsedByDefault` expression should be used only for the first rendering of a node (i.e. if the `optionalPreviousNode` is empty in `NodeComponent#computeCollapsingState`).  
+
+We won't update the GraphQL schemas nor the frontend, since collapsed state is handled via visibility, and the existing code already handles it.
+
+== Status
+
+Work in progress
+
+== Consequences
+
+No consequences detected for now.
+

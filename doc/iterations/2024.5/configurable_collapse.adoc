@@ -1,0 +1,48 @@
+= Configurable collapse
+
+== Problem
+
+Sirius Web doesn't provide a way for specifiers to set the default collapsible state of a node. 
+It also doesn't provide a way to let specifiers define tools that collapse/expand nodes as part of other operations (e.g. to expand a collapsed node when a child node is created).
+Nodes are always created expanded, and the only way to collapse them right now is that the end user does it manually.
+
+== Key Result
+
+- Specifiers must be able to define NodeDescriptions that are collapsed/expanded by default.
+- Specifiers must be able to call collapse/expand services in their tool to collapse/expand a set of nodes.
+
+== Solution
+
+A new field _Is Collapsed By Default Expression_ should be displayed in NodeDescription. 
+The field contains an boolean expression which is evaluated on the first rendering of the node to set its initial collapsed/expanded state.
+If the expression is empty it is evaluated to `false`, which means that the node is expanded by default (this preserves Sirius Web's default behavior to expand new nodes by default). 
+
+A new `diagramServices` variable  with services to collapse/expand nodes should be accessible from AQL expressions and Java services.
+While this shape is focused on collapsing/expanding nodes, this variable should ultimately contain several diagram-level services (e.g. pin, hide, etc).
+
+== Scenario
+
+1. Default Collapsing State
+- A specifier adds a NodeDescription in the view DSL
+- The _Is Collapsed By Default Expression_ field is available and its default value is empty, which means expanded
+- The specifier can define an AQL expression to that returns a boolean value to set the default collapsing state of the node (`true` for collapsed, `false` for expanded)
+- When an end user creates a node represented in this manner in a diagram, the node is collapsed/expanded according to this expression
+- If the user manually expands/collapses the node the value returned by the expression is not taken into account (the expression can't override user-defined state).
+
+2. Collapse/Expand operation
+- A specifier creates a tool in the view DSL
+- The specifier creates an operation, for example ChangeContext
+- The specifier fills the expression of its operation with a call to the collapse/expand service, for example `diagramServices.collapse(nodeId)`
+- When an end user uses the tool defined this way, the appropriate nodes are collapsed/expanded
+
+=== Cutting backs
+
+Nothing identified for now
+
+== Rabbit holes
+
+Nothing identified for now
+
+== No-gos
+
+Nothing identified for now
