@@ -1,0 +1,39 @@
+= ADR-140 Add collapse and expand services
+
+== Context
+
+Sirius Web doesn't provide a way for specifiers to define tools that collapse/expand nodes as part of other operations (e.g. to expand a collapsed node when a child node is created).
+
+We will add a new `diagramServices` variable  with services to collapse/expand nodes from AQL expressions and Java services.
+
+== Decision
+
+We will create a new interface `IDiagramServices` in `org.eclipse.sirius.components.collaborative.diagrams.api` with the following signature:
+```java
+public interface IDiagramServices {
+    void collapse(IDiagramServicesContext context, List<Node> nodes);
+    void expand(IDiagramServicesContext context, List<Node> nodes);
+}
+```
+
+We will add a new variable `diagramServices : IDiagramService` in the `VariableManager`.
+The `IDiagramService` would be a wrapper for objects that can be accessed by `IDiagramServices` services.
+For the moment it would only define a getter on the `DiagramContext`, which is required in our implementation of collapse/expand.
+
+This will allows developers to call these services from their AQL expressions and Java services.
+
+The implementation of the `IDiagramServices` interface will be located in `org.eclipse.sirius.components.collaborative.diagrams`.
+
+We will make `DiagramContext#diagramEvent`, `DiagramComponentProps#diagramEvent`, and `NodeComponentProps#diagramEvent` lists to store multiple events.
+
+The collapse/expand services will store instances of `UpdateCollapsingStateEvent` in the `DiagramContext#diagramEvent` list.
+
+We will update the `NodeComponent#doRender` and `NodeComponent#computeCollapsingState` methods to use this information (stored in `NodeComponent#props`) to compute the collapsing state of a node.
+
+== Status
+
+Work in progress
+
+== Consequences
+The new interface `IDiagramServices` should be used in the future to define diagram-level services.
+
