@@ -50,7 +50,7 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
-import org.eclipse.sirius.components.widget.reference.IReferenceWidgetRootCandidateSearchProvider;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetRootCandidateSearchProvider;
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widget.reference;
+package org.eclipse.sirius.components.formdescriptioneditors.widget.reference;
 
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.sirius.components.collaborative.widget.reference.ReferenceWidgetDescriptor;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionProvider;
 import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
 import org.springframework.stereotype.Service;

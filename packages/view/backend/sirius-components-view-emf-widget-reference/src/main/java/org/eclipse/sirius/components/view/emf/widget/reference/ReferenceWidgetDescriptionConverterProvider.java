@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.widget.reference;
+package org.eclipse.sirius.components.view.emf.widget.reference;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -25,7 +26,6 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IWidgetConverterProvider;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 /**
  * Provides the widget converter needed for the reference widget.

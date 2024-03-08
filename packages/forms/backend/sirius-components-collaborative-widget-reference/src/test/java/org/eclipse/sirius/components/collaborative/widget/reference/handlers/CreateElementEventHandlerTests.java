@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.Page;
-import org.eclipse.sirius.components.widget.reference.IReferenceWidgetCreateElementHandler;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetCreateElementHandler;
 import org.eclipse.sirius.components.widget.reference.ReferenceValue;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.junit.jupiter.api.Test;

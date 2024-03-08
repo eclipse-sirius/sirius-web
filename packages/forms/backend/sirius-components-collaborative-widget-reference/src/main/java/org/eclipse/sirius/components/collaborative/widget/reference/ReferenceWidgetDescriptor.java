@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widget.reference;
+package org.eclipse.sirius.components.collaborative.widget.reference;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +22,11 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.widget.reference.ReferenceElementProps;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponentProps;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
 import org.springframework.stereotype.Component;
 
 /**

@@ -35,6 +35,7 @@
 		<module>sirius-components-view</module>
 		<module>sirius-components-view-edit</module>
 		<module>sirius-components-view-emf</module>
+		<module>sirius-components-view-emf-widget-reference</module>
 		<module>sirius-components-view-builder</module>
 		<module>sirius-components-view-diagram</module>
 		<module>sirius-components-view-diagram-edit</module>

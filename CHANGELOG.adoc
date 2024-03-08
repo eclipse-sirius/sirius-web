@@ -71,6 +71,8 @@ Having `Viewer` as a type did not bring any additional value and it created some
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [core] Move the `WidgetIdProvider` from `sirius-components-compatibility` to `sirius-components-forms` to remove unnecessary dependencies to the Sirius Desktop compatibility layer.
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [core] Move the EMF based default description of the details view from `sirius-components-compatibility-emf` to `sirius-components-emf-forms` since there are no dependency between the default description of the details view and the Sirius Desktop compatibility layer.
 - https://github.com/eclipse-sirius/sirius-web/issues/3096[#3096] [tree] `TreeConfiguration` has a new parameter `List<String> activeFilterIds`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [form] Allow consumers of Sirius Components to reuse the reference widget without the form description editor or the view DSL.
+
 
 === Dependency update
 

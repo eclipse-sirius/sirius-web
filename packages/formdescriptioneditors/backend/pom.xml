@@ -35,5 +35,6 @@
 		<module>sirius-components-formdescriptioneditors</module>
 		<module>sirius-components-collaborative-formdescriptioneditors</module>
 		<module>sirius-components-formdescriptioneditors-graphql</module>
+		<module>sirius-components-collaborative-formdescriptioneditors-widget-reference</module>
 	</modules>
 </project>
