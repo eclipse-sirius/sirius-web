@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2024 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="02-store-semantic_data-domains" author="sbegaudeau">
+        <createTable tableName="semantic_data_domain">
+            <column name="semantic_data_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uri" type="TEXT">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="semantic_data_domain" columnNames="semantic_data_id, uri"/>
+        <addForeignKeyConstraint baseTableName="semantic_data_domain" baseColumnNames="semantic_data_id" constraintName="fk_semantic_data_domain_semantic_data_id" referencedTableName="semantic_data" referencedColumnNames="id" onDelete="CASCADE"/>
+        <sql>
+            ALTER TABLE semantic_data_domain ADD CONSTRAINT semantic_data_domain_uri_length CHECK (char_length(uri) &gt; 0)
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -10,18 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.services.api;
+package org.eclipse.sirius.web.application.editingcontext.services;
 
-import java.util.Optional;
+import java.util.List;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.sirius.web.application.editingcontext.services.DocumentData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 
 /**
- * Used to transform an EMF resource into a document.
+ * The data retrieved from the serialization of a document.
  *
  * @author sbegaudeau
  */
-public interface IResourceToDocumentService {
-    Optional<DocumentData> toDocument(Resource resource);
+public record DocumentData(Document document, List<EPackageEntry> ePackageEntries) {
 }

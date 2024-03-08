@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +26,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
-import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IDocumentToResourceService;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
@@ -63,6 +60,8 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final ISemanticDataSearchService semanticDataSearchService;
 
+    private final IDocumentToResourceService documentToResourceService;
+
     private final IEditingDomainFactory editingDomainFactory;
 
     private final List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders;
@@ -71,10 +70,11 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final Timer timer;
 
-    public EditingContextSearchService(IProjectSearchService projectSearchService, ISemanticDataSearchService semanticDataSearchService, IEditingDomainFactory editingDomainFactory,
+    public EditingContextSearchService(IProjectSearchService projectSearchService, ISemanticDataSearchService semanticDataSearchService, IDocumentToResourceService documentToResourceService, IEditingDomainFactory editingDomainFactory,
                                        List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors, MeterRegistry meterRegistry) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
+        this.documentToResourceService = Objects.requireNonNull(documentToResourceService);
         this.editingDomainFactory = Objects.requireNonNull(editingDomainFactory);
         this.representationDescriptionProviders = Objects.requireNonNull(representationDescriptionProviders);
         this.editingContextProcessors = Objects.requireNonNull(editingContextProcessors);
@@ -125,20 +125,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
         ResourceSet resourceSet = editingContext.getDomain().getResourceSet();
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
 
-        var documents = semanticData.getDocuments();
-        for (var document : documents) {
-            var resource = new JSONResourceFactory().createResourceFromPath(document.getId().toString());
-
-            try (var inputStream = new ByteArrayInputStream(document.getContent().getBytes())) {
-                resourceSet.getResources().add(resource);
-                resource.load(inputStream, null);
-
-                resource.eAdapters().add(new ResourceMetadataAdapter(document.getName()));
-            } catch (IOException | IllegalArgumentException exception) {
-                this.logger.warn("An error occured while loading document {}: {}.", document.getId(), exception.getMessage());
-                resourceSet.getResources().remove(resource);
-            }
-        }
+        semanticData.getDocuments().forEach(document -> this.documentToResourceService.toResource(resourceSet, document));
 
         // The ECrossReferenceAdapter must be set after the resource loading because it needs to resolve proxies in case
         // of inter-resources references

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +25,7 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,11 +67,20 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
             new UUIDParser().parse(editingContext.getId())
                     .map(AggregateReference::<Project, UUID>to)
                     .ifPresent(project -> {
-                        var documents = emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                        var documentData = emfEditingContext.getDomain().getResourceSet().getResources().stream()
                                 .map(this.resourceToDocumentService::toDocument)
                                 .flatMap(Optional::stream)
                                 .collect(Collectors.toSet());
-                        this.semanticDataUpdateService.updateDocuments(project, documents);
+
+                        var documents = new LinkedHashSet<Document>();
+                        var domainUris = new LinkedHashSet<String>();
+
+                        documentData.forEach(data -> {
+                            documents.add(data.document());
+                            domainUris.addAll(data.ePackageEntries().stream().map(EPackageEntry::nsURI).toList());
+                        });
+
+                        this.semanticDataUpdateService.updateDocuments(project, documents, domainUris);
                     });
         }
 

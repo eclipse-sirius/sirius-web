@@ -13,11 +13,13 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -51,6 +53,9 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
     @MappedCollection(idColumn = "semantic_data_id")
     private Set<Document> documents = new LinkedHashSet<>();
 
+    @MappedCollection(idColumn = "semantic_data_id")
+    private Set<SemanticDataDomain> domains = new LinkedHashSet<>();
+
     private Instant createdOn;
 
     private Instant lastModifiedOn;
@@ -81,8 +86,11 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
         return this.isNew;
     }
 
-    public void updateDocuments(Set<Document> newDocuments) {
+    public void updateDocuments(Set<Document> newDocuments, Set<String> domainUris) {
         this.documents = newDocuments;
+        this.domains = domainUris.stream()
+                .map(SemanticDataDomain::new)
+                .collect(Collectors.toSet());
 
         this.lastModifiedOn = Instant.now();
         this.registerEvent(new SemanticDataUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, this));
@@ -103,6 +111,8 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
 
         private Set<Document> documents = new LinkedHashSet<>();
 
+        private Set<SemanticDataDomain> domains = new LinkedHashSet<>();
+
         public Builder project(AggregateReference<Project, UUID> project) {
             this.project = Objects.requireNonNull(project);
             return this;
@@ -113,13 +123,21 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
             return this;
         }
 
+        public Builder domains(Collection<String> domains) {
+            this.domains = domains.stream()
+                    .map(SemanticDataDomain::new)
+                    .collect(Collectors.toSet());
+            return this;
+        }
+
         public SemanticData build() {
             var semanticData = new SemanticData();
 
             semanticData.isNew = true;
             semanticData.id = UUID.randomUUID();
-            semanticData.project = Objects.requireNonNull(project);
+            semanticData.project = Objects.requireNonNull(this.project);
             semanticData.documents = Objects.requireNonNull(this.documents);
+            semanticData.domains = Objects.requireNonNull(this.domains);
 
             var now = Instant.now();
             semanticData.createdOn = now;

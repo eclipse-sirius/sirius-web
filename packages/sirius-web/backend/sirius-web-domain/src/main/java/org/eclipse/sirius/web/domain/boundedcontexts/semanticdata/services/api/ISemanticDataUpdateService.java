@@ -25,5 +25,5 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  * @author sbegaudeau
  */
 public interface ISemanticDataUpdateService {
-    void updateDocuments(AggregateReference<Project, UUID> project, Set<Document> documents);
+    void updateDocuments(AggregateReference<Project, UUID> project, Set<Document> documents, Set<String> domainUris);
 }
