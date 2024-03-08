@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.widget.reference;
+package org.eclipse.sirius.components.view.emf.widget.reference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,15 +32,15 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.forms.WidgetIdProvider;
-import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
+import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
+import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
@@ -53,7 +53,6 @@ import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
-import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyleProvider;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.widgets.reference.util.ReferenceSwitch;
@@ -87,7 +86,6 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<O
 
     public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService,
             IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IFormIdProvider widgetIdProvider) {
-
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);

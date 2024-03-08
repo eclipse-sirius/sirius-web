@@ -1,0 +1,12 @@
+= sirius-components-collaborative-formdescriptioneditors-widget-reference
+
+== Goal
+
+This project is used to add support for the reference widget to form description editors.
+
+== Dependencies
+
+- sirius-components-collaborative-formdescriptioneditors
+- sirius-components-widget-reference-view
+
+This project should not depend on anything else without a good reason to do so.

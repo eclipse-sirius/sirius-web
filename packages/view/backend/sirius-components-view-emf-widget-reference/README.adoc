@@ -1,0 +1,12 @@
+= sirius-components-view-emf-widget-reference
+
+== Goal
+
+This project is used to add support for the reference widget to the view converter.
+
+== Dependencies
+
+- sirius-components-view-emf
+- sirius-components-widget-reference-view
+
+This project should not depend on anything else without a good reason to do so.

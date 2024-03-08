@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widget.reference;
+package org.eclipse.sirius.components.view.emf.widget.reference;
 
 import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 
 /**

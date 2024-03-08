@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widget.reference;
+package org.eclipse.sirius.components.formdescriptioneditors.widget.reference;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +21,9 @@ import org.eclipse.sirius.components.formdescriptioneditors.description.FormDesc
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.emf.widget.reference.ReferenceWidgetStyleProvider;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.widgets.reference.util.ReferenceSwitch;
 import org.springframework.stereotype.Service;
@@ -51,8 +54,7 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
         };
     }
 
-    public ReferenceWidgetDescription.Builder getReferenceWidgetDescriptionBuilder(org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription referenceDescription,
-            String id) {
+    public ReferenceWidgetDescription.Builder getReferenceWidgetDescriptionBuilder(org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription referenceDescription, String id) {
         return ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .targetObjectIdProvider(vm -> "")
