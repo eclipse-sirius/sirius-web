@@ -28,6 +28,7 @@ import { PinIcon } from '../../icons/PinIcon';
 import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Tool } from '../Tool';
+import { useAdjustSize } from '../adjust-size/useAdjustSize';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
@@ -63,7 +64,6 @@ import {
   PaletteState,
 } from './Palette.types';
 import { ToolSection } from './tool-section/ToolSection';
-import { useAdjustSize } from '../adjust-size/useAdjustSize';
 
 const usePaletteStyle = makeStyles((theme) => ({
   palette: {
@@ -482,23 +482,23 @@ export const Palette = ({
         })}
         {hideableDiagramElement ? (
           <>
-            <Tooltip title="Hide elements">
+            <Tooltip title="Hide element">
               <IconButton
                 className={classes.toolIcon}
                 size="small"
-                aria-label="hide elements"
+                aria-label="Hide element"
                 onClick={invokeHideDiagramElementTool}
-                data-testid="Hide-elements">
+                data-testid="Hide-element">
                 <VisibilityOffIcon fontSize="small" />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Fade elements">
+            <Tooltip title="Fade element">
               <IconButton
                 className={classes.toolIcon}
                 size="small"
-                aria-label="Fade elements"
+                aria-label="Fade element"
                 onClick={invokeFadeDiagramElementTool}
-                data-testid="Fade-elements">
+                data-testid="Fade-element">
                 <TonalityIcon fontSize="small" />
               </IconButton>
             </Tooltip>

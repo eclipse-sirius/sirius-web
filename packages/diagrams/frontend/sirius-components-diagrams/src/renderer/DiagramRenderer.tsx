@@ -63,6 +63,7 @@ import { useMoveChange } from './move/useMoveChange';
 import { DiagramNodeType } from './node/NodeTypes.types';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
+import { GroupPalette } from './palette/group-tool/GroupPalette';
 import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
@@ -72,6 +73,7 @@ import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
 import 'reactflow/dist/style.css';
+import { useGroupPalette } from './palette/group-tool/useGroupPalette';
 
 const GRID_STEP: number = 10;
 
@@ -91,6 +93,13 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     hideDiagramElementPalette,
     isOpened: isDiagramElementPaletteOpened,
   } = useDiagramElementPalette();
+
+  const {
+    onDiagramGroupElementClick,
+    hideGroupPalette,
+    position: groupPalettePosition,
+    isOpened: isGroupPaletteOpened,
+  } = useGroupPalette();
 
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
@@ -131,8 +140,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
 
         setNodes(laidOutDiagram.nodes);
         setEdges(laidOutDiagram.edges);
-        hideDiagramPalette();
-        hideDiagramElementPalette();
+        closeAllPalettes();
 
         synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
       });
@@ -173,7 +181,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
           transformedNodeChanges = applyHelperLines(transformedNodeChanges);
 
           if (transformedNodeChanges.some((change) => change.type === 'position')) {
-            hideDiagramElementPalette();
+            closeAllPalettes();
           }
 
           let newNodes = applyNodeChanges(transformedNodeChanges, oldNodes);
@@ -228,9 +236,14 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
 
   const { backgroundColor, smallGridColor, largeGridColor } = diagramBackgroundStyle;
 
-  const handleMove: OnMove = useCallback(() => {
+  const closeAllPalettes = () => {
     hideDiagramPalette();
     hideDiagramElementPalette();
+    hideGroupPalette();
+  };
+
+  const handleMove: OnMove = useCallback(() => {
+    closeAllPalettes();
   }, [isDiagramElementPaletteOpened, isDiagramPaletteOpened]);
 
   const handleNodeDragStop: NodeDragHandler = onNodeDragStop((node: Node) => {
@@ -242,6 +255,18 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     };
     onNodesChange([resetPosition]);
   });
+
+  const handleDiagramElementCLick = (event: React.MouseEvent<Element, MouseEvent>) => {
+    onDiagramElementClick(event);
+    onDiagramGroupElementClick(event);
+  };
+
+  const handleSelectionStart = () => {
+    closeAllPalettes();
+  };
+  const handleSelectionEnd = (event: React.MouseEvent<Element, MouseEvent>) => {
+    onDiagramGroupElementClick(event);
+  };
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
 
@@ -261,8 +286,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       onEdgesChange={handleEdgesChange}
       onEdgeUpdate={reconnectEdge}
       onPaneClick={handlePaneClick}
-      onEdgeClick={onDiagramElementClick}
-      onNodeClick={onDiagramElementClick}
+      onEdgeClick={handleDiagramElementCLick}
+      onNodeClick={handleDiagramElementCLick}
       onMove={handleMove}
       nodeDragThreshold={1}
       onDrop={onDrop}
@@ -272,6 +297,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       onNodeDragStop={handleNodeDragStop}
       onNodeMouseEnter={onNodeMouseEnter}
       onNodeMouseLeave={onNodeMouseLeave}
+      onSelectionStart={handleSelectionStart}
+      onSelectionEnd={handleSelectionEnd}
       maxZoom={40}
       minZoom={0.1}
       snapToGrid={snapToGrid}
@@ -307,7 +334,12 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         onHelperLines={setHelperLinesEnabled}
         refreshEventPayloadId={diagramRefreshedEventPayload.id}
       />
-
+      <GroupPalette
+        refreshEventPayloadId={diagramRefreshedEventPayload.id}
+        x={groupPalettePosition?.x}
+        y={groupPalettePosition?.y}
+        isOpened={isGroupPaletteOpened}
+      />
       <DiagramPalette diagramElementId={diagramRefreshedEventPayload.diagram.id} />
       {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
       <ConnectorContextualMenu />
