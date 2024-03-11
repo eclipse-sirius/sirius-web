@@ -14,7 +14,7 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
   const fadeByElementTestId = (elementTestId) => {
     cy.getByTestId(elementTestId).should('have.css', 'opacity', '1');
     cy.getByTestId(elementTestId).first().click({ force: true });
-    cy.getByTestId('Fade-elements').should('exist').click({ force: true });
+    cy.getByTestId('Fade-element').should('exist').click({ force: true });
     cy.getByTestId(elementTestId).should('have.css', 'opacity', '0.4');
   };
 
@@ -22,8 +22,8 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId(elementTestId).then((elementBefore) => {
       const countBefore = elementBefore.length ?? 0;
       cy.getByTestId(elementTestId).first().click({ force: true });
-      cy.getByTestId('Hide-elements').should('exist').click({ force: true });
-      cy.getByTestId('Hide-elements').should('not.exist');
+      cy.getByTestId('Hide-element').should('exist').click({ force: true });
+      cy.getByTestId('Hide-element').should('not.exist');
       if (countBefore === 1) {
         cy.getByTestId(elementTestId).should('not.exist');
       } else {
@@ -64,12 +64,12 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     createFlowReactFlowDiagram();
     cy.getByTestId('rf__wrapper').findByTestId('Label - CaptureSubSystem').should('exist').click('topLeft');
 
-    cy.getByTestId('Hide-elements').should('exist');
-    cy.getByTestId('Fade-elements').should('exist');
+    cy.getByTestId('Hide-element').should('exist');
+    cy.getByTestId('Fade-element').should('exist');
     cy.getByTestId('rf__wrapper').click('bottomLeft');
     // NOTE for later: ensure the palette is displayed
-    cy.getByTestId('Hide-elements').should('not.exist');
-    cy.getByTestId('Fade-elements').should('not.exist');
+    cy.getByTestId('Hide-element').should('not.exist');
+    cy.getByTestId('Fade-element').should('not.exist');
   });
 
   it.skip('can fade any type of nodes', () => {
