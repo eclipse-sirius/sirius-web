@@ -34,8 +34,11 @@ import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInpu
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.Select;
+import org.eclipse.sirius.components.forms.TreeNode;
+import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.services.FormVariableViewPreEditingContextProcessor;
 import org.eclipse.sirius.web.services.MasterDetailsFormDescriptionProvider;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.junit.jupiter.api.BeforeEach;
@@ -223,6 +226,68 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 .expectNextMatches(initialFormContentMatcher)
                 .then(changeMasterValue)
                 .expectNextMatches(updatedFormContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a view based form description, when form variables are initialized, then widgets can read their value")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenViewBasedFormDescriptionWhenFormVariablesAreInitializedThenWidgetsCanReadTheirValue() {
+        this.commitInitializeStateBeforeThreadSwitching();
+
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                FormVariableViewPreEditingContextProcessor.REPRESENTATION_DESCRIPTION_ID,
+                TestIdentifiers.DOMAIN_OBJECT.toString(),
+                "Shared Variables Form"
+        );
+        var result = this.graphQLRequestor.execute(CREATE_REPRESENTATION_MUTATION, input);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        String typename = JsonPath.read(result, "$.data.createRepresentation.__typename");
+        assertThat(typename).isEqualTo(CreateRepresentationSuccessPayload.class.getSimpleName());
+
+        String representationId = JsonPath.read(result, "$.data.createRepresentation.representation.id");
+        assertThat(representationId).isNotNull();
+
+        var formEventInput = new FormEventInput(UUID.randomUUID(), TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationId);
+        var flux = this.graphQLRequestor.subscribe(GET_FORM_EVENT_SUBSCRIPTION, formEventInput);
+
+        Predicate<Object> initialFormContentMatcher = object -> Optional.of(object)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .filter(form -> {
+                    var widgets = form.getPages().get(0).getGroups().get(0).getWidgets();
+
+                    var checkedTreeNodes = widgets.stream()
+                            .filter(TreeWidget.class::isInstance)
+                            .map(TreeWidget.class::cast)
+                            .flatMap(treeWidget -> treeWidget.getNodes().stream())
+                            .filter(TreeNode::isValue)
+                            .toList();
+
+                    var list = widgets.stream()
+                            .filter(org.eclipse.sirius.components.forms.List.class::isInstance)
+                            .map(org.eclipse.sirius.components.forms.List.class::cast)
+                            .findFirst()
+                            .orElse(null);
+
+                    return list.getItems().size() == 1 && checkedTreeNodes.stream().allMatch(node -> node.getLabel().equals("Root"));
+                })
+                .isPresent();
+
+        StepVerifier.create(flux)
+                .expectNextMatches(initialFormContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

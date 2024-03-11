@@ -55,11 +55,11 @@ import reactor.core.publisher.Flux;
     "org.eclipse.sirius.components.forms",
     "org.eclipse.sirius.components.portals",
     "org.eclipse.sirius.components.trees",
+    "org.eclipse.sirius.components.view.emf",
     "org.eclipse.sirius.web.domain",
     "org.eclipse.sirius.web.application",
     "org.eclipse.sirius.web.infrastructure",
     "org.eclipse.sirius.web.starter"
-
 })
 public class SiriusWebStarterConfiguration {
 

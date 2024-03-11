@@ -70,14 +70,13 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
         var editingContext = optionalEditingContext.get();
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             var views = siriusWebEditingContext.getViews();
-            assertThat(views).hasSize(1);
+            assertThat(views).isNotEmpty();
 
-            var view = views.get(0);
-            assertThat(view.getDescriptions()).hasSize(1);
-
-            var viewRepresentationDescription = view.getDescriptions().get(0);
-            assertThat(viewRepresentationDescription).isInstanceOf(FormDescription.class);
-            assertThat(viewRepresentationDescription.getName()).isEqualTo("Human Form");
+            var hasHumanFormDescription = views.stream()
+                    .anyMatch(view -> view.getDescriptions().stream()
+                            .filter(FormDescription.class::isInstance)
+                            .anyMatch(representationDescription -> representationDescription.getName().equals("Human Form")));
+            assertThat(hasHumanFormDescription).isTrue();
         } else {
             fail("Invalid editing context");
         }
