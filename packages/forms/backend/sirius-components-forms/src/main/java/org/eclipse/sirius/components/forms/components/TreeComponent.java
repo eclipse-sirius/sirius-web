@@ -104,8 +104,7 @@ public class TreeComponent implements IComponent {
         List<?> semanticChildren = treeDescription.getChildrenProvider().apply(itemVariableManager);
 
         for (Object child : semanticChildren) {
-            VariableManager childVariableManager = new VariableManager();
-            itemVariableManager.getVariables().forEach(childVariableManager::put);
+            VariableManager childVariableManager = itemVariableManager.createChild();
             childVariableManager.put(VariableManager.SELF, child);
 
             TreeNode node = this.renderNode(childVariableManager, treeDescription, parentId);

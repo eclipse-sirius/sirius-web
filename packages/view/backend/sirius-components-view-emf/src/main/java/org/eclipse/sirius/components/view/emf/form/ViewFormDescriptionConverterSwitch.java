@@ -105,6 +105,8 @@ import org.slf4j.LoggerFactory;
  */
 public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<AbstractControlDescription>> {
 
+    private static final  String VARIABLE_MANAGER = "variableManager";
+
     private final Logger logger = LoggerFactory.getLogger(ViewFormDescriptionConverterSwitch.class);
 
     private final AQLInterpreter interpreter;
@@ -140,15 +142,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         StringValueProvider valueProvider = this.getStringValueProvider(viewTextfieldDescription.getValueExpression());
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(viewTextfieldDescription.getBody());
         Function<VariableManager, TextfieldStyle> styleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             var effectiveStyle = viewTextfieldDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(TextfieldDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewTextfieldDescription::getStyle);
             if (effectiveStyle == null) {
                 return null;
             }
-            return new TextfieldStyleProvider(effectiveStyle).apply(variableManager);
+            return new TextfieldStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
         TextfieldDescription.Builder builder = TextfieldDescription.newTextfieldDescription(descriptionId)
@@ -179,15 +183,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         BooleanValueProvider valueProvider = new BooleanValueProvider(this.interpreter, valueExpression);
         BiFunction<VariableManager, Boolean, IStatus> newValueHandler = this.getNewValueHandler(viewCheckboxDescription.getBody());
         Function<VariableManager, CheckboxStyle> styleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             var effectiveStyle = viewCheckboxDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(CheckboxDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewCheckboxDescription::getStyle);
             if (effectiveStyle == null) {
                 return null;
             }
-            return new CheckboxStyleProvider(effectiveStyle).apply(variableManager);
+            return new CheckboxStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
         CheckboxDescription.Builder builder = CheckboxDescription.newCheckboxDescription(descriptionId)
@@ -221,15 +227,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         Function<VariableManager, List<?>> optionsProvider = this.getMultiValueProvider(candidateExpression);
         BiFunction<VariableManager, String, IStatus> selectNewValueHandler = this.getSelectNewValueHandler(viewSelectDescription.getBody());
         Function<VariableManager, SelectStyle> styleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             var effectiveStyle = viewSelectDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(SelectDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewSelectDescription::getStyle);
             if (effectiveStyle == null) {
                 return null;
             }
-            return new SelectStyleProvider(effectiveStyle).apply(variableManager);
+            return new SelectStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
         SelectDescription.Builder builder = SelectDescription.newSelectDescription(descriptionId)
@@ -262,15 +270,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         StringValueProvider valueProvider = this.getStringValueProvider(textAreaDescription.getValueExpression());
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(textAreaDescription.getBody());
         Function<VariableManager, TextareaStyle> styleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             var effectiveStyle = textAreaDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(TextareaDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(textAreaDescription::getStyle);
             if (effectiveStyle == null) {
                 return null;
             }
-            return new TextareaStyleProvider(effectiveStyle).apply(variableManager);
+            return new TextareaStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
         TextareaDescription.Builder builder = TextareaDescription.newTextareaDescription(descriptionId)
@@ -329,15 +339,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         Function<VariableManager, List<? extends Object>> optionsProvider = this.getMultiValueProvider(candidateExpression);
         BiFunction<VariableManager, List<String>, IStatus> multiSelectNewValueHandler = this.getMultiSelectNewValuesHandler(multiSelectDescription.getBody());
         Function<VariableManager, MultiSelectStyle> styleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             var effectiveStyle = multiSelectDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(MultiSelectDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(multiSelectDescription::getStyle);
             if (effectiveStyle == null) {
                 return null;
             }
-            return new MultiSelectStyleProvider(effectiveStyle).apply(variableManager);
+            return new MultiSelectStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
         MultiSelectDescription.Builder builder = MultiSelectDescription.newMultiSelectDescription(descriptionId)
@@ -371,7 +383,9 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         StringValueProvider optionLabelProvider = this.getStringValueProvider(radioDescription.getCandidateLabelExpression());
 
         Function<VariableManager, Boolean> optionSelectedProvider = variableManager -> {
-            Optional<Object> optionalResult = this.interpreter.evaluateExpression(variableManager.getVariables(), radioDescription.getValueExpression()).asObject();
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
+            Optional<Object> optionalResult = this.interpreter.evaluateExpression(childVariableManager.getVariables(), radioDescription.getValueExpression()).asObject();
             Object candidate = variableManager.getVariables().get(RadioComponent.CANDIDATE_VARIABLE);
             return optionalResult.map(candidate::equals).orElse(Boolean.FALSE);
         };
@@ -381,8 +395,10 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getSelectNewValueHandler(radioDescription.getBody());
         Function<VariableManager, RadioStyle> styleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             var effectiveStyle = radioDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(RadioDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(radioDescription::getStyle);
@@ -463,15 +479,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(flexboxContainerDescription.getIsEnabledExpression());
         FlexDirection flexDirection = FlexDirection.valueOf(flexboxContainerDescription.getFlexDirection().getName());
         Function<VariableManager, ContainerBorderStyle> borderStyleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             var effectiveStyle = flexboxContainerDescription.getConditionalBorderStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(org.eclipse.sirius.components.view.form.ContainerBorderStyle.class::cast)
                     .findFirst()
                     .orElseGet(flexboxContainerDescription::getBorderStyle);
             if (effectiveStyle == null) {
                 return null;
             }
-            return new ContainerBorderStyleProvider(effectiveStyle).apply(variableManager);
+            return new ContainerBorderStyleProvider(effectiveStyle).apply(childVariableManager);
         };
         List<Optional<AbstractControlDescription>> children = new ArrayList<>();
         flexboxContainerDescription.getChildren().forEach(widget -> children.add(ViewFormDescriptionConverterSwitch.this.doSwitch(widget)));
@@ -503,15 +521,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         StringValueProvider imageURLProvider = this.getStringValueProvider(viewButtonDescription.getImageExpression());
         Function<VariableManager, IStatus> pushButtonHandler = this.getOperationsHandler(viewButtonDescription.getBody());
         Function<VariableManager, ButtonStyle> styleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             var effectiveStyle = viewButtonDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(ButtonDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewButtonDescription::getStyle);
             if (effectiveStyle == null) {
                 return null;
             }
-            return new ButtonStyleProvider(effectiveStyle).apply(variableManager);
+            return new ButtonStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
         ButtonDescription.Builder builder = ButtonDescription.newButtonDescription(descriptionId)
@@ -574,15 +594,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         StringValueProvider labelProvider = this.getStringValueProvider(viewLabelDescription.getLabelExpression());
         StringValueProvider valueProvider = this.getStringValueProvider(viewLabelDescription.getValueExpression());
         Function<VariableManager, LabelWidgetStyle> styleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             var effectiveStyle = viewLabelDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(LabelDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewLabelDescription::getStyle);
             if (effectiveStyle == null) {
                 return null;
             }
-            return new LabelStyleProvider(effectiveStyle).apply(variableManager);
+            return new LabelStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
         LabelDescription.Builder builder = LabelDescription.newLabelDescription(descriptionId)
@@ -607,15 +629,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         StringValueProvider labelProvider = this.getStringValueProvider(viewLinkDescription.getLabelExpression());
         StringValueProvider valueProvider = this.getStringValueProvider(viewLinkDescription.getValueExpression());
         Function<VariableManager, LinkStyle> styleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             var effectiveStyle = viewLinkDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(LinkDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewLinkDescription::getStyle);
             if (effectiveStyle == null) {
                 return null;
             }
-            return new LinkStyleProvider(effectiveStyle).apply(variableManager);
+            return new LinkStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
         LinkDescription.Builder builder = LinkDescription.newLinkDescription(descriptionId)
@@ -649,15 +673,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         Function<VariableManager, List<String>> itemIconURLProvider = this::getListItemIconURL;
 
         Function<VariableManager, ListStyle> styleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             var effectiveStyle = viewListDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(ListDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewListDescription::getStyle);
             if (effectiveStyle == null) {
                 return null;
             }
-            return new ListStyleProvider(effectiveStyle).apply(variableManager);
+            return new ListStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
         ListDescription.Builder builder = ListDescription.newListDescription(descriptionId)
@@ -712,7 +738,9 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         Function<VariableManager, List<?>> iterableProvider = variableManager -> {
             String safeIterabeExpression = Optional.ofNullable(formElementFor.getIterableExpression()).orElse("");
             if (!safeIterabeExpression.isBlank()) {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), safeIterabeExpression);
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(VARIABLE_MANAGER, variableManager);
+                Result result = this.interpreter.evaluateExpression(childVariableManager.getVariables(), safeIterabeExpression);
                 return result.asObjects().orElse(List.of());
             } else {
                 return List.of();
@@ -794,6 +822,8 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         return variableManager -> {
             List<String> values = new ArrayList<>();
             if (!safeValueExpression.isBlank()) {
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(VARIABLE_MANAGER, variableManager);
                 Optional<List<Object>> optionalResult = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression).asObjects();
                 if (optionalResult.isPresent()) {
                     values = optionalResult.get().stream().filter(String.class::isInstance).map(String.class::cast).toList();
@@ -808,7 +838,9 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         return variableManager -> {
             List<List<String>> values = new ArrayList<>(new ArrayList<>());
             if (!safeValueExpression.isBlank()) {
-                Optional<List<Object>> optionalResult = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression).asObjects();
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(VARIABLE_MANAGER, variableManager);
+                Optional<List<Object>> optionalResult = this.interpreter.evaluateExpression(childVariableManager.getVariables(), safeValueExpression).asObjects();
                 if (optionalResult.isPresent()) {
                     var list = optionalResult.get().stream().filter(List.class::isInstance).map(List.class::cast).toList();
                     return list.stream().map(valuesList -> (List<String>) valuesList.stream().filter(String.class::isInstance).map(String.class::cast).toList())
@@ -834,7 +866,9 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     private IStatus getListItemClickHandler(VariableManager variableManager, List<Operation> operations) {
         OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
-        Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
+        VariableManager childVariableManager = variableManager.createChild();
+        childVariableManager.put(VARIABLE_MANAGER, variableManager);
+        Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
         if (optionalVariableManager.isEmpty()) {
             return this.buildFailureWithFeedbackMessages("Something went wrong while handling the item click.");
         } else {
@@ -855,10 +889,12 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
     private Function<VariableManager, List<?>> getMultiValueProvider(String expression) {
         String safeExpression = Optional.ofNullable(expression).orElse("");
         return variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             if (safeExpression.isBlank()) {
                 return List.of();
             } else {
-                return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of());
+                return this.interpreter.evaluateExpression(childVariableManager.getVariables(), safeExpression).asObjects().orElse(List.of());
             }
         };
     }
@@ -866,10 +902,12 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
     private <T> Function<VariableManager, List<T>> getMultiValueProvider(String expression, Class<T> type) {
         String safeExpression = Optional.ofNullable(expression).orElse("");
         return variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             if (safeExpression.isBlank()) {
                 return List.of();
             } else {
-                return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast).toList();
+                return this.interpreter.evaluateExpression(childVariableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast).toList();
             }
         };
     }
@@ -905,13 +943,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
             Optional<IEditingContext> optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
             if (optionalEditingDomain.isPresent()) {
                 IEditingContext editingContext = optionalEditingDomain.get();
-                // @formatter:off
+
                 List<Object> newValuesObjects = newValue.stream()
                         .map(currentValue -> this.objectService.getObject(editingContext, currentValue))
                         .flatMap(Optional::stream)
                         .toList();
-                // @formatter:on
+
                 VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(VARIABLE_MANAGER, variableManager);
                 childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValuesObjects);
                 OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
                 Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
@@ -930,7 +969,9 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         return variableManager -> {
             List<String> values = new ArrayList<>();
             if (!safeValueExpression.isBlank()) {
-                Optional<List<Object>> optionalResult = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression).asObjects();
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(VARIABLE_MANAGER, variableManager);
+                Optional<List<Object>> optionalResult = this.interpreter.evaluateExpression(childVariableManager.getVariables(), safeValueExpression).asObjects();
                 if (optionalResult.isPresent()) {
                     values = optionalResult.get().stream().map(this.objectService::getId).toList();
                 }
@@ -954,7 +995,9 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
         return variableManager -> {
             if (!safeValueExpression.isBlank()) {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression);
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(VARIABLE_MANAGER, variableManager);
+                Result result = this.interpreter.evaluateExpression(childVariableManager.getVariables(), safeValueExpression);
                 var rawValue = result.asObject();
                 return rawValue.map(this.objectService::getId).orElseGet(() -> rawValue.map(Objects::toString).orElse(""));
             }
@@ -964,8 +1007,10 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     private Function<VariableManager, IStatus> getOperationsHandler(List<Operation> operations) {
         return variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
-            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
+            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
             if (optionalVariableManager.isEmpty()) {
                 return this.buildFailureWithFeedbackMessages("Something went wrong while handling the widget operations execution.");
             } else {
@@ -978,6 +1023,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         return (variableManager, newValue) -> {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValue);
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
             Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
             if (optionalVariableManager.isEmpty()) {
@@ -1000,6 +1046,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
             }
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValueObject);
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
             Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
             if (optionalVariableManager.isEmpty()) {
@@ -1018,7 +1065,9 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
     private Function<VariableManager, Boolean> getReadOnlyValueProvider(String expression) {
         return variableManager -> {
             if (expression != null && !expression.isBlank()) {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), expression);
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(VARIABLE_MANAGER, variableManager);
+                Result result = this.interpreter.evaluateExpression(childVariableManager.getVariables(), expression);
                 return result.asBoolean().map(value -> !value).orElse(Boolean.FALSE);
             }
             return Boolean.FALSE;
@@ -1031,11 +1080,9 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
 
     private List<String> getListItemIconURL(VariableManager variablemanager) {
-        // @formatter:off
         return variablemanager.get(ListComponent.CANDIDATE_VARIABLE, Object.class)
                 .map(this.objectService::getImagePath)
                 .orElse(List.of());
-        // @formatter:on
     }
 
     private boolean matches(String condition, VariableManager variableManager) {
