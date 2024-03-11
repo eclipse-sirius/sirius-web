@@ -149,6 +149,11 @@
 			<artifactId>sirius-components-domain-emf</artifactId>
 			<version>2024.1.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-emf</artifactId>
+			<version>2024.1.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>

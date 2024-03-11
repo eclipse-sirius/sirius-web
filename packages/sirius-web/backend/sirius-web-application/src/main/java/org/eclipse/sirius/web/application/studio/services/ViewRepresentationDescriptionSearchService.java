@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.representations;
+package org.eclipse.sirius.web.application.studio.services;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,30 +23,24 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
-import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.springframework.stereotype.Service;
 
 /**
  * Used to find view representation descriptions.
  *
- * @author arichard
+ * @author sbegaudeau
  */
 @Service
-@ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
 public class ViewRepresentationDescriptionSearchService implements IViewRepresentationDescriptionSearchService {
 
     private final IURLParser urlParser;
 
     private final IIdentityService identityService;
 
-    private final IInMemoryViewRegistry inMemoryViewRegistry;
-
-    public ViewRepresentationDescriptionSearchService(IURLParser urlParser, IIdentityService identityService, IInMemoryViewRegistry inMemoryViewRegistry) {
+    public ViewRepresentationDescriptionSearchService(IURLParser urlParser, IIdentityService identityService) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.identityService = Objects.requireNonNull(identityService);
-        this.inMemoryViewRegistry = Objects.requireNonNull(inMemoryViewRegistry);
     }
 
     @Override
@@ -72,11 +66,6 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     @Override
     public List<View> findViewsBySourceId(IEditingContext editingContext, String sourceId) {
-        List<View> inMemoryViews = this.inMemoryViewRegistry.findViewById(sourceId).stream().toList();
-        if (!inMemoryViews.isEmpty()) {
-            return inMemoryViews;
-        }
-
         var views = Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
@@ -97,5 +86,4 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
         var parameters = this.urlParser.getParameterValues(descriptionId);
         return Optional.ofNullable(parameters.get(IRepresentationDescriptionIdProvider.SOURCE_ELEMENT_ID)).orElse(List.of()).stream().findFirst();
     }
-
 }

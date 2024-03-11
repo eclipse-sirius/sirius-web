@@ -60,7 +60,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-collaborative-trees", 63.0),
   new ModuleCoverage("sirius-components-trees-graphql", 51.0),
   new ModuleCoverage("sirius-components-selection", 0.0),
-  new ModuleCoverage("sirius-components-collaborative-selection", 6.0),
+  new ModuleCoverage("sirius-components-collaborative-selection", 7.0),
   new ModuleCoverage("sirius-components-selection-graphql", 20.0),
   new ModuleCoverage("sirius-components-validation", 0.0),
   new ModuleCoverage("sirius-components-collaborative-validation", 5.0),
@@ -75,11 +75,11 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-graphql", 54.0),
   new ModuleCoverage("sirius-components-web", 54.0),
   new ModuleCoverage("sirius-components-starter", 72.0),
-  new ModuleCoverage("sirius-components-domain", 68.0),
+  new ModuleCoverage("sirius-components-domain", 69.0),
   new ModuleCoverage("sirius-components-domain-edit", 22.0),
   new ModuleCoverage("sirius-components-domain-design", 29.0),
   new ModuleCoverage("sirius-components-domain-emf", 98.0),
-  new ModuleCoverage("sirius-components-view", 55.0),
+  new ModuleCoverage("sirius-components-view", 57.0),
   new ModuleCoverage("sirius-components-view-edit", 10.0),
   new ModuleCoverage("sirius-components-view-diagram", 53.0),
   new ModuleCoverage("sirius-components-view-diagram-edit", 3.0),
@@ -87,22 +87,22 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-view-form-edit", 1.0),
   new ModuleCoverage("sirius-components-widget-reference-view", 28.0),
   new ModuleCoverage("sirius-components-widget-reference-view-edit", 3.0),
-  new ModuleCoverage("sirius-components-view-gantt", 31.0),
+  new ModuleCoverage("sirius-components-view-gantt", 40.0),
   new ModuleCoverage("sirius-components-view-gantt-edit", 6.0),
-  new ModuleCoverage("sirius-components-view-deck", 26.0),
+  new ModuleCoverage("sirius-components-view-deck", 34.0),
   new ModuleCoverage("sirius-components-view-deck-edit", 4.0),
-  new ModuleCoverage("sirius-components-view-emf", 57.0),
-  new ModuleCoverage("sirius-components-view-builder", 13.0),
-  new ModuleCoverage("sirius-components-task", 47.0),
+  new ModuleCoverage("sirius-components-view-emf", 58.0),
+  new ModuleCoverage("sirius-components-view-builder", 26.0),
+  new ModuleCoverage("sirius-components-task", 48.0),
   new ModuleCoverage("sirius-components-task-edit", 3.0),
-  new ModuleCoverage("sirius-components-task-starter", 41.0),
+  new ModuleCoverage("sirius-components-task-starter", 63.0),
   new ModuleCoverage("sirius-components-flow-starter", 78.0),
   new ModuleCoverage("sirius-web-customwidgets", 57.0),
   new ModuleCoverage("sirius-web-customwidgets-edit", 7.0),
   new ModuleCoverage("sirius-web-customnodes", 12.0),
   new ModuleCoverage("sirius-web-customnodes-edit", 5.0),
   new ModuleCoverage("sirius-web-domain", 80.0),
-  new ModuleCoverage("sirius-web-application", 91.0),
+  new ModuleCoverage("sirius-web-application", 92.0),
   new ModuleCoverage("sirius-web-infrastructure", 85.0),
   new ModuleCoverage("sirius-web-starter", 98.0),
   new ModuleCoverage("sirius-web", 37.0)
@@ -135,7 +135,7 @@ System.out.println();
 
 // Check global code coverage
 double global = checkCoverage("");
-double expectedGlobalCoverage = 49.0;
+double expectedGlobalCoverage = 50.0;
 boolean isValidCoverage = global >= expectedGlobalCoverage;
 display("total", global, expectedGlobalCoverage);
 
