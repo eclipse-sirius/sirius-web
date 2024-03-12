@@ -11,7 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection, SelectionContextProvider } from '@eclipse-sirius/sirius-components-core';
+import {
+  ConfirmationDialogContextProvider,
+  Selection,
+  SelectionContextProvider,
+} from '@eclipse-sirius/sirius-components-core';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { DetailsView, FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
 import React, { useEffect, useState } from 'react';
@@ -128,10 +132,12 @@ export const App = ({
   }
   return (
     <SelectionContextProvider initialSelection={selection}>
-      <div style={appStyle}>
-        <div style={headerStyle}></div>
-        {state.editingContextId && state.authenticate ? <div style={componentStyle}>{component}</div> : null}
-      </div>
+      <ConfirmationDialogContextProvider>
+        <div style={appStyle}>
+          <div style={headerStyle}></div>
+          {state.editingContextId && state.authenticate ? <div style={componentStyle}>{component}</div> : null}
+        </div>
+      </ConfirmationDialogContextProvider>
     </SelectionContextProvider>
   );
 };
