@@ -66,12 +66,36 @@ export const ConfirmationDialog = ({
   title,
   message,
   buttonLabel,
+  allowConfirmationDisabled,
   confirmationDisabled,
   onConfirmationDisabledChange,
   onConfirm,
   onCancel,
 }: ConfirmationDialogProps) => {
   const classes = useConfirmationDialogStyles();
+
+  let confirmationDisabledElement: JSX.Element | null = null;
+  if (allowConfirmationDisabled) {
+    confirmationDisabledElement = (
+      <FormControlLabel
+        control={
+          <Checkbox
+            data-testid="confirmation-dialog-checkbox-disabled"
+            className={classes.checkbox}
+            checked={confirmationDisabled}
+            onChange={(event) => onConfirmationDisabledChange(event.target.checked)}
+            icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+            checkedIcon={<CheckBoxIcon className={classes.checkboxChecked} fontSize="small" />}
+          />
+        }
+        label={
+          <Typography className={classes.checkboxLabel} variant="body2">
+            Disable this confirmation dialog
+          </Typography>
+        }
+      />
+    );
+  }
   return (
     <div>
       <Dialog open={open} onClose={onCancel} aria-labelledby="confirmation-dialog" data-testid="confirmation-dialog">
@@ -83,23 +107,7 @@ export const ConfirmationDialog = ({
           <DialogContentText className={classes.message} data-testid="confirmation-dialog-message">
             {message}
           </DialogContentText>
-          <FormControlLabel
-            control={
-              <Checkbox
-                data-testid="confirmation-dialog-checkbox-disabled"
-                className={classes.checkbox}
-                checked={confirmationDisabled}
-                onChange={(event) => onConfirmationDisabledChange(event.target.checked)}
-                icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-                checkedIcon={<CheckBoxIcon className={classes.checkboxChecked} fontSize="small" />}
-              />
-            }
-            label={
-              <Typography className={classes.checkboxLabel} variant="body2">
-                Disable this confirmation dialog
-              </Typography>
-            }
-          />
+          {confirmationDisabledElement}
         </DialogContent>
         <DialogActions>
           <Button
