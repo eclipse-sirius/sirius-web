@@ -23,6 +23,7 @@
 - [ADR-135] Add support for representations in object related services
 - [ADR-136] Add variables to the view form dsl
 - [ADR-137] Use a common identification strategy for transient representations
+- [ADR-138] Allow consumers to reuse smaller parts of the Sirius Web backend
 
 === Deprecation warning
 

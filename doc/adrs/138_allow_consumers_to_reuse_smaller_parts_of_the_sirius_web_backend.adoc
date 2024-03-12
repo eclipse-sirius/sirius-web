@@ -1,0 +1,44 @@
+= [ADR-138] Allow consumers to reuse smaller parts of the Sirius Web backend
+
+== Context
+
+Sirius Web can now be reused more easily but some of our consumers want to reuse only a subset of Sirius Web.
+Thanks to our domain driven design based approach, the content of Sirius Web is now separated in various bounded context.
+
+== Decision
+
+We will enforce an even stronger separation betwen our various bounded context by separating the bounded contexts in various projects.
+For that we will introduce the following new projects:
+
+=== Project
+
+* `sirius-web-project-domain`
+** no dependency other bounded contexts
+* `sirius-web-project-application`
+** depends on `sirius-web-project-domain`
+
+=== Semantic Data
+
+* `sirius-web-semanticdata-domain`
+** depends on `sirius-web-project-domain`
+* `sirius-web-semanticdata-application`
+** depends on `sirius-web-semanticdata-domain`
+
+=== Representation Data
+
+* `sirius-web-representationdata-domain`
+** depends on `sirius-web-project-domain`
+* sirius-web-representationdata-application
+** depends on `sirius-web-representationdata-domain`
+
+
+== Status
+
+Work in progress
+
+== Consequences
+
+The existing Sirius Web projects will be transformed and a stronger separation will appear between our various bounded contexts.
+It will then be possible to use the project bounded context of Sirius Web without dependencies to the semantic data or representation data bounded contexts.
+
+We will have to provide a similar separation on the frontend side too
