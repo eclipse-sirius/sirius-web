@@ -21,7 +21,8 @@
 - [ADR-133] Add Tree Widget to the View DSL
 - [ADR-134] Split IObjectService in multiples sub services
 - [ADR-135] Add support for representations in object related services
-- [ADR-136] Add variables to the view form dsl.
+- [ADR-136] Add variables to the view form dsl
+- [ADR-137] Use a common identification strategy for transient representations
 
 === Deprecation warning
 
