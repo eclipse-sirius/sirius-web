@@ -60,12 +60,17 @@ import org.springframework.context.support.StaticApplicationContext;
  */
 public class ViewPaletteProviderTests {
 
+    public static final String PRECONDITION_EXPRESSION_FALSE = "false";
+
     private static EdgeDescription getEdgeDescription() {
         EdgeDescription edgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         EdgePalette edgePalette = DiagramFactory.eINSTANCE.createEdgePalette();
         edgeDescription.setPalette(edgePalette);
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         edgePalette.getNodeTools().add(nodeTool);
+        NodeTool nodeToolWithFalsePrecondition = DiagramFactory.eINSTANCE.createNodeTool();
+        nodeToolWithFalsePrecondition.setPreconditionExpression(PRECONDITION_EXPRESSION_FALSE);
+        edgePalette.getNodeTools().add(nodeToolWithFalsePrecondition);
         EdgeToolSection toolSection = DiagramFactory.eINSTANCE.createEdgeToolSection();
         edgePalette.getToolSections().add(toolSection);
         NodeTool nodeToolInToolSection = DiagramFactory.eINSTANCE.createNodeTool();
@@ -78,9 +83,15 @@ public class ViewPaletteProviderTests {
         NodePalette nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
+        NodeTool nodeToolWithFalsePrecondition = DiagramFactory.eINSTANCE.createNodeTool();
+        nodeToolWithFalsePrecondition.setPreconditionExpression(PRECONDITION_EXPRESSION_FALSE);
         EdgeTool edgeTool = DiagramFactory.eINSTANCE.createEdgeTool();
+        EdgeTool edgeToolWithFalsePrecondition = DiagramFactory.eINSTANCE.createEdgeTool();
+        edgeToolWithFalsePrecondition.setPreconditionExpression(PRECONDITION_EXPRESSION_FALSE);
         nodePalette.getNodeTools().add(nodeTool);
         nodePalette.getEdgeTools().add(edgeTool);
+        nodePalette.getNodeTools().add(nodeToolWithFalsePrecondition);
+        nodePalette.getEdgeTools().add(edgeToolWithFalsePrecondition);
         NodeToolSection toolSection = DiagramFactory.eINSTANCE.createNodeToolSection();
         nodePalette.getToolSections().add(toolSection);
         NodeTool nodeToolInToolSection = DiagramFactory.eINSTANCE.createNodeTool();
@@ -96,6 +107,9 @@ public class ViewPaletteProviderTests {
         diagramDescription.setPalette(diagramPalette);
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         diagramPalette.getNodeTools().add(nodeTool);
+        NodeTool nodeToolWithFalsePrecondition = DiagramFactory.eINSTANCE.createNodeTool();
+        nodeToolWithFalsePrecondition.setPreconditionExpression(PRECONDITION_EXPRESSION_FALSE);
+        diagramPalette.getNodeTools().add(nodeToolWithFalsePrecondition);
         DiagramToolSection diagramToolSection = DiagramFactory.eINSTANCE.createDiagramToolSection();
         diagramPalette.getToolSections().add(diagramToolSection);
         NodeTool nodeToolInToolSection = DiagramFactory.eINSTANCE.createNodeTool();
