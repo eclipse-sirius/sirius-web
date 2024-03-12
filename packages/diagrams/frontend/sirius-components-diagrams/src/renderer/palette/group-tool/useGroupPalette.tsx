@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useCallback, useEffect, useState } from 'react';
-import { XYPosition, useKeyPress, useStoreApi } from 'reactflow';
+import { Edge, Node, XYPosition, useKeyPress, useStoreApi } from 'reactflow';
 import { UseGroupPaletteValue, UseGroupPaletteState } from './useGroupPalette.types';
 
 const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds?: DOMRect): XYPosition => {
@@ -22,7 +22,7 @@ const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds?: D
 };
 
 export const useGroupPalette = (): UseGroupPaletteValue => {
-  const [state, setState] = useState<UseGroupPaletteState>({ position: null, isOpened: false });
+  const [state, setState] = useState<UseGroupPaletteState>({ position: null, isOpened: false, refElementId: null });
 
   const store = useStoreApi();
 
@@ -33,12 +33,16 @@ export const useGroupPalette = (): UseGroupPaletteValue => {
     }
   }, [escapePressed]);
 
-  const onDiagramElementClick = useCallback((event: React.MouseEvent<Element, MouseEvent>) => {
-    const { domNode } = store.getState();
-    const element = domNode?.getBoundingClientRect();
-    const palettePosition = computePalettePosition(event, element);
-    setState((prevState) => ({ ...prevState, position: palettePosition, isOpened: true }));
-  }, []);
+  const onDiagramElementClick = useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>, refElement: Node | Edge | null) => {
+      const { domNode } = store.getState();
+      const element = domNode?.getBoundingClientRect();
+      const palettePosition = computePalettePosition(event, element);
+      const refElementId: string | null = refElement?.id ?? null;
+      setState((prevState) => ({ ...prevState, position: palettePosition, isOpened: true, refElementId }));
+    },
+    []
+  );
 
   const hideGroupPalette = () => {
     setState((prevState) => ({ ...prevState, position: null, isOpened: false }));
@@ -46,6 +50,7 @@ export const useGroupPalette = (): UseGroupPaletteValue => {
   return {
     position: state.position,
     isOpened: state.isOpened,
+    refElementId: state.refElementId,
     hideGroupPalette,
     onDiagramElementClick,
   };

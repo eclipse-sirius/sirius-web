@@ -147,6 +147,7 @@ Thanks to this capability, a specifier can easily retrieve a variable overriden 
 - https://github.com/eclipse-sirius/sirius-web/issues/3197[#3197] [form] Add the `FormVariable` concept to the view form DSL.
 Form variables declared in a form description will thus be added in the FormDescription `VariableManager`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3198[#3198] [form] Add a new variable, `variableManager`, in most interpreted expressions of the form DSL.
+- https://github.com/eclipse-sirius/sirius-web/issues/3243[#3243] [diagram] Add tools to help manual layout on multiple elements
 
 === Improvements
 

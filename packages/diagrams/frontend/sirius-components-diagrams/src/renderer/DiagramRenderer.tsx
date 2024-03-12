@@ -65,6 +65,7 @@ import { DiagramNodeType } from './node/NodeTypes.types';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { GroupPalette } from './palette/group-tool/GroupPalette';
+import { useGroupPalette } from './palette/group-tool/useGroupPalette';
 import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
@@ -74,7 +75,6 @@ import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
 import 'reactflow/dist/style.css';
-import { useGroupPalette } from './palette/group-tool/useGroupPalette';
 
 const GRID_STEP: number = 10;
 
@@ -105,6 +105,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     hideGroupPalette,
     position: groupPalettePosition,
     isOpened: isGroupPaletteOpened,
+    refElementId: groupPaletteRefElementId,
   } = useGroupPalette();
 
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
@@ -263,14 +264,14 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const handleDiagramElementCLick = (event: React.MouseEvent<Element, MouseEvent>, element: Node | Edge) => {
     diagramPaletteOnDiagramElementClick();
     elementPaletteOnDiagramElementClick(event, element);
-    groupPaletteOnDiagramElementClick(event);
+    groupPaletteOnDiagramElementClick(event, element);
   };
 
   const handleSelectionStart = () => {
     closeAllPalettes();
   };
   const handleSelectionEnd = (event: React.MouseEvent<Element, MouseEvent>) => {
-    groupPaletteOnDiagramElementClick(event);
+    groupPaletteOnDiagramElementClick(event, null);
   };
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
@@ -344,6 +345,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         x={groupPalettePosition?.x}
         y={groupPalettePosition?.y}
         isOpened={isGroupPaletteOpened}
+        refElementId={groupPaletteRefElementId}
+        hidePalette={hideGroupPalette}
       />
       <DiagramPalette diagramElementId={diagramRefreshedEventPayload.diagram.id} />
       {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}

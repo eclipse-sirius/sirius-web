@@ -11,23 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface GroupPaletteProps {
-  x?: number;
-  y?: number;
-  isOpened: boolean;
-  refElementId: string | null;
-  refreshEventPayloadId: string;
-  hidePalette: () => void;
-}
+import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon';
 
-export interface GroupPaletteState {
-  isDistributeElementToolSectionExpand: boolean;
-  lastDistributeElementToolId: string | null;
-}
-
-export interface GroupPaletteSectionTool {
-  id: string;
-  title: string;
-  action: () => void;
-  icon: JSX.Element;
-}
+export const AlignVerticalBottomIcon = (props: SvgIconProps) => {
+  return (
+    <SvgIcon
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      aria-labelledby="title"
+      aria-describedby="desc"
+      role="img"
+      {...props}>
+      <path d="M22,22H2v-2h20V22z M10,2H7v16h3V2z M17,8h-3v10h3V8z" />
+    </SvgIcon>
+  );
+};

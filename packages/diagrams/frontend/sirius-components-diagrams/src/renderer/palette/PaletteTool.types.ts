@@ -11,23 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface GroupPaletteProps {
-  x?: number;
-  y?: number;
-  isOpened: boolean;
-  refElementId: string | null;
-  refreshEventPayloadId: string;
-  hidePalette: () => void;
-}
-
-export interface GroupPaletteState {
-  isDistributeElementToolSectionExpand: boolean;
-  lastDistributeElementToolId: string | null;
-}
-
-export interface GroupPaletteSectionTool {
-  id: string;
-  title: string;
-  action: () => void;
-  icon: JSX.Element;
+export interface PaletteToolProps {
+  toolName: string;
+  onClick: () => void;
+  children: React.ReactNode;
 }
