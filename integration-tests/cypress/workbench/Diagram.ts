@@ -35,6 +35,9 @@ export class Diagram {
     return cy.getByTestId('Palette');
   }
 
+  public getGroupPalette(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('GroupPalette');
+  }
   public getDiagramScale(diagramLabel: string): Cypress.Chainable<number> {
     return this.getDiagram(diagramLabel)
       .find('.react-flow__viewport')
