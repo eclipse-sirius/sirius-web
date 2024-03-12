@@ -1,0 +1,33 @@
+= [ADR-137] Use a common identification strategy for transient representations
+
+== Context
+
+A representation identifier can be any kind of string.
+Persisted representations are using a `UUID` which is used as the primary key of the representation in Sirius Web.
+Transient representations have various kind of id from `UUID` to various string based identifiers.
+
+The issue is that we need to know that a representation is transient or not in order to look for its metadata in the database or in memory.
+
+== Decision
+
+All transient representations will switch to a URI based identifier with a prefix defining the kind of representation.
+This will change the id of the following representations to:
+
+- Explorer: `explorer://?expandedIds=[]&activeFilterIds=[]`
+- Details: `details://?objectIds=[]`
+- Validation: `validation://`
+- RelatedElements: `relatedElements://?objectIds=[]`
+- Representations: `representations://?objectIds=[]`
+- Selection: `selection://`
+
+As a result, all transient representations should start with a identifier of the type of representation `explorer`, `details`, `validation`, etc followed by `://` and various parameters specific to the instance.
+
+On top of that, the frontend should be able to create the identifier directly in order to avoid having two different identifiers for the same representation.
+
+== Status
+
+Work in progress
+
+== Consequences
+
+The identifier of all the transient representations will change.
