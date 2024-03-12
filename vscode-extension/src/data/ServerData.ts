@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,10 +51,9 @@ export class ServerData {
 
   private fetchProjects(): Promise<ProjectData[]> {
     const graphQLQuery = `
-      query getProjects($page: Int!) {
+      query getProjects($page: Int!, $limit: Int!) {
         viewer {
-          id
-          projects(page: $page) {
+          projects(page: $page, limit: $limit) {
             edges {
               node {
                 id
@@ -72,7 +71,7 @@ export class ServerData {
         queryURL,
         {
           query: graphQLQuery,
-          variables: { page: 0 },
+          variables: { page: 0, limit: 50 },
         },
         headers
       )
