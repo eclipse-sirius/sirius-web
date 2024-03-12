@@ -87,7 +87,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
 
         var newProjectName = "renamed project";
-        this.projectUpdateService.renameProject(TestIdentifiers.ECORE_SAMPLE_PROJECT, newProjectName);
+        this.projectUpdateService.renameProject(null, TestIdentifiers.ECORE_SAMPLE_PROJECT, newProjectName);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -104,7 +104,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
 
         var sampleProject = this.projectSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT).get();
-        this.projectUpdateService.renameProject(TestIdentifiers.ECORE_SAMPLE_PROJECT, sampleProject.getName());
+        this.projectUpdateService.renameProject(null, TestIdentifiers.ECORE_SAMPLE_PROJECT, sampleProject.getName());
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -131,7 +131,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
 
         var newDocumentName = "renamed document";
         var updatedDocument = Document.newDocument(originalDocument.getId()).name(newDocumentName).content(originalDocument.getContent()).build();
-        this.semanticDataUpdateService.updateDocuments(projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
+        this.semanticDataUpdateService.updateDocuments(null, projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -160,7 +160,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         var newDocumentName = originalDocument.getName();
         // Identical to the original except for the timestamps
         var updatedDocument = Document.newDocument(originalDocument.getId()).name(newDocumentName).content(originalDocument.getContent()).build();
-        this.semanticDataUpdateService.updateDocuments(projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
+        this.semanticDataUpdateService.updateDocuments(null, projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -187,7 +187,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         var originalContent = originalDocument.getContent();
         var newContent = originalContent + "modified";
         var updatedDocument = Document.newDocument(originalDocument.getId()).name(originalDocument.getName()).content(newContent).build();
-        this.semanticDataUpdateService.updateDocuments(projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
+        this.semanticDataUpdateService.updateDocuments(null, projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -210,7 +210,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         var originalContent = representationData.content();
         var newContent = originalContent + "modified";
 
-        this.representationDataUpdateService.updateContent(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
+        this.representationDataUpdateService.updateContent(null, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -231,7 +231,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         var representationData = optionalRepresentationData.get();
 
         var newContent = representationData.content();
-        this.representationDataUpdateService.updateContent(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
+        this.representationDataUpdateService.updateContent(null, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -65,7 +66,7 @@ public class CreateFormDescriptionEditorEventHandlerTests {
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
         IFormDescriptionEditorCreationService formDescriptionEditorCreationService = new IFormDescriptionEditorCreationService.NoOp() {
             @Override
-            public FormDescriptionEditor create(String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
+            public FormDescriptionEditor create(ICause cause, String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
                 hasBeenCalled.set(true);
                 return new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());
             }

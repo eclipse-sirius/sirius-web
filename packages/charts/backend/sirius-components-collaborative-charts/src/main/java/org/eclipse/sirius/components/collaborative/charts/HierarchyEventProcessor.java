@@ -66,7 +66,7 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
-        Hierarchy hierarchy = this.hierarchyCreationService.refresh(editingContext, hierarchyContext).orElse(null);
+        Hierarchy hierarchy = this.hierarchyCreationService.refresh(null, editingContext, hierarchyContext).orElse(null);
         hierarchyContext.update(hierarchy);
         this.hierarchyEventFlux = new HierarchyEventFlux(hierarchy);
 
@@ -91,7 +91,7 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
     @Override
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
-            Hierarchy refreshedHierarchy = this.hierarchyCreationService.refresh(this.editingContext, this.hierarchyContext).orElse(null);
+            Hierarchy refreshedHierarchy = this.hierarchyCreationService.refresh(changeDescription.getInput(), this.editingContext, this.hierarchyContext).orElse(null);
 
             this.logger.trace("Hierarchy refreshed: {}", refreshedHierarchy.getId());
 

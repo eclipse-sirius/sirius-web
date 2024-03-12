@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.sirius.web.papaya.factories.EMFProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.JavaProjectFactory;
@@ -43,7 +44,7 @@ public class PapayaProjectTemplateInitializer implements IProjectTemplateInitial
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(String projectTemplateId, IEditingContext editingContext) {
+    public Optional<RepresentationMetadata> handle(ICause cause, String projectTemplateId, IEditingContext editingContext) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             new JavaProjectFactory().create(emfEditingContext);
             new ReactiveStreamsProjectFactory().create(emfEditingContext);

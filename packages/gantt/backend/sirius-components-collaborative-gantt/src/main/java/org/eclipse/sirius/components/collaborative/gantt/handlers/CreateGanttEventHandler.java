@@ -103,7 +103,7 @@ public class CreateGanttEventHandler implements IEditingContextEventHandler {
 
                 Gantt gantt = this.ganttCreationService.create(createRepresentationInput.representationName(), object, ganttDescription, editingContext);
 
-                this.representationPersistenceService.save(editingContext, gantt);
+                this.representationPersistenceService.save(createRepresentationInput, editingContext, gantt);
                 var representationMetadata = new RepresentationMetadata(gantt.getId(), gantt.getKind(), gantt.getLabel(), gantt.descriptionId());
                 payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);

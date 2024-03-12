@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.event.ProjectImageCreatedEvent;
@@ -64,12 +65,12 @@ public class ProjectImage extends AbstractValidatingAggregateRoot<ProjectImage> 
         return this.label;
     }
 
-    public void updateLabel(String newLabel) {
+    public void updateLabel(ICause cause, String newLabel) {
         if (!Objects.equals(this.label, newLabel)) {
             this.label = newLabel;
             this.lastModifiedOn = Instant.now();
 
-            this.registerEvent(new ProjectImageLabelUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, this));
+            this.registerEvent(new ProjectImageLabelUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this));
         }
     }
 
@@ -94,8 +95,8 @@ public class ProjectImage extends AbstractValidatingAggregateRoot<ProjectImage> 
         return this.isNew;
     }
 
-    public void dispose() {
-        this.registerEvent(new ProjectImageDeletedEvent(UUID.randomUUID(), Instant.now(), this));
+    public void dispose(ICause cause) {
+        this.registerEvent(new ProjectImageDeletedEvent(UUID.randomUUID(), Instant.now(), cause, this));
     }
 
     public static Builder newProjectImage() {
@@ -138,7 +139,7 @@ public class ProjectImage extends AbstractValidatingAggregateRoot<ProjectImage> 
             return this;
         }
 
-        public ProjectImage build() {
+        public ProjectImage build(ICause cause) {
             var projectImage = new ProjectImage();
 
             projectImage.isNew = true;
@@ -152,7 +153,7 @@ public class ProjectImage extends AbstractValidatingAggregateRoot<ProjectImage> 
             projectImage.createdOn = now;
             projectImage.lastModifiedOn = now;
 
-            projectImage.registerEvent(new ProjectImageCreatedEvent(UUID.randomUUID(), now, projectImage));
+            projectImage.registerEvent(new ProjectImageCreatedEvent(UUID.randomUUID(), now, cause, projectImage));
             return projectImage;
         }
     }

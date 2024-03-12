@@ -127,7 +127,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
             this.ganttContext.update(refreshedGanttRepresentation);
 
             if (refreshedGanttRepresentation != null) {
-                this.representationPersistenceService.save(this.editingContext, refreshedGanttRepresentation);
+                this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedGanttRepresentation);
                 this.logger.trace("Gantt refreshed: {}", ganttId);
             } else {
                 this.logger.warn("Gantt refresh failed: {}", ganttId);

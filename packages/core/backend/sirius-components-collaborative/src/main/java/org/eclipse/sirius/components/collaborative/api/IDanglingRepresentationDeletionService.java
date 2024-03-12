@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.api;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 
 /**
@@ -35,7 +36,7 @@ public interface IDanglingRepresentationDeletionService {
      */
     boolean isDangling(IEditingContext editingContext, IRepresentation representation);
 
-    void deleteDanglingRepresentations(IEditingContext editingContext);
+    void deleteDanglingRepresentations(ICause cause, IEditingContext editingContext);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -50,7 +51,7 @@ public interface IDanglingRepresentationDeletionService {
         }
 
         @Override
-        public void deleteDanglingRepresentations(IEditingContext editingContext) {
+        public void deleteDanglingRepresentations(ICause cause, IEditingContext editingContext) {
         }
 
     }

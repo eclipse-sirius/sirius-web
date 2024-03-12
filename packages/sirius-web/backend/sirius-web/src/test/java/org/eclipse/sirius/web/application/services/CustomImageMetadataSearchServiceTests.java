@@ -67,7 +67,7 @@ public class CustomImageMetadataSearchServiceTests extends AbstractIntegrationTe
 
         var label = "Custom image";
         if (!this.imageSearchService.existsByLabel(label)) {
-            this.imageCreationService.createImage(label, "image.svg", new ByteArrayInputStream(svg.getBytes(StandardCharsets.UTF_8)));
+            this.imageCreationService.createImage(null, label, "image.svg", new ByteArrayInputStream(svg.getBytes(StandardCharsets.UTF_8)));
         }
     }
 
@@ -99,7 +99,7 @@ public class CustomImageMetadataSearchServiceTests extends AbstractIntegrationTe
                 .map(CustomImageMetadata::id)
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Missing global image"));
-        this.imageDeletionService.deleteImage(globalImageId);
+        this.imageDeletionService.deleteImage(null, globalImageId);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();

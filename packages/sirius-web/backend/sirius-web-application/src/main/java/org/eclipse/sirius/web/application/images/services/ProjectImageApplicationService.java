@@ -79,7 +79,7 @@ public class ProjectImageApplicationService implements IProjectImageApplicationS
     @Override
     @Transactional
     public IPayload uploadImage(UploadImageInput input) {
-        var result = this.projectImageCreationService.createProjectImage(input.projectId(), input.label(), input.file().getName(), input.file().getInputStream());
+        var result = this.projectImageCreationService.createProjectImage(input, input.projectId(), input.label(), input.file().getName(), input.file().getInputStream());
 
         IPayload payload = null;
         if (result instanceof Failure<ProjectImage> failure) {
@@ -93,7 +93,7 @@ public class ProjectImageApplicationService implements IProjectImageApplicationS
     @Override
     @Transactional
     public IPayload renameImage(RenameImageInput input) {
-        var result = this.projectImageUpdateService.renameProjectImage(input.imageId(), input.newLabel());
+        var result = this.projectImageUpdateService.renameProjectImage(input, input.imageId(), input.newLabel());
 
         IPayload payload = null;
         if (result instanceof Failure<Void> failure) {
@@ -107,7 +107,7 @@ public class ProjectImageApplicationService implements IProjectImageApplicationS
     @Override
     @Transactional
     public IPayload deleteImage(DeleteImageInput input) {
-        var result = this.projectImageDeletionService.deleteProjectImage(input.imageId());
+        var result = this.projectImageDeletionService.deleteProjectImage(input, input.imageId());
 
         IPayload payload = null;
         if (result instanceof Failure<Void> failure) {

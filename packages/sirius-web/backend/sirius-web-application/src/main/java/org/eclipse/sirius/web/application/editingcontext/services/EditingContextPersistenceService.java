@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextPersistenceFilter;
@@ -67,7 +68,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
     @Override
     @Transactional
-    public void persist(IEditingContext editingContext) {
+    public void persist(ICause cause, IEditingContext editingContext) {
         long start = System.currentTimeMillis();
 
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
@@ -90,7 +91,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                             domainUris.addAll(data.ePackageEntries().stream().map(EPackageEntry::nsURI).toList());
                         });
 
-                        this.semanticDataUpdateService.updateDocuments(project, documents, domainUris);
+                        this.semanticDataUpdateService.updateDocuments(cause, project, documents, domainUris);
                     });
         }
 

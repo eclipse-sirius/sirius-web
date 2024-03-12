@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,7 +83,7 @@ public class RenameFormEventHandler implements IFormEventHandler {
                     .pages(List.of()) // We don't store form pages, it will be re-render by the FormProcessor.
                     .build();
             // @formatter:on
-            this.representationPersistenceService.save(editingContext, renamedForm);
+            this.representationPersistenceService.save(renameRepresentationInput, editingContext, renamedForm);
 
             payload = new RenameRepresentationSuccessPayload(formInput.id(), renamedForm);
             changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.representationId(), formInput);

@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.events.ImageCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.events.ImageDeletedEvent;
@@ -78,8 +79,8 @@ public class Image extends AbstractValidatingAggregateRoot<Image> implements Per
         return this.isNew;
     }
 
-    public void dispose() {
-        this.registerEvent(new ImageDeletedEvent(UUID.randomUUID(), Instant.now(), this));
+    public void dispose(ICause cause) {
+        this.registerEvent(new ImageDeletedEvent(UUID.randomUUID(), Instant.now(), cause, this));
     }
 
     public static Builder newImage() {
@@ -115,7 +116,7 @@ public class Image extends AbstractValidatingAggregateRoot<Image> implements Per
             return this;
         }
 
-        public Image build() {
+        public Image build(ICause cause) {
             var image = new Image();
 
             image.isNew = true;
@@ -128,7 +129,7 @@ public class Image extends AbstractValidatingAggregateRoot<Image> implements Per
             image.createdOn = now;
             image.lastModifiedOn = now;
 
-            image.registerEvent(new ImageCreatedEvent(UUID.randomUUID(), now, image));
+            image.registerEvent(new ImageCreatedEvent(UUID.randomUUID(), now, cause, image));
             return image;
         }
     }

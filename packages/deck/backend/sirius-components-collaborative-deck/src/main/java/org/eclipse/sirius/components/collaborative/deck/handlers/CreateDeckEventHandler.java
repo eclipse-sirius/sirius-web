@@ -103,7 +103,7 @@ public class CreateDeckEventHandler implements IEditingContextEventHandler {
 
                 Deck deckDiagram = this.deckCreationService.create(createRepresentationInput.representationName(), object, deckDescription, editingContext);
 
-                this.representationPersistenceService.save(editingContext, deckDiagram);
+                this.representationPersistenceService.save(createRepresentationInput, editingContext, deckDiagram);
 
                 var representationMetadata = new RepresentationMetadata(deckDiagram.id(), deckDiagram.getKind(), deckDiagram.label(), deckDiagram.descriptionId());
                 payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);

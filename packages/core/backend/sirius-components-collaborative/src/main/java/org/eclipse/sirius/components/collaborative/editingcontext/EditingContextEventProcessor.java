@@ -175,9 +175,9 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             refreshRepresentationSample.stop(timer);
 
             if (this.shouldPersistTheEditingContext(changeDescription)) {
-                this.editingContextPersistenceService.persist(this.editingContext);
+                this.editingContextPersistenceService.persist(changeDescription.getInput(), this.editingContext);
             }
-            this.danglingRepresentationDeletionService.deleteDanglingRepresentations(this.editingContext);
+            this.danglingRepresentationDeletionService.deleteDanglingRepresentations(changeDescription.getInput(), this.editingContext);
 
         };
 

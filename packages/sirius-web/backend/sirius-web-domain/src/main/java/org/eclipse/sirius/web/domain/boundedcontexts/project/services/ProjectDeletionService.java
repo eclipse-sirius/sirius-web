@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectDeletionService;
 import org.eclipse.sirius.web.domain.services.Failure;
@@ -41,13 +42,13 @@ public class ProjectDeletionService implements IProjectDeletionService {
     }
 
     @Override
-    public IResult<Void> deleteProject(UUID projectId) {
+    public IResult<Void> deleteProject(ICause cause, UUID projectId) {
         IResult<Void> result = null;
 
         var optionalProject = this.projectRepository.findById(projectId);
         if (optionalProject.isPresent()) {
             var project = optionalProject.get();
-            project.dispose();
+            project.dispose(cause);
 
             this.projectRepository.delete(project);
             result = new Success<>(null);

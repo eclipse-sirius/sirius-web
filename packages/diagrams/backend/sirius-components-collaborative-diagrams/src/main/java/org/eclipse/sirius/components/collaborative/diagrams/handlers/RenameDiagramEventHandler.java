@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -88,7 +88,7 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
                 Diagram diagram = optionalDiagram.get();
 
                 Diagram renamedDiagram = Diagram.newDiagram(diagram).label(newLabel).build();
-                this.representationPersistenceService.save(editingContext, renamedDiagram);
+                this.representationPersistenceService.save(renameRepresentationInput, editingContext, renamedDiagram);
                 diagramContext.update(renamedDiagram);
 
                 payload = new RenameRepresentationSuccessPayload(diagramInput.id(), renamedDiagram);

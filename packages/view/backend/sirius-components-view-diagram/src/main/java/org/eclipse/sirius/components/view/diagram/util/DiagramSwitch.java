@@ -1108,11 +1108,8 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch. <<<<<<< HEAD
-     * @return the result of interpreting the object as an instance of '<em>Selection Description</em>'.
-     * @generated =======
-     * @return the result of interpreting the object as an instance of '<em>Selection Dialog Description</em>'. >>>>>>>
-     *         e444ba2ad ([2759] Reactivate the SelectionDialog)
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Selection Dialog Description</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */

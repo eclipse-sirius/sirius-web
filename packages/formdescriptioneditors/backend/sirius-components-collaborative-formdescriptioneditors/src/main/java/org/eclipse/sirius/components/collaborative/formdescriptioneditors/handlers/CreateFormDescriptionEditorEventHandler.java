@@ -98,7 +98,7 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
             if (optionalFormDescriptionEditorDescription.isPresent() && optionalObject.isPresent()) {
                 Object object = optionalObject.get();
                 FormDescriptionEditorDescription representationDescription = optionalFormDescriptionEditorDescription.get();
-                FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.create(createRepresentationInput.representationName(), object, representationDescription,
+                FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.create(createRepresentationInput, createRepresentationInput.representationName(), object, representationDescription,
                         editingContext);
 
                 var representationMetadata = new RepresentationMetadata(formDescriptionEditor.getId(), formDescriptionEditor.getKind(), formDescriptionEditor.getLabel(),

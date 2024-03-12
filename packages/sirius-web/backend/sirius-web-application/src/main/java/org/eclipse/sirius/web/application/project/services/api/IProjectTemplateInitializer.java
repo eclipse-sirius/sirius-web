@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 
 /**
  * Initializes the contents of a new project created from a project template. The initializer can add new documents to
@@ -27,5 +28,5 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 public interface IProjectTemplateInitializer {
     boolean canHandle(String projectTemplateId);
 
-    Optional<RepresentationMetadata> handle(String projectTemplateId, IEditingContext editingContext);
+    Optional<RepresentationMetadata> handle(ICause cause, String projectTemplateId, IEditingContext editingContext);
 }
