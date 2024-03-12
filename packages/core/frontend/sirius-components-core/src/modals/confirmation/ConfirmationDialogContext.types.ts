@@ -21,6 +21,7 @@ export interface ConfirmationDialogContextValue2 {
 
 export interface ConfirmationDialogContextProviderState {
   open: boolean;
+  allowConfirmationDisabled: boolean;
   confirmationDisabled: boolean;
   title: string;
   message: string;

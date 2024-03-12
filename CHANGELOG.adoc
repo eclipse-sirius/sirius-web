@@ -176,6 +176,7 @@ image:doc/screenshots/borderNodeCreationArea.png[BorderNode creation area,50%]
 +
 In other scenarios, the default creation position border remains the eastern one.
 - https://github.com/eclipse-sirius/sirius-web/issues/2785[#2785] [gantt] Add cypress tests
+- https://github.com/eclipse-sirius/sirius-web/issues/3225[#3225] [sirius-web] The confirmation dialog on delete does not propose anymore the option allowing to "Disable this confirmation dialog" when the local storage is not available.
 
 == v2024.1.0
 

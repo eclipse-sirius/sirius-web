@@ -22,15 +22,32 @@ const defaultValue: ConfirmationDialogContextValue = {
   showConfirmation: () => {},
 };
 
+const isLocalStorageAvailable = (): boolean => {
+  const test: string = 'localStorageTest';
+  try {
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    return true;
+  } catch (_) {
+    return false;
+  }
+};
+
 export const ConfirmationDialogContext = React.createContext<ConfirmationDialogContextValue>(defaultValue);
 
 export const ConfirmationDialogContextProvider = ({ children }) => {
   const localStorageKey: string = 'sirius-confirmation-dialog-disabled';
-  const storedPreference: string | null = localStorage.getItem(localStorageKey);
+  let allowConfirmationDisabled: boolean = false;
+  let storedPreference: string | null = null;
+  if (isLocalStorageAvailable()) {
+    allowConfirmationDisabled = true;
+    storedPreference = localStorage.getItem(localStorageKey);
+  }
   const initialConfirmationDisabled: boolean = storedPreference ? JSON.parse(storedPreference) : false;
 
   const [state, setState] = useState<ConfirmationDialogContextProviderState>({
     open: false,
+    allowConfirmationDisabled,
     confirmationDisabled: initialConfirmationDisabled,
     title: '',
     message: '',
@@ -39,12 +56,17 @@ export const ConfirmationDialogContextProvider = ({ children }) => {
   });
 
   const showConfirmation = (title: string, message: string, buttonLabel: string, onConfirm: () => void) => {
-    const storedPreference: string | null = localStorage.getItem(localStorageKey);
+    let allowConfirmationDisabled: boolean = false;
+    let storedPreference: string | null = null;
+    if (isLocalStorageAvailable()) {
+      allowConfirmationDisabled = true;
+      storedPreference = localStorage.getItem(localStorageKey);
+    }
     const confirmationDisabled: boolean = storedPreference ? JSON.parse(storedPreference) : false;
     if (confirmationDisabled) {
       onConfirm();
     } else {
-      setState({ open: true, confirmationDisabled, title, message, buttonLabel, onConfirm });
+      setState({ open: true, allowConfirmationDisabled, confirmationDisabled, title, message, buttonLabel, onConfirm });
     }
   };
 
@@ -54,7 +76,9 @@ export const ConfirmationDialogContextProvider = ({ children }) => {
 
   const handleConfirm = () => {
     state.onConfirm();
-    localStorage.setItem(localStorageKey, JSON.stringify(state.confirmationDisabled));
+    if (isLocalStorageAvailable()) {
+      localStorage.setItem(localStorageKey, JSON.stringify(state.confirmationDisabled));
+    }
     handleClose();
   };
 
@@ -71,6 +95,7 @@ export const ConfirmationDialogContextProvider = ({ children }) => {
           title={state.title}
           message={state.message}
           buttonLabel={state.buttonLabel}
+          allowConfirmationDisabled={state.allowConfirmationDisabled}
           confirmationDisabled={state.confirmationDisabled}
           onConfirmationDisabledChange={handleConfirmationDisabledChange}
           onCancel={handleClose}

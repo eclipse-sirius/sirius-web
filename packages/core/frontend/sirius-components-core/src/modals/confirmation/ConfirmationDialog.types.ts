@@ -16,6 +16,7 @@ export interface ConfirmationDialogProps {
   title: string;
   message: string;
   buttonLabel: string;
+  allowConfirmationDisabled: boolean;
   confirmationDisabled: boolean;
   onConfirmationDisabledChange: (checked: boolean) => void;
   onConfirm: () => void;
