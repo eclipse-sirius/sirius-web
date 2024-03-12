@@ -157,7 +157,10 @@ public class ViewPaletteProvider implements IPaletteProvider {
         return ToolSection.newToolSection(toolSelectionId)
                 .label(toolSection.getName())
                 .iconURL(List.of())
-                .tools(toolSection.getNodeTools().stream().map(tool -> this.createDiagramRootNodeTool(tool, variableManager, interpreter)).toList())
+                .tools(toolSection.getNodeTools().stream()
+                        .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
+                        .map(tool -> this.createDiagramRootNodeTool(tool, variableManager, interpreter))
+                        .toList())
                 .build();
     }
 
@@ -280,7 +283,10 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
                 String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId;
                 edgePalette = Palette.newPalette(edgePaletteId)
-                        .tools(toolFinder.findNodeTools(viewEdgeDescription).stream().map(tool -> this.createNodeTool(tool, variableManager, interpreter)).toList())
+                        .tools(toolFinder.findNodeTools(viewEdgeDescription).stream()
+                                .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
+                                .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
+                                .toList())
                         .toolSections(toolSections)
                         .build();
 
