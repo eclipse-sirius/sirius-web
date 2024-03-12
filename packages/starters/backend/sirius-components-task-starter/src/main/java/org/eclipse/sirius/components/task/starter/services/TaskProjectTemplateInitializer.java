@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class TaskProjectTemplateInitializer implements IProjectTemplateInitializ
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(String projectTemplateId, IEditingContext editingContext) {
+    public Optional<RepresentationMetadata> handle(ICause cause, String projectTemplateId, IEditingContext editingContext) {
         if (TaskProjectTemplateProvider.TASK_EXAMPLE_TEMPLATE_ID.equals(projectTemplateId)) {
             return this.initializeTaskProject(editingContext);
         }

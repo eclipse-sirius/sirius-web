@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataContentUpdatedEvent;
@@ -108,14 +109,14 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
         return this.lastModifiedOn;
     }
 
-    public void updateContent(String newContent) {
+    public void updateContent(ICause cause, String newContent) {
         if (!Objects.equals(this.content, newContent)) {
             this.content = newContent;
 
             var now = Instant.now();
             this.lastModifiedOn = now;
 
-            this.registerEvent(new RepresentationDataContentUpdatedEvent(UUID.randomUUID(), now, this));
+            this.registerEvent(new RepresentationDataContentUpdatedEvent(UUID.randomUUID(), now, cause, this));
         }
     }
 
@@ -127,8 +128,8 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
         }
     }
 
-    public void dispose() {
-        this.registerEvent(new RepresentationDataDeletedEvent(UUID.randomUUID(), Instant.now(), this));
+    public void dispose(ICause cause) {
+        this.registerEvent(new RepresentationDataDeletedEvent(UUID.randomUUID(), Instant.now(), cause, this));
     }
 
     @Override
@@ -210,7 +211,7 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
             return this;
         }
 
-        public RepresentationData build() {
+        public RepresentationData build(ICause cause) {
             var representationData = new RepresentationData();
             representationData.isNew = true;
             representationData.id = Objects.requireNonNull(this.id);
@@ -227,7 +228,7 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
             representationData.createdOn = now;
             representationData.lastModifiedOn = now;
 
-            representationData.registerEvent(new RepresentationDataCreatedEvent(UUID.randomUUID(), now, representationData));
+            representationData.registerEvent(new RepresentationDataCreatedEvent(UUID.randomUUID(), now, cause, representationData));
             return representationData;
         }
     }

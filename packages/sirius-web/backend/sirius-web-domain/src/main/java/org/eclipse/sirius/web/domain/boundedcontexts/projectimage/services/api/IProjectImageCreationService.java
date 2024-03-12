@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api;
 import java.io.InputStream;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
 import org.eclipse.sirius.web.domain.services.IResult;
 
@@ -24,5 +25,5 @@ import org.eclipse.sirius.web.domain.services.IResult;
  * @author sbegaudeau
  */
 public interface IProjectImageCreationService {
-    IResult<ProjectImage> createProjectImage(UUID projectId, String label, String fileName, InputStream inputStream);
+    IResult<ProjectImage> createProjectImage(ICause cause, UUID projectId, String label, String fileName, InputStream inputStream);
 }

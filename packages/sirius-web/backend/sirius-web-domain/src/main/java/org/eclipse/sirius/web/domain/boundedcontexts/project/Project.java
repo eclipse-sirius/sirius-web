@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
@@ -65,12 +66,12 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
         return this.name;
     }
 
-    public void updateName(String newName) {
+    public void updateName(ICause cause, String newName) {
         if (!Objects.equals(this.name, newName)) {
             this.name = newName;
             this.lastModifiedOn = Instant.now();
 
-            this.registerEvent(new ProjectNameUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, this));
+            this.registerEvent(new ProjectNameUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this));
         }
     }
 
@@ -78,16 +79,16 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
         return Collections.unmodifiableSet(this.natures);
     }
 
-    public void addNature(String natureName) {
+    public void addNature(ICause cause, String natureName) {
         var newNature = new Nature(natureName);
 
         this.natures.add(newNature);
         this.lastModifiedOn = Instant.now();
 
-        this.registerEvent(new ProjectNatureAddedEvent(UUID.randomUUID(), this.lastModifiedOn, this, newNature));
+        this.registerEvent(new ProjectNatureAddedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this, newNature));
     }
 
-    public void removeNature(String natureName) {
+    public void removeNature(ICause cause, String natureName) {
         this.natures.stream()
                 .filter(nature -> nature.name().equals(natureName))
                 .findFirst()
@@ -95,7 +96,7 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
                     this.natures.remove(nature);
                     this.lastModifiedOn = Instant.now();
 
-                    this.registerEvent(new ProjectNatureRemovedEvent(UUID.randomUUID(), this.lastModifiedOn, this, nature));
+                    this.registerEvent(new ProjectNatureRemovedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this, nature));
                 });
     }
 
@@ -112,8 +113,8 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
         return this.isNew;
     }
 
-    public void dispose() {
-        this.registerEvent(new ProjectDeletedEvent(UUID.randomUUID(), Instant.now(), this));
+    public void dispose(ICause cause) {
+        this.registerEvent(new ProjectDeletedEvent(UUID.randomUUID(), Instant.now(), cause, this));
     }
 
     public static Builder newProject() {
@@ -148,7 +149,7 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
             return this;
         }
 
-        public Project build() {
+        public Project build(ICause cause) {
             var project = new Project();
             project.isNew = true;
             project.id = UUID.randomUUID();
@@ -159,7 +160,7 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
             project.createdOn = now;
             project.lastModifiedOn = now;
 
-            project.registerEvent(new ProjectCreatedEvent(UUID.randomUUID(), now, project));
+            project.registerEvent(new ProjectCreatedEvent(UUID.randomUUID(), now, cause, project));
             return project;
         }
     }

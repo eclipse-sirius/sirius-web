@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
@@ -46,7 +47,7 @@ public class ProjectCreationService implements IProjectCreationService {
     }
 
     @Override
-    public IResult<Project> createProject(String name, List<String> natures) {
+    public IResult<Project> createProject(ICause cause, String name, List<String> natures) {
         IResult<Project> result = null;
 
         var projectName = this.projectNameValidator.sanitize(name);
@@ -56,7 +57,7 @@ public class ProjectCreationService implements IProjectCreationService {
             var project = Project.newProject()
                     .name(name)
                     .natures(natures)
-                    .build();
+                    .build(cause);
             this.projectRepository.save(project);
 
             result = new Success<>(project);

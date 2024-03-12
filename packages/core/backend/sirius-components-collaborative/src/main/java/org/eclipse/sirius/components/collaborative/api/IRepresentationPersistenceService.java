@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.api;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentation;
+import org.eclipse.sirius.components.events.ICause;
 
 /**
  * Used to persist the representations.
@@ -22,7 +23,7 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  */
 public interface IRepresentationPersistenceService {
 
-    void save(IEditingContext editingContext, IRepresentation representation);
+    void save(ICause cause, IEditingContext editingContext, IRepresentation representation);
 
     /**
      * Empty implementation, used for mocks in unit tests.
@@ -32,7 +33,7 @@ public interface IRepresentationPersistenceService {
     class NoOp implements IRepresentationPersistenceService {
 
         @Override
-        public void save(IEditingContext editingContext, IRepresentation representation) {
+        public void save(ICause cause, IEditingContext editingContext, IRepresentation representation) {
             // Do nothing
         }
 

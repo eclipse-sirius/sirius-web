@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
 import org.eclipse.sirius.components.collaborative.representations.migration.RepresentationMigrationData;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
@@ -67,7 +68,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
     @Override
     @Transactional
-    public void save(IEditingContext editingContext, IRepresentation representation) {
+    public void save(ICause cause, IEditingContext editingContext, IRepresentation representation) {
         var optionalProjectId = new UUIDParser().parse(editingContext.getId());
         var optionalRepresentationId = new UUIDParser().parse(representation.getId());
         if (optionalProjectId.isPresent() && optionalRepresentationId.isPresent()) {
@@ -80,7 +81,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
             if (exists) {
                 var migrationData = this.getLastMigrationData(representation.getKind());
-                this.representationDataUpdateService.updateContentWithMigrationData(representationId, content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
+                this.representationDataUpdateService.updateContentWithMigrationData(cause, representationId, content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
             } else {
                 var migrationData = this.getInitialMigrationData(representation.getKind());
                 var representationData = RepresentationData.newRepresentationData(representationId)
@@ -92,7 +93,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
                         .content(content)
                         .lastMigrationPerformed(migrationData.lastMigrationPerformed())
                         .migrationVersion(migrationData.migrationVersion())
-                        .build();
+                        .build(cause);
 
                 this.representationDataCreationService.create(representationData);
             }

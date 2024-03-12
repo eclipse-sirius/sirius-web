@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.sirius.web.application.studio.services.api.IDefaultDomainResourceProvider;
@@ -78,14 +79,14 @@ public class StudioProjectTemplateInitializer implements IProjectTemplateInitial
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(String projectTemplateId, IEditingContext editingContext) {
+    public Optional<RepresentationMetadata> handle(ICause cause, String projectTemplateId, IEditingContext editingContext) {
         return switch (projectTemplateId) {
-            case STUDIO_TEMPLATE_ID -> this.createStudio(editingContext);
+            case STUDIO_TEMPLATE_ID -> this.createStudio(cause, editingContext);
             default -> Optional.empty();
         };
     }
 
-    private Optional<RepresentationMetadata> createStudio(IEditingContext editingContext) {
+    private Optional<RepresentationMetadata> createStudio(ICause cause, IEditingContext editingContext) {
         return new UUIDParser().parse(editingContext.getId())
                 .map(AggregateReference::<Project, UUID>to)
                 .flatMap(project -> this.getResourceSet(editingContext).flatMap(resourceSet -> {
@@ -105,7 +106,7 @@ public class StudioProjectTemplateInitializer implements IProjectTemplateInitial
                         Object semanticTarget = domainResource.getContents().get(0);
 
                         Diagram diagram = this.diagramCreationService.create(domainDiagramDescription.getLabel(), semanticTarget, domainDiagramDescription, editingContext);
-                        this.representationPersistenceService.save(editingContext, diagram);
+                        this.representationPersistenceService.save(cause, editingContext, diagram);
 
                         result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
                     }

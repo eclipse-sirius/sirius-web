@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetPreviewConverterProvider;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponent;
@@ -74,7 +75,7 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
     }
 
     @Override
-    public FormDescriptionEditor create(String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
+    public FormDescriptionEditor create(ICause cause, String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
         FormDescriptionEditor newFormDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(UUID.randomUUID().toString())
                 .label(label)
                 .targetObjectId(this.objectService.getId(targetObject))
@@ -82,7 +83,7 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
                 .pages(List.of()) // We don't store form description editor pages, it will be re-render by the FormDescriptionEditorProcessor.
                 .build();
 
-        this.representationPersistenceService.save(editingContext, newFormDescriptionEditor);
+        this.representationPersistenceService.save(cause, editingContext, newFormDescriptionEditor);
 
         return newFormDescriptionEditor;
     }

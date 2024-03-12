@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.service
 
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.services.IResult;
 
 /**
@@ -22,5 +23,5 @@ import org.eclipse.sirius.web.domain.services.IResult;
  * @author sbegaudeau
  */
 public interface IRepresentationDataDeletionService {
-    IResult<Void> delete(UUID representationDataId);
+    IResult<Void> delete(ICause cause, UUID representationDataId);
 }

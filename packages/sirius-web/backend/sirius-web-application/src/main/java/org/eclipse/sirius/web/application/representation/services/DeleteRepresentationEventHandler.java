@@ -73,7 +73,7 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
             if (optionalRepresentationId.isPresent()) {
                 var representationId = optionalRepresentationId.get();
 
-                this.representationDataDeletionService.delete(representationId);
+                this.representationDataDeletionService.delete(deleteRepresentationInput, representationId);
 
                 payload = new DeleteRepresentationSuccessPayload(input.id(), deleteRepresentationInput.representationId());
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_DELETION, editingContext.getId(), input);

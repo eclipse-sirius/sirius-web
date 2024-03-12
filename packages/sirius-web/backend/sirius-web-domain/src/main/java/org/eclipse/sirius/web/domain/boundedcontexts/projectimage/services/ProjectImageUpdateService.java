@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.repositories.IProjectImageRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageUpdateService;
 import org.eclipse.sirius.web.domain.services.Failure;
@@ -41,7 +42,7 @@ public class ProjectImageUpdateService implements IProjectImageUpdateService {
     }
 
     @Override
-    public IResult<Void> renameProjectImage(UUID projectImageId, String newLabel) {
+    public IResult<Void> renameProjectImage(ICause cause, UUID projectImageId, String newLabel) {
         IResult<Void> result = null;
 
         var optionalProjectImage = this.projectImageRepository.findById(projectImageId);
@@ -53,7 +54,7 @@ public class ProjectImageUpdateService implements IProjectImageUpdateService {
             result = new Failure<>(this.messageService.notFound());
         } else {
             var projectImage = optionalProjectImage.get();
-            projectImage.updateLabel(newLabel);
+            projectImage.updateLabel(cause, newLabel);
 
             this.projectImageRepository.save(projectImage);
             result = new Success<>(null);

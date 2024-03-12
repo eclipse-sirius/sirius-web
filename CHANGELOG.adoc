@@ -20,6 +20,8 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3846[#3846] [core] Migrate frontend to React 18, you now need React 18 to import sirius web modules.
 - https://github.com/eclipse-sirius/sirius-web/issues/3875[#3875] [sirius-web] The `ExplorerView` component has been moved from `sirius-components-trees` to `sirius-web-application` module
+- https://github.com/eclipse-sirius/sirius-web/issues/3155[#3155] [core] All the paths in the code involving the modification of some data (project, semantic data, representation data, etc.) will now require a new parameter `ICause cause` which is the cause of this change.
+Both `IInput` and `IDomainEvent` implement `ICause` and will thus be used to indicate which action has triggered the change.
 
 === Dependency update
 
@@ -41,6 +43,9 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3987[#3987] [sirius-web] Transform `widgetFields` fragment to retrieve custom widget fields
 - https://github.com/eclipse-sirius/sirius-web/issues/3875[#3875] [sirius-web] Move explorer related code from `sirius-components-trees` to `sirius-web-application`
 - https://github.com/eclipse-sirius/sirius-web/issues/3806[#3806] [sirius-web] Add an API to condition the application of migration participants
+- https://github.com/eclipse-sirius/sirius-web/issues/3155[#3155] [core] Propagate the cause of the events in Sirius Web.
+The interfaces `IInput` and `IDomainEvent` are now both extending `ICause` which let us capture the causes of a domain event recursively.
+An event may have been caused by another event or caused by an input received from the frontend for example.
 
 
 == v2024.9.0

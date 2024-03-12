@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.springframework.context.annotation.Configuration;
 
@@ -66,14 +67,14 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(String templateId, IEditingContext editingContext) {
+    public Optional<RepresentationMetadata> handle(ICause cause, String templateId, IEditingContext editingContext) {
         if (FlowProjectTemplatesProvider.FLOW_TEMPLATE_ID.equals(templateId)) {
-            return this.initializeFlowProject(editingContext);
+            return this.initializeFlowProject(cause, editingContext);
         }
         return Optional.empty();
     }
 
-    private Optional<RepresentationMetadata> initializeFlowProject(IEditingContext editingContext) {
+    private Optional<RepresentationMetadata> initializeFlowProject(ICause cause, IEditingContext editingContext) {
         Optional<RepresentationMetadata> result = Optional.empty();
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var documentId = UUID.randomUUID();
@@ -90,7 +91,7 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
                 Object semanticTarget = resource.getContents().get(0);
 
                 Diagram diagram = this.diagramCreationService.create(topographyDiagram.getLabel(), semanticTarget, topographyDiagram, editingContext);
-                this.representationPersistenceService.save(editingContext, diagram);
+                this.representationPersistenceService.save(cause, editingContext, diagram);
 
                 result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
             }

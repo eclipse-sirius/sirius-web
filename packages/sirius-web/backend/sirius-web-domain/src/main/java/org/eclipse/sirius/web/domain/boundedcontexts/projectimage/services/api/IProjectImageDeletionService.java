@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api;
 
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.services.IResult;
 
 /**
@@ -22,5 +23,5 @@ import org.eclipse.sirius.web.domain.services.IResult;
  * @author sbegaudeau
  */
 public interface IProjectImageDeletionService {
-    IResult<Void> deleteProjectImage(UUID projectImageId);
+    IResult<Void> deleteProjectImage(ICause cause, UUID projectImageId);
 }

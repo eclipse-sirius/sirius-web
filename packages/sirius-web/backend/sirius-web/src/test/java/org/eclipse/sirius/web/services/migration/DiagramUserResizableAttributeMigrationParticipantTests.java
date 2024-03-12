@@ -61,7 +61,7 @@ public class DiagramUserResizableAttributeMigrationParticipantTests extends Abst
         var optionalRepresentation = this.representationSearchService.findById(optionalEditingContext.get(), MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM.toString(), Diagram.class);
         assertThat(optionalRepresentation).isPresent();
 
-        this.representationPersistenceService.save(optionalEditingContext.get(), optionalRepresentation.get());
+        this.representationPersistenceService.save(null, optionalEditingContext.get(), optionalRepresentation.get());
 
         var optionalUpdatedRepresentationData = this.representationDataSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
         assertThat(optionalUpdatedRepresentationData).isPresent();

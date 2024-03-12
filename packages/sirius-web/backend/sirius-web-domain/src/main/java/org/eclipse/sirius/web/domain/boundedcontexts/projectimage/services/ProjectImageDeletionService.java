@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.repositories.IProjectImageRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageDeletionService;
 import org.eclipse.sirius.web.domain.services.Failure;
@@ -41,13 +42,13 @@ public class ProjectImageDeletionService implements IProjectImageDeletionService
     }
 
     @Override
-    public IResult<Void> deleteProjectImage(UUID projectImageId) {
+    public IResult<Void> deleteProjectImage(ICause cause, UUID projectImageId) {
         IResult<Void> result = null;
 
         var optionalProjectImage = this.projectImageRepository.findById(projectImageId);
         if (optionalProjectImage.isPresent()) {
             var projectImage = optionalProjectImage.get();
-            projectImage.dispose();
+            projectImage.dispose(cause);
 
             this.projectImageRepository.delete(projectImage);
             result = new Success<>(null);

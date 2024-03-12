@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.service
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataDeletionService;
 import org.eclipse.sirius.web.domain.services.Failure;
@@ -41,13 +42,13 @@ public class RepresentationDataDeletionService implements IRepresentationDataDel
     }
 
     @Override
-    public IResult<Void> delete(UUID representationDataId) {
+    public IResult<Void> delete(ICause cause, UUID representationDataId) {
         IResult<Void> result = null;
 
         var optionalRepresentationData = this.representationDataRepository.findById(representationDataId);
         if (optionalRepresentationData.isPresent()) {
             var representationData = optionalRepresentationData.get();
-            representationData.dispose();
+            representationData.dispose(cause);
 
             this.representationDataRepository.delete(representationData);
             result = new Success<>(null);

@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectNameValidator;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
@@ -45,7 +46,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
     }
 
     @Override
-    public IResult<Void> renameProject(UUID projectId, String newName) {
+    public IResult<Void> renameProject(ICause cause, UUID projectId, String newName) {
         IResult<Void> result = null;
 
         var optionalProject = this.projectRepository.findById(projectId);
@@ -56,7 +57,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
             result = new Failure<>(this.messageService.notFound());
         } else {
             var project = optionalProject.get();
-            project.updateName(newName);
+            project.updateName(cause, newName);
 
             this.projectRepository.save(project);
             result = new Success<>(null);
@@ -66,7 +67,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
     }
 
     @Override
-    public IResult<Void> addNature(UUID projectId, String natureName) {
+    public IResult<Void> addNature(ICause cause, UUID projectId, String natureName) {
         IResult<Void> result = null;
 
         var optionalProject = this.projectRepository.findById(projectId);
@@ -74,7 +75,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
             result = new Failure<>(this.messageService.notFound());
         } else {
             var project = optionalProject.get();
-            project.addNature(natureName);
+            project.addNature(cause, natureName);
 
             this.projectRepository.save(project);
             result = new Success<>(null);
@@ -84,7 +85,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
     }
 
     @Override
-    public IResult<Void> removeNature(UUID projectId, String natureName) {
+    public IResult<Void> removeNature(ICause cause, UUID projectId, String natureName) {
         IResult<Void> result = null;
 
         var optionalProject = this.projectRepository.findById(projectId);
@@ -92,7 +93,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
             result = new Failure<>(this.messageService.notFound());
         } else {
             var project = optionalProject.get();
-            project.removeNature(natureName);
+            project.removeNature(cause, natureName);
 
             this.projectRepository.save(project);
             result = new Success<>(null);

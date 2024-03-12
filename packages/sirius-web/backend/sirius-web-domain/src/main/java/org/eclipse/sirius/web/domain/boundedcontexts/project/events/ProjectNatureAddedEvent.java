@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.project.events;
 import java.time.Instant;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 
@@ -28,6 +29,7 @@ import jakarta.validation.constraints.NotNull;
 public record ProjectNatureAddedEvent(
         @NotNull UUID id,
         @NotNull Instant createdOn,
+        @NotNull ICause causedBy,
         @NotNull Project project,
         @NotNull Nature nature) implements IProjectEvent {
 }

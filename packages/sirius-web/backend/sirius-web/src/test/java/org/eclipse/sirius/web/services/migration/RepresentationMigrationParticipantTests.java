@@ -64,7 +64,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         Hierarchy hierarchy = optionalRepresentation.get();
         assertThat(hierarchy.getChildNodes()).hasSize(1);
 
-        this.representationPersistenceService.save(optionalEditingContext.get(), optionalRepresentation.get());
+        this.representationPersistenceService.save(null, optionalEditingContext.get(), optionalRepresentation.get());
 
         var optionalUpdatedRepresentationData = this.representationDataSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
         assertThat(optionalUpdatedRepresentationData).isPresent();

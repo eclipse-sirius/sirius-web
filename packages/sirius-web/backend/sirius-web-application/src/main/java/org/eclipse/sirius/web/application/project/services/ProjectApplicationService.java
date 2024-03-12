@@ -79,7 +79,7 @@ public class ProjectApplicationService implements IProjectApplicationService {
     @Override
     @Transactional
     public IPayload createProject(CreateProjectInput input) {
-        var result = this.projectCreationService.createProject(input.name(), input.natures());
+        var result = this.projectCreationService.createProject(input, input.name(), input.natures());
 
         IPayload payload = null;
         if (result instanceof Failure<Project> failure) {
@@ -93,7 +93,7 @@ public class ProjectApplicationService implements IProjectApplicationService {
     @Override
     @Transactional
     public IPayload renameProject(RenameProjectInput input) {
-        var result = this.projectUpdateService.renameProject(input.projectId(), input.newName());
+        var result = this.projectUpdateService.renameProject(input, input.projectId(), input.newName());
 
         IPayload payload = null;
         if (result instanceof Failure<Void> failure) {
@@ -107,7 +107,7 @@ public class ProjectApplicationService implements IProjectApplicationService {
     @Override
     @Transactional
     public IPayload deleteProject(DeleteProjectInput input) {
-        var result = this.projectDeletionService.deleteProject(input.projectId());
+        var result = this.projectDeletionService.deleteProject(input, input.projectId());
 
         IPayload payload = null;
         if (result instanceof Failure<Void> failure) {

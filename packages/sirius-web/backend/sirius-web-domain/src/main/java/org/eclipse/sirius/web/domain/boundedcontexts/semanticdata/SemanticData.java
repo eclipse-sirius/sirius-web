@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
@@ -90,19 +91,25 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
         return this.isNew;
     }
 
-    public void updateDocuments(Set<Document> newDocuments, Set<String> domainUris) {
+    public void updateDocuments(ICause cause, Set<Document> newDocuments, Set<String> domainUris) {
         boolean shouldBeUpdated = false;
 
         Set<Document> documentsToSet = new LinkedHashSet<>();
         for (var document : newDocuments) {
-            var optionalExistingDocument = this.documents.stream().filter(existingDocument -> existingDocument.getId().equals(document.getId())).findFirst();
+            var optionalExistingDocument = this.documents.stream()
+                    .filter(existingDocument -> existingDocument.getId().equals(document.getId()))
+                    .findFirst();
+
             if (optionalExistingDocument.isPresent()) {
                 var existingDocument = optionalExistingDocument.get();
                 if (this.sameContent(existingDocument, document)) {
                     // Reuse the existing instance, timestamps included
                     documentsToSet.add(existingDocument);
                 } else {
-                    var newDocument = Document.newDocument(existingDocument.getId()).name(document.getName()).content(document.getContent()).build();
+                    var newDocument = Document.newDocument(existingDocument.getId())
+                            .name(document.getName())
+                            .content(document.getContent())
+                            .build();
                     documentsToSet.add(newDocument);
                     shouldBeUpdated = true;
                 }
@@ -121,22 +128,24 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
                         .collect(Collectors.toSet()));
 
         if (shouldBeUpdated) {
-            this.doUpdateDocuments(documentsToSet, domainUris);
+            this.doUpdateDocuments(cause, documentsToSet, domainUris);
         }
     }
 
     private boolean sameContent(Document currentDocument, Document newDocument) {
-        return currentDocument.getId().equals(newDocument.getId()) && currentDocument.getName().equals(newDocument.getName()) && currentDocument.getContent().equals(newDocument.getContent());
+        return currentDocument.getId().equals(newDocument.getId())
+                && currentDocument.getName().equals(newDocument.getName())
+                && currentDocument.getContent().equals(newDocument.getContent());
     }
 
-    private void doUpdateDocuments(Set<Document> newDocuments, Set<String> domainUris) {
+    private void doUpdateDocuments(ICause cause, Set<Document> newDocuments, Set<String> domainUris) {
         this.documents = newDocuments;
         this.domains = domainUris.stream()
                 .map(SemanticDataDomain::new)
                 .collect(Collectors.toSet());
 
         this.lastModifiedOn = Instant.now();
-        this.registerEvent(new SemanticDataUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, this));
+        this.registerEvent(new SemanticDataUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this));
     }
 
     public static Builder newSemanticData() {
@@ -173,7 +182,7 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
             return this;
         }
 
-        public SemanticData build() {
+        public SemanticData build(ICause cause) {
             var semanticData = new SemanticData();
 
             semanticData.isNew = true;
@@ -186,7 +195,7 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
             semanticData.createdOn = now;
             semanticData.lastModifiedOn = now;
 
-            semanticData.registerEvent(new SemanticDataCreatedEvent(UUID.randomUUID(), now, semanticData));
+            semanticData.registerEvent(new SemanticDataCreatedEvent(UUID.randomUUID(), now, cause, semanticData));
             return semanticData;
         }
     }

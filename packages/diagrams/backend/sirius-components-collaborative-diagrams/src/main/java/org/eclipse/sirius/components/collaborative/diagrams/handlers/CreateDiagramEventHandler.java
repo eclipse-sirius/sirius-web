@@ -106,7 +106,7 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
 
                 Diagram diagram = this.diagramCreationService.create(createRepresentationInput.representationName(), object, diagramDescription, editingContext);
 
-                this.representationPersistenceService.save(editingContext, diagram);
+                this.representationPersistenceService.save(createRepresentationInput, editingContext, diagram);
 
                 var representationMetadata = new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId());
                 payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);

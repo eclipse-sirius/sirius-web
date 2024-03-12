@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.event;
 import java.time.Instant;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
 
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +28,7 @@ import jakarta.validation.constraints.NotNull;
 public record ProjectImageDeletedEvent(
         @NotNull UUID id,
         @NotNull Instant createdOn,
+        @NotNull ICause causedBy,
         @NotNull ProjectImage projectImage) implements IProjectImageEvent {
 }
 

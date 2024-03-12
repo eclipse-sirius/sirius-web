@@ -59,7 +59,7 @@ public class ProjectNatureTests extends AbstractIntegrationTests {
                 .satisfies(project -> assertThat(project.getNatures()).hasSize(1));
 
         var projectId = optionalProject.map(Project::getId).orElseThrow(IllegalStateException::new);
-        this.projectUpdateService.addNature(projectId, "new nature");
+        this.projectUpdateService.addNature(null, projectId, "new nature");
 
         optionalProject = this.projectSearchService.findById(TestIdentifiers.SYSML_SAMPLE_PROJECT);
         assertThat(optionalProject)
@@ -82,7 +82,7 @@ public class ProjectNatureTests extends AbstractIntegrationTests {
         var projectId = optionalProject.map(Project::getId).orElseThrow(IllegalStateException::new);
         var existingNature = optionalProject.flatMap(project -> project.getNatures().stream().map(Nature::name).findFirst())
                 .orElseThrow(IllegalStateException::new);
-        this.projectUpdateService.removeNature(projectId, existingNature);
+        this.projectUpdateService.removeNature(null, projectId, existingNature);
 
         optionalProject = this.projectSearchService.findById(TestIdentifiers.SYSML_SAMPLE_PROJECT);
         assertThat(optionalProject)

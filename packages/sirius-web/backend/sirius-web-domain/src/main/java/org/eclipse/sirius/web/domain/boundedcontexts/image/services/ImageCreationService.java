@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.repositories.IImageRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageCreationService;
@@ -46,7 +47,7 @@ public class ImageCreationService implements IImageCreationService {
     }
 
     @Override
-    public IResult<Image> createImage(String label, String fileName, InputStream inputStream) {
+    public IResult<Image> createImage(ICause cause, String label, String fileName, InputStream inputStream) {
         IResult<Image> result = null;
 
         var optionalContent = this.getContent(inputStream);
@@ -65,7 +66,7 @@ public class ImageCreationService implements IImageCreationService {
                     .label(realLabel)
                     .contentType(contentType)
                     .content(content)
-                    .build();
+                    .build(cause);
 
             this.imageRepository.save(image);
 

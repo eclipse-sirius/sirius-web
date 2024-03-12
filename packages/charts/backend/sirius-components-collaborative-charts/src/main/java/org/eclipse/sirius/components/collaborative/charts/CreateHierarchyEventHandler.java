@@ -91,7 +91,6 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof CreateRepresentationInput createRepresentationInput) {
-
             Optional<HierarchyDescription> optionalHierarchyDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(HierarchyDescription.class::isInstance)
                     .map(HierarchyDescription.class::cast);
@@ -102,9 +101,8 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
                 Object object = optionalObject.get();
                 HierarchyDescription representationDescription = optionalHierarchyDescription.get();
 
-                Hierarchy hierarchy = this.hierarchyCreationService.create(createRepresentationInput.representationName(), object, representationDescription, editingContext);
-
-                this.representationPersistenceService.save(editingContext, hierarchy);
+                Hierarchy hierarchy = this.hierarchyCreationService.create(createRepresentationInput, createRepresentationInput.representationName(), object, representationDescription, editingContext);
+                this.representationPersistenceService.save(createRepresentationInput, editingContext, hierarchy);
 
                 var representationMetadata = new RepresentationMetadata(hierarchy.getId(), hierarchy.getKind(), hierarchy.getLabel(), hierarchy.getDescriptionId());
                 payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);

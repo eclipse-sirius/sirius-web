@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
@@ -61,12 +62,12 @@ public class HierarchyCreationService {
         // @formatter:on
     }
 
-    public Hierarchy create(String label, Object targetObject, HierarchyDescription hierarchyDescription, IEditingContext editingContext) {
-        Hierarchy newHierarchy = this.doRender(label, targetObject, editingContext, hierarchyDescription, Optional.empty());
+    public Hierarchy create(ICause cause, String label, Object targetObject, HierarchyDescription hierarchyDescription, IEditingContext editingContext) {
+        Hierarchy newHierarchy = this.doRender(cause, label, targetObject, editingContext, hierarchyDescription, Optional.empty());
         return newHierarchy;
     }
 
-    public Optional<Hierarchy> refresh(IEditingContext editingContext, HierarchyContext hierarchyContext) {
+    public Optional<Hierarchy> refresh(ICause cause, IEditingContext editingContext, HierarchyContext hierarchyContext) {
         Hierarchy previousHierarchy = hierarchyContext.getHierarchy();
         var optionalObject = this.objectService.getObject(editingContext, previousHierarchy.getTargetObjectId());
         // @formatter:off
@@ -78,13 +79,13 @@ public class HierarchyCreationService {
         if (optionalObject.isPresent() && optionalHierarchyDescription.isPresent()) {
             Object object = optionalObject.get();
             HierarchyDescription hierarchyDescription = optionalHierarchyDescription.get();
-            Hierarchy hierarchy = this.doRender(previousHierarchy.getLabel(), object, editingContext, hierarchyDescription, Optional.of(hierarchyContext));
+            Hierarchy hierarchy = this.doRender(cause, previousHierarchy.getLabel(), object, editingContext, hierarchyDescription, Optional.of(hierarchyContext));
             return Optional.of(hierarchy);
         }
         return Optional.empty();
     }
 
-    private Hierarchy doRender(String label, Object targetObject, IEditingContext editingContext, HierarchyDescription hierarchyDescription, Optional<HierarchyContext> optionalHierarchyContext) {
+    private Hierarchy doRender(ICause cause, String label, Object targetObject, IEditingContext editingContext, HierarchyDescription hierarchyDescription, Optional<HierarchyContext> optionalHierarchyContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
@@ -99,7 +100,7 @@ public class HierarchyCreationService {
 
         Hierarchy newHierarchy = new HierarchyRenderer().render(element);
 
-        this.representationPersistenceService.save(editingContext, newHierarchy);
+        this.representationPersistenceService.save(null, editingContext, newHierarchy);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
