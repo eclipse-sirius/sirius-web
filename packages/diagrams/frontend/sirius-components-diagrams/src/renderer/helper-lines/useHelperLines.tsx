@@ -135,7 +135,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
       const change = changes[0];
       if (isMove(change)) {
         const movingNode = getNodes().find((node) => node.id === change.id);
-        if (movingNode) {
+        if (movingNode && !movingNode.data.pinned) {
           const helperLines: HelperLines = getHelperLines(change, movingNode, getNodes());
           setState({ vertical: helperLines.vertical, horizontal: helperLines.horizontal });
           let snapOffsetX: number = 0;

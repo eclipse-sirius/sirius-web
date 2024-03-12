@@ -23,33 +23,8 @@ export const HelperLinesIconOff = (props: SvgIconProps) => {
       role="img"
       {...props}>
       <path d="M22,11V9h-7V2h-2v7h-2V2H9v7H2v2h7v2H2v2h7v7h2v-7h2v7h2v-7h7v-2h-7v-2H22z M13,13h-2v-2h2V13z" />
-      <line
-        fill="none"
-        id="svg_10"
-        stroke="#757575"
-        stroke-dasharray="null"
-        stroke-linecap="null"
-        stroke-linejoin="null"
-        stroke-opacity="null"
-        stroke-width="2"
-        x1="3"
-        x2="20"
-        y1="3.5"
-        y2="21"
-      />
-      <line
-        fill="none"
-        id="svg_12"
-        stroke="#ffffff"
-        stroke-dasharray="null"
-        stroke-linecap="null"
-        stroke-linejoin="null"
-        stroke-width="1.75"
-        x1="4.12"
-        x2="21.06"
-        y1="2.42"
-        y2="19.78"
-      />
+      <line fill="none" id="svg_10" stroke="#757575" strokeWidth="2" x1="3" x2="20" y1="3.5" y2="21" />
+      <line fill="none" id="svg_12" stroke="#ffffff" strokeWidth="1.75" x1="4.12" x2="21.06" y1="2.42" y2="19.78" />
     </SvgIcon>
   );
 };
