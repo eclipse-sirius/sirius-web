@@ -52,15 +52,6 @@ public class EditCardToolBuilder {
         return this;
     }
     /**
-     * Setter for PreconditionExpression.
-     *
-     * @generated
-     */
-    public EditCardToolBuilder preconditionExpression(java.lang.String value) {
-        this.getEditCardTool().setPreconditionExpression(value);
-        return this;
-    }
-    /**
      * Setter for Body.
      *
      * @generated

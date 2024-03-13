@@ -38,6 +38,29 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface LaneDescription extends DeckElementDescription {
     /**
+     * Returns the value of the '<em><b>Name</b></em>' attribute. The default value is
+     * <code>"New Lane Description"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Name</em>' attribute.
+     * @see #setName(String)
+     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getLaneDescription_Name()
+     * @model default="New Lane Description" dataType="org.eclipse.sirius.components.view.Identifier"
+     * @generated
+     */
+    String getName();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getName <em>Name</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Name</em>' attribute.
+     * @see #getName()
+     * @generated
+     */
+    void setName(String value);
+
+    /**
      * Returns the value of the '<em><b>Owned Card Descriptions</b></em>' containment reference list. The list contents
      * are of type {@link org.eclipse.sirius.components.view.deck.CardDescription}. <!-- begin-user-doc --> <!--
      * end-user-doc -->

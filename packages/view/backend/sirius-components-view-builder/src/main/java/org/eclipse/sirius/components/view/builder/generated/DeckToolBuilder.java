@@ -36,15 +36,6 @@ public abstract class DeckToolBuilder {
         return this;
     }
     /**
-     * Setter for PreconditionExpression.
-     *
-     * @generated
-     */
-    public DeckToolBuilder preconditionExpression(java.lang.String value) {
-        this.getDeckTool().setPreconditionExpression(value);
-        return this;
-    }
-    /**
      * Setter for Body.
      *
      * @generated

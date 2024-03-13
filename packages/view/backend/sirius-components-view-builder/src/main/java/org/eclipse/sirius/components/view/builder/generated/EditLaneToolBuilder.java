@@ -52,15 +52,6 @@ public class EditLaneToolBuilder {
         return this;
     }
     /**
-     * Setter for PreconditionExpression.
-     *
-     * @generated
-     */
-    public EditLaneToolBuilder preconditionExpression(java.lang.String value) {
-        this.getEditLaneTool().setPreconditionExpression(value);
-        return this;
-    }
-    /**
      * Setter for Body.
      *
      * @generated

@@ -16,12 +16,12 @@
       extensibleProviderFactory="true" childCreationExtenders="true" ecorePackage="deck.ecore#/">
     <genClasses ecoreClass="deck.ecore#//DeckDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/laneDescriptions"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/backgroundColor"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/laneDropTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="deck.ecore#//LaneDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//LaneDescription/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//LaneDescription/ownedCardDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//LaneDescription/editTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//LaneDescription/createTool"/>
@@ -29,13 +29,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//LaneDescription/isCollapsibleExpression"/>
     </genClasses>
     <genClasses ecoreClass="deck.ecore#//CardDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//CardDescription/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//CardDescription/descriptionExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//CardDescription/editTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//CardDescription/deleteTool"/>
     </genClasses>
     <genClasses image="false" ecoreClass="deck.ecore#//DeckTool">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//DeckTool/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//DeckTool/preconditionExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckTool/body"/>
     </genClasses>
     <genClasses ecoreClass="deck.ecore#//CreateCardTool"/>
@@ -45,7 +45,6 @@
     <genClasses ecoreClass="deck.ecore#//CardDropTool"/>
     <genClasses ecoreClass="deck.ecore#//LaneDropTool"/>
     <genClasses image="false" ecoreClass="deck.ecore#//DeckElementDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//DeckElementDescription/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//DeckElementDescription/semanticCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//DeckElementDescription/titleExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//DeckElementDescription/labelExpression"/>

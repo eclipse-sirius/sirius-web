@@ -80,7 +80,7 @@ export class GanttTestHelper {
   }
 
   /**
-   * Creates the Deck Task Sample view from the stereotype.
+   * Creates the Gantt Task Sample view from the stereotype.
    * @returns the created studio project id.
    */
   public initGanttView(): Cypress.Chainable<string> {

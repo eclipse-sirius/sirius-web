@@ -34,8 +34,6 @@ import org.eclipse.sirius.components.view.deck.DeckTool;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckToolImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckToolImpl#getPreconditionExpression <em>Precondition
- * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckToolImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
@@ -61,26 +59,6 @@ public abstract class DeckToolImpl extends MinimalEObjectImpl.Container implemen
      * @ordered
      */
     protected String name = NAME_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getPreconditionExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getPreconditionExpression()
-     * @generated
-     * @ordered
-     */
-    protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
@@ -140,29 +118,6 @@ public abstract class DeckToolImpl extends MinimalEObjectImpl.Container implemen
      * @generated
      */
     @Override
-    public String getPreconditionExpression() {
-        return this.preconditionExpression;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setPreconditionExpression(String newPreconditionExpression) {
-        String oldPreconditionExpression = this.preconditionExpression;
-        this.preconditionExpression = newPreconditionExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.DECK_TOOL__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EList<Operation> getBody() {
         if (this.body == null) {
             this.body = new EObjectContainmentEList<>(Operation.class, this, DeckPackage.DECK_TOOL__BODY);
@@ -194,8 +149,6 @@ public abstract class DeckToolImpl extends MinimalEObjectImpl.Container implemen
         switch (featureID) {
             case DeckPackage.DECK_TOOL__NAME:
                 return this.getName();
-            case DeckPackage.DECK_TOOL__PRECONDITION_EXPRESSION:
-                return this.getPreconditionExpression();
             case DeckPackage.DECK_TOOL__BODY:
                 return this.getBody();
         }
@@ -213,9 +166,6 @@ public abstract class DeckToolImpl extends MinimalEObjectImpl.Container implemen
         switch (featureID) {
             case DeckPackage.DECK_TOOL__NAME:
                 this.setName((String) newValue);
-                return;
-            case DeckPackage.DECK_TOOL__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression((String) newValue);
                 return;
             case DeckPackage.DECK_TOOL__BODY:
                 this.getBody().clear();
@@ -236,9 +186,6 @@ public abstract class DeckToolImpl extends MinimalEObjectImpl.Container implemen
             case DeckPackage.DECK_TOOL__NAME:
                 this.setName(NAME_EDEFAULT);
                 return;
-            case DeckPackage.DECK_TOOL__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
-                return;
             case DeckPackage.DECK_TOOL__BODY:
                 this.getBody().clear();
                 return;
@@ -256,8 +203,6 @@ public abstract class DeckToolImpl extends MinimalEObjectImpl.Container implemen
         switch (featureID) {
             case DeckPackage.DECK_TOOL__NAME:
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case DeckPackage.DECK_TOOL__PRECONDITION_EXPRESSION:
-                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case DeckPackage.DECK_TOOL__BODY:
                 return this.body != null && !this.body.isEmpty();
         }
@@ -277,8 +222,6 @@ public abstract class DeckToolImpl extends MinimalEObjectImpl.Container implemen
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: ");
         result.append(this.name);
-        result.append(", preconditionExpression: ");
-        result.append(this.preconditionExpression);
         result.append(')');
         return result.toString();
     }

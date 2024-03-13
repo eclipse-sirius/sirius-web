@@ -71,7 +71,9 @@ public class LaneComponent implements IComponent {
         String title = laneDescription.titleProvider().apply(childVariableManager);
         String label = laneDescription.labelProvider().apply(childVariableManager);
 
-        Optional<Lane> optionalPreviousLane = this.props.previousLanes().stream().filter(lane -> lane.targetObjectId().equals(targetObjectId)).findFirst();
+        Optional<Lane> optionalPreviousLane = this.props.previousLanes().stream()
+            .filter(lane -> lane.descriptionId().equals(laneDescription.id()) && lane.targetObjectId().equals(targetObjectId))
+            .findFirst();
         String laneId = optionalPreviousLane.map(Lane::id).orElse(UUID.randomUUID().toString());
         List<Card> previousCards = optionalPreviousLane.map(Lane::cards).orElse(List.of());
         List<Element> childrenElements = this.getChildren(childVariableManager, laneDescription, laneId, previousCards);

@@ -27,15 +27,6 @@ public abstract class DeckElementDescriptionBuilder {
     protected abstract org.eclipse.sirius.components.view.deck.DeckElementDescription getDeckElementDescription();
 
     /**
-     * Setter for Name.
-     *
-     * @generated
-     */
-    public DeckElementDescriptionBuilder name(java.lang.String value) {
-        this.getDeckElementDescription().setName(value);
-        return this;
-    }
-    /**
      * Setter for SemanticCandidatesExpression.
      *
      * @generated

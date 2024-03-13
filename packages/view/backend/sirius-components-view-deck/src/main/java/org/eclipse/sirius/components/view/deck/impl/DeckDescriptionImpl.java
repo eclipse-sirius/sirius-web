@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckDescriptionStyle;
@@ -39,8 +38,6 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckDescriptionImpl#getLaneDescriptions <em>Lane
  * Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckDescriptionImpl#getBackgroundColor <em>Background
- * Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckDescriptionImpl#getLaneDropTool <em>Lane Drop
  * Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckDescriptionImpl#getStyle <em>Style</em>}</li>
@@ -60,16 +57,6 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
      * @ordered
      */
     protected EList<LaneDescription> laneDescriptions;
-
-    /**
-     * The cached value of the '{@link #getBackgroundColor() <em>Background Color</em>}' containment reference. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getBackgroundColor()
-     * @generated
-     * @ordered
-     */
-    protected UserColor backgroundColor;
 
     /**
      * The cached value of the '{@link #getLaneDropTool() <em>Lane Drop Tool</em>}' containment reference. <!--
@@ -131,54 +118,6 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
             this.laneDescriptions = new EObjectContainmentEList<>(LaneDescription.class, this, DeckPackage.DECK_DESCRIPTION__LANE_DESCRIPTIONS);
         }
         return this.laneDescriptions;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public UserColor getBackgroundColor() {
-        return this.backgroundColor;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public NotificationChain basicSetBackgroundColor(UserColor newBackgroundColor, NotificationChain msgs) {
-        UserColor oldBackgroundColor = this.backgroundColor;
-        this.backgroundColor = newBackgroundColor;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DeckPackage.DECK_DESCRIPTION__BACKGROUND_COLOR, oldBackgroundColor, newBackgroundColor);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setBackgroundColor(UserColor newBackgroundColor) {
-        if (newBackgroundColor != this.backgroundColor) {
-            NotificationChain msgs = null;
-            if (this.backgroundColor != null)
-                msgs = ((InternalEObject) this.backgroundColor).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DeckPackage.DECK_DESCRIPTION__BACKGROUND_COLOR, null, msgs);
-            if (newBackgroundColor != null)
-                msgs = ((InternalEObject) newBackgroundColor).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DeckPackage.DECK_DESCRIPTION__BACKGROUND_COLOR, null, msgs);
-            msgs = this.basicSetBackgroundColor(newBackgroundColor, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.DECK_DESCRIPTION__BACKGROUND_COLOR, newBackgroundColor, newBackgroundColor));
     }
 
     /**
@@ -300,8 +239,6 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
         switch (featureID) {
             case DeckPackage.DECK_DESCRIPTION__LANE_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getLaneDescriptions()).basicRemove(otherEnd, msgs);
-            case DeckPackage.DECK_DESCRIPTION__BACKGROUND_COLOR:
-                return this.basicSetBackgroundColor(null, msgs);
             case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
                 return this.basicSetLaneDropTool(null, msgs);
             case DeckPackage.DECK_DESCRIPTION__STYLE:
@@ -322,8 +259,6 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
         switch (featureID) {
             case DeckPackage.DECK_DESCRIPTION__LANE_DESCRIPTIONS:
                 return this.getLaneDescriptions();
-            case DeckPackage.DECK_DESCRIPTION__BACKGROUND_COLOR:
-                return this.getBackgroundColor();
             case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
                 return this.getLaneDropTool();
             case DeckPackage.DECK_DESCRIPTION__STYLE:
@@ -346,9 +281,6 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
             case DeckPackage.DECK_DESCRIPTION__LANE_DESCRIPTIONS:
                 this.getLaneDescriptions().clear();
                 this.getLaneDescriptions().addAll((Collection<? extends LaneDescription>) newValue);
-                return;
-            case DeckPackage.DECK_DESCRIPTION__BACKGROUND_COLOR:
-                this.setBackgroundColor((UserColor) newValue);
                 return;
             case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
                 this.setLaneDropTool((LaneDropTool) newValue);
@@ -375,9 +307,6 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
             case DeckPackage.DECK_DESCRIPTION__LANE_DESCRIPTIONS:
                 this.getLaneDescriptions().clear();
                 return;
-            case DeckPackage.DECK_DESCRIPTION__BACKGROUND_COLOR:
-                this.setBackgroundColor((UserColor) null);
-                return;
             case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
                 this.setLaneDropTool((LaneDropTool) null);
                 return;
@@ -401,8 +330,6 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
         switch (featureID) {
             case DeckPackage.DECK_DESCRIPTION__LANE_DESCRIPTIONS:
                 return this.laneDescriptions != null && !this.laneDescriptions.isEmpty();
-            case DeckPackage.DECK_DESCRIPTION__BACKGROUND_COLOR:
-                return this.backgroundColor != null;
             case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
                 return this.laneDropTool != null;
             case DeckPackage.DECK_DESCRIPTION__STYLE:

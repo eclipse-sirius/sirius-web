@@ -52,9 +52,21 @@ public class LaneDescriptionItemProvider extends DeckElementDescriptionItemProvi
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addNamePropertyDescriptor(object);
             this.addIsCollapsibleExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNamePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LaneDescription_name_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LaneDescription_name_feature", "_UI_LaneDescription_type"),
+                DeckPackage.Literals.LANE_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -146,6 +158,7 @@ public class LaneDescriptionItemProvider extends DeckElementDescriptionItemProvi
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(LaneDescription.class)) {
+            case DeckPackage.LANE_DESCRIPTION__NAME:
             case DeckPackage.LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
@@ -163,12 +176,10 @@ public class LaneDescriptionItemProvider extends DeckElementDescriptionItemProvi
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS, DeckFactory.eINSTANCE.createCardDescription()));
 
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__EDIT_TOOL, DeckFactory.eINSTANCE.createEditLaneTool()));
@@ -176,24 +187,18 @@ public class LaneDescriptionItemProvider extends DeckElementDescriptionItemProvi
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__CREATE_TOOL, DeckFactory.eINSTANCE.createCreateCardTool()));
 
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__CARD_DROP_TOOL, DeckFactory.eINSTANCE.createCardDropTool()));
+
+        super.collectNewChildDescriptors(newChildDescriptors, object);
     }
 
     /**
      * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
-
-        boolean qualify = childFeature == DeckPackage.Literals.DECK_ELEMENT_DESCRIPTION__STYLE || childFeature == DeckPackage.Literals.DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES;
-
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
-        }
         return super.getCreateChildText(owner, feature, child, selection);
     }
 

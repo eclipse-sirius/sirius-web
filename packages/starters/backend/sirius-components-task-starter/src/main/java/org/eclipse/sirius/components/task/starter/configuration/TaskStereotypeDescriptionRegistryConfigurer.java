@@ -33,7 +33,7 @@ public class TaskStereotypeDescriptionRegistryConfigurer implements IStereotypeD
 
     private static final UUID TASK_EXAMPLE_ID = UUID.nameUUIDFromBytes("task_example".getBytes());
 
-    private static final String TASK_EXAMPLE_LABEL = "Task model example";
+    private static final String TASK_EXAMPLE_LABEL = "Task Model Sample";
 
     private static final String TIMER_NAME = "siriusweb_stereotype_load";
 

@@ -34,6 +34,29 @@ package org.eclipse.sirius.components.view.deck;
  */
 public interface CardDescription extends DeckElementDescription {
     /**
+     * Returns the value of the '<em><b>Name</b></em>' attribute. The default value is
+     * <code>"New Card Description"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Name</em>' attribute.
+     * @see #setName(String)
+     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getCardDescription_Name()
+     * @model default="New Card Description" dataType="org.eclipse.sirius.components.view.Identifier"
+     * @generated
+     */
+    String getName();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.CardDescription#getName <em>Name</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Name</em>' attribute.
+     * @see #getName()
+     * @generated
+     */
+    void setName(String value);
+
+    /**
      * Returns the value of the '<em><b>Description Expression</b></em>' attribute. The default value is
      * <code>"aql:self"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

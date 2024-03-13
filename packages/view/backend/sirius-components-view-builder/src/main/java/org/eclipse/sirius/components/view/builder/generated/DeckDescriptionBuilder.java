@@ -91,16 +91,6 @@ public class DeckDescriptionBuilder {
     }
 
     /**
-     * Setter for BackgroundColor.
-     *
-     * @generated
-     */
-    public DeckDescriptionBuilder backgroundColor(org.eclipse.sirius.components.view.UserColor value) {
-        this.getDeckDescription().setBackgroundColor(value);
-        return this;
-    }
-
-    /**
      * Setter for LaneDropTool.
      *
      * @generated

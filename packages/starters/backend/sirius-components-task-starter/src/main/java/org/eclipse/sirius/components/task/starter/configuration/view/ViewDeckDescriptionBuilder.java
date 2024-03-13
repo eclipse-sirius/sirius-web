@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.task.starter.configuration.view;
 
+import java.util.Arrays;
+
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DeleteElement;
@@ -45,6 +47,12 @@ public class ViewDeckDescriptionBuilder {
 
     private static final String DESCRIPTION = "description";
 
+    private static final String AQL_SELF = "aql:self";
+
+    private static final String AQL_SELF_NAME = "aql:self.name";
+
+    private static final String AQL_SELF_DESCRIPTION = "aql:self.description";
+
     private final DeckBuilders deckBuilders;
 
     private final ViewBuilders viewBuilders;
@@ -69,15 +77,6 @@ public class ViewDeckDescriptionBuilder {
         view.getDescriptions().add(deckDescription);
     }
 
-    private void createOKRDeckDescription(View view) {
-        DeckDescription deckDescription = this.createDeckDescription("OKR");
-        LaneDescription laneDescription = this.createLaneDescription("OKR");
-        CardDescription cardDescription = this.createCardDescription();
-        deckDescription.getLaneDescriptions().add(laneDescription);
-        laneDescription.getOwnedCardDescriptions().add(cardDescription);
-        view.getDescriptions().add(deckDescription);
-    }
-
     private void createKanbanDeckDescription(View view) {
         DeckDescription deckDescription = this.createDeckDescription("Kanban");
         LaneDescription laneDescription = this.createLaneDescription("Kanban");
@@ -87,15 +86,29 @@ public class ViewDeckDescriptionBuilder {
         view.getDescriptions().add(deckDescription);
     }
 
+    private void createOKRDeckDescription(View view) {
+        DeckDescription deckDescription = this.deckBuilders.newDeckDescription()
+                .name("Deck OKR Representation")
+                .domainType("task::Project")
+                .titleExpression("New OKR Representation")
+                .build();
+
+        LaneDescription objectiveLaneDescription = this.createObjectiveLaneDescription();
+        LaneDescription keyResultLaneDescription = this.createKeyResultLaneDescription();
+        LaneDescription taskLaneDescription = this.createInitiativeLaneDescription();
+        deckDescription.getLaneDescriptions().addAll(Arrays.asList(objectiveLaneDescription, keyResultLaneDescription, taskLaneDescription));
+        view.getDescriptions().add(deckDescription);
+    }
+
     private CardDescription createCardDescription() {
         EditCardTool editCardTool = this.createEditCardTool();
         DeleteCardTool deleteCardTool = this.createDeleteCardTool();
         return this.deckBuilders.newCardDescription()
                 .name("Card Description")
                 .semanticCandidatesExpression("aql:self.getTasksWithTag()")
-                .titleExpression("aql:self.name")
+                .titleExpression(AQL_SELF_NAME)
                 .labelExpression("aql:self.computeTaskDurationDays()")
-                .descriptionExpression("aql:self.description")
+                .descriptionExpression(AQL_SELF_DESCRIPTION)
                 .editTool(editCardTool)
                 .deleteTool(deleteCardTool)
                 .build();
@@ -115,6 +128,72 @@ public class ViewDeckDescriptionBuilder {
                 .createTool(createCardTool)
                 .cardDropTool(cardDropTool)
                 .editTool(editLaneTool)
+                .build();
+    }
+
+    private LaneDescription createObjectiveLaneDescription() {
+        EditCardTool editCardTool = this.createEditCardTool();
+        DeleteCardTool deleteCardTool = this.createDeleteCardTool();
+        CardDescription cardDescription =  this.deckBuilders.newCardDescription()
+                .name("Objectives Card")
+                .semanticCandidatesExpression("aql:self.ownedObjectives")
+                .titleExpression(AQL_SELF_NAME)
+                .labelExpression("")
+                .descriptionExpression(AQL_SELF_DESCRIPTION)
+                .editTool(editCardTool)
+                .deleteTool(deleteCardTool)
+                .build();
+
+        return this.deckBuilders.newLaneDescription()
+                .name("Objectives")
+                .semanticCandidatesExpression(AQL_SELF)
+                .labelExpression("")
+                .titleExpression("Objectives")
+                .ownedCardDescriptions(cardDescription)
+                .build();
+    }
+
+    private LaneDescription createKeyResultLaneDescription() {
+        EditCardTool editCardTool = this.createEditCardTool();
+        DeleteCardTool deleteCardTool = this.createDeleteCardTool();
+        CardDescription cardDescription =  this.deckBuilders.newCardDescription()
+                .name("KeyResults Card")
+                .semanticCandidatesExpression("aql:self.eAllContents(task::KeyResult)")
+                .titleExpression(AQL_SELF_NAME)
+                .labelExpression("aql:self.eContainer().name")
+                .descriptionExpression(AQL_SELF_DESCRIPTION)
+                .editTool(editCardTool)
+                .deleteTool(deleteCardTool)
+                .build();
+
+        return this.deckBuilders.newLaneDescription()
+                .name("Key Results")
+                .semanticCandidatesExpression(AQL_SELF)
+                .labelExpression("")
+                .titleExpression("Key Results")
+                .ownedCardDescriptions(cardDescription)
+                .build();
+    }
+
+    private LaneDescription createInitiativeLaneDescription() {
+        EditCardTool editCardTool = this.createEditCardTool();
+        DeleteCardTool deleteCardTool = this.createDeleteCardTool();
+        CardDescription cardDescription =  this.deckBuilders.newCardDescription()
+                .name("Initiatives Card")
+                .semanticCandidatesExpression("aql:self.eAllContents(task::Task)")
+                .titleExpression(AQL_SELF_NAME)
+                .labelExpression("aql:self.eContainer(task::KeyResult).name")
+                .descriptionExpression(AQL_SELF_DESCRIPTION)
+                .editTool(editCardTool)
+                .deleteTool(deleteCardTool)
+                .build();
+
+        return this.deckBuilders.newLaneDescription()
+                .name("Initiatives")
+                .semanticCandidatesExpression(AQL_SELF)
+                .labelExpression("")
+                .titleExpression("Initiatives")
+                .ownedCardDescriptions(cardDescription)
                 .build();
     }
 
@@ -187,7 +266,7 @@ public class ViewDeckDescriptionBuilder {
 
         Let let = this.viewBuilders.newLet()
                 .variableName("tag")
-                .valueExpression("aql:self")
+                .valueExpression(AQL_SELF)
                 .children(projectChangeContext)
                 .build();
 
