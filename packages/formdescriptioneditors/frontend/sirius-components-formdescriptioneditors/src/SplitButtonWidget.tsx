@@ -83,7 +83,7 @@ const useStyles = makeStyles<Theme>((theme) => ({
   },
   helpOutlineOutlined: {
     marginLeft: theme.spacing(1),
-    fontSize: theme.spacing(2),
+    fontSize: theme.typography.subtitle1.fontSize,
   },
   dragOver: {
     borderWidth: '1px',
@@ -180,6 +180,7 @@ export const SplitButtonWidget = ({ widget, editingContextId, representationId }
         actionsButtonLabel: actionsButtonLabel,
         actionsImageURL: actionsImageURL,
         actionsIsValidImage: actionsIsValidImage,
+        selectedIndex: state.selectedIndex >= widget.actions.length - 1 ? 0 : state.selectedIndex,
       };
     });
   }, [
@@ -253,11 +254,11 @@ export const SplitButtonWidget = ({ widget, editingContextId, representationId }
   };
 
   const getStyle = (index: number): React.CSSProperties => {
-    if (widget.actions.length == 0) {
+    if (!widget.actions.at(index) || !widget.actions.at(index).style) {
       const defaultProps = {
         backgroundColor: null,
         foregroundColor: null,
-        fontSize: null,
+        fontSize: theme.typography.subtitle2.fontSize,
         italic: null,
         bold: null,
         underline: null,
