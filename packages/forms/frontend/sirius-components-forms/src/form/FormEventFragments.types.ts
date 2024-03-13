@@ -290,7 +290,7 @@ export interface GQLSplitButton extends GQLWidget {
 export interface GQLButtonStyle {
   backgroundColor: string | null;
   foregroundColor: string | null;
-  fontSize: number | null;
+  fontSize: number | string | null;
   italic: boolean | null;
   bold: boolean | null;
   underline: boolean | null;

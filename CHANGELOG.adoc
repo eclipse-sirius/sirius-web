@@ -104,6 +104,7 @@ The implemented fix does not allow to evaluate an AQL expression, but only to re
 - https://github.com/eclipse-sirius/sirius-web/issues/3149[#3149] [diagram] Fix an issue where newly created border nodes could overlap existing one
 - https://github.com/eclipse-sirius/sirius-web/issues/3217[#3217] [diagram] Prevent helper lines to be displayed on moving a pinned node
 - https://github.com/eclipse-sirius/sirius-web/issues/3215[#3215] [vscode] Fix an issue where it was impossible to delete elements on a diagram from the VSCode extension.
+- https://github.com/eclipse-sirius/sirius-web/issues/3208[#3208] [form] Fix an issue with splitbutton default style in form editor
 
 === New Features
 
