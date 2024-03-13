@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.service
 
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.services.IResult;
 
 /**
@@ -22,5 +23,5 @@ import org.eclipse.sirius.web.domain.services.IResult;
  * @author sbegaudeau
  */
 public interface IRepresentationDataUpdateService {
-    IResult<Void> updateContent(UUID id, String content);
+    IResult<Void> updateContent(ICause cause, UUID id, String content);
 }

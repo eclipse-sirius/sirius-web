@@ -113,7 +113,7 @@ public class PortalEventProcessor implements IPortalEventProcessor {
 
     private void updatePortal(IInput input, Portal newPortal) {
         this.currentPortal = newPortal;
-        this.representationPersistenceService.save(this.editingContext, this.currentPortal);
+        this.representationPersistenceService.save(input, this.editingContext, this.currentPortal);
         this.emitNewPortal(input);
     }
 

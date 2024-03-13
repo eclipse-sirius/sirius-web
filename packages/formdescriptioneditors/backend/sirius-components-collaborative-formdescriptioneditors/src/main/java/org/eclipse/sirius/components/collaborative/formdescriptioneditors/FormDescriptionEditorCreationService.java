@@ -82,7 +82,7 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
                 .pages(List.of()) // We don't store form description editor pages, it will be re-render by the FormDescriptionEditorProcessor.
                 .build();
 
-        this.representationPersistenceService.save(editingContext, newFormDescriptionEditor);
+        this.representationPersistenceService.save(null, editingContext, newFormDescriptionEditor);
 
         return newFormDescriptionEditor;
     }

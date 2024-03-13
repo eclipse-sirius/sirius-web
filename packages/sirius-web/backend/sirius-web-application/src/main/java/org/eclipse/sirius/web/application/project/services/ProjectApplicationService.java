@@ -79,7 +79,7 @@ public class ProjectApplicationService implements IProjectApplicationService {
     @Override
     @Transactional
     public IPayload createProject(CreateProjectInput input) {
-        var result = this.projectCreationService.createProject(input.name(), input.natures());
+        var result = this.projectCreationService.createProject(input, input.name(), input.natures());
 
         IPayload payload = null;
         if (result instanceof Failure<Project> failure) {

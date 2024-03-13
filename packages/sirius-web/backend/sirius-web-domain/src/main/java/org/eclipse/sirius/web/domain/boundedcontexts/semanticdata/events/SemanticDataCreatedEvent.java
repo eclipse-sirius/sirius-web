@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events;
 import java.time.Instant;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 
 import jakarta.validation.constraints.NotNull;
@@ -27,5 +28,6 @@ import jakarta.validation.constraints.NotNull;
 public record SemanticDataCreatedEvent(
         @NotNull UUID id,
         @NotNull Instant createdOn,
+        @NotNull ICause causedBy,
         @NotNull SemanticData semanticData) implements ISemanticDataEvent {
 }

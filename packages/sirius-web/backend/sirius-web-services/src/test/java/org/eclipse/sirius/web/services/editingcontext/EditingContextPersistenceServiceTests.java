@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
@@ -74,7 +75,7 @@ public class EditingContextPersistenceServiceTests {
 
         var editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
 
-        editingContextPersistenceService.persist(editingContext);
+        editingContextPersistenceService.persist(new ICause.NoOp(), editingContext);
         assertThat(entities).hasSize(1);
 
         DocumentEntity documentEntity = entities.get(0);
@@ -123,7 +124,7 @@ public class EditingContextPersistenceServiceTests {
 
         var editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
 
-        editingContextPersistenceService.persist(editingContext);
+        editingContextPersistenceService.persist(new ICause.NoOp(), editingContext);
         assertThat(entities).hasSize(1);
 
         DocumentEntity documentEntity = entities.get(0);

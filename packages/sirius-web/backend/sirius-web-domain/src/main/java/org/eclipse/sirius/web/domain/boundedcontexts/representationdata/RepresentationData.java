@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataContentUpdatedEvent;
@@ -95,13 +96,13 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
         return this.lastModifiedOn;
     }
 
-    public void updateContent(String newContent) {
+    public void updateContent(ICause cause, String newContent) {
         this.content = newContent;
 
         var now = Instant.now();
         this.lastModifiedOn = now;
 
-        this.registerEvent(new RepresentationDataContentUpdatedEvent(UUID.randomUUID(), now, this));
+        this.registerEvent(new RepresentationDataContentUpdatedEvent(UUID.randomUUID(), now, cause, this));
     }
 
     public void dispose() {
@@ -173,7 +174,7 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
             return this;
         }
 
-        public RepresentationData build() {
+        public RepresentationData build(ICause cause) {
             var representationData = new RepresentationData();
             representationData.isNew = true;
             representationData.id = Objects.requireNonNull(id);
@@ -188,7 +189,7 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
             representationData.createdOn = now;
             representationData.lastModifiedOn = now;
 
-            representationData.registerEvent(new RepresentationDataCreatedEvent(UUID.randomUUID(), now, representationData));
+            representationData.registerEvent(new RepresentationDataCreatedEvent(UUID.randomUUID(), now, cause, representationData));
             return representationData;
         }
     }

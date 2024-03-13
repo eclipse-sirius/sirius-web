@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
@@ -146,7 +147,7 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
             return this;
         }
 
-        public Project build() {
+        public Project build(ICause cause) {
             var project = new Project();
             project.isNew = true;
             project.id = UUID.randomUUID();
@@ -157,7 +158,7 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
             project.createdOn = now;
             project.lastModifiedOn = now;
 
-            project.registerEvent(new ProjectCreatedEvent(UUID.randomUUID(), now, project));
+            project.registerEvent(new ProjectCreatedEvent(UUID.randomUUID(), now, cause, project));
             return project;
         }
     }

@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
 import java.util.Set;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -25,5 +26,5 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  * @author sbegaudeau
  */
 public interface ISemanticDataUpdateService {
-    void updateDocuments(AggregateReference<Project, UUID> project, Set<Document> documents);
+    void updateDocuments(ICause cause, AggregateReference<Project, UUID> project, Set<Document> documents);
 }

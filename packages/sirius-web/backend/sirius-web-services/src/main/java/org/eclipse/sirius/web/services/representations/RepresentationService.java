@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.widget.reference.browser.Mode
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 import org.eclipse.sirius.components.trees.Tree;
@@ -106,7 +107,7 @@ public class RepresentationService implements IRepresentationService, IRepresent
     }
 
     @Override
-    public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
+    public void save(ICause cause, IEditingContext editingContext, ISemanticRepresentation representation) {
         long start = System.currentTimeMillis();
 
         var editingContextId = new IDParser().parse(editingContext.getId());

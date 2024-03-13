@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
@@ -81,11 +82,11 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
         return this.isNew;
     }
 
-    public void updateDocuments(Set<Document> newDocuments) {
+    public void updateDocuments(ICause cause, Set<Document> newDocuments) {
         this.documents = newDocuments;
 
         this.lastModifiedOn = Instant.now();
-        this.registerEvent(new SemanticDataUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, this));
+        this.registerEvent(new SemanticDataUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this));
     }
 
     public static Builder newSemanticData() {
@@ -113,7 +114,7 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
             return this;
         }
 
-        public SemanticData build() {
+        public SemanticData build(ICause cause) {
             var semanticData = new SemanticData();
 
             semanticData.isNew = true;
@@ -125,7 +126,7 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
             semanticData.createdOn = now;
             semanticData.lastModifiedOn = now;
 
-            semanticData.registerEvent(new SemanticDataCreatedEvent(UUID.randomUUID(), now, semanticData));
+            semanticData.registerEvent(new SemanticDataCreatedEvent(UUID.randomUUID(), now, cause, semanticData));
             return semanticData;
         }
     }

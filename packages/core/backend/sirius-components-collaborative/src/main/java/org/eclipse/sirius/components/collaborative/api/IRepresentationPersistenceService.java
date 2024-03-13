@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.api;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
 /**
@@ -22,7 +23,7 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
  */
 public interface IRepresentationPersistenceService {
 
-    void save(IEditingContext editingContext, ISemanticRepresentation representation);
+    void save(ICause cause, IEditingContext editingContext, ISemanticRepresentation representation);
 
     /**
      * Empty implementation, used for mocks in unit tests.
@@ -32,7 +33,7 @@ public interface IRepresentationPersistenceService {
     class NoOp implements IRepresentationPersistenceService {
 
         @Override
-        public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
+        public void save(ICause cause, IEditingContext editingContext, ISemanticRepresentation representation) {
             // Do nothing
         }
 

@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.service
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataUpdateService;
 import org.eclipse.sirius.web.domain.services.Failure;
@@ -41,13 +42,13 @@ public class RepresentationDataUpdateService implements IRepresentationDataUpdat
     }
 
     @Override
-    public IResult<Void> updateContent(UUID id, String content) {
+    public IResult<Void> updateContent(ICause cause, UUID id, String content) {
         IResult<Void> result = null;
 
         var optionalRepresentationData = this.representationDataRepository.findById(id);
         if (optionalRepresentationData.isPresent()) {
             var representationData = optionalRepresentationData.get();
-            representationData.updateContent(content);
+            representationData.updateContent(cause, content);
             this.representationDataRepository.save(representationData);
 
             result = new Success<>(null);

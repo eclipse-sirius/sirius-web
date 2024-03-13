@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories.ISemanticDataRepository;
@@ -38,11 +39,11 @@ public class SemanticDataCreationService implements ISemanticDataCreationService
     }
 
     @Override
-    public void initialize(AggregateReference<Project, UUID> project) {
+    public void initialize(ICause cause, AggregateReference<Project, UUID> project) {
         var semanticData = SemanticData.newSemanticData()
                 .project(project)
                 .documents(Set.of())
-                .build();
+                .build(cause);
         this.semanticDataRepository.save(semanticData);
     }
 }

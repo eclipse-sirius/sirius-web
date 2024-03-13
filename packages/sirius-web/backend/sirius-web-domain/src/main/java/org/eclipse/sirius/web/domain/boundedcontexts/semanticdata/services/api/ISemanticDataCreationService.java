@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
 
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
@@ -23,5 +24,5 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  * @author sbegaudeau
  */
 public interface ISemanticDataCreationService {
-    void initialize(AggregateReference<Project, UUID> project);
+    void initialize(ICause cause, AggregateReference<Project, UUID> project);
 }

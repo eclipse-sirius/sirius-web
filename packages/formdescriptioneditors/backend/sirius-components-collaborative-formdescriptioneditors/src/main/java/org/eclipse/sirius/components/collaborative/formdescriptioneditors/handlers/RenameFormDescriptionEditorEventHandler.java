@@ -85,7 +85,7 @@ public class RenameFormDescriptionEditorEventHandler implements IFormDescription
                     .pages(List.of()) // We don't store form description editor pages, it will be re-render by
                     // the FormDescriptionEditorProcessor.
                     .build();
-            this.representationPersistenceService.save(editingContext, renamedFormDescriptionEditor);
+            this.representationPersistenceService.save(renameRepresentationInput, editingContext, renamedFormDescriptionEditor);
 
             payload = new RenameRepresentationSuccessPayload(formDescriptionEditorInput.id(), renamedFormDescriptionEditor);
             changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.representationId(), formDescriptionEditorInput);

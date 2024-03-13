@@ -172,6 +172,9 @@ Thanks to this capability, a specifier can easily retrieve a variable overriden 
 image:doc/screenshots/borderNodeCreationArea.png[BorderNode creation area,50%]
 +
 In other scenarios, the default creation position border remains the eastern one.
+- https://github.com/eclipse-sirius/sirius-web/issues/3155[#3155] [core] Propagate the cause of the events in Sirius Web.
+The interfaces `IInput` and `IDomainEvent` are now both extending `ICause` which let us capture the causes of a domain event recursively.
+An event may have been caused by another event caused by an input received from the frontend for example.
 
 == v2024.1.0
 

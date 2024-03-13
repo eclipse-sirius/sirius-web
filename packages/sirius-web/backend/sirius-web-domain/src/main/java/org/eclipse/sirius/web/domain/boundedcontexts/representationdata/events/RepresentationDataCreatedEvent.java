@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events;
 import java.time.Instant;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
 
 import jakarta.validation.constraints.NotNull;
@@ -27,5 +28,6 @@ import jakarta.validation.constraints.NotNull;
 public record RepresentationDataCreatedEvent(
         @NotNull UUID id,
         @NotNull Instant createdOn,
+        @NotNull ICause cause,
         @NotNull RepresentationData representationData) implements IRepresentationDataEvent {
 }

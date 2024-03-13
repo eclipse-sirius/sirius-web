@@ -95,7 +95,7 @@ public class CreatePortalEventHandler implements IEditingContextEventHandler {
                     variableManager.put(VariableManager.SELF, object);
                     variableManager.put("name", createRepresentationInput.representationName());
                     Portal portal = new PortalRenderer(variableManager, portalDescription).render();
-                    this.representationPersistenceService.save(editingContext, portal);
+                    this.representationPersistenceService.save(createRepresentationInput, editingContext, portal);
 
                     payload = new CreateRepresentationSuccessPayload(input.id(), portal);
                     changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);

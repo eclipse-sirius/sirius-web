@@ -1,0 +1,9 @@
+= sirius-components-events
+
+== Goal
+
+This project provides concepts which will be leveraged by our events
+
+== Dependencies
+
+None, nothing.

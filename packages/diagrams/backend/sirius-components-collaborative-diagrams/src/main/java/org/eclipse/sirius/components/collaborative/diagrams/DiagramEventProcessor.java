@@ -105,7 +105,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
         Diagram diagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
-        this.representationPersistenceService.save(parameters.editingContext(), diagram);
+        this.representationPersistenceService.save(null, parameters.editingContext(), diagram);
         this.diagramContext.update(diagram);
         this.diagramEventFlux = new DiagramEventFlux(diagram);
 
@@ -140,7 +140,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                         .layoutData(layoutData)
                         .build();
 
-                this.representationPersistenceService.save(this.editingContext, laidOutDiagram);
+                this.representationPersistenceService.save(layoutDiagramInput, this.editingContext, laidOutDiagram);
                 this.diagramContext.reset();
                 this.diagramContext.update(laidOutDiagram);
                 this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
@@ -176,7 +176,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
-            this.representationPersistenceService.save(this.editingContext, refreshedDiagram);
+            this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedDiagram);
 
             if (refreshedDiagram != null) {
                 this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId());

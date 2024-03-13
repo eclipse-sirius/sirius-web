@@ -71,7 +71,7 @@ public class RenamePortalEventHandler implements IPortalEventHandler {
             if (portalInput instanceof RenamePortalInput renameRepresentationInput) {
                 String newLabel = renameRepresentationInput.newLabel();
                 var renamedPortal = Portal.newPortal(context.getCurrentPortal()).label(newLabel).build();
-                this.representationPersistenceService.save(context.getEditingContext(), renamedPortal);
+                this.representationPersistenceService.save(renameRepresentationInput, context.getEditingContext(), renamedPortal);
                 context.setNextPortal(renamedPortal);
 
                 payload = new RenameRepresentationSuccessPayload(portalInput.id(), renamedPortal);

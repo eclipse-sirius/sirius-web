@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
@@ -59,7 +60,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
     @Override
     @Transactional
-    public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
+    public void save(ICause cause, IEditingContext editingContext, ISemanticRepresentation representation) {
         var optionalProjectId = new UUIDParser().parse(editingContext.getId());
         var optionalRepresentationId = new UUIDParser().parse(representation.getId());
 
@@ -71,7 +72,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
             var exists = this.representationDataSearchService.existsById(representationId);
             if (exists) {
-                this.representationDataUpdateService.updateContent(representationId, content);
+                this.representationDataUpdateService.updateContent(cause, representationId, content);
             } else {
                 var representationData = RepresentationData.newRepresentationData(representationId)
                         .project(AggregateReference.to(projectId))
@@ -80,7 +81,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
                         .descriptionId(representation.getDescriptionId())
                         .targetObjectId(representation.getTargetObjectId())
                         .content(content)
-                        .build();
+                        .build(cause);
 
                 this.representationDataCreationService.create(representationData);
             }

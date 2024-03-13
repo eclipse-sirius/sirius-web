@@ -15,12 +15,14 @@ package org.eclipse.sirius.web.domain.events;
 import java.time.Instant;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
+
 /**
  * Interface to be implemented by all the events of the domain.
  *
  * @author sbegaudeau
  */
-public interface IDomainEvent {
+public interface IDomainEvent extends ICause {
     UUID id();
     Instant createdOn();
 }

@@ -113,7 +113,7 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
                 if (representationDescription instanceof HierarchyDescription) {
                     Hierarchy hierarchy = this.hierarchyCreationService.create(createRepresentationInput.representationName(), object, representationDescription, editingContext);
 
-                    this.representationPersistenceService.save(editingContext, hierarchy);
+                    this.representationPersistenceService.save(createRepresentationInput, editingContext, hierarchy);
 
                     changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
                     payload = new CreateRepresentationSuccessPayload(input.id(), hierarchy);

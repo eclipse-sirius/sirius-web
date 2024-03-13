@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories.ISemanticDataRepository;
@@ -38,9 +39,9 @@ public class SemanticDataUpdateService implements ISemanticDataUpdateService {
     }
 
     @Override
-    public void updateDocuments(AggregateReference<Project, UUID> project, Set<Document> documents) {
+    public void updateDocuments(ICause cause, AggregateReference<Project, UUID> project, Set<Document> documents) {
         this.semanticDataRepository.findByProjectId(project.getId()).ifPresent(semanticData -> {
-            semanticData.updateDocuments(documents);
+            semanticData.updateDocuments(cause, documents);
             this.semanticDataRepository.save(semanticData);
         });
     }

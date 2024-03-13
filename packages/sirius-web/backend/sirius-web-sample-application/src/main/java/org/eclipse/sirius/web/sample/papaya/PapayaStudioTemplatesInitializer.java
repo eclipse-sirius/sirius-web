@@ -131,7 +131,7 @@ public class PapayaStudioTemplatesInitializer implements IProjectTemplateInitial
                         Object semanticTarget = resource.getContents().get(0);
 
                         Diagram diagram = this.diagramCreationService.create(topographyDiagram.getLabel(), semanticTarget, topographyDiagram, editingContext);
-                        this.representationPersistenceService.save(editingContext, diagram);
+                        this.representationPersistenceService.save(null, editingContext, diagram);
 
                         result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
                     }

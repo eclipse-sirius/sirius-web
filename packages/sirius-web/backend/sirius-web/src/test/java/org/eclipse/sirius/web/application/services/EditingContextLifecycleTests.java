@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -95,7 +96,7 @@ public class EditingContextLifecycleTests extends AbstractIntegrationTests {
             ePackage.setName("Sample Updated");
 
             TestTransaction.start();
-            this.editingContextPersistenceService.persist(editingContext);
+            this.editingContextPersistenceService.persist(new ICause.NoOp(), editingContext);
             TestTransaction.flagForCommit();
             TestTransaction.end();
         }

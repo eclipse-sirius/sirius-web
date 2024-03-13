@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -49,8 +50,6 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
     private final Timer timer;
 
-    private final Logger logger = LoggerFactory.getLogger(EditingContextPersistenceService.class);
-
     public EditingContextPersistenceService(ISemanticDataUpdateService semanticDataUpdateService, IResourceToDocumentService resourceToDocumentService, MeterRegistry meterRegistry) {
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
@@ -58,7 +57,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
     }
 
     @Override
-    public void persist(IEditingContext editingContext) {
+    public void persist(ICause cause, IEditingContext editingContext) {
         long start = System.currentTimeMillis();
 
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
@@ -69,7 +68,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                                 .map(this.resourceToDocumentService::toDocument)
                                 .flatMap(Optional::stream)
                                 .collect(Collectors.toSet());
-                        this.semanticDataUpdateService.updateDocuments(project, documents);
+                        this.semanticDataUpdateService.updateDocuments(cause, project, documents);
                     });
         }
 

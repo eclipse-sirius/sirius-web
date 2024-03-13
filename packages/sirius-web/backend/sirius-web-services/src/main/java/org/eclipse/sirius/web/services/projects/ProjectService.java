@@ -155,7 +155,7 @@ public class ProjectService implements IProjectService {
                     var editingContext = optionalEditingContext.get();
                     var representationToOpen = projectTemplateInitializer.handle(input.templateId(), editingContext).orElse(null);
 
-                    this.editingContextPersistenceService.persist(editingContext);
+                    this.editingContextPersistenceService.persist(input, editingContext);
                     result = new CreateProjectFromTemplateSuccessPayload(createProjectInput.id(), createProjectSuccessPayload.project(), representationToOpen);
                 }
             } else {

@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
@@ -75,7 +76,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
     }
 
     @Override
-    public void persist(IEditingContext editingContext) {
+    public void persist(ICause cause, IEditingContext editingContext) {
         long start = System.currentTimeMillis();
 
         if (editingContext instanceof IEMFEditingContext) {

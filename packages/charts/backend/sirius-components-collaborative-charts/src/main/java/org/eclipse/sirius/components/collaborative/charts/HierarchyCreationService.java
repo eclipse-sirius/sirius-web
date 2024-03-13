@@ -99,7 +99,7 @@ public class HierarchyCreationService {
 
         Hierarchy newHierarchy = new HierarchyRenderer().render(element);
 
-        this.representationPersistenceService.save(editingContext, newHierarchy);
+        this.representationPersistenceService.save(null, editingContext, newHierarchy);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);

@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 
@@ -23,5 +24,5 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
  * @author sbegaudeau
  */
 public interface IProjectCreationService {
-    IResult<Project> createProject(String name, List<String> natures);
+    IResult<Project> createProject(ICause cause, String name, List<String> natures);
 }
