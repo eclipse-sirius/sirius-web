@@ -45,7 +45,9 @@ export const useGroupPalette = (): UseGroupPaletteValue => {
   );
 
   const hideGroupPalette = () => {
-    setState((prevState) => ({ ...prevState, position: null, isOpened: false }));
+    if (state.isOpened) {
+      setState((prevState) => ({ ...prevState, position: null, isOpened: false }));
+    }
   };
   return {
     position: state.position,
