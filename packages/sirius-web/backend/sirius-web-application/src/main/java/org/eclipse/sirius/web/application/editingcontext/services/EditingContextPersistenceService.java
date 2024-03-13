@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.editingcontext.services;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,12 +24,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextPersistenceFilter;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -49,13 +49,14 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
     private final IResourceToDocumentService resourceToDocumentService;
 
+    private final List<IEditingContextPersistenceFilter> persistenceFilters;
+
     private final Timer timer;
 
-    private final Logger logger = LoggerFactory.getLogger(EditingContextPersistenceService.class);
-
-    public EditingContextPersistenceService(ISemanticDataUpdateService semanticDataUpdateService, IResourceToDocumentService resourceToDocumentService, MeterRegistry meterRegistry) {
+    public EditingContextPersistenceService(ISemanticDataUpdateService semanticDataUpdateService, IResourceToDocumentService resourceToDocumentService, List<IEditingContextPersistenceFilter> persistenceFilters, MeterRegistry meterRegistry) {
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
+        this.persistenceFilters = Objects.requireNonNull(persistenceFilters);
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
 
@@ -67,7 +68,10 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
             new UUIDParser().parse(editingContext.getId())
                     .map(AggregateReference::<Project, UUID>to)
                     .ifPresent(project -> {
+
                         var documentData = emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                                .filter(resource -> IEMFEditingContext.RESOURCE_SCHEME.equals(resource.getURI().scheme()))
+                                .filter(resource -> this.persistenceFilters.stream().allMatch(filter -> filter.shouldPersist(resource)))
                                 .map(this.resourceToDocumentService::toDocument)
                                 .flatMap(Optional::stream)
                                 .collect(Collectors.toSet());
