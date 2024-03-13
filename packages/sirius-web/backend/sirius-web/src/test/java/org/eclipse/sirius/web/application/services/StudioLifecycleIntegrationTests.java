@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.fail;
 
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -77,6 +78,26 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
                             .filter(FormDescription.class::isInstance)
                             .anyMatch(representationDescription -> representationDescription.getName().equals("Human Form")));
             assertThat(hasHumanFormDescription).isTrue();
+        } else {
+            fail("Invalid editing context");
+        }
+    }
+
+    @Test
+    @DisplayName("Given a studio, when it is loaded, then the palette is available")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenStudioWhenItIsLoadedThenThenPaletteIsAvailable() {
+        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.EMPTY_STUDIO_PROJECT.toString());
+        assertThat(optionalEditingContext).isPresent();
+
+        var editingContext = optionalEditingContext.get();
+        if (editingContext instanceof EditingContext siriusWebEditingContext) {
+            var resourceSet = siriusWebEditingContext.getDomain().getResourceSet();
+            assertThat(resourceSet.getResources()).hasSize(1);
+
+            var resource = resourceSet.getResources().get(0);
+            assertThat(resource.getURI().toString()).isEqualTo(ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI);
         } else {
             fail("Invalid editing context");
         }

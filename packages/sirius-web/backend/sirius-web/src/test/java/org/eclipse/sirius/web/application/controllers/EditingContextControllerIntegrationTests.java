@@ -186,7 +186,6 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), TestIdentifiers.EMPTY_STUDIO_PROJECT.toString());
         var flux = this.graphQLRequestor.subscribe(GET_EDITING_CONTEXT_EVENT_SUBSCRIPTION, editingContextEventInput);
 
-
         Consumer<InvokeEditingContextActionInput> invokeEditingContextActionTask = (input) -> {
             var result = this.graphQLRequestor.execute(INVOKE_EDITING_CONTEXT_ACTION, input);
 

@@ -154,6 +154,6 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         assertThat(editingContext).isInstanceOf(IEMFEditingContext.class);
 
         var emfEditingContext = (IEMFEditingContext) editingContext;
-        assertThat(emfEditingContext.getDomain().getResourceSet().getResources()).hasSize(2);
+        assertThat(emfEditingContext.getDomain().getResourceSet().getResources()).hasSize(3);
     }
 }
