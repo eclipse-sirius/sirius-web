@@ -52,15 +52,6 @@ public class CardDropToolBuilder {
         return this;
     }
     /**
-     * Setter for PreconditionExpression.
-     *
-     * @generated
-     */
-    public CardDropToolBuilder preconditionExpression(java.lang.String value) {
-        this.getCardDropTool().setPreconditionExpression(value);
-        return this;
-    }
-    /**
      * Setter for Body.
      *
      * @generated

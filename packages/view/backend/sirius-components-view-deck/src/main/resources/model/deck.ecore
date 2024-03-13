@@ -4,8 +4,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="DeckDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="laneDescriptions" upperBound="-1"
         eType="#//LaneDescription" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="laneDropTool" eType="#//LaneDropTool"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//DeckDescriptionStyle"
@@ -14,6 +12,8 @@
         eType="#//ConditionalDeckDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LaneDescription" eSuperTypes="#//DeckElementDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
+        defaultValueLiteral="New Lane Description"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedCardDescriptions"
         upperBound="-1" eType="#//CardDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="editTool" eType="#//EditLaneTool"
@@ -27,6 +27,8 @@
         defaultValueLiteral="aql:true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CardDescription" eSuperTypes="#//DeckElementDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
+        defaultValueLiteral="New Card Description"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="descriptionExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self"/>
@@ -37,8 +39,6 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeckTool" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
-        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
         containment="true"/>
   </eClassifiers>
@@ -49,8 +49,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="CardDropTool" eSuperTypes="#//DeckTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="LaneDropTool" eSuperTypes="#//DeckTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="DeckElementDescription" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
-        defaultValueLiteral="newDeckElementDescription"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
         lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self"/>

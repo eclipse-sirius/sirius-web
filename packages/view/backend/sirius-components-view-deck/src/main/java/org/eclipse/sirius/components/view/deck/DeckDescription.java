@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.view.deck;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.eclipse.sirius.components.view.UserColor;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Description</b></em>'. <!-- end-user-doc -->
@@ -25,7 +24,6 @@ import org.eclipse.sirius.components.view.UserColor;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getLaneDescriptions <em>Lane
  * Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getBackgroundColor <em>Background Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getLaneDropTool <em>Lane Drop Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getStyle <em>Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getConditionalStyles <em>Conditional
@@ -48,29 +46,6 @@ public interface DeckDescription extends RepresentationDescription {
      * @generated
      */
     EList<LaneDescription> getLaneDescriptions();
-
-    /**
-     * Returns the value of the '<em><b>Background Color</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Background Color</em>' containment reference.
-     * @see #setBackgroundColor(UserColor)
-     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckDescription_BackgroundColor()
-     * @model containment="true"
-     * @generated
-     */
-    UserColor getBackgroundColor();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckDescription#getBackgroundColor
-     * <em>Background Color</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Background Color</em>' containment reference.
-     * @see #getBackgroundColor()
-     * @generated
-     */
-    void setBackgroundColor(UserColor value);
 
     /**
      * Returns the value of the '<em><b>Lane Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--

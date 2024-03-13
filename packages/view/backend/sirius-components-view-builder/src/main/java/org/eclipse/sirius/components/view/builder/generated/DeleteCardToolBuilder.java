@@ -52,15 +52,6 @@ public class DeleteCardToolBuilder {
         return this;
     }
     /**
-     * Setter for PreconditionExpression.
-     *
-     * @generated
-     */
-    public DeleteCardToolBuilder preconditionExpression(java.lang.String value) {
-        this.getDeleteCardTool().setPreconditionExpression(value);
-        return this;
-    }
-    /**
      * Setter for Body.
      *
      * @generated

@@ -35,7 +35,6 @@ import org.eclipse.sirius.components.view.deck.DeckPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckElementDescriptionImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckElementDescriptionImpl#getSemanticCandidatesExpression
  * <em>Semantic Candidates Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckElementDescriptionImpl#getTitleExpression <em>Title
@@ -50,26 +49,6 @@ import org.eclipse.sirius.components.view.deck.DeckPackage;
  * @generated
  */
 public abstract class DeckElementDescriptionImpl extends MinimalEObjectImpl.Container implements DeckElementDescription {
-    /**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
-    protected static final String NAME_EDEFAULT = "newDeckElementDescription";
-
-    /**
-     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
-    protected String name = NAME_EDEFAULT;
-
     /**
      * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -167,29 +146,6 @@ public abstract class DeckElementDescriptionImpl extends MinimalEObjectImpl.Cont
     @Override
     protected EClass eStaticClass() {
         return DeckPackage.Literals.DECK_ELEMENT_DESCRIPTION;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.DECK_ELEMENT_DESCRIPTION__NAME, oldName, this.name));
     }
 
     /**
@@ -318,7 +274,8 @@ public abstract class DeckElementDescriptionImpl extends MinimalEObjectImpl.Cont
     @Override
     public EList<ConditionalDeckElementDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalDeckElementDescriptionStyle.class, this, DeckPackage.DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalDeckElementDescriptionStyle.class, this,
+                    DeckPackage.DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }
@@ -347,8 +304,6 @@ public abstract class DeckElementDescriptionImpl extends MinimalEObjectImpl.Cont
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case DeckPackage.DECK_ELEMENT_DESCRIPTION__NAME:
-                return this.getName();
             case DeckPackage.DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return this.getSemanticCandidatesExpression();
             case DeckPackage.DECK_ELEMENT_DESCRIPTION__TITLE_EXPRESSION:
@@ -372,9 +327,6 @@ public abstract class DeckElementDescriptionImpl extends MinimalEObjectImpl.Cont
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case DeckPackage.DECK_ELEMENT_DESCRIPTION__NAME:
-                this.setName((String) newValue);
-                return;
             case DeckPackage.DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 this.setSemanticCandidatesExpression((String) newValue);
                 return;
@@ -403,9 +355,6 @@ public abstract class DeckElementDescriptionImpl extends MinimalEObjectImpl.Cont
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case DeckPackage.DECK_ELEMENT_DESCRIPTION__NAME:
-                this.setName(NAME_EDEFAULT);
-                return;
             case DeckPackage.DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
                 return;
@@ -433,8 +382,6 @@ public abstract class DeckElementDescriptionImpl extends MinimalEObjectImpl.Cont
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case DeckPackage.DECK_ELEMENT_DESCRIPTION__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case DeckPackage.DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
             case DeckPackage.DECK_ELEMENT_DESCRIPTION__TITLE_EXPRESSION:
@@ -460,9 +407,7 @@ public abstract class DeckElementDescriptionImpl extends MinimalEObjectImpl.Cont
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(", semanticCandidatesExpression: ");
+        result.append(" (semanticCandidatesExpression: ");
         result.append(this.semanticCandidatesExpression);
         result.append(", titleExpression: ");
         result.append(this.titleExpression);

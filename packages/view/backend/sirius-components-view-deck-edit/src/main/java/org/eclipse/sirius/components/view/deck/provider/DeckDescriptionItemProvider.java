@@ -20,7 +20,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckFactory;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
@@ -69,7 +68,6 @@ public class DeckDescriptionItemProvider extends RepresentationDescriptionItemPr
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DeckPackage.Literals.DECK_DESCRIPTION__LANE_DESCRIPTIONS);
-            this.childrenFeatures.add(DeckPackage.Literals.DECK_DESCRIPTION__BACKGROUND_COLOR);
             this.childrenFeatures.add(DeckPackage.Literals.DECK_DESCRIPTION__LANE_DROP_TOOL);
             this.childrenFeatures.add(DeckPackage.Literals.DECK_DESCRIPTION__STYLE);
             this.childrenFeatures.add(DeckPackage.Literals.DECK_DESCRIPTION__CONDITIONAL_STYLES);
@@ -134,7 +132,6 @@ public class DeckDescriptionItemProvider extends RepresentationDescriptionItemPr
 
         switch (notification.getFeatureID(DeckDescription.class)) {
             case DeckPackage.DECK_DESCRIPTION__LANE_DESCRIPTIONS:
-            case DeckPackage.DECK_DESCRIPTION__BACKGROUND_COLOR:
             case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
             case DeckPackage.DECK_DESCRIPTION__STYLE:
             case DeckPackage.DECK_DESCRIPTION__CONDITIONAL_STYLES:
@@ -156,8 +153,6 @@ public class DeckDescriptionItemProvider extends RepresentationDescriptionItemPr
 
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.DECK_DESCRIPTION__LANE_DESCRIPTIONS, DeckFactory.eINSTANCE.createLaneDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.DECK_DESCRIPTION__BACKGROUND_COLOR, ViewFactory.eINSTANCE.createFixedColor()));
-
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.DECK_DESCRIPTION__LANE_DROP_TOOL, DeckFactory.eINSTANCE.createLaneDropTool()));
 
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.DECK_DESCRIPTION__STYLE, DeckFactory.eINSTANCE.createDeckDescriptionStyle()));
@@ -169,18 +164,10 @@ public class DeckDescriptionItemProvider extends RepresentationDescriptionItemPr
      * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
-
-        boolean qualify = childFeature == DeckPackage.Literals.DECK_DESCRIPTION__STYLE || childFeature == DeckPackage.Literals.DECK_DESCRIPTION__CONDITIONAL_STYLES;
-
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
-        }
         return super.getCreateChildText(owner, feature, child, selection);
     }
 

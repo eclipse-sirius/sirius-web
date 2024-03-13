@@ -116,22 +116,13 @@ public interface DeckPackage extends EPackage {
     int DECK_DESCRIPTION__LANE_DESCRIPTIONS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Background Color</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DECK_DESCRIPTION__BACKGROUND_COLOR = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
-
-    /**
      * The feature id for the '<em><b>Lane Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DECK_DESCRIPTION__LANE_DROP_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
+    int DECK_DESCRIPTION__LANE_DROP_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -140,7 +131,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DECK_DESCRIPTION__STYLE = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
+    int DECK_DESCRIPTION__STYLE = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -149,7 +140,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DECK_DESCRIPTION__CONDITIONAL_STYLES = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
+    int DECK_DESCRIPTION__CONDITIONAL_STYLES = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -158,7 +149,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DECK_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
+    int DECK_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -179,21 +170,13 @@ public interface DeckPackage extends EPackage {
     int DECK_ELEMENT_DESCRIPTION = 10;
 
     /**
-     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DECK_ELEMENT_DESCRIPTION__NAME = 0;
-
-    /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 1;
+    int DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 0;
 
     /**
      * The feature id for the '<em><b>Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -202,7 +185,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DECK_ELEMENT_DESCRIPTION__TITLE_EXPRESSION = 2;
+    int DECK_ELEMENT_DESCRIPTION__TITLE_EXPRESSION = 1;
 
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -211,7 +194,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 3;
+    int DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 2;
 
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -220,7 +203,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DECK_ELEMENT_DESCRIPTION__STYLE = 4;
+    int DECK_ELEMENT_DESCRIPTION__STYLE = 3;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -229,7 +212,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES = 5;
+    int DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES = 4;
 
     /**
      * The number of structural features of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!--
@@ -238,7 +221,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT = 6;
+    int DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT = 5;
 
     /**
      * The number of operations of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -258,14 +241,6 @@ public interface DeckPackage extends EPackage {
      * @generated
      */
     int LANE_DESCRIPTION = 1;
-
-    /**
-     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int LANE_DESCRIPTION__NAME = DECK_ELEMENT_DESCRIPTION__NAME;
 
     /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -313,13 +288,21 @@ public interface DeckPackage extends EPackage {
     int LANE_DESCRIPTION__CONDITIONAL_STYLES = DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES;
 
     /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DESCRIPTION__NAME = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
      * The feature id for the '<em><b>Owned Card Descriptions</b></em>' containment reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
+    int LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -328,7 +311,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__EDIT_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+    int LANE_DESCRIPTION__EDIT_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Create Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -337,7 +320,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__CREATE_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int LANE_DESCRIPTION__CREATE_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Card Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -346,7 +329,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__CARD_DROP_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+    int LANE_DESCRIPTION__CARD_DROP_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Is Collapsible Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -355,7 +338,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+    int LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of structural features of the '<em>Lane Description</em>' class. <!-- begin-user-doc --> <!--
@@ -364,7 +347,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION_FEATURE_COUNT = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int LANE_DESCRIPTION_FEATURE_COUNT = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The number of operations of the '<em>Lane Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -383,14 +366,6 @@ public interface DeckPackage extends EPackage {
      * @generated
      */
     int CARD_DESCRIPTION = 2;
-
-    /**
-     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CARD_DESCRIPTION__NAME = DECK_ELEMENT_DESCRIPTION__NAME;
 
     /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -438,13 +413,21 @@ public interface DeckPackage extends EPackage {
     int CARD_DESCRIPTION__CONDITIONAL_STYLES = DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES;
 
     /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CARD_DESCRIPTION__NAME = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
      * The feature id for the '<em><b>Description Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__DESCRIPTION_EXPRESSION = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
+    int CARD_DESCRIPTION__DESCRIPTION_EXPRESSION = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -453,7 +436,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__EDIT_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+    int CARD_DESCRIPTION__EDIT_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -462,7 +445,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__DELETE_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int CARD_DESCRIPTION__DELETE_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>Card Description</em>' class. <!-- begin-user-doc --> <!--
@@ -471,7 +454,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION_FEATURE_COUNT = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+    int CARD_DESCRIPTION_FEATURE_COUNT = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The number of operations of the '<em>Card Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -500,22 +483,13 @@ public interface DeckPackage extends EPackage {
     int DECK_TOOL__NAME = 0;
 
     /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DECK_TOOL__PRECONDITION_EXPRESSION = 1;
-
-    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DECK_TOOL__BODY = 2;
+    int DECK_TOOL__BODY = 1;
 
     /**
      * The number of structural features of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -523,7 +497,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DECK_TOOL_FEATURE_COUNT = 3;
+    int DECK_TOOL_FEATURE_COUNT = 2;
 
     /**
      * The number of operations of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -550,15 +524,6 @@ public interface DeckPackage extends EPackage {
      * @ordered
      */
     int CREATE_CARD_TOOL__NAME = DECK_TOOL__NAME;
-
-    /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CREATE_CARD_TOOL__PRECONDITION_EXPRESSION = DECK_TOOL__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -605,15 +570,6 @@ public interface DeckPackage extends EPackage {
     int EDIT_CARD_TOOL__NAME = DECK_TOOL__NAME;
 
     /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDIT_CARD_TOOL__PRECONDITION_EXPRESSION = DECK_TOOL__PRECONDITION_EXPRESSION;
-
-    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -656,15 +612,6 @@ public interface DeckPackage extends EPackage {
      * @ordered
      */
     int DELETE_CARD_TOOL__NAME = DECK_TOOL__NAME;
-
-    /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DELETE_CARD_TOOL__PRECONDITION_EXPRESSION = DECK_TOOL__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -711,15 +658,6 @@ public interface DeckPackage extends EPackage {
     int EDIT_LANE_TOOL__NAME = DECK_TOOL__NAME;
 
     /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDIT_LANE_TOOL__PRECONDITION_EXPRESSION = DECK_TOOL__PRECONDITION_EXPRESSION;
-
-    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -764,15 +702,6 @@ public interface DeckPackage extends EPackage {
     int CARD_DROP_TOOL__NAME = DECK_TOOL__NAME;
 
     /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CARD_DROP_TOOL__PRECONDITION_EXPRESSION = DECK_TOOL__PRECONDITION_EXPRESSION;
-
-    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -815,15 +744,6 @@ public interface DeckPackage extends EPackage {
      * @ordered
      */
     int LANE_DROP_TOOL__NAME = DECK_TOOL__NAME;
-
-    /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int LANE_DROP_TOOL__PRECONDITION_EXPRESSION = DECK_TOOL__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1136,18 +1056,6 @@ public interface DeckPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.deck.DeckDescription#getBackgroundColor <em>Background Color</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Background Color</em>'.
-     * @see org.eclipse.sirius.components.view.deck.DeckDescription#getBackgroundColor()
-     * @see #getDeckDescription()
-     * @generated
-     */
-    EReference getDeckDescription_BackgroundColor();
-
-    /**
-     * Returns the meta object for the containment reference
      * '{@link org.eclipse.sirius.components.view.deck.DeckDescription#getLaneDropTool <em>Lane Drop Tool</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1191,6 +1099,17 @@ public interface DeckPackage extends EPackage {
      * @generated
      */
     EClass getLaneDescription();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.deck.LaneDescription#getName()
+     * @see #getLaneDescription()
+     * @generated
+     */
+    EAttribute getLaneDescription_Name();
 
     /**
      * Returns the meta object for the containment reference list
@@ -1263,6 +1182,17 @@ public interface DeckPackage extends EPackage {
     EClass getCardDescription();
 
     /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.deck.CardDescription#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.deck.CardDescription#getName()
+     * @see #getCardDescription()
+     * @generated
+     */
+    EAttribute getCardDescription_Name();
+
+    /**
      * Returns the meta object for the attribute
      * '{@link org.eclipse.sirius.components.view.deck.CardDescription#getDescriptionExpression <em>Description
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1318,18 +1248,6 @@ public interface DeckPackage extends EPackage {
      * @generated
      */
     EAttribute getDeckTool_Name();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.deck.DeckTool#getPreconditionExpression <em>Precondition
-     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
-     * @see org.eclipse.sirius.components.view.deck.DeckTool#getPreconditionExpression()
-     * @see #getDeckTool()
-     * @generated
-     */
-    EAttribute getDeckTool_PreconditionExpression();
 
     /**
      * Returns the meta object for the containment reference list
@@ -1412,18 +1330,6 @@ public interface DeckPackage extends EPackage {
      * @generated
      */
     EClass getDeckElementDescription();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getName <em>Name</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Name</em>'.
-     * @see org.eclipse.sirius.components.view.deck.DeckElementDescription#getName()
-     * @see #getDeckElementDescription()
-     * @generated
-     */
-    EAttribute getDeckElementDescription_Name();
 
     /**
      * Returns the meta object for the attribute
@@ -1603,14 +1509,6 @@ public interface DeckPackage extends EPackage {
         EReference DECK_DESCRIPTION__LANE_DESCRIPTIONS = eINSTANCE.getDeckDescription_LaneDescriptions();
 
         /**
-         * The meta object literal for the '<em><b>Background Color</b></em>' containment reference feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference DECK_DESCRIPTION__BACKGROUND_COLOR = eINSTANCE.getDeckDescription_BackgroundColor();
-
-        /**
          * The meta object literal for the '<em><b>Lane Drop Tool</b></em>' containment reference feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1643,6 +1541,14 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EClass LANE_DESCRIPTION = eINSTANCE.getLaneDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LANE_DESCRIPTION__NAME = eINSTANCE.getLaneDescription_Name();
 
         /**
          * The meta object literal for the '<em><b>Owned Card Descriptions</b></em>' containment reference list feature.
@@ -1695,6 +1601,14 @@ public interface DeckPackage extends EPackage {
         EClass CARD_DESCRIPTION = eINSTANCE.getCardDescription();
 
         /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CARD_DESCRIPTION__NAME = eINSTANCE.getCardDescription_Name();
+
+        /**
          * The meta object literal for the '<em><b>Description Expression</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1735,14 +1649,6 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EAttribute DECK_TOOL__NAME = eINSTANCE.getDeckTool_Name();
-
-        /**
-         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute DECK_TOOL__PRECONDITION_EXPRESSION = eINSTANCE.getDeckTool_PreconditionExpression();
 
         /**
          * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
@@ -1822,14 +1728,6 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EClass DECK_ELEMENT_DESCRIPTION = eINSTANCE.getDeckElementDescription();
-
-        /**
-         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute DECK_ELEMENT_DESCRIPTION__NAME = eINSTANCE.getDeckElementDescription_Name();
 
         /**
          * The meta object literal for the '<em><b>Semantic Candidates Expression</b></em>' attribute feature. <!--

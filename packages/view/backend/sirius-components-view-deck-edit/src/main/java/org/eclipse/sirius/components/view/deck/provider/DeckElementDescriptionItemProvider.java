@@ -61,24 +61,11 @@ public class DeckElementDescriptionItemProvider extends ItemProviderAdapter
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addNamePropertyDescriptor(object);
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
             this.addTitleExpressionPropertyDescriptor(object);
             this.addLabelExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addNamePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DeckElementDescription_name_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DeckElementDescription_name_feature", "_UI_DeckElementDescription_type"), DeckPackage.Literals.DECK_ELEMENT_DESCRIPTION__NAME,
-                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -166,7 +153,7 @@ public class DeckElementDescriptionItemProvider extends ItemProviderAdapter
      */
     @Override
     public String getText(Object object) {
-        String label = ((DeckElementDescription) object).getName();
+        String label = ((DeckElementDescription) object).getSemanticCandidatesExpression();
         return label == null || label.length() == 0 ? this.getString("_UI_DeckElementDescription_type") : this.getString("_UI_DeckElementDescription_type") + " " + label;
     }
 
@@ -182,7 +169,6 @@ public class DeckElementDescriptionItemProvider extends ItemProviderAdapter
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(DeckElementDescription.class)) {
-            case DeckPackage.DECK_ELEMENT_DESCRIPTION__NAME:
             case DeckPackage.DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
             case DeckPackage.DECK_ELEMENT_DESCRIPTION__TITLE_EXPRESSION:
             case DeckPackage.DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
@@ -215,18 +201,10 @@ public class DeckElementDescriptionItemProvider extends ItemProviderAdapter
      * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
-
-        boolean qualify = childFeature == DeckPackage.Literals.DECK_ELEMENT_DESCRIPTION__STYLE || childFeature == DeckPackage.Literals.DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES;
-
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
-        }
         return super.getCreateChildText(owner, feature, child, selection);
     }
 

@@ -52,15 +52,6 @@ public class LaneDropToolBuilder {
         return this;
     }
     /**
-     * Setter for PreconditionExpression.
-     *
-     * @generated
-     */
-    public LaneDropToolBuilder preconditionExpression(java.lang.String value) {
-        this.getLaneDropTool().setPreconditionExpression(value);
-        return this;
-    }
-    /**
      * Setter for Body.
      *
      * @generated

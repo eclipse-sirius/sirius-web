@@ -42,6 +42,26 @@ import org.eclipse.sirius.components.view.deck.EditCardTool;
  */
 public class CardDescriptionImpl extends DeckElementDescriptionImpl implements CardDescription {
     /**
+     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getName()
+     * @generated
+     * @ordered
+     */
+    protected static final String NAME_EDEFAULT = "New Card Description";
+
+    /**
+     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getName()
+     * @generated
+     * @ordered
+     */
+    protected String name = NAME_EDEFAULT;
+
+    /**
      * The default value of the '{@link #getDescriptionExpression() <em>Description Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -98,6 +118,29 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
     @Override
     protected EClass eStaticClass() {
         return DeckPackage.Literals.CARD_DESCRIPTION;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setName(String newName) {
+        String oldName = this.name;
+        this.name = newName;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.CARD_DESCRIPTION__NAME, oldName, this.name));
     }
 
     /**
@@ -243,6 +286,8 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case DeckPackage.CARD_DESCRIPTION__NAME:
+                return this.getName();
             case DeckPackage.CARD_DESCRIPTION__DESCRIPTION_EXPRESSION:
                 return this.getDescriptionExpression();
             case DeckPackage.CARD_DESCRIPTION__EDIT_TOOL:
@@ -262,6 +307,9 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case DeckPackage.CARD_DESCRIPTION__NAME:
+                this.setName((String) newValue);
+                return;
             case DeckPackage.CARD_DESCRIPTION__DESCRIPTION_EXPRESSION:
                 this.setDescriptionExpression((String) newValue);
                 return;
@@ -283,6 +331,9 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+            case DeckPackage.CARD_DESCRIPTION__NAME:
+                this.setName(NAME_EDEFAULT);
+                return;
             case DeckPackage.CARD_DESCRIPTION__DESCRIPTION_EXPRESSION:
                 this.setDescriptionExpression(DESCRIPTION_EXPRESSION_EDEFAULT);
                 return;
@@ -304,6 +355,8 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case DeckPackage.CARD_DESCRIPTION__NAME:
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case DeckPackage.CARD_DESCRIPTION__DESCRIPTION_EXPRESSION:
                 return DESCRIPTION_EXPRESSION_EDEFAULT == null ? this.descriptionExpression != null : !DESCRIPTION_EXPRESSION_EDEFAULT.equals(this.descriptionExpression);
             case DeckPackage.CARD_DESCRIPTION__EDIT_TOOL:
@@ -325,7 +378,9 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (descriptionExpression: ");
+        result.append(" (name: ");
+        result.append(this.name);
+        result.append(", descriptionExpression: ");
         result.append(this.descriptionExpression);
         result.append(')');
         return result.toString();

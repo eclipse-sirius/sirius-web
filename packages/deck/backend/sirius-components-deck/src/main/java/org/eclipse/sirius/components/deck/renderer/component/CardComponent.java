@@ -71,7 +71,7 @@ public class CardComponent implements IComponent {
         DeckElementStyle style = cardDescription.styleProvider().apply(childVariableManager);
 
         Optional<Card> optionalPreviousCard = this.props.previousCards().stream()
-                .filter(card -> card.targetObjectId().equals(targetObjectId))
+                .filter(card -> card.descriptionId().equals(cardDescription.id()) && card.targetObjectId().equals(targetObjectId))
                 .findFirst();
         String cardId = optionalPreviousCard.map(Card::id).orElse(UUID.randomUUID().toString());
         boolean visible = optionalPreviousCard.map(this::computeVisibility).orElse(true);

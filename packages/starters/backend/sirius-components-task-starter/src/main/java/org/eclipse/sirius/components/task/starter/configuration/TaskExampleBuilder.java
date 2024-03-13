@@ -21,6 +21,8 @@ import java.util.Locale;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.task.Company;
+import org.eclipse.sirius.components.task.KeyResult;
+import org.eclipse.sirius.components.task.Objective;
 import org.eclipse.sirius.components.task.Person;
 import org.eclipse.sirius.components.task.Project;
 import org.eclipse.sirius.components.task.Task;
@@ -253,36 +255,36 @@ public class TaskExampleBuilder {
         Project okrProject = TaskFactory.eINSTANCE.createProject();
         okrProject.setName("OKR Project Dev");
 
-        List<TaskTag> okrTags = this.createOKRTags();
-        okrProject.getOwnedTags().addAll(okrTags);
+        Objective objectiveAppicationRunning = TaskFactory.eINSTANCE.createObjective();
+        objectiveAppicationRunning.setName("Have the application running");
+
+        KeyResult keyResultDevCompleted = TaskFactory.eINSTANCE.createKeyResult();
+        keyResultDevCompleted.setName("Dev completed");
+        keyResultDevCompleted.setDescription("The development is completed");
 
         Task idea = TaskFactory.eINSTANCE.createTask();
         idea.setName(IDEA);
         idea.setStartTime(Instant.parse(DATE_2023_12_10T08_30_00Z));
         idea.setEndTime(Instant.parse(DATE_2023_12_11T17_30_00Z));
         idea.setProgress(50);
-        idea.getTags().add(okrTags.get(0));
         Task spec = TaskFactory.eINSTANCE.createTask();
         spec.setName(SPECIFICATION);
         spec.setStartTime(Instant.parse(DATE_2023_12_11T08_30_00Z));
         spec.setEndTime(Instant.parse(DATE_2023_12_12T17_30_00Z));
         spec.setProgress(50);
         spec.getDependencies().add(idea);
-        spec.getTags().add(okrTags.get(0));
 
         Task development = TaskFactory.eINSTANCE.createTask();
         development.setName(DEVELOPMENT);
         development.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
         development.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
         development.getDependencies().add(spec);
-        development.getTags().add(okrTags.get(1));
 
         Task codeDev = TaskFactory.eINSTANCE.createTask();
         codeDev.setName(CODE_DEVELOPMENT);
         codeDev.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
         codeDev.setEndTime(Instant.parse(DATE_2023_12_15T17_30_00Z));
         codeDev.getAssignedPersons().add(peter);
-        codeDev.getTags().add(okrTags.get(2));
 
         Task review = TaskFactory.eINSTANCE.createTask();
         review.setName(REVIEW);
@@ -290,16 +292,23 @@ public class TaskExampleBuilder {
         review.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
         development.getSubTasks().addAll(List.of(codeDev, review));
         codeDev.getAssignedPersons().add(paul);
-        review.getTags().add(okrTags.get(3));
 
-        Task release = TaskFactory.eINSTANCE.createTask();
-        release.setName(RELEASE);
-        release.setStartTime(Instant.parse(DATE_2023_12_18T08_30_00Z));
-        release.setEndTime(Instant.parse(DATE_2023_12_18T08_30_00Z));
-        release.getTags().add(okrTags.get(3));
+        keyResultDevCompleted.getSubTasks().addAll(List.of(idea, spec, development));
 
+        KeyResult keyResultTestsOK = TaskFactory.eINSTANCE.createKeyResult();
+        keyResultTestsOK.setName("Tests passed");
+        keyResultTestsOK.setDescription("The tests are all passed");
 
-        okrProject.getOwnedTasks().addAll(List.of(idea, spec, development, release));
+        Task manualsTest = TaskFactory.eINSTANCE.createTask();
+        manualsTest.setName("Manual Test Campaign");
+        Task automaticTests = TaskFactory.eINSTANCE.createTask();
+        manualsTest.setName("Automatic Test Checks");
+
+        keyResultTestsOK.getSubTasks().addAll(List.of(manualsTest, automaticTests));
+
+        objectiveAppicationRunning.getOwnedKeyResults().addAll(List.of(keyResultDevCompleted, keyResultTestsOK));
+        okrProject.getOwnedObjectives().addAll(List.of(objectiveAppicationRunning));
+
         return okrProject;
     }
 
@@ -309,17 +318,6 @@ public class TaskExampleBuilder {
             TaskTag tag = TaskFactory.eINSTANCE.createTaskTag();
             tag.setPrefix("daily");
             tag.setSuffix(dayOfWeek.getDisplayName(TextStyle.FULL, Locale.ENGLISH));
-            tags.add(tag);
-        }
-        return tags;
-    }
-
-    private List<TaskTag> createOKRTags() {
-        List<TaskTag> tags = new ArrayList<>();
-        for (int i = 0; i <= 4; i++) {
-            TaskTag tag = TaskFactory.eINSTANCE.createTaskTag();
-            tag.setPrefix("OKR");
-            tag.setSuffix(String.format("Objective #%s", i));
             tags.add(tag);
         }
         return tags;

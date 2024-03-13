@@ -237,7 +237,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EReference getDeckDescription_BackgroundColor() {
+    public EReference getDeckDescription_LaneDropTool() {
         return (EReference) this.deckDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
@@ -247,7 +247,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EReference getDeckDescription_LaneDropTool() {
+    public EReference getDeckDescription_Style() {
         return (EReference) this.deckDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
@@ -257,18 +257,8 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EReference getDeckDescription_Style() {
-        return (EReference) this.deckDescriptionEClass.getEStructuralFeatures().get(3);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EReference getDeckDescription_ConditionalStyles() {
-        return (EReference) this.deckDescriptionEClass.getEStructuralFeatures().get(4);
+        return (EReference) this.deckDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -287,8 +277,8 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EReference getLaneDescription_OwnedCardDescriptions() {
-        return (EReference) this.laneDescriptionEClass.getEStructuralFeatures().get(0);
+    public EAttribute getLaneDescription_Name() {
+        return (EAttribute) this.laneDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -297,7 +287,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EReference getLaneDescription_EditTool() {
+    public EReference getLaneDescription_OwnedCardDescriptions() {
         return (EReference) this.laneDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
@@ -307,7 +297,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EReference getLaneDescription_CreateTool() {
+    public EReference getLaneDescription_EditTool() {
         return (EReference) this.laneDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
@@ -317,7 +307,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EReference getLaneDescription_CardDropTool() {
+    public EReference getLaneDescription_CreateTool() {
         return (EReference) this.laneDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
@@ -327,8 +317,18 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
+    public EReference getLaneDescription_CardDropTool() {
+        return (EReference) this.laneDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EAttribute getLaneDescription_IsCollapsibleExpression() {
-        return (EAttribute) this.laneDescriptionEClass.getEStructuralFeatures().get(4);
+        return (EAttribute) this.laneDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -347,7 +347,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EAttribute getCardDescription_DescriptionExpression() {
+    public EAttribute getCardDescription_Name() {
         return (EAttribute) this.cardDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -357,8 +357,18 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
+    public EAttribute getCardDescription_DescriptionExpression() {
+        return (EAttribute) this.cardDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getCardDescription_EditTool() {
-        return (EReference) this.cardDescriptionEClass.getEStructuralFeatures().get(1);
+        return (EReference) this.cardDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -368,7 +378,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      */
     @Override
     public EReference getCardDescription_DeleteTool() {
-        return (EReference) this.cardDescriptionEClass.getEStructuralFeatures().get(2);
+        return (EReference) this.cardDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -397,18 +407,8 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EAttribute getDeckTool_PreconditionExpression() {
-        return (EAttribute) this.deckToolEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EReference getDeckTool_Body() {
-        return (EReference) this.deckToolEClass.getEStructuralFeatures().get(2);
+        return (EReference) this.deckToolEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -487,7 +487,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EAttribute getDeckElementDescription_Name() {
+    public EAttribute getDeckElementDescription_SemanticCandidatesExpression() {
         return (EAttribute) this.deckElementDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -497,7 +497,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EAttribute getDeckElementDescription_SemanticCandidatesExpression() {
+    public EAttribute getDeckElementDescription_TitleExpression() {
         return (EAttribute) this.deckElementDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
@@ -507,7 +507,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EAttribute getDeckElementDescription_TitleExpression() {
+    public EAttribute getDeckElementDescription_LabelExpression() {
         return (EAttribute) this.deckElementDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
@@ -517,18 +517,8 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
-    public EAttribute getDeckElementDescription_LabelExpression() {
-        return (EAttribute) this.deckElementDescriptionEClass.getEStructuralFeatures().get(3);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EReference getDeckElementDescription_Style() {
-        return (EReference) this.deckElementDescriptionEClass.getEStructuralFeatures().get(4);
+        return (EReference) this.deckElementDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -538,7 +528,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      */
     @Override
     public EReference getDeckElementDescription_ConditionalStyles() {
-        return (EReference) this.deckElementDescriptionEClass.getEStructuralFeatures().get(5);
+        return (EReference) this.deckElementDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -642,12 +632,12 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         // Create classes and their features
         this.deckDescriptionEClass = this.createEClass(DECK_DESCRIPTION);
         this.createEReference(this.deckDescriptionEClass, DECK_DESCRIPTION__LANE_DESCRIPTIONS);
-        this.createEReference(this.deckDescriptionEClass, DECK_DESCRIPTION__BACKGROUND_COLOR);
         this.createEReference(this.deckDescriptionEClass, DECK_DESCRIPTION__LANE_DROP_TOOL);
         this.createEReference(this.deckDescriptionEClass, DECK_DESCRIPTION__STYLE);
         this.createEReference(this.deckDescriptionEClass, DECK_DESCRIPTION__CONDITIONAL_STYLES);
 
         this.laneDescriptionEClass = this.createEClass(LANE_DESCRIPTION);
+        this.createEAttribute(this.laneDescriptionEClass, LANE_DESCRIPTION__NAME);
         this.createEReference(this.laneDescriptionEClass, LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS);
         this.createEReference(this.laneDescriptionEClass, LANE_DESCRIPTION__EDIT_TOOL);
         this.createEReference(this.laneDescriptionEClass, LANE_DESCRIPTION__CREATE_TOOL);
@@ -655,13 +645,13 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.createEAttribute(this.laneDescriptionEClass, LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION);
 
         this.cardDescriptionEClass = this.createEClass(CARD_DESCRIPTION);
+        this.createEAttribute(this.cardDescriptionEClass, CARD_DESCRIPTION__NAME);
         this.createEAttribute(this.cardDescriptionEClass, CARD_DESCRIPTION__DESCRIPTION_EXPRESSION);
         this.createEReference(this.cardDescriptionEClass, CARD_DESCRIPTION__EDIT_TOOL);
         this.createEReference(this.cardDescriptionEClass, CARD_DESCRIPTION__DELETE_TOOL);
 
         this.deckToolEClass = this.createEClass(DECK_TOOL);
         this.createEAttribute(this.deckToolEClass, DECK_TOOL__NAME);
-        this.createEAttribute(this.deckToolEClass, DECK_TOOL__PRECONDITION_EXPRESSION);
         this.createEReference(this.deckToolEClass, DECK_TOOL__BODY);
 
         this.createCardToolEClass = this.createEClass(CREATE_CARD_TOOL);
@@ -677,7 +667,6 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.laneDropToolEClass = this.createEClass(LANE_DROP_TOOL);
 
         this.deckElementDescriptionEClass = this.createEClass(DECK_ELEMENT_DESCRIPTION);
-        this.createEAttribute(this.deckElementDescriptionEClass, DECK_ELEMENT_DESCRIPTION__NAME);
         this.createEAttribute(this.deckElementDescriptionEClass, DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
         this.createEAttribute(this.deckElementDescriptionEClass, DECK_ELEMENT_DESCRIPTION__TITLE_EXPRESSION);
         this.createEAttribute(this.deckElementDescriptionEClass, DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION);
@@ -746,8 +735,6 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.initEClass(this.deckDescriptionEClass, DeckDescription.class, "DeckDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getDeckDescription_LaneDescriptions(), this.getLaneDescription(), null, "laneDescriptions", null, 0, -1, DeckDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getDeckDescription_BackgroundColor(), theViewPackage.getUserColor(), null, "backgroundColor", null, 0, 1, DeckDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDeckDescription_LaneDropTool(), this.getLaneDropTool(), null, "laneDropTool", null, 0, 1, DeckDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDeckDescription_Style(), this.getDeckDescriptionStyle(), null, "style", null, 0, 1, DeckDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -756,6 +743,8 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.laneDescriptionEClass, LaneDescription.class, "LaneDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getLaneDescription_Name(), theViewPackage.getIdentifier(), "name", "New Lane Description", 0, 1, LaneDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getLaneDescription_OwnedCardDescriptions(), this.getCardDescription(), null, "ownedCardDescriptions", null, 0, -1, LaneDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getLaneDescription_EditTool(), this.getEditLaneTool(), null, "editTool", null, 0, 1, LaneDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -768,6 +757,8 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.cardDescriptionEClass, CardDescription.class, "CardDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getCardDescription_Name(), theViewPackage.getIdentifier(), "name", "New Card Description", 0, 1, CardDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getCardDescription_DescriptionExpression(), theViewPackage.getInterpretedExpression(), "descriptionExpression", "aql:self", 0, 1, CardDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getCardDescription_EditTool(), this.getEditCardTool(), null, "editTool", null, 0, 1, CardDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -778,8 +769,6 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.initEClass(this.deckToolEClass, DeckTool.class, "DeckTool", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getDeckTool_Name(), theViewPackage.getIdentifier(), "name", null, 1, 1, DeckTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getDeckTool_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, DeckTool.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDeckTool_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, DeckTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -796,8 +785,6 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.initEClass(this.laneDropToolEClass, LaneDropTool.class, "LaneDropTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.deckElementDescriptionEClass, DeckElementDescription.class, "DeckElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getDeckElementDescription_Name(), theViewPackage.getIdentifier(), "name", "newDeckElementDescription", 0, 1, DeckElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getDeckElementDescription_SemanticCandidatesExpression(), theViewPackage.getInterpretedExpression(), "semanticCandidatesExpression", "aql:self", 1, 1,
                 DeckElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getDeckElementDescription_TitleExpression(), theViewPackage.getInterpretedExpression(), "titleExpression", "aql:self", 0, 1, DeckElementDescription.class,

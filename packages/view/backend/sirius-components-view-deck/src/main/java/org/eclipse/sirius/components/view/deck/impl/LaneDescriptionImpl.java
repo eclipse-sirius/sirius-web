@@ -50,6 +50,26 @@ import org.eclipse.sirius.components.view.deck.LaneDescription;
  */
 public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements LaneDescription {
     /**
+     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getName()
+     * @generated
+     * @ordered
+     */
+    protected static final String NAME_EDEFAULT = "New Lane Description";
+
+    /**
+     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getName()
+     * @generated
+     * @ordered
+     */
+    protected String name = NAME_EDEFAULT;
+
+    /**
      * The cached value of the '{@link #getOwnedCardDescriptions() <em>Owned Card Descriptions</em>}' containment
      * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -126,6 +146,29 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
     @Override
     protected EClass eStaticClass() {
         return DeckPackage.Literals.LANE_DESCRIPTION;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setName(String newName) {
+        String oldName = this.name;
+        this.name = newName;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.LANE_DESCRIPTION__NAME, oldName, this.name));
     }
 
     /**
@@ -336,6 +379,8 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case DeckPackage.LANE_DESCRIPTION__NAME:
+                return this.getName();
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 return this.getOwnedCardDescriptions();
             case DeckPackage.LANE_DESCRIPTION__EDIT_TOOL:
@@ -359,6 +404,9 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case DeckPackage.LANE_DESCRIPTION__NAME:
+                this.setName((String) newValue);
+                return;
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 this.getOwnedCardDescriptions().clear();
                 this.getOwnedCardDescriptions().addAll((Collection<? extends CardDescription>) newValue);
@@ -387,6 +435,9 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+            case DeckPackage.LANE_DESCRIPTION__NAME:
+                this.setName(NAME_EDEFAULT);
+                return;
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 this.getOwnedCardDescriptions().clear();
                 return;
@@ -414,6 +465,8 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case DeckPackage.LANE_DESCRIPTION__NAME:
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 return this.ownedCardDescriptions != null && !this.ownedCardDescriptions.isEmpty();
             case DeckPackage.LANE_DESCRIPTION__EDIT_TOOL:
@@ -439,7 +492,9 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (isCollapsibleExpression: ");
+        result.append(" (name: ");
+        result.append(this.name);
+        result.append(", isCollapsibleExpression: ");
         result.append(this.isCollapsibleExpression);
         result.append(')');
         return result.toString();
