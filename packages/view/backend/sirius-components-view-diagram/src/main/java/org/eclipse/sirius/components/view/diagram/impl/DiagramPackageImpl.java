@@ -403,10 +403,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
+     * @generated
      */
     public static DiagramPackage init() {
         if (isInited)
@@ -693,6 +693,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EAttribute getNodeDescription_KeepAspectRatio() {
         return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(12);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getNodeDescription_IsCollapsedByDefaultExpression() {
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(13);
     }
 
     /**
@@ -1845,6 +1855,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION);
         this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION);
         this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__KEEP_ASPECT_RATIO);
+        this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION);
 
         this.edgeDescriptionEClass = this.createEClass(EDGE_DESCRIPTION);
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION);
@@ -2099,6 +2110,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeDescription_KeepAspectRatio(), this.ecorePackage.getEBoolean(), "keepAspectRatio", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeDescription_IsCollapsedByDefaultExpression(), theViewPackage.getInterpretedExpression(), "isCollapsedByDefaultExpression", null, 0, 1, NodeDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.edgeDescriptionEClass, EdgeDescription.class, "EdgeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getEdgeDescription_BeginLabelExpression(), theViewPackage.getInterpretedExpression(), "beginLabelExpression", "", 0, 1, EdgeDescription.class, !IS_TRANSIENT,

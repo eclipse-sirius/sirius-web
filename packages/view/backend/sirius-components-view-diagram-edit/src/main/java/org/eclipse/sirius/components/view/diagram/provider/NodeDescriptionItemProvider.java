@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,6 +64,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.addDefaultWidthExpressionPropertyDescriptor(object);
             this.addDefaultHeightExpressionPropertyDescriptor(object);
             this.addKeepAspectRatioPropertyDescriptor(object);
+            this.addIsCollapsedByDefaultExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -156,6 +157,19 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
+     * This adds a property descriptor for the Is Collapsed By Default Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addIsCollapsedByDefaultExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeDescription_isCollapsedByDefaultExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_isCollapsedByDefaultExpression_feature", "_UI_NodeDescription_type"),
+                DiagramPackage.Literals.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
      * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
      * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
@@ -238,6 +252,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
             case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
+            case DiagramPackage.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:

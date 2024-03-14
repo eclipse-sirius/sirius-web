@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.builder.generated.DropToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.IfBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeToolBuilder;
+import org.eclipse.sirius.components.view.builder.generated.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -78,16 +79,20 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
     }
 
     private DiagramDescription createDiagramDescription() {
+        var nodeStyle = new RectangularNodeStyleDescriptionBuilder()
+                .build();
+
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
                 .domainType("papaya_logical_architecture:Component")
-                .semanticCandidatesExpression("aql:self.eContents")
+                .semanticCandidatesExpression("aql:self.eContents()")
                 .labelExpression("aql:self.name")
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .style(nodeStyle)
                 .build();
 
         var createNewComponent = new CreateInstanceBuilder()
-                .typeName("papaya_logial_acrhitecture:Component")
+                .typeName("papaya_logical_architecture:Component")
                 .referenceName("components")
                 .variableName("newInstance")
                 .children(

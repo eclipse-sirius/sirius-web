@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -248,6 +248,16 @@ public class NodeDescriptionBuilder {
      */
     public NodeDescriptionBuilder keepAspectRatio(java.lang.Boolean value) {
         this.getNodeDescription().setKeepAspectRatio(value);
+        return this;
+    }
+
+    /**
+     * Setter for IsCollapsedByDefaultExpression.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder isCollapsedByDefaultExpression(java.lang.String value) {
+        this.getNodeDescription().setIsCollapsedByDefaultExpression(value);
         return this;
     }
 

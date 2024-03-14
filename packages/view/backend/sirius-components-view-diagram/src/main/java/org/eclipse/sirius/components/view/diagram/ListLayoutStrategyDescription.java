@@ -32,9 +32,9 @@ import org.eclipse.emf.common.util.EList;
  * Nodes</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getListLayoutStrategyDescription()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getListLayoutStrategyDescription()
  */
 public interface ListLayoutStrategyDescription extends LayoutStrategyDescription {
 
@@ -43,10 +43,10 @@ public interface ListLayoutStrategyDescription extends LayoutStrategyDescription
      * <code>"aql:true"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Are Child Nodes Draggable Expression</em>' attribute.
-     * @model default="aql:true" dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
-     * @generated
      * @see #setAreChildNodesDraggableExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getListLayoutStrategyDescription_AreChildNodesDraggableExpression()
+     * @model default="aql:true" dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
+     * @generated
      */
     String getAreChildNodesDraggableExpression();
 
@@ -56,9 +56,9 @@ public interface ListLayoutStrategyDescription extends LayoutStrategyDescription
      * <em>Are Child Nodes Draggable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Are Child Nodes Draggable Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Are Child Nodes Draggable Expression</em>' attribute.
      * @see #getAreChildNodesDraggableExpression()
+     * @generated
      */
     void setAreChildNodesDraggableExpression(String value);
 
@@ -67,10 +67,10 @@ public interface ListLayoutStrategyDescription extends LayoutStrategyDescription
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Top Gap Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setTopGapExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getListLayoutStrategyDescription_TopGapExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getTopGapExpression();
 
@@ -80,9 +80,9 @@ public interface ListLayoutStrategyDescription extends LayoutStrategyDescription
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Top Gap Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Top Gap Expression</em>' attribute.
      * @see #getTopGapExpression()
+     * @generated
      */
     void setTopGapExpression(String value);
 
@@ -91,10 +91,10 @@ public interface ListLayoutStrategyDescription extends LayoutStrategyDescription
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Bottom Gap Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setBottomGapExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getListLayoutStrategyDescription_BottomGapExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getBottomGapExpression();
 
@@ -104,9 +104,9 @@ public interface ListLayoutStrategyDescription extends LayoutStrategyDescription
      * <em>Bottom Gap Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Bottom Gap Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Bottom Gap Expression</em>' attribute.
      * @see #getBottomGapExpression()
+     * @generated
      */
     void setBottomGapExpression(String value);
 
@@ -115,9 +115,9 @@ public interface ListLayoutStrategyDescription extends LayoutStrategyDescription
      * {@link org.eclipse.sirius.components.view.diagram.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Growable Nodes</em>' reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getListLayoutStrategyDescription_GrowableNodes()
      * @model
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getListLayoutStrategyDescription_GrowableNodes()
      */
     EList<NodeDescription> getGrowableNodes();
 } // ListLayoutStrategyDescription
