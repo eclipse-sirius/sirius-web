@@ -18,6 +18,7 @@ import {
   BackgroundVariant,
   ConnectionLineType,
   ConnectionMode,
+  Edge,
   EdgeChange,
   Node,
   NodeChange,
@@ -256,8 +257,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     onNodesChange([resetPosition]);
   });
 
-  const handleDiagramElementCLick = (event: React.MouseEvent<Element, MouseEvent>) => {
-    onDiagramElementClick(event);
+  const handleDiagramElementCLick = (event: React.MouseEvent<Element, MouseEvent>, element: Node | Edge) => {
+    onDiagramElementClick(event, element);
     onDiagramGroupElementClick(event);
   };
 
