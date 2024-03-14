@@ -33,7 +33,7 @@ export const useGroupPalette = (): UseGroupPaletteValue => {
     }
   }, [escapePressed]);
 
-  const onDiagramGroupElementClick = useCallback((event: React.MouseEvent<Element, MouseEvent>) => {
+  const onDiagramElementClick = useCallback((event: React.MouseEvent<Element, MouseEvent>) => {
     const { domNode } = store.getState();
     const element = domNode?.getBoundingClientRect();
     const palettePosition = computePalettePosition(event, element);
@@ -47,6 +47,6 @@ export const useGroupPalette = (): UseGroupPaletteValue => {
     position: state.position,
     isOpened: state.isOpened,
     hideGroupPalette,
-    onDiagramGroupElementClick,
+    onDiagramElementClick,
   };
 };

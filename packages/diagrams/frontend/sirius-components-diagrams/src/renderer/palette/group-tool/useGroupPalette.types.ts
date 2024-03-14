@@ -17,7 +17,7 @@ export interface UseGroupPaletteValue {
   position: XYPosition | null;
   isOpened: boolean;
   hideGroupPalette: () => void;
-  onDiagramGroupElementClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
+  onDiagramElementClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
 }
 
 export interface UseGroupPaletteState {
