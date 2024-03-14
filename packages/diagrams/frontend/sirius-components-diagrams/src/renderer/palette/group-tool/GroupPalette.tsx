@@ -25,7 +25,6 @@ import { useHideDiagramElements } from '../../hide/useHideDiagramElements';
 import { usePinDiagramElements } from '../../pin/usePinDiagramElements';
 import { ContextualPaletteStyleProps } from '../Palette.types';
 import { PalettePortal } from '../PalettePortal';
-import { useDiagramElementPalette } from '../useDiagramElementPalette';
 import { GroupPaletteProps } from './GroupPalette.types';
 
 const usePaletteStyle = makeStyles((theme) => ({
@@ -53,12 +52,12 @@ export const GroupPalette = memo(({ x, y, isOpened }: GroupPaletteProps) => {
   const { hideDiagramElements } = useHideDiagramElements();
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { pinDiagramElements } = usePinDiagramElements();
-  const { hideDiagramElementPalette } = useDiagramElementPalette();
   const [selectedElementIds, setSelectedElementIds] = useState<string[]>([]);
 
-  const onChange = useCallback(({ nodes }) => {
-    if (nodes.filter((node) => node.selected).length > 1) {
-      setSelectedElementIds(nodes.filter((node) => node.selected).map((node) => node.id));
+  const onChange = useCallback(({ nodes, edges }) => {
+    const selectedElements = [...nodes, ...edges].filter((element) => element.selected);
+    if (selectedElements.length > 1) {
+      setSelectedElementIds(selectedElements.map((element) => element.id));
     } else {
       setSelectedElementIds([]);
     }
@@ -74,7 +73,6 @@ export const GroupPalette = memo(({ x, y, isOpened }: GroupPaletteProps) => {
   if (!shouldRender) {
     return null;
   }
-  hideDiagramElementPalette();
 
   return (
     <PalettePortal>

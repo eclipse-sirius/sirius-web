@@ -12,10 +12,11 @@
  *******************************************************************************/
 
 import { useCallback, useContext, useEffect } from 'react';
-import { XYPosition, useKeyPress, useStoreApi } from 'reactflow';
+import { Edge, Node, XYPosition, useKeyPress, useReactFlow, useStoreApi } from 'reactflow';
 import { DiagramElementPaletteContext } from './DiagramElementPaletteContext';
 import { DiagramElementPaletteContextValue } from './DiagramElementPaletteContext.types';
 import { UseDiagramElementPaletteValue } from './useDiagramElementPalette.types';
+import { NodeData, EdgeData } from '../DiagramRenderer.types';
 
 const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DOMRect | undefined): XYPosition => {
   return {
@@ -27,22 +28,34 @@ const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DO
 export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
   const { x, y, isOpened, hideDiagramElementPalette, showDiagramElementPalette } =
     useContext<DiagramElementPaletteContextValue>(DiagramElementPaletteContext);
+  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
 
   const store = useStoreApi();
 
-  const onDiagramElementClick = useCallback((event: React.MouseEvent<Element, MouseEvent>) => {
-    const { domNode } = store.getState();
-    const element = domNode?.getBoundingClientRect();
-    const palettePosition = computePalettePosition(event, element);
-    showDiagramElementPalette(palettePosition.x, palettePosition.y);
-  }, []);
+  const onDiagramElementClick = useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>, elementClicked: Node | Edge) => {
+      const { domNode } = store.getState();
+      const element = domNode?.getBoundingClientRect();
+      const palettePosition = computePalettePosition(event, element);
+      const selectedElement = [
+        ...getNodes().filter((node) => node.selected),
+        ...getEdges().filter((edge) => edge.selected),
+      ];
+      if (selectedElement.length === 1 && selectedElement[0] && selectedElement[0].id === elementClicked.id) {
+        showDiagramElementPalette(palettePosition.x, palettePosition.y);
+      } else {
+        hideDiagramElementPalette();
+      }
+    },
+    [showDiagramElementPalette, hideDiagramElementPalette]
+  );
 
   const escapePressed = useKeyPress('Escape');
   useEffect(() => {
     if (escapePressed) {
       hideDiagramElementPalette();
     }
-  }, [escapePressed]);
+  }, [escapePressed, hideDiagramElementPalette]);
 
   return {
     x,
