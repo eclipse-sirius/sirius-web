@@ -113,6 +113,7 @@ The implemented fix does not allow to evaluate an AQL expression, but only to re
 - https://github.com/eclipse-sirius/sirius-web/issues/3228[#3228] [diagram] Fix an issue where list child could be moved outside its container
 - https://github.com/eclipse-sirius/sirius-web/issues/3206[#3206] [diagram] Fix an issue where precondition on tool was not respected during palette creation
 - https://github.com/eclipse-sirius/sirius-web/issues/3257[#3257] [diagram] Fix an issue that caused an infinite loop when selecting elements with shift.
+- https://github.com/eclipse-sirius/sirius-web/issues/3239[#3239] [form] Add missing reference widget view builder
 
 === New Features
 

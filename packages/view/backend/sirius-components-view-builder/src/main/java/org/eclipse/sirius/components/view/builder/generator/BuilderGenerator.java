@@ -84,11 +84,9 @@ public class BuilderGenerator {
         resourceSet.getResources().add(EcorePackage.eINSTANCE.eResource());
         resourceSet.getURIConverter().getURIMap().put(URI.createURI("platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore"), URI.createURI("http://www.eclipse.org/emf/2002/Ecore"));
 
-        List<EObject> allViewContent = new ArrayList<>();
-
         URI viewURI = URI.createFileURI(args[1] + "/../sirius-components-view/src/main/resources/model/view.genmodel");
         Resource viewResource = resourceSet.getResource(viewURI, true);
-        allViewContent.addAll(viewResource.getContents());
+        List<EObject> allViewContent = new ArrayList<>(viewResource.getContents());
 
         URI diagramURI = URI.createFileURI(args[1] + "/../sirius-components-view-diagram/src/main/resources/model/diagram.genmodel");
         Resource diagramResource = resourceSet.getResource(diagramURI, true);
@@ -105,6 +103,10 @@ public class BuilderGenerator {
         URI ganttURI = URI.createFileURI(args[1] + "/../sirius-components-view-gantt/src/main/resources/model/gantt.genmodel");
         Resource ganttResource = resourceSet.getResource(ganttURI, true);
         allViewContent.addAll(ganttResource.getContents());
+
+        URI referenceURI = URI.createFileURI(args[1] + "/../sirius-components-widget-reference-view/src/main/resources/model/reference.genmodel");
+        Resource referenceResource = resourceSet.getResource(referenceURI, true);
+        allViewContent.addAll(referenceResource.getContents());
 
         var gen = new BuilderGenerator(args[0], args[2], args[3]);
 
