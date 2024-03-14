@@ -106,6 +106,7 @@ The implemented fix does not allow to evaluate an AQL expression, but only to re
 - https://github.com/eclipse-sirius/sirius-web/issues/3215[#3215] [vscode] Fix an issue where it was impossible to delete elements on a diagram from the VSCode extension.
 - https://github.com/eclipse-sirius/sirius-web/issues/3208[#3208] [form] Fix an issue with splitbutton default style in form editor
 - https://github.com/eclipse-sirius/sirius-web/issues/3235[#3235] [diagram] Fix an issue where group palette and element palette could be both displayed on edges.
+- https://github.com/eclipse-sirius/sirius-web/issues/3035[#3035] [diagram] Fix an issue where diagram palette and element palette could be both displayed.
 
 === New Features
 

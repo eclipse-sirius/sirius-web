@@ -88,15 +88,20 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
 
-  const { onDiagramBackgroundClick, hideDiagramPalette, isOpened: isDiagramPaletteOpened } = useDiagramPalette();
   const {
-    onDiagramElementClick,
+    onDiagramBackgroundClick,
+    onDiagramElementClick: diagramPaletteOnDiagramElementClick,
+    hideDiagramPalette,
+    isOpened: isDiagramPaletteOpened,
+  } = useDiagramPalette();
+  const {
+    onDiagramElementClick: elementPaletteOnDiagramElementClick,
     hideDiagramElementPalette,
     isOpened: isDiagramElementPaletteOpened,
   } = useDiagramElementPalette();
 
   const {
-    onDiagramGroupElementClick,
+    onDiagramElementClick: groupPaletteOnDiagramElementClick,
     hideGroupPalette,
     position: groupPalettePosition,
     isOpened: isGroupPaletteOpened,
@@ -258,15 +263,16 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   });
 
   const handleDiagramElementCLick = (event: React.MouseEvent<Element, MouseEvent>, element: Node | Edge) => {
-    onDiagramElementClick(event, element);
-    onDiagramGroupElementClick(event);
+    diagramPaletteOnDiagramElementClick();
+    elementPaletteOnDiagramElementClick(event, element);
+    groupPaletteOnDiagramElementClick(event);
   };
 
   const handleSelectionStart = () => {
     closeAllPalettes();
   };
   const handleSelectionEnd = (event: React.MouseEvent<Element, MouseEvent>) => {
-    onDiagramGroupElementClick(event);
+    groupPaletteOnDiagramElementClick(event);
   };
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();

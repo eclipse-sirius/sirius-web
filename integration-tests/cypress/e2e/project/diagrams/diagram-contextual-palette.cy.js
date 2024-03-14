@@ -269,4 +269,21 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').should('not.exist');
     cy.getByTestId('confirmation-dialog').should('not.exist');
   });
+
+
+  it('diagram palette is closed once element palette is opened', () => {
+    createFlowReactFlowDiagram();
+
+    // trick used to interact with the palette
+    cy.getByTestId('fit-to-screen').click();
+    cy.wait(4000);
+
+    cy.getByTestId('rf__wrapper').click(100, 100);
+    cy.getByTestId('Palette').should('exist').should('have.length', 1);
+    cy.getByTestId('Palette').findByTestId('Composite Processor - Tool').should('exist');
+
+    cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').should('exist').click();
+    cy.getByTestId('Palette').should('exist').should('have.length', 1);
+    cy.getByTestId('Palette').findByTestId('Edit - Tool').should('exist');
+  });
 });

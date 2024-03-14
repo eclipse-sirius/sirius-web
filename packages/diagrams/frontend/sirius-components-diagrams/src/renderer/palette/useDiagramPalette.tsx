@@ -29,12 +29,17 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
     useContext<DiagramPaletteContextValue>(DiagramPaletteContext);
   const store = useStoreApi();
 
-  const onDiagramBackgroundClick = useCallback((event: React.MouseEvent<Element, MouseEvent>) => {
-    const { domNode } = store.getState();
-    const element = domNode?.getBoundingClientRect();
-    const palettePosition = computePalettePosition(event, element);
-    showDiagramPalette(palettePosition.x, palettePosition.y);
-  }, []);
+  const onDiagramBackgroundClick = useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>) => {
+      const { domNode } = store.getState();
+      const element = domNode?.getBoundingClientRect();
+      const palettePosition = computePalettePosition(event, element);
+      showDiagramPalette(palettePosition.x, palettePosition.y);
+    },
+    [showDiagramPalette]
+  );
+
+  const onDiagramElementClick = useCallback(() => hideDiagramPalette(), [hideDiagramPalette]);
 
   const escapePressed = useKeyPress('Escape');
   useEffect(() => {
@@ -50,6 +55,7 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
     hideDiagramPalette,
     showDiagramPalette,
     onDiagramBackgroundClick,
+    onDiagramElementClick,
     getLastToolInvoked,
     setLastToolInvoked,
   };
