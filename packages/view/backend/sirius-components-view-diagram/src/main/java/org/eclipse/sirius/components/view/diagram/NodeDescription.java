@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -290,5 +290,29 @@ public interface NodeDescription extends DiagramElementDescription {
      * @generated
      */
     void setKeepAspectRatio(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Is Collapsed By Default Expression</b></em>' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Is Collapsed By Default Expression</em>' attribute.
+     * @see #setIsCollapsedByDefaultExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_IsCollapsedByDefaultExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getIsCollapsedByDefaultExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getIsCollapsedByDefaultExpression <em>Is
+     * Collapsed By Default Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Is Collapsed By Default Expression</em>' attribute.
+     * @see #getIsCollapsedByDefaultExpression()
+     * @generated
+     */
+    void setIsCollapsedByDefaultExpression(String value);
 
 } // NodeDescription

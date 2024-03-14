@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -239,6 +239,26 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected boolean keepAspectRatio = KEEP_ASPECT_RATIO_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getIsCollapsedByDefaultExpression() <em>Is Collapsed By Default
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getIsCollapsedByDefaultExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getIsCollapsedByDefaultExpression() <em>Is Collapsed By Default
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getIsCollapsedByDefaultExpression()
+     * @generated
+     * @ordered
+     */
+    protected String isCollapsedByDefaultExpression = IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -590,6 +610,30 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public String getIsCollapsedByDefaultExpression() {
+        return this.isCollapsedByDefaultExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIsCollapsedByDefaultExpression(String newIsCollapsedByDefaultExpression) {
+        String oldIsCollapsedByDefaultExpression = this.isCollapsedByDefaultExpression;
+        this.isCollapsedByDefaultExpression = newIsCollapsedByDefaultExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION, oldIsCollapsedByDefaultExpression,
+                    this.isCollapsedByDefaultExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
@@ -642,6 +686,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.getDefaultHeightExpression();
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
                 return this.isKeepAspectRatio();
+            case DiagramPackage.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION:
+                return this.getIsCollapsedByDefaultExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -699,6 +745,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
                 this.setKeepAspectRatio((Boolean) newValue);
                 return;
+            case DiagramPackage.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION:
+                this.setIsCollapsedByDefaultExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -750,6 +799,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
                 this.setKeepAspectRatio(KEEP_ASPECT_RATIO_EDEFAULT);
                 return;
+            case DiagramPackage.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION:
+                this.setIsCollapsedByDefaultExpression(IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -788,6 +840,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return DEFAULT_HEIGHT_EXPRESSION_EDEFAULT == null ? this.defaultHeightExpression != null : !DEFAULT_HEIGHT_EXPRESSION_EDEFAULT.equals(this.defaultHeightExpression);
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
                 return this.keepAspectRatio != KEEP_ASPECT_RATIO_EDEFAULT;
+            case DiagramPackage.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION:
+                return IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT == null ? this.isCollapsedByDefaultExpression != null
+                : !IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT.equals(this.isCollapsedByDefaultExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -813,6 +868,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         result.append(this.defaultHeightExpression);
         result.append(", keepAspectRatio: ");
         result.append(this.keepAspectRatio);
+        result.append(", isCollapsedByDefaultExpression: ");
+        result.append(this.isCollapsedByDefaultExpression);
         result.append(')');
         return result.toString();
     }

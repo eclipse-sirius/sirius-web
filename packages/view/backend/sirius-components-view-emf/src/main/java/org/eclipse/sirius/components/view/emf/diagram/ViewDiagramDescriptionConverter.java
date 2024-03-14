@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeletionPolicy;
 import org.eclipse.sirius.components.collaborative.diagrams.handlers.DeleteFromDiagramEventHandler;
-import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
@@ -53,6 +52,7 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
+import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
@@ -241,6 +241,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         Function<VariableManager, Size> sizeProvider = variableManager -> this.computeSize(viewNodeDescription, interpreter, variableManager);
 
+        Predicate<VariableManager> isCollapsedByDefaultPredicate = variableManager -> this.computeDefaultCollapsingStateProvider(viewNodeDescription.getIsCollapsedByDefaultExpression(), interpreter, variableManager);
+
         Function<VariableManager, Integer> defaultWidthProvider = variableManager -> this.computeDefaultSizeProvider(viewNodeDescription.getDefaultWidthExpression(), interpreter,
                 variableManager);
         Function<VariableManager, Integer> defaultHeightProvider = variableManager -> this.computeDefaultSizeProvider(viewNodeDescription.getDefaultHeightExpression(), interpreter,
@@ -278,6 +280,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .userResizable(viewNodeDescription.isUserResizable())
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
                 .shouldRenderPredicate(shouldRenderPredicate)
+                .isCollapsedByDefaultPredicate(isCollapsedByDefaultPredicate)
                 .defaultWidthProvider(defaultWidthProvider)
                 .defaultHeightProvider(defaultHeightProvider)
                 .keepAspectRatio(viewNodeDescription.isKeepAspectRatio());
@@ -303,6 +306,16 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         }
 
         return builder.build();
+    }
+
+    private Boolean computeDefaultCollapsingStateProvider(String defaultCollapsingStateExpression, AQLInterpreter interpreter, VariableManager variableManager) {
+        if (defaultCollapsingStateExpression != null && !defaultCollapsingStateExpression.isBlank()) {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), defaultCollapsingStateExpression);
+            if (result.getStatus().compareTo(Status.WARNING) <= 0) {
+                return result.asBoolean().orElse(false);
+            }
+        }
+        return false;
     }
 
     private Integer computeDefaultSizeProvider(String defaultSizeExpression, AQLInterpreter interpreter, VariableManager variableManager) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,6 +76,8 @@ public final class NodeDescription implements IDiagramElementDescription {
     private Function<VariableManager, IStatus> deleteHandler;
 
     private boolean keepAspectRatio;
+
+    private Predicate<VariableManager> isCollapsedByDefaultPredicate;
 
     private Function<VariableManager, Integer> defaultWidthProvider;
 
@@ -184,6 +186,10 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.keepAspectRatio;
     }
 
+    public Predicate<VariableManager> getIsCollapsedByDefaultPredicate() {
+        return this.isCollapsedByDefaultPredicate;
+    }
+
     public Function<VariableManager, Integer> getDefaultWidthProvider() {
         return this.defaultWidthProvider;
     }
@@ -248,6 +254,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private boolean keepAspectRatio;
 
+        private Predicate<VariableManager> isCollapsedByDefaultPredicate = variableManager -> false;
+
         private Function<VariableManager, Integer> defaultWidthProvider = variableManager -> null;
 
         private Function<VariableManager, Integer> defaultHeightProvider = variableManager -> null;
@@ -280,9 +288,9 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.shouldRenderPredicate = nodeDescription.getShouldRenderPredicate();
             this.dropNodeHandler = nodeDescription.getDropNodeHandler();
             this.keepAspectRatio = nodeDescription.isKeepAspectRatio();
+            this.isCollapsedByDefaultPredicate = nodeDescription.getIsCollapsedByDefaultPredicate();
             this.defaultWidthProvider = nodeDescription.getDefaultWidthProvider();
             this.defaultHeightProvider = nodeDescription.getDefaultHeightProvider();
-
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
@@ -390,6 +398,11 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
+        public Builder isCollapsedByDefaultPredicate(Predicate<VariableManager> isCollapsedByDefaultPredicate) {
+            this.isCollapsedByDefaultPredicate = Objects.requireNonNull(isCollapsedByDefaultPredicate);
+            return this;
+        }
+
         public Builder defaultWidthProvider(Function<VariableManager, Integer> defaultWidthProvider) {
             this.defaultWidthProvider = Objects.requireNonNull(defaultWidthProvider);
             return this;
@@ -424,6 +437,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
             nodeDescription.dropNodeHandler = this.dropNodeHandler; // Optional on purpose.
             nodeDescription.keepAspectRatio = this.keepAspectRatio;
+            nodeDescription.isCollapsedByDefaultPredicate = Objects.requireNonNull(this.isCollapsedByDefaultPredicate);
             nodeDescription.defaultWidthProvider = Objects.requireNonNull(this.defaultWidthProvider);
             nodeDescription.defaultHeightProvider = Objects.requireNonNull(this.defaultHeightProvider);
             return nodeDescription;

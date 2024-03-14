@@ -49,11 +49,22 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
      * The default value of the '{@link #getAreChildNodesDraggableExpression() <em>Are Child Nodes Draggable
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getAreChildNodesDraggableExpression()
      * @generated
      * @ordered
-     * @see #getAreChildNodesDraggableExpression()
      */
     protected static final String ARE_CHILD_NODES_DRAGGABLE_EXPRESSION_EDEFAULT = "aql:true";
+
+    /**
+     * The cached value of the '{@link #getAreChildNodesDraggableExpression() <em>Are Child Nodes Draggable
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getAreChildNodesDraggableExpression()
+     * @generated
+     * @ordered
+     */
+    protected String areChildNodesDraggableExpression = ARE_CHILD_NODES_DRAGGABLE_EXPRESSION_EDEFAULT;
+
     /**
      * The default value of the '{@link #getTopGapExpression() <em>Top Gap Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -63,24 +74,7 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
      * @see #getTopGapExpression()
      */
     protected static final String TOP_GAP_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getBottomGapExpression() <em>Bottom Gap Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBottomGapExpression()
-     */
-    protected static final String BOTTOM_GAP_EXPRESSION_EDEFAULT = "";
-    /**
-     * The cached value of the '{@link #getAreChildNodesDraggableExpression() <em>Are Child Nodes Draggable
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getAreChildNodesDraggableExpression()
-     */
-    protected String areChildNodesDraggableExpression = ARE_CHILD_NODES_DRAGGABLE_EXPRESSION_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getTopGapExpression() <em>Top Gap Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -90,6 +84,17 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
      * @see #getTopGapExpression()
      */
     protected String topGapExpression = TOP_GAP_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getBottomGapExpression() <em>Bottom Gap Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBottomGapExpression()
+     */
+    protected static final String BOTTOM_GAP_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getBottomGapExpression() <em>Bottom Gap Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -104,9 +109,9 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
      * The cached value of the '{@link #getGrowableNodes() <em>Growable Nodes</em>}' reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getGrowableNodes()
      * @generated
      * @ordered
-     * @see #getGrowableNodes()
      */
     protected EList<NodeDescription> growableNodes;
 
@@ -313,14 +318,15 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (areChildNodesDraggableExpression: " +
-                this.areChildNodesDraggableExpression +
-                ", topGapExpression: " +
-                this.topGapExpression +
-                ", bottomGapExpression: " +
-                this.bottomGapExpression +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (areChildNodesDraggableExpression: ");
+        result.append(this.areChildNodesDraggableExpression);
+        result.append(", topGapExpression: ");
+        result.append(this.topGapExpression);
+        result.append(", bottomGapExpression: ");
+        result.append(this.bottomGapExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // ListLayoutStrategyDescriptionImpl

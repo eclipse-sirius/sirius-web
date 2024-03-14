@@ -161,7 +161,8 @@ public class NodeComponent implements IComponent {
         Set<ViewModifier> modifiers = this.computeModifiers(optionalDiagramEvent, optionalPreviousNode, nodeId);
         ViewModifier state = this.computeState(modifiers);
         boolean isPinned = this.isPinned(optionalDiagramEvent, nodeId, optionalPreviousNode);
-        CollapsingState collapsingState = this.computeCollapsingState(nodeId, optionalPreviousNode, optionalDiagramEvent);
+        boolean isCollapsedByDefault = nodeDescription.getIsCollapsedByDefaultPredicate().test(nodeVariableManager);
+        CollapsingState collapsingState = this.computeCollapsingState(nodeId, optionalPreviousNode, optionalDiagramEvent, isCollapsedByDefault);
 
         nodeVariableManager.put(NodeComponent.COLLAPSING_STATE, collapsingState);
         nodeVariableManager.put(NodeComponent.IS_BORDER_NODE, isBorderNode);
@@ -252,12 +253,14 @@ public class NodeComponent implements IComponent {
         return dummyLabelType;
     }
 
-    private CollapsingState computeCollapsingState(String nodeId, Optional<Node> optionalPreviousNode, Optional<IDiagramEvent> optionalDiagramEvent) {
+    private CollapsingState computeCollapsingState(String nodeId, Optional<Node> optionalPreviousNode, Optional<IDiagramEvent> optionalDiagramEvent, boolean isCollapsedByDefault) {
         CollapsingState newCollapsingState = CollapsingState.EXPANDED;
 
         if (optionalPreviousNode.isPresent()) {
             Node previousNode = optionalPreviousNode.get();
             newCollapsingState = previousNode.getCollapsingState();
+        } else if (isCollapsedByDefault) {
+            newCollapsingState = CollapsingState.COLLAPSED;
         }
 
         if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof UpdateCollapsingStateEvent updateCollapsingStateEvent
