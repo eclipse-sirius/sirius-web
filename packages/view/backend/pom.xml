@@ -45,5 +45,7 @@
 		<module>sirius-components-view-deck-edit</module>
 		<module>sirius-components-view-form</module>
 		<module>sirius-components-view-form-edit</module>
+		<module>sirius-components-widget-reference-view</module>
+		<module>sirius-components-widget-reference-view-edit</module>
 	</modules>
 </project>

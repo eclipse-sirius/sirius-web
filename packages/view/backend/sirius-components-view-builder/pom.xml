@@ -87,6 +87,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-widget-reference-view</artifactId>
+			<version>2024.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
 			<version>2024.1.5</version>
 			<scope>test</scope>
