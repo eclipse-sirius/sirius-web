@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IReconnectionToolsExecutor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionToolInterpreterData;
 import org.eclipse.sirius.components.core.api.IEditService;
@@ -28,22 +26,15 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
-import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.view.emf.configuration.ViewPaletteToolsConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.ApplicationContext;
+import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
+import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -58,26 +49,20 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final IEditService editService;
 
-    private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
-
-    private final List<IJavaServiceProvider> javaServiceProviders;
+    private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
     private final IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
+    private final IViewAQLInterpreterFactory aqlInterpreterFactory;
+
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final ApplicationContext applicationContext;
-
-    private final Logger logger = LoggerFactory.getLogger(ViewReconnectionToolsExecutor.class);
-
-    public ViewReconnectionToolsExecutor(ViewPaletteToolsConfiguration parameters, IEditService editService, List<IJavaServiceProvider> javaServiceProviders,
-            ApplicationContext applicationContext, IFeedbackMessageService feedbackMessageService) {
-        this.objectService = Objects.requireNonNull(parameters.getObjectService());
+    public ViewReconnectionToolsExecutor(IObjectService objectService, IEditService editService, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewAQLInterpreterFactory aqlInterpreterFactory, IFeedbackMessageService feedbackMessageService) {
+        this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
-        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(parameters.getViewRepresentationDescriptionSearchService());
-        this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
-        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(parameters.getViewRepresentationDescriptionPredicate());
-        this.applicationContext = Objects.requireNonNull(applicationContext);
+        this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
+        this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
@@ -91,13 +76,11 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
             DiagramDescription diagramDescription) {
         IStatus status = new Failure("");
 
-        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramDescription.getId())
-                .filter(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::isInstance)
-                .map(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::cast);
+        var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());
         if (optionalDiagramDescription.isPresent()) {
             org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
 
-            var optionalViewEdgeDescription = this.viewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescription.getId());
+            var optionalViewEdgeDescription = this.viewDiagramDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescription.getId());
             if (optionalViewEdgeDescription.isPresent()) {
                 var viewEdgeDescription = optionalViewEdgeDescription.get();
 
@@ -105,7 +88,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
                 for (org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool edgeReconnectionTool : edgeReconnectionTools) {
                     VariableManager variableManager = this.createVariableManager(toolInterpreterData, editingContext);
 
-                    AQLInterpreter interpreter = this.createInterpreter((View) viewDiagramDescription.eContainer(), this.getAccessibleEPackages(editingContext));
+                    AQLInterpreter interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) viewDiagramDescription.eContainer());
                     var diagramOperationInterpreter = new DiagramOperationInterpreter(interpreter, this.objectService, this.editService, toolInterpreterData.getDiagramContext(),
                             Map.of(), this.feedbackMessageService);
                     diagramOperationInterpreter.executeOperations(edgeReconnectionTool.getBody(), variableManager);
@@ -130,36 +113,6 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
         variableManager.put("edgeView", toolInterpreterData.getEdgeView());
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         return variableManager;
-    }
-
-    private List<EPackage> getAccessibleEPackages(IEditingContext editingContext) {
-        if (editingContext instanceof IEMFEditingContext) {
-            Registry packageRegistry = ((IEMFEditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
-            return packageRegistry.values().stream()
-                    .filter(EPackage.class::isInstance)
-                    .map(EPackage.class::cast)
-                    .toList();
-        } else {
-            return List.of();
-        }
-    }
-
-    private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {
-        AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
-        List<Object> serviceInstances = this.javaServiceProviders.stream()
-                .flatMap(provider -> provider.getServiceClasses(view).stream())
-                .map(serviceClass -> {
-                    try {
-                        return beanFactory.createBean(serviceClass);
-                    } catch (BeansException beansException) {
-                        this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException);
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .map(Object.class::cast)
-                .toList();
-        return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }
 
 }

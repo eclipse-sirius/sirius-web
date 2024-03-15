@@ -20,7 +20,6 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
@@ -43,7 +42,6 @@ import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
@@ -55,15 +53,10 @@ import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.Tool;
-import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
-import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.view.emf.configuration.ViewPaletteToolsConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.ApplicationContext;
+import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
+import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -85,13 +78,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewPaletteProvider implements IPaletteProvider {
 
-    private final Logger logger = LoggerFactory.getLogger(ViewPaletteProvider.class);
-
     private final IURLParser urlParser;
 
     private final IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
-    private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
+    private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
     private final IDiagramDescriptionService diagramDescriptionService;
 
@@ -99,21 +90,18 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
     private final IObjectService objectService;
 
-    private final List<IJavaServiceProvider> javaServiceProviders;
-
-    private final ApplicationContext applicationContext;
+    private final IViewAQLInterpreterFactory aqlInterpreterFactory;
 
     private final Function<EObject, UUID> idProvider = (eObject) -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
 
-    public ViewPaletteProvider(ViewPaletteToolsConfiguration parameters, IDiagramDescriptionService diagramDescriptionService, IDiagramIdProvider diagramIdProvider, List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext) {
-        this.urlParser = Objects.requireNonNull(parameters.getUrlParser());
-        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(parameters.getViewRepresentationDescriptionPredicate());
-        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(parameters.getViewRepresentationDescriptionSearchService());
+    public ViewPaletteProvider(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IDiagramIdProvider diagramIdProvider, IObjectService objectService, IViewAQLInterpreterFactory aqlInterpreterFactory) {
+        this.urlParser = Objects.requireNonNull(urlParser);
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
+        this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
-        this.objectService = Objects.requireNonNull(parameters.getObjectService());
-        this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
-        this.applicationContext = Objects.requireNonNull(applicationContext);
+        this.objectService = Objects.requireNonNull(objectService);
+        this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
     }
 
     @Override
@@ -126,12 +114,10 @@ public class ViewPaletteProvider implements IPaletteProvider {
         Palette palette = null;
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, targetElement);
-        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramDescription.getId())
-                .filter(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::isInstance)
-                .map(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::cast);
+        var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());
         if (optionalDiagramDescription.isPresent()) {
             org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
-            var interpreter = this.createInterpreter((View) viewDiagramDescription.eContainer(), editingContext);
+            var interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) viewDiagramDescription.eContainer());
             if (diagramElement instanceof Diagram) {
                 palette = this.getDiagramPalette(diagramDescription, viewDiagramDescription, variableManager, interpreter);
             } else if (diagramElement instanceof Node && diagramElementDescription instanceof NodeDescription nodeDescription) {
@@ -145,7 +131,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
         return palette;
     }
 
-    protected Palette getDiagramPalette(DiagramDescription diagramDescription, org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private Palette getDiagramPalette(DiagramDescription diagramDescription, org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         Palette diagramPalette = null;
         var toolFinder = new ToolFinder();
         Optional<String> sourceElementId = this.getSourceElementId(diagramDescription.getId());
@@ -200,15 +186,17 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
-    protected Palette getNodePalette(IEditingContext editingContext, DiagramDescription diagramDescription, NodeDescription nodeDescription, List<ToolSection> extraToolSections, VariableManager variableManager, AQLInterpreter interpreter) {
+    private Palette getNodePalette(IEditingContext editingContext, DiagramDescription diagramDescription, NodeDescription nodeDescription, List<ToolSection> extraToolSections, VariableManager variableManager, AQLInterpreter interpreter) {
         Optional<String> sourceElementId = this.getSourceElementId(nodeDescription.getId());
+
         Palette nodePalette = null;
         var toolFinder = new ToolFinder();
         if (sourceElementId.isPresent()) {
-            String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + sourceElementId.get();
-            var optionalNodeDescription = this.viewRepresentationDescriptionSearchService.findViewNodeDescriptionById(editingContext, nodeDescription.getId());
+            var optionalNodeDescription = this.viewDiagramDescriptionSearchService.findViewNodeDescriptionById(editingContext, nodeDescription.getId());
+
             if (optionalNodeDescription.isPresent()) {
                 org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription = optionalNodeDescription.get();
+
                 var tools = new ArrayList<ITool>();
                 tools.addAll(toolFinder.findNodeTools(viewNodeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
@@ -218,11 +206,14 @@ public class ViewPaletteProvider implements IPaletteProvider {
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, nodeDescription, variableManager, interpreter))
                         .toList());
+
                 var toolSections = new ArrayList<ToolSection>();
                 toolSections.addAll(toolFinder.findToolSections(viewNodeDescription).stream()
                         .map(nodeToolSection -> this.createToolSection(nodeToolSection, diagramDescription, nodeDescription, variableManager, interpreter))
                         .toList());
                 toolSections.addAll(extraToolSections);
+
+                String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + sourceElementId.get();
                 nodePalette = Palette.newPalette(nodePaletteId)
                         .tools(tools)
                         .toolSections(toolSections)
@@ -270,22 +261,24 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
-    protected Palette getEdgePalette(IEditingContext editingContext, EdgeDescription edgeDescription, List<ToolSection> extraToolSections, VariableManager variableManager, AQLInterpreter interpreter) {
+    private Palette getEdgePalette(IEditingContext editingContext, EdgeDescription edgeDescription, List<ToolSection> extraToolSections, VariableManager variableManager, AQLInterpreter interpreter) {
         Palette edgePalette = null;
         var toolFinder = new ToolFinder();
         Optional<String> optionalSourceElementId = this.getSourceElementId(edgeDescription.getId());
         if (optionalSourceElementId.isPresent()) {
             var sourceElementId = optionalSourceElementId.get();
 
-            var optionalEdgeDescription = this.viewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescription.getId());
+            var optionalEdgeDescription = this.viewDiagramDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescription.getId());
             if (optionalEdgeDescription.isPresent()) {
                 org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
-                String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId;
+
                 var toolSections = new ArrayList<ToolSection>();
                 toolSections.addAll(toolFinder.findToolSections(viewEdgeDescription).stream()
                         .map(edgeToolSection -> this.createToolSection(edgeToolSection, variableManager, interpreter))
                         .toList());
                 toolSections.addAll(extraToolSections);
+
+                String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId;
                 edgePalette = Palette.newPalette(edgePaletteId)
                         .tools(toolFinder.findNodeTools(viewEdgeDescription).stream().map(tool -> this.createNodeTool(tool, variableManager, interpreter)).toList())
                         .toolSections(toolSections)
@@ -311,7 +304,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
     private Optional<String> getSourceElementId(String descriptionId) {
         var parameters = this.urlParser.getParameterValues(descriptionId);
-        return Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_ELEMENT_ID)).orElse(List.of()).stream().findFirst();
+        return Optional.ofNullable(parameters.get(IRepresentationDescriptionIdProvider.SOURCE_ELEMENT_ID)).orElse(List.of()).stream().findFirst();
     }
 
     private List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement) {
@@ -465,37 +458,6 @@ public class ViewPaletteProvider implements IPaletteProvider {
             }
         }
         return result;
-    }
-
-    private AQLInterpreter createInterpreter(View view, IEditingContext editingContext) {
-        List<EPackage> visibleEPackages = this.getAccessibleEPackages(editingContext);
-        AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
-        List<Object> serviceInstances = this.javaServiceProviders.stream()
-                .flatMap(provider -> provider.getServiceClasses(view).stream())
-                .map(serviceClass -> {
-                    try {
-                        return beanFactory.createBean(serviceClass);
-                    } catch (BeansException beansException) {
-                        this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException);
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .map(Object.class::cast)
-                .toList();
-        return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
-    }
-
-    private List<EPackage> getAccessibleEPackages(IEditingContext editingContext) {
-        if (editingContext instanceof IEMFEditingContext) {
-            EPackage.Registry packageRegistry = ((IEMFEditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
-            return packageRegistry.values().stream()
-                    .filter(EPackage.class::isInstance)
-                    .map(EPackage.class::cast)
-                    .toList();
-        } else {
-            return List.of();
-        }
     }
 
     private boolean checkPrecondition(Tool tool, VariableManager variableManager, AQLInterpreter interpreter) {

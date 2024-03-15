@@ -72,6 +72,7 @@ Having `Viewer` as a type did not bring any additional value and it created some
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [core] Move the EMF based default description of the details view from `sirius-components-compatibility-emf` to `sirius-components-emf-forms` since there are no dependency between the default description of the details view and the Sirius Desktop compatibility layer.
 - https://github.com/eclipse-sirius/sirius-web/issues/3096[#3096] [tree] `TreeConfiguration` has a new parameter `List<String> activeFilterIds`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [form] Allow consumers of Sirius Components to reuse the reference widget without the form description editor or the view DSL.
+- https://github.com/eclipse-sirius/sirius-web/issues/3246[#3246] [view] Remove representation specific code from `ViewRepresentationDescriptionSearchService`
 
 
 === Dependency update
@@ -178,6 +179,7 @@ image:doc/screenshots/borderNodeCreationArea.png[BorderNode creation area,50%]
 In other scenarios, the default creation position border remains the eastern one.
 - https://github.com/eclipse-sirius/sirius-web/issues/2785[#2785] [gantt] Add cypress tests
 - https://github.com/eclipse-sirius/sirius-web/issues/3225[#3225] [sirius-web] The confirmation dialog on delete does not propose anymore the option allowing to "Disable this confirmation dialog" when the local storage is not available.
+- https://github.com/eclipse-sirius/sirius-web/issues/3246[#3246] [view] Make the `ViewRepresentationDescriptionSearchService` independent from specific representations
 
 == v2024.1.0
 
