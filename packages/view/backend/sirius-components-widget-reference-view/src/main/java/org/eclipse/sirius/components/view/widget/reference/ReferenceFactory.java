@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference;
+package org.eclipse.sirius.components.view.widget.reference;
 
 import org.eclipse.emf.ecore.EFactory;
 
@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EFactory;
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each non-abstract class of
  * the model. <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage
+ * @see ReferencePackage
  * @generated
  */
 public interface ReferenceFactory extends EFactory {
@@ -27,7 +27,7 @@ public interface ReferenceFactory extends EFactory {
      *
      * @generated
      */
-    ReferenceFactory eINSTANCE = org.eclipse.sirius.components.widgets.reference.impl.ReferenceFactoryImpl.init();
+    ReferenceFactory eINSTANCE = org.eclipse.sirius.components.view.widget.reference.impl.ReferenceFactoryImpl.init();
 
     /**
      * Returns a new object of class '<em>Widget Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

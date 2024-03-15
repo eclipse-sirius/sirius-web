@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference.impl;
+package org.eclipse.sirius.components.view.widget.reference.impl;
 
 import java.util.Collection;
 
@@ -24,10 +24,10 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl;
-import org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle;
-import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Widget Description</b></em>'. <!-- end-user-doc
@@ -36,9 +36,9 @@ import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptio
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl#getReferenceOwnerExpression
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl#getReferenceOwnerExpression
  * <em>Reference Owner Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl#getReferenceNameExpression
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl#getReferenceNameExpression
  * <em>Reference Name Expression</em>}</li>
  * </ul>
  *

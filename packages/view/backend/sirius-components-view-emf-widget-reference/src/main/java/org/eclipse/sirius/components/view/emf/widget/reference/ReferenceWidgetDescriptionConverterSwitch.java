@@ -53,9 +53,9 @@ import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
-import org.eclipse.sirius.components.widgets.reference.util.ReferenceSwitch;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.util.ReferenceSwitch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference;
+package org.eclipse.sirius.components.view.widget.reference;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.view.Operation;
@@ -24,15 +24,15 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression
+ * <li>{@link ReferenceWidgetDescription#getReferenceOwnerExpression
  * <em>Reference Owner Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression
+ * <li>{@link ReferenceWidgetDescription#getReferenceNameExpression
  * <em>Reference Name Expression</em>}</li>
  * </ul>
  *
  * @model
  * @generated
- * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription()
+ * @see ReferencePackage#getReferenceWidgetDescription()
  */
 public interface ReferenceWidgetDescription extends WidgetDescription {
 
@@ -42,7 +42,7 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      *
      * @return the value of the '<em>Reference Owner Expression</em>' attribute.
      * @see #setReferenceOwnerExpression(String)
-     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ReferenceOwnerExpression()
+     * @see ReferencePackage#getReferenceWidgetDescription_ReferenceOwnerExpression()
      * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
@@ -50,7 +50,7 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
 
     /**
      * Sets the value of the
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression
+     * '{@link ReferenceWidgetDescription#getReferenceOwnerExpression
      * <em>Reference Owner Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
@@ -66,7 +66,7 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      *
      * @return the value of the '<em>Reference Name Expression</em>' attribute.
      * @see #setReferenceNameExpression(String)
-     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ReferenceNameExpression()
+     * @see ReferencePackage#getReferenceWidgetDescription_ReferenceNameExpression()
      * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
      * @generated
      */
@@ -74,7 +74,7 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
 
     /**
      * Sets the value of the
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression
+     * '{@link ReferenceWidgetDescription#getReferenceNameExpression
      * <em>Reference Name Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
@@ -89,7 +89,7 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Body</em>' containment reference list.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_Body()
+     * @see ReferencePackage#getReferenceWidgetDescription_Body()
      * @model containment="true"
      * @generated
      */
@@ -103,12 +103,12 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * @model containment="true"
      * @generated
      * @see #setStyle(ReferenceWidgetDescriptionStyle)
-     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_Style()
+     * @see ReferencePackage#getReferenceWidgetDescription_Style()
      */
     ReferenceWidgetDescriptionStyle getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getStyle
+     * Sets the value of the '{@link ReferenceWidgetDescription#getStyle
      * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
@@ -120,13 +120,13 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
 
     /**
      * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle}. <!--
+     * of type {@link ConditionalReferenceWidgetDescriptionStyle}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Conditional Styles</em>' containment reference list.
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ConditionalStyles()
+     * @see ReferencePackage#getReferenceWidgetDescription_ConditionalStyles()
      */
     EList<ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles();
 
@@ -136,7 +136,7 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      *
      * @return the value of the '<em>Is Enabled Expression</em>' attribute.
      * @see #setIsEnabledExpression(String)
-     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_IsEnabledExpression()
+     * @see ReferencePackage#getReferenceWidgetDescription_IsEnabledExpression()
      * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
@@ -144,7 +144,7 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
 
     /**
      * Sets the value of the
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getIsEnabledExpression <em>Is
+     * '{@link ReferenceWidgetDescription#getIsEnabledExpression <em>Is
      * Enabled Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value

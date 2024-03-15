@@ -25,13 +25,13 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.form.provider.WidgetDescriptionItemProvider;
-import org.eclipse.sirius.components.widgets.reference.ReferenceFactory;
-import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
+import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 
 /**
  * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription} object. <!-- begin-user-doc -->
+ * {@link ReferenceWidgetDescription} object. <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  *
  * @generated

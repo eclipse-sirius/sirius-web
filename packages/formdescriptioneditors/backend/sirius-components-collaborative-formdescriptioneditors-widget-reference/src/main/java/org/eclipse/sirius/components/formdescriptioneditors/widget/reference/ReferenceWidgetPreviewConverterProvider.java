@@ -24,8 +24,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.widget.reference.ReferenceWidgetStyleProvider;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
-import org.eclipse.sirius.components.widgets.reference.util.ReferenceSwitch;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.util.ReferenceSwitch;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,7 +40,7 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
     public Switch<AbstractWidgetDescription> getWidgetConverter(FormDescriptionEditorDescription formDescriptionEditorDescription, VariableManager variableManager) {
         return new ReferenceSwitch<>() {
             @Override
-            public AbstractWidgetDescription caseReferenceWidgetDescription(org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription referenceDescription) {
+            public AbstractWidgetDescription caseReferenceWidgetDescription(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription referenceDescription) {
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put(VariableManager.SELF, referenceDescription);
                 String id = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -54,7 +54,7 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
         };
     }
 
-    public ReferenceWidgetDescription.Builder getReferenceWidgetDescriptionBuilder(org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription referenceDescription, String id) {
+    public ReferenceWidgetDescription.Builder getReferenceWidgetDescriptionBuilder(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription referenceDescription, String id) {
         return ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .targetObjectIdProvider(vm -> "")
@@ -107,7 +107,7 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
         return helpText;
     }
 
-    private ReferenceWidgetStyle getWidgetStyle(org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
+    private ReferenceWidgetStyle getWidgetStyle(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
         ReferenceWidgetDescriptionStyle style = referenceDescription.getStyle();
         if (style == null) {
             return null;

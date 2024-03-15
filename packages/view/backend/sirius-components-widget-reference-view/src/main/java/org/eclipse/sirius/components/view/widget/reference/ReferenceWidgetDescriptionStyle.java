@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference;
+package org.eclipse.sirius.components.view.widget.reference;
 
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.UserColor;
@@ -24,11 +24,11 @@ import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle#getColor
+ * <li>{@link ReferenceWidgetDescriptionStyle#getColor
  * <em>Color</em>}</li>
  * </ul>
  *
- * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescriptionStyle()
+ * @see ReferencePackage#getReferenceWidgetDescriptionStyle()
  * @model
  * @generated
  */
@@ -39,7 +39,7 @@ public interface ReferenceWidgetDescriptionStyle extends WidgetDescriptionStyle,
      *
      * @return the value of the '<em>Color</em>' reference.
      * @see #setColor(UserColor)
-     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescriptionStyle_Color()
+     * @see ReferencePackage#getReferenceWidgetDescriptionStyle_Color()
      * @model
      * @generated
      */
@@ -47,7 +47,7 @@ public interface ReferenceWidgetDescriptionStyle extends WidgetDescriptionStyle,
 
     /**
      * Sets the value of the
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle#getColor <em>Color</em>}'
+     * '{@link ReferenceWidgetDescriptionStyle#getColor <em>Color</em>}'
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
