@@ -74,7 +74,7 @@ public class NodeComponent implements IComponent {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         INodesRequestor nodesRequestor = this.props.getNodesRequestor();
         DiagramRenderingCache cache = this.props.getCache();
-        Optional<IDiagramEvent> optionalDiagramEvent = this.props.getDiagramEvent();
+        List<IDiagramEvent> diagramEvents = this.props.getDiagramEvents();
 
         VariableManager nodeComponentVariableManager = variableManager.createChild();
 
@@ -102,7 +102,7 @@ public class NodeComponent implements IComponent {
             var optionalPreviousNode = nodesRequestor.getByTargetObjectId(targetObjectId);
 
             if (this.shouldRender(targetObjectId, optionalPreviousNode, nodeVariableManager)) {
-                Element nodeElement = this.doRender(nodeVariableManager, targetObjectId, optionalPreviousNode, optionalDiagramEvent);
+                Element nodeElement = this.doRender(nodeVariableManager, targetObjectId, optionalPreviousNode, diagramEvents);
                 children.add(nodeElement);
 
                 cache.put(nodeDescription.getId(), nodeElement);
@@ -150,7 +150,7 @@ public class NodeComponent implements IComponent {
                 .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), elementId));
     }
 
-    private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode, Optional<IDiagramEvent> optionalDiagramEvent) {
+    private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode, List<IDiagramEvent> diagramEvents) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
         boolean isBorderNode = containmentKind == NodeContainmentKind.BORDER_NODE;
@@ -158,11 +158,12 @@ public class NodeComponent implements IComponent {
 
         String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
 
-        Set<ViewModifier> modifiers = this.computeModifiers(optionalDiagramEvent, optionalPreviousNode, nodeId);
+        Set<ViewModifier> modifiers = this.computeModifiers(diagramEvents, optionalPreviousNode, nodeId);
         ViewModifier state = this.computeState(modifiers);
-        boolean isPinned = this.isPinned(optionalDiagramEvent, nodeId, optionalPreviousNode);
+
+        boolean isPinned = this.isPinned(diagramEvents, nodeId, optionalPreviousNode);
         boolean isCollapsedByDefault = nodeDescription.getIsCollapsedByDefaultPredicate().test(nodeVariableManager);
-        CollapsingState collapsingState = this.computeCollapsingState(nodeId, optionalPreviousNode, optionalDiagramEvent, isCollapsedByDefault);
+        CollapsingState collapsingState = this.computeCollapsingState(nodeId, optionalPreviousNode, diagramEvents, isCollapsedByDefault);
 
         nodeVariableManager.put(NodeComponent.COLLAPSING_STATE, collapsingState);
         nodeVariableManager.put(NodeComponent.IS_BORDER_NODE, isBorderNode);
@@ -194,7 +195,7 @@ public class NodeComponent implements IComponent {
         Set<CustomizableProperties> customizableProperties = Set.of();
 
         Size size = this.getSize(optionalPreviousNode, nodeDescription, nodeVariableManager);
-        Optional<Size> newSize = this.getNodeSizeFromEvent(this.props.getDiagramEvent(), nodeId);
+        Optional<Size> newSize = this.getNodeSizeFromEvent(this.props.getDiagramEvents(), nodeId);
         if (newSize.isPresent()) {
             size = newSize.get();
         }
@@ -254,7 +255,8 @@ public class NodeComponent implements IComponent {
         return dummyLabelType;
     }
 
-    private CollapsingState computeCollapsingState(String nodeId, Optional<Node> optionalPreviousNode, Optional<IDiagramEvent> optionalDiagramEvent, boolean isCollapsedByDefault) {
+
+    private CollapsingState computeCollapsingState(String nodeId, Optional<Node> optionalPreviousNode, List<IDiagramEvent> diagramEvents, boolean isCollapsedByDefault) {
         CollapsingState newCollapsingState = CollapsingState.EXPANDED;
 
         if (optionalPreviousNode.isPresent()) {
@@ -264,9 +266,12 @@ public class NodeComponent implements IComponent {
             newCollapsingState = CollapsingState.COLLAPSED;
         }
 
-        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof UpdateCollapsingStateEvent updateCollapsingStateEvent
-                && updateCollapsingStateEvent.diagramElementId().equals(nodeId)) {
-            newCollapsingState = updateCollapsingStateEvent.collapsingState();
+        for (IDiagramEvent diagramEvent : diagramEvents) {
+            if (diagramEvent instanceof UpdateCollapsingStateEvent updateCollapsingStateEvent) {
+                if (updateCollapsingStateEvent.diagramElementId().equals(nodeId)) {
+                    newCollapsingState = updateCollapsingStateEvent.collapsingState();
+                }
+            }
         }
 
         return newCollapsingState;
@@ -279,43 +284,48 @@ public class NodeComponent implements IComponent {
      * If a diagram event is specified and this one requests a modification of the modifier set, applied the event on
      * the default set.
      *
-     * @param optionalDiagramEvent
-     *         The optional diagram event modifying the default modifier set of the node
+     * @param diagramEvents
+     *         The diagram events modifying the default modifier set of the node
      * @param optionalPreviousNode
      *         The previous node from which get the old modifier set. If empty, the old modifier set is set to an
      *         empty Set
      * @param id
      *         The ID of the current node
      */
-    private Set<ViewModifier> computeModifiers(Optional<IDiagramEvent> optionalDiagramEvent, Optional<Node> optionalPreviousNode, String id) {
+    private Set<ViewModifier> computeModifiers(List<IDiagramEvent> diagramEvents, Optional<Node> optionalPreviousNode, String id) {
         Set<ViewModifier> modifiers = new HashSet<>(optionalPreviousNode.map(Node::getModifiers).orElse(Set.of()));
-        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof HideDiagramElementEvent hideDiagramElementEvent) {
-            if (hideDiagramElementEvent.getElementIds().contains(id)) {
-                if (hideDiagramElementEvent.hideElement()) {
-                    modifiers.add(ViewModifier.Hidden);
-                } else {
-                    modifiers.remove(ViewModifier.Hidden);
+        for (IDiagramEvent diagramEvent : diagramEvents) {
+            if (diagramEvent instanceof HideDiagramElementEvent hideDiagramElementEvent) {
+                if (hideDiagramElementEvent.getElementIds().contains(id)) {
+                    if (hideDiagramElementEvent.hideElement()) {
+                        modifiers.add(ViewModifier.Hidden);
+                    } else {
+                        modifiers.remove(ViewModifier.Hidden);
+                    }
                 }
-            }
-        } else if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof FadeDiagramElementEvent fadeDiagramElementEvent) {
-            if (fadeDiagramElementEvent.getElementIds().contains(id)) {
-                if (fadeDiagramElementEvent.fadeElement()) {
-                    modifiers.add(ViewModifier.Faded);
-                } else {
-                    modifiers.remove(ViewModifier.Faded);
+            } else if (diagramEvent instanceof FadeDiagramElementEvent fadeDiagramElementEvent) {
+                if (fadeDiagramElementEvent.getElementIds().contains(id)) {
+                    if (fadeDiagramElementEvent.fadeElement()) {
+                        modifiers.add(ViewModifier.Faded);
+                    } else {
+                        modifiers.remove(ViewModifier.Faded);
+                    }
                 }
             }
         }
         return modifiers;
     }
 
-    private boolean isPinned(Optional<IDiagramEvent> optionalDiagramEvent, String nodeId, Optional<Node> optionalPreviousNode) {
-        return optionalDiagramEvent
-                .filter(PinDiagramElementEvent.class::isInstance)
-                .map(PinDiagramElementEvent.class::cast)
-                .filter(pinDiagramElementEvent -> pinDiagramElementEvent.elementIds().contains(nodeId))
-                .map(PinDiagramElementEvent::pinned)
-                .orElse(optionalPreviousNode.map(Node::isPinned).orElse(false));
+    private boolean isPinned(List<IDiagramEvent> diagramEvents, String nodeId, Optional<Node> optionalPreviousNode) {
+        boolean isPinned = false;
+        for (IDiagramEvent diagramEvent : diagramEvents) {
+            if (diagramEvent instanceof PinDiagramElementEvent pinDiagramElementEvent) {
+                if (pinDiagramElementEvent.elementIds().contains(nodeId)) {
+                    isPinned = pinDiagramElementEvent.pinned();
+                }
+            }
+        }
+        return isPinned;
     }
 
     private ViewModifier computeState(Set<ViewModifier> modifiers) {
@@ -366,10 +376,14 @@ public class NodeComponent implements IComponent {
         return size;
     }
 
-    private Optional<Size> getNodeSizeFromEvent(Optional<IDiagramEvent> optionalDiagramEvent, String nodeId) {
+    private Optional<Size> getNodeSizeFromEvent(List<IDiagramEvent> diagramEvents, String nodeId) {
         Optional<Size> size = Optional.empty();
-        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof ResizeEvent resizeEvent && resizeEvent.nodeId().equals(nodeId)) {
-            return Optional.of(resizeEvent.newSize());
+        for (IDiagramEvent diagramEvent : diagramEvents) {
+            if (diagramEvent instanceof ResizeEvent resizeEvent) {
+                if (resizeEvent.nodeId().equals(nodeId)) {
+                    size = Optional.ofNullable(resizeEvent.newSize());
+                }
+            }
         }
         return size;
     }
@@ -425,7 +439,7 @@ public class NodeComponent implements IComponent {
                     .viewDeletionRequests(this.props.getViewDeletionRequests())
                     .parentElementId(nodeId)
                     .previousTargetObjectIds(previousBorderNodesTargetObjectIds)
-                    .diagramEvent(this.props.getDiagramEvent().orElse(null))
+                    .diagramEvents(this.props.getDiagramEvents())
                     .parentElementState(state)
                     .operationValidator(this.props.getOperationValidator())
                     .build();
@@ -460,7 +474,7 @@ public class NodeComponent implements IComponent {
                     .viewDeletionRequests(this.props.getViewDeletionRequests())
                     .parentElementId(nodeId)
                     .previousTargetObjectIds(previousChildNodesTargetObjectIds)
-                    .diagramEvent(this.props.getDiagramEvent().orElse(null))
+                    .diagramEvents(this.props.getDiagramEvents())
                     .parentElementState(state)
                     .operationValidator(this.props.getOperationValidator())
                     .build();

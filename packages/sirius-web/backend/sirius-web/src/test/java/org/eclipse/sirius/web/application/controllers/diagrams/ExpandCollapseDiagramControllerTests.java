@@ -13,25 +13,28 @@
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DiagramEventSubscriptionRunner;
-import org.eclipse.sirius.components.graphql.tests.CreateRepresentationMutationRunner;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.services.api.IGivenCreatedDiagramSubscription;
+import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,10 +43,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
-import graphql.execution.DataFetcherResult;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
@@ -52,23 +54,36 @@ import reactor.test.StepVerifier;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTests {
 
     @Autowired
-    private CreateRepresentationMutationRunner createRepresentationMutationRunner;
+    private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
+    private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
-    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
+
+    @Autowired
+    private ExpandCollapseDiagramDescriptionProvider expandCollapseDiagramDescriptionProvider;
 
     @BeforeEach
     public void beforeEach() {
-        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                .map(IEditingContextEventProcessor::getEditingContextId)
-                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
+        this.givenInitialServerState.initialize();
+    }
+
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToExpandedCollapseDiagram() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                TestIdentifiers.PAPAYA_PROJECT.toString(),
+                this.expandCollapseDiagramDescriptionProvider.getRepresentationDescriptionId(),
+                TestIdentifiers.PAPAYA_ROOT_OBJECT.toString(),
+                "ExpandCollapseDiagram"
+        );
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
     }
 
     @Test
@@ -76,42 +91,11 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramWithCollapsedNodesByDefaultWhenItIsOpenedThenSomeNodesAreCollapsed() {
-        this.commitInitializeStateBeforeThreadSwitching();
+        var flux = this.givenSubscriptionToExpandedCollapseDiagram();
 
-        var input = new CreateRepresentationInput(
-                UUID.randomUUID(),
-                TestIdentifiers.PAPAYA_PROJECT.toString(),
-                ExpandCollapseDiagramDescriptionProvider.REPRESENTATION_DESCRIPTION_ID,
-                TestIdentifiers.PAPAYA_ROOT_OBJECT.toString(),
-                "ExpandCollapseDiagram"
-        );
-        var result = this.createRepresentationMutationRunner.run(input);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
-
-        String typename = JsonPath.read(result, "$.data.createRepresentation.__typename");
-        assertThat(typename).isEqualTo(CreateRepresentationSuccessPayload.class.getSimpleName());
-
-        String representationId = JsonPath.read(result, "$.data.createRepresentation.representation.id");
-        assertThat(representationId).isNotNull();
-
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), TestIdentifiers.PAPAYA_PROJECT.toString(), representationId);
-        var flux = this.diagramEventSubscriptionRunner.run(diagramEventInput);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
-
-        Predicate<Object> initialDiagramContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
+        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
-                .filter(diagram -> {
+                .ifPresentOrElse(diagram -> {
                     var domainNodes = diagram.getNodes().stream()
                             .filter(node -> node.getInsideLabel().getText().endsWith("-domain"))
                             .toList();
@@ -125,30 +109,111 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
                     assertThat(nonDomainNodes)
                             .isNotEmpty()
                             .allMatch(node -> node.getCollapsingState() == CollapsingState.EXPANDED);
-
-                    return true;
-                })
-                .isPresent();
+                }, () -> fail("Missing diagram"));
 
         StepVerifier.create(flux)
-                .expectNextMatches(initialDiagramContentMatcher)
+                .consumeNextWith(initialDiagramContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
-    /**
-     * Used to commit the state of the transaction after its initialization by the @Sql annotation
-     * in order to make the state persisted in the database. Without this, the initialized state
-     * will not be visible by the various repositories when the test will switch threads to use
-     * the thread of the editing context.
-     *
-     * This should not be used every single time but only in the couple integrations tests that are
-     * required to interact with repositories while inside an editing context event handler or a
-     * representation event handler for example.
-     */
-    private void commitInitializeStateBeforeThreadSwitching() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
+    @Test
+    @DisplayName("Given a diagram with collapsed nodes by default, when a tool expanding nodes is invoked, then collapsed nodes are expanded")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenDiagramWithCollapsedNodesByDefaultWhenToolExpandingNodesIsInvokedThenCollapsedNodesAreExpanded() {
+        var flux = this.givenSubscriptionToExpandedCollapseDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var collapsedNodeId = new AtomicReference<String>();
+
+        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+
+                    diagram.getNodes().stream()
+                            .filter(node -> node.getCollapsingState().equals(CollapsingState.COLLAPSED))
+                            .map(Node::getId)
+                            .findFirst()
+                            .ifPresent(collapsedNodeId::set);
+                }, () -> fail("Missing diagram"));
+
+        Runnable expandNodes = () -> {
+            String expandToolId = this.expandCollapseDiagramDescriptionProvider.getExpandNodeToolId();
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), TestIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), collapsedNodeId.get(), expandToolId, 0, 0, null);
+            var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+
+            String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+        };
+
+        Predicate<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .filter(diagram -> {
+                    return diagram.getNodes().stream()
+                        .filter(node -> node.getId().equals(collapsedNodeId.get()))
+                        .map(node -> node.getCollapsingState().equals(CollapsingState.EXPANDED))
+                        .findFirst()
+                        .orElse(false);
+                })
+                .isPresent();
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(expandNodes)
+                .expectNextMatches(updatedDiagramContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a diagram with collapsed nodes by default, when a tool collapsing nodes is invoked, then expanded nodes are collapsed")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenDiagramWithCollapsedNodesByDefaultWhenToolCollapsingNodesIsInvokedThenExpandedNodesAreCollapsed() {
+        var flux = this.givenSubscriptionToExpandedCollapseDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var expandedNodeId = new AtomicReference<String>();
+
+        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+
+                    diagram.getNodes().stream()
+                            .filter(node -> node.getCollapsingState().equals(CollapsingState.EXPANDED))
+                            .map(Node::getId)
+                            .findFirst()
+                            .ifPresent(expandedNodeId::set);
+                }, () -> fail("Missing diagram"));
+
+        Runnable collapseNodes = () -> {
+            String collapseToolId = this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId();
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), TestIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), expandedNodeId.get(), collapseToolId, 0, 0, null);
+            var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+
+            String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+        };
+
+        Predicate<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .filter(diagram -> {
+                    return diagram.getNodes().stream()
+                        .filter(node -> node.getId().equals(expandedNodeId.get()))
+                        .map(node -> node.getCollapsingState().equals(CollapsingState.COLLAPSED))
+                        .findFirst()
+                        .orElse(false);
+                })
+                .isPresent();
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(collapseNodes)
+                .expectNextMatches(updatedDiagramContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 }

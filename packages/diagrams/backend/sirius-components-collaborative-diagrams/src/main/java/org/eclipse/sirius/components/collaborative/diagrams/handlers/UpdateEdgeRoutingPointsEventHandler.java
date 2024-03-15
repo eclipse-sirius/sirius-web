@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,7 +85,7 @@ public class UpdateEdgeRoutingPointsEventHandler implements IDiagramEventHandler
         Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.getDiagram(), diagramInput.diagramElementId());
 
         if (optionalEdge.isPresent()) {
-            diagramContext.setDiagramEvent(new UpdateEdgeRoutingPointsEvent(diagramInput.diagramElementId(), diagramInput.routingPoints()));
+            diagramContext.getDiagramEvents().add(new UpdateEdgeRoutingPointsEvent(diagramInput.diagramElementId(), diagramInput.routingPoints()));
             payloadSink.tryEmitValue(new SuccessPayload(diagramInput.id()));
             changeDescriptionSink.tryEmitNext(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.representationId(), diagramInput));
         } else {

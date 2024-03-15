@@ -58,6 +58,7 @@ public class ArrangeAllEventHandlerTests {
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(SuccessPayload.class);
 
-        assertThat(diagramContext.getDiagramEvent()).isInstanceOf(ArrangeAllEvent.class);
+        assertThat(diagramContext.getDiagramEvents()).hasSize(1);
+        assertThat(diagramContext.getDiagramEvents().get(0)).isInstanceOf(ArrangeAllEvent.class);
     }
 }

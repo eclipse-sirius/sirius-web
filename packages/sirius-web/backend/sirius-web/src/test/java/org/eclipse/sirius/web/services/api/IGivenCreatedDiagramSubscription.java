@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 THALES GLOBAL SERVICES.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.events;
+package org.eclipse.sirius.web.services.api;
+
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+
+import reactor.core.publisher.Flux;
 
 /**
- * Represent an event for the diagram.
+ * Used to create a diagram and subscribe to it.
  *
- * @author fbarbin
+ * @author sbegaudeau
  */
-@SuppressWarnings("checkstyle:InterfaceIsType")
-public interface IDiagramEvent {
-
-    /**
-     * The name of the variable used to store and retrieve the diagram event from a variable manager.
-     */
-    String DIAGRAM_EVENTS = "diagramEvents";
+public interface IGivenCreatedDiagramSubscription {
+    Flux<DiagramRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input);
 }

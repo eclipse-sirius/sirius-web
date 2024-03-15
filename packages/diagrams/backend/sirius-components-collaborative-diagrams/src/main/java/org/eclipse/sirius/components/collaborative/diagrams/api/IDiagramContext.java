@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,9 +41,7 @@ public interface IDiagramContext {
 
     List<ViewDeletionRequest> getViewDeletionRequests();
 
-    IDiagramEvent getDiagramEvent();
-
-    void setDiagramEvent(IDiagramEvent diagramElementEvent);
+    List<IDiagramEvent> getDiagramEvents();
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -76,13 +74,8 @@ public interface IDiagramContext {
         }
 
         @Override
-        public IDiagramEvent getDiagramEvent() {
-            return null;
+        public List<IDiagramEvent> getDiagramEvents() {
+            return List.of();
         }
-
-        @Override
-        public void setDiagramEvent(IDiagramEvent diagramElementEvent) {
-        }
-
     }
 }

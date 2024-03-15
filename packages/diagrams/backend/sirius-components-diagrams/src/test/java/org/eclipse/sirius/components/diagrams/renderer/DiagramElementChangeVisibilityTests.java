@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -207,7 +207,7 @@ public class DiagramElementChangeVisibilityTests {
                 .viewDeletionRequests(List.of())
                 .previousDiagram(previousDiagram)
                 .operationValidator(new IOperationValidator.NoOp())
-                .diagramEvent(Optional.empty())
+                .diagramEvents(List.of())
                 .build();
 
         Element element = new Element(DiagramComponent.class, props);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -59,7 +58,7 @@ public final class NodeComponentProps implements IProps {
 
     private IOperationValidator operationValidator;
 
-    private Optional<IDiagramEvent> diagramEvent;
+    private List<IDiagramEvent> diagramEvents;
 
     private NodeComponentProps() {
         // Prevent instantiation
@@ -109,8 +108,8 @@ public final class NodeComponentProps implements IProps {
         return this.previousTargetObjectIds;
     }
 
-    public Optional<IDiagramEvent> getDiagramEvent() {
-        return this.diagramEvent;
+    public List<IDiagramEvent> getDiagramEvents() {
+        return this.diagramEvents;
     }
 
     public IOperationValidator getOperationValidator() {
@@ -152,7 +151,7 @@ public final class NodeComponentProps implements IProps {
 
         private IOperationValidator operationValidator;
 
-        private Optional<IDiagramEvent> diagramEvent = Optional.empty();
+        private List<IDiagramEvent> diagramEvents;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -214,8 +213,8 @@ public final class NodeComponentProps implements IProps {
             return this;
         }
 
-        public Builder diagramEvent(IDiagramEvent diagramEvent) {
-            this.diagramEvent = Optional.ofNullable(diagramEvent);
+        public Builder diagramEvents(List<IDiagramEvent> diagramEvents) {
+            this.diagramEvents = Objects.requireNonNull(diagramEvents);
             return this;
         }
 
@@ -231,7 +230,7 @@ public final class NodeComponentProps implements IProps {
             nodeComponentProps.viewDeletionRequests = Objects.requireNonNull(this.viewDeletionRequests);
             nodeComponentProps.parentElementId = Objects.requireNonNull(this.parentElementId);
             nodeComponentProps.previousTargetObjectIds = Objects.requireNonNull(this.previousTargetObjectIds);
-            nodeComponentProps.diagramEvent = Objects.requireNonNull(this.diagramEvent);
+            nodeComponentProps.diagramEvents = Objects.requireNonNull(this.diagramEvents);
             nodeComponentProps.operationValidator = Objects.requireNonNull(this.operationValidator);
             nodeComponentProps.parentElementState = Objects.requireNonNull(this.parentElementState);
             return nodeComponentProps;

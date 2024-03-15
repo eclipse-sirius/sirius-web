@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,12 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
@@ -159,7 +161,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
                 result = tool.getHandler().apply(variableManager);
                 Position newPosition = Position.at(startingPositionX, startingPositionY);
 
-                diagramContext.setDiagramEvent(new SinglePositionEvent(diagramElementId, newPosition));
+                diagramContext.getDiagramEvents().add(new SinglePositionEvent(diagramElementId, newPosition));
             }
         }
         return result;
@@ -185,6 +187,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
+        variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
         variableManager.put(VariableManager.SELF, self.get());
         variableManager.put(Node.SELECTED_NODE, node.orElse(null));
         variableManager.put(Edge.SELECTED_EDGE, edge.orElse(null));

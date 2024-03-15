@@ -75,7 +75,8 @@ public class UpdateCollapsingStateEventHandlerTests {
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(SuccessPayload.class);
 
-        assertThat(diagramContext.getDiagramEvent()).isInstanceOf(UpdateCollapsingStateEvent.class);
+        assertThat(diagramContext.getDiagramEvents()).hasSize(1);
+        assertThat(diagramContext.getDiagramEvents().get(0)).isInstanceOf(UpdateCollapsingStateEvent.class);
     }
 
 }

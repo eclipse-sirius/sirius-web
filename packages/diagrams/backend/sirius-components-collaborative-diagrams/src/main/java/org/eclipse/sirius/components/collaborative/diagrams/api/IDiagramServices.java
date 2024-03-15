@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 THALES GLOBAL SERVICES.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.events;
+package org.eclipse.sirius.components.collaborative.diagrams.api;
+
+import java.util.List;
+
+import org.eclipse.sirius.components.diagrams.Node;
 
 /**
- * Represent an event for the diagram.
+ * Service used to perform operations on a diagram.
  *
- * @author fbarbin
+ * @author gdaniel
  */
-@SuppressWarnings("checkstyle:InterfaceIsType")
-public interface IDiagramEvent {
+public interface IDiagramServices {
 
-    /**
-     * The name of the variable used to store and retrieve the diagram event from a variable manager.
-     */
-    String DIAGRAM_EVENTS = "diagramEvents";
+    Object collapse(IDiagramService diagramService, List<Node> node);
+
+    Object expand(IDiagramService diagramService, List<Node> node);
+
 }

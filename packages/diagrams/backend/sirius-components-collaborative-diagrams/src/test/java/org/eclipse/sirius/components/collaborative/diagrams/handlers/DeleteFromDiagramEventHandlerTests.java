@@ -146,7 +146,8 @@ public class DeleteFromDiagramEventHandlerTests {
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(DeleteFromDiagramSuccessPayload.class);
 
-        IDiagramEvent diagramEvent = diagramContext.getDiagramEvent();
+        assertThat(diagramContext.getDiagramEvents()).hasSize(1);
+        IDiagramEvent diagramEvent = diagramContext.getDiagramEvents().get(0);
         assertThat(diagramEvent).isInstanceOf(RemoveEdgeEvent.class);
         RemoveEdgeEvent removeEdgeEvent = (RemoveEdgeEvent) diagramEvent;
         assertThat(removeEdgeEvent.getEdgeIds()).contains(EDGE_ID);

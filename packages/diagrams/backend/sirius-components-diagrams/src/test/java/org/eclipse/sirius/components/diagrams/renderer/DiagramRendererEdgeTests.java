@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -157,7 +157,7 @@ public class DiagramRendererEdgeTests {
                 .viewDeletionRequests(List.of())
                 .previousDiagram(Optional.empty())
                 .operationValidator(new IOperationValidator.NoOp())
-                .diagramEvent(Optional.empty())
+                .diagramEvents(List.of())
                 .build();
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer().render(element);

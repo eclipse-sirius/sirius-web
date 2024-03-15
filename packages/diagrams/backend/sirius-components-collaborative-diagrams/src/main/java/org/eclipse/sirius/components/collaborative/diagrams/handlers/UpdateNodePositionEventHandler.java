@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2024 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -88,7 +88,7 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
         Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.diagramElementId());
 
         if (optionalNode.isPresent()) {
-            diagramContext.setDiagramEvent(new MoveEvent(diagramInput.diagramElementId(), newPosition));
+            diagramContext.getDiagramEvents().add(new MoveEvent(diagramInput.diagramElementId(), newPosition));
             payloadSink.tryEmitValue(new UpdateNodePositionSuccessPayload(diagramInput.id(), diagramContext.getDiagram()));
             changeDescriptionSink.tryEmitNext(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.representationId(), diagramInput));
         } else {
