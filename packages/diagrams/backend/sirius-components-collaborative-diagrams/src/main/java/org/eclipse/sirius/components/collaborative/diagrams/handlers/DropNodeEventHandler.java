@@ -19,11 +19,13 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.Environment;
@@ -131,6 +133,7 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
 
             VariableManager variableManager = new VariableManager();
             variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
+            variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
             variableManager.put(DROPPED_ELEMENT, optionalDroppedElement.get());

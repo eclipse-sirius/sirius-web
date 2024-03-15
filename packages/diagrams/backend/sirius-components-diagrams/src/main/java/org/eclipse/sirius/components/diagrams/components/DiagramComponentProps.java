@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,7 +50,7 @@ public final class DiagramComponentProps implements IProps {
 
     private List<ViewDeletionRequest> viewDeletionRequests;
 
-    private Optional<IDiagramEvent> diagramEvent;
+    private List<IDiagramEvent> diagramEvents;
 
     private DiagramComponentProps() {
         // Prevent instantiation
@@ -84,8 +84,8 @@ public final class DiagramComponentProps implements IProps {
         return this.viewDeletionRequests;
     }
 
-    public Optional<IDiagramEvent> getDiagramEvent() {
-        return this.diagramEvent;
+    public List<IDiagramEvent> getDiagramEvents() {
+        return this.diagramEvents;
     }
 
     public static Builder newDiagramComponentProps() {
@@ -113,7 +113,7 @@ public final class DiagramComponentProps implements IProps {
 
         private List<ViewDeletionRequest> viewDeletionRequests;
 
-        private Optional<IDiagramEvent> diagramEvent;
+        private List<IDiagramEvent> diagramEvents;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -150,8 +150,8 @@ public final class DiagramComponentProps implements IProps {
             return this;
         }
 
-        public Builder diagramEvent(Optional<IDiagramEvent> diagramEvent) {
-            this.diagramEvent = Objects.requireNonNull(diagramEvent);
+        public Builder diagramEvents(List<IDiagramEvent> diagramEvents) {
+            this.diagramEvents = Objects.requireNonNull(diagramEvents);
             return this;
         }
 
@@ -164,7 +164,7 @@ public final class DiagramComponentProps implements IProps {
             diagramComponentProps.previousDiagram = Objects.requireNonNull(this.previousDiagram);
             diagramComponentProps.viewCreationRequests = List.copyOf(Objects.requireNonNull(this.viewCreationRequests));
             diagramComponentProps.viewDeletionRequests = List.copyOf(Objects.requireNonNull(this.viewDeletionRequests));
-            diagramComponentProps.diagramEvent = Objects.requireNonNull(this.diagramEvent);
+            diagramComponentProps.diagramEvents = Objects.requireNonNull(this.diagramEvents);
             return diagramComponentProps;
         }
     }

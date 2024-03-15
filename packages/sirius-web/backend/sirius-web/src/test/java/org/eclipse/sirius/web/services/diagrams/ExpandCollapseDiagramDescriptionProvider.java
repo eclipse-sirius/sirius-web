@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.diagrams;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -21,14 +22,19 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.NodePaletteBuilder;
+import org.eclipse.sirius.components.view.builder.generated.NodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.OnStudioTests;
@@ -44,30 +50,55 @@ import org.springframework.stereotype.Service;
 @Conditional(OnStudioTests.class)
 public class ExpandCollapseDiagramDescriptionProvider implements IEditingContextProcessor {
 
-    public static final String REPRESENTATION_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=3c0d2bf3-d061-3a39-85e9-c9de8f6a287c&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93";
+    private final IDiagramIdProvider diagramIdProvider;
+
+    private final View view;
+
+    private DiagramDescription diagramDescription;
+
+    private NodeTool expandNodeTool;
+
+    private NodeTool collapseNodeTool;
+
+    public ExpandCollapseDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
+        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.view = this.createView();
+    }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            siriusWebEditingContext.getViews().add(this.createView());
+            siriusWebEditingContext.getViews().add(this.view);
         }
+    }
+
+    public String getRepresentationDescriptionId() {
+        return this.diagramIdProvider.getId(this.diagramDescription);
+    }
+
+    public String getExpandNodeToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.expandNodeTool).toString().getBytes()).toString();
+    }
+
+    public String getCollapseNodeToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.collapseNodeTool).toString().getBytes()).toString();
     }
 
     private View createView() {
         ViewBuilder viewBuilder = new ViewBuilder();
-        View view = viewBuilder.build();
-        view.getDescriptions().add(this.createDiagramDescription());
+        View expandCollapseView = viewBuilder.build();
+        expandCollapseView.getDescriptions().add(this.createDiagramDescription());
 
-        view.eAllContents().forEachRemaining(eObject -> {
+        expandCollapseView.eAllContents().forEachRemaining(eObject -> {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
 
         String resourcePath = UUID.nameUUIDFromBytes("ExpandCollapseDiagramDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
         resource.eAdapters().add(new ResourceMetadataAdapter("ExpandCollapseDiagramDescription"));
-        resource.getContents().add(view);
+        resource.getContents().add(expandCollapseView);
 
-        return view;
+        return expandCollapseView;
     }
 
     private DiagramDescription createDiagramDescription() {
@@ -80,6 +111,29 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
                 .position(InsideLabelPosition.TOP_CENTER)
                 .build();
 
+        this.expandNodeTool = new NodeToolBuilder()
+                .name("Expand")
+                .body(
+                        new ChangeContextBuilder()
+                                .expression("aql:diagramServices.expand(Sequence{ selectedNode })")
+                                .build()
+                )
+                .build();
+
+
+        this.collapseNodeTool = new NodeToolBuilder()
+                .name("Collapse")
+                .body(
+                        new ChangeContextBuilder()
+                                .expression("aql:diagramServices.collapse(Sequence{ selectedNode })")
+                                .build()
+                )
+                .build();
+
+        var nodePalette = new NodePaletteBuilder()
+                .nodeTools(this.expandNodeTool, this.collapseNodeTool)
+                .build();
+
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
                 .domainType("papaya_logical_architecture:Component")
@@ -88,10 +142,11 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
                 .style(nodeStyle)
                 .collapsible(true)
                 .isCollapsedByDefaultExpression("aql:self.name.endsWith('-domain')")
+                .palette(nodePalette)
                 .build();
 
 
-        var diagramDescription = new DiagramDescriptionBuilder()
+        this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
                 .titleExpression("aql:'ExpandCollapseDiagram'")
                 .domainType("papaya_core:Root")
@@ -100,6 +155,6 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
                 .autoLayout(false)
                 .build();
 
-        return diagramDescription;
+        return this.diagramDescription;
     }
 }

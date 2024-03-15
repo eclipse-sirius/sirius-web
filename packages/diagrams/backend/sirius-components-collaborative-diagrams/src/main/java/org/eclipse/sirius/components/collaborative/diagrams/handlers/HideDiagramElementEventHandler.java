@@ -107,7 +107,7 @@ public class HideDiagramElementEventHandler implements IDiagramEventHandler {
         }
 
         if (resolvedIds.size() > 0) {
-            diagramContext.setDiagramEvent(new HideDiagramElementEvent(resolvedIds, diagramInput.hide()));
+            diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(resolvedIds, diagramInput.hide()));
         }
 
         this.sendResponse(payloadSink, changeDescriptionSink, errors, resolvedIds.size() > 0, diagramContext, diagramInput);

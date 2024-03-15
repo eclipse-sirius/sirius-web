@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 THALES GLOBAL SERVICES.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.events;
+package org.eclipse.sirius.components.collaborative.diagrams.api;
 
 /**
- * Represent an event for the diagram.
+ * Information used to perform diagram service operations.
  *
- * @author fbarbin
+ * @author gdaniel
  */
-@SuppressWarnings("checkstyle:InterfaceIsType")
-public interface IDiagramEvent {
+public interface IDiagramService {
 
     /**
-     * The name of the variable used to store and retrieve the diagram event from a variable manager.
+     * The name of the variable used to store and retrieve the diagram services context from a variable manager.
      */
-    String DIAGRAM_EVENTS = "diagramEvents";
+    String DIAGRAM_SERVICES = "diagramServices";
+
+    IDiagramContext getDiagramContext();
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 THALES GLOBAL SERVICES.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.events;
+package org.eclipse.sirius.web.services.api;
 
 /**
- * Represent an event for the diagram.
+ * Used to set up a test by committing the current transaction.
  *
- * @author fbarbin
+ * @author sbegaudeau
  */
-@SuppressWarnings("checkstyle:InterfaceIsType")
-public interface IDiagramEvent {
-
-    /**
-     * The name of the variable used to store and retrieve the diagram event from a variable manager.
-     */
-    String DIAGRAM_EVENTS = "diagramEvents";
+public interface IGivenCommittedTransaction {
+    void commit();
 }

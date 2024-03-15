@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -125,12 +126,13 @@ public class DiagramCreationService implements IDiagramCreationService {
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
         variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, optionalDiagramContext.orElse(null));
+        variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(optionalDiagramContext.orElse(null)));
 
-        Optional<IDiagramEvent> optionalDiagramElementEvent = optionalDiagramContext.map(IDiagramContext::getDiagramEvent);
+        List<IDiagramEvent> diagramEvents = optionalDiagramContext.map(IDiagramContext::getDiagramEvents).orElse(List.of());
         Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
         List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(IDiagramContext::getViewCreationRequests).orElse(List.of());
         List<ViewDeletionRequest> viewDeletionRequests = optionalDiagramContext.map(IDiagramContext::getViewDeletionRequests).orElse(List.of());
-
+        
         //@formatter:off
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
@@ -140,7 +142,7 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .viewCreationRequests(viewCreationRequests)
                 .viewDeletionRequests(viewDeletionRequests)
                 .previousDiagram(optionalPreviousDiagram)
-                .diagramEvent(optionalDiagramElementEvent);
+                .diagramEvents(diagramEvents);
         //@formatter:on
 
         DiagramComponentProps props = builder.build();

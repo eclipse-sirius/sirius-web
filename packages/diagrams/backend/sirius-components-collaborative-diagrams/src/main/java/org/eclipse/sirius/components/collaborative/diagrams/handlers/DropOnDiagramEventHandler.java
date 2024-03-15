@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,12 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
@@ -120,7 +122,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
             result = new Success();
             var dropHandler = optionalDropHandler.get();
             Position newPosition = Position.at(startingPositionX, startingPositionY);
-            diagramContext.setDiagramEvent(new SinglePositionEvent(diagramElementId, newPosition));
+            diagramContext.getDiagramEvents().add(new SinglePositionEvent(diagramElementId, newPosition));
 
             for (Object self : objects) {
                 VariableManager variableManager = new VariableManager();
@@ -128,6 +130,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
                 variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
                 variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
+                variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
                 variableManager.put(VariableManager.SELF, self);
 
                 IStatus dropResult = dropHandler.apply(variableManager);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,12 +35,13 @@ public class DiagramContext implements IDiagramContext {
 
     private final List<ViewDeletionRequest> viewDeletionRequests;
 
-    private IDiagramEvent diagramEvent;
+    private final List<IDiagramEvent> diagramEvents;
 
     public DiagramContext(Diagram initialDiagram) {
         this.diagram = Objects.requireNonNull(initialDiagram);
         this.viewCreationRequests = new ArrayList<>();
         this.viewDeletionRequests = new ArrayList<>();
+        this.diagramEvents = new ArrayList<>();
     }
 
     @Override
@@ -64,18 +65,13 @@ public class DiagramContext implements IDiagramContext {
     }
 
     @Override
-    public IDiagramEvent getDiagramEvent() {
-        return this.diagramEvent;
-    }
-
-    @Override
-    public void setDiagramEvent(IDiagramEvent diagramEvent) {
-        this.diagramEvent = diagramEvent;
+    public List<IDiagramEvent> getDiagramEvents() {
+        return this.diagramEvents;
     }
 
     @Override
     public void reset() {
-        this.diagramEvent = null;
+        this.diagramEvents.clear();
         this.viewCreationRequests.clear();
         this.viewDeletionRequests.clear();
     }

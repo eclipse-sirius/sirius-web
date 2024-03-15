@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,11 +20,13 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeletionPolicy;
@@ -153,7 +155,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         }
 
         RemoveEdgeEvent removeEdgeEvent = new RemoveEdgeEvent(deletedEdgeIds);
-        diagramContext.setDiagramEvent(removeEdgeEvent);
+        diagramContext.getDiagramEvents().add(removeEdgeEvent);
         this.sendResponse(payloadSink, changeDescriptionSink, errors, atLeastOneOk, diagramContext, diagramInput);
     }
 
@@ -191,7 +193,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 variableManager.put(Node.SELECTED_NODE, node);
                 variableManager.put(DELETION_POLICY, deletionPolicy);
                 variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
-
+                variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
                 NodeDescription nodeDescription = optionalNodeDescription.get();
                 this.logger.debug("Deleted diagram element {}", node.getId());
                 result = nodeDescription.getDeleteHandler().apply(variableManager);
@@ -220,6 +222,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 variableManager.put(Edge.SELECTED_EDGE, edge);
                 variableManager.put(DELETION_POLICY, deletionPolicy);
                 variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
+                variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
 
                 // @formatter:off
                 this.diagramQueryService.findNodeById(diagramContext.getDiagram(), edge.getSourceId())

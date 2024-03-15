@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2024 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -113,7 +113,7 @@ public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
                     .y(oldPosition.getY() - newPosition.getY())
                     .build();
             //@formatter:on
-            diagramContext.setDiagramEvent(new ResizeEvent(diagramInput.diagramElementId(), delta, newSize));
+            diagramContext.getDiagramEvents().add(new ResizeEvent(diagramInput.diagramElementId(), delta, newSize));
 
             payloadSink.tryEmitValue(new UpdateNodeBoundsSuccessPayload(diagramInput.id(), diagramContext.getDiagram()));
             changeDescriptionSink.tryEmitNext(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.representationId(), diagramInput));

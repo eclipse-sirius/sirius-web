@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class DiagramComponent implements IComponent {
 
         var optionalPreviousDiagram = this.props.getPreviousDiagram();
         variableManager.put(DiagramComponentProps.PREVIOUS_DIAGRAM, optionalPreviousDiagram.orElse(null));
-        variableManager.put(IDiagramEvent.DIAGRAM_EVENT, this.props.getDiagramEvent().orElse(null));
+        variableManager.put(IDiagramEvent.DIAGRAM_EVENTS, this.props.getDiagramEvents());
 
         String label = diagramDescription.getLabelProvider().apply(variableManager);
 
@@ -78,7 +78,7 @@ public class DiagramComponent implements IComponent {
                             .viewDeletionRequests(this.props.getViewDeletionRequests())
                             .parentElementId(diagramId)
                             .previousTargetObjectIds(previousNodesTargetIds)
-                            .diagramEvent(this.props.getDiagramEvent().orElse(null))
+                            .diagramEvents(this.props.getDiagramEvents())
                             .parentElementState(ViewModifier.Normal)
                             .operationValidator(this.props.getOperationValidator())
                             .build();
@@ -90,7 +90,7 @@ public class DiagramComponent implements IComponent {
                     var previousEdges = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getEdges(previousDiagram, edgeDescription))
                             .orElse(List.of());
                     IEdgesRequestor edgesRequestor = new EdgesRequestor(previousEdges);
-                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, this.props.getOperationValidator(), this.props.getDiagramEvent());
+                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, this.props.getOperationValidator(), this.props.getDiagramEvents());
                     return new Element(EdgeComponent.class, edgeComponentProps);
                 })
                 .toList();

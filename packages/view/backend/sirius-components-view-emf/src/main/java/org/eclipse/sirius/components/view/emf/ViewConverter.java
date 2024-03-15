@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -61,7 +62,7 @@ public class ViewConverter implements IViewConverter {
     public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext, IObjectService objectService) {
         this.javaServiceProviders = new ArrayList<>();
         this.javaServiceProviders.addAll(Objects.requireNonNull(javaServiceProviders));
-        this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class));
+        this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class, DiagramServices.class));
         this.representationDescriptionConverters = Objects.requireNonNull(representationDescriptionConverters);
         this.applicationContext = Objects.requireNonNull(applicationContext);
         this.objectService = Objects.requireNonNull(objectService);

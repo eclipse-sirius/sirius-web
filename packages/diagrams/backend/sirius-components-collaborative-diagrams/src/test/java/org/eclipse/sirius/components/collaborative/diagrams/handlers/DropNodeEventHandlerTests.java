@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.Environment;
@@ -77,10 +78,11 @@ public class DropNodeEventHandlerTests {
 
     private final Function<VariableManager, IStatus> dropNodeHandler = variableManager -> {
         assertThat(variableManager).isNotNull();
-        assertThat(variableManager.getVariables()).hasSize(7);
+        assertThat(variableManager.getVariables()).hasSize(8);
         assertThat(variableManager.getVariables()).containsKey(Environment.ENVIRONMENT);
         assertThat(variableManager.getVariables()).containsKey(IEditingContext.EDITING_CONTEXT);
         assertThat(variableManager.getVariables()).containsKey(IDiagramContext.DIAGRAM_CONTEXT);
+        assertThat(variableManager.getVariables()).containsKey(IDiagramService.DIAGRAM_SERVICES);
         assertThat(variableManager.getVariables()).containsKey("droppedNode");
         assertThat(variableManager.getVariables()).containsKey("droppedElement");
         assertThat(variableManager.getVariables()).containsKey("targetNode");

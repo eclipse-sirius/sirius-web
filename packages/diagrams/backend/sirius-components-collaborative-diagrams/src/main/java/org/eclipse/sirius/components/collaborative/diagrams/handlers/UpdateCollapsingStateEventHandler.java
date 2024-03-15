@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,7 +77,7 @@ public class UpdateCollapsingStateEventHandler implements IDiagramEventHandler {
         if (diagramInput instanceof UpdateCollapsingStateInput input) {
             var optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), input.diagramElementId());
             if (optionalNode.isPresent()) {
-                diagramContext.setDiagramEvent(new UpdateCollapsingStateEvent(input.diagramElementId(), input.collapsingState()));
+                diagramContext.getDiagramEvents().add(new UpdateCollapsingStateEvent(input.diagramElementId(), input.collapsingState()));
                 payload = new SuccessPayload(diagramInput.id());
                 changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_ELEMENT_COLLAPSING_STATE_CHANGE, diagramInput.representationId(), diagramInput);
             } else {

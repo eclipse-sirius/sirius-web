@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.diagrams;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -26,8 +27,6 @@ import org.eclipse.sirius.components.view.builder.generated.CreateInstanceBuilde
 import org.eclipse.sirius.components.view.builder.generated.CreateViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramPaletteBuilder;
-import org.eclipse.sirius.components.view.builder.generated.DropToolBuilder;
-import org.eclipse.sirius.components.view.builder.generated.IfBuilder;
 import org.eclipse.sirius.components.view.builder.generated.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeToolBuilder;
@@ -38,7 +37,9 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.OnStudioTests;
@@ -55,30 +56,49 @@ import org.springframework.stereotype.Service;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class UnsynchronizedDiagramDescriptionProvider implements IEditingContextProcessor {
 
-    public static final String REPRESENTATION_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=a7fd6137-34a6-39ac-9088-412b4d8f8193&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93";
+    private final IDiagramIdProvider diagramIdProvider;
+
+    private final View view;
+
+    private DiagramDescription diagramDescription;
+
+    private NodeTool createNodeTool;
+
+    public UnsynchronizedDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
+        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.view = this.createView();
+    }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            siriusWebEditingContext.getViews().add(this.createView());
+            siriusWebEditingContext.getViews().add(this.view);
         }
+    }
+
+    public String getRepresentationDescriptionId() {
+        return this.diagramIdProvider.getId(this.diagramDescription);
+    }
+
+    public String getCreateNodeToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.createNodeTool).toString().getBytes()).toString();
     }
 
     private View createView() {
         ViewBuilder viewBuilder = new ViewBuilder();
-        View view = viewBuilder.build();
-        view.getDescriptions().add(this.createDiagramDescription());
+        View unsynchronizedView = viewBuilder.build();
+        unsynchronizedView.getDescriptions().add(this.createDiagramDescription());
 
-        view.eAllContents().forEachRemaining(eObject -> {
+        unsynchronizedView.eAllContents().forEachRemaining(eObject -> {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
 
         String resourcePath = UUID.nameUUIDFromBytes("UnsynchronizedDiagramDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
         resource.eAdapters().add(new ResourceMetadataAdapter("UnsynchronizedDiagramDescription"));
-        resource.getContents().add(view);
+        resource.getContents().add(unsynchronizedView);
 
-        return view;
+        return unsynchronizedView;
     }
 
     private DiagramDescription createDiagramDescription() {
@@ -107,12 +127,20 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 .children(
                         new SetValueBuilder()
                                 .featureName("components")
-                                .valueExpression("newInstance")
+                                .valueExpression("aql:newInstance")
+                                .children(
+                                        new CreateViewBuilder()
+                                                .elementDescription(nodeDescription)
+                                                .semanticElementExpression("aql:newInstance")
+                                                .parentViewExpression("aql:selectedNode")
+                                                .containmentKind(NodeContainmentKind.CHILD_NODE)
+                                                .build()
+                                )
                                 .build()
                 )
                 .build();
 
-        var createNodeTool = new NodeToolBuilder()
+        this.createNodeTool = new NodeToolBuilder()
                 .name("Create Component")
                 .body(
                         new ChangeContextBuilder()
@@ -122,40 +150,11 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 )
                 .build();
 
-        var dropOnDiagram = new CreateViewBuilder()
-                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(nodeDescription)
-                .parentViewExpression("aql:null")
-                .semanticElementExpression("aql:self")
-                .build();
-
-        var dropOnExistingNode = new CreateViewBuilder()
-                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(nodeDescription)
-                .parentViewExpression("aql:selectedNode")
-                .semanticElementExpression("aql:self")
-                .build();
-
-        var dropTool = new DropToolBuilder()
-                .name("Drop tool")
-                .body(
-                        new IfBuilder()
-                                .conditionExpression("aql:selectedNode = null")
-                                .children(dropOnDiagram)
-                                .build(),
-                        new IfBuilder()
-                                .conditionExpression("aql:selectedNode <> null")
-                                .children(dropOnExistingNode)
-                                .build()
-                )
-                .build();
-
         var diagramPalette = new DiagramPaletteBuilder()
-                .nodeTools(createNodeTool)
-                .dropTool(dropTool)
+                .nodeTools(this.createNodeTool)
                 .build();
 
-        var diagramDescription = new DiagramDescriptionBuilder()
+        this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
                 .titleExpression("aql:'UnsynchronizedDiagram'")
                 .domainType("papaya_core:Root")
@@ -165,6 +164,6 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 .autoLayout(false)
                 .build();
 
-        return diagramDescription;
+        return this.diagramDescription;
     }
 }

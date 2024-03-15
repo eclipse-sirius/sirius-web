@@ -104,7 +104,7 @@ public class PinDiagramElementEventHandler implements IDiagramEventHandler {
         }
 
         if (!resolvedIds.isEmpty()) {
-            diagramContext.setDiagramEvent(new PinDiagramElementEvent(resolvedIds, diagramInput.pinned()));
+            diagramContext.getDiagramEvents().add(new PinDiagramElementEvent(resolvedIds, diagramInput.pinned()));
         }
 
         this.sendResponse(payloadSink, changeDescriptionSink, errors, !resolvedIds.isEmpty(), diagramInput);

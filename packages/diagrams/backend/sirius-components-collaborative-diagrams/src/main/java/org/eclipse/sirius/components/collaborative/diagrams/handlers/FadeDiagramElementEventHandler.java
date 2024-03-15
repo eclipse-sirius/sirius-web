@@ -107,7 +107,7 @@ public class FadeDiagramElementEventHandler implements IDiagramEventHandler {
         }
 
         if (resolvedIds.size() > 0) {
-            diagramContext.setDiagramEvent(new FadeDiagramElementEvent(resolvedIds, diagramInput.fade()));
+            diagramContext.getDiagramEvents().add(new FadeDiagramElementEvent(resolvedIds, diagramInput.fade()));
         }
 
         this.sendResponse(payloadSink, changeDescriptionSink, errors, resolvedIds.size() > 0, diagramContext, diagramInput);
