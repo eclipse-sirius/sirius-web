@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder.generated;
 
+import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
+
 /**
  * Builder for ReferenceWidgetDescriptionStyleBuilder.
  *
@@ -21,24 +24,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ReferenceWidgetDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle referenceWidgetDescriptionStyle = org.eclipse.sirius.components.widgets.reference.ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle();
+    private org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle referenceWidgetDescriptionStyle = org.eclipse.sirius.components.view.widget.reference.ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle getReferenceWidgetDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle getReferenceWidgetDescriptionStyle() {
         return this.referenceWidgetDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle build() {
         return this.getReferenceWidgetDescriptionStyle();
     }
 

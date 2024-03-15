@@ -24,12 +24,12 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.form.provider.WidgetDescriptionStyleItemProvider;
-import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle} object. <!-- begin-user-doc
+ * {@link ReferenceWidgetDescriptionStyle} object. <!-- begin-user-doc
  * --> <!-- end-user-doc -->
  *
  * @generated

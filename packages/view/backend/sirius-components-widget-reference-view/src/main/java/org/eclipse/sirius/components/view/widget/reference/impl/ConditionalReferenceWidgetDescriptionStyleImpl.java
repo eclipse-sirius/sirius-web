@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference.impl;
+package org.eclipse.sirius.components.view.widget.reference.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
@@ -21,9 +21,9 @@ import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.impl.ConditionalImpl;
-import org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle;
-import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Conditional Reference Widget Description
@@ -32,17 +32,17 @@ import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptio
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#getFontSize
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#getFontSize
  * <em>Font Size</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isItalic
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isItalic
  * <em>Italic</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isBold
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isBold
  * <em>Bold</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isUnderline
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isUnderline
  * <em>Underline</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isStrikeThrough
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isStrikeThrough
  * <em>Strike Through</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#getColor
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#getColor
  * <em>Color</em>}</li>
  * </ul>
  *

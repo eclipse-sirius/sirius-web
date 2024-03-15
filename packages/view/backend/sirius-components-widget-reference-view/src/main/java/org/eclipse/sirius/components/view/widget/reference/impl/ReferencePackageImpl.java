@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference.impl;
+package org.eclipse.sirius.components.view.widget.reference.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -19,11 +19,11 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
-import org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle;
-import org.eclipse.sirius.components.widgets.reference.ReferenceFactory;
-import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
@@ -84,7 +84,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      *
      * @generated
      * @see org.eclipse.emf.ecore.EPackage.Registry
-     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#eNS_URI
+     * @see ReferencePackage#eNS_URI
      * @see #init()
      */
     private ReferencePackageImpl() {

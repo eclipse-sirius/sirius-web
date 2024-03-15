@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference.impl;
+package org.eclipse.sirius.components.view.widget.reference.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
@@ -20,8 +20,8 @@ import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionStyleImpl;
-import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Widget Description Style</b></em>'. <!--
@@ -30,17 +30,17 @@ import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptio
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl#getFontSize
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl#getFontSize
  * <em>Font Size</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl#isItalic
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl#isItalic
  * <em>Italic</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl#isBold
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl#isBold
  * <em>Bold</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl#isUnderline
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl#isUnderline
  * <em>Underline</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl#isStrikeThrough
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl#isStrikeThrough
  * <em>Strike Through</em>}</li>
- * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl#getColor
+ * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl#getColor
  * <em>Color</em>}</li>
  * </ul>
  *

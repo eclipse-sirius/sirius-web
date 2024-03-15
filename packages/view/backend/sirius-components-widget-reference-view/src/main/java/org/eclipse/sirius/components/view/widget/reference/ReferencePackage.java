@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference;
+package org.eclipse.sirius.components.view.widget.reference;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.view.form.FormPackage;
  * </ul>
  * <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.components.widgets.reference.ReferenceFactory
+ * @see ReferenceFactory
  * @model kind="package"
  * @generated
  */
@@ -59,11 +59,11 @@ public interface ReferencePackage extends EPackage {
 
     /**
      * The meta object id for the
-     * '{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget
+     * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl
-     * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getReferenceWidgetDescription()
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetDescription()
      * @generated
      */
     int REFERENCE_WIDGET_DESCRIPTION = 0;
@@ -167,11 +167,11 @@ public interface ReferencePackage extends EPackage {
 
     /**
      * The meta object id for the
-     * '{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl <em>Widget
+     * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl <em>Widget
      * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getReferenceWidgetDescriptionStyle()
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetDescriptionStyle()
      * @generated
      */
     int REFERENCE_WIDGET_DESCRIPTION_STYLE = 1;
@@ -244,11 +244,11 @@ public interface ReferencePackage extends EPackage {
 
     /**
      * The meta object id for the
-     * '{@link org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
+     * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
      * <em>Conditional Reference Widget Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
-     * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getConditionalReferenceWidgetDescriptionStyle()
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getConditionalReferenceWidgetDescriptionStyle()
      * @generated
      */
     int CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE = 2;
@@ -258,7 +258,7 @@ public interface ReferencePackage extends EPackage {
      *
      * @generated
      */
-    ReferencePackage eINSTANCE = org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl.init();
+    ReferencePackage eINSTANCE = org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl.init();
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -336,22 +336,22 @@ public interface ReferencePackage extends EPackage {
 
     /**
      * Returns the meta object for class
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription <em>Widget Description</em>}'.
+     * '{@link ReferenceWidgetDescription <em>Widget Description</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Widget Description</em>'.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription
+     * @see ReferenceWidgetDescription
      * @generated
      */
     EClass getReferenceWidgetDescription();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression
+     * '{@link ReferenceWidgetDescription#getReferenceOwnerExpression
      * <em>Reference Owner Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Reference Owner Expression</em>'.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression()
+     * @see ReferenceWidgetDescription#getReferenceOwnerExpression()
      * @see #getReferenceWidgetDescription()
      * @generated
      */
@@ -359,11 +359,11 @@ public interface ReferencePackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression
+     * '{@link ReferenceWidgetDescription#getReferenceNameExpression
      * <em>Reference Name Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Reference Name Expression</em>'.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression()
+     * @see ReferenceWidgetDescription#getReferenceNameExpression()
      * @see #getReferenceWidgetDescription()
      * @generated
      */
@@ -371,23 +371,23 @@ public interface ReferencePackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getBody <em>Body</em>}'. <!--
+     * '{@link ReferenceWidgetDescription#getBody <em>Body</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Body</em>'.
      * @generated
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getBody()
+     * @see ReferenceWidgetDescription#getBody()
      * @see #getReferenceWidgetDescription()
      */
     EReference getReferenceWidgetDescription_Body();
 
     /**
      * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getStyle <em>Style</em>}'.
+     * '{@link ReferenceWidgetDescription#getStyle <em>Style</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference '<em>Style</em>'.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getStyle()
+     * @see ReferenceWidgetDescription#getStyle()
      * @see #getReferenceWidgetDescription()
      * @generated
      */
@@ -395,11 +395,11 @@ public interface ReferencePackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getConditionalStyles
+     * '{@link ReferenceWidgetDescription#getConditionalStyles
      * <em>Conditional Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getConditionalStyles()
+     * @see ReferenceWidgetDescription#getConditionalStyles()
      * @see #getReferenceWidgetDescription()
      * @generated
      */
@@ -407,22 +407,22 @@ public interface ReferencePackage extends EPackage {
 
     /**
      * Returns the meta object for class
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle <em>Widget Description
+     * '{@link ReferenceWidgetDescriptionStyle <em>Widget Description
      * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Widget Description Style</em>'.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle
+     * @see ReferenceWidgetDescriptionStyle
      * @generated
      */
     EClass getReferenceWidgetDescriptionStyle();
 
     /**
      * Returns the meta object for the reference
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle#getColor
+     * '{@link ReferenceWidgetDescriptionStyle#getColor
      * <em>Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the reference '<em>Color</em>'.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle#getColor()
+     * @see ReferenceWidgetDescriptionStyle#getColor()
      * @see #getReferenceWidgetDescriptionStyle()
      * @generated
      */
@@ -430,22 +430,22 @@ public interface ReferencePackage extends EPackage {
 
     /**
      * Returns the meta object for class
-     * '{@link org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle
+     * '{@link ConditionalReferenceWidgetDescriptionStyle
      * <em>Conditional Reference Widget Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Conditional Reference Widget Description Style</em>'.
-     * @see org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle
+     * @see ConditionalReferenceWidgetDescriptionStyle
      * @generated
      */
     EClass getConditionalReferenceWidgetDescriptionStyle();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getIsEnabledExpression <em>Is
+     * '{@link ReferenceWidgetDescription#getIsEnabledExpression <em>Is
      * Enabled Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getIsEnabledExpression()
+     * @see ReferenceWidgetDescription#getIsEnabledExpression()
      * @see #getReferenceWidgetDescription()
      * @generated
      */
@@ -476,11 +476,11 @@ public interface ReferencePackage extends EPackage {
 
         /**
          * The meta object literal for the
-         * '{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget
+         * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @see org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl
-         * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getReferenceWidgetDescription()
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetDescription()
          * @generated
          */
         EClass REFERENCE_WIDGET_DESCRIPTION = eINSTANCE.getReferenceWidgetDescription();
@@ -527,11 +527,11 @@ public interface ReferencePackage extends EPackage {
 
         /**
          * The meta object literal for the
-         * '{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl <em>Widget
+         * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl <em>Widget
          * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @see org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl
-         * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getReferenceWidgetDescriptionStyle()
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetDescriptionStyle()
          * @generated
          */
         EClass REFERENCE_WIDGET_DESCRIPTION_STYLE = eINSTANCE.getReferenceWidgetDescriptionStyle();
@@ -546,13 +546,13 @@ public interface ReferencePackage extends EPackage {
 
         /**
          * The meta object literal for the
-         * '{@link org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
+         * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
          * <em>Conditional Reference Widget Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
          * -->
          *
          * @generated
-         * @see org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
-         * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getConditionalReferenceWidgetDescriptionStyle()
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getConditionalReferenceWidgetDescriptionStyle()
          */
         EClass CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE = eINSTANCE.getConditionalReferenceWidgetDescriptionStyle();
 

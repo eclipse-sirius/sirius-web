@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference.util;
+package org.eclipse.sirius.components.view.widget.reference.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -21,16 +21,16 @@ import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
-import org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle;
-import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
  * method for each class of the model. <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage
+ * @see ReferencePackage
  * @generated
  */
 public class ReferenceAdapterFactory extends AdapterFactoryImpl {
@@ -139,12 +139,12 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription <em>Widget Description</em>}'.
+     * '{@link ReferenceWidgetDescription <em>Widget Description</em>}'.
      * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription
+     * @see ReferenceWidgetDescription
      * @generated
      */
     public Adapter createReferenceWidgetDescriptionAdapter() {
@@ -153,12 +153,12 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle <em>Widget Description
+     * '{@link ReferenceWidgetDescriptionStyle <em>Widget Description
      * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle
+     * @see ReferenceWidgetDescriptionStyle
      * @generated
      */
     public Adapter createReferenceWidgetDescriptionStyleAdapter() {
@@ -167,13 +167,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle
+     * '{@link ConditionalReferenceWidgetDescriptionStyle
      * <em>Conditional Reference Widget Description Style</em>}'. <!-- begin-user-doc --> This default implementation
      * returns null so that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the
      * cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle
+     * @see ConditionalReferenceWidgetDescriptionStyle
      * @generated
      */
     public Adapter createConditionalReferenceWidgetDescriptionStyleAdapter() {

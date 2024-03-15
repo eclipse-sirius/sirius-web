@@ -16,7 +16,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.emf.configuration.ChildExtenderProvider;
 import org.eclipse.sirius.components.view.form.FormPackage;
-import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
 import org.eclipse.sirius.components.widgets.reference.provider.ReferenceItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

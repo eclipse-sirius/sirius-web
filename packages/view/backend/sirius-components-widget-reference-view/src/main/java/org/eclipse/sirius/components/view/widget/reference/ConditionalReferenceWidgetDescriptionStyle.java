@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference;
+package org.eclipse.sirius.components.view.widget.reference;
 
 import org.eclipse.sirius.components.view.Conditional;
 
@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.view.Conditional;
  * Style</b></em>'. <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getConditionalReferenceWidgetDescriptionStyle()
+ * @see ReferencePackage#getConditionalReferenceWidgetDescriptionStyle()
  * @model
  * @generated
  */

@@ -12,6 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder.generated;
 
+import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
+
 /**
  * Builder for ReferenceWidgetDescriptionBuilder.
  *
@@ -21,24 +26,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ReferenceWidgetDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription.
+     * Create instance org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription referenceWidgetDescription = org.eclipse.sirius.components.widgets.reference.ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
+    private org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription referenceWidgetDescription = org.eclipse.sirius.components.view.widget.reference.ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription.
+     * Return instance org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription getReferenceWidgetDescription() {
+    protected org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription getReferenceWidgetDescription() {
         return this.referenceWidgetDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription.
+     * Return instance org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription build() {
+    public org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription build() {
         return this.getReferenceWidgetDescription();
     }
 
@@ -113,17 +118,18 @@ public class ReferenceWidgetDescriptionBuilder {
      *
      * @generated
      */
-    public ReferenceWidgetDescriptionBuilder style(org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle value) {
+    public ReferenceWidgetDescriptionBuilder style(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle value) {
         this.getReferenceWidgetDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
      * @generated
      */
-    public ReferenceWidgetDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle value : values) {
+    public ReferenceWidgetDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle value : values) {
             this.getReferenceWidgetDescription().getConditionalStyles().add(value);
         }
         return this;

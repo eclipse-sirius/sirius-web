@@ -17,7 +17,7 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.widget.reference.ReferenceWidgetDescriptor;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionProvider;
-import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
 import org.springframework.stereotype.Service;
 
 /**
