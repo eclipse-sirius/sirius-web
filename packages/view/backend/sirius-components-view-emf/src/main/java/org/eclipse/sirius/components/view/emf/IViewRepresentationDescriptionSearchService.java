@@ -12,13 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.eclipse.sirius.components.view.diagram.EdgeDescription;
-import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.form.FormElementDescription;
+import org.eclipse.sirius.components.view.View;
 
 /**
  * Get a View representation description from its representation description Id.
@@ -29,11 +28,7 @@ public interface IViewRepresentationDescriptionSearchService {
 
     Optional<RepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId);
 
-    Optional<NodeDescription> findViewNodeDescriptionById(IEditingContext editingContext, String nodeDescriptionId);
-
-    Optional<EdgeDescription> findViewEdgeDescriptionById(IEditingContext editingContext, String edgeDescriptionId);
-
-    Optional<FormElementDescription> findViewFormElementDescriptionById(IEditingContext editingContext, String formDescriptionId);
+    List<View> findViewsBySourceId(IEditingContext editingContext, String sourceId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -48,18 +43,8 @@ public interface IViewRepresentationDescriptionSearchService {
         }
 
         @Override
-        public Optional<NodeDescription> findViewNodeDescriptionById(IEditingContext editingContext, String nodeDescriptionId) {
-            return Optional.empty();
-        }
-
-        @Override
-        public Optional<EdgeDescription> findViewEdgeDescriptionById(IEditingContext editingContext, String edgeDescriptionId) {
-            return Optional.empty();
-        }
-
-        @Override
-        public Optional<FormElementDescription> findViewFormElementDescriptionById(IEditingContext editingContext, String formDescriptionId) {
-            return Optional.empty();
+        public List<View> findViewsBySourceId(IEditingContext editingContext, String sourceId) {
+            return List.of();
         }
     }
 }

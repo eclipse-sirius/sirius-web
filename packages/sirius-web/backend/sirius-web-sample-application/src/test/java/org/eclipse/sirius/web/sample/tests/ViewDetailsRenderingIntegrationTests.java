@@ -77,7 +77,6 @@ import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.DomainTypeTextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.ITextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.ViewPropertiesDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.view.emf.configuration.ViewPropertiesDescriptionServiceConfiguration;
 import org.eclipse.sirius.components.view.form.util.FormAdapterFactory;
 import org.eclipse.sirius.components.view.util.ViewAdapterFactory;
 import org.eclipse.sirius.web.services.editingcontext.EditingContext;
@@ -127,24 +126,20 @@ public class ViewDetailsRenderingIntegrationTests {
 
         EMFKindService emfKindService = new EMFKindService(new URLParser());
 
-        ViewPropertiesDescriptionServiceConfiguration parameters = new ViewPropertiesDescriptionServiceConfiguration(objectService, emfKindService, new IFeedbackMessageService.NoOp());
-
-        // @formatter:off
         List<ITextfieldCustomizer> customizers = List.of(
                 new AQLTextfieldCustomizer(new StaticApplicationContext(), List.of()),
                 new DomainTypeTextfieldCustomizer()
         );
-        // @formatter:on
 
-        // @formatter:off
         new ViewPropertiesDescriptionRegistryConfigurer(
-                parameters,
+                objectService,
                 composedAdapterFactory,
                 new IPropertiesValidationProvider.NoOp(),
                 new IEMFMessageService.NoOp(),
-                customizers)
+                emfKindService,
+                customizers,
+                new IFeedbackMessageService.NoOp())
             .addPropertiesDescriptions(formDescription -> this.viewPropertiesFormDescription = formDescription);
-        // @formatter:on
     }
 
     @Test

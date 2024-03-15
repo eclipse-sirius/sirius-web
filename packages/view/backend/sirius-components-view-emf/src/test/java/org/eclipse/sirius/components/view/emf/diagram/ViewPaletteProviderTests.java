@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
@@ -32,11 +33,11 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
@@ -47,8 +48,8 @@ import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
-import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.view.emf.configuration.ViewPaletteToolsConfiguration;
+import org.eclipse.sirius.components.view.emf.ViewAQLInterpreterFactory;
+import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.StaticApplicationContext;
 
@@ -110,7 +111,8 @@ public class ViewPaletteProviderTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var result = viewPaletteProvider.getDiagramPalette(diagramDescription, getDiagramDescription(), variableManager, interpreter);
+        var diagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
+        var result = viewPaletteProvider.handle(null, diagram, diagramDescription, diagramDescription, new IEditingContext.NoOp());
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://diagramPalette?diagramId=sourceElementId");
@@ -129,7 +131,8 @@ public class ViewPaletteProviderTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var result = viewPaletteProvider.getNodePalette(new IEditingContext.NoOp(), this.createDiagramDescription(), this.createNodeDescription(), List.of(), variableManager, interpreter);
+        var node = new TestDiagramBuilder().getNode(UUID.randomUUID().toString(), true);
+        var result = viewPaletteProvider.handle(null, node, this.createNodeDescription(), this.createDiagramDescription(), new IEditingContext.NoOp());
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://nodePalette?nodeId=sourceElementId");
@@ -138,7 +141,7 @@ public class ViewPaletteProviderTests {
         assertThat(((SingleClickOnDiagramElementTool) result.tools().get(0)).appliesToDiagramRoot()).isFalse();
         assertThat(result.tools().get(1)).isInstanceOf(SingleClickOnTwoDiagramElementsTool.class);
         assertThat(((SingleClickOnTwoDiagramElementsTool) result.tools().get(1)).candidates()).isNotEmpty();
-        assertThat(result.toolSections()).hasSize(1);
+        assertThat(result.toolSections()).hasSize(3);
         assertThat(result.toolSections().get(0).tools()).hasSize(2);
     }
 
@@ -162,24 +165,25 @@ public class ViewPaletteProviderTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var result = viewPaletteProvider.getEdgePalette(new IEditingContext.NoOp(), edgeDescription, List.of(), variableManager, interpreter);
+        var edge = new TestDiagramBuilder().getEdge(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        var result = viewPaletteProvider.handle(null, edge, edgeDescription, this.createDiagramDescription(), new IEditingContext.NoOp());
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://edgePalette?edgeId=sourceElementId");
         assertThat(result.tools()).hasSize(1);
         assertThat(result.tools().get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
         assertThat(((SingleClickOnDiagramElementTool) result.tools().get(0)).appliesToDiagramRoot()).isFalse();
-        assertThat(result.toolSections()).hasSize(1);
+        assertThat(result.toolSections()).hasSize(2);
         assertThat(result.toolSections().get(0).tools()).hasSize(1);
     }
 
     private ViewPaletteProvider createViewPaletteProvider() {
         IURLParser urlParser = url -> Map.of(IDiagramIdProvider.SOURCE_ELEMENT_ID, List.of("sourceElementId"));
 
-        IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService = new IViewRepresentationDescriptionSearchService.NoOp() {
+        IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService = new IViewDiagramDescriptionSearchService() {
 
             @Override
-            public Optional<RepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
+            public Optional<org.eclipse.sirius.components.view.diagram.DiagramDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
                 org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription = getDiagramDescription();
                 return Optional.of(diagramDescription);
             }
@@ -196,10 +200,9 @@ public class ViewPaletteProviderTests {
                 return Optional.of(edgeDescription);
             }
         };
-        ViewPaletteToolsConfiguration viewPaletteToolsConfiguration = new ViewPaletteToolsConfiguration(urlParser, iRepresentationDescription -> true,
-                viewRepresentationDescriptionSearchService, new IObjectService.NoOp());
-        return new ViewPaletteProvider(viewPaletteToolsConfiguration, new IDiagramDescriptionService.NoOp(),
-                new IDiagramIdProvider.NoOp(), List.of(), new StaticApplicationContext());
+
+        return new ViewPaletteProvider(urlParser, representationDescription -> true, viewDiagramDescriptionSearchService, new IDiagramDescriptionService.NoOp(),
+                new IDiagramIdProvider.NoOp(), new IObjectService.NoOp(), new ViewAQLInterpreterFactory(List.of(), new StaticApplicationContext()));
     }
 
     private DiagramDescription createDiagramDescription() {

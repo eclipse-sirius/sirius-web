@@ -44,7 +44,6 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
-import org.eclipse.sirius.components.view.emf.configuration.ViewPropertiesDescriptionServiceConfiguration;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
 import org.springframework.stereotype.Service;
@@ -64,11 +63,11 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     private final IFeedbackMessageService feedbackMessageService;
     private final AQLTextfieldCustomizer aqlTextfieldCustomizer;
 
-    public PropertiesWidgetCreationService(IPropertiesConfigurerService propertiesConfigurerService, ViewPropertiesDescriptionServiceConfiguration parameters, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
+    public PropertiesWidgetCreationService(IPropertiesConfigurerService propertiesConfigurerService, IObjectService objectService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
-        this.objectService = Objects.requireNonNull(parameters.getObjectService());
-        this.emfKindService = Objects.requireNonNull(parameters.getEmfKindService());
-        this.feedbackMessageService = Objects.requireNonNull(parameters.getFeedbackMessageService());
+        this.objectService = Objects.requireNonNull(objectService);
+        this.emfKindService = Objects.requireNonNull(emfKindService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.aqlTextfieldCustomizer = Objects.requireNonNull(aqlTextfieldCustomizer);
     }
 

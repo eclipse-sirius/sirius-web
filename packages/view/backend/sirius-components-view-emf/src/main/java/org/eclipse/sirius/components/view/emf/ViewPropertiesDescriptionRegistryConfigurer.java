@@ -47,7 +47,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
-import org.eclipse.sirius.components.view.emf.configuration.ViewPropertiesDescriptionServiceConfiguration;
 import org.eclipse.sirius.components.view.emf.diagram.NodeStylePropertiesConfigurer;
 import org.springframework.stereotype.Service;
 
@@ -94,20 +93,20 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
 
     private final List<ITextfieldCustomizer> customizers;
 
-    private final Function<VariableManager, String> semanticTargetIdProvider;
-
     private final IFeedbackMessageService feedbackMessageService;
 
+    private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public ViewPropertiesDescriptionRegistryConfigurer(ViewPropertiesDescriptionServiceConfiguration parameters, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
-            IEMFMessageService emfMessageService, List<ITextfieldCustomizer> customizers) {
-        this.objectService = Objects.requireNonNull(parameters.getObjectService());
+
+    public ViewPropertiesDescriptionRegistryConfigurer(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IEMFMessageService emfMessageService,
+                                                       IEMFKindService emfKindService, List<ITextfieldCustomizer> customizers, IFeedbackMessageService feedbackMessageService) {
+        this.objectService = Objects.requireNonNull(objectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
-        this.emfKindService = Objects.requireNonNull(parameters.getEmfKindService());
-        this.feedbackMessageService = Objects.requireNonNull(parameters.getFeedbackMessageService());
-        this.customizers = List.copyOf(customizers);
+        this.emfKindService = Objects.requireNonNull(emfKindService);
+        this.customizers = Objects.requireNonNull(customizers);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
     }
 
