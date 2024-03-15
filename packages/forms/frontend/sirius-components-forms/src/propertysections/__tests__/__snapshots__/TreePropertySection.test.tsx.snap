@@ -4,7 +4,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-91"
+      class="makeStyles-propertySectionLabel-25"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -12,7 +12,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
         Tree
       </h6>
       <div
-        class="makeStyles-subscribers-92"
+        class="makeStyles-subscribers-26"
       />
     </div>
     <ul
@@ -47,7 +47,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
           >
             <div
-              class="makeStyles-label-94"
+              class="makeStyles-label-28"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
@@ -83,7 +83,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-94"
+                      class="makeStyles-label-28"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -109,7 +109,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-94"
+                      class="makeStyles-label-28"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -139,7 +139,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
           >
             <div
-              class="makeStyles-label-94"
+              class="makeStyles-label-28"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
@@ -172,7 +172,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-107"
+      class="makeStyles-propertySectionLabel-31"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -180,7 +180,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
         Tree
       </h6>
       <div
-        class="makeStyles-subscribers-108"
+        class="makeStyles-subscribers-32"
       />
     </div>
     <ul
@@ -215,7 +215,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
           >
             <div
-              class="makeStyles-label-110"
+              class="makeStyles-label-34"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
@@ -263,7 +263,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-110"
+                      class="makeStyles-label-34"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -299,7 +299,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
                             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                           >
                             <div
-                              class="makeStyles-label-110"
+                              class="makeStyles-label-34"
                             >
                               <p
                                 class="MuiTypography-root MuiTypography-body1"
@@ -327,7 +327,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-41"
+      class="makeStyles-propertySectionLabel-13"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -335,7 +335,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
         Deep Tree
       </h6>
       <div
-        class="makeStyles-subscribers-42"
+        class="makeStyles-subscribers-14"
       />
     </div>
     <ul
@@ -370,7 +370,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
           >
             <div
-              class="makeStyles-label-44"
+              class="makeStyles-label-16"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
@@ -406,7 +406,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-44"
+                      class="makeStyles-label-16"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -448,7 +448,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
           >
             <div
-              class="makeStyles-label-44"
+              class="makeStyles-label-16"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
@@ -496,7 +496,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-44"
+                      class="makeStyles-label-16"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -532,7 +532,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                           >
                             <div
-                              class="makeStyles-label-44"
+                              class="makeStyles-label-16"
                             >
                               <p
                                 class="MuiTypography-root MuiTypography-body1"
@@ -558,7 +558,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                           >
                             <div
-                              class="makeStyles-label-44"
+                              class="makeStyles-label-16"
                             >
                               <p
                                 class="MuiTypography-root MuiTypography-body1"
@@ -600,7 +600,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-44"
+                      class="makeStyles-label-16"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -648,7 +648,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                           >
                             <div
-                              class="makeStyles-label-44"
+                              class="makeStyles-label-16"
                             >
                               <p
                                 class="MuiTypography-root MuiTypography-body1"
@@ -684,7 +684,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                                   >
                                     <div
-                                      class="makeStyles-label-44"
+                                      class="makeStyles-label-16"
                                     >
                                       <p
                                         class="MuiTypography-root MuiTypography-body1"
@@ -710,7 +710,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                                   >
                                     <div
-                                      class="makeStyles-label-44"
+                                      class="makeStyles-label-16"
                                     >
                                       <p
                                         class="MuiTypography-root MuiTypography-body1"
@@ -744,7 +744,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-44"
+                      class="makeStyles-label-16"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -768,7 +768,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-71"
+      class="makeStyles-propertySectionLabel-19"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -776,7 +776,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
         Deep Tree
       </h6>
       <div
-        class="makeStyles-subscribers-72"
+        class="makeStyles-subscribers-20"
       />
     </div>
     <ul
@@ -811,7 +811,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
           >
             <div
-              class="makeStyles-label-74"
+              class="makeStyles-label-22"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
@@ -859,7 +859,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-74"
+                      class="makeStyles-label-22"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -885,7 +885,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-74"
+                      class="makeStyles-label-22"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -923,7 +923,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-74"
+                      class="makeStyles-label-22"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -965,7 +965,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
           >
             <div
-              class="makeStyles-label-74"
+              class="makeStyles-label-22"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
@@ -1001,7 +1001,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-74"
+                      class="makeStyles-label-22"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -1025,7 +1025,7 @@ exports[`should render a multi-level tree correctly 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-11"
+      class="makeStyles-propertySectionLabel-7"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -1033,7 +1033,7 @@ exports[`should render a multi-level tree correctly 1`] = `
         Deep Tree
       </h6>
       <div
-        class="makeStyles-subscribers-12"
+        class="makeStyles-subscribers-8"
       />
     </div>
     <ul
@@ -1068,7 +1068,7 @@ exports[`should render a multi-level tree correctly 1`] = `
             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
           >
             <div
-              class="makeStyles-label-14"
+              class="makeStyles-label-10"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
@@ -1116,7 +1116,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-14"
+                      class="makeStyles-label-10"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -1152,7 +1152,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                           >
                             <div
-                              class="makeStyles-label-14"
+                              class="makeStyles-label-10"
                             >
                               <p
                                 class="MuiTypography-root MuiTypography-body1"
@@ -1178,7 +1178,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                           >
                             <div
-                              class="makeStyles-label-14"
+                              class="makeStyles-label-10"
                             >
                               <p
                                 class="MuiTypography-root MuiTypography-body1"
@@ -1208,7 +1208,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-14"
+                      class="makeStyles-label-10"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -1246,7 +1246,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-14"
+                      class="makeStyles-label-10"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -1294,7 +1294,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                           >
                             <div
-                              class="makeStyles-label-14"
+                              class="makeStyles-label-10"
                             >
                               <p
                                 class="MuiTypography-root MuiTypography-body1"
@@ -1330,7 +1330,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                                   >
                                     <div
-                                      class="makeStyles-label-14"
+                                      class="makeStyles-label-10"
                                     >
                                       <p
                                         class="MuiTypography-root MuiTypography-body1"
@@ -1356,7 +1356,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                                   >
                                     <div
-                                      class="makeStyles-label-14"
+                                      class="makeStyles-label-10"
                                     >
                                       <p
                                         class="MuiTypography-root MuiTypography-body1"
@@ -1406,7 +1406,7 @@ exports[`should render a multi-level tree correctly 1`] = `
             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
           >
             <div
-              class="makeStyles-label-14"
+              class="makeStyles-label-10"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
@@ -1442,7 +1442,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                     class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
                   >
                     <div
-                      class="makeStyles-label-14"
+                      class="makeStyles-label-10"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1"
@@ -1517,7 +1517,7 @@ exports[`should render the tree with a help hint 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-123"
+      class="makeStyles-propertySectionLabel-37"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -1537,7 +1537,7 @@ exports[`should render the tree with a help hint 1`] = `
         />
       </svg>
       <div
-        class="makeStyles-subscribers-124"
+        class="makeStyles-subscribers-38"
       />
     </div>
     <ul
@@ -1560,7 +1560,7 @@ exports[`should render the tree with a help hint 1`] = `
             class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
           >
             <div
-              class="makeStyles-label-126"
+              class="makeStyles-label-40"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
