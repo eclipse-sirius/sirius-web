@@ -67,9 +67,9 @@ export class Explorer {
     cy.getByTestId('new-object-modal').should('not.exist');
   }
 
-  public select(treeItemLabel: string): void {
+  public select(treeItemLabel: string, multiSelection: boolean = false): void {
     this.getTreeItemByLabel(treeItemLabel).should('exist');
-    this.getTreeItemByLabel(treeItemLabel).click();
+    this.getTreeItemByLabel(treeItemLabel).click({ ctrlKey: multiSelection });
   }
 
   public createRepresentation(

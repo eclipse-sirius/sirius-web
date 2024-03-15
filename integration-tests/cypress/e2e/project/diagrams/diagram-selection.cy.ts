@@ -53,6 +53,19 @@ describe('Diagram selection', () => {
         diagram.getSelectedNodes('diagram', 'DSP').should('not.exist');
         diagram.getSelectedNodes('diagram', 'Motion_Engine').should('exist');
       });
+      it('Then diagram selection is synchronized with the explorer during multi selection', () => {
+        const explorer = new Explorer();
+        const diagram = new Diagram();
+
+        explorer.expand('Central_Unit');
+        explorer.select('DSP');
+        diagram.getSelectedNodes('diagram', 'DSP').should('exist');
+        diagram.getSelectedNodes('diagram', 'Motion_Engine').should('not.exist');
+
+        explorer.select('Motion_Engine', true);
+        diagram.getSelectedNodes('diagram', 'DSP').should('exist');
+        diagram.getSelectedNodes('diagram', 'Motion_Engine').should('exist');
+      });
     });
 
     context('When we interact with the details view', () => {
