@@ -153,7 +153,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     }
   }, [diagramRefreshedEventPayload, diagramDescription]);
 
-  const { updateSelectionOnNodesChange, updateSelectionOnEdgesChange } = useDiagramSelection();
+  useDiagramSelection();
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { transformResizeListNodeChanges } = useResizeChange();
@@ -197,7 +197,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
           setNodes(newNodes);
           layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
 
-          updateSelectionOnNodesChange(noReadOnlyChanges);
           return newNodes;
         });
       }
@@ -207,7 +206,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
 
   const handleEdgesChange: OnEdgesChange = (changes: EdgeChange[]) => {
     onEdgesChange(changes);
-    updateSelectionOnEdgesChange(changes);
   };
 
   const handlePaneClick = useCallback(

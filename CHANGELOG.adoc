@@ -108,6 +108,7 @@ The implemented fix does not allow to evaluate an AQL expression, but only to re
 - https://github.com/eclipse-sirius/sirius-web/issues/3208[#3208] [form] Fix an issue with splitbutton default style in form editor
 - https://github.com/eclipse-sirius/sirius-web/issues/3235[#3235] [diagram] Fix an issue where group palette and element palette could be both displayed on edges.
 - https://github.com/eclipse-sirius/sirius-web/issues/3035[#3035] [diagram] Fix an issue where diagram palette and element palette could be both displayed.
+- https://github.com/eclipse-sirius/sirius-web/issues/3044[#3044] [diagram] Fix an issue that caused the selection between the diagram and the explorer to be desynchronized
 
 === New Features
 
