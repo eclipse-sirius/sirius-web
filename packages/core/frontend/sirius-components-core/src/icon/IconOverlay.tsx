@@ -10,25 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useContext } from 'react';
 import { ServerContext } from '../contexts/ServerContext';
 import { ServerContextValue } from '../contexts/ServerContext.types';
-import { IconOverlayProps, IconOverlayStyleProps } from './IconOverlay.types';
-
-const useStyles = makeStyles<Theme, IconOverlayStyleProps>((_theme) => ({
-  iconContainer: {
-    position: 'relative',
-    width: ({ iconWidth }) => `${iconWidth}px`,
-    height: ({ iconHeight }) => `${iconHeight}px`,
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-}));
+import { IconOverlayProps } from './IconOverlay.types';
 
 export const IconOverlay = ({
   iconURL,
@@ -40,13 +26,12 @@ export const IconOverlay = ({
 }: IconOverlayProps) => {
   const iconWidth: number = customIconWidth || 16;
   const iconHeight: number = customIconHeight || 16;
-  const classes = useStyles({ iconHeight, iconWidth });
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   return (
     <>
       {iconURL?.length > 0 && (
-        <div className={classes.iconContainer} style={{ ...customIconStyle }}>
+        <div style={{ position: 'relative', width: iconWidth, height: iconHeight, ...customIconStyle }}>
           {iconURL.map((url: string, index) => (
             <Tooltip title={title || ''} key={'tooltip_' + index}>
               <img
@@ -55,8 +40,7 @@ export const IconOverlay = ({
                 key={index}
                 alt={alt}
                 src={httpOrigin + url}
-                className={classes.icon}
-                style={{ zIndex: index }}
+                style={{ zIndex: index, position: 'absolute', top: 0, left: 0 }}
               />
             </Tooltip>
           ))}
