@@ -188,6 +188,7 @@ In other scenarios, the default creation position border remains the eastern one
 - https://github.com/eclipse-sirius/sirius-web/issues/3225[#3225] [sirius-web] The confirmation dialog on delete does not propose anymore the option allowing to "Disable this confirmation dialog" when the local storage is not available.
 - https://github.com/eclipse-sirius/sirius-web/issues/3246[#3246] [view] Make the `ViewRepresentationDescriptionSearchService` independent from specific representations
 - https://github.com/eclipse-sirius/sirius-web/issues/3220[#3220] [deck] Add documentation
+- https://github.com/eclipse-sirius/sirius-web/issues/3178[#3178] [portal] Add documentation for portals
 
 == v2024.1.0
 
