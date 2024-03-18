@@ -1,6 +1,5 @@
 = Changelog
 
-
 == v2024.5.0 (work in progress)
 
 === Shapes
@@ -13,6 +12,7 @@
 
 - [ADR-139] Add Is Collapsed By Default Expression in NodeDescription entity in the view DSL
 - [ADR-140] Add collapse and expand services
+- [ADR-141] Factorize GraphQL queries in tests
 
 
 === Deprecation warning
