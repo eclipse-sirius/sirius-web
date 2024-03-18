@@ -1,0 +1,30 @@
+= [ADR-141] Factorize GraphQL queries in tests
+
+== Context
+
+GraphQL queries/mutations/subscription are used in various tests.
+For example, the mutation `createProject` is defined in 7 places in Sirius Web's tests, and the code needed to execute it and parse the result is duplicated in various places.
+This adds complexity when creating tests, and creates a risk if the GraphQL queries change in the future.
+
+== Decision
+
+We will factorize these GraphQL queries, their execution, and the parsing of the result to make them easier to reuse.
+We will move `GraphQLRequestor` to `sirius-component-spring-tests`, and add _runner_ interfaces like:
+
+```java
+public interface IQueryRunner {
+  String run(Map<String, Object> variables);
+}
+```
+
+We will create a new project `sirius-web-tests` and define implementations of these runners tailored to Sirius Web (e.g. `createProject`).
+
+We will update existing tests to use the runners.
+
+== Status
+
+Work in progress
+
+== Consequences
+
+Tests relying on GraphQL queries will be easier to write and maintain.
