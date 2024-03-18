@@ -25,4 +25,5 @@ export interface UseDistributeElementsValue {
   arrangeInRow: (selectedNodeIds: string[]) => void;
   arrangeInColumn: (selectedNodeIds: string[]) => void;
   arrangeInGrid: (selectedNodeIds: string[]) => void;
+  makeNodesSameSize: (selectedNodeIds: string[], refElementId: string | null) => void;
 }

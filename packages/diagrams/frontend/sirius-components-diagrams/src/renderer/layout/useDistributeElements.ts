@@ -111,7 +111,7 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
             totalSize) /
           numberOfGap;
         const updatedNodes = getNodes().map((node) => {
-          if (!selectedNodeIds.includes(node.id)) {
+          if (!selectedNodeIds.includes(node.id) || node.data.pinned) {
             return node;
           }
 
@@ -152,10 +152,9 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
     return useCallback((selectedNodeIds: string[], refElementId: string | null) => {
       processLayoutTool(
         selectedNodeIds,
-        (selectedNodes, refNode) => {
-          selectedNodes.sort(getComparePositionFn('horizontal'));
+        (_selectedNodes, refNode) => {
           return getNodes().map((node) => {
-            if (!selectedNodeIds.includes(node.id)) {
+            if (!selectedNodeIds.includes(node.id) || node.data.pinned) {
               return node;
             }
             const referencePositionValue: number = (() => {
@@ -223,7 +222,11 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
     (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node): Node[] => {
       const largestWidth: number = selectedNodes.reduce((width, node) => Math.max(width, node.width ?? 0), 0);
       return getNodes().map((node) => {
-        if (!selectedNodeIds.includes(node.id)) {
+        if (
+          !selectedNodeIds.includes(node.id) ||
+          node.data.nodeDescription?.userResizable === false ||
+          node.data.pinned
+        ) {
           return node;
         }
         return {
@@ -246,7 +249,11 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
     (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node): Node[] => {
       const largestHeight: number = selectedNodes.reduce((height, node) => Math.max(height, node.height ?? 0), 0);
       return getNodes().map((node) => {
-        if (!selectedNodeIds.includes(node.id)) {
+        if (
+          !selectedNodeIds.includes(node.id) ||
+          node.data.nodeDescription?.userResizable === false ||
+          node.data.pinned
+        ) {
           return node;
         }
         return {
@@ -270,18 +277,20 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
       selectedNodeIds,
       (selectedNodes, refNode) => {
         let nextXPosition: number = refNode.position.x;
-        const updatedSelectedNodes = selectedNodes.map((node) => {
-          const updatedNode = {
-            ...node,
-            position: {
-              ...node.position,
-              x: nextXPosition,
-              y: refNode.position.y,
-            },
-          };
-          nextXPosition = updatedNode.position.x + (updatedNode.width ?? 0) + arrangeGapBetweenElements;
-          return updatedNode;
-        });
+        const updatedSelectedNodes = selectedNodes
+          .filter((node) => !node.data.pinned)
+          .map((node) => {
+            const updatedNode = {
+              ...node,
+              position: {
+                ...node.position,
+                x: nextXPosition,
+                y: refNode.position.y,
+              },
+            };
+            nextXPosition = updatedNode.position.x + (updatedNode.width ?? 0) + arrangeGapBetweenElements;
+            return updatedNode;
+          });
 
         return getNodes().map((node) => {
           const replacedNode = updatedSelectedNodes.find((updatedSelectedNode) => updatedSelectedNode.id === node.id);
@@ -300,18 +309,20 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
       selectedNodeIds,
       (selectedNodes, refNode) => {
         let nextYPosition: number = refNode.position.y;
-        const updatedSelectedNodes = selectedNodes.map((node) => {
-          const updatedNode = {
-            ...node,
-            position: {
-              ...node.position,
-              x: refNode.position.x,
-              y: nextYPosition,
-            },
-          };
-          nextYPosition = updatedNode.position.y + (updatedNode.height ?? 0) + arrangeGapBetweenElements;
-          return updatedNode;
-        });
+        const updatedSelectedNodes = selectedNodes
+          .filter((node) => !node.data.pinned)
+          .map((node) => {
+            const updatedNode = {
+              ...node,
+              position: {
+                ...node.position,
+                x: refNode.position.x,
+                y: nextYPosition,
+              },
+            };
+            nextYPosition = updatedNode.position.y + (updatedNode.height ?? 0) + arrangeGapBetweenElements;
+            return updatedNode;
+          });
 
         return getNodes().map((node) => {
           const replacedNode = updatedSelectedNodes.find((updatedSelectedNode) => updatedSelectedNode.id === node.id);
@@ -332,28 +343,30 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
         const columnNumber: number = Math.round(Math.sqrt(selectedNodeIds.length));
         let nextXPosition: number = refNode.position.x;
         let nextYPosition: number = refNode.position.y;
-        const updatedSelectedNodes = selectedNodes.map((node, index) => {
-          const columnIndex = index + 1;
-          const updatedNode = {
-            ...node,
-            position: {
-              ...node.position,
-              x: nextXPosition,
-              y: nextYPosition,
-            },
-          };
-          nextXPosition = updatedNode.position.x + (updatedNode.width ?? 0) + arrangeGapBetweenElements;
-          if (columnIndex % columnNumber === 0) {
-            nextXPosition = refNode.position.x;
-            nextYPosition =
-              updatedNode.position.y +
-              arrangeGapBetweenElements +
-              selectedNodes
-                .slice(columnIndex - columnNumber, columnIndex)
-                .reduce((maxHeight, rowNode) => Math.max(maxHeight, rowNode.height ?? 0), 0);
-          }
-          return updatedNode;
-        });
+        const updatedSelectedNodes = selectedNodes
+          .filter((node) => !node.data.pinned)
+          .map((node, index) => {
+            const columnIndex = index + 1;
+            const updatedNode = {
+              ...node,
+              position: {
+                ...node.position,
+                x: nextXPosition,
+                y: nextYPosition,
+              },
+            };
+            nextXPosition = updatedNode.position.x + (updatedNode.width ?? 0) + arrangeGapBetweenElements;
+            if (columnIndex % columnNumber === 0) {
+              nextXPosition = refNode.position.x;
+              nextYPosition =
+                updatedNode.position.y +
+                arrangeGapBetweenElements +
+                selectedNodes
+                  .slice(columnIndex - columnNumber, columnIndex)
+                  .reduce((maxHeight, rowNode) => Math.max(maxHeight, rowNode.height ?? 0), 0);
+            }
+            return updatedNode;
+          });
 
         return getNodes().map((node) => {
           const replacedNode = updatedSelectedNodes.find((updatedSelectedNode) => updatedSelectedNode.id === node.id);
@@ -376,6 +389,31 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
   const distributeAlignBottom = distributeAlign('bottom');
   const distributeAlignMiddle = distributeAlign('middle');
 
+  const makeNodesSameSize = useCallback((selectedNodeIds: string[], refElementId: string | null) => {
+    processLayoutTool(
+      selectedNodeIds,
+      (_selectedNodes, refNode) => {
+        return getNodes().map((node) => {
+          if (!selectedNodeIds.includes(node.id) || node.data.nodeDescription?.userResizable === false) {
+            return node;
+          }
+
+          return {
+            ...node,
+            width: refNode.width,
+            height: refNode.height,
+            data: {
+              ...node.data,
+              resizedByUser: true,
+            },
+          };
+        });
+      },
+      null,
+      refElementId
+    );
+  }, []);
+
   return {
     distributeGapVertically,
     distributeGapHorizontally,
@@ -390,5 +428,6 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
     arrangeInRow,
     arrangeInColumn,
     arrangeInGrid,
+    makeNodesSameSize,
   };
 };
