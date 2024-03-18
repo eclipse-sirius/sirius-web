@@ -13,6 +13,7 @@
 
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
+import PhotoSizeSelectSmallIcon from '@material-ui/icons/PhotoSizeSelectSmall';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -99,6 +100,7 @@ export const GroupPalette = memo(
       arrangeInRow,
       arrangeInColumn,
       arrangeInGrid,
+      makeNodesSameSize,
     } = useDistributeElements(refreshEventPayloadId);
     const [selectedElementIds, setSelectedElementIds] = useState<string[]>([]);
     const [state, setState] = useState<GroupPaletteState>({
@@ -200,6 +202,12 @@ export const GroupPalette = memo(
         title: 'Arrange in grid',
         action: () => arrangeInGrid(selectedElementIds),
         icon: <ViewModuleIcon fontSize="small" />,
+      },
+      {
+        id: 'make-same-size',
+        title: 'Make same size',
+        action: () => makeNodesSameSize(selectedElementIds, refElementId),
+        icon: <PhotoSizeSelectSmallIcon fontSize="small" />,
       },
     ];
     const shouldRender = selectedElementIds.length > 1 && isOpened && x && y;

@@ -149,6 +149,7 @@ Form variables declared in a form description will thus be added in the FormDesc
 - https://github.com/eclipse-sirius/sirius-web/issues/3198[#3198] [form] Add a new variable, `variableManager`, in most interpreted expressions of the form DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/3243[#3243] [diagram] Add tools to help manual layout on multiple elements
 - https://github.com/eclipse-sirius/sirius-web/issues/2999[#2999] [formdescriptioneditor] Add the support for read-only _Form Description Editors_.
+- https://github.com/eclipse-sirius/sirius-web/issues/3253[#3253] [diagram] Add a new tool to apply same size on multiple nodes
 
 === Improvements
 

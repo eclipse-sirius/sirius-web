@@ -80,6 +80,7 @@ describe('Diagram - group palette', () => {
       diagram.getGroupPalette().findByTestId('Arrange in row').should('exist');
       diagram.getGroupPalette().findByTestId('Arrange in column').should('exist');
       diagram.getGroupPalette().findByTestId('Arrange in grid').should('exist');
+      diagram.getGroupPalette().findByTestId('Make same size').should('exist');
     });
 
     it('Then the last distribute elements tool used is memorized', () => {
