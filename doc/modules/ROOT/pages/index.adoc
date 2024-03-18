@@ -1,0 +1,5 @@
+= Welcome
+
+Welcome to the Sirius-Web Doc Center!
+
+include::general-information.adoc[leveloffset=+1]

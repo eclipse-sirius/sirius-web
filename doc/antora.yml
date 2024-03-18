@@ -1,0 +1,5 @@
+name: sirius-web
+title: Sirius Web
+version: true
+nav:
+  - modules/ROOT/nav.adoc

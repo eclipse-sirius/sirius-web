@@ -1,0 +1,10 @@
+= Overview
+* Name: Sirius Web
+
+== Source code
+
+* License: xref:product-legal:index.adoc[Obeo]
+
+== Communication
+
+https://www.eclipse.org/sirius/sirius-web.html[Eclipse Sirius Web]

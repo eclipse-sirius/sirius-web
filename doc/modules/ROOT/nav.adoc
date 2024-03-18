@@ -1,0 +1,4 @@
+* xref:index.adoc[]
+* xref:product-legal:index.adoc[]
+
+include::user-manual:partial$nav.adoc[]
