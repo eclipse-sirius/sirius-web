@@ -220,12 +220,6 @@
 			<version>2024.1.5</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-forms-tests</artifactId>
-			<version>2024.1.5</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>

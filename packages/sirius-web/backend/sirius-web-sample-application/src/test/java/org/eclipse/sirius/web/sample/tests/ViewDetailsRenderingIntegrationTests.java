@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.sample.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.eclipse.sirius.components.forms.tests.FormAssertions.assertThat;
 
 import fr.obeo.dsl.designer.sample.flow.FlowPackage;
 

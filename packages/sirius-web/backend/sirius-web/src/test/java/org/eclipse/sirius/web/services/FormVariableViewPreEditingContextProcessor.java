@@ -79,7 +79,7 @@ public class FormVariableViewPreEditingContextProcessor implements IEditingConte
         TreeDescription treeDescription = new TreeDescriptionBuilder()
                 .name("Tree")
                 .childrenExpression("aql:self.eContents()}")
-                .labelExpression("aql:self")
+                .labelExpression("Tree")
                 .treeItemLabelExpression("aql:self.name")
                 .isCheckableExpression("aql:true")
                 .checkedValueExpression("aql:listValues->includes(self)")
@@ -87,17 +87,20 @@ public class FormVariableViewPreEditingContextProcessor implements IEditingConte
 
         ListDescription listDescription = new ListDescriptionBuilder()
                 .name("List")
+                .labelExpression("List")
                 .displayExpression("aql:candidate.name")
                 .valueExpression("aql:listValues")
                 .build();
 
         GroupDescription groupDescription = new GroupDescriptionBuilder()
                 .name(NAME)
+                .labelExpression("Group")
                 .children(treeDescription, listDescription)
                 .build();
 
         PageDescription pageDescription = new PageDescriptionBuilder()
                 .name(NAME)
+                .labelExpression("Page")
                 .domainType("domain:Domain")
                 .groups(groupDescription)
                 .build();

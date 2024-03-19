@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -34,8 +35,8 @@ import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInpu
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.Select;
-import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.TreeWidget;
+import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
 import org.eclipse.sirius.web.services.FormVariableViewPreEditingContextProcessor;
@@ -60,6 +61,7 @@ import reactor.test.StepVerifier;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class FormControllerIntegrationTests extends AbstractIntegrationTests {
 
@@ -173,21 +175,14 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .filter(form -> {
-                    var widgets = form.getPages().get(0).getGroups().get(0).getWidgets();
+                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+                    var richText = groupNavigator.findWidget("RichText", RichText.class);
+                    assertThat(richText).hasValue("first");
 
-                    widgets.stream()
-                            .filter(Select.class::isInstance)
-                            .map(Select.class::cast)
-                            .findFirst()
-                            .ifPresent(select -> selectId.set(select.getId()));
+                    var select = groupNavigator.findWidget("Select", Select.class);
+                    selectId.set(select.getId());
 
-                    var richText = widgets.stream()
-                            .filter(RichText.class::isInstance)
-                            .map(RichText.class::cast)
-                            .findFirst()
-                            .orElse(null);
-
-                    return richText.getValue().equals("first");
+                    return true;
                 })
                 .isPresent();
 
@@ -211,14 +206,11 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .filter(form -> {
-                    var widgets = form.getPages().get(0).getGroups().get(0).getWidgets();
-                    var richText = widgets.stream()
-                            .filter(RichText.class::isInstance)
-                            .map(RichText.class::cast)
-                            .findFirst()
-                            .orElse(null);
+                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+                    var richText = groupNavigator.findWidget("RichText", RichText.class);
+                    assertThat(richText).hasValue("second");
 
-                    return richText.getValue().equals("second");
+                    return true;
                 })
                 .isPresent();
 
@@ -267,22 +259,13 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .filter(form -> {
-                    var widgets = form.getPages().get(0).getGroups().get(0).getWidgets();
+                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+                    var listWidget = groupNavigator.findWidget("List", org.eclipse.sirius.components.forms.List.class);
+                    assertThat(listWidget.getItems()).hasSize(1);
 
-                    var checkedTreeNodes = widgets.stream()
-                            .filter(TreeWidget.class::isInstance)
-                            .map(TreeWidget.class::cast)
-                            .flatMap(treeWidget -> treeWidget.getNodes().stream())
-                            .filter(TreeNode::isValue)
-                            .toList();
-
-                    var list = widgets.stream()
-                            .filter(org.eclipse.sirius.components.forms.List.class::isInstance)
-                            .map(org.eclipse.sirius.components.forms.List.class::cast)
-                            .findFirst()
-                            .orElse(null);
-
-                    return list.getItems().size() == 1 && checkedTreeNodes.stream().allMatch(node -> node.getLabel().equals("Root"));
+                    var treeWidget = groupNavigator.findWidget("Tree", TreeWidget.class);
+                    assertThat(treeWidget).hasCheckedTreeItemsSize(1);
+                    return true;
                 })
                 .isPresent();
 
