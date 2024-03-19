@@ -57,26 +57,31 @@ export const useDiagramSelection = (): void => {
     }
   }, [selection]);
 
-  const onSelectionChange = useCallback(({ nodes, edges }) => {
-    const selectionEntries: SelectionEntry[] = [...nodes, ...edges]
-      .filter((element) => element.selected)
-      .map((node) => {
-        const { targetObjectId, targetObjectKind, targetObjectLabel } = node.data;
-        return {
-          id: targetObjectId,
-          kind: targetObjectKind,
-          label: targetObjectLabel,
-        };
-      });
-    const currentSelectionEntryIds = selection.entries.map((selectionEntry) => selectionEntry.id);
-    const shouldUpdateSelection =
-      selectionEntries.map((entry) => entry.id).filter((entryId) => currentSelectionEntryIds.includes(entryId))
-        .length !== selectionEntries.length;
+  const onSelectionChange = useCallback(
+    ({ nodes, edges }) => {
+      const selectionEntries: SelectionEntry[] = [...nodes, ...edges]
+        .filter((element) => element.selected)
+        .map((node) => {
+          const { targetObjectId, targetObjectKind, targetObjectLabel } = node.data;
+          return {
+            id: targetObjectId,
+            kind: targetObjectKind,
+            label: targetObjectLabel,
+          };
+        });
+      const selectionDiagramEntryIds = selection.entries
+        .map((selectionEntry) => selectionEntry.id)
+        .sort((id1: string, id2: string) => id1.localeCompare(id2));
+      const selectedDiagramElementIds = selectionEntries
+        .map((entry) => entry.id)
+        .sort((id1: string, id2: string) => id1.localeCompare(id2));
 
-    if (selectionEntries.length > 0 && shouldUpdateSelection) {
-      setSelection({ entries: selectionEntries });
-    }
-  }, []);
+      if (JSON.stringify(selectedDiagramElementIds) !== JSON.stringify(selectionDiagramEntryIds)) {
+        setSelection({ entries: selectionEntries });
+      }
+    },
+    [selection]
+  );
   useOnSelectionChange({
     onChange: onSelectionChange,
   });
