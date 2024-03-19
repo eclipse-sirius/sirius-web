@@ -6,7 +6,8 @@
 === Shapes
 
 - Configurable collapse
-
+- Add support for EMF models migration
+- Add support for representations migration
 
 === Architectural decision records
 

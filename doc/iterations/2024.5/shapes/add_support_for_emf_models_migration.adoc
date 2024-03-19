@@ -1,0 +1,37 @@
+= Add the support for EMF models migration
+
+== Context
+
+Users want to upgrade the version of Sirius Web without losing the models they created with an older version.
+
+== Key Result
+
+Models contributed with a version n of Sirius Web must be available with any version > n of Sirius Web. 
+Specifiers must also be able to contribute on how to handle evolutions on their own models to guarantee compatibility between several versions.
+
+== Solution
+
+We will leverage the `ExtendedMetaData` mechanism from EMF.
+This mechanism, once implemented, allows specifiers to give indications on how to serialize or deserialize an EMF resource.
+For example if an attribute is called _name_ in a version n of the model and _fullName_  in a version n+1, we can "map" _name_ to _fullName_ during the deserialisation process. 
+
+Specifiers will be able to contribute several `IMigrationParticipant` that will be accessible in the implementation of the ExtendedMetaData.
+Each `IMigrationParticipant` will be in charge of updating specific changes targeting a kind of model.
+During the upgrade process, only the `IMigrationParticipant` that have a targeted version superior to the last one stored in the model will be called.
+Then the most superior `IMigrationParticipant` called will store his target version in the model.
+
+=== Breadboarding
+
+none
+
+=== Cutting backs
+
+none
+
+== Rabbit holes
+
+The first time that old models are loaded, it could take some time if there are lots of transformations needed.
+
+== No-gos
+
+N.A.
