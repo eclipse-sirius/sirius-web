@@ -31,5 +31,6 @@ public interface TestIdentifiers {
     UUID EPACKAGE_OBJECT = UUID.fromString("3237b215-ae23-48d7-861e-f542a4b9a4b8");
     UUID EPACKAGE_PORTAL_REPRESENTATION = UUID.fromString("e81eec5c-42d6-491c-8bcc-9beb951356f8");
     UUID DOMAIN_OBJECT = UUID.fromString("f8204cb6-3705-48a5-bee3-ad7e7d6cbdaf");
+    UUID HUMAN_ENTITY_OBJECT = UUID.fromString("1731ffb5-bfb0-46f3-a23d-0c0650300005");
     UUID PORTAL_REPRESENTATION_DESCRIPTION = UUID.fromString("69030a1b-0b5f-3c1d-8399-8ca260e4a672");
 }

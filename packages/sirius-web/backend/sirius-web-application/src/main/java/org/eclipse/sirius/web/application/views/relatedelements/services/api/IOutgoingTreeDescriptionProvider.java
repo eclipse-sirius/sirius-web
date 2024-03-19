@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.forms.tests;
+package org.eclipse.sirius.web.application.views.relatedelements.services.api;
+
+import org.eclipse.sirius.components.forms.description.TreeDescription;
 
 /**
- * Enumeration used to indicate if the identifiers should be taken into account while determining if form elements match
- * one another.
+ * Provides the description of the tree widget for the outgoing panel.
  *
- * @author lfasani
+ * @author sbegaudeau
  */
-public enum IdPolicy {
-    WITH_ID, WITHOUT_ID
+public interface IOutgoingTreeDescriptionProvider {
+    TreeDescription getTreeDescription();
 }

@@ -69,6 +69,12 @@
 			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-forms-tests</artifactId>
+			<version>2024.1.5</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

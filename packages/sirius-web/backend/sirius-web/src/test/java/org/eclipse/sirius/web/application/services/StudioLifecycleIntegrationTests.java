@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -101,5 +102,46 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
         } else {
             fail("Invalid editing context");
         }
+    }
+
+    @Test
+    @DisplayName("Given a studio, when it is loaded, then its content can be manipulated")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenStudioWhenItIsLoadedThenItsContentCanBeManipulated() {
+        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
+        assertThat(optionalEditingContext).isPresent();
+
+        var editingContext = optionalEditingContext.get();
+        if (editingContext instanceof EditingContext siriusWebEditingContext) {
+            var resourceSet = siriusWebEditingContext.getDomain().getResourceSet();
+
+            var domain = resourceSet.getResources().stream()
+                    .filter(resource -> !resource.getContents().isEmpty())
+                    .map(resource -> resource.getContents().get(0))
+                    .filter(Domain.class::isInstance)
+                    .map(Domain.class::cast)
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("Missing domain"));
+
+            assertThat(domain.getName()).isEqualTo("buck");
+
+            var domainString = domain.toString();
+            assertThat(domainString.substring(domainString.indexOf("("))).isEqualTo("(name: buck)");
+
+            this.assertEntityContent(domain, "Root", "(name: Root) (abstract: false)");
+            this.assertEntityContent(domain, "NamedElement", "(name: NamedElement) (abstract: true)");
+            this.assertEntityContent(domain, "Human", "(name: Human) (abstract: false)");
+        }
+    }
+
+    private void assertEntityContent(Domain domain, String name, String content) {
+        var root = domain.getTypes().stream()
+                .filter(entity -> entity.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Missing entity"));
+
+        var rootString = root.toString();
+        assertThat(rootString.substring(rootString.indexOf("("))).isEqualTo(content);
     }
 }
