@@ -112,6 +112,7 @@ The implemented fix does not allow to evaluate an AQL expression, but only to re
 - https://github.com/eclipse-sirius/sirius-web/issues/2956[#2956] [diagram] Fix an issue where diagram performance were degraded over time when moving elements.
 - https://github.com/eclipse-sirius/sirius-web/issues/3228[#3228] [diagram] Fix an issue where list child could be moved outside its container
 - https://github.com/eclipse-sirius/sirius-web/issues/3206[#3206] [diagram] Fix an issue where precondition on tool was not respected during palette creation
+- https://github.com/eclipse-sirius/sirius-web/issues/3257[#3257] [diagram] Fix an issue that caused an infinite loop when selecting elements with shift.
 
 === New Features
 
