@@ -1,0 +1,36 @@
+= Add the support for representations migration
+
+== Context
+
+Specifiers want to upgrade the version of Sirius Web without losing the representations they created with an older version.
+
+== Key Result
+
+Representations contributed with a version n of Sirius Web must be available with any version > n of Sirius Web. 
+Specifiers must also be able to contribute on how to handle evolutions on their own representations to guarantee compatibility between several versions.
+
+== Solution
+
+Contrary to the models are deserialized/serialized by EMF, the representations use the `Jackson` library to convert POJO into JSON.
+We can plug in modules into Jackson to give indications on how to serialize/deserialize JSON to/from Java.
+Specifier will be able to contribute several `IRepresentationMigrationParticipant` that will be available in the implementation of a Jackson module.
+
+Each `IRepresentationMigrationParticipant` will be in charge of updating specific changes targeting a kind of representation.
+During the upgrade process, only the `IRepresentationMigrationParticipant` that have a targeted version superior to the last one stored in the representation will be called.
+Then the most superior `IRepresentationMigrationParticipant` called will store his target version in the representation.
+
+=== Breadboarding
+
+none
+
+=== Cutting backs
+
+none
+
+== Rabbit holes
+
+The first time that old representations are loaded, it could take some time if there are lots of transformations needed.
+
+== No-gos
+
+N.A.
