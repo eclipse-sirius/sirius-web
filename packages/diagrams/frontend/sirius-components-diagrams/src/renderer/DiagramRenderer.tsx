@@ -351,7 +351,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       <DiagramPalette diagramElementId={diagramRefreshedEventPayload.diagram.id} />
       {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
       <ConnectorContextualMenu />
-      <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} />
+      {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
     </ReactFlow>
   );
 };
