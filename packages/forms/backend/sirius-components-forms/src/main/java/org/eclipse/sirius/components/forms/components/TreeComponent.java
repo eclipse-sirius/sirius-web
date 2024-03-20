@@ -95,25 +95,29 @@ public class TreeComponent implements IComponent {
         VariableManager itemVariableManager = variableManager.createChild();
         itemVariableManager.put(ANCESTORS_VARIABLE, ancestors);
 
-        String parentId = null;
+        final String parentId;
         if (!ancestors.isEmpty()) {
             itemVariableManager.put(VariableManager.SELF, ancestors.get(ancestors.size() - 1));
             parentId = treeDescription.getNodeIdProvider().apply(itemVariableManager);
+        } else {
+            parentId = null;
         }
 
         List<?> semanticChildren = treeDescription.getChildrenProvider().apply(itemVariableManager);
 
-        for (Object child : semanticChildren) {
-            VariableManager childVariableManager = itemVariableManager.createChild();
-            childVariableManager.put(VariableManager.SELF, child);
+        semanticChildren.stream()
+            .filter(Objects::nonNull)
+            .forEach(child -> {
+                VariableManager childVariableManager = itemVariableManager.createChild();
+                childVariableManager.put(VariableManager.SELF, child);
 
-            TreeNode node = this.renderNode(childVariableManager, treeDescription, parentId);
-            nodes.add(node);
+                TreeNode node = this.renderNode(childVariableManager, treeDescription, parentId);
+                nodes.add(node);
 
-            List<Object> newAncestors = new ArrayList<>(ancestors);
-            newAncestors.add(child);
-            nodes.addAll(this.computeChildren(newAncestors, variableManager, treeDescription));
-        }
+                List<Object> newAncestors = new ArrayList<>(ancestors);
+                newAncestors.add(child);
+                nodes.addAll(this.computeChildren(newAncestors, variableManager, treeDescription));
+            });
 
         return nodes;
     }
