@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services;
+package org.eclipse.sirius.components.graphql.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
+import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.springframework.stereotype.Service;
 
 import graphql.ExecutionInput;

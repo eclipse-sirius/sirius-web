@@ -23,9 +23,9 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionEventInput;
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionRefreshedEventPayload;
+import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
-import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.services.selection.SelectionDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

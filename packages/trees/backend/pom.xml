@@ -35,5 +35,6 @@
 		<module>sirius-components-trees</module>
 		<module>sirius-components-collaborative-trees</module>
 		<module>sirius-components-trees-graphql</module>
+		<module>sirius-components-trees-tests</module>
 	</modules>
 </project>

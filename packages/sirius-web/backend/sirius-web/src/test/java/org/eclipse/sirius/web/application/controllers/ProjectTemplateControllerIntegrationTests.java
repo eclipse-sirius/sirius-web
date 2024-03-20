@@ -28,7 +28,8 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateSuccessPayload;
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
-import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
+import org.eclipse.sirius.web.tests.graphql.CreateProjectFromTemplateMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,47 +49,11 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=*" })
 public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String GET_PROJECT_TEMPLATES_QUERY = """
-            query getProjectTemplates($page: Int!, $limit: Int!) {
-              viewer {
-                projectTemplates(page: $page, limit: $limit) {
-                  edges {
-                    node {
-                      id
-                      label
-                      imageURL
-                    }
-                  }
-                  pageInfo {
-                    hasPreviousPage
-                    hasNextPage
-                    startCursor
-                    endCursor
-                    count
-                  }
-                }
-              }
-            }
-            """;
-
-    private static final String CREATE_PROJECT_FROM_TEMPLATE_MUTATION = """
-            mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
-              createProjectFromTemplate(input: $input) {
-                __typename
-                ... on CreateProjectFromTemplateSuccessPayload {
-                  project {
-                    id
-                  }
-                  representationToOpen {
-                    id
-                  }
-                }
-              }
-            }
-            """;
+    @Autowired
+    private ProjectTemplatesQueryRunner projectTemplatesQueryRunner;
 
     @Autowired
-    private IGraphQLRequestor graphQLRequestor;
+    private CreateProjectFromTemplateMutationRunner createProjectFromTemplateMutationRunner;
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
@@ -109,7 +74,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSetOfProjectTemplatesWhenQueryIsPerformedThenTheProjectTemplatesAreReturned() {
         Map<String, Object> variables = Map.of("page", 0, "limit", 2);
-        var result = this.graphQLRequestor.execute(GET_PROJECT_TEMPLATES_QUERY, variables);
+        var result = this.projectTemplatesQueryRunner.run(variables);
 
         boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
@@ -139,7 +104,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         TestTransaction.end();
 
         var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), StudioProjectTemplateProvider.STUDIO_TEMPLATE_ID);
-        var result = this.graphQLRequestor.execute(CREATE_PROJECT_FROM_TEMPLATE_MUTATION, input);
+        var result = this.createProjectFromTemplateMutationRunner.run(input);
 
         String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
         assertThat(typename).isEqualTo(CreateProjectFromTemplateSuccessPayload.class.getSimpleName());

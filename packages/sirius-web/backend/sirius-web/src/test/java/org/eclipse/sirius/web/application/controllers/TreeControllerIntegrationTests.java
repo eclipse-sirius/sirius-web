@@ -39,10 +39,12 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
+import org.eclipse.sirius.components.trees.tests.graphql.DeleteTreeItemMutationRunner;
+import org.eclipse.sirius.components.trees.tests.graphql.TreeEventSubscriptionRunner;
+import org.eclipse.sirius.components.trees.tests.graphql.TreeFiltersQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
-import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,41 +68,14 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String GET_TREE_EVENT_SUBSCRIPTION = """
-            subscription treeEvent($input: TreeEventInput!) {
-              treeEvent(input: $input) {
-                __typename
-              }
-            }
-            """;
+    @Autowired
+    private TreeEventSubscriptionRunner treeEventSubscriptionRunner;
 
-    private static final String DELETE_TREE_ITEM_MUTATION = """
-            mutation deleteTreeItem($input: DeleteTreeItemInput!) {
-              deleteTreeItem(input: $input) {
-                __typename
-              }
-            }
-            """;
+    @Autowired
+    private DeleteTreeItemMutationRunner deleteTreeItemMutationRunner;
 
-    private static final String GET_TREE_FILTERS_QUERY = """
-            query getFilters($editingContextId: ID!, $representationId: ID!) {
-              viewer {
-                editingContext(editingContextId: $editingContextId) {
-                  representation(representationId: $representationId) {
-                    description {
-                      ... on TreeDescription {
-                        filters {
-                          id
-                          label
-                          defaultState
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            """;
+    @Autowired
+    private TreeFiltersQueryRunner treeFiltersQueryRunner;
 
     /**
      * Record used to contain both a way to find a tree item and some predicate to validate on said tree item in order to simplify the design of some advanced tests.
@@ -135,9 +110,6 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     );
 
     @Autowired
-    private IGraphQLRequestor graphQLRequestor;
-
-    @Autowired
     private IEditingContextSearchService editingContextSearchService;
 
     @Autowired
@@ -159,7 +131,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenWeSubscribeToTreeEventsOfItsExplorerThenTheTreeOfTheExplorerIsSent() {
         var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.REPRESENTATION_ID, List.of(), List.of());
-        var flux = this.graphQLRequestor.subscribe(GET_TREE_EVENT_SUBSCRIPTION, input);
+        var flux = this.treeEventSubscriptionRunner.run(input);
 
         Predicate<Object> projectContentMatcher = object -> Optional.of(object)
                 .filter(DataFetcherResult.class::isInstance)
@@ -181,11 +153,11 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenExplorerOfProjectWhenWeDeleteTreeItemsThenTheTreeIsRefreshed() {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
         var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.REPRESENTATION_ID, expandedIds, List.of());
-        var flux = this.graphQLRequestor.subscribe(GET_TREE_EVENT_SUBSCRIPTION, input);
+        var flux = this.treeEventSubscriptionRunner.run(input);
 
-        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(rootDocumentIsNamedEcore, ePackageIsNamedSample, representationIsAPortal));
-        var hasNoMoreRepresentation = this.getTreeRefreshedEventPayloadMatcher(List.of(ePackageHasNoRepresentation));
-        var hasNoMoreObject = this.getTreeRefreshedEventPayloadMatcher(List.of(documentHasNoObject));
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.representationIsAPortal));
+        var hasNoMoreRepresentation = this.getTreeRefreshedEventPayloadMatcher(List.of(this.ePackageHasNoRepresentation));
+        var hasNoMoreObject = this.getTreeRefreshedEventPayloadMatcher(List.of(this.documentHasNoObject));
 
         Predicate<Object> hasNoMoreDocument = object -> Optional.of(object)
                 .filter(DataFetcherResult.class::isInstance)
@@ -249,7 +221,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     private Runnable deleteTreeItem(String editingContextId, String treeId, UUID treeItemId) {
         return () -> {
             var input = new DeleteTreeItemInput(UUID.randomUUID(), editingContextId, treeId, treeItemId);
-            var result = this.graphQLRequestor.execute(DELETE_TREE_ITEM_MUTATION, input);
+            var result = this.deleteTreeItemMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.deleteTreeItem.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
@@ -269,7 +241,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
                 "representationId", ExplorerDescriptionProvider.REPRESENTATION_ID
         );
-        var result = this.graphQLRequestor.execute(GET_TREE_FILTERS_QUERY, variables);
+        var result = this.treeFiltersQueryRunner.run(variables);
 
         List<String> treeFilterIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.filters[*].id");
         assertThat(treeFilterIds).hasSize(0);

@@ -26,6 +26,8 @@ The removal of those deprecated modules will occur during the iteration 2024.9.0
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3271[#3271] [test] Move `IGraphQLRequestor` to `org.eclipse.sirius.components.graphql.tests.api`.
+
 
 === Dependency update
 
@@ -35,6 +37,9 @@ The removal of those deprecated modules will occur during the iteration 2024.9.0
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3271[#3271] [test] Factorize GraphQL queries used in tests.
+4 new projects have been created to store GraphQL queries, mutations, and subscription runners: `sirius-components-graphql-tests`, `sirius-components-trees-tests`, `sirius-components-portals-tests`, `sirius-web-tests`.
+`sirius-components-forms-tests` and `sirius-components-diagrams-tests` now both contain GraphQL queries related to forms and diagras.
 
 === Improvements
 

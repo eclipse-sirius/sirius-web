@@ -51,5 +51,6 @@
 		<module>sirius-web-infrastructure</module>
 		<module>sirius-web-starter</module>
 		<module>sirius-web</module>
+		<module>sirius-web-tests</module>
 	</modules>
 </project>

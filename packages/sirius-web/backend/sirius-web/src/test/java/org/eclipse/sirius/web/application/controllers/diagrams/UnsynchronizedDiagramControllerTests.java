@@ -27,9 +27,10 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInpu
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
+import org.eclipse.sirius.components.diagrams.tests.graphql.DiagramEventSubscriptionRunner;
+import org.eclipse.sirius.components.graphql.tests.CreateRepresentationMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
-import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.services.diagrams.UnsynchronizedDiagramDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,29 +54,11 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTests {
 
-    private static final String GET_DIAGRAM_EVENT_SUBSCRIPTION = """
-            subscription diagramEvent($input: DiagramEventInput!) {
-              diagramEvent(input: $input) {
-                __typename
-              }
-            }
-            """;
-
-    private static final String CREATE_REPRESENTATION_MUTATION = """
-            mutation createRepresentation($input: CreateRepresentationInput!) {
-              createRepresentation(input: $input) {
-                __typename
-                ... on CreateRepresentationSuccessPayload {
-                  representation {
-                    id
-                  }
-                }
-              }
-            }
-            """;
+    @Autowired
+    private CreateRepresentationMutationRunner createRepresentationMutationRunner;
 
     @Autowired
-    private IGraphQLRequestor graphQLRequestor;
+    private DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
 
     @Autowired
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
@@ -101,7 +84,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
                 TestIdentifiers.PAPAYA_ROOT_OBJECT.toString(),
                 "UnsynchronizedDiagram"
         );
-        var result = this.graphQLRequestor.execute(CREATE_REPRESENTATION_MUTATION, input);
+        var result = this.createRepresentationMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -114,7 +97,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
         assertThat(representationId).isNotNull();
 
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), TestIdentifiers.PAPAYA_PROJECT.toString(), representationId);
-        var flux = this.graphQLRequestor.subscribe(GET_DIAGRAM_EVENT_SUBSCRIPTION, diagramEventInput);
+        var flux = this.diagramEventSubscriptionRunner.run(diagramEventInput);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();

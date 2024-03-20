@@ -1,0 +1,11 @@
+= sirius-web-tests
+
+== Goal
+
+This project is used to tests Sirius Web applications.
+
+== Dependencies
+
+- AssertJ
+
+This project should not depend on anything else without a good reason to do so.

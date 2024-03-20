@@ -21,9 +21,9 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
+import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
-import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,16 +45,8 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String GET_PORTAL_EVENT_SUBSCRIPTION = """
-            subscription portalEvent($input: PortalEventInput!) {
-              portalEvent(input: $input) {
-                __typename
-              }
-            }
-            """;
-
     @Autowired
-    private IGraphQLRequestor graphQLRequestor;
+    private PortalEventSubscriptionRunner portalEventSubscriptionRunner;
 
     @Autowired
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
@@ -72,7 +64,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenPortalWhenWeSubscribeToPortalEventsThenCurrentStateOfThePortalIsSent() {
         var input = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-        var flux = this.graphQLRequestor.subscribe(GET_PORTAL_EVENT_SUBSCRIPTION, input);
+        var flux = this.portalEventSubscriptionRunner.run(input);
 
         Predicate<Object> portalRefreshedEventPayloadMatcher = object -> Optional.of(object)
                 .filter(DataFetcherResult.class::isInstance)

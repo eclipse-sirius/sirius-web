@@ -24,8 +24,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
+import org.eclipse.sirius.components.collaborative.diagrams.handlers.TestDiagramBuilder;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
-import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,12 +33,12 @@ import org.junit.jupiter.api.Test;
  *
  * @author frouene
  */
-class GenericDiagramToolReferencePositionProviderTests {
+public class GenericDiagramToolReferencePositionProviderTests {
 
     public static final String CONTAINER_ID = "containerId";
 
     @Test
-    void canHandle() {
+    public void canHandle() {
         var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
 
         InvokeSingleClickOnDiagramElementToolInput inputInvokeSingleClick = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), "", "",
@@ -54,7 +54,7 @@ class GenericDiagramToolReferencePositionProviderTests {
     }
 
     @Test
-    void getReferencePositionInvokeSingleClickOnDiagramElementTool() {
+    public void getReferencePositionInvokeSingleClickOnDiagramElementTool() {
         var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
         var diagramId = UUID.randomUUID().toString();
         IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
@@ -71,7 +71,7 @@ class GenericDiagramToolReferencePositionProviderTests {
     }
 
     @Test
-    void getReferencePositionDropOnDiagramElementTool() {
+    public void getReferencePositionDropOnDiagramElementTool() {
         var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
         var diagramId = UUID.randomUUID().toString();
         IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
@@ -88,7 +88,7 @@ class GenericDiagramToolReferencePositionProviderTests {
     }
 
     @Test
-    void getReferencePositionDropOnNodeTool() {
+    public void getReferencePositionDropOnNodeTool() {
         var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
         var diagramId = UUID.randomUUID().toString();
         IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));

@@ -35,5 +35,6 @@
 		<module>sirius-components-portals</module>
 		<module>sirius-components-collaborative-portals</module>
 		<module>sirius-components-portals-graphql</module>
+		<module>sirius-components-portals-tests</module>
 	</modules>
 </project>
