@@ -246,3 +246,64 @@ INSERT INTO representation_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
+
+-- Sample Papaya project
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  'c3d7df85-e0bd-472c-aec1-c05cc88276e4',
+  'Papaya Sample',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO nature (
+  project_id,
+  name
+) VALUES (
+  'c3d7df85-e0bd-472c-aec1-c05cc88276e4',
+  'papaya'
+);
+INSERT INTO semantic_data (
+  id,
+  project_id,
+  created_on,
+  last_modified_on
+) VALUES (
+  'cc89c500-c27e-4968-9c67-15cf767c6ef0',
+  'c3d7df85-e0bd-472c-aec1-c05cc88276e4',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  'cc89c500-c27e-4968-9c67-15cf767c6ef0',
+  'domain://papaya_core'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  'cc89c500-c27e-4968-9c67-15cf767c6ef0',
+  'domain://papaya_logical_architecture'
+);
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  'a4495c9c-d00c-4f0e-a591-1176d102a4a1',
+  'cc89c500-c27e-4968-9c67-15cf767c6ef0',
+  'Papaya',
+  '{"json":{"version":"1.0","encoding":"utf-8"},"ns":{"papaya_core":"domain://papaya_core","papaya_logical_architecture":"domain://papaya_logical_architecture"},"content":[{"id":"aa0b7b22-ade2-4148-9ee2-c5972bd72ab7","eClass":"papaya_core:Root","data":{"components":[{"id":"fad0f4c9-e668-44f3-8deb-aef0edb6ddff","eClass":"papaya_logical_architecture:Component","data":{"name":"sirius-web-domain"}},{"id":"13e0b82e-3d24-403a-bfc1-4bda81846e55","eClass":"papaya_logical_architecture:Component","data":{"name":"sirius-web-application"}},{"id":"5c313fbf-d254-4a37-962b-7817cfa18526","eClass":"papaya_logical_architecture:Component","data":{"name":"sirius-web-infrastructure"}},{"id":"e462e8ac-39d3-4ab2-b20f-ea7f0a0283d6","eClass":"papaya_logical_architecture:Component","data":{"name":"sirius-web-starter"}},{"id":"92221ad3-a0b5-4774-b941-87cda3edb772","eClass":"papaya_logical_architecture:Component","data":{"name":"sirius-web"}}]}}]}',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);

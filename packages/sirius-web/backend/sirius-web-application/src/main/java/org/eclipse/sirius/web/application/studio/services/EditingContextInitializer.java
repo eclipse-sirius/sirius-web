@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.studio.services;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,6 +33,7 @@ import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IDocumentToResourceService;
+import org.eclipse.sirius.web.application.studio.services.api.IDomainProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.stereotype.Service;
 
@@ -47,15 +49,24 @@ public class EditingContextInitializer implements IEditingContextProcessor {
 
     private final IDocumentToResourceService documentToResourceService;
 
-    public EditingContextInitializer(ISemanticDataSearchService semanticDataSearchService, IDocumentToResourceService documentToResourceService) {
+    private final List<IDomainProvider> domainProviders;
+
+    public EditingContextInitializer(ISemanticDataSearchService semanticDataSearchService, IDocumentToResourceService documentToResourceService, List<IDomainProvider> domainProviders) {
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
         this.documentToResourceService = Objects.requireNonNull(documentToResourceService);
+        this.domainProviders = Objects.requireNonNull(domainProviders);
     }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             List<Domain> domains = new ArrayList<>();
+
+            this.domainProviders.stream()
+                    .map(domainProvider -> domainProvider.getDomains(siriusWebEditingContext))
+                    .flatMap(Collection::stream)
+                    .forEach(domains::add);
+
             List<View> views = new ArrayList<>();
 
             var allSemanticData = this.semanticDataSearchService.findAllByDomains(List.of(DomainPackage.eNS_URI, ViewPackage.eNS_URI));

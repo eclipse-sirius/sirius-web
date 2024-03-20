@@ -44,6 +44,8 @@
 		<module>sirius-web-customnodes</module>
 		<module>sirius-web-customnodes-edit</module>
 
+		<module>sirius-web-papaya</module>
+
 		<module>sirius-web-domain</module>
 		<module>sirius-web-application</module>
 		<module>sirius-web-infrastructure</module>

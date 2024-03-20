@@ -442,6 +442,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-papaya</artifactId>
+			<version>2024.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-domain</artifactId>
 			<version>2024.3.0</version>
 		</dependency>

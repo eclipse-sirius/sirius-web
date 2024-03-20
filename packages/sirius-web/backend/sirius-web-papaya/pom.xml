@@ -22,10 +22,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
-	<artifactId>sirius-web</artifactId>
+	<artifactId>sirius-web-papaya</artifactId>
 	<version>2024.3.0</version>
-	<name>sirius-web</name>
-	<description>Sirius Web</description>
+	<name>sirius-web-papaya</name>
+	<description>Sirius Web Papaya</description>
 
 	<properties>
 		<java.version>17</java.version>
@@ -41,46 +41,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-starter</artifactId>
+			<artifactId>sirius-web-application</artifactId>
 			<version>2024.3.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-papaya</artifactId>
-			<version>2024.3.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.projectreactor</groupId>
-			<artifactId>reactor-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-forms-tests</artifactId>
-			<version>2024.3.0</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
