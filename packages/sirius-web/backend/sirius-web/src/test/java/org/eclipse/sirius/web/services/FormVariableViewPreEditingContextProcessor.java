@@ -46,11 +46,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class FormVariableViewPreEditingContextProcessor implements IEditingContextProcessor  {
 
-    public static final String DESCRIPTION_ID = "FormVariableFormDescription";
-
     public static final String REPRESENTATION_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=formDescription&sourceKind=view&sourceId=c70a4bb6-7310-335d-bda7-a4d1b7c5486f&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93";
 
-    public static final String NAME = "FormVariableForm";
     @Override
     public void preProcess(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
@@ -60,16 +57,16 @@ public class FormVariableViewPreEditingContextProcessor implements IEditingConte
     private View createView() {
         ViewBuilder viewBuilder = new ViewBuilder();
         View view = viewBuilder.build();
-        view.getDescriptions().add(createFormDescription());
+        view.getDescriptions().add(this.createFormDescription());
 
         // Add an ID to all view elements
         view.eAllContents().forEachRemaining(eObject -> {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
 
-        String resourcePath = UUID.nameUUIDFromBytes(DESCRIPTION_ID.getBytes()).toString();
+        String resourcePath = UUID.nameUUIDFromBytes("FormVariableFormDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
-        resource.eAdapters().add(new ResourceMetadataAdapter(DESCRIPTION_ID));
+        resource.eAdapters().add(new ResourceMetadataAdapter("FormVariableFormDescription"));
         resource.getContents().add(view);
 
         return view;
@@ -93,25 +90,26 @@ public class FormVariableViewPreEditingContextProcessor implements IEditingConte
                 .build();
 
         GroupDescription groupDescription = new GroupDescriptionBuilder()
-                .name(NAME)
+                .name("Group")
                 .labelExpression("Group")
                 .children(treeDescription, listDescription)
                 .build();
 
         PageDescription pageDescription = new PageDescriptionBuilder()
-                .name(NAME)
+                .name("Page")
                 .labelExpression("Page")
                 .domainType("domain:Domain")
                 .groups(groupDescription)
                 .build();
 
         return new FormDescriptionBuilder()
-                .name(NAME)
+                .name("Form")
                 .formVariables(new FormVariableBuilder().name("listValues")
                         .defaultValueExpression("aql:self.eContents()->at(1)")
                         .build())
                 .titleExpression("aql:'Form'")
                 .pages(pageDescription)
-                .domainType("ecore:EPackage").build();
+                .domainType("ecore:EPackage")
+                .build();
     }
 }
