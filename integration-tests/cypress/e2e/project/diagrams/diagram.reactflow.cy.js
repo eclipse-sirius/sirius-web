@@ -117,7 +117,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('create-representation').click();
 
     cy.getByTestId('rf__wrapper').should('exist');
-    cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').should('exist').click();
+    cy.getByTestId('Wifi').click();
     cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').type('{del}');
 
     cy.getByTestId('confirmation-dialog').should('be.visible');
