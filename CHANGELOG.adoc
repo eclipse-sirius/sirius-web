@@ -7,6 +7,7 @@
 - Configurable collapse
 - Add support for EMF models migration
 - Add support for representations migration
+- Add Assertions and Navigators to improve Diagram testability
 
 === Architectural decision records
 

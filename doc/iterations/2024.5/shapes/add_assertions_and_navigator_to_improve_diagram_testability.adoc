@@ -1,0 +1,53 @@
+= Add Assertions and Navigators to improve Diagram Testability
+
+== Problem
+
+Defining diagram tests that require complex diagram navigation is cumbersome.
+Existing assertions could be improved to ease the verification of diagram elements.
+
+== Key Result
+
+Testers can write simpler tests that rely on new navigation capabilities to retrieve the diagram elements involved in their tests.
+Testers can validate diagram elements using custom assertions.
+
+== Solution
+
+=== Navigator APIs
+
+A set of navigator APIs to:
+
+- Access a list of elements regardless of their position in the diagram, and matching a given condition (label, description, semantic target label)
+- Access an unique element regardless of its position in the diagram, and matching a given condition
+- Access the direct children of an element matching a given condition
+- Access the direct parent or the list of ancestors of an element
+- Access the outgoing/incoming edges of a node, matching a given condition
+- Access the label of an element
+
+All these operations should have two modes: one that stops the navigation and returns the list of elements (e.g. `findBorderNodes()`), and one that allows to continue the navigation (e.g. `borderNodes().ancestors()`).
+
+Navigators will need to cache information for performance reasons (we don't want to actually navigate the model on every query), as well as to provide navigation capabilities that aren't directly accessible from diagram elements (e.g. a node doesn't know its ancestors).
+
+=== Assertion APIs
+
+New assertions will complement the ones already defined in `DiagramAssertions` to:
+
+- Check the properties of a label (text, isHeader)
+- Check the style of a label (color, bold, italic)
+- Check the type of a node
+- Check the layout strategy of a node
+- Check the source/target of an edge
+- Check the number of children of a node
+- Check if a given node is an ancestor of the provided one
+- Check the number of elements in the diagram
+
+== Cutting Back
+
+Nothing identified for now
+
+== Rabbit Hole
+
+Nothing identified for now
+
+== No-gos
+
+Nothing identified for now
