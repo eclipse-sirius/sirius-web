@@ -27,10 +27,10 @@ import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInpu
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.TreeWidget;
+import org.eclipse.sirius.components.forms.tests.graphql.RelatedElementsEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
-import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,16 +52,8 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RelatedElementsViewControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String GET_RELATED_ELEMENTS_EVENT_SUBSCRIPTION = """
-            subscription relatedElementsEvent($input: PropertiesEventInput!) {
-              relatedElementsEvent(input: $input) {
-                __typename
-              }
-            }
-            """;
-
     @Autowired
-    private IGraphQLRequestor graphQLRequestor;
+    private RelatedElementsEventSubscriptionRunner relatedElementsEventSubscriptionRunner;
 
     @Autowired
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
@@ -79,7 +71,7 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSemanticObjectWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
         var input = new PropertiesEventInput(UUID.randomUUID(), TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(TestIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
-        var flux = this.graphQLRequestor.subscribe(GET_RELATED_ELEMENTS_EVENT_SUBSCRIPTION, input);
+        var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
             var groupNavigator = new FormNavigator(form).page("Human").group("Related Elements");

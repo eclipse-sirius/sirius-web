@@ -36,12 +36,15 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.TreeWidget;
+import org.eclipse.sirius.components.forms.tests.graphql.EditSelectMutationRunner;
+import org.eclipse.sirius.components.forms.tests.graphql.FormEventSubscriptionRunner;
+import org.eclipse.sirius.components.forms.tests.graphql.PropertiesEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
+import org.eclipse.sirius.components.graphql.tests.CreateRepresentationMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
 import org.eclipse.sirius.web.services.FormVariableViewPreEditingContextProcessor;
 import org.eclipse.sirius.web.services.MasterDetailsFormDescriptionProvider;
-import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,45 +68,17 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class FormControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String GET_PROPERTIES_EVENT_SUBSCRIPTION = """
-            subscription propertiesEvent($input: PropertiesEventInput!) {
-              propertiesEvent(input: $input) {
-                __typename
-              }
-            }
-            """;
-
-    private static final String GET_FORM_EVENT_SUBSCRIPTION = """
-            subscription formEvent($input: FormEventInput!) {
-              formEvent(input: $input) {
-                __typename
-              }
-            }
-            """;
-
-    private static final String CREATE_REPRESENTATION_MUTATION = """
-            mutation createRepresentation($input: CreateRepresentationInput!) {
-              createRepresentation(input: $input) {
-                __typename
-                ... on CreateRepresentationSuccessPayload {
-                  representation {
-                    id
-                  }
-                }
-              }
-            }
-            """;
-
-    private static final String EDIT_SELECT_MUTATION = """
-            mutation editSelect($input: EditSelectInput!) {
-              editSelect(input: $input) {
-                __typename
-              }
-            }
-            """;
+    @Autowired
+    private PropertiesEventSubscriptionRunner propertiesEventSubscriptionRunner;
 
     @Autowired
-    private IGraphQLRequestor graphQLRequestor;
+    private FormEventSubscriptionRunner formEventSubscriptionRunner;
+
+    @Autowired
+    private CreateRepresentationMutationRunner createRepresentationMutationRunner;
+
+    @Autowired
+    private EditSelectMutationRunner editSelectMutationRunner;
 
     @Autowired
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
@@ -121,7 +96,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSemanticObjectWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
         var input = new PropertiesEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
-        var flux = this.graphQLRequestor.subscribe(GET_PROPERTIES_EVENT_SUBSCRIPTION, input);
+        var flux = this.propertiesEventSubscriptionRunner.run(input);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)
                 .filter(DataFetcherResult.class::isInstance)
@@ -150,7 +125,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 TestIdentifiers.EPACKAGE_OBJECT.toString(),
                 "Master Details Form"
         );
-        var result = this.graphQLRequestor.execute(CREATE_REPRESENTATION_MUTATION, input);
+        var result = this.createRepresentationMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -163,7 +138,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         assertThat(representationId).isNotNull();
 
         var formEventInput = new FormEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), representationId);
-        var flux = this.graphQLRequestor.subscribe(GET_FORM_EVENT_SUBSCRIPTION, formEventInput);
+        var flux = this.formEventSubscriptionRunner.run(formEventInput);
 
         AtomicReference<String> selectId = new AtomicReference<>("");
 
@@ -189,7 +164,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         Runnable changeMasterValue = () -> {
             var editSelectInput = new EditSelectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), representationId, selectId.get(), "second");
 
-            var editSelectResult = this.graphQLRequestor.execute(EDIT_SELECT_MUTATION, editSelectInput);
+            var editSelectResult = this.editSelectMutationRunner.run(editSelectInput);
             String editSelectResultTypename = JsonPath.read(editSelectResult, "$.data.editSelect.__typename");
             assertThat(editSelectResultTypename).isEqualTo(SuccessPayload.class.getSimpleName());
 
@@ -236,7 +211,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 TestIdentifiers.DOMAIN_OBJECT.toString(),
                 "Shared Variables Form"
         );
-        var result = this.graphQLRequestor.execute(CREATE_REPRESENTATION_MUTATION, input);
+        var result = this.createRepresentationMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -249,7 +224,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         assertThat(representationId).isNotNull();
 
         var formEventInput = new FormEventInput(UUID.randomUUID(), TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationId);
-        var flux = this.graphQLRequestor.subscribe(GET_FORM_EVENT_SUBSCRIPTION, formEventInput);
+        var flux = this.formEventSubscriptionRunner.run(formEventInput);
 
         Predicate<Object> initialFormContentMatcher = object -> Optional.of(object)
                 .filter(DataFetcherResult.class::isInstance)

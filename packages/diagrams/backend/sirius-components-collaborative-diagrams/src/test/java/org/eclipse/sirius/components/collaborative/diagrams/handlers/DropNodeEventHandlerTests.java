@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,6 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
-import org.eclipse.sirius.components.diagrams.tests.TestDiagramDescriptionBuilder;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -51,9 +49,11 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
+ * Used to test dropping nodes.
+ *
  * @author frouene
  */
-class DropNodeEventHandlerTests {
+public class DropNodeEventHandlerTests {
 
     private static final String DROPPED_ELEMENT_ID = "droppedElementId";
 
@@ -74,6 +74,7 @@ class DropNodeEventHandlerTests {
     };
 
     private final AtomicBoolean hasBeenExecuted = new AtomicBoolean();
+
     private final Function<VariableManager, IStatus> dropNodeHandler = variableManager -> {
         assertThat(variableManager).isNotNull();
         assertThat(variableManager.getVariables()).hasSize(7);
@@ -87,6 +88,7 @@ class DropNodeEventHandlerTests {
         this.hasBeenExecuted.set(true);
         return new Success();
     };
+
     private final IDiagramDescriptionService diagramDescriptionService = new IDiagramDescriptionService.NoOp() {
         @Override
         public Optional<NodeDescription> findNodeDescriptionById(DiagramDescription diagramDescription, String nodeDescriptionId) {
@@ -95,6 +97,7 @@ class DropNodeEventHandlerTests {
         }
 
     };
+
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
         @Override
         public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {

@@ -34,5 +34,6 @@
 	<modules>
 		<module>sirius-components-tests</module>
 		<module>sirius-components-spring-tests</module>
+		<module>sirius-components-graphql-tests</module>
 	</modules>
 </project>

@@ -39,7 +39,12 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDelet
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
-import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
+import org.eclipse.sirius.web.tests.graphql.CreateProjectMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.DeleteProjectMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.ProjectEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.graphql.ProjectQueryRunner;
+import org.eclipse.sirius.web.tests.graphql.ProjectsQueryRunner;
+import org.eclipse.sirius.web.tests.graphql.RenameProjectMutationRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,79 +69,23 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProjectControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String GET_PROJECT_QUERY = """
-            query getProject($projectId: ID!) {
-              viewer {
-                project(projectId: $projectId) {
-                  id
-                  name
-                }
-              }
-            }
-            """;
-
-    private static final String GET_PROJECTS_QUERY = """
-            query getProjects($page: Int!, $limit: Int!) {
-              viewer {
-                projects(page: $page, limit: $limit) {
-                  edges {
-                    node {
-                      id
-                    }
-                  }
-                  pageInfo {
-                    hasPreviousPage
-                    hasNextPage
-                    startCursor
-                    endCursor
-                    count
-                  }
-                }
-              }
-            }
-            """;
-
-    private static final String CREATE_PROJECT_MUTATION = """
-            mutation createProject($input: CreateProjectInput!) {
-              createProject(input: $input) {
-                __typename
-                ... on CreateProjectSuccessPayload {
-                  project {
-                    id
-                  }
-                }
-              }
-            }
-            """;
-
-    private static final String RENAME_PROJECT_MUTATION = """
-            mutation renameProject($input: RenameProjectInput!) {
-              renameProject(input: $input) {
-                __typename
-              }
-            }
-            """;
-
-    private static final String DELETE_PROJECT_MUTATION = """
-            mutation deleteProject($input: DeleteProjectInput!) {
-              deleteProject(input: $input) {
-                __typename
-              }
-            }
-            """;
-
-    private static final String GET_PROJECT_EVENT_SUBSCRIPTION = """
-            subscription projectEvent($input: ProjectEventInput!) {
-              projectEvent(input: $input) {
-                ... on ProjectRenamedEventPayload {
-                  newName
-                }
-              }
-            }
-            """;
+    @Autowired
+    private ProjectQueryRunner projectQueryRunner;
 
     @Autowired
-    private IGraphQLRequestor graphQLRequestor;
+    private ProjectsQueryRunner projectsQueryRunner;
+
+    @Autowired
+    private CreateProjectMutationRunner createProjectMutationRunner;
+
+    @Autowired
+    private RenameProjectMutationRunner renameProjectMutationRunner;
+
+    @Autowired
+    private DeleteProjectMutationRunner deleteProjectMutationRunner;
+
+    @Autowired
+    private ProjectEventSubscriptionRunner projectEventSubscriptionRunner;
 
     @Autowired
     private IProjectSearchService projectSearchService;
@@ -164,7 +113,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenQueryIsPerformedThenTheProjectIsReturned() {
         Map<String, Object> variables = Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT.toString());
-        var result = this.graphQLRequestor.execute(GET_PROJECT_QUERY, variables);
+        var result = this.projectQueryRunner.run(variables);
 
         String projectId = JsonPath.read(result, "$.data.viewer.project.id");
         assertThat(projectId).isEqualTo(TestIdentifiers.SYSML_SAMPLE_PROJECT.toString());
@@ -179,7 +128,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnInvalidProjectWhenQueryIsPerformedThenNullIsReturned() {
         Map<String, Object> variables = Map.of("projectId", TestIdentifiers.INVALID_PROJECT.toString());
-        var result = this.graphQLRequestor.execute(GET_PROJECT_QUERY, variables);
+        var result = this.projectQueryRunner.run(variables);
 
         Object value = JsonPath.read(result, "$.data.viewer.project");
         assertThat(value).isEqualTo(null);
@@ -191,7 +140,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSetOfProjectsWhenQueryIsPerformedThenTheProjectsAreReturned() {
         Map<String, Object> variables = Map.of("page", 0, "limit", 2);
-        var result = this.graphQLRequestor.execute(GET_PROJECTS_QUERY, variables);
+        var result = this.projectsQueryRunner.run(variables);
 
         boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
@@ -220,7 +169,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(page.getTotalElements()).isZero();
 
         var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
-        var result = this.graphQLRequestor.execute(CREATE_PROJECT_MUTATION, input);
+        var result = this.createProjectMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -244,7 +193,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenValidProjectToCreateWhenMutationIsPerformedThenTheSemanticDataAreCreated() {
         var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
-        var result = this.graphQLRequestor.execute(CREATE_PROJECT_MUTATION, input);
+        var result = this.createProjectMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -270,7 +219,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isTrue();
 
         var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.UML_SAMPLE_PROJECT);
-        var result = this.graphQLRequestor.execute(DELETE_PROJECT_MUTATION, input);
+        var result = this.deleteProjectMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -293,7 +242,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isTrue();
 
         var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.UML_SAMPLE_PROJECT, "New Name");
-        var result = this.graphQLRequestor.execute(RENAME_PROJECT_MUTATION, input);
+        var result = this.renameProjectMutationRunner.run(input);
         String typename = JsonPath.read(result, "$.data.renameProject.__typename");
         assertThat(typename).isEqualTo(RenameProjectSuccessPayload.class.getSimpleName());
 
@@ -310,7 +259,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnInvalidProjectToDeleteWhenMutationIsPerformedThenErrorIsReturned() {
         var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.INVALID_PROJECT);
-        var result = this.graphQLRequestor.execute(DELETE_PROJECT_MUTATION, input);
+        var result = this.deleteProjectMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -327,11 +276,11 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenTheProjectIsRenamedThenProjectEventIsEmitted() {
         var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
-        var flux = this.graphQLRequestor.subscribe(GET_PROJECT_EVENT_SUBSCRIPTION, projectEventInput);
+        var flux = this.projectEventSubscriptionRunner.run(projectEventInput);
 
         var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, "New Name");
         Runnable renameProjectTask = () -> {
-            var result = this.graphQLRequestor.execute(RENAME_PROJECT_MUTATION, input);
+            var result = this.renameProjectMutationRunner.run(input);
             String typename = JsonPath.read(result, "$.data.renameProject.__typename");
             assertThat(typename).isEqualTo(RenameProjectSuccessPayload.class.getSimpleName());
 
@@ -355,11 +304,11 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenTheProjectIsDeletedThenTheProjectEventIsCompleted() {
         var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
-        var flux = this.graphQLRequestor.subscribe(GET_PROJECT_EVENT_SUBSCRIPTION, projectEventInput);
+        var flux = this.projectEventSubscriptionRunner.run(projectEventInput);
 
         var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
         Runnable deleteProjectTask = () -> {
-            var result = this.graphQLRequestor.execute(DELETE_PROJECT_MUTATION, input);
+            var result = this.deleteProjectMutationRunner.run(input);
             String typename = JsonPath.read(result, "$.data.deleteProject.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
