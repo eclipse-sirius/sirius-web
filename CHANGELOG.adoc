@@ -18,6 +18,11 @@
 
 === Deprecation warning
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] Starting with Sirius Web 2024.5.0, every maven modules used by `sirius-web-sample-application` in the `sirius-web` package will be deprecated including `sirius-web-sample-application`.
+This includes maven modules such as `sirius-web-persistence`, `sirius-web-services`, `sirius-web-graphql` among others.
+They will be replaced by the maven modules of the new architecture used by `sirius-web`.
+The removal of those deprecated modules will occur during the iteration 2024.9.0.
+
 
 === Breaking changes
 
@@ -33,6 +38,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] Improve the new architecture to reach feature partity with the old one
 
 
 == v2024.3.0
