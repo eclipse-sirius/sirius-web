@@ -1,0 +1,18 @@
+= Community
+
+== Official Forum
+
+The official community forum for Sirius Web is the https://github.com/eclipse-sirius/sirius-web/discussions[GitHub 'Discussions' tab].
+
+== Bug Tracker
+
+The official bug tracker for Sirius Web is the https://github.com/eclipse-sirius/sirius-web/issues[GitHub 'Issues' tab].
+
+== Contribute
+
+Sirius Web is an open-source project, and as such, accepts contributions.
+Refer to the https://github.com/eclipse-sirius/sirius-web/blob/master/CONTRIBUTING[Contributing Documentation] for how to contribute changes to Sirius Web.
+
+== Professional Support
+
+https://www.obeosoft.com/en/[Obeo], the main company behind this open-source project, can provide professional support, training or custom development. https://www.obeosoft.com/en/contact[Get in touch!]

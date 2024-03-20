@@ -1,0 +1,84 @@
+= Representation Descriptions
+
+== Default Descriptions
+
+Sirius Web provides 6 types of ready-to-use representation descriptions.
+
+=== xref:user-manual:reference-documentation/studio-definition/view-model/description-chart/index.adoc[]
+
+A `Chart Description` defines how the xref:user-manual:reference-documentation/studio-runtime/index.adoc[] creates xref:user-manual:reference-documentation/studio-runtime/index.adoc#_chart[Chart Representations].
+
+#TODO: Insert example snapshot of a Chart Representation.#
+
+=== xref:user-manual:reference-documentation/studio-definition/view-model/description-deck/index.adoc[]
+
+A `Deck Description` defines how the xref:user-manual:reference-documentation/studio-runtime/index.adoc[] creates xref:user-manual:reference-documentation/studio-runtime/index.adoc#_deck[Deck Representations].
+
+[cols="1,2",frame=none,grid=none,border=none,stripe=none]
+|===
+a|In Deck Descriptions:
+
+* Semantic elements are represented as lanes and cards.
+* Lanes are vertical groupings of cards.
+
+a|.A sample `Deck Representation`
+image::DeckRepresentation.png["Sample Deck Representation"]
+|=== 
+
+=== xref:user-manual:reference-documentation/studio-definition/view-model/description-diagram/index.adoc[]
+
+A `Diagram Description` defines how the xref:user-manual:reference-documentation/studio-runtime/index.adoc[] creates xref:user-manual:reference-documentation/studio-runtime/index.adoc#_diagram[Diagram Representations].
+
+[cols="1,2",frame=none,grid=none,border=none,stripe=none]
+|===
+a|In Diagram Descriptions:
+
+* Semantic elements can be mapped to nodes and/or edges.
+* Edges can also represent features between semantic elements.
+* Nodes can be inside or on the border of other nodes.
+* Nodes can use default shapes or rely on vector images, possibly animated.
+* Use powerful ready-to-use layout algorithms.
+* Edit the diagram through integrated palettes
+
+a|.A sample `Diagram Representation`
+image::DiagramRepresentation.png["Sample Diagram Representation"]
+|=== 
+
+=== xref:user-manual:reference-documentation/studio-definition/view-model/description-form/index.adoc[]
+
+A `Form Description` defines how the xref:user-manual:reference-documentation/studio-runtime/index.adoc[] creates xref:user-manual:reference-documentation/studio-runtime/index.adoc#_form[Form Representations].
+
+#TODO: Insert example snapshot of a Form Representation.#
+
+=== xref:user-manual:reference-documentation/studio-definition/view-model/description-gantt/index.adoc[]
+
+A `Gantt Description` defines how the xref:user-manual:reference-documentation/studio-runtime/index.adoc[] creates xref:user-manual:reference-documentation/studio-runtime/index.adoc#_gantt[Gantt Representations].
+
+#TODO: Insert example snapshot of a Gantt Representation.#
+
+=== xref:user-manual:reference-documentation/studio-definition/view-model/description-portal/index.adoc[]
+
+A `Portal Description` defines how the xref:user-manual:reference-documentation/studio-runtime/index.adoc[] creates xref:user-manual:reference-documentation/studio-runtime/index.adoc#_portal[Portal Representations].
+
+[cols="1,2",frame=none,grid=none,border=none,stripe=none]
+|===
+a|Portal Descriptions are actually bit peculiar compared to other representation descriptions:
+
+* There is only *one single reflective instance*, so _Studio Makers_ cannot created their own.
+* This singleton instance may be activated by the administrator of the application.
+* The _Studio Users_ may create a _Portal Representation_ and configure which other representations get embedded into it, and how they are layed out.
+* Portal representations can be created for any semantic elements.
+
+a|.A sample `Portal Representation`
+image::PortalRepresentation.png["Sample Portal Representation"]
+|=== 
+
+=== xref:user-manual:reference-documentation/studio-definition/view-model/description-tree/index.adoc[]
+
+A `Tree Description` defines how the xref:user-manual:reference-documentation/studio-runtime/index.adoc[] creates xref:user-manual:reference-documentation/studio-runtime/index.adoc#_tree[Tree Representations].
+
+#TODO: Insert example snapshot of a Tree Representation.#
+
+== Custom Representation Descriptions
+
+Depending on your custom studio, it is possible that a _Studio Developer_ may have contributed a xref:developer-manual:reference-documentation/studio-development/index.adoc#_custom_representation_description_apis[Custom Representation Description]. In that case, the documentation provided by your studio should explain how the corresponding `Representation Description` works.

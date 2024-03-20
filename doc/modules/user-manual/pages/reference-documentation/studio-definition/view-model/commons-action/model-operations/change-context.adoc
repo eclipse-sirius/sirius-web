@@ -1,0 +1,46 @@
+= Change Context
+
+A `Change Context` operation changes the current contextual element.
+
+This is useful for performing several model operations on a same element, especially if it required a navigation query to reach.
+
+#TODO: It seems that in a diagram, if the `ChangeContext` expression returns `void`, Sirius Web interprets it as an error. This was not the case in Sirius Desktop. If this is not a bug, add a WARNING admonition here. Current workaround is to append `= null` to the expression.#
+
+== Examples
+
+.Changing the contextual element from `o1` to `o2`
+====
+
+.Variables before
+------
+"self" : o1
+"object1" : o1
+"object2" : o2
+------
+
+.Operation
+------
+ChangeContext(expression: "var:object2")
+------
+
+.Variables after
+------
+"self" : o2
+"object1" : o1
+"object2" : o2
+------
+====
+
+== Properties
+
+.Properties of `Change Context` operation
+[cols="1,1,3"]
+|===
+|_Property_
+|_Type_
+|_Semantics_
+
+|*`Expression`*
+|`String` (expression)
+|An expression that returns the new contextual element
+|===

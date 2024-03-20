@@ -1,0 +1,13 @@
+= Deck
+
+A `Deck Representation` conforms to a `xref:user-manual:reference-documentation/studio-definition/view-model/description-deck/index.adoc[Deck Representation Description]` of the _Studio Definition_.
+
+#TODO: migrate https://github.com/eclipse-sirius/sirius-web/blob/master/doc/user/representation-deck.adoc #
+
+== Purpose
+
+#TODO: Deck representations are perfect for representing...#
+
+== Definition
+
+Deck representations are composed of `Lanes` and `Cards`.

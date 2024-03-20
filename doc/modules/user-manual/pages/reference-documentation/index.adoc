@@ -1,0 +1,9 @@
+= Reference Documentation
+
+== xref:reference-documentation/studio-definition/index.adoc[]
+
+This is the reference documentation for how to create a _Studio Definition_ with the *low-code* approach of Sirius Web.
+
+== xref:reference-documentation/studio-runtime/index.adoc[]
+
+This is the reference documentation for how to use a custom studio created with Sirius Web.

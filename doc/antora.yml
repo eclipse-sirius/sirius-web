@@ -1,5 +1,9 @@
 name: sirius-web
 title: Sirius Web
 version: true
+start_page: root.adoc
 nav:
   - modules/ROOT/nav.adoc
+  - modules/user-manual/nav.adoc
+  - modules/developer-manual/nav.adoc
+  - modules/legal/nav.adoc

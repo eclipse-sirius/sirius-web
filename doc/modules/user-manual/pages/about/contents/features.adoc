@@ -1,0 +1,28 @@
+= Features
+
+Fundamentally, Sirius Web is a framework for defining custom domain-specific studios, so its key features focus on:
+
+* Creating _Studio Definitions_:
+** A _xref:user-manual:reference-documentation/studio-definition/index.adoc[Studio Definition]_ specifies the domain-specific data model and view model that will comprise the custom studio.
+** _Studio Makers_ can specify their _Studio Definition_ using the *low-code* approach to Sirius Web, which requires no programming experience.
+** _Studio Developers_ can specify their _Studio Definition_ using the *programmatic* approach to Sirius Web, which can leverage the full power of the Sirius Web APIs fora  finer control over the details of the resulting custom studio.
+** In the _view model_, a _Studio Definition_ can rely on 7 types of ready-to-use graphical representations for their domain-specific data:
+*** xref:user-manual:reference-documentation/studio-runtime/index.adoc#_chart[Chart Representations] for representing the data into various kinds of charts.
+*** xref:user-manual:reference-documentation/studio-runtime/index.adoc#_deck[Deck Representations] for representing the data in the form of a Kanban board.
+*** xref:user-manual:reference-documentation/studio-runtime/index.adoc#_diagram[Diagram Representations] for representing the data into nodes and edges.
+*** xref:user-manual:reference-documentation/studio-runtime/index.adoc#_form[Form Representations] for presenting (and editing) the domain data as a form.
+*** xref:user-manual:reference-documentation/studio-runtime/index.adoc#_gantt[Gantt Representations] for Gantt Chart-style representations of tasks in a timeline.
+*** xref:user-manual:reference-documentation/studio-runtime/index.adoc#_portal[Portal Representations] for composite representations based on other representations.
+*** xref:user-manual:reference-documentation/studio-runtime/index.adoc#_tree[Tree Representations] for hierarchical representations in a tree structure.
+
+* The _Studio Runtime_:
+** It renders a _Studio Definition_ as part of a web application
+** By default, it also provides a _workbench_ in which users may organize into projects their data and associated graphical representations.
+
+Sirius Web also provides resources for developers, detailed in the xref:developer-manual:index.adoc[].
+In particular:
+
+* The _xref:developer-manual:getting-started/blueprint-application/index.adoc[Blueprint Application]_ is a basic sample application integrating the _Studio Runtime_ into a web application. It can be used as a showcase or as a starting point for developing an application based on Sirius Web.
+* Extensibility:
+** With the Sirius Web APIs, _Studio Developers_ may extend their custom studio in ways which are not accessible through the low-code approach.
+** In particular, xref:developer-manual:reference-documentation/studio-development/index.adoc#_custom_representation_description_apis[custom types] of graphical representations can be created in order to better fit the domain-specific data to edit.

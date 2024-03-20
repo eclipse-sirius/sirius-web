@@ -1,0 +1,9 @@
+= Data Model
+
+The _Data Model_ defines the structure of the domain-specific data that the _Studio Definition_ can handle.
+
+include::user-manual:reference-documentation/studio-definition/data-model/creation.adoc[leveloffset=+1]
+
+== Data Model Reuse
+
+#TODO: Explain how we can also just re-use an existing data model for our new studio definition.#

@@ -1,0 +1,46 @@
+= Delete View
+
+NOTE: This operation is specific to xref:user-manual:reference-documentation/studio-runtime/view-model/representation-diagram/index.adoc[Diagram Representations].
+
+A `Delete View` operation deletes a graphical element from a diagram. The semantic element remains in the model. Other graphical elements targetting the same semantic element remain.
+
+This is useful for removing a graphical element in a diagram as a result of a user interaction.
+
+== Examples
+
+.Removing a Node representing an Entity
+====
+
+.Variables before
+------
+"self" : someDiagram (nodes: Sequence{node1})
+"entity" : entity1
+"entityAsNode" : node1
+------
+
+.Operation
+------
+DeleteView(viewExpression: "var:entityAsNode")
+------
+
+.Variables after
+------
+"self" : someDiagram (nodes: Sequence{})
+"entity" : entity1
+"entityAsNode" : null
+------
+====
+
+== Properties
+
+.Properties of `Delete View` operation
+[cols="1,1,3"]
+|===
+|_Property_
+|_Type_
+|_Semantics_
+
+|*`View Expression`*
+|`String` (expression)
+|An expression that returns the graphical element to delete.
+|===

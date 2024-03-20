@@ -1,0 +1,7 @@
+= Tree
+
+A `Tree Representation` conforms to a `xref:user-manual:reference-documentation/studio-definition/view-model/description-tree/index.adoc[Tree Representation Description]` of the _Studio Definition_.
+
+== Purpose
+
+Trees represent domain data in a hierarchical manner.

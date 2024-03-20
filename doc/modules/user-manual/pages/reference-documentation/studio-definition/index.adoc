@@ -1,0 +1,13 @@
+= Studio Definition
+
+include::overview.adoc[leveloffset=+1]
+
+== xref:user-manual:reference-documentation/studio-definition/data-model/index.adoc[]
+
+The _Data Model_ defines the structure of the domain-specific data support by the studio.
+
+== xref:user-manual:reference-documentation/studio-definition/view-model/index.adoc[]
+
+The _View Model_ defines how the _Data Model_ is to be graphically represented and edited.
+
+include::limitations.adoc[leveloffset=+1]

@@ -1,0 +1,5 @@
+= Tutorials
+
+== xref:developer-manual:getting-started/tutorials/basic-family/index.adoc[]
+
+In this tutorial, you will programmatically create a simple Sirius Web studio to express family relations.

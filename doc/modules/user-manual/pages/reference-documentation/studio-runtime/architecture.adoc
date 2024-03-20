@@ -1,0 +1,7 @@
+= Architecture
+
+The architecture of the _Studio Runtime_ is as follows:
+
+#TODO: Insert architecture runtime of the diagram.#
+
+#TODO: Add some additional explanations.#

@@ -1,0 +1,9 @@
+= View Model
+
+The _View Model_ specifies how the domain-specific data from the _xref:user-manual:reference-documentation/studio-definition/data-model/index.adoc[Data Model]_ is to be *represented* and *edited* through graphical representations.
+
+include::user-manual:reference-documentation/studio-definition/view-model/overview.adoc[leveloffset=+1]
+
+include::user-manual:reference-documentation/studio-definition/view-model/representation-descriptions.adoc[leveloffset=+1]
+
+include::user-manual:reference-documentation/studio-definition/view-model/commons.adoc[leveloffset=+1]

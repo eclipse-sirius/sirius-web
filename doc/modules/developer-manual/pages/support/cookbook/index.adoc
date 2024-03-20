@@ -1,0 +1,43 @@
+include::user-manual:support/cookbook/index.adoc[]
+
+== For Studio Developers
+
+.I want the in-line label edition of a Node to allow editing attribute values.
+[%collapsible]
+====
+In the _Edit Label_ of your _Node Description_, set the _Expression_ to call a custom service
+====
+
+.How can I programmatically access the contents of a diagram, from the backend?
+[%collapsible]
+====
+#TODO: Equivalent to retrieving the `DSemanticDiagram`.#
+[source,java]
+----
+return "TODO";
+----
+====
+
+.In the backend, how I can override core services?
+[%collapsible]
+====
+#TODO: talk about how with Spring it is easy to redefine and contribute core services. Using `@Primary` and `@Order` annotations.#
+====
+
+#TODO: Add cookbook entry to sort-of "serialize" a programmatically-created studio definition so that it can be explored as a View model.#
+
+=== Logging
+
+.In the backend, how can I log the time taken for rendering a Diagram representation?
+[%collapsible]
+====
+In `sirius-web-sample-application/src/main/resources/application-dev.properties`, set `logging.level.org.eclipse.sirius.components.collaborative.diagrams.DiagramCreationService=trace`.
+====
+
+=== Debugging 
+
+.In the backend, how can I debug what happens for a `Palette`?
+[%collapsible]
+====
+Set a breakpoint at `org.eclipse.sirius.components.collaborative.diagrams.handlers.GetPaletteEventHandler.handle(One<IPayload>, Many<ChangeDescription>, IEditingContext, IDiagramContext, IDiagramInput)`.
+====

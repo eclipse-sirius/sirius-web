@@ -1,0 +1,67 @@
+= Data Model Contribution APIs
+
+#TODO: In this section we explain how to plug our data model into the Sirius Web sample application.
+Probably this is just a few Java interfaces to implement and annotate with Spring.#
+
+== Contributing an Ecore metamodel
+
+After having created your Ecore metamodel, or if you have an existing Ecore metamodel, we now want to make Sirius Web aware of it as a data model.
+
+Sirius Web relies on the generated _Model_ and _Model Edit_ APIs.
+
+[IMPORTANT]
+.Working with customized generated code
+====
+If you provide _Model_ or _Model Edit_ generated code specializations through the EMF _Eclipse Extension Points_, e.g. a specialized `EFactory` implementation contributed through extension point `org.eclipse.emf.ecore.factory_override`, you will find that Sirius Web does not (yet?) have the means to rely on these contributions. The workaround consists in making sure you (or your generated code) instantiates the actual implementation you want to use.
+====
+
+The data model can be contributed to Sirius Web by creating a `@Configuration` as follows (adapt domain `XXX` to your own code):
+
+[source, java]
+----
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.sirius.components.emf.services.ILabelFeatureProvider;
+import org.eclipse.sirius.components.emf.services.LabelFeatureProvider;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class XXXEmfConfiguration {
+
+    @Bean
+    AdapterFactory xXXAdapterFactory() { <1>
+        return new XXXItemProviderAdapterFactory();
+    }
+
+    @Bean
+    EPackage xXXEPackage() { <2>
+        return XXXPackage.eINSTANCE;
+    }
+
+    @Bean
+    ILabelFeatureProvider xXXLabelFeatureProvider() { <3>
+        return new LabelFeatureProvider(
+            XXXPackage.eINSTANCE.getNsURI(),
+            new XXXSwitch<EAttribute>() { <4>
+                @Override
+                public EAttribute defaultCase(EObject object) {
+                    return null;
+                }
+            },
+            new XXXSwitch<Boolean>() { <5>
+            @Override
+            public Boolean defaultCase(EObject object) {
+                return false;
+            }
+        );
+    }
+}
+----
+<1> Adapt method name and implementation to provide the `ItemProviderAdapterFactory` implementation of your metamodel.
+<2> Adapt method name and implementation to provide the singleton instanceof your own `EPackage`.
+<3> Adapt method name to provide a `LabelFeatureProvider` for your domain.
+<4> Adapt anonymous class name and implementation to use the generated EMF `Switch` of your metamodel. Implementation must return the `EAttribute` to use as the labeling feature for elements of your metamodel.
+<5> Adapt anonymous class name and implementation to use the generated EMF `Switch` of your metamodel. Implementation must return `true` for elements whose labeling feature is editable by users through an `Edit Label` tool.

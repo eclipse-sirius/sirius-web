@@ -1,0 +1,8 @@
+* xref:developer-manual:index.adoc[]
++
+--
+include::developer-manual:about/nav.adoc[]
+include::developer-manual:getting-started/nav.adoc[]
+include::developer-manual:reference-documentation/nav.adoc[]
+include::developer-manual:support/nav.adoc[]
+--

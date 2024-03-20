@@ -1,0 +1,13 @@
+= Query by feature name
+
+A query can be specified by simply referencing the name of a feature available on the contextual element:
+
+.Query by feature name
+====
+*feature:* myFeatureName
+====
+
+Where:
+
+* *`feature:`* indicates that this query uses the syntax "by feature name".
+* `myFeatureName` is the name of a feature available on the contextual element, e.g. `eContents`.

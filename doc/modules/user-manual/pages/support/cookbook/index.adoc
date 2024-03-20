@@ -1,0 +1,11 @@
+= Cookbook
+
+This page gathers common solutions to common difficulties which may be encountered while working on _Studio Definitions_.
+
+== For Studio Makers
+
+.I want to allow end users to edit a node by editing its label in-line.
+[%collapsible]
+====
+Find the `Node Description` corresponding to the type of node. In its `Node Palette`, add an `Edit Label` tool. Fill in the appropriate `Expression`.
+====

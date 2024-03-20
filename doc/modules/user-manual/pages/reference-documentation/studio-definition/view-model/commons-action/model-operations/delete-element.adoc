@@ -1,0 +1,33 @@
+= Delete Element
+
+A `Delete Element` operation deletes the contextual model element from the model.
+Any incoming references are cleared beforehand.
+
+This is useful for deleting model elements as a result of a user interaction.
+
+== Examples
+
+.Deleting an entity
+====
+
+.Variables before
+------
+"self" : someDomain (types: Sequence{entity1})
+"entity" : entity1
+------
+
+.Operation
+------
+DeleteElement()
+------
+
+.Variables after
+------
+"self" : someDomain (types: Sequence{})
+"entity" : null
+------
+====
+
+== Properties
+
+This operation has no properties, it gets applied on the contextual element.

@@ -1,0 +1,3 @@
+= Custom Tool Description APIs
+
+#TODO: migrate https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/contribute-custom-tool.adoc#

@@ -1,0 +1,10 @@
+= Requirements
+
+== Sirius Web Requirements
+
+* #TODO: list requirements. Not sure there will be many. Maybe needs some rights?#
+
+== Know-how 
+
+* #TODO: maybe query language?#
+* Nice-to-have: knowledge of https://eclipse.dev/sirius/[Sirius Desktop].

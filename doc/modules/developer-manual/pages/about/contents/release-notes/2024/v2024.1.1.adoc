@@ -1,0 +1,5 @@
+include::user-manual:about/contents/release-notes/2024/v2024.1.1.adoc[]
+
+== Changes for Studio Developers
+
+#TODO: List changes that impact the way Sirius Web gets integrated into web applications.#

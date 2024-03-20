@@ -1,0 +1,33 @@
+= Views
+
+In Sirius Web, a *View* is a UI component that participates in the UI displayed for a xref:user-manual:reference-documentation/studio-runtime/workbench/concepts/projects/index.adoc[Workspace Project] alongside xref:user-manual:reference-documentation/studio-runtime/workbench/ui/editors/index.adoc[Editors].
+
+== xref:user-manual:reference-documentation/studio-runtime/workbench/ui/views/explorer/index.adoc[]
+
+#TODO: Add snapshot of an example of the Explorer view.#
+
+In the leftmost pane of the workbench, the *Explorer* view is a tree-structured representation of the project contents.
+
+== xref:user-manual:reference-documentation/studio-runtime/workbench/ui/views/validation/index.adoc[]
+
+#TODO: Add snapshot of an example of the Validation view.#
+
+In the leftmost pane of the workbench, the *Validation* view displays the validation results of the current project.
+
+== xref:user-manual:reference-documentation/studio-runtime/workbench/ui/views/details/index.adoc[]
+
+#TODO: Add snapshot of an example of the Details view.#
+
+In the rightmost pane of the workbench, the *Details* view displays attributes of the currently-selected element or representation in a form representation.
+
+== xref:user-manual:reference-documentation/studio-runtime/workbench/ui/views/representations/index.adoc[]
+
+#TODO: Add snapshot of an example of the Representations view.#
+
+In the rightmost pane of the workbench, the *Representations* view displays, for a selected semantic element, the list of all representations where that semantic element is represented.
+
+== xref:user-manual:reference-documentation/studio-runtime/workbench/ui/views/related-elements/index.adoc[]
+
+#TODO: Add snapshot of an example of the Related Elements view.#
+
+In the rightmost pane of the workbench, the *Related Elements* view displays, for a selected semantic element, semantically-related elements.

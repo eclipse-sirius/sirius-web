@@ -1,0 +1,5 @@
+= Concepts
+
+== xref:user-manual:reference-documentation/studio-runtime/workbench/concepts/projects/index.adoc[]
+
+In the workbench, *Projects* are the root containers used to organize data.

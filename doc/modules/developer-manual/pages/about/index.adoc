@@ -1,0 +1,9 @@
+= About Sirius Web APIs
+
+include::developer-manual:about/contents/overview.adoc[leveloffset=+1]
+
+include::developer-manual:about/contents/features.adoc[leveloffset=+1]
+
+== xref:developer-manual:about/contents/release-notes/index.adoc[]
+
+The release notes document the latest changes which may impact _Studio Users_ and _Studio Makers_.

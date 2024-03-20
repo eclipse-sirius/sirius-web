@@ -1,0 +1,49 @@
+= If
+
+An `If` operation defines a sub-operation which is only executed if the conditional expression evaluates to `True`.
+
+This is useful when some behavior need to be executed only when certain conditions are met.
+
+#TODO: It seems that in a diagram, if the `If` conditional expression returns `void`, Sirius Web interprets it as an error. This was not the case in Sirius Desktop. If this is not a bug, add a WARNING admonition here. Current workaround is to append `= null` to the expression.#
+
+== Examples
+
+.Conditionally changing the contextual element from `o1` to `o2`
+====
+
+.Variables before
+------
+"self" : o1
+"object1" : o1
+"object2" : o2
+------
+
+.Operation
+------
+If(conditionExpression: "aql:true")
+    ChangeContext(expression: "var:object2")
+------
+
+.Variables after
+------
+"self" : o2
+"object1" : o1
+"object2" : o2
+------
+====
+
+#TODO: I think we should have a nicer way to represent a tree of model operations.#
+
+== Properties
+
+.Properties of `If` operation
+[cols="1,1,3"]
+|===
+|_Property_
+|_Type_
+|_Semantics_
+
+|*`Condition Expression`*
+|`String` (expression)
+|An expression that returns `True` if the child operation must be executed.
+|===

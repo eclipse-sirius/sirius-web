@@ -1,0 +1,46 @@
+include::user-manual:support/faq/index.adoc[]
+
+== Development
+
+.Can I use another IDE than what is recommended in the xref:developer-manual:getting-started/development-environment/backend.adoc[Development Environment Setup]?
+[%collapsible]
+====
+Yes. There are no hard dependencies from Sirius Web to the IDE used for editing the backend or the frontend.
+====
+
+== Integration
+
+.Is Sirius Web based on the https://eclipse.dev/glsp/[Graphical Language Server Platform (GLSP)]?
+[%collapsible]
+====
+No. GLSP was made for _diagram representations_, while Sirius Web supports several very different types of graphical representations. xref:user-manual:reference-documentation/studio-runtime/view-model/representation-diagram/index.adoc[Diagram Representations] are only one such type of graphical representation. Other types of representations, such as xref:user-manual:reference-documentation/studio-runtime/view-model/representation-tree/index.adoc[Tree Representations] or xref:user-manual:reference-documentation/studio-runtime/view-model/representation-form/index.adoc[Form Representations] cannot be supported by GLSP.
+====
+
+.Can I integrate Sirius Web inside https://code.visualstudio.com/[Visual Studio Code]?
+[%collapsible]
+====
+Yes.
+====
+
+.Can I integrate Sirius Web inside https://theia-ide.org/[Eclipse Theia]?
+[%collapsible]
+====
+Yes.
+====
+
+== Migration
+
+.Can I migrate my Sirius Desktop modeler to Sirius Web?
+[%collapsible]
+====
+For the moment there is no automated means to migrate an existing Sirius Desktop modeler (_.odesign_ file specification) to Sirius Web.
+The main reason why is that Sirius Web does not yet have feature parity with Sirius Desktop. Moreover, custom code from your existing modeler may rely on Eclipse-specific facilities (UI through SWT/JFace, other Eclipse extensions, etc.).
+The underlying EMF metamodel however, may be used as the Data model for your Sirius Web modeler.
+====
+
+.Can I migrate my Graphiti-based modeler to Sirius Web?
+[%collapsible]
+====
+There is no automated means to migrate an existing modeler based on https://eclipse.dev/graphiti/[Eclipse Graphiti] to Sirius Web.
+The underlying EMF metamodel however, may be used as the Data model for your Sirius Web modeler.
+====

@@ -1,0 +1,105 @@
+= Diagram Description
+
+A `Diagram Description` defines how the xref:user-manual:reference-documentation/studio-runtime/index.adoc[] creates xref:user-manual:reference-documentation/studio-runtime/index.adoc#_diagram[Diagram Representations].
+
+#TODO: fill this in#
+
+* Name
+* Domain Type
+* Precondition Expression
+* Title Expression
+* Auto Layout
+
+== Node Description
+
+A `Diagram Description` may contain several `Node Description`.
+
+A `Node Description` defines a mapping between semantic elements from the data model, and graphical nodes in the resulting diagram.
+
+#TODO: fill this in#
+
+* Name
+* Domain Type
+* Semantic Candidates Expression
+* Precondition Expression
+* Synchronization Policy
+* Label Expression
+* Collapsible
+* Reused Child Node Descriptions
+* Reused Border Node Descriptions
+* User Resizable
+* Default Width Expression
+* Default Height Expression
+* Keep Aspect Ratio
+* Is Collapsed By Default Expression
+
+== Edge Description
+
+A `Diagram Description` may contain several `Edge Description`.
+
+An `Edge Description` defines a mapping between semantic elements from the data model, and graphical edges in the resulting diagram.
+
+#TODO: fill this in#
+
+* Name
+* Domain Type
+* Semantic Candidates Expression
+* Precondition Expression
+* Synchronization Policy
+* Label Expression
+* Begin Label Expression
+* End Label Expression
+* Is Domain Based Edge
+* Source Node Descriptions
+* Target Node Descriptions
+* Source Nodes Expression
+* Target Nodes Expression
+
+== Palette
+
+A `Diagram Description` may contain at most one `Palette`.
+
+A `Palette` is the top-level container for all the `Tools` defining available actions on nodes or edges of a diagram.
+
+=== Drop Tool
+
+A `Palette` may contain several `Drop Tool`.
+
+A `Drop Tool` defines the behavior to perform whenever an arbitrary element is dropped onto the diagram.
+
+* Name
+* Precondition Expression
+
+The behavior of this tool is specified through a xref:user-manual:reference-documentation/studio-definition/view-model/index.adoc#_model_operations[Model Operation].
+
+=== Drop Node Tool
+
+A `Palette` may contain several `Drop Node Tool`.
+
+A `Drop Node Tool` is a tool that defines the behavior to perform whenever a node from the diagram is drag-and-dropped into some target.
+
+* Name
+* Precondition Expression
+* Accepted Node Types
+
+The behavior of this tool is specified through a xref:user-manual:reference-documentation/studio-definition/view-model/index.adoc#_model_operations[Model Operation].
+
+=== Node Tool
+
+A `Palette` may contain several `Node Tool`.
+
+A `Node Tool` is a tool that defines arbitrary behaviors that may be performed on elements of a diagram.
+
+* Name
+* Precondition Expression
+* Icon URLs Expression
+
+The behavior of this tool is specified through a xref:user-manual:reference-documentation/studio-definition/view-model/index.adoc#_model_operations[Model Operation].
+
+=== Diagram Tool Section
+
+A `Palette` may contain several `Diagram Tool Section`.
+
+A `Diagram Tool Section` is a logical container for tools. It is used to logically group together tools in sub-groups.
+
+* Name

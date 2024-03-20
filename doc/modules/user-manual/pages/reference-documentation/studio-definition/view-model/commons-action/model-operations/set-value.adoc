@@ -1,0 +1,62 @@
+= Set Value
+
+A `Set Value` operation assigns (or adds to) the value of a feature on a model element.
+This is useful for modifying the model as a result of a user interaction.
+
+== Examples
+
+.Setting the name of an entity
+====
+.Variables before
+------
+"self" : someEntity (name: null)
+------
+
+.Operation
+------
+SetValue(featureName: "name", valueExpression: "EntityName")
+------
+
+.Variables after
+------
+"self" : someEntity (name: "EntityName")
+------
+====
+
+.Adding an entity into a domain
+====
+.Variables before
+------
+"self" : someDomain (types : Sequence{})
+"entity" : entity1
+------
+
+.Operation
+------
+SetValue(featureName: "types", valueExpression: "aql:entity")
+------
+
+.Variables after
+------
+"self" : someDomain (types : Sequence{entity1})
+"entity" : entity1
+------
+====
+
+== Properties
+
+.Properties of `Set Value` operation
+[cols="1,1,3"]
+|===
+|_Property_
+|_Type_
+|_Semantics_
+
+|*`Feature Name`*
+|`String`
+|The name of the feature of the contextual element to add to.
+
+|*`Value Expression`*
+|`String` (expression)
+|An expression returning the value to add to the specified feature.
+|===

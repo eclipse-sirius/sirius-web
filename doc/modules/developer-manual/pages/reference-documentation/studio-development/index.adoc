@@ -1,0 +1,11 @@
+= Studio Development
+
+#TODO: I'm not sure what the API documentation will look like, but potentially it might be quite large. I think we might need to split this up a bit more to account for this.#
+
+include::developer-manual:reference-documentation/studio-development/overview.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-workbench/index.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-datamodel/index.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/index.adoc[leveloffset=+1]

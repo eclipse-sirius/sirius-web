@@ -1,0 +1,8 @@
+= Gantt
+
+A `Gantt Representation` conforms to a `xref:user-manual:reference-documentation/studio-definition/view-model/description-gantt/index.adoc[Gantt Representation Description]` of the _Studio Definition_.
+
+== Purpose
+
+Gantt representations represent domain data in the style of https://en.wikipedia.org/wiki/Gantt_chart[Gantt Charts]. The main purpose is to represent the spread of tasks over a timeline.
+

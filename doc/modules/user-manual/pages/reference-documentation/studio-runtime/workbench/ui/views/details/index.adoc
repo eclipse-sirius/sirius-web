@@ -1,0 +1,7 @@
+= Details
+
+#TODO: Add a representative snapshot of the "Details" view.#
+
+The *Details* view is one of the views on the rightmost pane of the workbench UI.
+
+Through a xref:user-manual:reference-documentation/studio-runtime/view-model/representation-form/index.adoc[Form Representation], it represents and allows the edition of a _contextual element_. Which is usually the currently-selected _semantic element_ in the workbench, but not always.

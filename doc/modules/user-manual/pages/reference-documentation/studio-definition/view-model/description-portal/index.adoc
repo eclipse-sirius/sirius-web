@@ -1,0 +1,9 @@
+= Portal Description
+
+A `Portal Description` defines how the xref:user-manual:reference-documentation/studio-runtime/index.adoc[] creates xref:user-manual:reference-documentation/studio-runtime/index.adoc#_portal[Portal Representations].
+
+This type of representation description is a bit particular, as _Studio Makers_ may not create their own as part of their _Studio Definition_.
+
+The single, generic, instance of `Portal Description` is contributed to the _Studio Definition_ whenever the 'portal feature' is enabled for Sirius Web (which is the case with the default configuration). The application administrator may choose to disable it in order to prevent users from creating and manipulating Portal representations.
+
+Refer to the xref:user-manual:reference-documentation/studio-runtime/index.adoc#_portal[Studio Runtime] documentation for how _Studio Users_ can created `Portal Representations`.

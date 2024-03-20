@@ -1,0 +1,242 @@
+= Project Template APIs
+
+== Project Template Provider APIs
+
+This API is used to populate the list of available _xref:user-manual:reference-documentation/studio-runtime/index.adoc#_project_templates[Project Templates]_ in the workbench.
+
+[source, java, linenums]
+----
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateProvider;
+import org.eclipse.sirius.web.services.api.projects.ProjectTemplate;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class XXXProjectTemplatesProvider implements IProjectTemplateProvider {
+
+    public static final String ID_TEMPLATE_XXX = "XXX_Template"; <1>
+
+    @Override
+    public List<ProjectTemplate> getProjectTemplates() {
+        return List.of(ProjectTemplate
+            .newProjectTemplate(ID_TEMPLATE_XXX)
+            .label("XXX Template") <2>
+            .imageURL("/images/XXX-Template.png") <3>
+            .natures(List.of()) <4>
+            .build()
+        );
+    }
+
+}
+----
+<1> This ID uniquely identifies the project template.
+<2> This label for the project template will be displayed in the workbench UI where the project templates are listed.
+<3> This image for the project template will be displayed in the workbench UI where the project templates are listed. Recommended size of 1600*1600px.
+<4> Project natures may be specified here if needed.
+
+
+== Project Template Initializer APIs
+
+This API is used to provide the contents to insert into _Project Templates_.
+
+[source, java, linenums]
+----
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Supplier;
+import java.util.concurrent.TimeUnit;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.xmi.XMLParserPool;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
+import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
+import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
+import org.eclipse.sirius.web.services.api.id.IDParser;
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
+
+@Configuration
+public class XXXProjectTemplatesInitializer implements IProjectTemplateInitializer {
+
+    private static final String DOCUMENT_TITLE = "XXX Sample Document"; <1>
+
+    private final Logger logger = LoggerFactory.getLogger(XXXProjectTemplatesInitializer.class);
+
+    private final IProjectRepository projectRepository;
+
+    private final IDocumentRepository documentRepository;
+
+    private final StereotypeBuilder stereotypeBuilder;
+
+    public XXXProjectTemplatesInitializer(IProjectRepository projectRepository, IDocumentRepository documentRepository, MeterRegistry meterRegistry) {
+        this.projectRepository = Objects.requireNonNull(projectRepository);
+        this.documentRepository = Objects.requireNonNull(documentRepository);
+        this.stereotypeBuilder = new StereotypeBuilder(this.getClass().getSimpleName(), meterRegistry);
+    }
+
+    @Override
+    public boolean canHandle(String templateId) { <2>
+        return XXXProjectTemplatesProvider.ID_TEMPLATE_XXX.equals(templateId);
+    }
+
+    @Override
+    public Optional<RepresentationMetadata> handle(String templateId, IEditingContext editingContext) { <3>
+        final Optional<RepresentationMetadata> mainRepresentationMetadata;
+        switch (templateId) {
+            case XXXProjectTemplatesProvider.ID_TEMPLATE_XXX:
+                mainRepresentationMetadata = this.initializeXXXProject(editingContext, this::getXXXSampleModelContents);
+                break;
+            default:
+                mainRepresentationMetadata = Optional.empty();
+        }
+        return mainRepresentationMetadata;
+    }
+
+    private Optional<RepresentationMetadata> initializeXXXProject(IEditingContext editingContext, final Supplier<String> documentEntityContentSupplier) {
+        Optional<RepresentationMetadata> result = Optional.empty();
+        Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext).filter(IEMFEditingContext.class::isInstance).map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain);
+        Optional<UUID> editingContextUUID = new IDParser().parse(editingContext.getId());
+        if (optionalEditingDomain.isPresent() && editingContextUUID.isPresent()) {
+            AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
+            ResourceSet resourceSet = adapterFactoryEditingDomain.getResourceSet();
+
+            var optionalDocumentEntity = this.projectRepository.findById(editingContextUUID.get()).map(projectEntity -> {
+                DocumentEntity documentEntity = new DocumentEntity();
+                documentEntity.setProject(projectEntity);
+                documentEntity.setName(DOCUMENT_TITLE);
+                documentEntity.setContent(documentEntityContentSupplier.get());
+
+                documentEntity = this.documentRepository.save(documentEntity);
+                return documentEntity;
+            });
+
+            if (optionalDocumentEntity.isPresent()) {
+                DocumentEntity documentEntity = optionalDocumentEntity.get();
+                JsonResource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
+
+                resource.eAdapters().add(new ResourceMetadataAdapter(DOCUMENT_TITLE));
+                resourceSet.getResources().add(resource);
+            }
+        }
+        return result;
+    }
+
+    private String getXXXSampleModelContents() { <4>
+        return this.stereotypeBuilder.getStereotypeBody(List.of(XXXModels.createXXXModelSample()));
+    }
+
+    public static class XXXModels { <5>
+        public static XXXModel createXXXModelSample() {
+            final XXXModel model = XXXPackage.eINSTANCE.getXXXFactory().create...();
+            return model;
+        }
+    }
+
+    public static class StereotypeBuilder {
+
+        private static final XMLParserPool XML_PARSER_POOL = new XMLParserPoolImpl();
+
+        private final Logger logger = LoggerFactory.getLogger(StereotypeBuilder.class);
+
+        private final Timer timer;
+
+        public StereotypeBuilder(String timerName, MeterRegistry meterRegistry) {
+            this.timer = Timer.builder(timerName).register(meterRegistry);
+        }
+
+        public String getStereotypeBody(List<EObject> rootEObjects) {
+            JsonResource resource = new JSONResourceFactory().createResourceFromPath("inmemory");
+            if (rootEObjects != null) {
+                resource.getContents().addAll(rootEObjects);
+            }
+
+            String content = "";
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                Map<String, Object> options = new HashMap<>();
+                options.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
+                options.put(JsonResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
+
+                resource.save(outputStream, options);
+
+                content = outputStream.toString();
+            } catch (IOException exception) {
+                this.logger.error(exception.getMessage(), exception);
+            }
+            return content;
+        }
+
+        public String getStereotypeBody(ClassPathResource classPathResource) {
+            long start = System.currentTimeMillis();
+
+            String content = "";
+            try (var inputStream = classPathResource.getInputStream()) {
+                URI uri = new JSONResourceFactory().createResourceURI(classPathResource.getFilename());
+                Resource inputResource = this.loadFromXMI(uri, inputStream);
+                content = this.saveAsJSON(uri, inputResource);
+            } catch (IOException exception) {
+                this.logger.error(exception.getMessage(), exception);
+            }
+
+            long end = System.currentTimeMillis();
+            this.timer.record(end - start, TimeUnit.MILLISECONDS);
+
+            return content;
+        }
+
+        private Resource loadFromXMI(URI uri, InputStream inputStream) throws IOException {
+            Resource inputResource = new XMIResourceImpl(uri);
+            Map<String, Object> xmiLoadOptions = new EMFResourceUtils().getXMILoadOptions(XML_PARSER_POOL);
+            inputResource.load(inputStream, xmiLoadOptions);
+            return inputResource;
+        }
+
+        private String saveAsJSON(URI uri, Resource inputResource) throws IOException {
+            String content;
+            JsonResource ouputResource = new JSONResourceFactory().createResource(uri);
+            ouputResource.getContents().addAll(inputResource.getContents());
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                Map<String, Object> jsonSaveOptions = new EMFResourceUtils().getFastJSONSaveOptions();
+                jsonSaveOptions.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
+                jsonSaveOptions.put(JsonResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
+                ouputResource.save(outputStream, jsonSaveOptions);
+                content = outputStream.toString(StandardCharsets.UTF_8);
+            }
+            return content;
+        }
+    }
+}
+----
+<1> #TODO: Can't remember what's the purpose of this identifier#
+<2> Adapt to define for which _Project Template_ this initializer applies.
+<3> Adapt to provide the textual concents to insert into the project.
+<4> This implementation relies on using a helper that can transform an EMF model in memory into the textual contents we want to insert into the project.
+<5> Adapt this helper class to create EMF models using the generated Java EMF API.

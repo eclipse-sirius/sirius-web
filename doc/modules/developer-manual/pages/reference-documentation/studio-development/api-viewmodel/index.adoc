@@ -1,0 +1,9 @@
+= View Model APIs
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/api-overview.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/api-representation-descriptions.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/api-description-custom-representation/index.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/api-description-custom-tool/index.adoc[leveloffset=+1]

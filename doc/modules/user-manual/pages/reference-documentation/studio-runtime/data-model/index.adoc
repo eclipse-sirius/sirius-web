@@ -1,0 +1,5 @@
+= Data Model at runtime
+
+#TODO: here described how all registered data models generically contribute elements in the UI workbench#
+
+#TODO: probably also explain how to create/edit/move/etc. domain-specific data using default views like "Explorer", "Details", "Validation", etc.#

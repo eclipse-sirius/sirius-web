@@ -1,0 +1,5 @@
+= Portal Representation Description APIs
+
+A `xref:user-manual:reference-documentation/studio-definition/index.adoc#_portal_description[Portal Representation Description]` defines how the `xref:user-manual:reference-documentation/studio-runtime/index.adoc#_portal[Portal Representations]` are created at runtime.
+
+#TODO: Add APIs used to create/edit Portal Representation Descriptions.#

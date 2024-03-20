@@ -1,0 +1,7 @@
+= Form
+
+A `Form Representation` conforms to a `xref:user-manual:reference-documentation/studio-definition/view-model/description-form/index.adoc[Form Representation Description]` of the _Studio Definition_.
+
+== Purpose
+
+Form representations represent the domain data as various fields. They are often used to for the edition of the attribute values on the domain entities.

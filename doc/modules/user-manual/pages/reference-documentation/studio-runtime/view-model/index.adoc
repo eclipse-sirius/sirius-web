@@ -1,0 +1,36 @@
+= View Model at runtime
+
+Each of the 6 types of default xref:user-manual:reference-documentation/studio-definition/view-model/representation-descriptions[Representation Descriptions] provided by Sirius Web comes with its own dedicated editor which provides the runtime for representations of the corresponding type.
+
+== xref:user-manual:reference-documentation/studio-runtime/view-model/representation-chart/index.adoc[]
+
+#TODO: A few words about the runtime for Charts.#
+
+== xref:user-manual:reference-documentation/studio-runtime/view-model/representation-deck/index.adoc[]
+
+#TODO: A few words about the runtime for Decks.#
+
+== xref:user-manual:reference-documentation/studio-runtime/view-model/representation-diagram/index.adoc[]
+
+#TODO: A few words about the runtime for Diagrams.#
+
+== xref:user-manual:reference-documentation/studio-runtime/view-model/representation-form/index.adoc[]
+
+#TODO: A few words about the runtime for Forms.#
+
+== xref:user-manual:reference-documentation/studio-runtime/view-model/representation-gantt/index.adoc[]
+
+#TODO: A few words about the runtime for Gantts.#
+
+== xref:user-manual:reference-documentation/studio-runtime/view-model/representation-portal/index.adoc[]
+
+#TODO: A few words about the runtime for Portals.#
+
+== xref:user-manual:reference-documentation/studio-runtime/view-model/representation-tree/index.adoc[]
+
+#TODO: A few words about the runtime for Trees.#
+
+== xref:user-manual:reference-documentation/studio-runtime/view-model/representation-custom/index.adoc[]
+
+Custom representation types may provide their own dedicated editor as well, but it it necessarily the case.
+Refer to the documentation of the custom studio for more information about the runtime for custom representation types.

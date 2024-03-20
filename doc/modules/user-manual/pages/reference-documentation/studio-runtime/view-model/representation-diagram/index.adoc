@@ -1,0 +1,20 @@
+= Diagram
+
+A `Diagram Representation` conforms to a `xref:user-manual:reference-documentation/studio-definition/view-model/description-diagram/index.adoc[Diagram Representation Description]` of the _Studio Definition_.
+
+== Purpose
+
+Diagram representations represent the domain-specific data as nodes connected by edges.
+They are typically used to represent logical topologies such as software or system architectures, organizations or deployments.
+
+== Visualization
+
+#TODO: talk about layers, node mappings, container mappings, relation-based edge mappings, element-based edge mappings, etc.#
+
+#TODO: Drag and drop fade.#
+
+#TODO: Show/hide of an element is available on an element, but to reveal one needs to rely on the toolbar#
+
+== Edition
+
+#TODO: talk about palettes, tools, etc.#

@@ -1,0 +1,9 @@
+// Note: Cannot include an open block here.
+* xref:developer-manual:getting-started/index.adoc[]
+** xref:developer-manual:getting-started/development-environment/index.adoc[]
+** xref:developer-manual:getting-started/blueprint-application/index.adoc[]
+// *** xref:developer-manual:getting-started/development-environment/index.adoc#_requirements[Requirements]
+// *** xref:developer-manual:getting-started/development-environment/index.adoc#_backend[Backend]
+// *** xref:developer-manual:getting-started/development-environment/index.adoc#_frontend[Frontend]
+** xref:developer-manual:getting-started/tutorials/index.adoc[]
+*** xref:developer-manual:getting-started/tutorials/basic-family/index.adoc[Basic Family]

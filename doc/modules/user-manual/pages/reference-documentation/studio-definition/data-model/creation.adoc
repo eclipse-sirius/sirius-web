@@ -1,0 +1,8 @@
+= Data Model Creation
+
+Sirius Web provides a low-code approach to defining the data model of a _Studio Definition_.
+
+== Domain Definition DSL
+
+#TODO: Explain what is the Domain Definition DSL, its concepts, and how to use it to define a data model for our studio definition.
+Also probably mention the expressivity limitations it comes with.#

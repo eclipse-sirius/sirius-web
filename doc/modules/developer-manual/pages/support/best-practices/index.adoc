@@ -1,0 +1,13 @@
+= Best Practices
+
+The following best practices capitalize the first-hand experience of the Sirius Web developers with the programmatic customization of Sirius Web.
+
+.Cypress tests
+[%collapsible]
+====
+#TODO: run Cypress tests from a built artefact and not from the runtime.#
+====
+
+#TODO: never build in the command-line at the same time as in STS.#
+
+#TODO: to be able to hot reload in STS, set classpath entry "output" to "target/classes" instead of "bin". Maybe M2e would help support this?#

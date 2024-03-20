@@ -1,0 +1,5 @@
+= Overview
+
+#TODO: This should give a general overview of the general capacities of Sirius Web, and the lifecycle of the artifacts we are about to edit in order to create a modeler.
+I think here a form of architecture diagram would be nice to visualize the relations between Data Model, View Model and the Sirius-Web runtime.
+Probably the technologies used/available for each side would appear on the diagram too, and/or as an additional layer.#

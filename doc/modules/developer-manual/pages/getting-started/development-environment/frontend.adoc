@@ -1,0 +1,8 @@
+= Frontend
+
+#TODO: Explain how to setup the devenv for the frontend.
+Essentially same as the devenv for contributors, i.e. VSCode + NPM#
+
+To my knowledge, in the general case we do not need to contribute to the frontend when implementing a modeler, so we only need the capacities to build and run the frontend, no need for an IDE or anything like that.
+
+Check: probably there is a way to retrieve the frontend module from NPM without even having to build it locally

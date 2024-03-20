@@ -1,0 +1,15 @@
+= Overview
+
+In Sirius Web, a `View Model` is made of `Views`.
+
+A `View` represents a predefined set of graphical representation types for a particular domain.
+In essence, a `View` forms a logically-consistent perspective on the domain-specific data.
+
+For instance, a studio may set up different `Views` for a same set of data, and which one is used depends on the role of the _Studio User_ in the organization (e.g. engineer, architect, quality assurance, etc.).
+Since each role has a different grasp of the data, usually depending on technological or sociological background, each needs different means to represent and edit a same set of data.
+
+Inside each `View`, we can define two kinds of elements:
+
+* `Representation Description`, which define a mapping between concepts of the _Data Model_ (e.g. the `name` attribute of type `Entity`) and standard elements from the UI (e.g. displayed as a label in a node of a `Diagram Representation`, and as an editable text field in a `Form Representation`).
+In these descriptions, the element instance from the _Data Model_ is often called the *semantic element* while the element produced that _represents_ it is often called the *graphical element*.
+* Shared commonalities between `Representation Descriptions`, such as colors, etc.

@@ -1,0 +1,23 @@
+= Welcome
+
+Welcome to the Sirius Web Documentation Center!
+
+This is the central location for any and all documentation related to the https://eclipse.dev/sirius/sirius-web.html[Sirius Web open-source project].
+
+== Studio Users and Studio Makers
+
+Are you an end user looking into getting a better understanding of how to use a custom studio made with Sirius Web?
+Or are you planning to work on a studio made with the low-code approach of Sirius Web?
+
+The xref:user-manual:index.adoc[] will explain all the runtime concepts and how to define a custom studio with a low-code approach.
+
+== Studio Developers
+
+Are you a developer wanting to programmatically create or edit a studio with Sirius Web?
+Or you want to integrate a custom studio within another application?
+
+The xref:developer-manual:index.adoc[] will explain all about the APIs you can use to define or extend a custom studio.
+
+include::ROOT:about.adoc[leveloffset=+1]
+
+include::ROOT:sources.adoc[leveloffset=+1]

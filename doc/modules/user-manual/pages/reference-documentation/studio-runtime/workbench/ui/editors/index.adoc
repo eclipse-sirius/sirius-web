@@ -1,0 +1,27 @@
+= Editors
+
+#TODO: Here talk a bit about what's an editor, its purpose and how it contributes to the UI.#
+
+Editors are UI components meant to _represent_ and/or _edit_ data.
+By default, they usually open in the central pane of the workbench. xref:user-manual:reference-documentation/studio-runtime/workbench/ui/views/index.adoc[Views] in the leftmost and rightmost panes will show information that may depend on the currently-opened editor or the selection wherein.
+
+== Default pseudo-editor
+
+#TODO: Add representative snapshot.#
+
+#TODO: Talk about the pseudo-editor that appears whenever we have no other editor opened.
+It shows available options for the current context, e.g. for any context it allows creating a new model in the current project. For a semantic element it allows creating new representations or opening existing representations on them.#
+
+== Representation Editors
+
+Each type of representation provided by Sirius Web comes with its own dedicated editor.
+
+Refer to the documentation for each representation type for more details about the editor dedicated to that representation type:
+
+* xref:user-manual:reference-documentation/studio-runtime/view-model/representation-chart/index.adoc[]
+* xref:user-manual:reference-documentation/studio-runtime/view-model/representation-deck/index.adoc[]
+* xref:user-manual:reference-documentation/studio-runtime/view-model/representation-diagram/index.adoc[]
+* xref:user-manual:reference-documentation/studio-runtime/view-model/representation-form/index.adoc[]
+* xref:user-manual:reference-documentation/studio-runtime/view-model/representation-gantt/index.adoc[]
+* xref:user-manual:reference-documentation/studio-runtime/view-model/representation-portal/index.adoc[]
+* xref:user-manual:reference-documentation/studio-runtime/view-model/representation-tree/index.adoc[]

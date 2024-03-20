@@ -1,0 +1,26 @@
+= Acceleo Query Language (AQL)
+
+The previous possibilities to express queries were very simple, for practical purposes.
+
+In order to express more complex queries in the form of expressions, Sirius Web relies on the https://eclipse.dev/acceleo/documentation/aql.html[Acceleo Query Language (AQL)].
+It is a powerful, expressive and extensible query language.
+
+In fact, at runtime, Sirius Web will transform any query into an equivalent AQL query for execution.
+Therefore, the examples that we have seen before can also by adapted into AQL:
+
+.AQL equivalent to the query by variable name
+====
+*aql:* myVariableName
+====
+
+.AQL equivalent to the query by feature name
+====
+*aql:* self.myFeatureName
+====
+
+.AQL equivalent to the query by service name
+====
+*aql:* self.myServiceName()
+====
+
+#TODO: There should probably be more infos here. Maybe some examples?#

@@ -1,0 +1,69 @@
+= Stereotype Description APIs
+
+This API is used to contribute the _xref:user-manual:reference-documentation/studio-runtime/index.adoc#_stereotypes[Stereotypes]_.
+
+[source, java, linenums]
+----
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistry;
+import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
+import org.springframework.context.annotation.Configuration;
+
+import io.micrometer.core.instrument.MeterRegistry;
+
+@Configuration
+public class XXXStereotypeDescriptionRegistryConfigurer implements IStereotypeDescriptionRegistryConfigurer {
+
+    private enum XXXStereotype {
+        Blank("XXX_Blank", "XXX Blank Model", () -> List.of(XXXProjectTemplatesInitializer.XXXModels.createXXXModelBlank())); <1>
+
+        private final UUID uuid;
+
+        private final String label;
+
+        private final Supplier<List<EObject>> contentsSupplier;
+
+        XXXStereotype(final String id, final String label, Supplier<List<EObject>> contentsSupplier) {
+            this.uuid = UUID.nameUUIDFromBytes(Objects.requireNonNull(id).getBytes());
+            this.label = Objects.requireNonNull(label);
+            this.contentsSupplier = Objects.requireNonNull(contentsSupplier);
+        }
+
+        public UUID getUuid() {
+            return this.uuid;
+        }
+
+        public String getLabel() {
+            return this.label;
+        }
+
+        public Supplier<List<EObject>> getContentsSupplier() {
+            return this.contentsSupplier;
+        }
+    }
+
+    private static final String TIMER_NAME = "XXX_siriusweb_stereotype_load";
+
+    private final StereotypeBuilder stereotypeBuilder;
+
+    public XXXStereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry) {
+        this.stereotypeBuilder = new XXXProjectTemplatesInitializer.StereotypeBuilder(TIMER_NAME, meterRegistry); <2>
+    }
+
+    @Override
+    public void addStereotypeDescriptions(IStereotypeDescriptionRegistry registry) {
+        Stream.of(XXXStereotype.values())
+            .map(stereotype -> new StereotypeDescription(stereotype.getUuid(), stereotype.getLabel(), () -> this.stereotypeBuilder.getStereotypeBody(stereotype.getContentsSupplier().get())))
+            .forEach(registry::add);
+    }
+}
+----
+<1> This assumes that helper class `XXXModels` also used in xref:developer-manual:reference-documentation/studio-development/index.adoc#_project_template_initializer_apis[the section about Project Template Initializer APIs] is accessible.
+<2> This assumes that helper class `StereotypeBuilder` also used in xref:developer-manual:reference-documentation/studio-development/index.adoc#_project_template_initializer_apis[the section about Project Template Initializer APIs] is accessible.

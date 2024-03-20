@@ -1,0 +1,13 @@
+= Query by variable name
+
+A query can be specified by simply referencing a variable from the context by its name:
+
+.Query by variable name
+====
+*var:* myVariableName
+====
+
+Where:
+
+* *`var:`* indicates that this query uses the syntax "by variable name".
+* `myVariableName` is the name of a variable from the context, e.g. `self`.

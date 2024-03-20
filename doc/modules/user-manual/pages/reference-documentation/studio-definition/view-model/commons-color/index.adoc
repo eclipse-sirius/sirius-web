@@ -1,0 +1,11 @@
+= Color Palettes
+
+A `View` can contain several `Color Palette`.
+
+In each `Color Palette`, the _Studio Maker_ can define several `Color`.
+
+== Fixed Colors
+
+For now, Sirius Web only supports `Fixed Color`.
+
+Such colors are specified through a `String` that must be a valid _Hexadecimal Color Code_, e.g. `#FF0000`.

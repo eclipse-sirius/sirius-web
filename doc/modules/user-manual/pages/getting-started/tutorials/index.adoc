@@ -1,0 +1,9 @@
+= Tutorials
+
+== xref:user-manual:getting-started/tutorials/basic-family/index.adoc[]
+
+In this tutorial, you will use the Sirius Web *low-code* approach to create a simple studio for representing and expressing family relations between individuals.
+
+== xref:user-manual:getting-started/tutorials/mindstorms-robot/index.adoc[]
+
+In this tutorial, you will use the Sirius Web *low-code* approach to create a simple studio for representing and expressing choreographies (sequences of instructions) for a Lego Mindstorms Robot.

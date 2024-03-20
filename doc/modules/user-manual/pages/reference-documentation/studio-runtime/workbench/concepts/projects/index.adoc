@@ -1,0 +1,31 @@
+= Projects
+
+== Purpose
+
+In the Sirius Web Workbench, a _Project_ is the base organizational unit.
+It serves as a top-level container of models and representations.
+
+== Project Natures
+
+Depending on their intended use, a _Project_ may be tagged with one or several _Project Nature_.
+
+#TODO: explain default natures provided.#
+
+== Project Templates
+
+Sometimes, getting started on a new domain may seem a bit daunting at first ; or other times we may want to get a quick answer a bout a particular domain and we don't want to go through the trouble of having to create a new project with some data and representations in it.
+
+To facilitate this, Sirius Web provides the possibility for custom studios to contribute so-called _Template Projects_.
+A _Template Project_ is a representative sample _Project_ for a specific purpose. Usually it is used to be able to quickly create a project with a model of a particular domain, but it is not limited to that use case. It can also be very practical to be able to quickly showcase the depth and breadth of possibilities offered by a custom studio.
+
+By default, _Template Projects_ are listed at the top of the homepage of the workbench. In a few clicks, one can create a new project populated with domain-specific models and their graphical representations.
+
+== Stereotypes
+
+_Stereotypes_ are a bit like _Project Templates_, but instead of enabling the quick and easy creation of a pre-populated project, they are used to quickly create a pre-populated domain-specific model in any project.
+
+By default, _Stereotypes_ are available from the main view on a _Project_, through the left pane 'Create a new Model'.
+
+== Managing Projects
+
+#TODO: Here add link to the documentation section that is about the UI allowing creating/importing/exporting/deleting projects.#

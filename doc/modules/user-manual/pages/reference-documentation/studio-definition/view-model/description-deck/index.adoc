@@ -1,0 +1,7 @@
+= Deck Description
+
+A `Deck Description` defines how the xref:user-manual:reference-documentation/studio-runtime/index.adoc[] creates xref:user-manual:reference-documentation/studio-runtime/index.adoc#_deck[Deck Representations].
+
+#TODO: Detail the contents of this description.#
+
+#TODO: migrate https://github.com/eclipse-sirius/sirius-web/blob/master/doc/specifier/representation-deck.adoc #

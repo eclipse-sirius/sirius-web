@@ -1,0 +1,63 @@
+= Unset Value
+
+An `Unset Value` operation clears (or removes from) the value of a feature on a model element.
+
+This is useful for mutating the semantic model as a result of user interaction.
+
+== Examples
+
+.Clearing the name of an entity
+====
+.Variables before
+------
+"self" : someEntity (name: "EntityName")
+------
+
+.Operation
+------
+UnsetValue(featureName: "name", valueExpression: null)
+------
+
+.Variables after
+------
+"self" : someEntity (name: null)
+------
+====
+
+.Removing an entity from a domain
+====
+.Variables before
+------
+"self" : someDomain (types : Sequence{entity1})
+"entity" : entity1
+------
+
+.Operation
+------
+UnsetValue(featureName: "types", valueExpression: "aql:entity")
+------
+
+.Variables after
+------
+"self" : someDomain (types : Sequence{})
+"entity" : entity1
+------
+====
+
+== Properties
+
+.Properties of `Unset Value` operation
+[cols="1,1,3"]
+|===
+|_Property_
+|_Type_
+|_Semantics_
+
+|*`Feature Name`*
+|`String`
+|The name of the feature of the contextual element to unset from.
+
+|*`Element Expression`*
+|`String` (expression)
+|An expression returning the element(s) to unset.
+|===

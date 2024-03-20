@@ -1,0 +1,18 @@
+= Comparison
+
+#TODO: Include comparison of Sirius Web with... OCP? Sirius Desktop? Others?#
+
+[cols="1,2,2"]
+|===
+|*Feature*
+|*Sirius Web*
+|*Sirius Desktop*
+
+|feature1
+|SiriusWeb1
+|SiriusDesktop1
+
+|feature2
+|SiriusWeb2
+|SiriusDesktop2
+|=== 

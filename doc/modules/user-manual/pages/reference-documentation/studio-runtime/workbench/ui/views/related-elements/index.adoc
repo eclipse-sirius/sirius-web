@@ -1,0 +1,7 @@
+= Related Elements
+
+#TODO: Add a representative snapshot of the "Related Elements" view.#
+
+The *Related Elements* view is one of the views in the rightmost pane of the workbench UI.
+
+It represents other elements which are semantically related to the currently-selected element.
