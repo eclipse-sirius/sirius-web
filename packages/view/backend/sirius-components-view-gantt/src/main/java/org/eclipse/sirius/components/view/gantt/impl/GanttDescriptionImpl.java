@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.DropTaskTool;
@@ -48,6 +49,8 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getDeleteTool <em>Delete
  * Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getDropTool <em>Drop Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getCreateTaskDependencyTool <em>Create
+ * Task Dependency Tool</em>}</li>
  * </ul>
  *
  * @generated
@@ -112,6 +115,16 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @ordered
      */
     protected DropTaskTool dropTool;
+
+    /**
+     * The cached value of the '{@link #getCreateTaskDependencyTool() <em>Create Task Dependency Tool</em>}' containment
+     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getCreateTaskDependencyTool()
+     * @generated
+     * @ordered
+     */
+    protected CreateTaskDependencyTool createTaskDependencyTool;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -391,6 +404,55 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @generated
      */
     @Override
+    public CreateTaskDependencyTool getCreateTaskDependencyTool() {
+        return this.createTaskDependencyTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetCreateTaskDependencyTool(CreateTaskDependencyTool newCreateTaskDependencyTool, NotificationChain msgs) {
+        CreateTaskDependencyTool oldCreateTaskDependencyTool = this.createTaskDependencyTool;
+        this.createTaskDependencyTool = newCreateTaskDependencyTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL, oldCreateTaskDependencyTool,
+                    newCreateTaskDependencyTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setCreateTaskDependencyTool(CreateTaskDependencyTool newCreateTaskDependencyTool) {
+        if (newCreateTaskDependencyTool != this.createTaskDependencyTool) {
+            NotificationChain msgs = null;
+            if (this.createTaskDependencyTool != null)
+                msgs = ((InternalEObject) this.createTaskDependencyTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL, null, msgs);
+            if (newCreateTaskDependencyTool != null)
+                msgs = ((InternalEObject) newCreateTaskDependencyTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL, null, msgs);
+            msgs = this.basicSetCreateTaskDependencyTool(newCreateTaskDependencyTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL, newCreateTaskDependencyTool, newCreateTaskDependencyTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case GanttPackage.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS:
@@ -405,6 +467,8 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.basicSetDeleteTool(null, msgs);
             case GanttPackage.GANTT_DESCRIPTION__DROP_TOOL:
                 return this.basicSetDropTool(null, msgs);
+            case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
+                return this.basicSetCreateTaskDependencyTool(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -429,6 +493,8 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.getDeleteTool();
             case GanttPackage.GANTT_DESCRIPTION__DROP_TOOL:
                 return this.getDropTool();
+            case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
+                return this.getCreateTaskDependencyTool();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -461,6 +527,9 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
             case GanttPackage.GANTT_DESCRIPTION__DROP_TOOL:
                 this.setDropTool((DropTaskTool) newValue);
                 return;
+            case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
+                this.setCreateTaskDependencyTool((CreateTaskDependencyTool) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -491,6 +560,9 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
             case GanttPackage.GANTT_DESCRIPTION__DROP_TOOL:
                 this.setDropTool((DropTaskTool) null);
                 return;
+            case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
+                this.setCreateTaskDependencyTool((CreateTaskDependencyTool) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -515,6 +587,8 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.deleteTool != null;
             case GanttPackage.GANTT_DESCRIPTION__DROP_TOOL:
                 return this.dropTool != null;
+            case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
+                return this.createTaskDependencyTool != null;
         }
         return super.eIsSet(featureID);
     }

@@ -73,7 +73,7 @@ public class TaskDescriptionComponent implements IComponent {
         Instant endTime = taskDescription.endTimeProvider().apply(childVariableManager);
         Integer progress = taskDescription.progressProvider().apply(childVariableManager);
         Boolean computeDatesDynamicallyProvider = taskDescription.computeDatesDynamicallyProvider().apply(childVariableManager);
-        List<Object> dependencyObjects = taskDescription.dependenciesProvider().apply(childVariableManager);
+        List<Object> dependencyObjects = taskDescription.taskDependenciesProvider().apply(childVariableManager);
         List<String> dependencyObjectIds = dependencyObjects.stream()
             .map(semanticElement -> {
                 VariableManager dependencyVariableManager = childVariableManager.createChild();

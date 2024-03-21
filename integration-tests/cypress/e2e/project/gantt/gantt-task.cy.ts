@@ -77,4 +77,22 @@ describe('Verify the Gantt Task actions', () => {
     ganttHelper.getGanttRepresentation().getByTestId('delete-task').click();
     ganttHelper.getTask('New Task').should('not.exist');
   });
+
+  it.only('can create a task dependency', () => {
+    const ganttHelper = new GanttTestHelper();
+    ganttHelper.getTask('Front').click();
+    ganttHelper
+      .getGanttRepresentation()
+      .findByTestId('task-relation-handle-right-Front')
+      .trigger('mouseenter')
+      .trigger('mousedown');
+
+    ganttHelper
+      .getGanttRepresentation()
+      .findByTestId('task-relation-handle-left-Back')
+      .trigger('mouseenter', { force: true })
+      .trigger('mouseup', { force: true });
+
+    ganttHelper.getGanttRepresentation().findByTestId('task-arrow-endOfTask-Front-startOfTask-Back').should('exist');
+  });
 });

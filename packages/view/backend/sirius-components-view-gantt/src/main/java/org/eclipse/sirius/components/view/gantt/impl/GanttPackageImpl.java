@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle;
+import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.DropTaskTool;
@@ -98,6 +99,13 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     private EClass dropTaskToolEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass createTaskDependencyToolEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -239,6 +247,16 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
+    public EReference getGanttDescription_CreateTaskDependencyTool() {
+        return (EReference) this.ganttDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getTaskDescription() {
         return this.taskDescriptionEClass;
     }
@@ -329,7 +347,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EAttribute getTaskDescription_DependenciesExpression() {
+    public EAttribute getTaskDescription_TaskDependenciesExpression() {
         return (EAttribute) this.taskDescriptionEClass.getEStructuralFeatures().get(8);
     }
 
@@ -459,18 +477,8 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EAttribute getTaskTool_PreconditionExpression() {
-        return (EAttribute) this.taskToolEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EReference getTaskTool_Body() {
-        return (EReference) this.taskToolEClass.getEStructuralFeatures().get(2);
+        return (EReference) this.taskToolEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -519,6 +527,16 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
+    public EClass getCreateTaskDependencyTool() {
+        return this.createTaskDependencyToolEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public GanttFactory getGanttFactory() {
         return (GanttFactory) this.getEFactoryInstance();
     }
@@ -549,6 +567,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
         this.createEReference(this.ganttDescriptionEClass, GANTT_DESCRIPTION__EDIT_TOOL);
         this.createEReference(this.ganttDescriptionEClass, GANTT_DESCRIPTION__DELETE_TOOL);
         this.createEReference(this.ganttDescriptionEClass, GANTT_DESCRIPTION__DROP_TOOL);
+        this.createEReference(this.ganttDescriptionEClass, GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL);
 
         this.taskDescriptionEClass = this.createEClass(TASK_DESCRIPTION);
         this.createEAttribute(this.taskDescriptionEClass, TASK_DESCRIPTION__NAME);
@@ -559,7 +578,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
         this.createEAttribute(this.taskDescriptionEClass, TASK_DESCRIPTION__END_TIME_EXPRESSION);
         this.createEAttribute(this.taskDescriptionEClass, TASK_DESCRIPTION__PROGRESS_EXPRESSION);
         this.createEAttribute(this.taskDescriptionEClass, TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION);
-        this.createEAttribute(this.taskDescriptionEClass, TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION);
+        this.createEAttribute(this.taskDescriptionEClass, TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION);
         this.createEReference(this.taskDescriptionEClass, TASK_DESCRIPTION__STYLE);
         this.createEReference(this.taskDescriptionEClass, TASK_DESCRIPTION__CONDITIONAL_STYLES);
         this.createEReference(this.taskDescriptionEClass, TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS);
@@ -575,7 +594,6 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
 
         this.taskToolEClass = this.createEClass(TASK_TOOL);
         this.createEAttribute(this.taskToolEClass, TASK_TOOL__NAME);
-        this.createEAttribute(this.taskToolEClass, TASK_TOOL__PRECONDITION_EXPRESSION);
         this.createEReference(this.taskToolEClass, TASK_TOOL__BODY);
 
         this.createTaskToolEClass = this.createEClass(CREATE_TASK_TOOL);
@@ -585,6 +603,8 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
         this.deleteTaskToolEClass = this.createEClass(DELETE_TASK_TOOL);
 
         this.dropTaskToolEClass = this.createEClass(DROP_TASK_TOOL);
+
+        this.createTaskDependencyToolEClass = this.createEClass(CREATE_TASK_DEPENDENCY_TOOL);
     }
 
     /**
@@ -625,6 +645,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
         this.editTaskToolEClass.getESuperTypes().add(this.getTaskTool());
         this.deleteTaskToolEClass.getESuperTypes().add(this.getTaskTool());
         this.dropTaskToolEClass.getESuperTypes().add(this.getTaskTool());
+        this.createTaskDependencyToolEClass.getESuperTypes().add(this.getTaskTool());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.ganttDescriptionEClass, GanttDescription.class, "GanttDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -640,6 +661,8 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getGanttDescription_DropTool(), this.getDropTaskTool(), null, "dropTool", null, 0, 1, GanttDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getGanttDescription_CreateTaskDependencyTool(), this.getCreateTaskDependencyTool(), null, "createTaskDependencyTool", null, 0, 1, GanttDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.taskDescriptionEClass, TaskDescription.class, "TaskDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTaskDescription_Name(), theViewPackage.getIdentifier(), "name", "", 1, 1, TaskDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
@@ -658,8 +681,8 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTaskDescription_ComputeStartEndDynamicallyExpression(), theViewPackage.getInterpretedExpression(), "computeStartEndDynamicallyExpression",
                 "aql:self.computeStartEndDynamically", 0, 1, TaskDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTaskDescription_DependenciesExpression(), theViewPackage.getInterpretedExpression(), "dependenciesExpression", "aql:self.dependencies", 0, 1, TaskDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTaskDescription_TaskDependenciesExpression(), theViewPackage.getInterpretedExpression(), "taskDependenciesExpression", "aql:self.dependencies", 0, 1,
+                TaskDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTaskDescription_Style(), this.getTaskStyleDescription(), null, "style", null, 1, 1, TaskDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTaskDescription_ConditionalStyles(), this.getConditionalTaskStyle(), null, "conditionalStyles", null, 0, -1, TaskDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -684,8 +707,6 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
         this.initEClass(this.taskToolEClass, TaskTool.class, "TaskTool", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTaskTool_Name(), theViewPackage.getIdentifier(), "name", "", 1, 1, TaskTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTaskTool_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", "", 0, 1, TaskTool.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTaskTool_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, TaskTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -696,6 +717,8 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
         this.initEClass(this.deleteTaskToolEClass, DeleteTaskTool.class, "DeleteTaskTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.dropTaskToolEClass, DropTaskTool.class, "DropTaskTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.createTaskDependencyToolEClass, CreateTaskDependencyTool.class, "CreateTaskDependencyTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         this.createResource(eNS_URI);

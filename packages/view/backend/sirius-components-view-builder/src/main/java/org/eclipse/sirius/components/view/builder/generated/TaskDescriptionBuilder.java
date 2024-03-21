@@ -117,12 +117,12 @@ public class TaskDescriptionBuilder {
     }
 
     /**
-     * Setter for DependenciesExpression.
+     * Setter for TaskDependenciesExpression.
      *
      * @generated
      */
-    public TaskDescriptionBuilder dependenciesExpression(java.lang.String value) {
-        this.getTaskDescription().setDependenciesExpression(value);
+    public TaskDescriptionBuilder taskDependenciesExpression(java.lang.String value) {
+        this.getTaskDescription().setTaskDependenciesExpression(value);
         return this;
     }
 

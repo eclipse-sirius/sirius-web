@@ -211,24 +211,24 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
     protected String computeStartEndDynamicallyExpression = COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getDependenciesExpression() <em>Dependencies Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getTaskDependenciesExpression() <em>Task Dependencies Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getDependenciesExpression()
+     * @see #getTaskDependenciesExpression()
      * @generated
      * @ordered
      */
-    protected static final String DEPENDENCIES_EXPRESSION_EDEFAULT = "aql:self.dependencies";
+    protected static final String TASK_DEPENDENCIES_EXPRESSION_EDEFAULT = "aql:self.dependencies";
 
     /**
-     * The cached value of the '{@link #getDependenciesExpression() <em>Dependencies Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getTaskDependenciesExpression() <em>Task Dependencies Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getDependenciesExpression()
+     * @see #getTaskDependenciesExpression()
      * @generated
      * @ordered
      */
-    protected String dependenciesExpression = DEPENDENCIES_EXPRESSION_EDEFAULT;
+    protected String taskDependenciesExpression = TASK_DEPENDENCIES_EXPRESSION_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
@@ -481,8 +481,8 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @generated
      */
     @Override
-    public String getDependenciesExpression() {
-        return this.dependenciesExpression;
+    public String getTaskDependenciesExpression() {
+        return this.taskDependenciesExpression;
     }
 
     /**
@@ -491,11 +491,11 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @generated
      */
     @Override
-    public void setDependenciesExpression(String newDependenciesExpression) {
-        String oldDependenciesExpression = this.dependenciesExpression;
-        this.dependenciesExpression = newDependenciesExpression;
+    public void setTaskDependenciesExpression(String newTaskDependenciesExpression) {
+        String oldTaskDependenciesExpression = this.taskDependenciesExpression;
+        this.taskDependenciesExpression = newTaskDependenciesExpression;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION, oldDependenciesExpression, this.dependenciesExpression));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION, oldTaskDependenciesExpression, this.taskDependenciesExpression));
     }
 
     /**
@@ -627,8 +627,8 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return this.getProgressExpression();
             case GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION:
                 return this.getComputeStartEndDynamicallyExpression();
-            case GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION:
-                return this.getDependenciesExpression();
+            case GanttPackage.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION:
+                return this.getTaskDependenciesExpression();
             case GanttPackage.TASK_DESCRIPTION__STYLE:
                 return this.getStyle();
             case GanttPackage.TASK_DESCRIPTION__CONDITIONAL_STYLES:
@@ -674,8 +674,8 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
             case GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION:
                 this.setComputeStartEndDynamicallyExpression((String) newValue);
                 return;
-            case GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION:
-                this.setDependenciesExpression((String) newValue);
+            case GanttPackage.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION:
+                this.setTaskDependenciesExpression((String) newValue);
                 return;
             case GanttPackage.TASK_DESCRIPTION__STYLE:
                 this.setStyle((TaskStyleDescription) newValue);
@@ -728,8 +728,8 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
             case GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION:
                 this.setComputeStartEndDynamicallyExpression(COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT);
                 return;
-            case GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION:
-                this.setDependenciesExpression(DEPENDENCIES_EXPRESSION_EDEFAULT);
+            case GanttPackage.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION:
+                this.setTaskDependenciesExpression(TASK_DEPENDENCIES_EXPRESSION_EDEFAULT);
                 return;
             case GanttPackage.TASK_DESCRIPTION__STYLE:
                 this.setStyle((TaskStyleDescription) null);
@@ -772,8 +772,8 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
             case GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION:
                 return COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT == null ? this.computeStartEndDynamicallyExpression != null
                         : !COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT.equals(this.computeStartEndDynamicallyExpression);
-            case GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION:
-                return DEPENDENCIES_EXPRESSION_EDEFAULT == null ? this.dependenciesExpression != null : !DEPENDENCIES_EXPRESSION_EDEFAULT.equals(this.dependenciesExpression);
+            case GanttPackage.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION:
+                return TASK_DEPENDENCIES_EXPRESSION_EDEFAULT == null ? this.taskDependenciesExpression != null : !TASK_DEPENDENCIES_EXPRESSION_EDEFAULT.equals(this.taskDependenciesExpression);
             case GanttPackage.TASK_DESCRIPTION__STYLE:
                 return this.style != null;
             case GanttPackage.TASK_DESCRIPTION__CONDITIONAL_STYLES:
@@ -813,8 +813,8 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
         result.append(this.progressExpression);
         result.append(", computeStartEndDynamicallyExpression: ");
         result.append(this.computeStartEndDynamicallyExpression);
-        result.append(", dependenciesExpression: ");
-        result.append(this.dependenciesExpression);
+        result.append(", taskDependenciesExpression: ");
+        result.append(this.taskDependenciesExpression);
         result.append(')');
         return result.toString();
     }

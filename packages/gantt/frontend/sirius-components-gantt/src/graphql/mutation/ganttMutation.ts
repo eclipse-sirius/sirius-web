@@ -91,3 +91,23 @@ export const dropTaskMutation = gql`
     }
   }
 `;
+
+export const createTaskDependencyMutation = gql`
+  mutation createGanttTaskDependency($input: CreateGanttTaskDependencyInput!) {
+    createGanttTaskDependency(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;

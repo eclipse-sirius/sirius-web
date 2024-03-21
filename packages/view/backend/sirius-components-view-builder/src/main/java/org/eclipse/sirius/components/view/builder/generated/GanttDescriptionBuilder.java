@@ -137,5 +137,15 @@ public class GanttDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for CreateTaskDependencyTool.
+     *
+     * @generated
+     */
+    public GanttDescriptionBuilder createTaskDependencyTool(org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool value) {
+        this.getGanttDescription().setCreateTaskDependencyTool(value);
+        return this;
+    }
+
 }
 

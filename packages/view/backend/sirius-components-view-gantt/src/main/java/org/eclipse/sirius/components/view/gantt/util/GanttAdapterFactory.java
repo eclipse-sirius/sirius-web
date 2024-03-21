@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle;
+import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.DropTaskTool;
@@ -124,6 +125,11 @@ public class GanttAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseDropTaskTool(DropTaskTool object) {
             return GanttAdapterFactory.this.createDropTaskToolAdapter();
+        }
+
+        @Override
+        public Adapter caseCreateTaskDependencyTool(CreateTaskDependencyTool object) {
+            return GanttAdapterFactory.this.createCreateTaskDependencyToolAdapter();
         }
 
         @Override
@@ -282,6 +288,20 @@ public class GanttAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createDropTaskToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool <em>Create Task Dependency Tool</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool
+     * @generated
+     */
+    public Adapter createCreateTaskDependencyToolAdapter() {
         return null;
     }
 

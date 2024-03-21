@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle;
+import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.DropTaskTool;
@@ -153,6 +154,15 @@ public class GanttSwitch<T> extends Switch<T> {
                 T result = this.caseDropTaskTool(dropTaskTool);
                 if (result == null)
                     result = this.caseTaskTool(dropTaskTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case GanttPackage.CREATE_TASK_DEPENDENCY_TOOL: {
+                CreateTaskDependencyTool createTaskDependencyTool = (CreateTaskDependencyTool) theEObject;
+                T result = this.caseCreateTaskDependencyTool(createTaskDependencyTool);
+                if (result == null)
+                    result = this.caseTaskTool(createTaskDependencyTool);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -292,6 +302,21 @@ public class GanttSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseDropTaskTool(DropTaskTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Create Task Dependency Tool</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Create Task Dependency Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCreateTaskDependencyTool(CreateTaskDependencyTool object) {
         return null;
     }
 

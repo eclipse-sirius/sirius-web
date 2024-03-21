@@ -110,7 +110,10 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
 
   //---------------------------------
   // Mutations
-  const { deleteTask, editTask, createTask, dropTask } = useGanttMutations(editingContextId, representationId);
+  const { deleteTask, editTask, createTask, dropTask, createTaskDependency } = useGanttMutations(
+    editingContextId,
+    representationId
+  );
 
   const handleEditTask = (task: TaskOrEmpty) => {
     const newDetail: GQLTaskDetail = {
@@ -151,6 +154,7 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
         onDeleteTask={deleteTask}
         onExpandCollapse={onExpandCollapse}
         onDropTask={dropTask}
+        onCreateTaskDependency={createTaskDependency}
       />
     );
   }

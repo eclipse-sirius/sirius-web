@@ -86,6 +86,15 @@ public interface GanttFactory extends EFactory {
     DropTaskTool createDropTaskTool();
 
     /**
+     * Returns a new object of class '<em>Create Task Dependency Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Create Task Dependency Tool</em>'.
+     * @generated
+     */
+    CreateTaskDependencyTool createCreateTaskDependencyTool();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

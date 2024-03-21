@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttTaskService;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DropGanttTaskInput;
@@ -70,11 +71,7 @@ public class GanttTaskService implements IGanttTaskService {
             Optional<Object> targetObjectOpt = Optional.empty();
             String currentTaskId = createGanttTaskInput.currentTaskId();
             if (currentTaskId != null) {
-                targetObjectOpt = this.findTask(task -> Objects.equals(task.id(), currentTaskId), gantt.tasks()).map(task -> this.objectService.getObject(editingContext, task.targetObjectId()))
-                        .map(Optional::get);
-                if (targetObjectOpt.isEmpty()) {
-                    this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("The current task of id ''{0}'' is not found", currentTaskId), MessageLevel.ERROR));
-                }
+                targetObjectOpt = this.getTaskSemanticObject(currentTaskId, gantt, editingContext);
             } else {
                 targetObjectOpt = this.objectService.getObject(editingContext, gantt.targetObjectId());
             }
@@ -194,4 +191,40 @@ public class GanttTaskService implements IGanttTaskService {
         return payload;
     }
 
+    @Override
+    public IPayload createTaskDependency(CreateGanttTaskDependencyInput createTaskDependencyInput, IEditingContext editingContext, Gantt gantt) {
+        IPayload payload = new ErrorPayload(createTaskDependencyInput.id(), "Create task dependency failed");
+
+        Optional<GanttDescription> ganttDescriptionOpt = this.findGanttDescription(gantt.descriptionId(), editingContext);
+
+        if (ganttDescriptionOpt.isPresent()) {
+            VariableManager variableManager = new VariableManager();
+
+            Optional<Object> sourceObjectOpt = Optional.of(createTaskDependencyInput.sourceTaskId())
+                    .flatMap(taskId -> this.getTaskSemanticObject(taskId, gantt, editingContext));
+
+            Optional<Object> targetObjectOpt = Optional.of(createTaskDependencyInput.targetTaskId())
+                    .flatMap(taskId -> this.getTaskSemanticObject(taskId, gantt, editingContext));
+
+            if (sourceObjectOpt.isPresent() && targetObjectOpt.isPresent()) {
+                variableManager.put(GanttDescription.SOURCE_OBJECT, sourceObjectOpt.get());
+                variableManager.put(GanttDescription.TARGET_OBJECT, targetObjectOpt.get());
+                ganttDescriptionOpt.get().createTaskDependencyProvider().accept(variableManager);
+            }
+
+            payload = this.getPayload(createTaskDependencyInput.id());
+        }
+
+        return payload;
+    }
+
+    private Optional<Object> getTaskSemanticObject(String taskId, Gantt gantt, IEditingContext editingContext) {
+        Optional<Object> targetObjectOpt = this.findTask(task -> Objects.equals(task.id(), taskId), gantt.tasks())
+                .map(task -> this.objectService.getObject(editingContext, task.targetObjectId()))
+                .map(Optional::get);
+        if (targetObjectOpt.isEmpty()) {
+            this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("The current task of id ''{0}'' is not found", taskId), MessageLevel.ERROR));
+        }
+        return targetObjectOpt;
+    }
 }

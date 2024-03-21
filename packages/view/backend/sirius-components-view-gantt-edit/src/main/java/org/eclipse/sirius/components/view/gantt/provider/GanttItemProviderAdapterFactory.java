@@ -260,6 +260,30 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected CreateTaskDependencyToolItemProvider createTaskDependencyToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCreateTaskDependencyToolAdapter() {
+        if (this.createTaskDependencyToolItemProvider == null) {
+            this.createTaskDependencyToolItemProvider = new CreateTaskDependencyToolItemProvider(this);
+        }
+
+        return this.createTaskDependencyToolItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -402,6 +426,8 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
             this.deleteTaskToolItemProvider.dispose();
         if (this.dropTaskToolItemProvider != null)
             this.dropTaskToolItemProvider.dispose();
+        if (this.createTaskDependencyToolItemProvider != null)
+            this.createTaskDependencyToolItemProvider.dispose();
     }
 
     /**

@@ -67,7 +67,7 @@ export interface GQLTask {
   detail: GQLTaskDetail;
   style: GQLTaskStyle;
   subTasks: GQLTask[];
-  dependencyTaskIds: string[];
+  taskDependencyIds: string[];
 }
 
 export interface SelectableTask extends Task {

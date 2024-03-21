@@ -34,7 +34,7 @@ type Task {
   detail: TaskDetail!
   style: TaskStyle
   subTasks: [Task!]
-  dependencyTaskIds: [String!]
+  taskDependencyIds: [String!]
 }
 
 scalar Instant
@@ -65,6 +65,7 @@ extend type Mutation {
   deleteGanttTask(input: DeleteGanttTaskInput!): DeleteGanttTaskPayload
   editGanttTask(input: EditGanttTaskInput!): EditGanttTaskPayload
   dropGanttTask(input: DropGanttTaskInput!): DropGanttTaskPayload
+  createGanttTaskDependency(input: CreateGanttTaskDependencyInput!): CreateGanttTaskDependencyPayload
 }
 
 input CreateGanttTaskInput {
@@ -111,3 +112,12 @@ input DropGanttTaskInput {
   dropIndex: Int!
 }
 union DropGanttTaskPayload = SuccessPayload | ErrorPayload
+
+input CreateGanttTaskDependencyInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  sourceTaskId: ID!
+  targetTaskId: ID!
+}
+union CreateGanttTaskDependencyPayload = SuccessPayload | ErrorPayload

@@ -46,6 +46,7 @@ This will make the dependency to the old Sirius Web architecture more explicit.
 === Dependency update
 
 - Move to docker compose v2 for our GitHub Actions workflow.
+- https://github.com/eclipse-sirius/sirius-web/issues/3277[#3277] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.8 to benefit for enhancements
 
 === Bug fixes
 
@@ -72,6 +73,7 @@ In this first version, the only available positions _top_center_ for inside labe
 image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3237[#3237] [diagram] Add a `DiagramServices` class containing services to expand and collapse nodes from AQL expressions (via the new `diagramServices` variable) and Java services.
 - https://github.com/eclipse-sirius/sirius-web/issues/3282[#3282] [diagram] Add diagram assertions and navigators to ease the definition of diagram tests.
+- https://github.com/eclipse-sirius/sirius-web/issues/3277[#3277] [gantt] Add support for dependency creation
 
 
 === Improvements
@@ -167,6 +169,7 @@ Having `Viewer` as a type did not bring any additional value and it created some
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2783[#2783] [diagram] Remove our dependency to Sprotty and Snabbdom
 - https://github.com/eclipse-sirius/sirius-web/issues/3105[#3105] [deck] Move to @ObeoNetwork/react-trello 2.4.11 to avoid warnings because of react-redux depending on react 16.
+- https://github.com/eclipse-sirius/sirius-web/issues/3277[#2785] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.5 to remove dependency to react-redux
 
 === Bug fixes
 

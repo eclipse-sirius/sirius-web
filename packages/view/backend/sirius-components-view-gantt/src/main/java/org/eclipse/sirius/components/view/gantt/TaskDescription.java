@@ -227,27 +227,28 @@ public interface TaskDescription extends EObject {
     void setComputeStartEndDynamicallyExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Dependencies Expression</b></em>' attribute. The default value is
+     * Returns the value of the '<em><b>Task Dependencies Expression</b></em>' attribute. The default value is
      * <code>"aql:self.dependencies"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Dependencies Expression</em>' attribute.
-     * @see #setDependenciesExpression(String)
-     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getTaskDescription_DependenciesExpression()
+     * @return the value of the '<em>Task Dependencies Expression</em>' attribute.
+     * @see #setTaskDependenciesExpression(String)
+     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getTaskDescription_TaskDependenciesExpression()
      * @model default="aql:self.dependencies" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
-    String getDependenciesExpression();
+    String getTaskDependenciesExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getDependenciesExpression
-     * <em>Dependencies Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getTaskDependenciesExpression <em>Task
+     * Dependencies Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Dependencies Expression</em>' attribute.
-     * @see #getDependenciesExpression()
+     *            the new value of the '<em>Task Dependencies Expression</em>' attribute.
+     * @see #getTaskDependenciesExpression()
      * @generated
      */
-    void setDependenciesExpression(String value);
+    void setTaskDependenciesExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc

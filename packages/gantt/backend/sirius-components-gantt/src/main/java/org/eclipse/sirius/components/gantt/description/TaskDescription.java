@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public record TaskDescription(String id, Function<VariableManager, String> targetObjectIdProvider, Function<VariableManager, String> targetObjectKindProvider,
         Function<VariableManager, String> targetObjectLabelProvider, Function<VariableManager, List<Object>> semanticElementsProvider, Function<VariableManager, String> nameProvider,
         Function<VariableManager, String> descriptionProvider, Function<VariableManager, Instant> startTimeProvider, Function<VariableManager, Instant> endTimeProvider,
-        Function<VariableManager, Integer> progressProvider, Function<VariableManager, Boolean> computeDatesDynamicallyProvider, Function<VariableManager, List<Object>> dependenciesProvider,
+        Function<VariableManager, Integer> progressProvider, Function<VariableManager, Boolean> computeDatesDynamicallyProvider, Function<VariableManager, List<Object>> taskDependenciesProvider,
         List<String> reusedTaskDescriptionIds, List<TaskDescription> subTaskDescriptions) {
 
     public TaskDescription {
@@ -45,7 +45,7 @@ public record TaskDescription(String id, Function<VariableManager, String> targe
         Objects.requireNonNull(endTimeProvider);
         Objects.requireNonNull(progressProvider);
         Objects.requireNonNull(computeDatesDynamicallyProvider);
-        Objects.requireNonNull(dependenciesProvider);
+        Objects.requireNonNull(taskDependenciesProvider);
         Objects.requireNonNull(reusedTaskDescriptionIds);
         Objects.requireNonNull(subTaskDescriptions);
     }
@@ -90,7 +90,7 @@ public record TaskDescription(String id, Function<VariableManager, String> targe
 
         private Function<VariableManager, Boolean> computeDatesDynamicallyProvider;
 
-        private Function<VariableManager, List<Object>> dependenciesProvider;
+        private Function<VariableManager, List<Object>> taskDependenciesProvider;
 
         private List<TaskDescription> subTaskDescriptions = List.of();
 
@@ -150,8 +150,8 @@ public record TaskDescription(String id, Function<VariableManager, String> targe
             return this;
         }
 
-        public Builder dependenciesProvider(Function<VariableManager, List<Object>> dependenciesProvider) {
-            this.dependenciesProvider = Objects.requireNonNull(dependenciesProvider);
+        public Builder taskDependenciesProvider(Function<VariableManager, List<Object>> taskDependenciesProvider) {
+            this.taskDependenciesProvider = Objects.requireNonNull(taskDependenciesProvider);
             return this;
         }
 
@@ -168,7 +168,7 @@ public record TaskDescription(String id, Function<VariableManager, String> targe
         public TaskDescription build() {
             TaskDescription ganttDescription = new TaskDescription(this.id, this.targetObjectIdProvider, this.targetObjectKindProvider, this.targetObjectLabelProvider, this.semanticElementsProvider,
                     this.nameProvider, this.descriptionProvider, this.startTimeProvider, this.endTimeProvider, this.progressProvider, this.computeDatesDynamicallyProvider,
-                    this.dependenciesProvider, this.reusedTaskDescriptionIds, this.subTaskDescriptions);
+                    this.taskDependenciesProvider, this.reusedTaskDescriptionIds, this.subTaskDescriptions);
             return ganttDescription;
         }
     }

@@ -161,13 +161,22 @@ public interface GanttPackage extends EPackage {
     int GANTT_DESCRIPTION__DROP_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>Create Task Dependency Tool</b></em>' containment reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int GANTT_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
+    int GANTT_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -258,13 +267,13 @@ public interface GanttPackage extends EPackage {
     int TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION = 7;
 
     /**
-     * The feature id for the '<em><b>Dependencies Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Task Dependencies Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION = 8;
+    int TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION = 8;
 
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -478,22 +487,13 @@ public interface GanttPackage extends EPackage {
     int TASK_TOOL__NAME = 0;
 
     /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_TOOL__PRECONDITION_EXPRESSION = 1;
-
-    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TASK_TOOL__BODY = 2;
+    int TASK_TOOL__BODY = 1;
 
     /**
      * The number of structural features of the '<em>Task Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -502,7 +502,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_TOOL_FEATURE_COUNT = 3;
+    int TASK_TOOL_FEATURE_COUNT = 2;
 
     /**
      * The number of operations of the '<em>Task Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -529,15 +529,6 @@ public interface GanttPackage extends EPackage {
      * @ordered
      */
     int CREATE_TASK_TOOL__NAME = TASK_TOOL__NAME;
-
-    /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CREATE_TASK_TOOL__PRECONDITION_EXPRESSION = TASK_TOOL__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -584,15 +575,6 @@ public interface GanttPackage extends EPackage {
     int EDIT_TASK_TOOL__NAME = TASK_TOOL__NAME;
 
     /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDIT_TASK_TOOL__PRECONDITION_EXPRESSION = TASK_TOOL__PRECONDITION_EXPRESSION;
-
-    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -635,15 +617,6 @@ public interface GanttPackage extends EPackage {
      * @ordered
      */
     int DELETE_TASK_TOOL__NAME = TASK_TOOL__NAME;
-
-    /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DELETE_TASK_TOOL__PRECONDITION_EXPRESSION = TASK_TOOL__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -690,15 +663,6 @@ public interface GanttPackage extends EPackage {
     int DROP_TASK_TOOL__NAME = TASK_TOOL__NAME;
 
     /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DROP_TASK_TOOL__PRECONDITION_EXPRESSION = TASK_TOOL__PRECONDITION_EXPRESSION;
-
-    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -723,6 +687,51 @@ public interface GanttPackage extends EPackage {
      * @ordered
      */
     int DROP_TASK_TOOL_OPERATION_COUNT = TASK_TOOL_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.gantt.impl.CreateTaskDependencyToolImpl
+     * <em>Create Task Dependency Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.gantt.impl.CreateTaskDependencyToolImpl
+     * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getCreateTaskDependencyTool()
+     * @generated
+     */
+    int CREATE_TASK_DEPENDENCY_TOOL = 9;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_TASK_DEPENDENCY_TOOL__NAME = TASK_TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_TASK_DEPENDENCY_TOOL__BODY = TASK_TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Create Task Dependency Tool</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_TASK_DEPENDENCY_TOOL_FEATURE_COUNT = TASK_TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Create Task Dependency Tool</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_TASK_DEPENDENCY_TOOL_OPERATION_COUNT = TASK_TOOL_OPERATION_COUNT + 0;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.GanttDescription
@@ -805,6 +814,18 @@ public interface GanttPackage extends EPackage {
      * @generated
      */
     EReference getGanttDescription_DropTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getCreateTaskDependencyTool <em>Create Task
+     * Dependency Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Create Task Dependency Tool</em>'.
+     * @see org.eclipse.sirius.components.view.gantt.GanttDescription#getCreateTaskDependencyTool()
+     * @see #getGanttDescription()
+     * @generated
+     */
+    EReference getGanttDescription_CreateTaskDependencyTool();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.TaskDescription <em>Task
@@ -914,15 +935,15 @@ public interface GanttPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getDependenciesExpression <em>Dependencies
-     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getTaskDependenciesExpression <em>Task
+     * Dependencies Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Dependencies Expression</em>'.
-     * @see org.eclipse.sirius.components.view.gantt.TaskDescription#getDependenciesExpression()
+     * @return the meta object for the attribute '<em>Task Dependencies Expression</em>'.
+     * @see org.eclipse.sirius.components.view.gantt.TaskDescription#getTaskDependenciesExpression()
      * @see #getTaskDescription()
      * @generated
      */
-    EAttribute getTaskDescription_DependenciesExpression();
+    EAttribute getTaskDescription_TaskDependenciesExpression();
 
     /**
      * Returns the meta object for the containment reference
@@ -1062,18 +1083,6 @@ public interface GanttPackage extends EPackage {
     EAttribute getTaskTool_Name();
 
     /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.gantt.TaskTool#getPreconditionExpression <em>Precondition
-     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
-     * @see org.eclipse.sirius.components.view.gantt.TaskTool#getPreconditionExpression()
-     * @see #getTaskTool()
-     * @generated
-     */
-    EAttribute getTaskTool_PreconditionExpression();
-
-    /**
      * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.gantt.TaskTool#getBody <em>Body</em>}'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1124,6 +1133,16 @@ public interface GanttPackage extends EPackage {
      * @generated
      */
     EClass getDropTaskTool();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool
+     * <em>Create Task Dependency Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Create Task Dependency Tool</em>'.
+     * @see org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool
+     * @generated
+     */
+    EClass getCreateTaskDependencyTool();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1206,6 +1225,14 @@ public interface GanttPackage extends EPackage {
         EReference GANTT_DESCRIPTION__DROP_TOOL = eINSTANCE.getGanttDescription_DropTool();
 
         /**
+         * The meta object literal for the '<em><b>Create Task Dependency Tool</b></em>' containment reference feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL = eINSTANCE.getGanttDescription_CreateTaskDependencyTool();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.gantt.impl.TaskDescriptionImpl
          * <em>Task Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1280,12 +1307,12 @@ public interface GanttPackage extends EPackage {
         EAttribute TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION = eINSTANCE.getTaskDescription_ComputeStartEndDynamicallyExpression();
 
         /**
-         * The meta object literal for the '<em><b>Dependencies Expression</b></em>' attribute feature. <!--
+         * The meta object literal for the '<em><b>Task Dependencies Expression</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION = eINSTANCE.getTaskDescription_DependenciesExpression();
+        EAttribute TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION = eINSTANCE.getTaskDescription_TaskDependenciesExpression();
 
         /**
          * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
@@ -1392,14 +1419,6 @@ public interface GanttPackage extends EPackage {
         EAttribute TASK_TOOL__NAME = eINSTANCE.getTaskTool_Name();
 
         /**
-         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute TASK_TOOL__PRECONDITION_EXPRESSION = eINSTANCE.getTaskTool_PreconditionExpression();
-
-        /**
          * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1446,6 +1465,17 @@ public interface GanttPackage extends EPackage {
          * @generated
          */
         EClass DROP_TASK_TOOL = eINSTANCE.getDropTaskTool();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.gantt.impl.CreateTaskDependencyToolImpl <em>Create Task Dependency
+         * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.gantt.impl.CreateTaskDependencyToolImpl
+         * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getCreateTaskDependencyTool()
+         * @generated
+         */
+        EClass CREATE_TASK_DEPENDENCY_TOOL = eINSTANCE.getCreateTaskDependencyTool();
 
     }
 

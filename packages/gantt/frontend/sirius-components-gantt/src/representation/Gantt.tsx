@@ -17,6 +17,9 @@ import {
   Gantt as GanttDiagram,
   OnMoveTaskBeforeAfter,
   OnMoveTaskInside,
+  OnRelationChange,
+  RelationKind,
+  RelationMoveTarget,
   Task,
   TaskOrEmpty,
   ViewMode,
@@ -47,6 +50,7 @@ export const Gantt = ({
   onExpandCollapse,
   onDeleteTask,
   onDropTask,
+  onCreateTaskDependency,
 }: GanttProps) => {
   const [{ zoomLevel, selectedColumns, columns, displayColumns }, setState] = useState<GanttState>({
     zoomLevel: ViewMode.Day,
@@ -139,6 +143,15 @@ export const Gantt = ({
     }
   };
 
+  const handleRelationChange: OnRelationChange = (
+    from: [Task, RelationMoveTarget, number],
+    to: [Task, RelationMoveTarget, number]
+  ) => {
+    if (from[0].id !== to[0].id) {
+      onCreateTaskDependency(from[0].id, to[0].id);
+    }
+  };
+
   let tableColumns: Column[] = [];
   if (displayColumns) {
     tableColumns = columns.filter((col) => {
@@ -153,6 +166,8 @@ export const Gantt = ({
     taskDragColor: theme.palette.action.selected,
     selectedTaskBackgroundColor: theme.palette.action.selected,
   };
+
+  const authorizedRelations: RelationKind[] = ['endToStart'];
 
   return (
     <div ref={ganttContainerRef} className={ganttClasses.ganttContainer} data-testid={`gantt-representation`}>
@@ -189,6 +204,8 @@ export const Gantt = ({
         onMoveTaskBefore={handleMoveTaskBefore}
         onMoveTaskAfter={handleMoveTaskAfter}
         onMoveTaskInside={handleMoveTaskInside}
+        onRelationChange={handleRelationChange}
+        authorizedRelations={authorizedRelations}
       />
     </div>
   );
