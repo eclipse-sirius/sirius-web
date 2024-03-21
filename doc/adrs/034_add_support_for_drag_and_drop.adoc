@@ -32,4 +32,4 @@ public final class DiagramDescription implements IRepresentationDescription {
 
 == References
 
-- https://www.eclipse.org/sirius/doc/specifier/diagrams/Diagrams.html#container_tools
+- https://www.eclipse.dev/sirius/doc/specifier/diagrams/Diagrams.html#container_tools

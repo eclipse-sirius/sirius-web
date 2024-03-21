@@ -77,4 +77,4 @@ In order to keep things consistent,
 
 == References
 
-- https://www.eclipse.org/sirius/doc/specifier/diagrams/Diagrams.html#mappings
+- https://www.eclipse.dev/sirius/doc/specifier/diagrams/Diagrams.html#mappings

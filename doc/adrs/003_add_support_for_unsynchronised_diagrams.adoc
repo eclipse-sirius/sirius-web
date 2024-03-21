@@ -77,4 +77,4 @@ Such new model operations is out of the scope of this ADR but in order to introd
 
 == References
 
-- https://www.eclipse.org/sirius/doc/specifier/diagrams/Diagrams.html#mappings
+- https://www.eclipse.dev/sirius/doc/specifier/diagrams/Diagrams.html#mappings
