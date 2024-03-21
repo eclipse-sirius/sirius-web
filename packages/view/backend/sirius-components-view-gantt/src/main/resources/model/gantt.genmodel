@@ -21,6 +21,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/editTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/deleteTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/dropTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/createTaskDependencyTool"/>
     </genClasses>
     <genClasses ecoreClass="gantt.ecore#//TaskDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/name"/>
@@ -31,7 +32,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/endTimeExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/progressExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/computeStartEndDynamicallyExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/dependenciesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/taskDependenciesExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//TaskDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//TaskDescription/conditionalStyles"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//TaskDescription/subTaskElementDescriptions"/>
@@ -47,12 +48,12 @@
     </genClasses>
     <genClasses image="false" ecoreClass="gantt.ecore#//TaskTool">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskTool/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskTool/preconditionExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//TaskTool/body"/>
     </genClasses>
     <genClasses ecoreClass="gantt.ecore#//CreateTaskTool"/>
     <genClasses ecoreClass="gantt.ecore#//EditTaskTool"/>
     <genClasses ecoreClass="gantt.ecore#//DeleteTaskTool"/>
     <genClasses ecoreClass="gantt.ecore#//DropTaskTool"/>
+    <genClasses ecoreClass="gantt.ecore#//CreateTaskDependencyTool"/>
   </genPackages>
 </genmodel:GenModel>

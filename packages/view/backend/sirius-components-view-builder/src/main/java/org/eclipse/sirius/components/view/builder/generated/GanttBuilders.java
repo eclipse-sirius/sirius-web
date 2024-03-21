@@ -89,5 +89,15 @@ public class GanttBuilders {
         return new DropTaskToolBuilder();
     }
 
+    /**
+     * Instantiate a CreateTaskDependencyToolBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public CreateTaskDependencyToolBuilder newCreateTaskDependencyTool() {
+        return new CreateTaskDependencyToolBuilder();
+    }
+
 
 }

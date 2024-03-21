@@ -36,15 +36,6 @@ public abstract class TaskToolBuilder {
         return this;
     }
     /**
-     * Setter for PreconditionExpression.
-     *
-     * @generated
-     */
-    public TaskToolBuilder preconditionExpression(java.lang.String value) {
-        this.getTaskTool().setPreconditionExpression(value);
-        return this;
-    }
-    /**
      * Setter for Body.
      *
      * @generated

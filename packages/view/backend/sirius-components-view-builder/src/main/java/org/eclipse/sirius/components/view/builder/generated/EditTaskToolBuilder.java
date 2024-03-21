@@ -52,15 +52,6 @@ public class EditTaskToolBuilder {
         return this;
     }
     /**
-     * Setter for PreconditionExpression.
-     *
-     * @generated
-     */
-    public EditTaskToolBuilder preconditionExpression(java.lang.String value) {
-        this.getEditTaskTool().setPreconditionExpression(value);
-        return this;
-    }
-    /**
      * Setter for Body.
      *
      * @generated

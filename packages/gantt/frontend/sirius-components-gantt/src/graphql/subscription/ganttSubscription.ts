@@ -67,6 +67,6 @@ export const ganttEventSubscription = gql`
       backgroundColor
       progressColor
     }
-    dependencyTaskIds
+    taskDependencyIds
   }
 `;

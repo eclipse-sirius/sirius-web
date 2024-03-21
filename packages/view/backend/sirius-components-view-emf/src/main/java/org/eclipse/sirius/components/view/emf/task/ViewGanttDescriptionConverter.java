@@ -24,9 +24,9 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.gantt.description.GanttDescription;
 import org.eclipse.sirius.components.gantt.description.TaskDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -98,6 +98,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .editTaskProvider(Optional.ofNullable(viewGanttDescription.getEditTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
                 .deleteTaskProvider(Optional.ofNullable(viewGanttDescription.getDeleteTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
                 .dropTaskProvider(Optional.ofNullable(viewGanttDescription.getDropTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
+                .createTaskDependencyProvider(Optional.ofNullable(viewGanttDescription.getCreateTaskDependencyTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
                 .taskDescriptions(taskDescriptions)
                 .build();
     }
@@ -177,7 +178,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .endTimeProvider(endTimeProvider)
                 .progressProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getProgressExpression(), Integer.class, 0))
                 .computeStartEndDynamicallyProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getComputeStartEndDynamicallyExpression(), Boolean.class, false))
-                .dependenciesProvider(variableManager -> this.getSemanticElements(variableManager, interpreter, viewTaskDescription.getDependenciesExpression()))
+                .taskDependenciesProvider(variableManager -> this.getSemanticElements(variableManager, interpreter, viewTaskDescription.getTaskDependenciesExpression()))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)

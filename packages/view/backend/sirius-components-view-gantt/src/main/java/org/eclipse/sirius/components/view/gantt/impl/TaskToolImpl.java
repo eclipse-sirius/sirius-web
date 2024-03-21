@@ -34,8 +34,6 @@ import org.eclipse.sirius.components.view.gantt.TaskTool;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.TaskToolImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.gantt.impl.TaskToolImpl#getPreconditionExpression <em>Precondition
- * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.TaskToolImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
@@ -61,26 +59,6 @@ public abstract class TaskToolImpl extends MinimalEObjectImpl.Container implemen
      * @ordered
      */
     protected String name = NAME_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getPreconditionExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = "";
-
-    /**
-     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getPreconditionExpression()
-     * @generated
-     * @ordered
-     */
-    protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
@@ -140,29 +118,6 @@ public abstract class TaskToolImpl extends MinimalEObjectImpl.Container implemen
      * @generated
      */
     @Override
-    public String getPreconditionExpression() {
-        return this.preconditionExpression;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setPreconditionExpression(String newPreconditionExpression) {
-        String oldPreconditionExpression = this.preconditionExpression;
-        this.preconditionExpression = newPreconditionExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_TOOL__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EList<Operation> getBody() {
         if (this.body == null) {
             this.body = new EObjectContainmentEList<>(Operation.class, this, GanttPackage.TASK_TOOL__BODY);
@@ -194,8 +149,6 @@ public abstract class TaskToolImpl extends MinimalEObjectImpl.Container implemen
         switch (featureID) {
             case GanttPackage.TASK_TOOL__NAME:
                 return this.getName();
-            case GanttPackage.TASK_TOOL__PRECONDITION_EXPRESSION:
-                return this.getPreconditionExpression();
             case GanttPackage.TASK_TOOL__BODY:
                 return this.getBody();
         }
@@ -213,9 +166,6 @@ public abstract class TaskToolImpl extends MinimalEObjectImpl.Container implemen
         switch (featureID) {
             case GanttPackage.TASK_TOOL__NAME:
                 this.setName((String) newValue);
-                return;
-            case GanttPackage.TASK_TOOL__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression((String) newValue);
                 return;
             case GanttPackage.TASK_TOOL__BODY:
                 this.getBody().clear();
@@ -236,9 +186,6 @@ public abstract class TaskToolImpl extends MinimalEObjectImpl.Container implemen
             case GanttPackage.TASK_TOOL__NAME:
                 this.setName(NAME_EDEFAULT);
                 return;
-            case GanttPackage.TASK_TOOL__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
-                return;
             case GanttPackage.TASK_TOOL__BODY:
                 this.getBody().clear();
                 return;
@@ -256,8 +203,6 @@ public abstract class TaskToolImpl extends MinimalEObjectImpl.Container implemen
         switch (featureID) {
             case GanttPackage.TASK_TOOL__NAME:
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case GanttPackage.TASK_TOOL__PRECONDITION_EXPRESSION:
-                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case GanttPackage.TASK_TOOL__BODY:
                 return this.body != null && !this.body.isEmpty();
         }
@@ -277,8 +222,6 @@ public abstract class TaskToolImpl extends MinimalEObjectImpl.Container implemen
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: ");
         result.append(this.name);
-        result.append(", preconditionExpression: ");
-        result.append(this.preconditionExpression);
         result.append(')');
         return result.toString();
     }

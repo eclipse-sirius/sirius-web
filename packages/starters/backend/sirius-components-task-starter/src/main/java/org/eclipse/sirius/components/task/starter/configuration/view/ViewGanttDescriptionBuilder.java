@@ -16,6 +16,8 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DeleteElementBuilder;
 import org.eclipse.sirius.components.view.builder.generated.GanttBuilders;
+import org.eclipse.sirius.components.view.builder.generated.SetValueBuilder;
+import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.DropTaskTool;
@@ -51,6 +53,7 @@ public class ViewGanttDescriptionBuilder {
         EditTaskTool editTaskTool = this.createEditTaskTool();
         DeleteTaskTool deleteTaskTool = this.createDeleteTaskTool();
         DropTaskTool dropTaskTool = this.createDropTaskTool();
+        CreateTaskDependencyTool createTaskDependencyTool = this.createTaskDependencyTool();
 
         GanttDescription ganttDescription = new GanttBuilders().newGanttDescription()
                 .name(GANTT_REP_DESC_NAME)
@@ -61,6 +64,7 @@ public class ViewGanttDescriptionBuilder {
                 .editTool(editTaskTool)
                 .deleteTool(deleteTaskTool)
                 .dropTool(dropTaskTool)
+                .createTaskDependencyTool(createTaskDependencyTool)
                 .build();
 
         return ganttDescription;
@@ -70,7 +74,7 @@ public class ViewGanttDescriptionBuilder {
         return new GanttBuilders().newDropTaskTool()
                 .name("Drop Task")
                 .body(new ChangeContextBuilder()
-                        .expression("aql:source.moveTaskIntoTarget(target, indexInTarget)")
+                        .expression("aql:sourceObject.moveTaskIntoTarget(targetObject, indexInTarget)")
                         .build())
                 .build();
     }
@@ -101,6 +105,19 @@ public class ViewGanttDescriptionBuilder {
                 .build();
     }
 
+    private CreateTaskDependencyTool createTaskDependencyTool() {
+        return new GanttBuilders().newCreateTaskDependencyTool()
+                .name("Create Task Dependency")
+                .body(new ChangeContextBuilder()
+                    .expression("aql:targetObject")
+                    .children(new SetValueBuilder()
+                        .featureName("dependencies")
+                        .valueExpression("aql:sourceObject")
+                        .build())
+                    .build())
+                .build();
+    }
+
     private TaskDescription createTaskDescriptionInProject() {
         TaskDescription taskDescriptionInTask = this.createTaskDescriptionInTask();
 
@@ -113,7 +130,7 @@ public class ViewGanttDescriptionBuilder {
                 .endTimeExpression("aql:self.endTime")
                 .progressExpression("aql:self.progress")
                 .computeStartEndDynamicallyExpression("aql:self.computeStartEndDynamically")
-                .dependenciesExpression("aql:self.dependencies")
+                .taskDependenciesExpression("aql:self.dependencies")
                 .subTaskElementDescriptions(taskDescriptionInTask)
                 .build();
     }
@@ -128,7 +145,7 @@ public class ViewGanttDescriptionBuilder {
                 .endTimeExpression("aql:self.endTime")
                 .progressExpression("aql:self.progress")
                 .computeStartEndDynamicallyExpression("aql:self.computeStartEndDynamically")
-                .dependenciesExpression("aql:self.dependencies")
+                .taskDependenciesExpression("aql:self.dependencies")
                 .build();
 
         taskDescription.getReusedTaskElementDescriptions().add(taskDescription);

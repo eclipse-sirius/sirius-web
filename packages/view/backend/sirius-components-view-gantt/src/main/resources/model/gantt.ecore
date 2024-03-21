@@ -14,6 +14,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dropTool" eType="#//DropTaskTool"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createTaskDependencyTool"
+        eType="#//CreateTaskDependencyTool" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TaskDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
@@ -35,7 +37,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="computeStartEndDynamicallyExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self.computeStartEndDynamically"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dependenciesExpression"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskDependenciesExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self.dependencies"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" lowerBound="1" eType="#//TaskStyleDescription"
@@ -65,9 +67,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="TaskTool" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
         defaultValueLiteral=""/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
-        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
-        defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
         containment="true"/>
   </eClassifiers>
@@ -75,4 +74,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="EditTaskTool" eSuperTypes="#//TaskTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteTaskTool" eSuperTypes="#//TaskTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="DropTaskTool" eSuperTypes="#//TaskTool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateTaskDependencyTool" eSuperTypes="#//TaskTool"/>
 </ecore:EPackage>
