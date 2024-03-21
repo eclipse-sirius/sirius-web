@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @PublicApi
 public record GanttDescription(String id, String label, Function<VariableManager, String> idProvider, Function<VariableManager, String> labelProvider,
         Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<TaskDescription> taskDescriptions, Consumer<VariableManager> createTaskProvider,
-        Consumer<VariableManager> editTaskProvider, Consumer<VariableManager> deleteTaskProvider, Consumer<VariableManager> dropTaskProvider) implements IRepresentationDescription {
+        Consumer<VariableManager> editTaskProvider, Consumer<VariableManager> deleteTaskProvider, Consumer<VariableManager> dropTaskProvider, Consumer<VariableManager> createTaskDependencyProvider) implements IRepresentationDescription {
 
     public static final String LABEL = "label";
 
@@ -45,9 +45,9 @@ public record GanttDescription(String id, String label, Function<VariableManager
 
     public static final String NEW_PROGRESS = "newProgress";
 
-    public static final String SOURCE_OBJECT = "source";
+    public static final String SOURCE_OBJECT = "sourceObject";
 
-    public static final String TARGET_OBJECT = "target";
+    public static final String TARGET_OBJECT = "targetObject";
 
     public static final String SOURCE_TASK = "sourceTask";
 
@@ -118,6 +118,8 @@ public record GanttDescription(String id, String label, Function<VariableManager
 
         private Consumer<VariableManager> dropTaskProvider;
 
+        private Consumer<VariableManager> createTaskDependencyProvider;
+
         private List<TaskDescription> taskDescriptions;
 
         private Builder(String id) {
@@ -164,6 +166,11 @@ public record GanttDescription(String id, String label, Function<VariableManager
             return this;
         }
 
+        public Builder createTaskDependencyProvider(Consumer<VariableManager> createTaskDependencyProvider) {
+            this.createTaskDependencyProvider = createTaskDependencyProvider;
+            return this;
+        }
+
         public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
             this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
             return this;
@@ -176,7 +183,7 @@ public record GanttDescription(String id, String label, Function<VariableManager
 
         public GanttDescription build() {
             GanttDescription ganttDescription = new GanttDescription(this.id, this.label, this.idProvider, this.labelProvider, this.targetObjectIdProvider, this.canCreatePredicate,
-                    this.taskDescriptions, this.createTaskProvider, this.editTaskProvider, this.deleteTaskProvider, this.dropTaskProvider);
+                    this.taskDescriptions, this.createTaskProvider, this.editTaskProvider, this.deleteTaskProvider, this.dropTaskProvider, this.createTaskDependencyProvider);
             return ganttDescription;
         }
     }

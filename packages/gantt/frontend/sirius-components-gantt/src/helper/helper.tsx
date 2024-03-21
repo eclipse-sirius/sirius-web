@@ -34,7 +34,7 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
     } else if (gQLTask.detail.startTime === gQLTask.detail.endTime) {
       type = 'milestone';
     }
-    const dependencies: Dependency[] = gQLTask.dependencyTaskIds.map((dependencyTaskId) => {
+    const dependencies: Dependency[] = gQLTask.taskDependencyIds.map((dependencyTaskId) => {
       return {
         sourceId: dependencyTaskId,
         sourceTarget: 'endOfTask',

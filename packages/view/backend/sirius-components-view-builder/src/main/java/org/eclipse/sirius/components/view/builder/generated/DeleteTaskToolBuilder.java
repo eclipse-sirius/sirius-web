@@ -52,15 +52,6 @@ public class DeleteTaskToolBuilder {
         return this;
     }
     /**
-     * Setter for PreconditionExpression.
-     *
-     * @generated
-     */
-    public DeleteTaskToolBuilder preconditionExpression(java.lang.String value) {
-        this.getDeleteTaskTool().setPreconditionExpression(value);
-        return this;
-    }
-    /**
      * Setter for Body.
      *
      * @generated

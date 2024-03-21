@@ -150,7 +150,7 @@ public record TaskDescription(String id, Function<VariableManager, String> targe
             return this;
         }
 
-        public Builder dependenciesProvider(Function<VariableManager, List<Object>> dependenciesProvider) {
+        public Builder taskDependenciesProvider(Function<VariableManager, List<Object>> dependenciesProvider) {
             this.dependenciesProvider = Objects.requireNonNull(dependenciesProvider);
             return this;
         }

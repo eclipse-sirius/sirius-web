@@ -17,8 +17,11 @@ import { GQLErrorPayload, useMultiToast } from '@eclipse-sirius/sirius-component
 import { useEffect } from 'react';
 import { GQLTaskDetail } from '../subscription/GanttSubscription.types';
 import {
+  GQLCreateGanttTaskDependencyInput,
   GQLCreateGanttTaskInput,
   GQLCreateTaskData,
+  GQLCreateTaskDependencyData,
+  GQLCreateTaskDependencyVariables,
   GQLCreateTaskVariables,
   GQLDeleteGanttTaskInput,
   GQLDeleteTaskData,
@@ -32,7 +35,13 @@ import {
   GQLPayload,
   UseGanttMutations,
 } from './GanttMutation.types';
-import { createTaskMutation, deleteTaskMutation, dropTaskMutation, editTaskMutation } from './ganttMutation';
+import {
+  createTaskDependencyMutation,
+  createTaskMutation,
+  deleteTaskMutation,
+  dropTaskMutation,
+  editTaskMutation,
+} from './ganttMutation';
 
 const isErrorPayload = (payload): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload): payload is GQLPayload => payload.__typename === 'SuccessPayload';
@@ -139,10 +148,29 @@ export const useGanttMutations = (editingContextId: string, representationId: st
     mutationDropTask({ variables: { input } });
   };
 
+  const [mutationCreateTaskDependency, mutationCreateTaskDependencyResult] = useMutation<
+    GQLCreateTaskDependencyData,
+    GQLCreateTaskDependencyVariables
+  >(createTaskDependencyMutation);
+  useErrorReporting(mutationCreateTaskDependencyResult, (data) => data?.payload, addErrorMessage, addMessages);
+
+  const createTaskDependency = (sourceTaskId: string, targetTaskId: string) => {
+    const input: GQLCreateGanttTaskDependencyInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      sourceTaskId,
+      targetTaskId,
+    };
+
+    mutationCreateTaskDependency({ variables: { input } });
+  };
+
   return {
     deleteTask,
     createTask,
     editTask,
     dropTask,
+    createTaskDependency,
   };
 };

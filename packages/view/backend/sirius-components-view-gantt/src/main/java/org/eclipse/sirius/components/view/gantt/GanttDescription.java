@@ -31,6 +31,8 @@ import org.eclipse.sirius.components.view.UserColor;
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getEditTool <em>Edit Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDeleteTool <em>Delete Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDropTool <em>Drop Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getCreateTaskDependencyTool <em>Create Task
+ * Dependency Tool</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription()
@@ -164,5 +166,29 @@ public interface GanttDescription extends RepresentationDescription {
      * @generated
      */
     void setDropTool(DropTaskTool value);
+
+    /**
+     * Returns the value of the '<em><b>Create Task Dependency Tool</b></em>' containment reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Create Task Dependency Tool</em>' containment reference.
+     * @see #setCreateTaskDependencyTool(CreateTaskDependencyTool)
+     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription_CreateTaskDependencyTool()
+     * @model containment="true"
+     * @generated
+     */
+    CreateTaskDependencyTool getCreateTaskDependencyTool();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getCreateTaskDependencyTool <em>Create Task
+     * Dependency Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Create Task Dependency Tool</em>' containment reference.
+     * @see #getCreateTaskDependencyTool()
+     * @generated
+     */
+    void setCreateTaskDependencyTool(CreateTaskDependencyTool value);
 
 } // GanttDescription
