@@ -145,7 +145,7 @@ const layoutHandlePosition = (diagram: RawDiagram) => {
       );
 
       if (
-        nodeSourceConnectionHandle?.position !== sourcePosition &&
+        nodeSourceConnectionHandle?.position !== sourcePosition ||
         nodeTargetConnectionHandle?.position !== targetPosition
       ) {
         const { sourceConnectionHandles, targetConnectionHandles } = getUpdatedConnectionHandles(

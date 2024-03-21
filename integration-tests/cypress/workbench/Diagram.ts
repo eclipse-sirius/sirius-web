@@ -27,6 +27,10 @@ export class Diagram {
     return this.getDiagram(diagramLabel).contains('.react-flow__node', nodeLabel);
   }
 
+  public getEdgePaths(diagramLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getDiagram(diagramLabel).find('.react-flow__edge-path');
+  }
+
   public getSelectedNodes(diagramLabel: string, nodeLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getDiagram(diagramLabel).get('div.react-flow__node.selected').contains('.react-flow__node', nodeLabel);
   }
@@ -122,5 +126,27 @@ export class Diagram {
 
   public dropOnDiagram(diagramLabel: string, dataTransfer: DataTransfer): void {
     this.getDiagram(diagramLabel).getByTestId('rf__wrapper').trigger('drop', 'bottomRight', { dataTransfer });
+  }
+
+  public roundSvgPathData(pathData: string): string {
+    const pathValues = pathData.split(/([a-zA-Z])/);
+    const roundedPathValues: string[] = [];
+
+    for (let i = 0; i < pathValues.length; i++) {
+      const pathValue = pathValues[i];
+      if(pathValue) {
+        if (pathValue.match(/[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?/g)) {
+          roundedPathValues.push(parseFloat(pathValue).toFixed(2));
+        } else {
+          roundedPathValues.push(pathValue);
+        }
+      }
+    }
+
+    let roundedPathData = '';
+    for (let i = 0; i < roundedPathValues.length; i++) {
+      roundedPathData += roundedPathValues[i];
+    }
+    return roundedPathData;
   }
 }
