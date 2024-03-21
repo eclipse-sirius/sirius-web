@@ -22,6 +22,7 @@ import {
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
 } from './EdgeLayout.types';
+import { isDescendantOf } from '../layout/layoutNode';
 
 export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters = (
   sourceNode,
@@ -102,14 +103,21 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes) =
   }
   const horizontalDifference = Math.abs(centerA.x - centerB.x);
   const verticalDifference = Math.abs(centerA.y - centerB.y);
-
+  const isDescendant = isDescendantOf(nodeB, nodeA, (nodeId) => visiblesNodes.find((node) => node.id === nodeId));
   let position: Position;
   if (horizontalDifference > verticalDifference) {
-    position = centerA.x > centerB.x ? Position.Left : Position.Right;
+    if (isDescendant) {
+      position = centerA.x <= centerB.x ? Position.Left : Position.Right;
+    } else {
+      position = centerA.x > centerB.x ? Position.Left : Position.Right;
+    }
   } else {
-    position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
+    if (isDescendant) {
+      position = centerA.y <= centerB.y ? Position.Top : Position.Bottom;
+    } else {
+      position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
+    }
   }
-
   return {
     position,
   };
