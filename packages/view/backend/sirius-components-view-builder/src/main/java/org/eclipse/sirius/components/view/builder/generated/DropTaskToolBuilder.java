@@ -52,15 +52,6 @@ public class DropTaskToolBuilder {
         return this;
     }
     /**
-     * Setter for PreconditionExpression.
-     *
-     * @generated
-     */
-    public DropTaskToolBuilder preconditionExpression(java.lang.String value) {
-        this.getDropTaskTool().setPreconditionExpression(value);
-        return this;
-    }
-    /**
      * Setter for Body.
      *
      * @generated

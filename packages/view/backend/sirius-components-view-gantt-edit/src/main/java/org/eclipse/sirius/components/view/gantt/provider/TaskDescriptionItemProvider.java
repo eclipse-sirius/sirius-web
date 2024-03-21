@@ -69,7 +69,7 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
             this.addEndTimeExpressionPropertyDescriptor(object);
             this.addProgressExpressionPropertyDescriptor(object);
             this.addComputeStartEndDynamicallyExpressionPropertyDescriptor(object);
-            this.addDependenciesExpressionPropertyDescriptor(object);
+            this.addTaskDependenciesExpressionPropertyDescriptor(object);
             this.addReusedTaskElementDescriptionsPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -177,16 +177,16 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
     }
 
     /**
-     * This adds a property descriptor for the Dependencies Expression feature. <!-- begin-user-doc --> <!--
+     * This adds a property descriptor for the Task Dependencies Expression feature. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      */
-    protected void addDependenciesExpressionPropertyDescriptor(Object object) {
+    protected void addTaskDependenciesExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TaskDescription_dependenciesExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_dependenciesExpression_feature", "_UI_TaskDescription_type"),
-                GanttPackage.Literals.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_TaskDescription_taskDependenciesExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_taskDependenciesExpression_feature", "_UI_TaskDescription_type"),
+                GanttPackage.Literals.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -285,7 +285,7 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
             case GanttPackage.TASK_DESCRIPTION__END_TIME_EXPRESSION:
             case GanttPackage.TASK_DESCRIPTION__PROGRESS_EXPRESSION:
             case GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION:
-            case GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION:
+            case GanttPackage.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case GanttPackage.TASK_DESCRIPTION__STYLE:
