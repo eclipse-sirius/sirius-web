@@ -4,7 +4,7 @@
 
 We want to be able to support the toolbar actions in Form/FormDescriptionEditor.
 The toolbar actions are buttons located at the top of a Group/Page inside a Form/FormDescriptionEditor.
-The toolbar actions are inspired from https://www.eclipse.org/sirius/doc/specifier/properties/Properties_View_Description.html#group-toolbar-action in Eclipse Sirius Desktop.
+The toolbar actions are inspired from https://www.eclipse.dev/sirius/doc/specifier/properties/Properties_View_Description.html#group-toolbar-action in Eclipse Sirius Desktop.
 
 == Decision
 

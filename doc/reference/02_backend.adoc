@@ -14,7 +14,7 @@ Our backend relies on the following frameworks and libraries:
 - https://github.com/reactor[Reactor]
 - https://github.com/graphql-java/graphql-java[GraphQL Java]
 - https://www.eclipse.org/modeling/emf/[Eclipse Modeling Framework]
-- https://www.eclipse.org/sirius/[Eclipse Sirius]
+- https://www.eclipse.dev/sirius/[Eclipse Sirius]
 - https://www.eclipse.org/acceleo/documentation/[Acceleo Query Language (AQL)]
 
 Spring Boot comes with a set of dependencies that have been tested and validated one with the others.

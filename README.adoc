@@ -1,7 +1,7 @@
 = Sirius Web
 
-https://www.eclipse.org/sirius/sirius-web.html[Eclipse Sirius Web] is a framework to easily create and deploy studios to the web.
-We keep the principles which made the success of https://www.eclipse.org/sirius[Eclipse Sirius Desktop] and make them available on a modern cloud-based stack.
+https://www.eclipse.dev/sirius/sirius-web.html[Eclipse Sirius Web] is a framework to easily create and deploy studios to the web.
+We keep the principles which made the success of https://www.eclipse.dev/sirius[Eclipse Sirius Desktop] and make them available on a modern cloud-based stack.
 
 image::doc/images/ProjectEditor.png[Sirius Web]
 
