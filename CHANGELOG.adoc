@@ -46,6 +46,7 @@ The use of generics has thus been greatly reduced since they could not create a 
 - https://github.com/eclipse-sirius/sirius-web/issues/3183[#3183] [diagram] Fix an issue in which an edge between a child and its parent passed entirely through the child.
 - https://github.com/eclipse-sirius/sirius-web/issues/3287[#3287] [form] The label sent with the form refreshed event payload is the representation name, not the always the `FormRepresentationDescription#titleExpression`
 - https://github.com/eclipse-sirius/sirius-web/issues/3290[#3290] [diagram] Fix an issue that prevent the group palette to be displayed if only list children are selected.
+- https://github.com/eclipse-sirius/sirius-web/issues/3018[3018] [gantt] Fix reference widgets for AbstractTask Details
 
 === New Features
 

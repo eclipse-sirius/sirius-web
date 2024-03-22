@@ -103,7 +103,6 @@ describe('Verify the Gantt Representation', () => {
     });
 
     after(() => {
-      console.log('cy.deleteProject(taskProjectId)');
       cy.deleteProject(taskProjectId);
     });
     it('can display the table columns', () => {
