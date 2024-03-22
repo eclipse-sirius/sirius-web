@@ -40,7 +40,7 @@ For further information, please refer to ADR _130_add_support_for_outside_inside
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3183[#3183] [diagram] Fix an issue in which an edge between a child and its parent passed entirely through the child.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3018[3018] [gantt] Fix reference widgets for AbstractTask Details
 
 === New Features
 
