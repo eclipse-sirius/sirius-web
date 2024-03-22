@@ -132,7 +132,6 @@ public class TaskJavaService {
         Task task = TaskFactory.eINSTANCE.createTask();
         task.setName(NEW_TASK);
         task.setDescription("new description");
-        task.setName(NEW_TASK);
         if (context instanceof TaskTag tag) {
             task.getTags().add(tag);
 
@@ -232,13 +231,13 @@ public class TaskJavaService {
      * When a card is moved, we change the underlying task ordering.
      *
      * @param task
-     *            the task to move.
+     *         the task to move.
      * @param index
-     *            the new index in the lane task list.
+     *         the new index in the lane task list.
      * @param targetLaneTaskList
-     *            the current lane task list.
+     *         the current lane task list.
      * @param project
-     *            the project owning the tasks.
+     *         the project owning the tasks.
      * @return the index on which the task should be moved in the project task list to match the new index in the lane.
      */
     private int computeIndexOfTaskToReplace(Task task, int index, List<Task> targetLaneTaskList, Project project) {
@@ -280,15 +279,15 @@ public class TaskJavaService {
      * list.
      *
      * @param tag
-     *            the tag to move.
+     *         the tag to move.
      * @param index
-     *            the new index in the project tag list.
+     *         the new index in the project tag list.
      * @param tagList
-     *            the current deck representation tag list (might be a sub set of the project tag list).
+     *         the current deck representation tag list (might be a sub set of the project tag list).
      * @param project
-     *            the project owning the tags.
+     *         the project owning the tags.
      * @return the index on which the tag should be moved in the project tag list to match the new index in the deck
-     *         representation.
+     * representation.
      */
     private int computeIndexOfTagToMove(TaskTag tag, int index, List<TaskTag> tagList, Project project) {
         int newIndex;
