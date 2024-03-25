@@ -61,6 +61,7 @@ In this first version, the only available positions _top_center_ for inside labe
 +
 image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3237[#3237] [diagram] Add a `DiagramServices` class containing services to expand and collapse nodes from AQL expressions (via the new `diagramServices` variable) and Java services.
+- https://github.com/eclipse-sirius/sirius-web/issues/3282[#3282] [diagram] Add diagram assertions and navigators to ease the definition of diagram tests.
 
 
 === Improvements
