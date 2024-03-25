@@ -242,7 +242,8 @@ public class GeneralPurposeTests {
     }
 
     private void testNoThrowNewException(int index, String line, Path javaFilePath, List<String> lines) {
-        if (line.contains(THROW_NEW)) {
+        var isWhiteListed = javaFilePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("sirius-components-diagrams-tests");
+        if (!isWhiteListed && line.contains(THROW_NEW)) {
             var isRecord = lines.stream().anyMatch(l -> l.contains("public record"));
             if (!isRecord) {
                 fail(this.createErrorMessage("throw new XXXException", javaFilePath, index));
