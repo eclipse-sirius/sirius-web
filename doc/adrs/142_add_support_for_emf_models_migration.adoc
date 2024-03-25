@@ -1,0 +1,104 @@
+= ADR-142 - Add the support for EMF models migration
+
+== Context
+
+We want to be able to load any model created with a previous version of Sirius Web. 
+
+== Decision
+
+Since models are serialised/deserialised with EMF, we will use the `ExtendedMetaData` mechanism from EMF.
+
+== Consequences
+
+We will extend `ExtendedMetaData` with another class  `MigrationExtendedMetaData` that will be instantiated with the current version of the model expected by Sirius Web and a list of `IMigrationParticipant`.
+This class will also override the necessary methods from `BasicExtendedMetaData` that will allow us to migrate the model (like `getLocalElement`)
+
+One important thing to consider is that BasicExtendedMetaData methods assume that the model is stored in XMl format, since we're using JSON format, we should be really cautious about using the default methods and might have to override most of them even if we don't use them all for migrating, a BasicJSonExtendedMetaData might even be needed.
+
+[source,java]
+----
+public class MigrationExtendedMetaData extends BasicExtendedMetaData {
+    private final String version;
+    private final List<IMigrationParticipant> iMigrationParticipants;
+    public MigrationExtendedMetaData(List<IMigrationParticipant> iMigrationParticipants, String version) {
+        this.iMigrationParticipants = Objects.requireNonNull(iMigrationParticipants);
+        this.version = version;
+    }
+
+    @Override
+    public EStructuralFeature getLocalElement(EClass eClass,  String namespace, String oldName) {
+        EStructuralFeature structuralFeature = eClass.getEStructuralFeature(oldName);
+        var migrationParticipants = iMigrationParticipants.stream().
+                filter(iMigrationParticipant -> iMigrationParticipant.canHandle(this.version))
+                .sorted(Comparator.comparing(IMigrationParticipant::getMigrationParticipantVersion))
+                .toList();
+
+        for (IMigrationParticipant migrationParticipant : migrationParticipants) {
+            structuralFeature = migrationParticipant.getLocalElement(eClass, namespace, oldName);
+        }
+
+        return structuralFeature;
+    }
+}
+----
+
+In each method overridden, we call the corresponding method from `IMigrationParticipant` if it has a lesser version than the one used to instantiate the `MigrationExtendedMetaData`.
+
+[source,java]
+----
+public class MigrationExtendedMetaData extends BasicExtendedMetaData {
+    boolean canHandle(String currentFileVersion);
+    String getMigrationParticipantVersion();
+    EStructuralFeature getLocalElement(EClass eClass,  String namespace, String oldName);
+}
+----
+
+[source,java]
+----
+public class MigrationExtendedMetaData extends BasicExtendedMetaData {
+    boolean canHandle(String currentFileVersion);
+    String getMigrationParticipantVersion();
+    EStructuralFeature getLocalElement(EClass eClass,  String namespace, String oldName);
+}
+----
+
+This is an example of implementation where this NameFeatureChangelMigrationParticipant will be used if the model version is superior to `202404221458`.
+If the feature name was changed from "name2" to something else, we provide the new correct value.
+
+[source,java]
+----
+@Service
+public class NameFeatureChangelMigrationParticipant implements IMigrationParticipant {
+
+    private static final String PARTICIPANT_VERSION = "202404221458";
+    @Override
+    public boolean canHandle(String currentFileVersion) {
+        return PARTICIPANT_VERSION.compareTo(currentFileVersion) < 0;
+    }
+
+    @Override
+    public String getMigrationParticipantVersion() {
+        return PARTICIPANT_VERSION;
+    }
+
+    @Override
+    public EStructuralFeature getAttribute(String namespace, String name) {
+        return null;
+    }
+
+    @Override
+    public EStructuralFeature getLocalElement(EClass eClass,  String namespace, String oldName) {
+        EStructuralFeature feature = null;
+        if (DomainPackage.eINSTANCE.getDomain().equals(eClass)) {
+            if (oldName.equals("name2")) {
+                feature = DomainPackage.eINSTANCE.getNamedElement_Name();
+            }
+        }
+        return feature;
+    }
+}
+----
+
+== Status
+
+Work in progress
