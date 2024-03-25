@@ -17,6 +17,8 @@
 - [ADR-141] Factorize GraphQL queries in tests
 - [ADR-142] Add report on document upload
 - [ADR-143] Handle documents upload with other formats than JSON and XMI
+- [ADR-144] Add the support for EMF models migration
+
 
 === Deprecation warning
 
