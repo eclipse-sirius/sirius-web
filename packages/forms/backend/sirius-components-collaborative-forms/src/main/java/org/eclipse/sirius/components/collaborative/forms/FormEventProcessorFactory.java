@@ -103,6 +103,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                             .editingContext(editingContext)
                             .formDescription(formDescription)
                             .object(object)
+                            .label(form.getLabel())
                             .selection(List.of())
                             .build();
 

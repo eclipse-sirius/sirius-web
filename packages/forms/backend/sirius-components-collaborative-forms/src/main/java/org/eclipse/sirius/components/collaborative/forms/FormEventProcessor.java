@@ -108,13 +108,14 @@ public class FormEventProcessor implements IFormEventProcessor {
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
         this.formPostProcessor = Objects.requireNonNull(formPostProcessor);
 
-        this.variableManager = this.initializeVariableManager(this.formCreationParameters.getFormDescription());
+        this.variableManager = this.initializeVariableManager(this.formCreationParameters);
 
         Form form = this.refreshForm();
         this.currentForm.set(form);
     }
 
-    private VariableManager initializeVariableManager(FormDescription formDescription) {
+    private VariableManager initializeVariableManager(FormCreationParameters formDescriptionParameters) {
+        var formDescription = formDescriptionParameters.getFormDescription();
         var self = this.formCreationParameters.getObject();
         if (this.currentForm.get() != null) {
             self = this.objectService.getObject(this.editingContext, this.currentForm.get().getTargetObjectId()).orElse(self);
@@ -125,6 +126,9 @@ public class FormEventProcessor implements IFormEventProcessor {
         initialVariableManager.put(FormVariableProvider.SELECTION.name(), this.formCreationParameters.getSelection());
         initialVariableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.formCreationParameters.getId());
         initialVariableManager.put(IEditingContext.EDITING_CONTEXT, this.formCreationParameters.getEditingContext());
+        if (formDescriptionParameters.getLabel() != null) {
+            initialVariableManager.put(FormDescription.LABEL, formDescriptionParameters.getLabel());
+        }
 
         var initializer = formDescription.getVariableManagerInitializer();
         return initializer.apply(initialVariableManager);

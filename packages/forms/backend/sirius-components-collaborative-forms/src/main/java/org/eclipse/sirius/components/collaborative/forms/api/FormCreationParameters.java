@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,8 @@ public final class FormCreationParameters {
 
     private Object object;
 
+    private String label;
+
     private List<Object> selection;
 
     private FormDescription formDescription;
@@ -54,11 +56,16 @@ public final class FormCreationParameters {
                 .formDescription(formCreationParameters.getFormDescription())
                 .editingContext(formCreationParameters.getEditingContext())
                 .object(formCreationParameters.getObject())
+                .label(formCreationParameters.getLabel())
                 .selection(formCreationParameters.getSelection());
     }
 
     public Object getObject() {
         return this.object;
+    }
+
+    public String getLabel() {
+        return this.label;
     }
 
     public FormDescription getFormDescription() {
@@ -95,6 +102,8 @@ public final class FormCreationParameters {
 
         private Object object;
 
+        private String label;
+
         private List<Object> selection;
 
         private FormDescription formDescription;
@@ -107,6 +116,11 @@ public final class FormCreationParameters {
 
         public Builder object(Object object) {
             this.object = Objects.requireNonNull(object);
+            return this;
+        }
+
+        public Builder label(String label) {
+            this.label = Objects.requireNonNull(label);
             return this;
         }
 
@@ -129,6 +143,7 @@ public final class FormCreationParameters {
             FormCreationParameters formCreationParameters = new FormCreationParameters();
             formCreationParameters.id = this.id;
             formCreationParameters.object = Objects.requireNonNull(this.object);
+            formCreationParameters.label = this.label; // Can be null on purpose
             formCreationParameters.selection = Objects.requireNonNull(this.selection);
             formCreationParameters.formDescription = Objects.requireNonNull(this.formDescription);
             formCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
