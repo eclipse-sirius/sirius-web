@@ -199,7 +199,9 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     }
 
     private String computeFormLabel(org.eclipse.sirius.components.view.form.FormDescription viewFormDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        return this.evaluateString(interpreter, variableManager, viewFormDescription.getTitleExpression()).orElse(DEFAULT_FORM_LABEL);
+        return variableManager.get(FormDescription.LABEL, String.class)
+                .or(() -> this.evaluateString(interpreter, variableManager, viewFormDescription.getTitleExpression()))
+                .orElse(DEFAULT_FORM_LABEL);
     }
 
     private String computePageLabel(org.eclipse.sirius.components.view.form.PageDescription viewPageDescription, VariableManager variableManager, AQLInterpreter interpreter) {

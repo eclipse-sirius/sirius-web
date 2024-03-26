@@ -41,6 +41,8 @@ For further information, please refer to ADR _130_add_support_for_outside_inside
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3183[#3183] [diagram] Fix an issue in which an edge between a child and its parent passed entirely through the child.
+- https://github.com/eclipse-sirius/sirius-web/issues/3287[#3287] [form] The label sent with the form refreshed event payload is the representation name, not the always the `FormRepresentationDescription#titleExpression`
+
 
 
 === New Features

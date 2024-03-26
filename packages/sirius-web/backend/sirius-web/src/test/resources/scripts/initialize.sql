@@ -111,6 +111,94 @@ INSERT INTO document (
   '2024-01-02 9:42:0.000'
 );
 
+-- Sample studio instance project
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '018e603d-3caa-78ce-bee4-7ac3ad775236',
+  'Sample studio instance',
+  '2024-03-26 16:48:0.000',
+  '2024-03-26 16:48:0.000'
+);
+INSERT INTO semantic_data (
+  id,
+  project_id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '018e7b73-a3b8-761a-95ef-978abdd6dd63',
+  '018e603d-3caa-78ce-bee4-7ac3ad775236',
+  '2024-03-26 16:48:0.000',
+  '2024-03-26 16:48:0.000'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '018e7b73-a3b8-761a-95ef-978abdd6dd63',
+  'http://www.eclipse.org/sirius-web/domain'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '018e7b73-a3b8-761a-95ef-978abdd6dd63',
+  'http://www.eclipse.org/sirius-web/view'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '018e7b73-a3b8-761a-95ef-978abdd6dd63',
+  'http://www.eclipse.org/sirius-web/form'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '018e7b73-a3b8-761a-95ef-978abdd6dd63',
+  'domain://buck'
+);
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '018e7b83-cd77-77fb-9cbb-0043b0f80c8a',
+  '018e7b73-a3b8-761a-95ef-978abdd6dd63',
+  'world',
+  '{"json":{"version":"1.0","encoding":"utf-8"},"ns":{"buck":"domain://buck"},"content":[{"id":"61b6944d-1837-4def-b300-506ca5cb2680","eClass":"buck:Root","data":{"humans":[{"id":"11d81e59-0acb-4ad9-8783-6fb75d739548","eClass":"buck:Human","data":{"name":"world","description":"We are all human after all","promoted":true}}]}}]}',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO representation_data (
+  id,
+  project_id,
+  target_object_id,
+  description_id,
+  label,
+  kind,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '018e7b81-bf62-7800-8ccc-9aeeef53a69b',
+  '018e603d-3caa-78ce-bee4-7ac3ad775236',
+  '11d81e59-0acb-4ad9-8783-6fb75d739548',
+  'siriusComponents://representationDescription?kind=formDescription&sourceKind=view&sourceId=ed2a5355-991d-458f-87f1-ea3a18b1f104&sourceElementId=ed20cb85-a58a-47ad-bc0d-749ec8b2ea03',
+  'Human Form',
+  'siriusComponents://representation?type=Form',
+  '{"id": "018e7b81-bf62-7800-8ccc-9aeeef53a69b","kind": "siriusComponents://representation?type=Form","label": "Human Form","targetObjectId": "11d81e59-0acb-4ad9-8783-6fb75d739548","descriptionId": "siriusComponents://representationDescription?kind=formDescription&sourceKind=view&sourceId=ed2a5355-991d-458f-87f1-ea3a18b1f104&sourceElementId=ed20cb85-a58a-47ad-bc0d-749ec8b2ea03","pages": []}',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+
 -- Sample empty UML project
 INSERT INTO project (
   id,

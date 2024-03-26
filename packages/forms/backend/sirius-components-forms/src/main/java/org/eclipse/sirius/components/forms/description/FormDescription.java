@@ -33,6 +33,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @Immutable
 public final class FormDescription implements IRepresentationDescription {
 
+    public static final String LABEL = "label";
+
     private String id;
 
     private String label;
