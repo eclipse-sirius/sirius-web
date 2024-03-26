@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
-import { useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -57,7 +57,7 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
   const { addErrorMessage, addMessages } = useMultiToast();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { getNodes } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const [deleteElementsMutation, { data: deleteElementsData, error: deleteElementsError }] = useMutation<
     GQLDeleteFromDiagramData,

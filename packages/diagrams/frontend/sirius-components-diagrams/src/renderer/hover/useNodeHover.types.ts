@@ -11,9 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { NodeMouseHandler } from 'reactflow';
+import { Node, NodeMouseHandler } from '@xyflow/react';
+import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseNodeHoverValue {
-  onNodeMouseEnter: NodeMouseHandler;
-  onNodeMouseLeave: NodeMouseHandler;
+  onNodeMouseEnter: NodeMouseHandler<Node<NodeData>>;
+  onNodeMouseLeave: NodeMouseHandler<Node<NodeData>>;
 }

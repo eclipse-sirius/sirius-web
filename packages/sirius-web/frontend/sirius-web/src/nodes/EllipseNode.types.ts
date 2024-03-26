@@ -10,9 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+import { CommonData, GQLNodeStyle } from '@eclipse-sirius/sirius-components-diagrams';
+import { Node, NodeProps } from '@xyflow/react';
+import { FC } from 'react';
 
-export interface EllipseNodeData extends NodeData {}
+export interface EllipseNodeData extends Record<string, unknown>, CommonData {}
 
 export interface GQLEllipseNodeStyle extends GQLNodeStyle {
   color: string;
@@ -20,3 +22,10 @@ export interface GQLEllipseNodeStyle extends GQLNodeStyle {
   borderStyle: string;
   borderSize: string;
 }
+
+export interface NodeDataMap {
+  ellipseNode: EllipseNodeData;
+}
+export type NodeComponentsMap = {
+  [K in keyof NodeDataMap]: FC<NodeProps<Node<NodeDataMap[K], K>>>;
+};

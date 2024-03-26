@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, Edge } from 'reactflow';
+import { Edge, Node } from '@xyflow/react';
 
 export interface UseDiagramElementPaletteValue {
   x: number | null;

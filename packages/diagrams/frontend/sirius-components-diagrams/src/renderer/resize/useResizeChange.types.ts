@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeChange } from 'reactflow';
+import { Node, NodeChange } from '@xyflow/react';
+import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseResizeChangeValue {
-  transformResizeListNodeChanges: (changes: NodeChange[]) => NodeChange[];
+  transformResizeListNodeChanges: (changes: NodeChange<Node<NodeData>>[]) => NodeChange<Node<NodeData>>[];
 }

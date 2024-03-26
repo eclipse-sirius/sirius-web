@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Edge, Node, NodeChange, NodePositionChange, useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
-import { Node, NodeChange, NodePositionChange, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
 import { UseMoveChangeValue } from './useMoveChange.types';
@@ -24,7 +24,7 @@ const applyPositionChangeToParentIfUndraggable = (
   change: NodePositionChange
 ): NodeChange => {
   const parentNode = nodes.find((node) => movedNode?.parentNode === node.id);
-  if (parentNode && change.position && isListData(parentNode) && !parentNode.data.areChildNodesDraggable) {
+  if (parentNode && change.position && isListData(parentNode)) {
     change.id = parentNode.id;
     change.position.x = parentNode.position.x + (change.position.x - movedNode.position.x);
     change.position.y = parentNode.position.y + (change.position.y - movedNode.position.y);
@@ -38,24 +38,27 @@ const isMove = (change: NodeChange): change is NodePositionChange =>
   change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
 
 export const useMoveChange = (): UseMoveChangeValue => {
-  const { getNodes } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
-  const transformUndraggableListNodeChanges = useCallback((changes: NodeChange[]): NodeChange[] => {
-    return changes.map((change) => {
-      if (isMove(change)) {
-        const movedNode = getNodes().find((node) => change.id === node.id);
-        if (movedNode?.parentNode) {
-          applyPositionChangeToParentIfUndraggable(movedNode, getNodes(), change);
+  const transformUndraggableListNodeChanges = useCallback(
+    (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
+      return changes.map((change) => {
+        if (isMove(change)) {
+          const movedNode = getNodes().find((node) => change.id === node.id);
+          if (movedNode?.parentNode) {
+            applyPositionChangeToParentIfUndraggable(movedNode, getNodes(), change);
+          }
+          if (movedNode?.data.pinned) {
+            change.position = undefined; // canceled move if node is pinned
+          }
         }
-        if (movedNode?.data.pinned) {
-          change.position = undefined; // canceled move if node is pinned
-        }
-      }
-      return change;
-    });
-  }, []);
+        return change;
+      });
+    },
+    []
+  );
 
-  const applyMoveChange = (changes: NodeChange[], nodes: Node<NodeData>[]): Node<NodeData>[] => {
+  const applyMoveChange = (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): Node<NodeData>[] => {
     changes.forEach((change) => {
       if (isMove(change)) {
         const movedNode = nodes.find((node) => node.id === change.id);

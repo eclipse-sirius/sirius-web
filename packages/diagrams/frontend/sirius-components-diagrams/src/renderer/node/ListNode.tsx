@@ -13,8 +13,9 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
+import { Node, NodeProps } from '@xyflow/react';
 import { memo, useContext } from 'react';
-import { NodeProps } from 'reactflow';
+import { NodeComponentsMap } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDrop } from '../drop/useDrop';
@@ -54,7 +55,7 @@ const listNodeStyle = (
   return listNodeStyle;
 };
 
-export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) => {
+export const ListNode: NodeComponentsMap['listNode'] = memo(({ data, id, selected }: NodeProps<Node<ListNodeData>>) => {
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
@@ -68,10 +69,10 @@ export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) =
   useRefreshConnectionHandles(id, data.connectionHandles);
   return (
     <>
-      <Resizer data={data} selected={selected} />
+      <Resizer data={data} selected={!!selected} />
       <div
         style={{
-          ...listNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
+          ...listNodeStyle(theme, data.style, !!selected, hoveredNode?.id === id, data.faded),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyle,
         }}

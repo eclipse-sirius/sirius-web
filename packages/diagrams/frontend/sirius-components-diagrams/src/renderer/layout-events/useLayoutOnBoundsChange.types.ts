@@ -10,10 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeChange } from 'reactflow';
+import { Node, NodeChange } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 
 export interface UseLayoutOnBoundsChangeValue {
-  layoutOnBoundsChange: (changes: NodeChange[], nodes: Node<NodeData, DiagramNodeType>[]) => void;
+  layoutOnBoundsChange: (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]) => void;
 }

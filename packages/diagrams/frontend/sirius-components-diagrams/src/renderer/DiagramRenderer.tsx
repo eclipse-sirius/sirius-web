@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -22,23 +21,24 @@ import {
   EdgeChange,
   Node,
   NodeChange,
-  NodeDragHandler,
   NodePositionChange,
   OnEdgesChange,
   OnMove,
+  OnNodeDrag,
   OnNodesChange,
   ReactFlow,
   applyNodeChanges,
   useEdgesState,
   useNodesState,
-} from 'reactflow';
+} from '@xyflow/react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { useDiagramDescription } from '../contexts/useDiagramDescription';
 import { convertDiagram } from '../converter/convertDiagram';
-import { Diagram, DiagramRendererProps, NodeData } from './DiagramRenderer.types';
+import { Diagram, DiagramRendererProps, EdgeData, NodeData } from './DiagramRenderer.types';
 import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
@@ -48,6 +48,8 @@ import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
 import { useDropNode } from './dropNode/useDropNode';
 import { ConnectionLine } from './edge/ConnectionLine';
+
+import '@xyflow/react/dist/style.css';
 import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
@@ -71,10 +73,7 @@ import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 import { useResizeChange } from './resize/useResizeChange';
-import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
-
-import 'reactflow/dist/style.css';
 
 const GRID_STEP: number = 10;
 
@@ -115,8 +114,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     useDropNode();
   const { nodeTypes } = useNodeType();
 
-  const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node<NodeData>>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge<MultiLabelEdgeData>>([]);
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const { fitToScreen } = useInitialFitToScreen();
@@ -154,7 +153,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     }
   }, [diagramRefreshedEventPayload, diagramDescription]);
 
-  useDiagramSelection();
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { transformResizeListNodeChanges } = useResizeChange();
@@ -170,8 +168,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     resetHelperLines,
   } = useHelperLines();
 
-  const handleNodesChange: OnNodesChange = useCallback(
-    (changes: NodeChange[]) => {
+  const handleNodesChange: OnNodesChange<Node<NodeData>> = useCallback(
+    (changes: NodeChange<Node<NodeData>>[]) => {
       const noReadOnlyChanges = filterReadOnlyChanges(changes);
       if (
         noReadOnlyChanges.length === 1 &&
@@ -182,7 +180,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       } else {
         setNodes((oldNodes) => {
           resetHelperLines(changes);
-          let transformedNodeChanges: NodeChange[] = transformBorderNodeChanges(noReadOnlyChanges);
+          let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges);
           transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
           transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
           transformedNodeChanges = applyHelperLines(transformedNodeChanges);
@@ -205,7 +203,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     [setNodes, targetNodeId, draggedNode?.id]
   );
 
-  const handleEdgesChange: OnEdgesChange = (changes: EdgeChange[]) => {
+  const handleEdgesChange: OnEdgesChange<Edge<EdgeData>> = (changes: EdgeChange<Edge<EdgeData>>[]) => {
     onEdgesChange(changes);
   };
 
@@ -251,12 +249,12 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     closeAllPalettes();
   }, [isDiagramElementPaletteOpened, isDiagramPaletteOpened]);
 
-  const handleNodeDragStop: NodeDragHandler = onNodeDragStop((node: Node) => {
+  const handleNodeDragStop: OnNodeDrag<Node<NodeData>> = onNodeDragStop((node: Node) => {
     const resetPosition: NodePositionChange = {
       id: node.id,
       type: 'position',
       position: node.position,
-      positionAbsolute: node.positionAbsolute,
+      positionAbsolute: node.computed ? node.computed.positionAbsolute : { x: 0, y: 0 },
     };
     onNodesChange([resetPosition]);
   });

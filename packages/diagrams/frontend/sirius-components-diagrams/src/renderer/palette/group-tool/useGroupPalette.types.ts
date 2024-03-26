@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, XYPosition } from 'reactflow';
+import { Edge, Node, XYPosition } from '@xyflow/react';
 
 export interface UseGroupPaletteValue {
   position: XYPosition | null;
