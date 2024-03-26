@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { HandleProps } from 'reactflow';
+import { HandleProps } from '@xyflow/system';
 
 export interface ConnectionHandlesProps {
   connectionHandles: ConnectionHandle[];

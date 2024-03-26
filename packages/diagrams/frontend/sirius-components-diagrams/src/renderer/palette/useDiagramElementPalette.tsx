@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Edge, Node, XYPosition, useKeyPress, useReactFlow, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
-import { Edge, Node, XYPosition, useKeyPress, useReactFlow, useStoreApi } from 'reactflow';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramElementPaletteContext } from './DiagramElementPaletteContext';
 import { DiagramElementPaletteContextValue } from './DiagramElementPaletteContext.types';
 import { UseDiagramElementPaletteValue } from './useDiagramElementPalette.types';
-import { NodeData, EdgeData } from '../DiagramRenderer.types';
 
 const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DOMRect | undefined): XYPosition => {
   return {
@@ -28,12 +28,12 @@ const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DO
 export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
   const { x, y, isOpened, hideDiagramElementPalette, showDiagramElementPalette } =
     useContext<DiagramElementPaletteContextValue>(DiagramElementPaletteContext);
-  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const store = useStoreApi();
 
   const onDiagramElementClick = useCallback(
-    (event: React.MouseEvent<Element, MouseEvent>, elementClicked: Node | Edge) => {
+    (event: React.MouseEvent, elementClicked: Node | Edge) => {
       const { domNode } = store.getState();
       const element = domNode?.getBoundingClientRect();
       const palettePosition = computePalettePosition(event, element);

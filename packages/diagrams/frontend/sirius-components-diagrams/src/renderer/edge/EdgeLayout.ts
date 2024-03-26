@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { HandleElement, Position, internalsSymbol } from 'reactflow';
+import { Position, internalsSymbol } from '@xyflow/react';
+import { HandleElement } from '@xyflow/system';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import {
   GetEdgeParameters,
@@ -124,10 +125,10 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes) =
 };
 
 export const getNodeCenter: GetNodeCenter = (node, visiblesNodes) => {
-  if (node.positionAbsolute?.x && node.positionAbsolute?.y) {
+  if (node.computed && node.computed.positionAbsolute?.x && node.computed.positionAbsolute?.y) {
     return {
-      x: (node.positionAbsolute?.x ?? 0) + (node.width ?? 0) / 2,
-      y: (node.positionAbsolute?.y ?? 0) + (node.height ?? 0) / 2,
+      x: (node.computed.positionAbsolute?.x ?? 0) + (node.width ?? 0) / 2,
+      y: (node.computed.positionAbsolute?.y ?? 0) + (node.height ?? 0) / 2,
     };
   } else {
     let parentNode = visiblesNodes.find((nodeParent) => nodeParent.id === node.parentNode);
@@ -174,13 +175,14 @@ export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (n
         break;
     }
 
-    const x = (node.positionAbsolute?.x ?? 0) + handle.x + offsetX;
-    const y = (node.positionAbsolute?.y ?? 0) + handle.y + offsetY;
-
-    return {
-      x,
-      y,
-    };
+    if (node.computed) {
+      const x = (node.computed.positionAbsolute?.x ?? 0) + handle.x + offsetX;
+      const y = (node.computed.positionAbsolute?.y ?? 0) + handle.y + offsetY;
+      return {
+        x,
+        y,
+      };
+    }
   }
 
   return { x: 0, y: 0 };

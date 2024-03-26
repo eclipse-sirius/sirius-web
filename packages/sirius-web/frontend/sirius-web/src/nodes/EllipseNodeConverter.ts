@@ -29,7 +29,7 @@ import {
   convertOutsideLabels,
   isListLayoutStrategy,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Node, XYPosition } from 'reactflow';
+import { Node, XYPosition } from '@xyflow/react';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };

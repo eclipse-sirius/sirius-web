@@ -13,8 +13,8 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useTheme } from '@material-ui/core/styles';
+import { Edge, Node, OnNodeDrag, XYPosition, useReactFlow } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
-import { Node, NodeDragHandler, XYPosition, useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
@@ -98,7 +98,7 @@ const useDropNodeMutation = () => {
 
   const invokeMutation = useCallback(
     (
-      droppedNode: Node,
+      droppedNode: Node<NodeData>,
       targetElementId: string | null,
       dropPosition: XYPosition,
       onDragCancelled: (node: Node) => void
@@ -141,7 +141,7 @@ export const useDropNode = (): UseDropNodeValue => {
   const { diagramDescription } = useDiagramDescription();
 
   const onDropNode = useDropNodeMutation();
-  const { getNodes, getIntersectingNodes } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getIntersectingNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const getNodeById: (string) => Node | undefined = (id: string) => getNodes().find((n) => n.id === id);
 
@@ -153,7 +153,7 @@ export const useDropNode = (): UseDropNodeValue => {
     return node;
   };
 
-  const onNodeDragStart: NodeDragHandler = useCallback((_event, node) => {
+  const onNodeDragStart: OnNodeDrag<Node<NodeData>> = useCallback((_event, node) => {
     const computedNode = getDraggableNode(node);
 
     const dropDataEntry: GQLDropNodeCompatibility | undefined = diagramDescription.dropNodeCompatibility.find(
@@ -161,9 +161,7 @@ export const useDropNode = (): UseDropNodeValue => {
     );
     const compatibleNodes = getNodes()
       .filter((candidate) => !candidate.hidden && !isDescendantOf(computedNode, candidate, getNodeById))
-      .filter((candidate) =>
-        dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
-      )
+      .filter((candidate) => dropDataEntry?.droppableOnNodeTypes.includes(candidate.data.descriptionId))
       .map((candidate) => candidate.id);
 
     initializeDrop({
@@ -175,13 +173,13 @@ export const useDropNode = (): UseDropNodeValue => {
     });
   }, []);
 
-  const onNodeDrag: NodeDragHandler = useCallback(
+  const onNodeDrag: OnNodeDrag<Node<NodeData>> = useCallback(
     (_event, node) => {
       if (draggedNode && !draggedNode.data.isBorderNode) {
         const intersections = getIntersectingNodes(node).filter((intersectingNode) => !intersectingNode.hidden);
         const newParentId =
           [...intersections]
-            .filter((intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, getNodeById))
+            .filter((intersectingNode) => !isDescendantOf(draggedNode as Node, intersectingNode, getNodeById))
             .sort((n1, n2) => getNodeDepth(n2, intersections) - getNodeDepth(n1, intersections))[0]?.id || null;
         setTargetNodeId(newParentId);
       }
@@ -189,8 +187,8 @@ export const useDropNode = (): UseDropNodeValue => {
     [draggedNode?.id]
   );
 
-  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
-  const onNodeDragStop: (onDragCancelled: (node: Node) => void) => NodeDragHandler = useCallback(
+  const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const onNodeDragStop: (onDragCancelled: (node: Node) => void) => OnNodeDrag<Node<NodeData>> = useCallback(
     (onDragCancelled) => {
       return (event, _node) => {
         const dropPosition = reactFlowInstance.screenToFlowPosition({

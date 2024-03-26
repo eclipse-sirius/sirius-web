@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { DRAG_SOURCES_TYPE, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
-import { useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -77,7 +77,7 @@ export const useDrop = (): UseDropValue => {
       }
     }
   }, [droponDiagramElementData, droponDiagramError]);
-  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+  const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const onDrop = useCallback(
     (event: React.DragEvent, diagramElementId?: string) => {
       event.preventDefault();

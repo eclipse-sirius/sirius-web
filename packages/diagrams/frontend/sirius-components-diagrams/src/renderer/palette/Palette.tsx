@@ -20,8 +20,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import AdjustIcon from '@material-ui/icons/Adjust';
 import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useReactFlow, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { PinIcon } from '../../icons/PinIcon';
@@ -223,7 +223,7 @@ export const Palette = ({
   const { pinDiagramElements } = usePinDiagramElements();
   const { adjustSize } = useAdjustSize();
   const { hideDiagramElements } = useHideDiagramElements();
-  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
   const { addErrorMessage, addMessages } = useMultiToast();

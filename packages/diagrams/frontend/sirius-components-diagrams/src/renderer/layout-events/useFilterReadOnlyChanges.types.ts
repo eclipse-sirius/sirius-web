@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeChange } from 'reactflow';
+import { Node, NodeChange } from '@xyflow/react';
+import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseFilterReadOnlyChangesValue {
-  filterReadOnlyChanges: (changes: NodeChange[]) => NodeChange[];
+  filterReadOnlyChanges: (changes: NodeChange<Node<NodeData>>[]) => NodeChange<Node<NodeData>>[];
 }

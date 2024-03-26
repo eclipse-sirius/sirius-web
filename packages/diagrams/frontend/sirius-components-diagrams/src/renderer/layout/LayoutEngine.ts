@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Dimensions, Node } from 'reactflow';
+import { Dimensions, Node } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { FreeFormNodeLayoutHandler } from './FreeFormNodeLayoutHandler';

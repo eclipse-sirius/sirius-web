@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import { Theme, useTheme } from '@material-ui/core/styles';
+import { ConnectionLineComponentProps, getSmoothStepPath } from '@xyflow/react';
 import React, { memo } from 'react';
-import { ConnectionLineComponentProps, getSmoothStepPath } from 'reactflow';
 
 const connectionLineStyle = (theme: Theme): React.CSSProperties => {
   return {

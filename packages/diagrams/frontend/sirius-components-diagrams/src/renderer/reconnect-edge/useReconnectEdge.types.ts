@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Connection, Edge } from 'reactflow';
+import { Connection, Edge } from '@xyflow/react';
 import { GQLMessage } from '../Tool.types';
 
 export interface UseReconnectEdge {

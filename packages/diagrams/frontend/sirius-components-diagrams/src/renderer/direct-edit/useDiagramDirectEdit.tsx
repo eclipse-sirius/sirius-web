@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
-import { useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -24,7 +24,7 @@ const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»�
 export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
   const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } =
     useContext<DiagramDirectEditContextValue>(DiagramDirectEditContext);
-  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
   const onDirectEdit = useCallback(
@@ -42,14 +42,14 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
 
       let currentlyEditedLabelId: string | undefined | null;
       let isLabelEditable: boolean = false;
-      const nodeData: NodeData | undefined = getNodes().find((node) => node.selected)?.data;
-      if (nodeData) {
-        if (nodeData.insideLabel) {
-          currentlyEditedLabelId = nodeData.insideLabel.id;
-        } else if (nodeData.outsideLabels.BOTTOM_MIDDLE) {
-          currentlyEditedLabelId = nodeData.outsideLabels.BOTTOM_MIDDLE.id;
+      const node: Node<NodeData> | undefined = getNodes().find((node) => node.selected);
+      if (node) {
+        if (node.data.insideLabel) {
+          currentlyEditedLabelId = node.data.insideLabel.id;
+        } else if (node.data.outsideLabels.BOTTOM_MIDDLE) {
+          currentlyEditedLabelId = node.data.outsideLabels.BOTTOM_MIDDLE.id;
         }
-        isLabelEditable = nodeData.labelEditable;
+        isLabelEditable = node.data.labelEditable;
       }
       if (!currentlyEditedLabelId) {
         currentlyEditedLabelId = getEdges().find((edge) => edge.selected)?.data?.label?.id;

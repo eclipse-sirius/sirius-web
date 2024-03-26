@@ -24,16 +24,16 @@ import {
   findNodeIndex,
   getBorderNodeExtent,
   getChildNodePosition,
-  getEastBorderNodeFootprintHeight,
-  getHeaderFootprint,
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
+  getEastBorderNodeFootprintHeight,
+  getHeaderFootprint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Node } from 'reactflow';
+import { Node } from '@xyflow/react';
 
 export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   canHandle(node: Node<NodeData, DiagramNodeType>) {

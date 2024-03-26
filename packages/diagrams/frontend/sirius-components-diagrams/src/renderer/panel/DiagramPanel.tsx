@@ -27,10 +27,12 @@ import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
+import { Edge, Node, Panel, useReactFlow } from '@xyflow/react';
 import { memo, useContext, useState } from 'react';
-import { Panel, useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
+import { HelperLinesIconOff } from '../../icons/HelperLinesIconOff';
 import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
@@ -40,8 +42,6 @@ import { useArrangeAll } from '../layout/useArrangeAll';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
-import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
-import { HelperLinesIconOff } from '../../icons/HelperLinesIconOff';
 
 export const DiagramPanel = memo(
   ({ snapToGrid, onSnapToGrid, helperLines, onHelperLines, refreshEventPayloadId }: DiagramPanelProps) => {
@@ -51,7 +51,7 @@ export const DiagramPanel = memo(
 
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
-    const reactFlow = useReactFlow<NodeData, EdgeData>();
+    const reactFlow = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const { getEdges, getNodes } = reactFlow;
 
     const getAllElementsIds = () => [...getNodes().map((elem) => elem.id), ...getEdges().map((elem) => elem.id)];

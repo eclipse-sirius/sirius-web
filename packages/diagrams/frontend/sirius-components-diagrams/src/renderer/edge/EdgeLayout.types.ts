@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodePositionChange, Position, XYPosition } from 'reactflow';
+import { Node, NodePositionChange, Position, XYPosition } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 export interface EdgeParameters {

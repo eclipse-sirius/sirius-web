@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, XYPosition } from 'reactflow';
+import { Node, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
@@ -25,9 +25,9 @@ import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { ListNodeData } from '../renderer/node/ListNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
-import { convertHandles } from './convertHandles';
-import { convertOutsideLabels, convertInsideLabel } from './convertLabel';
 import { isListLayoutStrategy } from './convertDiagram';
+import { convertHandles } from './convertHandles';
+import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -139,7 +139,7 @@ const toListNode = (
   return node;
 };
 
-const adaptChildrenBorderNodes = (nodes: Node[], gqlChildrenNodes: GQLNode<GQLNodeStyle>[]): void => {
+const adaptChildrenBorderNodes = (nodes: Node<ListNodeData>[], gqlChildrenNodes: GQLNode<GQLNodeStyle>[]): void => {
   const childrenNodes = nodes.filter(
     (child) =>
       gqlChildrenNodes.map((gqlChild) => gqlChild.id).find((gqlChildId) => gqlChildId === child.id) !== undefined
@@ -174,7 +174,7 @@ export class ListNodeConverter implements INodeConverter {
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
-    nodes: Node[],
+    nodes: Node<ListNodeData>[],
     diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {

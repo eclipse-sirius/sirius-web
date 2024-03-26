@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useStoreApi } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
-import { useStoreApi } from 'reactflow';
 import { FullscreenContextValue } from './Fullscreen.context.types';
 import { FullscreenContext } from './FullscreenContext';
 import { UseFullscreenValue } from './useFullscreen.types';

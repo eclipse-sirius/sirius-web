@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useCallback } from 'react';
-import { Node, XYPosition, useReactFlow } from 'reactflow';
-import { UseDistributeElementsValue } from './useDistributeElements.types';
-import { NodeData, EdgeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
-import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
-import { RawDiagram } from './layout.types';
-import { useLayout } from './useLayout';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { Edge, Node, XYPosition, useReactFlow } from '@xyflow/react';
+import { useCallback } from 'react';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
+import { RawDiagram } from './layout.types';
+import { UseDistributeElementsValue } from './useDistributeElements.types';
+import { useLayout } from './useLayout';
+import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
 
 function getComparePositionFn(direction: 'horizontal' | 'vertical') {
   return (node1: Node, node2: Node) => {
@@ -33,7 +33,7 @@ function getComparePositionFn(direction: 'horizontal' | 'vertical') {
 
 const arrangeGapBetweenElements: number = 32;
 export const useDistributeElements = (refreshEventPayloadId: string): UseDistributeElementsValue => {
-  const { getNodes, getEdges, setNodes } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges, setNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { addMessages } = useMultiToast();
@@ -203,7 +203,7 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
   };
 
   const justifyElements = (
-    justifyElementsFn: (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node) => Node[]
+    justifyElementsFn: (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node) => Node<NodeData>[]
   ) => {
     return useCallback((selectedNodeIds: string[], refElementId: string | null) => {
       processLayoutTool(
@@ -219,7 +219,7 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
   };
 
   const justifyHorizontally = justifyElements(
-    (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node): Node[] => {
+    (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node): Node<NodeData>[] => {
       const largestWidth: number = selectedNodes.reduce((width, node) => Math.max(width, node.width ?? 0), 0);
       return getNodes().map((node) => {
         if (
@@ -246,7 +246,7 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
   );
 
   const justifyVertically = justifyElements(
-    (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node): Node[] => {
+    (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node): Node<NodeData>[] => {
       const largestHeight: number = selectedNodes.reduce((height, node) => Math.max(height, node.height ?? 0), 0);
       return getNodes().map((node) => {
         if (

@@ -13,8 +13,8 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
+import { Edge, EdgeMarkerType, ReactFlowState, useStore } from '@xyflow/react';
 import { useCallback } from 'react';
-import { Edge, EdgeMarkerType, ReactFlowState, useStore } from 'reactflow';
 import { MarkerProps } from './MarkerDefinitions.types';
 
 const markerSelector = (state: ReactFlowState): MarkerProps[] => {

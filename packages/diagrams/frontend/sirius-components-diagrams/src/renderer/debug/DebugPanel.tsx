@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import Box from '@material-ui/core/Box';
+import { Edge, Node, Panel, useReactFlow } from '@xyflow/react';
 import { useContext } from 'react';
-import { Edge, Node, Panel, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { NodeContext } from '../node/NodeContext';
 import { NodeContextValue } from '../node/NodeContext.types';
@@ -31,7 +31,7 @@ const debugPanelStyle = (reactFlowBounds: number): React.CSSProperties => {
 };
 
 export const DebugPanel = ({ reactFlowWrapper }: DebugPanelProps) => {
-  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+  const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const selectedNodes: Node<NodeData>[] = reactFlowInstance.getNodes().filter((node) => node.selected);
   const selectedEdges: Edge<EdgeData>[] = reactFlowInstance.getEdges().filter((edge) => edge.selected);
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);

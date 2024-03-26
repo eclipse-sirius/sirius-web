@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Position } from 'reactflow';
+import { Position } from '@xyflow/react';
 
 export interface ConnectionCreationHandlesProps {
   nodeId: string;

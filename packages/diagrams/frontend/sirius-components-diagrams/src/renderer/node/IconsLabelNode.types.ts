@@ -11,6 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { NodeData } from '../DiagramRenderer.types';
+import { CommonData } from '../DiagramRenderer.types';
 
-export interface IconLabelNodeData extends NodeData {}
+export interface IconLabelNodeData extends Record<string, unknown>, CommonData {}

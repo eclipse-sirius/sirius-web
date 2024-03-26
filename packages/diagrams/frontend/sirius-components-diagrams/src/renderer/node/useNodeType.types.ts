@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeTypes } from '@reactflow/core/dist/esm/types';
+import { NodeTypes } from '@xyflow/react';
 
 export interface UseNodeTypeValue {
   nodeTypes: NodeTypes;

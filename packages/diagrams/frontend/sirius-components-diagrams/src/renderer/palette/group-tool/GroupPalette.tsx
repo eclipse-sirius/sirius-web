@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import PhotoSizeSelectSmallIcon from '@material-ui/icons/PhotoSizeSelectSmall';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
+import { makeStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import PhotoSizeSelectSmallIcon from '@material-ui/icons/PhotoSizeSelectSmall';
 import TonalityIcon from '@material-ui/icons/Tonality';
 import VerticalAlignCenterIcon from '@material-ui/icons/VerticalAlignCenter';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
@@ -24,24 +24,25 @@ import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import ViewStreamIcon from '@material-ui/icons/ViewStream';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { memo, useCallback, useRef, useState } from 'react';
-import { useOnSelectionChange } from 'reactflow';
-import { GroupPaletteProps, GroupPaletteSectionTool, GroupPaletteState } from './GroupPalette.types';
-import { ContextualPaletteStyleProps } from '../Palette.types';
-import { PalettePortal } from '../PalettePortal';
-import { PaletteTool } from '../PaletteTool';
+
+import { useOnSelectionChange } from '@xyflow/react';
+import { AlignHorizontalCenterIcon } from '../../../icons/AlignHorizontalCenterIcon';
+import { AlignHorizontalLeftIcon } from '../../../icons/AlignHorizontalLeftIcon';
+import { AlignHorizontalRightIcon } from '../../../icons/AlignHorizontalRightIcon';
+import { AlignVerticalBottomIcon } from '../../../icons/AlignVerticalBottomIcon';
+import { AlignVerticalCenterIcon } from '../../../icons/AlignVerticalCenterIcon';
+import { AlignVerticalTopIcon } from '../../../icons/AlignVerticalTopIcon';
+import { JustifyHorizontalIcon } from '../../../icons/JustifyHorizontalIcon';
+import { JustifyVerticalIcon } from '../../../icons/JustifyVerticalIcon';
+import { PinIcon } from '../../../icons/PinIcon';
 import { useFadeDiagramElements } from '../../fade/useFadeDiagramElements';
 import { useHideDiagramElements } from '../../hide/useHideDiagramElements';
 import { useDistributeElements } from '../../layout/useDistributeElements';
 import { usePinDiagramElements } from '../../pin/usePinDiagramElements';
-import { AlignHorizontalLeftIcon } from '../../../icons/AlignHorizontalLeftIcon';
-import { AlignHorizontalRightIcon } from '../../../icons/AlignHorizontalRightIcon';
-import { AlignHorizontalCenterIcon } from '../../../icons/AlignHorizontalCenterIcon';
-import { AlignVerticalTopIcon } from '../../../icons/AlignVerticalTopIcon';
-import { AlignVerticalBottomIcon } from '../../../icons/AlignVerticalBottomIcon';
-import { AlignVerticalCenterIcon } from '../../../icons/AlignVerticalCenterIcon';
-import { PinIcon } from '../../../icons/PinIcon';
-import { JustifyHorizontalIcon } from '../../../icons/JustifyHorizontalIcon';
-import { JustifyVerticalIcon } from '../../../icons/JustifyVerticalIcon';
+import { ContextualPaletteStyleProps } from '../Palette.types';
+import { PalettePortal } from '../PalettePortal';
+import { PaletteTool } from '../PaletteTool';
+import { GroupPaletteProps, GroupPaletteSectionTool, GroupPaletteState } from './GroupPalette.types';
 
 const usePaletteStyle = makeStyles((theme) => ({
   palette: {

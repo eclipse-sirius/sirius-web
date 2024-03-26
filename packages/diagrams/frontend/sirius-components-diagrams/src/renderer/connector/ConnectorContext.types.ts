@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Connection, XYPosition } from 'reactflow';
+import { Connection, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from './useConnector.types';
 
 export interface ConnectorContextValue {

@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { UseArrangeAllValue } from './useArrangeAll.types';
-import { Edge, Node, useReactFlow, useViewport } from 'reactflow';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
-import { ListNodeData } from '../node/ListNode.types';
-import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
+import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
-import { headerVerticalOffset, labelVerticalPadding, labelHorizontalPadding } from './layoutParams';
+import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { ListNodeData } from '../node/ListNode.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RawDiagram } from './layout.types';
+import { headerVerticalOffset, labelHorizontalPadding, labelVerticalPadding } from './layoutParams';
+import { UseArrangeAllValue } from './useArrangeAll.types';
 import { useLayout } from './useLayout';
 import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
 
@@ -82,7 +82,7 @@ const computeLabels = (node, viewportZoom: number): ElkLabel[] => {
 };
 
 export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue => {
-  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const viewport = useViewport();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();

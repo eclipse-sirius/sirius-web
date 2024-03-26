@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Connection, OnConnect, OnConnectEnd, OnConnectStart, XYPosition } from 'reactflow';
+import { Connection, OnConnect, OnConnectEnd, OnConnectStart, XYPosition } from '@xyflow/react';
 
 export interface UseConnectorValue {
   onConnect: OnConnect;

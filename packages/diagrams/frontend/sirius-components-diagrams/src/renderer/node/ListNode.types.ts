@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { NodeData } from '../DiagramRenderer.types';
+import { CommonData } from '../DiagramRenderer.types';
 
-export interface ListNodeData extends NodeData {
+export interface ListNodeData extends Record<string, unknown>, CommonData {
   areChildNodesDraggable: boolean;
   topGap: number;
   bottomGap: number;

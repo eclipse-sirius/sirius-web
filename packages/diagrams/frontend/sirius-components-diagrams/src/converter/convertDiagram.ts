@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node } from 'reactflow';
+import { Edge, Node } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLLabel } from '../graphql/subscription/labelFragment.types';
@@ -22,7 +22,7 @@ import {
   ILayoutStrategy,
   ListLayoutStrategy,
 } from '../graphql/subscription/nodeFragment.types';
-import { Diagram, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
+import { Diagram, EdgeData, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
@@ -139,9 +139,9 @@ export const convertDiagram = (
   const nodeId2Depth = new Map<string, number>();
   nodes.forEach((node) => nodeId2Depth.set(node.id, nodeDepth(nodeId2node, node.id)));
   let usedHandles: string[] = [];
-  const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
-    const sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
-    const targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
+  const edges: Edge<EdgeData>[] = gqlDiagram.edges.map((gqlEdge) => {
+    const sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId) as Node<NodeData>;
+    const targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId) as Node<NodeData>;
     const data: MultiLabelEdgeData = {
       targetObjectId: gqlEdge.targetObjectId,
       targetObjectKind: gqlEdge.targetObjectKind,

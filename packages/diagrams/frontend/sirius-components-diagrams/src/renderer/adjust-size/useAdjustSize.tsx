@@ -10,29 +10,28 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, useReactFlow } from 'reactflow';
+import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useContext } from 'react';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';
-import { UseAdjustSizeValue } from './useAdjustSize.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
-import { NodeData, EdgeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { DiagramContext } from '../../contexts/DiagramContext';
 import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
+import { UseAdjustSizeValue } from './useAdjustSize.types';
 
 export const useAdjustSize = (): UseAdjustSizeValue => {
   const { layout } = useLayout();
   const { refreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
-  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const adjustSize = (nodeId: string): void => {
-    const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
-    const targetedNode: Node<NodeData, string> | undefined = nodes.find((node) => node.id === nodeId);
-    const childNodes: Node<NodeData, string>[] | [] = nodes
+    const nodes: Node<NodeData>[] = [...getNodes()];
+    const targetedNode: Node<NodeData> | undefined = nodes.find((node) => node.id === nodeId);
+    const childNodes: Node<NodeData>[] | [] = nodes
       .filter((node) => node.parentNode === nodeId)
       .map((node) => {
         node.data.resizedByUser = true;

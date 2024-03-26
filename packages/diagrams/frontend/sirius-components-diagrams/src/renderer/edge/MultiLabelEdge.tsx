@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo, useCallback, useContext, useEffect } from 'react';
 import {
   BaseEdge,
   Edge,
@@ -20,14 +19,14 @@ import {
   EdgeProps,
   Node,
   Position,
-  ReactFlowState,
   getSmoothStepPath,
   useReactFlow,
   useStore,
-} from 'reactflow';
+} from '@xyflow/react';
+import React, { memo, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { EdgeComponentsMap, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
@@ -52,7 +51,7 @@ const multiLabelEdgeStyle = (
   return multiLabelEdgeStyle;
 };
 
-export const MultiLabelEdge = memo(
+export const MultiLabelEdge: EdgeComponentsMap['multiLabelEdge'] = memo(
   ({
     id,
     source,
@@ -66,17 +65,14 @@ export const MultiLabelEdge = memo(
     targetPosition,
     sourceHandleId,
     targetHandleId,
-  }: EdgeProps<MultiLabelEdgeData>) => {
+  }: EdgeProps<Edge<MultiLabelEdgeData>>) => {
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const theme = useTheme();
-    const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+    const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
-    const sourceNode = useStore<Node<NodeData> | undefined>(
-      useCallback((store: ReactFlowState) => store.nodeInternals.get(source), [source])
-    );
-    const targetNode = useStore<Node<NodeData> | undefined>(
-      useCallback((store: ReactFlowState) => store.nodeInternals.get(target), [target])
-    );
+    const nodeLookup = useStore((s) => s.nodeLookup);
+    const sourceNode = nodeLookup.get(source) as Node<NodeData>;
+    const targetNode = nodeLookup.get(target) as Node<NodeData>;
 
     if (!sourceNode || !targetNode) {
       return null;

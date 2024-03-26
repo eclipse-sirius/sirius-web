@@ -15,9 +15,9 @@ import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { ApolloProvider } from '@apollo/client/react';
 import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { Node, ReactFlowProvider } from '@xyflow/react';
 import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
-import { Node, ReactFlowProvider } from 'reactflow';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
@@ -31,7 +31,7 @@ import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
-import { isEastBorderNode, isWestBorderNode, getNewlyAddedBorderNodePosition } from './layoutBorderNodes';
+import { getNewlyAddedBorderNodePosition, isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { getChildren } from './layoutNode';
 
 const emptyNodeProps = {
@@ -143,6 +143,9 @@ export const prepareLayoutArea = (
           id: node.id,
           data: node.data,
           key: `${node.id}-${index}`,
+          type: 'freeFormNode',
+          positionAbsoluteX: 0,
+          positionAbsoluteY: 0,
         });
         children.push(element);
       }
@@ -152,6 +155,9 @@ export const prepareLayoutArea = (
           id: node.id,
           data: node.data,
           key: `${node.id}-${index}`,
+          type: 'listNode',
+          positionAbsoluteX: 0,
+          positionAbsoluteY: 0,
         });
         children.push(element);
       }

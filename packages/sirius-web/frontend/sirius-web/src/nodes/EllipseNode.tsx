@@ -28,9 +28,9 @@ import {
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@material-ui/core/styles';
+import { Node, NodeProps, NodeResizer } from '@xyflow/react';
 import React, { memo, useContext } from 'react';
-import { NodeProps, NodeResizer } from 'reactflow';
-import { EllipseNodeData } from './EllipseNode.types';
+import { EllipseNodeData, NodeComponentsMap } from './EllipseNode.types';
 
 const ellipseNodeStyle = (
   theme: Theme,
@@ -70,51 +70,53 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   };
 };
 
-export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeData>) => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const theme = useTheme();
-  const { onDrop, onDragOver } = useDrop();
-  const { newConnectionStyleProvider } = useConnector();
-  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+export const EllipseNode: NodeComponentsMap['ellipseNode'] = memo(
+  ({ data, id, selected }: NodeProps<Node<EllipseNodeData>>) => {
+    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+    const theme = useTheme();
+    const { onDrop, onDragOver } = useDrop();
+    const { newConnectionStyleProvider } = useConnector();
+    const { style: dropFeedbackStyle } = useDropNodeStyle(id);
+    const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
-  const handleOnDrop = (event: React.DragEvent) => {
-    onDrop(event, id);
-  };
+    const handleOnDrop = (event: React.DragEvent) => {
+      onDrop(event, id);
+    };
 
-  useRefreshConnectionHandles(id, data.connectionHandles);
+    useRefreshConnectionHandles(id, data.connectionHandles);
 
-  return (
-    <>
-      {data.nodeDescription?.userResizable && !readOnly ? (
-        <NodeResizer
-          handleStyle={{ ...resizeHandleStyle(theme) }}
-          lineStyle={{ ...resizeLineStyle(theme) }}
-          color={theme.palette.selected}
-          isVisible={selected}
-          shouldResize={() => !data.isBorderNode}
-          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-        />
-      ) : null}
-      <div
-        style={{
-          ...ellipseNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
-          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
-          ...dropFeedbackStyle,
-        }}
-        onDragOver={onDragOver}
-        onDrop={handleOnDrop}
-        data-testid={`Ellipse - ${data?.insideLabel?.text}`}>
-        {data.insideLabel ? (
-          <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+    return (
+      <>
+        {data.nodeDescription?.userResizable && !readOnly ? (
+          <NodeResizer
+            handleStyle={{ ...resizeHandleStyle(theme) }}
+            lineStyle={{ ...resizeLineStyle(theme) }}
+            color={theme.palette.selected}
+            isVisible={selected}
+            shouldResize={() => !data.isBorderNode}
+            keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+          />
         ) : null}
-        {selected ? (
-          <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
-        ) : null}
-        {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
-        <ConnectionHandles connectionHandles={data.connectionHandles} />
-      </div>
-    </>
-  );
-});
+        <div
+          style={{
+            ...ellipseNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
+            ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
+            ...dropFeedbackStyle,
+          }}
+          onDragOver={onDragOver}
+          onDrop={handleOnDrop}
+          data-testid={`Ellipse - ${data?.insideLabel?.text}`}>
+          {data.insideLabel ? (
+            <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+          ) : null}
+          {selected ? (
+            <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
+          ) : null}
+          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
+          <ConnectionHandles connectionHandles={data.connectionHandles} />
+        </div>
+      </>
+    );
+  }
+);

@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@material-ui/core/styles';
+import { ReactFlowState, useStore, useViewport } from '@xyflow/react';
 import { CSSProperties, useEffect, useRef } from 'react';
-import { ReactFlowState, useStore, useViewport } from 'reactflow';
 import { HelperLinesProps } from './HelperLines.types';
 
 const canvasStyle: CSSProperties = {
