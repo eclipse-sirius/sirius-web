@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.LabelStyle;
-import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.OutsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.elements.OutsideLabelElementProps;
@@ -56,8 +55,6 @@ public class OutsideLabelComponent implements IComponent {
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
         List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
 
-        OutsideLabelLocation insideLabelLocation = outsideLabelDescription.getOutsideLabelLocation();
-
         var labelStyle = LabelStyle.newLabelStyle()
                 .color(color)
                 .fontSize(fontSize)
@@ -70,8 +67,9 @@ public class OutsideLabelComponent implements IComponent {
 
         OutsideLabelElementProps outsideLabelElementProps = OutsideLabelElementProps.newOutsideLabelElementProps(id)
                 .text(text)
-                .outsideLabelLocation(insideLabelLocation)
+                .outsideLabelLocation(outsideLabelDescription.getOutsideLabelLocation())
                 .style(labelStyle)
+                .overflowStrategy(outsideLabelDescription.getOverflowStrategy())
                 .build();
         return new Element(OutsideLabelElementProps.TYPE, outsideLabelElementProps);
     }

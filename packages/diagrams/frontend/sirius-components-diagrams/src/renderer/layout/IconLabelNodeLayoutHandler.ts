@@ -16,6 +16,7 @@ import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { RawDiagram, ForcedDimensions } from './layout.types';
+import { getInsideLabelWidthConstraint } from './layoutNode';
 
 const rectangularNodePadding = 8;
 
@@ -38,7 +39,9 @@ export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelN
 
     node.width =
       forceDimensions?.width ??
-      rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
+      rectangularNodePadding +
+        getInsideLabelWidthConstraint(node.data.insideLabel, labelElement) +
+        rectangularNodePadding;
     node.height = labelElement?.getBoundingClientRect().height;
   }
 

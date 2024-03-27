@@ -303,6 +303,11 @@ public class EdgeComponent implements IComponent {
         return state;
     }
 
+    private boolean isElementHidden(HideDiagramElementEvent diagramEvent, String elementId, ViewModifier state) {
+        return (diagramEvent.getElementIds().contains(elementId) && diagramEvent.hideElement())
+                || (!diagramEvent.getElementIds().contains(elementId) && state == ViewModifier.Hidden);
+    }
+
     /**
      * Returns the previous edge identified by the edge id, resets the anchor position of the edge end being
      * reconnected. Since a reconnected edge has changed its source or target, its id has also changed. The edge id of

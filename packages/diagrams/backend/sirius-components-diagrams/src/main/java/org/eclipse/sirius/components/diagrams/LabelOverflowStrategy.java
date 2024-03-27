@@ -13,10 +13,10 @@
 package org.eclipse.sirius.components.diagrams;
 
 /**
- * The outside label.
+ * The strategy to adopt if the label overflows its container.
  *
- * @author gcoutable
+ * @author frouene
  */
-public record OutsideLabel(String id, String text, OutsideLabelLocation outsideLabelLocation, LabelStyle style, LabelOverflowStrategy overflowStrategy) {
-
+public enum LabelOverflowStrategy {
+    NONE, WRAP, ELLIPSIS
 }

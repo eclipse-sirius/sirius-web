@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
@@ -104,6 +105,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .style(labelStyle)
                 .isHeader(false)
                 .displayHeaderSeparator(false)
+                .overflowStrategy(LabelOverflowStrategy.NONE)
                 .build();
 
         return Node.newNode(id)

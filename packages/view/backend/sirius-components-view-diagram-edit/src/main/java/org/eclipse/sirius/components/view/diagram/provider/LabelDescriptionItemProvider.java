@@ -61,6 +61,7 @@ public class LabelDescriptionItemProvider extends ItemProviderAdapter
             super.getPropertyDescriptors(object);
 
             this.addLabelExpressionPropertyDescriptor(object);
+            this.addOverflowStrategyPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -75,6 +76,18 @@ public class LabelDescriptionItemProvider extends ItemProviderAdapter
                 this.getString("_UI_LabelDescription_labelExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_LabelDescription_labelExpression_feature", "_UI_LabelDescription_type"),
                 DiagramPackage.Literals.LABEL_DESCRIPTION__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Overflow Strategy feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addOverflowStrategyPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelDescription_overflowStrategy_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelDescription_overflowStrategy_feature", "_UI_LabelDescription_type"),
+                DiagramPackage.Literals.LABEL_DESCRIPTION__OVERFLOW_STRATEGY, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -121,6 +134,7 @@ public class LabelDescriptionItemProvider extends ItemProviderAdapter
 
         switch (notification.getFeatureID(LabelDescription.class)) {
             case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
+            case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }
