@@ -1,0 +1,51 @@
+= Improve document upload
+
+== Problem
+
+Sirius Web doesn't provide a way for specifiers to send a report with the upload of a document.
+Sirius Web doesn't provide a way for specifiers to handle documents uploads with other formats than JSON and XMI.
+
+== Key Result
+
+- Specifiers must be able to create a textual report that will be sent with the upload of a document.
+Users should be able to download this report from the `Upload new model` modal.
+- Users must be able to upload documents that are not JSON or XMI.
+
+== Solution
+
+1. Report on Upload
+- The graphql query returning the document will be updated to also return a `String` containing the report.
+- A mechanism will be introduced allowing the specifiers to provide reports for a kind of document.
+- The `Upload new model` modal will be updated to handle the report and allow users to download it.
+2. Upload a document that is not JSON or XMI
+- The upload mechanism on backend will be modified, by relying on the resource factory registry instead of exclusively using the `JSONResourceFactory`.
+
+== Scenario
+
+1. Report on Upload
+- User wants to upload a document.
+A new `download report` button is available in the `Upload new model` modal.
+It is disabled.
+- Specifier has provided a report provider for this kind of document.
+- Once the document uploaded, the modal is not automatically closed (unlike the current behavior).
+The new `download report` button is now enabled, allowing to download the report as a text file.
+The `upload` button is now disabled, because the upload is finished.
+A new `close` button has also been add to the modal allowing to close the modal.
+
+
+2. Upload a document that is not JSON or XMI
+- User wants to upload a document (textual, ...) that is not JSON or XMI.
+- Specifier has provided a resource factory allowing to handle this kind of document.
+- User is able to upload his document.
+
+=== Cutting backs
+
+Nothing identified for now
+
+== Rabbit holes
+
+Nothing identified for now
+
+== No-gos
+
+Nothing identified for now
