@@ -14,6 +14,8 @@ import { Project } from '../../../pages/Project';
 import { Explorer } from '../../../workbench/Explorer';
 import { Diagram } from '../../../workbench/Diagram';
 import { Flow } from '../../../usecases/Flow';
+import { Papaya } from '../../../usecases/Papaya';
+import { Details } from '../../../workbench/Details';
 
 const projectName = 'Cypress - group palette';
 describe('Diagram - group palette', () => {
@@ -103,4 +105,71 @@ describe('Diagram - group palette', () => {
     });
   });
 
+  context('Given a papaya studio', () => {
+    let studioId: string = '';
+    before(() => {
+      new Papaya().createPapayaStudioProject().then((createdProjectData) => {
+        studioId = createdProjectData.projectId;
+      });
+    });
+    after(() => cy.deleteProject(studioId));
+    context('When we create a Papaya instance', () => {
+      let instanceId: string = '';
+      beforeEach(() => {
+        new Papaya().createPapayaInstanceProject(projectName).then((createdProjectData) => {
+          instanceId = createdProjectData.projectId;
+          new Project().visit(instanceId);
+        });
+        const explorer = new Explorer();
+        explorer.expand('Others...');
+        explorer.createRepresentation('Root', 'Diagram', 'diagram');
+      });
+      afterEach(() => cy.deleteProject(instanceId));
+
+      it('Then distribute tool are not displayed on list child element', () => {
+        const explorer = new Explorer();
+        const details = new Details();
+        const diagram = new Diagram();
+        explorer.createObject('Root', 'Components Component');
+        details.getTextField('Name').invoke('text').should('eq', '');
+        details.getTextField('Name').type('component{enter}');
+        explorer.createObject('component', 'Packages Package');
+        details.getTextField('Name').invoke('text').should('eq', '');
+        details.getTextField('Name').type('package{enter}');
+        explorer.createObject('package', 'Types Class');
+        details.getTextField('Name').invoke('text').should('eq', '');
+        details.getTextField('Name').type('class{enter}');
+        explorer.createObject('class', 'Attributes Attribute');
+        details.getTextField('Name').invoke('text').should('eq', '');
+        details.getTextField('Name').type('attribute{enter}');
+        explorer.createObject('class', 'Operations Operation');
+        details.getTextField('Name').invoke('text').should('eq', '');
+        details.getTextField('Name').type('operation{enter}');
+        explorer.select('attribute');
+        explorer.select('operation', true);
+        diagram.fitToScreen();
+        diagram.getNodes('diagram', 'attribute').click();
+        diagram.getGroupPalette().should('exist');
+        diagram.getGroupPalette().findByTestId('Distribute elements horizontally').should('not.exist');
+        explorer.select('class');
+        explorer.select('attribute', true);
+        diagram.fitToScreen();
+        diagram.getNodes('diagram', 'attribute').click();
+        diagram.getGroupPalette().should('exist');
+        diagram.getGroupPalette().findByTestId('Distribute elements horizontally').should('not.exist');
+        explorer.select('package');
+        explorer.select('class', true);
+        diagram.fitToScreen();
+        diagram.getNodes('diagram', 'class').click('top');
+        diagram.getGroupPalette().should('exist');
+        diagram.getGroupPalette().findByTestId('Distribute elements horizontally').should('exist');
+        explorer.select('attribute');
+        explorer.select('package', true);
+        diagram.fitToScreen();
+        diagram.getNodes('diagram', 'package').click('top');
+        diagram.getGroupPalette().should('exist');
+        diagram.getGroupPalette().findByTestId('Distribute elements horizontally').should('not.exist');
+      });
+    });
+  });
 });
