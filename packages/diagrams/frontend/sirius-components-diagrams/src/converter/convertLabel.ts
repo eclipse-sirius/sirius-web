@@ -17,7 +17,8 @@ import { AlignmentMap } from './convertDiagram.types';
 export const convertInsideLabel = (
   gqlInsideLabel: GQLInsideLabel | undefined,
   data: NodeData,
-  borderStyle: string
+  borderStyle: string,
+  hasVisibleChild: boolean = true
 ): InsideLabel | null => {
   if (!gqlInsideLabel) {
     return null;
@@ -43,7 +44,7 @@ export const convertInsideLabel = (
   const alignement = AlignmentMap[gqlInsideLabel.insideLabelLocation];
   if (alignement.isPrimaryVerticalAlignment) {
     if (alignement.primaryAlignment === 'TOP') {
-      if (insideLabel.displayHeaderSeparator) {
+      if (insideLabel.displayHeaderSeparator && hasVisibleChild) {
         insideLabel.style.borderBottom = borderStyle;
       }
       data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };

@@ -20,10 +20,9 @@ import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
-import { convertLineStyle } from './convertDiagram';
+import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertOutsideLabels, convertInsideLabel } from './convertLabel';
-import { isListLayoutStrategy } from './convertDiagram';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -88,7 +87,8 @@ const toImageNode = (
   data.insideLabel = convertInsideLabel(
     insideLabel,
     data,
-    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`,
+    gqlNode.childNodes?.some((child) => child.state !== GQLViewModifier.Hidden)
   );
 
   const node: Node<FreeFormNodeData> = {
