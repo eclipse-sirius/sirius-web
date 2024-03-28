@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Handle, Position } from '@xyflow/react';
 import React, { memo } from 'react';
-import { Handle, Position } from 'reactflow';
 import { useConnector } from '../connector/useConnector';
 import { ConnectionTargetHandleProps } from './ConnectionTargetHandle.types';
 import { useRefreshTargetHandles } from './useRefreshTargetHandles';

@@ -13,9 +13,9 @@
 
 import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
+import { Node, NodeProps } from '@xyflow/react';
 import React, { memo, useContext } from 'react';
-import { NodeProps } from 'reactflow';
-import { BorderNodePosition } from '../DiagramRenderer.types';
+import { BorderNodePosition, NodeComponentsMap } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDrop } from '../drop/useDrop';
@@ -74,57 +74,59 @@ const computeBorderRotation = (data: FreeFormNodeData): string | undefined => {
   return undefined;
 };
 
-export const FreeFormNode = memo(({ data, id, selected }: NodeProps<FreeFormNodeData>) => {
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
+  ({ data, id, selected }: NodeProps<Node<FreeFormNodeData>>) => {
+    const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
-  const theme = useTheme();
-  const { onDrop, onDragOver } = useDrop();
-  const { newConnectionStyleProvider } = useConnector();
-  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
-  const rotation = computeBorderRotation(data);
-  let imageURL: string | undefined = undefined;
-  if (data.imageURL) {
-    imageURL = httpOrigin + data.imageURL;
-  }
-
-  const handleOnDrop = (event: React.DragEvent) => {
-    onDrop(event, id);
-  };
-
-  useRefreshConnectionHandles(id, data.connectionHandles);
-
-  const getLabelId = (data: FreeFormNodeData): string | null => {
-    let labelId: string | null = null;
-    if (data.insideLabel) {
-      labelId = data.insideLabel.id;
-    } else if (data.outsideLabels.BOTTOM_MIDDLE) {
-      labelId = data.outsideLabels.BOTTOM_MIDDLE.id;
+    const theme = useTheme();
+    const { onDrop, onDragOver } = useDrop();
+    const { newConnectionStyleProvider } = useConnector();
+    const { style: dropFeedbackStyle } = useDropNodeStyle(id);
+    const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+    const rotation = computeBorderRotation(data);
+    let imageURL: string | undefined = undefined;
+    if (data.imageURL) {
+      imageURL = httpOrigin + data.imageURL;
     }
-    return labelId;
-  };
 
-  return (
-    <>
-      <Resizer data={data} selected={selected} />
-      <div
-        style={{
-          ...freeFormNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded, rotation, imageURL),
-          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
-          ...dropFeedbackStyle,
-        }}
-        onDragOver={onDragOver}
-        onDrop={handleOnDrop}
-        data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
-        {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />}
-        {selected ? <DiagramElementPalette diagramElementId={id} labelId={getLabelId(data)} /> : null}
-        {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
-        <ConnectionHandles connectionHandles={data.connectionHandles} />
-      </div>
-      {data.outsideLabels.BOTTOM_MIDDLE && (
-        <Label diagramElementId={id} label={data.outsideLabels.BOTTOM_MIDDLE} faded={data.faded} transform="" />
-      )}
-    </>
-  );
-});
+    const handleOnDrop = (event: React.DragEvent) => {
+      onDrop(event, id);
+    };
+
+    useRefreshConnectionHandles(id, data.connectionHandles);
+
+    const getLabelId = (data: FreeFormNodeData): string | null => {
+      let labelId: string | null = null;
+      if (data.insideLabel) {
+        labelId = data.insideLabel.id;
+      } else if (data.outsideLabels.BOTTOM_MIDDLE) {
+        labelId = data.outsideLabels.BOTTOM_MIDDLE.id;
+      }
+      return labelId;
+    };
+
+    return (
+      <>
+        <Resizer data={data} selected={!!selected} />
+        <div
+          style={{
+            ...freeFormNodeStyle(theme, data.style, !!selected, hoveredNode?.id === id, data.faded, rotation, imageURL),
+            ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
+            ...dropFeedbackStyle,
+          }}
+          onDragOver={onDragOver}
+          onDrop={handleOnDrop}
+          data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
+          {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />}
+          {selected ? <DiagramElementPalette diagramElementId={id} labelId={getLabelId(data)} /> : null}
+          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
+          <ConnectionHandles connectionHandles={data.connectionHandles} />
+        </div>
+        {data.outsideLabels.BOTTOM_MIDDLE && (
+          <Label diagramElementId={id} label={data.outsideLabels.BOTTOM_MIDDLE} faded={data.faded} transform="" />
+        )}
+      </>
+    );
+  }
+);

@@ -15,8 +15,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import IconButton from '@material-ui/core/IconButton';
 import { Slideshow } from '@material-ui/icons';
+import { Node, useNodes } from '@xyflow/react';
 import { Fragment, useState } from 'react';
-import { useNodes } from 'reactflow';
 import {
   DiagramPaletteToolContributionComponentProps,
   NodeData,
@@ -28,7 +28,7 @@ export const PapayaOperationActivityLabelDetailToolContribution = ({
 }: DiagramPaletteToolContributionComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);
 
-  const nodes = useNodes<NodeData>();
+  const nodes = useNodes<Node<NodeData>>();
   const targetedNode = nodes.find((node) => node.id === diagramElementId);
 
   const onClose = () => {
@@ -41,7 +41,7 @@ export const PapayaOperationActivityLabelDetailToolContribution = ({
       <>
         <Dialog open={true} onClose={onClose} fullWidth>
           <DialogContent>
-            <DialogContentText>{targetedNode.data.insideLabel.text}</DialogContentText>
+            <DialogContentText>{targetedNode.data.insideLabel?.text ?? ''}</DialogContentText>
           </DialogContent>
         </Dialog>
       </>

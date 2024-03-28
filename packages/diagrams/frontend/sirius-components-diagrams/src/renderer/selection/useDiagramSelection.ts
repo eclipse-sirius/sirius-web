@@ -12,14 +12,14 @@
  *******************************************************************************/
 
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { Edge, Node, useOnSelectionChange, useReactFlow } from '@xyflow/react';
 import { useCallback, useEffect } from 'react';
-import { useOnSelectionChange, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 
 export const useDiagramSelection = (): void => {
   const { selection, setSelection } = useSelection();
 
-  const { getNodes, setNodes, getEdges, setEdges, fitView } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, setNodes, getEdges, setEdges, fitView } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   useEffect(() => {
     const diagramElementIds: string[] = [

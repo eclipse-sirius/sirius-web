@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Edge, Node, NodeChange, NodePositionChange, useReactFlow } from '@xyflow/react';
 import { useState } from 'react';
-import { Node, NodeChange, NodePositionChange, useReactFlow } from 'reactflow';
-import { UseHelperLinesState, UseHelperLinesValue, HelperLines } from './useHelperLines.types';
-import { NodeData, EdgeData } from '../DiagramRenderer.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { isDescendantOf } from '../layout/layoutNode';
+import { HelperLines, UseHelperLinesState, UseHelperLinesValue } from './useHelperLines.types';
 
 const isMove = (change: NodeChange): change is NodePositionChange =>
   change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
@@ -39,12 +39,12 @@ const getHelperLines = (
       .filter((node) => node.id != movingNode.id)
       .filter((node) => !isDescendantOf(movingNode, node, getNodeById))
       .reduce<HelperLines>((helperLines, otherNode) => {
-        if (otherNode.positionAbsolute) {
+        if (otherNode.computed?.positionAbsolute) {
           const otherNodeBounds = {
-            x1: otherNode.positionAbsolute.x,
-            x2: otherNode.positionAbsolute.x + (otherNode.width ?? 0),
-            y1: otherNode.positionAbsolute.y,
-            y2: otherNode.positionAbsolute.y + (otherNode.height ?? 0),
+            x1: otherNode.computed.positionAbsolute.x,
+            x2: otherNode.computed.positionAbsolute.x + (otherNode.width ?? 0),
+            y1: otherNode.computed.positionAbsolute.y,
+            y2: otherNode.computed.positionAbsolute.y + (otherNode.height ?? 0),
           };
 
           const x1x1Gap = Math.abs(movingNodeBounds.x1 - otherNodeBounds.x1);
@@ -107,7 +107,7 @@ const getHelperLines = (
             movingNodeBounds.x1 + (movingNode.width ?? 0) / 2 - (otherNodeBounds.x1 + (otherNode.width ?? 0) / 2)
           );
           if (verticalCenterGap < verticalSnapGap) {
-            helperLines.vertical = otherNode.positionAbsolute.x + (otherNode.width ?? 0) / 2;
+            helperLines.vertical = otherNode.computed.positionAbsolute.x + (otherNode.width ?? 0) / 2;
             helperLines.snapX = otherNodeBounds.x1 + (otherNode.width ?? 0) / 2 - (movingNode.width ?? 0) / 2;
           }
 
@@ -115,7 +115,7 @@ const getHelperLines = (
             movingNodeBounds.y1 + (movingNode.height ?? 0) / 2 - (otherNodeBounds.y1 + (otherNode.height ?? 0) / 2)
           );
           if (horizontalCenterGap < horizontalSnapGap) {
-            helperLines.horizontal = otherNode.positionAbsolute.y + (otherNode.height ?? 0) / 2;
+            helperLines.horizontal = otherNode.computed.positionAbsolute.y + (otherNode.height ?? 0) / 2;
             helperLines.snapY = otherNodeBounds.y1 + (otherNode.height ?? 0) / 2 - (movingNode.height ?? 0) / 2;
           }
         }
@@ -128,9 +128,9 @@ const getHelperLines = (
 export const useHelperLines = (): UseHelperLinesValue => {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [state, setState] = useState<UseHelperLinesState>({ vertical: null, horizontal: null });
-  const { getNodes } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
-  const applyHelperLines = (changes: NodeChange[]): NodeChange[] => {
+  const applyHelperLines = (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
     if (enabled && changes.length === 1 && changes[0]) {
       const change = changes[0];
       if (isMove(change)) {
@@ -159,7 +159,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
   };
 
   const resetHelperLines = (changes: NodeChange[]): void => {
-    if (enabled && changes[0]?.type === 'reset') {
+    if (enabled && changes[0]?.type === 'replace') {
       setState({ vertical: null, horizontal: null });
     }
   };

@@ -37,9 +37,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
+import { Node, useNodes } from '@xyflow/react';
 import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
-import { useNodes } from 'reactflow';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from './DocumentTreeItemContextMenuContribution';
@@ -184,7 +184,7 @@ export const EditProjectView = () => {
     const diagramPaletteToolContributions: DiagramPaletteToolContextValue = [
       <DiagramPaletteToolContribution
         canHandle={(_diagramId, diagramElementId) => {
-          const nodes = useNodes<NodeData>();
+          const nodes = useNodes<Node<NodeData>>();
           const targetedNode = nodes.find((node) => node.id === diagramElementId);
           if (targetedNode) {
             return (

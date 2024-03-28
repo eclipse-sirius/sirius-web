@@ -12,10 +12,10 @@
  *******************************************************************************/
 
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { useCallback, useContext } from 'react';
 import {
   Connection,
   Edge,
+  Node,
   OnConnect,
   OnConnectEnd,
   OnConnectStart,
@@ -23,7 +23,8 @@ import {
   useReactFlow,
   useStore,
   useUpdateNodeInternals,
-} from 'reactflow';
+} from '@xyflow/react';
+import { useCallback, useContext } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters } from '../edge/EdgeLayout';
 import { NodeContext } from '../node/NodeContext';
@@ -56,7 +57,7 @@ export const useConnector = (): UseConnectorValue => {
   const { hideDiagramElementPalette } = useDiagramElementPalette();
   const updateNodeInternals = useUpdateNodeInternals();
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
-  const connectionNodeId = useStore((state) => state.connectionNodeId);
+  const connectionNodeId = useStore((state) => state.connectionStartHandle?.nodeId);
   const isConnectionInProgress = (!!connectionNodeId && isNewConnection) || !!connection;
   const isReconnectionInProgress = !!connectionNodeId && !isNewConnection;
 
@@ -99,7 +100,7 @@ export const useConnector = (): UseConnectorValue => {
   }, []);
 
   const onConnectStart: OnConnectStart = useCallback(
-    (_event: React.MouseEvent | React.TouchEvent, params: OnConnectStartParams) => {
+    (_event: MouseEvent | TouchEvent, params: OnConnectStartParams) => {
       hideDiagramElementPalette();
       resetConnection();
       if (params.nodeId) {
@@ -127,7 +128,7 @@ export const useConnector = (): UseConnectorValue => {
     setIsNewConnection(false);
   }, []);
 
-  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+  const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const addTempConnectionLine = () => {
     const sourceNode = reactFlowInstance.getNode(connection?.source ?? '');
@@ -151,7 +152,7 @@ export const useConnector = (): UseConnectorValue => {
         style: tempConnectionLineStyle(theme),
         zIndex: 2002,
       };
-      reactFlowInstance.setEdges((oldEdges: Edge<EdgeData>[]) => [...oldEdges, edge]);
+      reactFlowInstance.setEdges((oldEdges) => [...oldEdges, edge]);
     }
   };
 

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, Position, XYPosition } from 'reactflow';
+import { Node, Position, XYPosition } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters, getNodeCenter, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
@@ -73,15 +73,15 @@ const populateHandleIdToOtherEndNode: PopulateHandleIdToOtherHandNode = (
   handesIdToOtherEndNode
 ) => {
   edges.forEach((edge) => {
-    if (edge.sourceNode && edge.targetNode && edge.sourceHandle && edge.targetHandle) {
+    if (edge.source && edge.target && edge.sourceHandle && edge.targetHandle) {
       if (handlesId.find((id) => id === edge.sourceHandle)) {
-        const node = nodes.find((n) => n.id === edge.targetNode?.id);
+        const node = nodes.find((n) => n.id === edge.target);
         if (node) {
           handesIdToOtherEndNode.set(edge.sourceHandle, node);
         }
       }
       if (handlesId.find((id) => id === edge.targetHandle)) {
-        const node = nodes.find((n) => n.id === edge.sourceNode?.id);
+        const node = nodes.find((n) => n.id === edge.source);
         if (node) {
           handesIdToOtherEndNode.set(edge.targetHandle, node);
         }
@@ -131,9 +131,9 @@ const layoutHandleIndex = (diagram: RawDiagram) => {
 
 const layoutHandlePosition = (diagram: RawDiagram) => {
   diagram.edges.forEach((edge) => {
-    const { sourceNode: sourceEdgeNode, targetNode: targetEdgeNode, sourceHandle, targetHandle } = edge;
-    const sourceNode = diagram.nodes.find((node) => node.id === sourceEdgeNode?.id);
-    const targetNode = diagram.nodes.find((node) => node.id === targetEdgeNode?.id);
+    const { source: sourceEdgeNode, target: targetEdgeNode, sourceHandle, targetHandle } = edge;
+    const sourceNode = diagram.nodes.find((node) => node.id === sourceEdgeNode);
+    const targetNode = diagram.nodes.find((node) => node.id === targetEdgeNode);
     if (sourceNode && targetNode && sourceHandle && targetHandle) {
       const { sourcePosition, targetPosition } = getEdgeParameters(sourceNode, targetNode, diagram.nodes);
 
@@ -158,11 +158,11 @@ const layoutHandlePosition = (diagram: RawDiagram) => {
         );
 
         diagram.nodes = diagram.nodes.map((node) => {
-          if (edge.sourceNode && edge.targetNode) {
-            if (edge.sourceNode.id === node.id) {
+          if (edge.source && edge.target) {
+            if (edge.source === node.id) {
               node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
             }
-            if (edge.targetNode.id === node.id) {
+            if (edge.target === node.id) {
               node.data = { ...node.data, connectionHandles: targetConnectionHandles };
             }
           }

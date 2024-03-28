@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Node, NodeMouseHandler } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
-import { Node, NodeMouseHandler } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { NodeContext } from '../node/NodeContext';
 import { NodeContextValue } from '../node/NodeContext.types';
@@ -21,14 +21,14 @@ import { UseNodeHoverValue } from './useNodeHover.types';
 export const useNodeHover = (): UseNodeHoverValue => {
   const { setHoveredNode } = useContext<NodeContextValue>(NodeContext);
 
-  const onNodeMouseEnter: NodeMouseHandler = useCallback(
+  const onNodeMouseEnter: NodeMouseHandler<Node<NodeData>> = useCallback(
     (_: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData>) => {
       setHoveredNode(node);
     },
     []
   );
 
-  const onNodeMouseLeave: NodeMouseHandler = useCallback(() => setHoveredNode(null), []);
+  const onNodeMouseLeave: NodeMouseHandler<Node<NodeData>> = useCallback(() => setHoveredNode(null), []);
   return {
     onNodeMouseEnter,
     onNodeMouseLeave,

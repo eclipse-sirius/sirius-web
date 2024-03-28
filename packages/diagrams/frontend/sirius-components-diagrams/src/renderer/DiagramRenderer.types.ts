@@ -11,11 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node } from 'reactflow';
+import { Edge, EdgeProps, Node, NodeProps } from '@xyflow/react';
+import { FC } from 'react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { ConnectionHandle } from './handles/ConnectionHandles.types';
+import { FreeFormNodeData } from './node/FreeFormNode.types';
+import { IconLabelNodeData } from './node/IconsLabelNode.types';
+import { ListNodeData } from './node/ListNode.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
 
 export interface DiagramRendererProps {
@@ -39,7 +43,7 @@ export type OutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_EN
 
 export type OutsideLabels = Partial<Record<OutsideLabelLocation, OutsideLabel>>;
 
-export interface NodeData {
+export interface CommonData {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
@@ -68,7 +72,7 @@ export enum BorderNodePosition {
   WEST,
 }
 
-export interface EdgeData {
+export interface CommonEdgeData {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
@@ -99,3 +103,38 @@ export interface OutsideLabel {
   iconURL: string[];
   style: React.CSSProperties;
 }
+
+export interface EdgeData extends Record<string, unknown>, CommonEdgeData {}
+export interface NodeData extends Record<string, unknown>, CommonData {}
+
+export interface NodeDataMap {
+  freeFormNode: FreeFormNodeData;
+  iconLabelNode: IconLabelNodeData;
+  listNode: ListNodeData;
+}
+export type NodeComponentsMap = {
+  [K in keyof NodeDataMap]: FC<NodeProps<Node<NodeDataMap[K], K>>>;
+};
+
+export type NodePropsMap = {
+  [K in keyof NodeDataMap]: NodeProps<Node<NodeDataMap[K], K>>;
+};
+
+export type AnyNodeType = {
+  [K in keyof NodeDataMap]: Node<NodeDataMap[K], K>;
+}[keyof NodeDataMap];
+
+export interface EdgeDataMap {
+  multiLabelEdge: MultiLabelEdgeData;
+}
+export type EdgeComponentsMap = {
+  [K in keyof EdgeDataMap]: FC<EdgeProps<Edge<EdgeDataMap[K], K>>>;
+};
+
+export type EdgePropsMap = {
+  [K in keyof EdgeDataMap]: EdgeProps<Edge<EdgeDataMap[K], K>>;
+};
+
+export type AnyEdgeType = {
+  [K in keyof EdgeDataMap]: Edge<EdgeDataMap[K], K>;
+}[keyof EdgeDataMap];

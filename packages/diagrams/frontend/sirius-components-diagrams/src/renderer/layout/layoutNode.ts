@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Box, Node, Rect, XYPosition, boxToRect, rectToBox } from 'reactflow';
+import { Box, Node, Rect, XYPosition } from '@xyflow/react';
+import { boxToRect, rectToBox } from '@xyflow/system';
 import { NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from './layout.types';
 import {
@@ -39,7 +40,7 @@ export const computeNodesBox = (allVisibleNodes: Node<NodeData>[], nodes: Node[]
 
   const contentBox: Box = nodes.reduce<Box>(
     (currentBox, node) => {
-      const bounds = getNodeFootprint(allVisibleNodes, node);
+      const bounds = getNodeFootprint(allVisibleNodes, node as Node<NodeData>);
       const nodeBox = rectToBox({
         x: bounds.x,
         y: bounds.y,

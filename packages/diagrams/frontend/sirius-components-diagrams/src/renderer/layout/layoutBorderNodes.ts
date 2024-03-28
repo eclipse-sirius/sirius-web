@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { CoordinateExtent, Node, XYPosition } from 'reactflow';
+import { CoordinateExtent, Node, XYPosition } from '@xyflow/react';
+import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { borderNodeOffset, borderNodeReferencePositionRatio } from './layoutParams';
-import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 
 export const isEastBorderNode = (borderNode: Node<NodeData>): boolean => {
   return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePosition.EAST;
