@@ -12,8 +12,9 @@
  *******************************************************************************/
 
 import { useCallback } from 'react';
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange, useReactFlow } from 'reactflow';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from 'reactflow';
+import { useStore } from '../../representation/useStore';
+import { NodeData } from '../DiagramRenderer.types';
 import { useDropNode } from '../dropNode/useDropNode';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
@@ -22,10 +23,10 @@ import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseLayoutOnBoundsChangeValue } from './useLayoutOnBoundsChange.types';
 
 export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayoutOnBoundsChangeValue => {
-  const { getEdges, setNodes, setEdges } = useReactFlow<NodeData, EdgeData>();
   const { layout } = useLayout();
   const { hasDroppedNodeParentChanged } = useDropNode();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
+  const { getEdges } = useStore();
 
   const isMoveFinished = (change: NodeChange): change is NodePositionChange => {
     return (
@@ -89,8 +90,7 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
             }
             return node;
           });
-          setNodes(updatedNodes);
-          setEdges(laidOutDiagram.edges);
+
           const finalDiagram: RawDiagram = {
             nodes: updatedNodes,
             edges: laidOutDiagram.edges,

@@ -19,7 +19,7 @@ export type { IConvertEngine, INodeConverter } from './converter/ConvertEngine.t
 export { convertLineStyle, isListLayoutStrategy } from './converter/convertDiagram';
 export { AlignmentMap } from './converter/convertDiagram.types';
 export { convertHandles } from './converter/convertHandles';
-export { convertLabelStyle, convertInsideLabel, convertOutsideLabels } from './converter/convertLabel';
+export { convertInsideLabel, convertLabelStyle, convertOutsideLabels } from './converter/convertLabel';
 export type { GQLNodeDescription } from './graphql/query/nodeDescriptionFragment.types';
 export type { GQLDiagram, GQLNodeLayoutData } from './graphql/subscription/diagramFragment.types';
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
@@ -28,7 +28,7 @@ export type { GQLNode, GQLNodeStyle, GraphQLNodeStyleFragment } from './graphql/
 export { BorderNodePosition as BorderNodePosition } from './renderer/DiagramRenderer.types';
 export type { Diagram, NodeData } from './renderer/DiagramRenderer.types';
 export { Label } from './renderer/Label';
-export { useConnector } from './renderer/connector/useConnector';
+export { useConnectorNodeStyle } from './renderer/connector/useConnectorNodeStyle';
 export { useDrop } from './renderer/drop/useDrop';
 export { useDropNode } from './renderer/dropNode/useDropNode';
 export { useDropNodeStyle } from './renderer/dropNode/useDropNodeStyle';

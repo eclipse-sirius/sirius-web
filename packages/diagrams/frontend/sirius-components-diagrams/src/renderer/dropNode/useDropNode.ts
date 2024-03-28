@@ -141,7 +141,8 @@ export const useDropNode = (): UseDropNodeValue => {
   const { diagramDescription } = useDiagramDescription();
 
   const onDropNode = useDropNodeMutation();
-  const { getNodes, getIntersectingNodes } = useReactFlow<NodeData, EdgeData>();
+  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+  const { setNodes, getNodes } = reactFlowInstance;
 
   const getNodeById: (string) => Node | undefined = (id: string) => getNodes().find((n) => n.id === id);
 
@@ -153,36 +154,41 @@ export const useDropNode = (): UseDropNodeValue => {
     return node;
   };
 
-  const onNodeDragStart: NodeDragHandler = useCallback((_event, node, nodes) => {
-    if (!node || nodes.length > 1) {
-      // Drag on multi selection is not supported yet
-      return;
-    }
-    const computedNode = getDraggableNode(node);
+  const onNodeDragStart: NodeDragHandler = useCallback(
+    (_event, node, nodes) => {
+      if (!node || nodes.length > 1) {
+        // Drag on multi selection is not supported yet
+        return;
+      }
+      const computedNode = getDraggableNode(node);
 
-    const dropDataEntry: GQLDropNodeCompatibility | undefined = diagramDescription.dropNodeCompatibility.find(
-      (entry) => entry.droppedNodeDescriptionId === (computedNode as Node<NodeData>).data.descriptionId
-    );
-    const compatibleNodes = getNodes()
-      .filter((candidate) => !candidate.hidden && !isDescendantOf(computedNode, candidate, getNodeById))
-      .filter((candidate) =>
-        dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
-      )
-      .map((candidate) => candidate.id);
+      const dropDataEntry: GQLDropNodeCompatibility | undefined = diagramDescription.dropNodeCompatibility.find(
+        (entry) => entry.droppedNodeDescriptionId === (computedNode as Node<NodeData>).data.descriptionId
+      );
+      const compatibleNodes = getNodes()
+        .filter((candidate) => !candidate.hidden && !isDescendantOf(computedNode, candidate, getNodeById))
+        .filter((candidate) =>
+          dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
+        )
+        .map((candidate) => candidate.id);
 
-    initializeDrop({
-      initialParentId: computedNode.parentNode || null,
-      draggedNode: computedNode,
-      targetNodeId: computedNode.parentNode || null,
-      compatibleNodeIds: compatibleNodes,
-      droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
-    });
-  }, []);
+      initializeDrop({
+        initialParentId: computedNode.parentNode || null,
+        draggedNode: computedNode,
+        targetNodeId: computedNode.parentNode || null,
+        compatibleNodeIds: compatibleNodes,
+        droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
+      });
+    },
+    [getNodes]
+  );
 
   const onNodeDrag: NodeDragHandler = useCallback(
     (_event, node) => {
       if (draggedNode && !draggedNode.data.isBorderNode) {
-        const intersections = getIntersectingNodes(node).filter((intersectingNode) => !intersectingNode.hidden);
+        const intersections = reactFlowInstance
+          .getIntersectingNodes(node)
+          .filter((intersectingNode) => !intersectingNode.hidden);
         const newParentId =
           [...intersections]
             .filter((intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, getNodeById))
@@ -193,37 +199,49 @@ export const useDropNode = (): UseDropNodeValue => {
     [draggedNode?.id]
   );
 
-  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
-  const onNodeDragStop: (onDragCancelled: (node: Node) => void) => NodeDragHandler = useCallback(
-    (onDragCancelled) => {
-      return (event, _node) => {
-        const dropPosition = reactFlowInstance.screenToFlowPosition({
-          x: event.clientX,
-          y: event.clientY,
-        });
-        if (draggedNode) {
-          const oldParentId: string | null = draggedNode.parentNode || null;
-          const newParentId: string | null = targetNodeId;
-          const validNewParent =
-            (newParentId === null && droppableOnDiagram) ||
-            (newParentId !== null && compatibleNodeIds.includes(newParentId));
-          if (oldParentId !== newParentId) {
-            if (validNewParent) {
-              onDropNode(draggedNode, newParentId, dropPosition, onDragCancelled);
-            } else {
-              onDragCancelled(draggedNode);
-            }
-          } else if (draggedNode.type === 'iconLabelNode') {
-            // For list items, any move which did not change the parent (and potentially
-            // trigger a DnD operation) should be reverted as their layout is fixed.
-            onDragCancelled(draggedNode);
+  const onNodeDragStop: NodeDragHandler = useCallback(
+    (event) => {
+      const dropPosition = reactFlowInstance.screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+      if (draggedNode) {
+        const oldParentId: string | null = draggedNode.parentNode || null;
+        const newParentId: string | null = targetNodeId;
+        const validNewParent =
+          (newParentId === null && droppableOnDiagram) ||
+          (newParentId !== null && compatibleNodeIds.includes(newParentId));
+        if (oldParentId !== newParentId) {
+          if (validNewParent) {
+            onDropNode(draggedNode, newParentId, dropPosition, cancelDrop);
+          } else {
+            cancelDrop(draggedNode);
           }
+        } else if (draggedNode.type === 'iconLabelNode') {
+          // For list items, any move which did not change the parent (and potentially
+          // trigger a DnD operation) should be reverted as their layout is fixed.
+          cancelDrop(draggedNode);
         }
-        resetDrop();
-      };
+      }
+      resetDrop();
     },
-    [draggedNode?.id, targetNodeId, droppableOnDiagram, compatibleNodeIds.join('-'), reactFlowInstance]
+    [draggedNode?.id, targetNodeId, droppableOnDiagram, compatibleNodeIds.join('-'), reactFlowInstance, setNodes]
   );
+
+  const cancelDrop = (node: Node) => {
+    setNodes((nds) =>
+      nds.map((n) => {
+        if (n.id === node.id) {
+          n.position = node.position;
+          n.positionAbsolute = node.positionAbsolute;
+          n.data = {
+            ...n.data,
+          };
+        }
+        return n;
+      })
+    );
+  };
 
   const hasDroppedNodeParentChanged = (): boolean => {
     return (draggedNode?.parentNode ?? null) !== targetNodeId;

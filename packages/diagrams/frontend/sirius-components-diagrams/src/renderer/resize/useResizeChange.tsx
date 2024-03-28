@@ -10,11 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useCallback } from 'react';
-import { Node, NodeChange, useReactFlow } from 'reactflow';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { ListNodeData } from '../node/ListNode.types';
 import { NodeDimensionChange } from '@reactflow/core/dist/esm/types/changes';
+import { useCallback } from 'react';
+import { Node, NodeChange } from 'reactflow';
+import { useStore } from '../../representation/useStore';
+import { NodeData } from '../DiagramRenderer.types';
+import { ListNodeData } from '../node/ListNode.types';
 import { UseResizeChangeValue } from './useResizeChange.types';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
@@ -67,21 +68,24 @@ const isResize = (change: NodeChange): change is NodeDimensionChange =>
   change.type === 'dimensions' && (change.resizing ?? false);
 
 export const useResizeChange = (): UseResizeChangeValue => {
-  const { getNodes } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes } = useStore();
 
-  const transformResizeListNodeChanges = useCallback((changes: NodeChange[]): NodeChange[] => {
-    const newChanges: NodeChange[] = [];
-    const updatedChanges: NodeChange[] = changes.map((change) => {
-      if (isResize(change)) {
-        const resizedNode = getNodes().find((node) => change.id === node.id);
-        if (resizedNode) {
-          newChanges.push(...applyResizeToListContain(resizedNode, getNodes(), change));
+  const transformResizeListNodeChanges = useCallback(
+    (changes: NodeChange[]): NodeChange[] => {
+      const newChanges: NodeChange[] = [];
+      const updatedChanges: NodeChange[] = changes.map((change) => {
+        if (isResize(change)) {
+          const resizedNode = getNodes().find((node) => change.id === node.id);
+          if (resizedNode) {
+            newChanges.push(...applyResizeToListContain(resizedNode, getNodes(), change));
+          }
         }
-      }
-      return change;
-    });
-    return [...newChanges, ...updatedChanges];
-  }, []);
+        return change;
+      });
+      return [...newChanges, ...updatedChanges];
+    },
+    [getNodes]
+  );
 
   return { transformResizeListNodeChanges };
 };

@@ -127,7 +127,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3409[#3409] [diagram] Make border node movement smoother
 - https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [sirius-web] Restore support for project images
 - https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [core] Image URLs are now sanitized in a similar manner in all datafetchers, as a result absolute URLs to external images are better supported and a leading slash is now required anymore.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3296[#3296] [diagram] Add a hook `useStore` to retrieve local `setNodes`, `setEdges`, `onEdgesChange` and `onNodesChange`, this hook is used to align how nodes and edges are manipulated during processing of ReactFlow events.
 
 == v2024.3.0
 

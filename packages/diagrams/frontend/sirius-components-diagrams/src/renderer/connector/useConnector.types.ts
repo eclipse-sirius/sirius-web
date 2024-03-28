@@ -21,7 +21,6 @@ export interface UseConnectorValue {
   onConnectionStartElementClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   addTempConnectionLine: () => void;
   removeTempConnectionLine: () => void;
-  newConnectionStyleProvider: NodeStyleProvider;
   connection: Connection | null;
   position: XYPosition | null;
   isConnectionInProgress: boolean;
@@ -29,10 +28,6 @@ export interface UseConnectorValue {
   candidates: GQLNodeDescription[];
 }
 
-export interface NodeStyleProvider {
-  getNodeStyle: (nodeId: string, descriptionId: string) => React.CSSProperties;
-  getHandleStyle: (id: string) => React.CSSProperties;
-}
 export interface GQLGetToolSectionsData {
   viewer: GQLViewer;
 }

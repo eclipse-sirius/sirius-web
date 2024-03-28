@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeChange, NodePositionChange, getConnectedEdges, useReactFlow } from 'reactflow';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { Node, NodeChange, NodePositionChange, getConnectedEdges } from 'reactflow';
+import { useStore } from '../../representation/useStore';
+import { NodeData } from '../DiagramRenderer.types';
 import { getEdgeParametersWhileMoving, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
@@ -19,8 +20,9 @@ import { UseHandleChangeValue } from './useHandleChange.types';
 
 const isNodePositionChange = (change: NodeChange): change is NodePositionChange =>
   change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
+
 export const useHandleChange = (): UseHandleChangeValue => {
-  const { getEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getEdges } = useStore();
 
   const applyHandleChange = (
     changes: NodeChange[],

@@ -56,7 +56,7 @@ const findNearestBorderPosition = (
 export const useBorderChange = (): UseBorderChangeValue => {
   const { getNodes } = useReactFlow<NodeData, EdgeData>();
 
-  const transformBorderNodeChanges = useCallback((changes: NodeChange[]): NodeChange[] => {
+  const transformBorderNodeChanges = useCallback((changes: NodeChange[], oldNodes: Node<NodeData>[]): NodeChange[] => {
     return changes.map((change) => {
       if (change.type === 'position' && change.position && change.positionAbsolute) {
         const movedNode = getNodes().find((node) => change.id === node.id);
@@ -86,7 +86,11 @@ export const useBorderChange = (): UseBorderChangeValue => {
               change.positionAbsolute = movedNode.positionAbsolute;
             }
           } else {
-            movedNode.data.borderNodePosition = findBorderNodePosition(change.position, movedNode, parentNode);
+            const oldMovedNode = oldNodes.find((n) => n.id === movedNode.id);
+            const newPosition = findBorderNodePosition(change.position, movedNode, parentNode);
+            if (oldMovedNode && oldMovedNode.data.borderNodePosition !== newPosition) {
+              oldMovedNode.data.borderNodePosition = newPosition;
+            }
           }
         }
       }

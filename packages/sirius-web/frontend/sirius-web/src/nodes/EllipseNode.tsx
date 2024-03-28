@@ -22,7 +22,7 @@ import {
   Label,
   NodeContext,
   NodeContextValue,
-  useConnector,
+  useConnectorNodeStyle,
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
@@ -74,7 +74,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
-  const { newConnectionStyleProvider } = useConnector();
+  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
@@ -99,7 +99,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
       <div
         style={{
           ...ellipseNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
-          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
+          ...connectionFeedbackStyle,
           ...dropFeedbackStyle,
         }}
         onDragOver={onDragOver}
