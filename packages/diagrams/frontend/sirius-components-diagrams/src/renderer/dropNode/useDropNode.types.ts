@@ -18,7 +18,7 @@ import { GQLMessage } from '../Tool.types';
 export interface UseDropNodeValue {
   onNodeDragStart: NodeDragHandler;
   onNodeDrag: NodeDragHandler;
-  onNodeDragStop: (onDragCancelled: (node: Node) => void) => NodeDragHandler;
+  onNodeDragStop: NodeDragHandler;
   hasDroppedNodeParentChanged: () => boolean;
   draggedNode: Node<NodeData> | null;
   targetNodeId: string | null;

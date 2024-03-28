@@ -12,9 +12,9 @@
  *******************************************************************************/
 import { useState } from 'react';
 import { Node, NodeChange, NodePositionChange, useReactFlow } from 'reactflow';
-import { UseHelperLinesState, UseHelperLinesValue, HelperLines } from './useHelperLines.types';
-import { NodeData, EdgeData } from '../DiagramRenderer.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { isDescendantOf } from '../layout/layoutNode';
+import { HelperLines, UseHelperLinesState, UseHelperLinesValue } from './useHelperLines.types';
 
 const isMove = (change: NodeChange): change is NodePositionChange =>
   change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
@@ -128,6 +128,7 @@ const getHelperLines = (
 export const useHelperLines = (): UseHelperLinesValue => {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [state, setState] = useState<UseHelperLinesState>({ vertical: null, horizontal: null });
+  //Here we need the nodes in the ReactFlow store to get positionAbsolute
   const { getNodes } = useReactFlow<NodeData, EdgeData>();
 
   const applyHelperLines = (changes: NodeChange[]): NodeChange[] => {
@@ -159,7 +160,14 @@ export const useHelperLines = (): UseHelperLinesValue => {
   };
 
   const resetHelperLines = (changes: NodeChange[]): void => {
-    if (enabled && changes[0]?.type === 'reset') {
+    if (
+      enabled &&
+      changes.length === 1 &&
+      changes[0] &&
+      changes[0].type === 'position' &&
+      typeof changes[0].dragging === 'boolean' &&
+      !changes[0].dragging
+    ) {
       setState({ vertical: null, horizontal: null });
     }
   };

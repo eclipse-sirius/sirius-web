@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import React, { useCallback, useContext, useEffect, useMemo, useRef, MouseEvent as ReactMouseEvent } from 'react';
+import React, { MouseEvent as ReactMouseEvent, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -22,15 +22,11 @@ import {
   EdgeChange,
   Node,
   NodeChange,
-  NodeDragHandler,
-  NodePositionChange,
   OnEdgesChange,
   OnMove,
   OnNodesChange,
   ReactFlow,
   applyNodeChanges,
-  useEdgesState,
-  useNodesState,
 } from 'reactflow';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
@@ -38,6 +34,7 @@ import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { useDiagramDescription } from '../contexts/useDiagramDescription';
 import { convertDiagram } from '../converter/convertDiagram';
+import { useStore } from '../representation/useStore';
 import { Diagram, DiagramRendererProps, NodeData } from './DiagramRenderer.types';
 import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
@@ -49,7 +46,6 @@ import { useDrop } from './drop/useDrop';
 import { useDropNode } from './dropNode/useDropNode';
 import { ConnectionLine } from './edge/ConnectionLine';
 import { edgeTypes } from './edge/EdgeTypes';
-import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { HelperLines } from './helper-lines/HelperLines';
@@ -82,13 +78,16 @@ const GRID_STEP: number = 10;
 export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
+  const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
+  const nodes = getNodes();
+  const edges = getEdges();
+
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
 
   const ref = useRef<HTMLDivElement | null>(null);
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
-
   const {
     onDiagramBackgroundClick,
     onDiagramElementClick: diagramPaletteOnDiagramElementClick,
@@ -115,9 +114,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { onNodeDragStart, onNodeDrag, onNodeDragStop, diagramBackgroundStyle, targetNodeId, draggedNode } =
     useDropNode();
   const { nodeTypes } = useNodeType();
-
-  const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>([]);
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const { fitToScreen } = useInitialFitToScreen();
@@ -188,7 +184,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       } else {
         setNodes((oldNodes) => {
           resetHelperLines(changes);
-          let transformedNodeChanges: NodeChange[] = transformBorderNodeChanges(noReadOnlyChanges);
+          let transformedNodeChanges: NodeChange[] = transformBorderNodeChanges(noReadOnlyChanges, oldNodes);
           transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
           transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
           transformedNodeChanges = applyHelperLines(transformedNodeChanges);
@@ -197,19 +193,21 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
 
           newNodes = applyMoveChange(transformedNodeChanges, newNodes);
           newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
-          setNodes(newNodes);
-          layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
 
+          layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
           return newNodes;
         });
       }
     },
-    [setNodes, targetNodeId, draggedNode?.id, layoutOnBoundsChange]
+    [setNodes, targetNodeId, draggedNode?.id, layoutOnBoundsChange, getNodes]
   );
 
-  const handleEdgesChange: OnEdgesChange = useCallback((changes: EdgeChange[]) => {
-    onEdgesChange(changes);
-  }, []);
+  const handleEdgesChange: OnEdgesChange = useCallback(
+    (changes: EdgeChange[]) => {
+      onEdgesChange(changes);
+    },
+    [onEdgesChange]
+  );
 
   const handlePaneClick = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>) => {
@@ -252,16 +250,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const handleMove: OnMove = useCallback(() => {
     closeAllPalettes();
   }, [isDiagramElementPaletteOpened, isDiagramPaletteOpened]);
-
-  const handleNodeDragStop: NodeDragHandler = onNodeDragStop((node: Node) => {
-    const resetPosition: NodePositionChange = {
-      id: node.id,
-      type: 'position',
-      position: node.position,
-      positionAbsolute: node.positionAbsolute,
-    };
-    onNodesChange([resetPosition]);
-  });
 
   const handleDiagramElementCLick = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>, element: Node | Edge) => {
@@ -319,7 +307,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       onDragOver={onDragOver}
       onNodeDrag={handleNodeDrag}
       onNodeDragStart={onNodeDragStart}
-      onNodeDragStop={handleNodeDragStop}
+      onNodeDragStop={onNodeDragStop}
       onNodeMouseEnter={onNodeMouseEnter}
       onNodeMouseLeave={onNodeMouseLeave}
       onSelectionStart={handleSelectionStart}

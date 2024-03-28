@@ -31,6 +31,8 @@ import { memo, useContext, useState } from 'react';
 import { Panel, useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
+import { HelperLinesIconOff } from '../../icons/HelperLinesIconOff';
 import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
@@ -40,8 +42,6 @@ import { useArrangeAll } from '../layout/useArrangeAll';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
-import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
-import { HelperLinesIconOff } from '../../icons/HelperLinesIconOff';
 
 export const DiagramPanel = memo(
   ({ snapToGrid, onSnapToGrid, helperLines, onHelperLines, refreshEventPayloadId }: DiagramPanelProps) => {
@@ -51,8 +51,7 @@ export const DiagramPanel = memo(
 
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
-    const reactFlow = useReactFlow<NodeData, EdgeData>();
-    const { getEdges, getNodes } = reactFlow;
+    const { getNodes, getEdges, zoomIn, zoomOut, fitView } = useReactFlow<NodeData, EdgeData>();
 
     const getAllElementsIds = () => [...getNodes().map((elem) => elem.id), ...getEdges().map((elem) => elem.id)];
     const getSelectedNodes = () => getNodes().filter((node) => node.selected);
@@ -60,9 +59,9 @@ export const DiagramPanel = memo(
     const { fullscreen, onFullscreen } = useFullscreen();
     const { arrangeAll } = useArrangeAll(refreshEventPayloadId);
 
-    const handleFitToScreen = () => reactFlow.fitView({ duration: 200, nodes: getSelectedNodes() });
-    const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
-    const handleZoomOut = () => reactFlow.zoomOut({ duration: 200 });
+    const handleFitToScreen = () => fitView({ duration: 200, nodes: getSelectedNodes() });
+    const handleZoomIn = () => zoomIn({ duration: 200 });
+    const handleZoomOut = () => zoomOut({ duration: 200 });
     const handleShare = () => setState((prevState) => ({ ...prevState, dialogOpen: 'Share' }));
     const handleCloseDialog = () => setState((prevState) => ({ ...prevState, dialogOpen: null }));
 

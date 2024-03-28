@@ -14,13 +14,15 @@
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useEffect, useState } from 'react';
 import { useOnSelectionChange, useReactFlow } from 'reactflow';
+import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 
 export const useDiagramSelection = (onShiftSelection: boolean): void => {
   const { selection, setSelection } = useSelection();
   const [shiftSelection, setShiftSelection] = useState<SelectionEntry[]>([]);
 
-  const { getNodes, setNodes, getEdges, setEdges, fitView } = useReactFlow<NodeData, EdgeData>();
+  const { fitView } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, setNodes, getEdges, setEdges } = useStore();
 
   useEffect(() => {
     const diagramElementIds: string[] = [

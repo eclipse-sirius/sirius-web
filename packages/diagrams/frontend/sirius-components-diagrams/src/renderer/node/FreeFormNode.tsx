@@ -17,7 +17,7 @@ import React, { memo, useContext } from 'react';
 import { NodeProps } from 'reactflow';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
-import { useConnector } from '../connector/useConnector';
+import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
 import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles';
@@ -79,7 +79,7 @@ export const FreeFormNode = memo(({ data, id, selected }: NodeProps<FreeFormNode
 
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
-  const { newConnectionStyleProvider } = useConnector();
+  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
   const rotation = computeBorderRotation(data);
@@ -110,7 +110,7 @@ export const FreeFormNode = memo(({ data, id, selected }: NodeProps<FreeFormNode
       <div
         style={{
           ...freeFormNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded, rotation, imageURL),
-          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
+          ...connectionFeedbackStyle,
           ...dropFeedbackStyle,
         }}
         onDragOver={onDragOver}

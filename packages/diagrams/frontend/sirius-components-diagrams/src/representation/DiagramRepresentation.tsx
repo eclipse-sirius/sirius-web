@@ -42,6 +42,7 @@ import {
   GQLDiagramEventData,
   GQLDiagramEventVariables,
 } from './DiagramRepresentation.types';
+import { StoreContextProvider } from './StoreContext';
 
 const subscription = (contributions: GraphQLNodeStyleFragment[]) => gql(diagramEventSubscription(contributions));
 
@@ -172,30 +173,32 @@ export const DiagramRepresentation = ({
           readOnly,
         }}>
         <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
-          <DiagramDirectEditContextProvider>
-            <DiagramPaletteContextProvider>
-              <DiagramElementPaletteContextProvider>
-                <ConnectorContextProvider>
-                  <DropNodeContextProvider>
-                    <NodeContextProvider>
-                      <div
-                        style={{ display: 'inline-block', position: 'relative' }}
-                        data-representation-kind="diagram"
-                        data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
-                        <MarkerDefinitions />
-                        <FullscreenContextProvider>
-                          <DiagramRenderer
-                            key={state.diagramRefreshedEventPayload.diagram.id}
-                            diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-                          />
-                        </FullscreenContextProvider>
-                      </div>
-                    </NodeContextProvider>
-                  </DropNodeContextProvider>
-                </ConnectorContextProvider>
-              </DiagramElementPaletteContextProvider>
-            </DiagramPaletteContextProvider>
-          </DiagramDirectEditContextProvider>
+          <StoreContextProvider>
+            <DiagramDirectEditContextProvider>
+              <DiagramPaletteContextProvider>
+                <DiagramElementPaletteContextProvider>
+                  <ConnectorContextProvider>
+                    <DropNodeContextProvider>
+                      <NodeContextProvider>
+                        <div
+                          style={{ display: 'inline-block', position: 'relative' }}
+                          data-representation-kind="diagram"
+                          data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
+                          <MarkerDefinitions />
+                          <FullscreenContextProvider>
+                            <DiagramRenderer
+                              key={state.diagramRefreshedEventPayload.diagram.id}
+                              diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+                            />
+                          </FullscreenContextProvider>
+                        </div>
+                      </NodeContextProvider>
+                    </DropNodeContextProvider>
+                  </ConnectorContextProvider>
+                </DiagramElementPaletteContextProvider>
+              </DiagramPaletteContextProvider>
+            </DiagramDirectEditContextProvider>
+          </StoreContextProvider>
         </DiagramDescriptionContext.Provider>
       </DiagramContext.Provider>
     </ReactFlowProvider>

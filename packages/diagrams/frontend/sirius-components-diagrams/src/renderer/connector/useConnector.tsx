@@ -20,18 +20,16 @@ import {
   OnConnectEnd,
   OnConnectStart,
   OnConnectStartParams,
+  useStore as reactFlowStore,
   useReactFlow,
-  useStore,
   useUpdateNodeInternals,
 } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters } from '../edge/EdgeLayout';
-import { NodeContext } from '../node/NodeContext';
-import { NodeContextValue } from '../node/NodeContext.types';
 import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
-import { NodeStyleProvider, UseConnectorValue } from './useConnector.types';
+import { UseConnectorValue } from './useConnector.types';
 
 const tempConnectionLineStyle = (theme: Theme): React.CSSProperties => {
   return {
@@ -52,47 +50,16 @@ export const useConnector = (): UseConnectorValue => {
     setIsNewConnection,
   } = useContext<ConnectorContextValue>(ConnectorContext);
 
+  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getNode, setEdges } = reactFlowInstance;
+
   const theme = useTheme();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
   const updateNodeInternals = useUpdateNodeInternals();
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
-  const connectionNodeId = useStore((state) => state.connectionNodeId);
+
+  const connectionNodeId = reactFlowStore((state) => state.connectionNodeId);
   const isConnectionInProgress = (!!connectionNodeId && isNewConnection) || !!connection;
   const isReconnectionInProgress = !!connectionNodeId && !isNewConnection;
-
-  const newConnectionStyleProvider: NodeStyleProvider = {
-    getNodeStyle: (id: string, descriptionId: string): React.CSSProperties => {
-      const style: React.CSSProperties = {};
-      if (isNewConnection) {
-        const isConnectionCompatibleNode = Boolean(
-          candidates.find((nodeDescription) => nodeDescription.id === descriptionId)
-        );
-        const isSelectedNode = hoveredNode?.id === id;
-        if (isConnectionCompatibleNode) {
-          if (isSelectedNode) {
-            // Highlight the selected target
-            style.boxShadow = `0px 0px 2px 2px ${theme.palette.selected}`;
-          }
-          // Make sure all compatible nodes, even normally faded ones, are fully visible
-          style.opacity = '1';
-        } else {
-          // Force fade all incompatible nodes
-          style.opacity = '0.4';
-        }
-      }
-      return style;
-    },
-    getHandleStyle: (id: string): React.CSSProperties => {
-      const handleStyle: React.CSSProperties = {};
-      if (isNewConnection && candidates.map((node) => node.id).includes(id)) {
-        handleStyle.boxShadow = `0px 0px 2px 2px ${theme.palette.selected}`;
-        handleStyle.opacity = 1;
-      } else if (isNewConnection) {
-        handleStyle.opacity = 0.4;
-      }
-      return handleStyle;
-    },
-  };
 
   const onConnect: OnConnect = useCallback((connection: Connection) => {
     setConnection(connection);
@@ -127,17 +94,11 @@ export const useConnector = (): UseConnectorValue => {
     setIsNewConnection(false);
   }, []);
 
-  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
-
   const addTempConnectionLine = () => {
-    const sourceNode = reactFlowInstance.getNode(connection?.source ?? '');
-    const targetNode = reactFlowInstance.getNode(connection?.target ?? '');
+    const sourceNode = getNode(connection?.source ?? '');
+    const targetNode = getNode(connection?.target ?? '');
     if (sourceNode && targetNode && !!connection) {
-      const { targetPosition, sourcePosition } = getEdgeParameters(
-        sourceNode,
-        targetNode,
-        reactFlowInstance.getNodes()
-      );
+      const { targetPosition, sourcePosition } = getEdgeParameters(sourceNode, targetNode, getNodes());
 
       const edge: Edge<EdgeData> = {
         id: 'temp',
@@ -151,12 +112,12 @@ export const useConnector = (): UseConnectorValue => {
         style: tempConnectionLineStyle(theme),
         zIndex: 2002,
       };
-      reactFlowInstance.setEdges((oldEdges: Edge<EdgeData>[]) => [...oldEdges, edge]);
+      setEdges((oldEdges) => [...oldEdges, edge]);
     }
   };
 
   const removeTempConnectionLine = () => {
-    reactFlowInstance.setEdges(() => reactFlowInstance.getEdges().filter((item) => !item.id.includes('temp')));
+    setEdges((oldEdges) => oldEdges.filter((item) => !item.id.includes('temp')));
   };
 
   return {
@@ -167,7 +128,6 @@ export const useConnector = (): UseConnectorValue => {
     onConnectionStartElementClick,
     addTempConnectionLine,
     removeTempConnectionLine,
-    newConnectionStyleProvider,
     connection,
     position,
     isConnectionInProgress,

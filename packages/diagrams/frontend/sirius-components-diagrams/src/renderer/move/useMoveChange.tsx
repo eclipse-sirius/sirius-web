@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useCallback } from 'react';
-import { Node, NodeChange, NodePositionChange, useReactFlow } from 'reactflow';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { Node, NodeChange, NodePositionChange } from 'reactflow';
+import { useStore } from '../../representation/useStore';
+import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
 import { UseMoveChangeValue } from './useMoveChange.types';
 
@@ -38,22 +39,25 @@ const isMove = (change: NodeChange): change is NodePositionChange =>
   change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
 
 export const useMoveChange = (): UseMoveChangeValue => {
-  const { getNodes } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes } = useStore();
 
-  const transformUndraggableListNodeChanges = useCallback((changes: NodeChange[]): NodeChange[] => {
-    return changes.map((change) => {
-      if (isMove(change)) {
-        const movedNode = getNodes().find((node) => change.id === node.id);
-        if (movedNode?.parentNode && !movedNode.data.isBorderNode) {
-          applyPositionChangeToParentIfUndraggable(movedNode, getNodes(), change);
+  const transformUndraggableListNodeChanges = useCallback(
+    (changes: NodeChange[]): NodeChange[] => {
+      return changes.map((change) => {
+        if (isMove(change)) {
+          const movedNode = getNodes().find((node) => change.id === node.id);
+          if (movedNode?.parentNode && !movedNode.data.isBorderNode) {
+            applyPositionChangeToParentIfUndraggable(movedNode, getNodes(), change);
+          }
+          if (movedNode?.data.pinned) {
+            change.position = undefined; // canceled move if node is pinned
+          }
         }
-        if (movedNode?.data.pinned) {
-          change.position = undefined; // canceled move if node is pinned
-        }
-      }
-      return change;
-    });
-  }, []);
+        return change;
+      });
+    },
+    [getNodes]
+  );
 
   const applyMoveChange = (changes: NodeChange[], nodes: Node<NodeData>[]): Node<NodeData>[] => {
     changes.forEach((change) => {
