@@ -404,6 +404,19 @@ type RichText implements Widget {
   value: String!
 }
 
+type Slider implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
+  label: String!
+  iconURL: [String!]!
+  readOnly: Boolean!
+  minValue: Int!
+  maxValue: Int!
+  currentValue: Int!
+}
+
+
 type FormDescription implements RepresentationDescription {
   id: ID!
   label: String!
@@ -429,6 +442,7 @@ extend type Mutation {
   clickListItem(input: ClickListItemInput!): ClickListItemPayload!
   deleteListItem(input: DeleteListItemInput!): DeleteListItemPayload!
   pushButton(input: PushButtonInput!): PushButtonPayload!
+  editSlider(input: EditSliderInput!): EditSliderPayload!
 }
 
 input EditCheckboxInput {
@@ -551,3 +565,13 @@ input PushButtonInput {
 }
 
 union PushButtonPayload = ErrorPayload | SuccessPayload
+
+input EditSliderInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  sliderId: ID!
+  newValue: Int!
+}
+
+union EditSliderPayload = SuccessPayload | ErrorPayload

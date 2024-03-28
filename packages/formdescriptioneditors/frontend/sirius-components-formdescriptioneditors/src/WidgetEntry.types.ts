@@ -26,6 +26,7 @@ import {
   GQLRadio,
   GQLRichText,
   GQLSelect,
+  GQLSlider,
   GQLSplitButton,
   GQLTextarea,
   GQLTextfield,
@@ -71,6 +72,7 @@ export type PieChartWidgetProps = WidgetProps<GQLChartWidget>;
 export type RadioWidgetProps = WidgetProps<GQLRadio>;
 export type RichTextWidgetProps = WidgetProps<GQLRichText>;
 export type SelectWidgetProps = WidgetProps<GQLSelect>;
+export type SliderWidgetProps = WidgetProps<GQLSlider>;
 export type TextareaWidgetProps = WidgetProps<GQLTextarea>;
 export type TextfieldWidgetProps = WidgetProps<GQLTextfield>;
 export type TreeWidgetProps = WidgetProps<GQLTree>;

@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.tests.graphql.RelatedElementsEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -71,6 +71,7 @@ import org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.form.PieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SliderDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
@@ -674,6 +675,28 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseWidgetDescription(WidgetDescription widgetDescription) {
         return ViewFormDescriptionEditorConverterSwitch.this.customWidgetConverter.doSwitch(widgetDescription);
+    }
+
+    @Override
+    public AbstractWidgetDescription caseSliderDescription(SliderDescription sliderDescription) {
+        VariableManager childVariableManager = variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, sliderDescription);
+        String id = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
+        var builder =  org.eclipse.sirius.components.forms.description.SliderDescription.newSliderDescription(UUID.randomUUID().toString())
+                .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
+                .labelProvider(vm -> this.getWidgetLabel(sliderDescription, "Slider"))
+                .minValueProvider(vm -> 0)
+                .maxValueProvider(vm -> 100)
+                .currentValueProvider(vm -> 50)
+                .newValueHandler(vm -> new Success())
+                .diagnosticsProvider(vm -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "");
+        if (sliderDescription.getHelpExpression() != null && !sliderDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(sliderDescription));
+        }
+        return builder.build();
     }
 
     public String getWidgetLabel(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription, String defaultLabel) {

@@ -249,6 +249,8 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createRichTextDescription()));
 
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createSliderDescription()));
+
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createSelectDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createSplitButtonDescription()));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,15 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { getCSSColor, IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
+import { GQLSelect } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditSelectMutationData,
@@ -27,9 +28,9 @@ import {
   GQLErrorPayload,
   GQLSuccessPayload,
   GQLUpdateWidgetFocusMutationData,
-  SelectPropertySectionProps,
   SelectStyleProps,
 } from './SelectPropertySection.types';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<Theme, SelectStyleProps>((theme) => ({
   style: {
@@ -84,13 +85,13 @@ const isErrorPayload = (payload: GQLEditSelectPayload): payload is GQLErrorPaylo
 const isSuccessPayload = (payload: GQLEditSelectPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
-export const SelectPropertySection = ({
+export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
   editingContextId,
   formId,
   widget,
   subscribers,
   readOnly,
-}: SelectPropertySectionProps) => {
+}: PropertySectionComponentProps<GQLSelect>) => {
   const props: SelectStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,

@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.core.api.IDomainSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

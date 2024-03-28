@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.diagrams.tests.graphql.DiagramEventSubscriptionRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.data.PapayaSampleIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.diagrams.UnsynchronizedDiagramDescriptionProvider;
@@ -79,9 +79,9 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToUnsynchronizedDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                TestIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(),
                 this.unsynchronizedDiagramDescriptionProvider.getRepresentationDescriptionId(),
-                TestIdentifiers.PAPAYA_ROOT_OBJECT.toString(),
+                PapayaSampleIdentifiers.ROOT_OBJECT.toString(),
                 "UnsynchronizedDiagram"
         );
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
@@ -123,11 +123,11 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable createNode = () -> {
             var createNodeToolId = this.unsynchronizedDiagramDescriptionProvider.getCreateNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), TestIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), diagramId.get(), createNodeToolId, 0, 0, null);
-            var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), diagramId.get(), createNodeToolId, 0, 0, null);
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
-            String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
         Predicate<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)

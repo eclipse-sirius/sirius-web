@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -314,7 +314,8 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
     @Override
     public EList<ConditionalBarChartDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalBarChartDescriptionStyle.class, this, FormPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalBarChartDescriptionStyle.class, this,
+                    FormPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }

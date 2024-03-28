@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.Select;
+import org.eclipse.sirius.components.forms.Slider;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.TreeWidget;
@@ -56,6 +57,10 @@ public class FormAssertions extends Assertions {
 
     public static SelectAssert assertThat(Select select) {
         return new SelectAssert(select);
+    }
+
+    public static SliderAssert assertThat(Slider slider) {
+        return new SliderAssert(slider);
     }
 
     public static TextareaAssert assertThat(Textarea textarea) {

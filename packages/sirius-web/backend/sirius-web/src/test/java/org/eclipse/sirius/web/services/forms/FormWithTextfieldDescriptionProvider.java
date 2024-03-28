@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.forms;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -30,6 +31,7 @@ import org.eclipse.sirius.components.view.builder.generated.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.TextfieldDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.TextfieldDescriptionStyleBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
+import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -47,30 +49,43 @@ import org.springframework.stereotype.Service;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class FormWithTextfieldDescriptionProvider implements IEditingContextProcessor {
 
-    public static final String REPRESENTATION_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=formDescription&sourceKind=view&sourceId=5247c1b5-48c9-31f5-a1cb-0e8d37e2e748&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93";
+    private final IFormIdProvider formIdProvider;
+
+    private final View view;
+
+    private FormDescription formDescription;
+
+    public FormWithTextfieldDescriptionProvider(IFormIdProvider formIdProvider) {
+        this.formIdProvider = Objects.requireNonNull(formIdProvider);
+        this.view = this.createView();
+    }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            siriusWebEditingContext.getViews().add(this.createView());
+            siriusWebEditingContext.getViews().add(this.view);
         }
+    }
+
+    public String getRepresentationDescriptionId() {
+        return this.formIdProvider.getId(this.formDescription);
     }
 
     private View createView() {
         ViewBuilder viewBuilder = new ViewBuilder();
-        View view = viewBuilder.build();
-        view.getDescriptions().add(this.createFormDescription());
+        View textfieldFormView = viewBuilder.build();
+        textfieldFormView.getDescriptions().add(this.createFormDescription());
 
-        view.eAllContents().forEachRemaining(eObject -> {
+        textfieldFormView.eAllContents().forEachRemaining(eObject -> {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
 
         String resourcePath = UUID.nameUUIDFromBytes("FormWithTextfieldDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
         resource.eAdapters().add(new ResourceMetadataAdapter("FormWithTextfieldDescription"));
-        resource.getContents().add(view);
+        resource.getContents().add(textfieldFormView);
 
-        return view;
+        return textfieldFormView;
     }
 
     private FormDescription createFormDescription() {
@@ -119,13 +134,13 @@ public class FormWithTextfieldDescriptionProvider implements IEditingContextProc
                 .groups(groupDescription)
                 .build();
 
-        var formDescription = new FormDescriptionBuilder()
+        this.formDescription = new FormDescriptionBuilder()
                 .name("Form")
                 .titleExpression("aql:'FormWithTextfield'")
                 .domainType("domain:Domain")
                 .pages(pageDescription)
                 .build();
 
-        return formDescription;
+        return this.formDescription;
     }
 }

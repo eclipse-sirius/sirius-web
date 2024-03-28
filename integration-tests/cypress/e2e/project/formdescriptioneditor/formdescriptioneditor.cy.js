@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Explorer } from '../../../workbench/Explorer';
+
 describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
   beforeEach(() => {
     cy.deleteAllProjects();
@@ -33,11 +35,9 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('create-object').click();
     // create the form description editor
     cy.getByTestId('New Form Description').click();
-    cy.getByTestId('New Form Description-more').should('be.enabled').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
-    cy.getByTestId('representationDescription').click();
-    cy.getByTestId('FormDescriptionEditor').click();
-    cy.getByTestId('create-representation').click();
+
+    const explorer = new Explorer();
+    explorer.createRepresentation('New Form Description', 'FormDescriptionEditor', 'FormDescriptionEditor');
   });
 
   it('try to move a toolbar action into another empty group', () => {

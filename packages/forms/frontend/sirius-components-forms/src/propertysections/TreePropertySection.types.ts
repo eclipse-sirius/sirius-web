@@ -11,15 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLMessage, GQLSubscriber, GQLTree, GQLTreeNode } from '../form/FormEventFragments.types';
-
-export interface TreePropertySectionProps {
-  editingContextId: string;
-  formId: string;
-  widget: GQLTree;
-  subscribers: GQLSubscriber[];
-  readOnly: boolean;
-}
+import { GQLMessage, GQLTreeNode } from '../form/FormEventFragments.types';
 
 export interface TreeItemProps {
   node: GQLTreeNode;

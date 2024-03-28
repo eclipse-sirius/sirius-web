@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInpu
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.tests.graphql.DiagramEventSubscriptionRunner;
-import org.eclipse.sirius.web.TestIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.services.api.IGivenCreatedRepresentation;
@@ -55,7 +54,7 @@ public class GivenCreatedDiagramSubscription implements IGivenCreatedDiagramSubs
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), TestIdentifiers.PAPAYA_PROJECT.toString(), representationId);
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), input.editingContextId(), representationId);
         var flux = this.diagramEventSubscriptionRunner.run(diagramEventInput);
 
         TestTransaction.flagForCommit();

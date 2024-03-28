@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { getCSSColor, IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -19,9 +19,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
+import { GQLMultiSelect } from '../form/FormEventFragments.types';
 import {
   GQLEditMultiSelectMutationData,
   GQLEditMultiSelectPayload,
@@ -29,10 +30,10 @@ import {
   GQLSuccessPayload,
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusPayload,
-  MultiSelectPropertySectionProps,
   MultiSelectStyleProps,
 } from './MultiSelectPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<Theme, MultiSelectStyleProps>((theme) => ({
   style: {
@@ -88,13 +89,13 @@ const isSuccessPayload = (
   payload: GQLEditMultiSelectPayload | GQLUpdateWidgetFocusPayload
 ): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
 
-export const MultiSelectPropertySection = ({
+export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect> = ({
   editingContextId,
   formId,
   widget,
   subscribers,
   readOnly,
-}: MultiSelectPropertySectionProps) => {
+}: PropertySectionComponentProps<GQLMultiSelect>) => {
   const props: MultiSelectStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,

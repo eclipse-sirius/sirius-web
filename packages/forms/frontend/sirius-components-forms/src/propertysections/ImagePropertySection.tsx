@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,9 @@ import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-compon
 import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useContext, useEffect, useState } from 'react';
-import { ImagePropertySectionProps, ImageStyleProps } from './ImagePropertySection.types';
+import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
+import { GQLImage } from '../form/FormEventFragments.types';
+import { ImageStyleProps } from './ImagePropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
 const useImageStyles = makeStyles<Theme, ImageStyleProps>(() => ({
@@ -37,7 +39,11 @@ const useImageStyles = makeStyles<Theme, ImageStyleProps>(() => ({
 /**
  * Defines the content of a Image property section.
  */
-export const ImagePropertySection = ({ editingContextId, formId, widget }: ImagePropertySectionProps) => {
+export const ImagePropertySection: PropertySectionComponent<GQLImage> = ({
+  editingContextId,
+  formId,
+  widget,
+}: PropertySectionComponentProps<GQLImage>) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [validImage, setValidImage] = useState<boolean>(true);
 

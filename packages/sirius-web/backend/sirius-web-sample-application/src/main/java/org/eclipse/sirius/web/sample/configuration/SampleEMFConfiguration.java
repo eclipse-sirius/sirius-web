@@ -25,8 +25,6 @@ import org.eclipse.sirius.components.view.form.provider.FormItemProviderAdapterF
 import org.eclipse.sirius.components.view.provider.ViewItemProviderAdapterFactory;
 import org.eclipse.sirius.web.customnodes.CustomnodesPackage;
 import org.eclipse.sirius.web.customnodes.provider.CustomnodesItemProviderAdapterFactory;
-import org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage;
-import org.eclipse.sirius.web.customwidgets.provider.CustomwidgetsItemProviderAdapterFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -97,24 +95,6 @@ public class SampleEMFConfiguration {
     @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
     public ChildExtenderProvider formChildExtenderProvider() {
         return new ChildExtenderProvider(ViewPackage.eNS_URI, FormItemProviderAdapterFactory.ViewChildCreationExtender::new);
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
-    public EPackage customWidgetsEPackage() {
-        return CustomwidgetsPackage.eINSTANCE;
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
-    public AdapterFactory customWidgetsAdapterFactory() {
-        return new CustomwidgetsItemProviderAdapterFactory();
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
-    public ChildExtenderProvider sliderChildExtenderProvider() {
-        return new ChildExtenderProvider(FormPackage.eNS_URI, CustomwidgetsItemProviderAdapterFactory.FormChildCreationExtender::new);
     }
 
     @Bean

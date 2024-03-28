@@ -21,7 +21,12 @@ import {
   workbenchViewContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams';
-import { DetailsView, RelatedElementsView, RepresentationsView } from '@eclipse-sirius/sirius-components-forms';
+import {
+  DetailsView,
+  PropertySectionContext,
+  RelatedElementsView,
+  RepresentationsView,
+} from '@eclipse-sirius/sirius-components-forms';
 import { ExplorerView } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -39,6 +44,7 @@ import {
   defaultNodeTypeRegistry,
 } from '../diagrams/DiagramRepresentationConfiguration';
 import { DiagramRepresentationConfigurationProps } from '../diagrams/DiagramRepresentationConfiguration.types';
+import { propertySectionsRegistry } from '../forms/defaultPropertySectionRegistry';
 import { ApolloGraphQLProvider } from '../graphql/ApolloGraphQLProvider';
 import { OnboardArea } from '../onboarding/OnboardArea';
 import { RepresentationContextProvider } from '../representations/RepresentationContextProvider';
@@ -129,9 +135,11 @@ export const SiriusWebApplication = ({
                   <ConfirmationDialogContextProvider>
                     <RepresentationContextProvider>
                       <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-                        <div style={style}>
-                          <Router />
-                        </div>
+                        <PropertySectionContext.Provider value={{ propertySectionsRegistry }}>
+                          <div style={style}>
+                            <Router />
+                          </div>
+                        </PropertySectionContext.Provider>
                       </NodeTypeContext.Provider>
                     </RepresentationContextProvider>
                   </ConfirmationDialogContextProvider>

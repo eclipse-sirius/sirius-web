@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLLink } from '../form/FormEventFragments.types';
 
 export interface LinkStyleProps {
   color: string | null;
@@ -19,10 +18,4 @@ export interface LinkStyleProps {
   bold: boolean | null;
   underline: boolean | null;
   strikeThrough: boolean | null;
-}
-
-export interface LinkPropertySectionProps {
-  editingContextId: string;
-  formId: string;
-  widget: GQLLink;
 }
