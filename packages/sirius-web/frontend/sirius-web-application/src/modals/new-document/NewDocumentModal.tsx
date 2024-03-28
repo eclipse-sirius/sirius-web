@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -20,8 +20,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import {
@@ -30,6 +30,7 @@ import {
   GQLErrorPayload,
   GQLGetStereotypeDescriptionsQueryData,
   GQLGetStereotypeDescriptionsQueryVariables,
+  GQLSuccessPayload,
   NewDocumentModalProps,
 } from './NewDocumentModal.types';
 import {
@@ -41,9 +42,9 @@ import {
   HideToastEvent,
   NewDocumentModalContext,
   NewDocumentModalEvent,
-  newDocumentModalMachine,
   SchemaValue,
   ShowToastEvent,
+  newDocumentModalMachine,
 } from './NewDocumentModalMachine';
 
 const createDocumentMutation = gql`
@@ -52,6 +53,11 @@ const createDocumentMutation = gql`
       __typename
       ... on ErrorPayload {
         message
+      }
+      ... on CreateDocumentSuccessPayload {
+        document {
+          id
+        }
       }
     }
   }
@@ -86,6 +92,8 @@ const useNewDocumentModalStyles = makeStyles((theme) => ({
 
 const isErrorPayload = (payload: GQLCreateDocumentPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLCreateDocumentPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'CreateDocumentSuccessPayload';
 
 export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModalProps) => {
   const classes = useNewDocumentModalStyles();
@@ -138,6 +146,8 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
     dispatch(changeStereotypeDescriptionEvent);
   };
 
+  const { setSelection } = useSelection();
+
   const [createDocument, { loading: createDocumentLoading, data: createDocumentData, error: createDocumentError }] =
     useMutation<GQLCreateDocumentMutationData>(createDocumentMutation);
   useEffect(() => {
@@ -158,6 +168,8 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
           const { message } = createDocument;
           const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
           dispatch(showToastEvent);
+        } else if (isSuccessPayload(createDocument)) {
+          setSelection({ entries: [{ id: createDocument.document.id, label: 'New', kind: 'siriusWeb://document' }] });
         }
       }
     }
