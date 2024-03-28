@@ -105,7 +105,8 @@ const toListNode = (
   data.insideLabel = convertInsideLabel(
     insideLabel,
     data,
-    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`,
+    gqlNode.childNodes?.some((child) => child.state !== GQLViewModifier.Hidden)
   );
 
   const node: Node<ListNodeData> = {
