@@ -14,17 +14,22 @@ package org.eclipse.sirius.web.sample.tests.integration.task;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Optional;
+import com.jayway.jsonpath.JsonPath;
 
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
-import org.eclipse.sirius.components.task.starter.configuration.view.ViewGanttDescriptionBuilder;
-import org.eclipse.sirius.components.task.starter.configuration.view.ViewsStereotypeDescriptionRegistryConfigurer;
-import org.junit.jupiter.api.BeforeEach;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
+import org.eclipse.sirius.components.graphql.tests.CreateRepresentationMutationRunner;
+import org.eclipse.sirius.web.sample.TestIdentifiers;
+import org.eclipse.sirius.web.sample.tests.integration.AbstractIntegrationTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests of the gantt controllers.
@@ -32,35 +37,34 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author lfasani
  */
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
+@Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GanttControllerIntegrationTests extends AbstractTaskControllerIntegrationTests {
+public class GanttControllerIntegrationTests extends AbstractIntegrationTests {
+
+    public static final String GANTT_REPRESENTATION_DESCRIPTION_ID = String.format(
+            "siriusComponents://representationDescription?kind=ganttDescription&sourceKind=view&sourceId=%s&sourceElementId=%s", TestIdentifiers.GANTT_VIEW, TestIdentifiers.GANTT_REPRESENTATION);
 
     @Autowired
-    private IRepresentationDescriptionSearchService representationDescriptionSearchService;
-
-
-    @Override
-    @BeforeEach
-    public void beforeEach() {
-        super.beforeEach();
-
-        this.createStudio(ViewsStereotypeDescriptionRegistryConfigurer.GANTT_VIEW_ID);
-
-        this.createTaskProject();
-    }
+    private CreateRepresentationMutationRunner createRepresentationMutationRunner;
 
     @Test
-    @DisplayName("Given a task model, gantt representation creation succeeds")
-    public void givenGanttThenTasksMutationsSucceed() {
-        Optional<IRepresentationDescription> repDescOpt = this.representationDescriptionSearchService.findAll(this.editingDomain).values().stream()
-                .filter(desc -> desc.getLabel().equals(ViewGanttDescriptionBuilder.GANTT_REP_DESC_NAME))
-                .findFirst();
+    @DisplayName("Given a task model, when a create representation is performed, then the representation is created")
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenTaskModelThenGanttRepresentationCreationSucceeds() {
 
-        assertThat(repDescOpt).isPresent();
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                TestIdentifiers.TASK_PROJECT.toString(),
+                GANTT_REPRESENTATION_DESCRIPTION_ID,
+                TestIdentifiers.TASK_PROJECT_ROOT_OBJECT.toString(),
+                "GanttRepresentation"
+        );
+        var result = this.createRepresentationMutationRunner.run(input);
+        String typename = JsonPath.read(result, "$.data.createRepresentation.__typename");
+        assertThat(typename).isEqualTo(CreateRepresentationSuccessPayload.class.getSimpleName());
 
-        String taskProjectId = this.getTaskProjectId("Project Dev");
-
-        String representationId = this.createRepresentation(repDescOpt.get().getId(), taskProjectId, "Gantt");
-        assertThat(representationId).isNotBlank();
+        String representationId = JsonPath.read(result, "$.data.createRepresentation.representation.id");
+        assertThat(representationId).isNotNull();
     }
 }

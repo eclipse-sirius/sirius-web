@@ -23,6 +23,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -40,6 +42,7 @@ import org.eclipse.sirius.components.task.Person;
 import org.eclipse.sirius.components.task.Project;
 import org.eclipse.sirius.components.task.Task;
 import org.eclipse.sirius.components.task.TaskPackage;
+import org.eclipse.sirius.components.task.TaskTag;
 import org.eclipse.sirius.components.task.Team;
 import org.eclipse.sirius.components.view.emf.ICustomImageMetadataSearchService;
 import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesWidgetCreationService;
@@ -198,14 +201,27 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
 
     private Function<VariableManager, List<?>> getDependenciesProvider() {
         return variableManager -> {
-            List<Task> dependencies = new ArrayList<>();
-            variableManager.get(VariableManager.SELF, AbstractTask.class)
-                .map(AbstractTask::getDependencies)
+            List<Task> dependencies =  variableManager.get(VariableManager.SELF, AbstractTask.class)
+                .map(this::getProject)
                 .stream()
-                .flatMap(List::stream)
+                .flatMap(this::getAllContentStream)
+                .filter(Task.class::isInstance)
+                .map(Task.class::cast)
                 .toList();
+
             return dependencies;
         };
+    }
+
+    private Project getProject(EObject eObject) {
+        EObject parent = eObject.eContainer();
+        while (parent != null) {
+            if (parent instanceof Project project) {
+                return project;
+            }
+            parent = parent.eContainer();
+        }
+        return null;
     }
 
     private IfDescription createComputeDynamicallyWidget() {
@@ -229,18 +245,13 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
 
     private Function<VariableManager, List<?>> getTagsProvider() {
         return variableManager -> {
-            Optional<EObject> eObject = variableManager.get(VariableManager.SELF, EObject.class);
-            if (eObject.isPresent()) {
-                EObject parent = eObject.get().eContainer();
-                while (parent != null) {
-                    parent = eObject.get().eContainer();
-                    if (parent instanceof Project project) {
-                        return project.getOwnedTags();
-                    }
-                }
-            }
+            List<TaskTag> tags = variableManager.get(VariableManager.SELF, EObject.class)
+                .map(this::getProject)
+                .stream()
+                .flatMap(project -> project.getOwnedTags().stream())
+                .toList();
 
-            return List.of();
+            return tags;
         };
     }
 
@@ -248,9 +259,8 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
         return variableManager -> {
             List<Person> persons = variableManager.get(VariableManager.SELF, EObject.class)
                 .map(EObject::eResource)
-                .map(Resource::getContents)
                 .stream()
-                .flatMap(List::stream)
+                .flatMap(this::getAllResourceContentStream)
                 .filter(Person.class::isInstance)
                 .map(Person.class::cast)
                 .toList();
@@ -259,13 +269,22 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
         };
     }
 
+    private Stream<EObject> getAllResourceContentStream(Resource resource) {
+        Iterable<EObject> content = () -> resource.getAllContents();
+        return StreamSupport.stream(content.spliterator(), false);
+    }
+
+    private Stream<EObject> getAllContentStream(EObject eObject) {
+        Iterable<EObject> content = () -> eObject.eAllContents();
+        return StreamSupport.stream(content.spliterator(), false);
+    }
+
     private Function<VariableManager, List<?>> getTeamsProvider() {
         return variableManager -> {
             List<Team> teams = variableManager.get(VariableManager.SELF, EObject.class)
                 .map(EObject::eResource)
-                .map(Resource::getContents)
                 .stream()
-                .flatMap(List::stream)
+                .flatMap(this::getAllResourceContentStream)
                 .filter(Team.class::isInstance)
                 .map(Team.class::cast)
                 .toList();
