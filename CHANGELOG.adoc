@@ -73,6 +73,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - Facilitate the insertion of elements into a list node
 - Add support to filter elements on a diagram
 - Add filters on the explorer view
+- Improves resizing support for list nodes
 
 === Architectural decision records
 
