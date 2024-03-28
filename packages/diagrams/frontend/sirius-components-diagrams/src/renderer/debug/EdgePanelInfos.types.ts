@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge } from 'reactflow';
+import { Edge } from '@xyflow/react';
 import { EdgeData } from '../DiagramRenderer.types';
 export interface EdgePanelInfosProps {
   title: string;

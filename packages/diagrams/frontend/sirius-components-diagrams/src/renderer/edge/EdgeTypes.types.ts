@@ -11,11 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ComponentType } from 'react';
-import { EdgeProps } from 'reactflow';
+import { Edge, EdgeProps } from '@xyflow/react';
+import { FC } from 'react';
+import { EdgeDataMap } from '../DiagramRenderer.types';
 
 export type DiagramEdgeType = 'multiLabelEdge';
 
 export type DiagramEdgeTypes = {
-  [key in DiagramEdgeType]: ComponentType<EdgeProps>;
+  [K in keyof EdgeDataMap]: FC<EdgeProps<Edge<EdgeDataMap[K], K>>>;
 };

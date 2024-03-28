@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeChange } from 'reactflow';
+import { Node, NodeChange } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseMoveChangeValue {
-  transformUndraggableListNodeChanges: (changes: NodeChange[]) => NodeChange[];
-  applyMoveChange: (changes: NodeChange[], nodes: Node<NodeData>[]) => Node<NodeData>[];
+  transformUndraggableListNodeChanges: (changes: NodeChange<Node<NodeData>>[]) => NodeChange<Node<NodeData>>[];
+  applyMoveChange: (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]) => Node<NodeData>[];
 }

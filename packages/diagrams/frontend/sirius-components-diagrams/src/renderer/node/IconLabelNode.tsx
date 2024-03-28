@@ -12,15 +12,16 @@
  *******************************************************************************/
 
 import { Theme, useTheme } from '@material-ui/core/styles';
+import { Node, NodeProps } from '@xyflow/react';
 import { memo, useContext } from 'react';
-import { NodeProps } from 'reactflow';
+import { NodeComponentsMap } from '../DiagramRenderer.types';
 import { Label } from '../Label';
+import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { IconLabelNodeData } from './IconsLabelNode.types';
 import { NodeContext } from './NodeContext';
 import { NodeContextValue } from './NodeContext.types';
-import { useDrop } from '../drop/useDrop';
 
 const iconlabelStyle = (
   style: React.CSSProperties,
@@ -41,31 +42,33 @@ const iconlabelStyle = (
   return iconLabelNodeStyle;
 };
 
-export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNodeData>) => {
-  const theme = useTheme();
-  const { onDrop, onDragOver } = useDrop();
-  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+export const IconLabelNode: NodeComponentsMap['iconLabelNode'] = memo(
+  ({ data, id, selected }: NodeProps<Node<IconLabelNodeData>>) => {
+    const theme = useTheme();
+    const { onDrop, onDragOver } = useDrop();
+    const { style: dropFeedbackStyle } = useDropNodeStyle(id);
+    const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
-  const handleOnDrop = (event: React.DragEvent) => {
-    onDrop(event, id);
-  };
+    const handleOnDrop = (event: React.DragEvent) => {
+      onDrop(event, id);
+    };
 
-  return (
-    <div style={{ paddingLeft: '8px', paddingRight: '8px' }}>
-      <div
-        style={{
-          ...iconlabelStyle(data.style, theme, selected, hoveredNode?.id === id, data.faded),
-          ...dropFeedbackStyle,
-        }}
-        onDragOver={onDragOver}
-        onDrop={handleOnDrop}
-        data-testid={`IconLabel - ${data?.insideLabel?.text}`}>
-        {data.insideLabel ? (
-          <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
-        ) : null}
-        {selected ? <DiagramElementPalette diagramElementId={id} labelId={data?.insideLabel?.id ?? null} /> : null}
+    return (
+      <div style={{ paddingLeft: '8px', paddingRight: '8px' }}>
+        <div
+          style={{
+            ...iconlabelStyle(data.style, theme, !!selected, hoveredNode?.id === id, data.faded),
+            ...dropFeedbackStyle,
+          }}
+          onDragOver={onDragOver}
+          onDrop={handleOnDrop}
+          data-testid={`IconLabel - ${data?.insideLabel?.text}`}>
+          {data.insideLabel ? (
+            <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+          ) : null}
+          {selected ? <DiagramElementPalette diagramElementId={id} labelId={data?.insideLabel?.id ?? null} /> : null}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);

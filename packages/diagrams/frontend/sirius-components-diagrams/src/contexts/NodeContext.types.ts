@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeProps } from 'reactflow';
+import { NodeProps } from '@xyflow/react';
 import { INodeConverter } from '../converter/ConvertEngine.types';
 import { GraphQLNodeStyleFragment } from '../graphql/subscription/nodeFragment.types';
 import { NodeData } from '../renderer/DiagramRenderer.types';

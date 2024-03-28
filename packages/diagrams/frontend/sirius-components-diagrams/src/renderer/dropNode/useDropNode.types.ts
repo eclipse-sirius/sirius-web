@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodeDragHandler } from 'reactflow';
+import { Node, OnNodeDrag } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { GQLMessage } from '../Tool.types';
 
 export interface UseDropNodeValue {
-  onNodeDragStart: NodeDragHandler;
-  onNodeDrag: NodeDragHandler;
-  onNodeDragStop: (onDragCancelled: (node: Node) => void) => NodeDragHandler;
+  onNodeDragStart: OnNodeDrag<Node<NodeData>>;
+  onNodeDrag: OnNodeDrag<Node<NodeData>>;
+  onNodeDragStop: (onDragCancelled: (node: Node) => void) => OnNodeDrag<Node<NodeData>>;
   hasDroppedNodeParentChanged: () => boolean;
   draggedNode: Node<NodeData> | null;
   targetNodeId: string | null;

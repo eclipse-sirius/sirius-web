@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@material-ui/core/styles';
+import { NodeResizeControl, NodeResizer } from '@xyflow/react';
 import { memo, useContext } from 'react';
-import { NodeResizer, NodeResizeControl, ResizeControlVariant } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { ResizerProps } from './Resizer.types';
@@ -41,7 +41,7 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
     if (data.isListChild) {
       return (
         <NodeResizeControl
-          variant={ResizeControlVariant.Line}
+          //variant={ResizeControlVariant.Line} //TODO
           position={'bottom'}
           shouldResize={() => !data.isBorderNode}
           style={{ ...resizeControlLineStyle(theme) }}

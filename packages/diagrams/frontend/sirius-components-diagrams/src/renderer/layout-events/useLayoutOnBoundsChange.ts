@@ -11,22 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange, useReactFlow } from 'reactflow';
+import { Edge, Node, NodeChange, NodeDimensionChange, NodePositionChange, useReactFlow } from '@xyflow/react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDropNode } from '../dropNode/useDropNode';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseLayoutOnBoundsChangeValue } from './useLayoutOnBoundsChange.types';
 
 export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayoutOnBoundsChangeValue => {
-  const { getEdges, setNodes, setEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { layout } = useLayout();
   const { hasDroppedNodeParentChanged } = useDropNode();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
 
-  const isMoveFinished = (change: NodeChange): change is NodePositionChange => {
+  const isMoveFinished = (change: NodeChange<Node<NodeData>>): change is NodePositionChange => {
     return (
       change.type === 'position' &&
       typeof change.dragging === 'boolean' &&
@@ -34,17 +33,17 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
       !hasDroppedNodeParentChanged()
     );
   };
-  const isResizeFinished = (change: NodeChange): change is NodeDimensionChange =>
+  const isResizeFinished = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
     change.type === 'dimensions' && typeof change.resizing === 'boolean' && !change.resizing;
 
-  const isBoundsChangeFinished = (changes: NodeChange[]): NodeChange | undefined => {
+  const isBoundsChangeFinished = (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>> | undefined => {
     return changes.find((change) => isMoveFinished(change) || isResizeFinished(change));
   };
 
   const updateNodeResizeByUserState = (
-    changes: NodeChange[],
-    nodes: Node<NodeData, DiagramNodeType>[]
-  ): Node<NodeData, DiagramNodeType>[] => {
+    changes: NodeChange<Node<NodeData>>[],
+    nodes: Node<NodeData>[]
+  ): Node<NodeData>[] => {
     return nodes.map((node) => {
       if (changes.filter(isResizeFinished).find((dimensionChange) => dimensionChange.id === node.id)) {
         return {
@@ -59,7 +58,7 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
     });
   };
 
-  const layoutOnBoundsChange = (changes: NodeChange[], nodes: Node<NodeData, DiagramNodeType>[]): void => {
+  const layoutOnBoundsChange = (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): void => {
     const change = isBoundsChangeFinished(changes);
     if (change) {
       const updatedNodes = updateNodeResizeByUserState(changes, nodes);

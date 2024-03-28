@@ -13,8 +13,8 @@
 
 import { gql, OnDataOptions, useQuery, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { ReactFlowProvider } from '@xyflow/react';
 import { useContext, useEffect, useState } from 'react';
-import { ReactFlowProvider } from 'reactflow';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
 import { NodeTypeContext } from '../contexts/NodeContext';

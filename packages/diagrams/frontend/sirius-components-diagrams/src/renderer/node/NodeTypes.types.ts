@@ -11,11 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ComponentType } from 'react';
-import { NodeProps } from 'reactflow';
+import { Node, NodeProps } from '@xyflow/react';
+import { FC } from 'react';
+import { NodeDataMap } from '../DiagramRenderer.types';
 
 export type DiagramNodeType = string;
 
 export type DiagramNodeTypes = {
-  [key in DiagramNodeType]: ComponentType<NodeProps>;
+  [K in keyof NodeDataMap]: FC<NodeProps<Node<NodeDataMap[K], K>>>;
 };
