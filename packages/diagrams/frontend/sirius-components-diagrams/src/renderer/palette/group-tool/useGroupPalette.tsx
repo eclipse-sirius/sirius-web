@@ -44,11 +44,12 @@ export const useGroupPalette = (): UseGroupPaletteValue => {
     []
   );
 
-  const hideGroupPalette = () => {
+  const hideGroupPalette = useCallback(() => {
     if (state.isOpened) {
       setState((prevState) => ({ ...prevState, position: null, isOpened: false }));
     }
-  };
+  }, [state.isOpened]);
+
   return {
     position: state.position,
     isOpened: state.isOpened,

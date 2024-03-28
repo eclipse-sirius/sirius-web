@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, MouseEvent as ReactMouseEvent } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -187,10 +187,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
           transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
           transformedNodeChanges = applyHelperLines(transformedNodeChanges);
 
-          if (transformedNodeChanges.some((change) => change.type === 'position')) {
-            closeAllPalettes();
-          }
-
           let newNodes = applyNodeChanges(transformedNodeChanges, oldNodes);
 
           newNodes = applyMoveChange(transformedNodeChanges, newNodes);
@@ -276,6 +272,11 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
 
+  const handleNodeDrag = (event: ReactMouseEvent, node: Node, nodes: Node[]) => {
+    onNodeDrag(event, node, nodes);
+    closeAllPalettes();
+  };
+
   return (
     <ReactFlow
       nodes={nodes}
@@ -298,7 +299,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       nodeDragThreshold={1}
       onDrop={onDrop}
       onDragOver={onDragOver}
-      onNodeDrag={onNodeDrag}
+      onNodeDrag={handleNodeDrag}
       onNodeDragStart={onNodeDragStart}
       onNodeDragStop={handleNodeDragStop}
       onNodeMouseEnter={onNodeMouseEnter}
