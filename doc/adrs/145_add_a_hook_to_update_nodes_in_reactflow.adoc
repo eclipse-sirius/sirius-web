@@ -1,0 +1,80 @@
+= [ADR-145] Add a hook to update nodes in ReactFlow
+
+== Context
+
+We use the ReactFlow hook `useNodesState` to prototype our flow in `DiagramRenderer`.
+`const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);`
+
+It is stated on the documentation that this hook allows managing the state of nodes outside the ReatFlowInstance.
+
+So if we want to update a node outside DiagramRenderer we can't use the setNodes exported from `useReactFlow const { setNodes } = useReactFlow<NodeData, EdgeData>();` as it would create unexpected results.
+
+
+== Decision
+
+We need to be able to update nodes and edges with the same function in DiagramRenderer and other parts of the application.
+
+This can be done by having `setNodes` and `setEdges` function in a context that will be accessible with a custom hook.
+
+```
+export const useStore = (): useStoreValue => {
+  const { getEdges, getNodes, onEdgesChange, onNodesChange, setEdges, setNodes } =
+    useContext<StoreContextValue>(StoreContext);
+
+  return {
+    getEdges,
+    getNodes,
+    onEdgesChange,
+    onNodesChange,
+    setEdges,
+    setNodes,
+  };
+};
+```
+
+```
+export const StoreContext = React.createContext<StoreContextValue>(defaultValue);
+
+export const StoreContextProvider = ({ children }) => {
+  const [state, setState] = useState<StoreContextState>({
+    nodes: [],
+    edges: [],
+  });
+
+  const setNodes = (nodes: Node[]) => setState((prevState) => ({ ...prevState, nodes }));
+  const setEdges = (edges: Edge[]) => setState((prevState) => ({ ...prevState, edges }));
+
+  const onNodesChange = (changes: NodeChange[]) => {
+    setState((prevState) => {
+      const nodes = applyNodeChanges(changes, prevState.nodes);
+      return { ...prevState, nodes };
+    });
+  };
+  const onEdgesChange = (changes: EdgeChange[]) => {
+    setState((prevState) => {
+      const edges = applyEdgeChanges(changes, prevState.edges);
+      return { ...prevState, edges };
+    });
+  };
+
+  return (
+    <StoreContext.Provider
+      value={{
+        setEdges,
+        setNodes,
+        getEdges: () => state.edges,
+        getNodes: () => state.nodes,
+        onNodesChange,
+        onEdgesChange,
+      }}>
+      {children}
+    </StoreContext.Provider>
+  );
+};
+```
+
+== Status
+
+Work in progress
+
+== Consequences
