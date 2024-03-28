@@ -1,0 +1,23 @@
+= [ADR-142] Add a helper to update nodes in ReactFlow
+
+== Context
+
+We use the ReactFlow hook `useNodesState` to prototype our flow in `DiagramRenderer`.
+`const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);`
+
+It is stated on the documentation that this hook allows managing the state of nodes outside the ReatFlowInstance.
+
+So if we want to update a node outside DiagramRenderer we can't use the setNodes exported from `useReactFlow const { setNodes } = useReactFlow<NodeData, EdgeData>();` as it would create unexpected results.
+
+
+== Decision
+
+We need to be able to access the function `setNodes` that we are getting in DiagramRenderer in other parts of the application.
+
+This can be done by storing a `ref` pointing to `setNodes` in a `store`.
+
+== Status
+
+Work in progress
+
+== Consequences
