@@ -153,7 +153,11 @@ export const useDropNode = (): UseDropNodeValue => {
     return node;
   };
 
-  const onNodeDragStart: NodeDragHandler = useCallback((_event, node) => {
+  const onNodeDragStart: NodeDragHandler = useCallback((_event, node, nodes) => {
+    if (!node || nodes.length > 1) {
+      // Drag on multi selection is not supported yet
+      return;
+    }
     const computedNode = getDraggableNode(node);
 
     const dropDataEntry: GQLDropNodeCompatibility | undefined = diagramDescription.dropNodeCompatibility.find(
