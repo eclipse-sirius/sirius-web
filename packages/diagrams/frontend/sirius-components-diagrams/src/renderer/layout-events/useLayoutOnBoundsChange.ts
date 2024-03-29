@@ -11,8 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange, useReactFlow } from 'reactflow';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from 'reactflow';
+import { useShallow } from 'zustand/react/shallow';
+import { NodeData } from '../DiagramRenderer.types';
+import useStore from '../Store';
 import { useDropNode } from '../dropNode/useDropNode';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
@@ -20,8 +22,17 @@ import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseLayoutOnBoundsChangeValue } from './useLayoutOnBoundsChange.types';
 
+const selector = (state) => ({
+  nodes: state.nodes,
+  edges: state.edges,
+  setNodes: state.setNodes,
+  setEdges: state.setEdges,
+  getNodes: state.getNodes,
+  getEdges: state.getEdges,
+});
+
 export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayoutOnBoundsChangeValue => {
-  const { getEdges, setNodes, setEdges } = useReactFlow<NodeData, EdgeData>();
+  const { setNodes, setEdges, getEdges } = useStore(useShallow(selector));
   const { layout } = useLayout();
   const { hasDroppedNodeParentChanged } = useDropNode();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();

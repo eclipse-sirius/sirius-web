@@ -29,9 +29,8 @@ import {
   OnNodesChange,
   ReactFlow,
   applyNodeChanges,
-  useEdgesState,
-  useNodesState,
 } from 'reactflow';
+import { useShallow } from 'zustand/react/shallow';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { NodeTypeContext } from '../contexts/NodeContext';
@@ -49,7 +48,6 @@ import { useDrop } from './drop/useDrop';
 import { useDropNode } from './dropNode/useDropNode';
 import { ConnectionLine } from './edge/ConnectionLine';
 import { edgeTypes } from './edge/EdgeTypes';
-import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { HelperLines } from './helper-lines/HelperLines';
@@ -76,9 +74,24 @@ import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
 import 'reactflow/dist/style.css';
 
+import useStore from './Store';
+
 const GRID_STEP: number = 10;
 
+const selector = (state) => ({
+  nodes: state.nodes,
+  edges: state.edges,
+  setNodes: state.setNodes,
+  setEdges: state.setEdges,
+  getNodes: state.getNodes,
+  getEdges: state.getEdges,
+  onNodesChange: state.onNodesChange,
+  onEdgesChange: state.onEdgesChange,
+});
+
 export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
+  const { nodes, edges, setNodes, setEdges, getNodes, onNodesChange, onEdgesChange } = useStore(useShallow(selector));
+
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
   const { onDirectEdit } = useDiagramDirectEdit();
@@ -115,9 +128,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     useDropNode();
   const { nodeTypes } = useNodeType();
 
-  const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>([]);
-
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const { fitToScreen } = useInitialFitToScreen();
   const { setSelection } = useSelection();
@@ -140,6 +150,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         nodes: nodes as Node<NodeData, DiagramNodeType>[],
         edges,
       };
+
       layout(previousDiagram, convertedDiagram, diagramRefreshedEventPayload.referencePosition, (laidOutDiagram) => {
         laidOutDiagram.nodes
           .filter((node) => selectedNodeIds.includes(node.id))
@@ -178,28 +189,24 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         noReadOnlyChanges[0]?.type === 'dimensions' &&
         typeof noReadOnlyChanges[0].resizing !== 'boolean'
       ) {
-        setNodes((oldNodes) => applyNodeChanges(noReadOnlyChanges, oldNodes));
+        const newNodes = applyNodeChanges(noReadOnlyChanges, getNodes());
+        setNodes(newNodes);
       } else {
-        setNodes((oldNodes) => {
-          resetHelperLines(changes);
-          let transformedNodeChanges: NodeChange[] = transformBorderNodeChanges(noReadOnlyChanges);
-          transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
-          transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
-          transformedNodeChanges = applyHelperLines(transformedNodeChanges);
+        resetHelperLines(changes);
+        let transformedNodeChanges: NodeChange[] = transformBorderNodeChanges(noReadOnlyChanges);
+        transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
+        transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
+        transformedNodeChanges = applyHelperLines(transformedNodeChanges);
 
-          if (transformedNodeChanges.some((change) => change.type === 'position')) {
-            closeAllPalettes();
-          }
-
-          let newNodes = applyNodeChanges(transformedNodeChanges, oldNodes);
-
-          newNodes = applyMoveChange(transformedNodeChanges, newNodes);
-          newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
-          setNodes(newNodes);
-          layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
-
-          return newNodes;
-        });
+        if (transformedNodeChanges.some((change) => change.type === 'position')) {
+          closeAllPalettes();
+        }
+        let newNodes = applyNodeChanges(transformedNodeChanges, getNodes());
+        newNodes = applyMoveChange(transformedNodeChanges, newNodes);
+        newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+        setNodes(newNodes);
+        layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+        setNodes(newNodes);
       }
     },
     [setNodes, targetNodeId, draggedNode?.id]
