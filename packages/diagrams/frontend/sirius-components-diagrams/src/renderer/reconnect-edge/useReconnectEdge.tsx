@@ -90,18 +90,21 @@ export const useReconnectEdge = (): UseReconnectEdge => {
     }
   }, [reconnectEdgeData, reconnectEdgeError]);
 
-  const reconnectEdge = (oldEdge: Edge, newConnection: Connection) => {
-    const edgeId = oldEdge.id;
-    let reconnectEdgeKind = GQLReconnectKind.TARGET;
-    let newEdgeTargetId = newConnection.target;
-    if (oldEdge.target === newConnection.target) {
-      reconnectEdgeKind = GQLReconnectKind.SOURCE;
-      newEdgeTargetId = newConnection.source;
-    }
-    if (newEdgeTargetId) {
-      handleReconnectEdge(edgeId, newEdgeTargetId, reconnectEdgeKind);
-    }
-  };
+  const reconnectEdge = useCallback(
+    (oldEdge: Edge, newConnection: Connection) => {
+      const edgeId = oldEdge.id;
+      let reconnectEdgeKind = GQLReconnectKind.TARGET;
+      let newEdgeTargetId = newConnection.target;
+      if (oldEdge.target === newConnection.target) {
+        reconnectEdgeKind = GQLReconnectKind.SOURCE;
+        newEdgeTargetId = newConnection.source;
+      }
+      if (newEdgeTargetId) {
+        handleReconnectEdge(edgeId, newEdgeTargetId, reconnectEdgeKind);
+      }
+    },
+    [handleReconnectEdge]
+  );
 
   return { reconnectEdge };
 };
