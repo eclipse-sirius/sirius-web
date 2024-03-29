@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -205,9 +205,9 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     [setNodes, targetNodeId, draggedNode?.id]
   );
 
-  const handleEdgesChange: OnEdgesChange = (changes: EdgeChange[]) => {
+  const handleEdgesChange: OnEdgesChange = useCallback((changes: EdgeChange[]) => {
     onEdgesChange(changes);
-  };
+  }, []);
 
   const handlePaneClick = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>) => {
@@ -241,11 +241,11 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
 
   const { backgroundColor, smallGridColor, largeGridColor } = diagramBackgroundStyle;
 
-  const closeAllPalettes = () => {
+  const closeAllPalettes = useCallback(() => {
     hideDiagramPalette();
     hideDiagramElementPalette();
     hideGroupPalette();
-  };
+  }, [hideDiagramPalette, hideDiagramElementPalette, hideGroupPalette]);
 
   const handleMove: OnMove = useCallback(() => {
     closeAllPalettes();
@@ -261,18 +261,25 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     onNodesChange([resetPosition]);
   });
 
-  const handleDiagramElementCLick = (event: React.MouseEvent<Element, MouseEvent>, element: Node | Edge) => {
-    diagramPaletteOnDiagramElementClick();
-    elementPaletteOnDiagramElementClick(event, element);
-    groupPaletteOnDiagramElementClick(event, element);
-  };
+  const handleDiagramElementCLick = useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>, element: Node | Edge) => {
+      diagramPaletteOnDiagramElementClick();
+      elementPaletteOnDiagramElementClick(event, element);
+      groupPaletteOnDiagramElementClick(event, element);
+    },
+    [elementPaletteOnDiagramElementClick, diagramPaletteOnDiagramElementClick, groupPaletteOnDiagramElementClick]
+  );
 
-  const handleSelectionStart = () => {
+  const handleSelectionStart = useCallback(() => {
     closeAllPalettes();
-  };
-  const handleSelectionEnd = (event: React.MouseEvent<Element, MouseEvent>) => {
-    groupPaletteOnDiagramElementClick(event, null);
-  };
+  }, [closeAllPalettes]);
+
+  const handleSelectionEnd = useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>) => {
+      groupPaletteOnDiagramElementClick(event, null);
+    },
+    [groupPaletteOnDiagramElementClick]
+  );
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
 
@@ -308,7 +315,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       maxZoom={40}
       minZoom={0.1}
       snapToGrid={snapToGrid}
-      snapGrid={[GRID_STEP, GRID_STEP]}
+      snapGrid={useMemo(() => [GRID_STEP, GRID_STEP], [])}
       connectionMode={ConnectionMode.Loose}
       zoomOnDoubleClick={false}
       connectionLineType={ConnectionLineType.SmoothStep}
