@@ -15,14 +15,20 @@ package org.eclipse.sirius.web.application.controllers.forms;
 import static org.assertj.core.api.Assertions.fail;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.EditRichTextInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.RichText;
+import org.eclipse.sirius.components.forms.tests.graphql.EditRichTextMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaSampleIdentifiers;
@@ -47,6 +53,7 @@ import reactor.test.StepVerifier;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class RichTextControllerTests extends AbstractIntegrationTests {
 
@@ -58,6 +65,9 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private FormWithRichTextDescriptionProvider formWithRichTextDescriptionProvider;
+
+    @Autowired
+    private EditRichTextMutationRunner editRichTextMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -76,10 +86,10 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a textfield widget, when it is displayed, then it is properly initialized")
+    @DisplayName("Given a rich text widget, when it is displayed, then it is properly initialized")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenTextfieldWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
+    public void givenRichTextWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToRichTextForm();
 
         Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
@@ -97,6 +107,54 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a rich text widget, when it is edited, then its value is updated")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenRichTextWidgetWhenItIsEditedThenItsValueIsUpdated() {
+        var flux = this.givenSubscriptionToRichTextForm();
+
+        var formId = new AtomicReference<String>();
+        var richTextId = new AtomicReference<String>();
+
+        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    formId.set(form.getId());
+
+                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+                    var richText = groupNavigator.findWidget("Name", RichText.class);
+
+                    richTextId.set(richText.getId());
+                }, () -> fail("Missing form"));
+
+        Runnable editRichText = () -> {
+            var input = new EditRichTextInput(UUID.randomUUID(), PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), richTextId.get(), "None");
+            var result = this.editRichTextMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editRichText.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+                    var richText = groupNavigator.findWidget("Name", RichText.class);
+
+                    assertThat(richText)
+                            .hasValue("None")
+                            .isReadOnly();
+                }, () -> fail("Missing form"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(editRichText)
+                .consumeNextWith(updatedFormContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

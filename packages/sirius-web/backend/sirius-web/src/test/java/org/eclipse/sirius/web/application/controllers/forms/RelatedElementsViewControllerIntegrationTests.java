@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.controllers;
+package org.eclipse.sirius.web.application.controllers.forms;
 
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
@@ -20,8 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
 import org.eclipse.sirius.components.forms.Form;
@@ -31,6 +29,7 @@ import org.eclipse.sirius.components.forms.tests.graphql.RelatedElementsEventSub
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,16 +52,14 @@ import reactor.test.StepVerifier;
 public class RelatedElementsViewControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
-    private RelatedElementsEventSubscriptionRunner relatedElementsEventSubscriptionRunner;
+    private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private RelatedElementsEventSubscriptionRunner relatedElementsEventSubscriptionRunner;
 
     @BeforeEach
     public void beforeEach() {
-        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                .map(IEditingContextEventProcessor::getEditingContextId)
-                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
+        this.givenInitialServerState.initialize();
     }
 
     @Test

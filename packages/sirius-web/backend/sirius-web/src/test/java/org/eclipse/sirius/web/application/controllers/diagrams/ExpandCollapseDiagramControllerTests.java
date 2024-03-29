@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -31,6 +32,7 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaSampleIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCreatedDiagramSubscription;
@@ -96,19 +98,15 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
         Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
-                    var domainNodes = diagram.getNodes().stream()
-                            .filter(node -> node.getInsideLabel().getText().endsWith("-domain"))
-                            .toList();
-                    assertThat(domainNodes)
-                            .isNotEmpty()
-                            .allMatch(node -> node.getCollapsingState() == CollapsingState.COLLAPSED);
+                    var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+                    assertThat(siriusWebDomainNode).hasCollapsingState(CollapsingState.COLLAPSED);
 
 
                     var nonDomainNodes = diagram.getNodes().stream()
                             .filter(node -> !node.getInsideLabel().getText().endsWith("-domain"));
                     assertThat(nonDomainNodes)
                             .isNotEmpty()
-                            .allMatch(node -> node.getCollapsingState() == CollapsingState.EXPANDED);
+                            .allSatisfy(node -> assertThat(node).hasCollapsingState(CollapsingState.EXPANDED));
                 }, () -> fail("Missing diagram"));
 
         StepVerifier.create(flux)
@@ -132,11 +130,9 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
 
-                    diagram.getNodes().stream()
-                            .filter(node -> node.getCollapsingState().equals(CollapsingState.COLLAPSED))
-                            .map(Node::getId)
-                            .findFirst()
-                            .ifPresent(collapsedNodeId::set);
+                    var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+                    assertThat(siriusWebDomainNode).hasCollapsingState(CollapsingState.COLLAPSED);
+                    collapsedNodeId.set(siriusWebDomainNode.getId());
                 }, () -> fail("Missing diagram"));
 
         Runnable expandNodes = () -> {
@@ -148,21 +144,17 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
             assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
-        Predicate<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+        Consumer<DiagramRefreshedEventPayload> updatedDiagramContentConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
-                .filter(diagram -> {
-                    return diagram.getNodes().stream()
-                        .filter(node -> node.getId().equals(collapsedNodeId.get()))
-                        .map(node -> node.getCollapsingState().equals(CollapsingState.EXPANDED))
-                        .findFirst()
-                        .orElse(false);
-                })
-                .isPresent();
+                .ifPresentOrElse(diagram -> {
+                    var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+                    assertThat(siriusWebDomainNode).hasCollapsingState(CollapsingState.EXPANDED);
+                }, () -> fail("Missing diagram"));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(expandNodes)
-                .expectNextMatches(updatedDiagramContentMatcher)
+                .consumeNextWith(updatedDiagramContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

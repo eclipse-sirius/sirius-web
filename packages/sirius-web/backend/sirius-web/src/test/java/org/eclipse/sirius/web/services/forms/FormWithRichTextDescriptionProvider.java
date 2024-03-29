@@ -100,6 +100,7 @@ public class FormWithRichTextDescriptionProvider implements IEditingContextProce
                 .name("RichText")
                 .labelExpression("aql:'Name'")
                 .helpExpression("The name of the object")
+                .isEnabledExpression("aql:self.name.size() <> 4")
                 .valueExpression("aql:self.name")
                 .body(editRichText)
                 .build();
