@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -76,7 +77,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
     private final ApplicationContext applicationContext;
 
     public ViewInitialDirectEditElementLabelProvider(IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IDiagramQueryService diagramQueryService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService,
-                                                     List<IJavaServiceProvider> javaServiceProviders, IDiagramIdProvider idProvider, ApplicationContext applicationContext) {
+            List<IJavaServiceProvider> javaServiceProviders, IDiagramIdProvider idProvider, ApplicationContext applicationContext) {
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
@@ -108,7 +109,11 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
                 String descriptionId = node.getDescriptionId();
                 optionalLabelEditTool = this.getNodeDescription(diagramDescription.getNodeDescriptions(), descriptionId).map(NodeDescription::getPalette).map(NodePalette::getLabelEditTool);
                 semanticElement = this.objectService.getObject(editingContext, node.getTargetObjectId());
-                initialDirectEditElementLabel = node.getInsideLabel().getText();
+                if (node.getInsideLabel() != null && Objects.equals(node.getInsideLabel().getId(), labelId)) {
+                    initialDirectEditElementLabel = node.getInsideLabel().getText();
+                } else {
+                    initialDirectEditElementLabel = node.getOutsideLabels().stream().filter(label -> Objects.equals(label.id(), labelId)).findFirst().map(OutsideLabel::text).orElse("");
+                }
             } else if (diagramElement instanceof Edge edge) {
                 String descriptionId = edge.getDescriptionId();
                 semanticElement = this.objectService.getObject(editingContext, edge.getTargetObjectId());

@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
+import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -78,7 +79,15 @@ public class TestDiagramBuilder {
                 .build();
     }
 
-    public Node getNode(String id, boolean withLabel) {
+    public Node getNode(String id, boolean withInsideLabel) {
+        return this.getNode(id, withInsideLabel, List.of());
+    }
+
+    public Node getNodeWithOutsideLabels(String id, boolean withInsideLabel, List<OutsideLabel> outsideLabels) {
+        return this.getNode(id, withInsideLabel, outsideLabels);
+    }
+
+    private Node getNode(String id, boolean withInsideLabel, List<OutsideLabel> outsideLabels) {
         Node.Builder nodeBuilder = Node.newNode(id)
                 .type(NodeType.NODE_RECTANGLE)
                 .targetObjectId("nodeTargetObjectId")
@@ -93,9 +102,10 @@ public class TestDiagramBuilder {
                 .childNodes(List.of())
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
-                .collapsingState(CollapsingState.EXPANDED);
+                .collapsingState(CollapsingState.EXPANDED)
+                .outsideLabels(outsideLabels);
 
-        if (withLabel) {
+        if (withInsideLabel) {
             LabelStyle labelStyle = LabelStyle.newLabelStyle()
                     .color("#000000")
                     .fontSize(16)
