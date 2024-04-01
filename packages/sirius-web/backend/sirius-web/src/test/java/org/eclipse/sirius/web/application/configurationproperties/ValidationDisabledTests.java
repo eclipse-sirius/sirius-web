@@ -17,9 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.sirius.components.core.api.IValidationService;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
-import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
+import org.eclipse.sirius.web.application.validation.services.EMFValidationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +30,16 @@ import org.springframework.boot.test.context.SpringBootTest;
  *
  * @author sbegaudeau
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=*", "sirius.web.disabled=studio" })
-public class StudioDisabledTests extends AbstractIntegrationTests {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=*", "sirius.web.disabled=validation" })
+public class ValidationDisabledTests extends AbstractIntegrationTests {
+
     @Autowired(required = false)
-    private List<IProjectTemplateProvider> projectTemplateProviders = new ArrayList<>();
+    private List<IValidationService> validationServices = new ArrayList<>();
 
     @Test
-    @DisplayName("Given Sirius Web studio features disabled, when project template providers are requested, then studio support is not available")
-    public void givenSiriusWebStudioFeaturesDisabledWhenProjectTemplateProvidersAreRequestedThenStudioSupportIsNotAvailable() {
-        var hasStudioProjectTemplateProvider = this.projectTemplateProviders.stream().anyMatch(StudioProjectTemplateProvider.class::isInstance);
-        assertThat(hasStudioProjectTemplateProvider).isFalse();
+    @DisplayName("Given Sirius Web validation features disabled, when validation services are requested, then EMF validation support is not available")
+    public void givenSiriusWebStudioFeaturesDisabledWhenValidationServicesAreRequestedThenEMFValidationSupportIsNotAvailable() {
+        var hasEMFValidationService = this.validationServices.stream().anyMatch(EMFValidationService.class::isInstance);
+        assertThat(hasEMFValidationService).isFalse();
     }
 }

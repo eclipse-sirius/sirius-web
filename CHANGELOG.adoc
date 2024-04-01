@@ -70,6 +70,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [sirius-web] Improve the new architecture to reach feature partity with the old one
 - https://github.com/eclipse-sirius/sirius-web/issues/2567[#2567] [form] Fix the inconsistency in the typing of the custom widget API
+- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [validation] Multiple instances of `IValidationService` are now supported in the new architecture
 
 
 == v2024.3.0

@@ -12,8 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.forms;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.emf.common.util.Diagnostic;
@@ -32,19 +34,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class PropertiesValidationProvider implements IPropertiesValidationProvider {
 
-    private final IValidationService validationService;
+    private final List<IValidationService> validationServices;
 
-    public PropertiesValidationProvider(IValidationService validationService) {
-        this.validationService = Objects.requireNonNull(validationService);
+    public PropertiesValidationProvider(List<IValidationService> validationServices) {
+        this.validationServices = Objects.requireNonNull(validationServices);
     }
 
     @Override
     public Function<VariableManager, List<?>> getDiagnosticsProvider() {
         return variableManager -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EStructuralFeature.class);
-            if (optionalEObject.isPresent() && optionalEAttribute.isPresent()) {
-                return this.validationService.validate(optionalEObject.get(), optionalEAttribute.get());
+            var optionalEStructuralFeature = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EStructuralFeature.class);
+            if (optionalEObject.isPresent() && optionalEStructuralFeature.isPresent()) {
+                var eObject = optionalEObject.get();
+                var eStructuralFeature = optionalEStructuralFeature.get();
+                return this.validationServices.stream()
+                        .map(validationService -> validationService.validate(eObject, eStructuralFeature))
+                        .flatMap(Collection::stream)
+                        .toList();
             }
 
             return List.of();
@@ -54,34 +61,24 @@ public class PropertiesValidationProvider implements IPropertiesValidationProvid
     @Override
     public Function<Object, String> getKindProvider() {
         return object -> {
-            String kind = "Unknown";
             if (object instanceof Diagnostic diagnostic) {
-                switch (diagnostic.getSeverity()) {
-                    case org.eclipse.emf.common.util.Diagnostic.ERROR:
-                        kind = "Error";
-                        break;
-                    case org.eclipse.emf.common.util.Diagnostic.WARNING:
-                        kind = "Warning";
-                        break;
-                    case org.eclipse.emf.common.util.Diagnostic.INFO:
-                        kind = "Info";
-                        break;
-                    default:
-                        kind = "Unknown";
-                        break;
-                }
+                return switch (diagnostic.getSeverity()) {
+                    case org.eclipse.emf.common.util.Diagnostic.ERROR -> "Error";
+                    case org.eclipse.emf.common.util.Diagnostic.WARNING -> "Warning";
+                    case org.eclipse.emf.common.util.Diagnostic.INFO -> "Info";
+                    default -> "Unknown";
+                };
             }
-            return kind;
+            return "Unknown";
         };
     }
 
     @Override
     public Function<Object, String> getMessageProvider() {
-        return object -> {
-            if (object instanceof Diagnostic diagnostic) {
-                return diagnostic.getMessage();
-            }
-            return "";
-        };
+        return object -> Optional.ofNullable(object)
+                .filter(Diagnostic.class::isInstance)
+                .map(Diagnostic.class::cast)
+                .map(Diagnostic::getMessage)
+                .orElse("");
     }
 }

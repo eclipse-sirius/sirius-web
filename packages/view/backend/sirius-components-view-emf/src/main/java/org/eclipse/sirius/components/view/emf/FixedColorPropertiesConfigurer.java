@@ -13,8 +13,10 @@
 package org.eclipse.sirius.components.view.emf;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -25,7 +27,8 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IValidationService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
@@ -50,20 +53,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
-    private static final String EMPTY = "";
+    private final IIdentityService identityService;
 
-    private final Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
+    private final ILabelService labelService;
 
-    private final IValidationService validationService;
+    private final List<IValidationService> validationServices;
 
-    private final Function<VariableManager, String> semanticTargetIdProvider;
-
-    private final Function<VariableManager, String> pageLabelProvider;
-
-    public FixedColorPropertiesConfigurer(IValidationService validationService, IObjectService objectService) {
-        this.validationService = Objects.requireNonNull(validationService);
-        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
-        this.pageLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getLabel).orElse(null);
+    public FixedColorPropertiesConfigurer(IIdentityService identityService, ILabelService labelService, List<IValidationService> validationServices) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.labelService = Objects.requireNonNull(labelService);
+        this.validationServices = Objects.requireNonNull(validationServices);
     }
 
     @Override
@@ -74,9 +73,7 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
     private PageDescription getFixedColorProperties() {
         String id = UUID.nameUUIDFromBytes("fixedcolor".getBytes()).toString();
 
-        List<AbstractControlDescription> controls = new ArrayList<>();
-        controls.addAll(this.getGeneralControlDescription());
-
+        List<AbstractControlDescription> controls = this.getGeneralControlDescription();
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
 
         Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
@@ -88,7 +85,6 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
 
     private List<AbstractControlDescription> getGeneralControlDescription() {
         List<AbstractControlDescription> controls = new ArrayList<>();
-
 
         var name = this.createTextField("fixedcolor.name", "Name",
                              color -> ((UserColor) color).getName(),
@@ -106,26 +102,37 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
     }
 
     private PageDescription createSimplePageDescription(String id, GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
+        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
+
+        Function<VariableManager, String> pageLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.labelService::getLabel)
+                .orElse(null);
+
         return PageDescription.newPageDescription(id)
                 .idProvider(variableManager -> "page")
-                .labelProvider(this.pageLabelProvider)
-                .semanticElementsProvider(this.semanticElementsProvider)
+                .labelProvider(pageLabelProvider)
+                .semanticElementsProvider(semanticElementsProvider)
                 .canCreatePredicate(canCreatePredicate)
                 .groupDescriptions(List.of(groupDescription))
                 .build();
     }
 
     private GroupDescription createSimpleGroupDescription(List<AbstractControlDescription> controls) {
+        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
+
         return GroupDescription.newGroupDescription("group")
                 .idProvider(variableManager -> "group")
                 .labelProvider(variableManager -> "Core Properties")
-                .semanticElementsProvider(this.semanticElementsProvider)
+                .semanticElementsProvider(semanticElementsProvider)
                 .controlDescriptions(controls)
                 .build();
     }
 
     private TextfieldDescription createTextField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
-        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(EMPTY);
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(reader)
+                .orElse("");
+
         BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
             var self = variableManager.get(VariableManager.SELF, Object.class);
             if (self.isPresent()) {
@@ -136,9 +143,13 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
             }
         };
 
+        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
+                .orElse(null);
+
         return TextfieldDescription.newTextfieldDescription(id)
                 .idProvider(variableManager -> id)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .targetObjectIdProvider(semanticTargetIdProvider)
                 .labelProvider(variableManager -> title)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
@@ -155,8 +166,10 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
 
             if (optionalSelf.isPresent()) {
                 EObject self = optionalSelf.get();
-                List<Object> diagnostics = this.validationService.validate(self, feature);
-                return diagnostics;
+                return this.validationServices.stream()
+                        .map(validationService -> validationService.validate(self, feature))
+                        .flatMap(Collection::stream)
+                        .toList();
             }
 
             return List.of();
@@ -164,31 +177,23 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
     }
 
     private String kindProvider(Object object) {
-        String kind = "Unknown";
         if (object instanceof Diagnostic diagnostic) {
-            switch (diagnostic.getSeverity()) {
-                case org.eclipse.emf.common.util.Diagnostic.ERROR:
-                    kind = "Error";
-                    break;
-                case org.eclipse.emf.common.util.Diagnostic.WARNING:
-                    kind = "Warning";
-                    break;
-                case org.eclipse.emf.common.util.Diagnostic.INFO:
-                    kind = "Info";
-                    break;
-                default:
-                    kind = "Unknown";
-                    break;
-            }
+            return switch (diagnostic.getSeverity()) {
+                case org.eclipse.emf.common.util.Diagnostic.ERROR -> "Error";
+                case org.eclipse.emf.common.util.Diagnostic.WARNING -> "Warning";
+                case org.eclipse.emf.common.util.Diagnostic.INFO -> "Info";
+                default -> "Unknown";
+            };
         }
-        return kind;
+        return "Unknown";
     }
 
     private String messageProvider(Object object) {
-        if (object instanceof Diagnostic diagnostic) {
-            return diagnostic.getMessage();
-        }
-        return "";
+        return Optional.ofNullable(object)
+                .filter(Diagnostic.class::isInstance)
+                .map(Diagnostic.class::cast)
+                .map(Diagnostic::getMessage)
+                .orElse("");
     }
 
     private Function<VariableManager, Boolean> isReadOnlyProvider() {
