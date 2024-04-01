@@ -51,6 +51,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-deck-graphql</artifactId>
+			<version>2024.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-graphql</artifactId>
 			<version>2024.3.0</version>
 		</dependency>
