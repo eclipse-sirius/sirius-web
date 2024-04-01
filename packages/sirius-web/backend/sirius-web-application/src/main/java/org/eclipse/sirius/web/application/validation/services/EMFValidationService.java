@@ -30,6 +30,8 @@ import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IValidationService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.web.application.validation.OnValidationEnabled;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,6 +40,7 @@ import org.springframework.stereotype.Service;
  * @author gcoutable
  */
 @Service
+@Conditional(OnValidationEnabled.class)
 public class EMFValidationService implements IValidationService {
 
     private final EValidator.Registry eValidatorRegistry;

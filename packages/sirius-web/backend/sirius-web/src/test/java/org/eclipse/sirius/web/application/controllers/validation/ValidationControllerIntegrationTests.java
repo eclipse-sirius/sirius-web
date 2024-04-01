@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.controllers.selection;
+package org.eclipse.sirius.web.application.controllers.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -20,13 +20,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.selection.dto.SelectionEventInput;
-import org.eclipse.sirius.components.collaborative.selection.dto.SelectionRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.validation.dto.ValidationEventInput;
+import org.eclipse.sirius.components.collaborative.validation.dto.ValidationRefreshedEventPayload;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.PapayaSampleIdentifiers;
+import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
-import org.eclipse.sirius.web.services.selection.SelectionDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,12 +44,12 @@ import reactor.test.StepVerifier;
  * @author sbegaudeau
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SelectionControllerIntegrationTests extends AbstractIntegrationTests {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=validation" })
+public class ValidationControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String GET_SELECTION_EVENT_SUBSCRIPTION = """
-            subscription selectionEvent($input: SelectionEventInput!) {
-              selectionEvent(input: $input) {
+    private static final String GET_VALIDATION_EVENT_SUBSCRIPTION = """
+            subscription validationEvent($input: ValidationEventInput!) {
+              validationEvent(input: $input) {
                 __typename
               }
             }
@@ -68,27 +67,28 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     }
 
     @Test
-    @DisplayName("Given a semantic object, when we subscribe to its selection events, then the selection is sent")
+    @DisplayName("Given an editing context, when we subscribe to its validation events, then the validation data are sent")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenSemanticObjectWhenWeSubscribeToItsSelectionEventsThenTheSelectionIsSent() {
-        var input = new SelectionEventInput(UUID.randomUUID(), PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, PapayaSampleIdentifiers.ROOT_OBJECT.toString());
-        var flux = this.graphQLRequestor.subscribe(GET_SELECTION_EVENT_SUBSCRIPTION, input)
+    public void givenAnEditingContextWhenWeSubscribeToItsValidationEventsThenTheValidationDataAreSent() {
+        var input = new ValidationEventInput(UUID.randomUUID(), TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
+        var flux = this.graphQLRequestor.subscribe(GET_VALIDATION_EVENT_SUBSCRIPTION, input)
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData)
-                .filter(SelectionRefreshedEventPayload.class::isInstance)
-                .map(SelectionRefreshedEventPayload.class::cast);
+                .filter(ValidationRefreshedEventPayload.class::isInstance)
+                .map(ValidationRefreshedEventPayload.class::cast);
 
-        Consumer<SelectionRefreshedEventPayload> selectionContentConsumer = payload -> Optional.of(payload)
-                .map(SelectionRefreshedEventPayload::selection)
-                .ifPresentOrElse(selection -> {
-                    assertThat(selection.getObjects()).hasSizeGreaterThanOrEqualTo(5);
-                }, () -> fail("Missing selection"));
+        Consumer<ValidationRefreshedEventPayload> validationContentConsumer = payload -> Optional.of(payload)
+                .map(ValidationRefreshedEventPayload::validation)
+                .ifPresentOrElse(validation -> {
+                    assertThat(validation).isNotNull();
+                }, () -> fail("Missing validation"));
 
         StepVerifier.create(flux)
-                .consumeNextWith(selectionContentConsumer)
+                .consumeNextWith(validationContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
+
 }

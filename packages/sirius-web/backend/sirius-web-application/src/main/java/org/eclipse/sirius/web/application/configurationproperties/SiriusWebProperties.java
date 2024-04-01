@@ -27,7 +27,10 @@ public record SiriusWebProperties(
         String disabled
 ) {
     public static final String EVERYTHING = "*";
+
     public static final String STUDIO = "studio";
 
     public static final String PORTAL = "portal";
+
+    public static final String VALIDATION = "validation";
 }
