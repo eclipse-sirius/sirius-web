@@ -29,6 +29,8 @@ public final class PapayaSampleIdentifiers {
 
     public static final UUID SIRIUS_COMPONENTS_REPRESENTATIONS_OBJECT = UUID.fromString("48f65c15-6655-41c8-8771-b15411b69137");
 
+    public static final UUID PROJECT_OBJECT = UUID.fromString("24430514-64bc-4b78-a904-4dab25d55a09");
+
     private PapayaSampleIdentifiers() {
         // Prevent instantiation
     }
