@@ -58,6 +58,11 @@ const useStyle = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   icon: {
     marginRight: ({ iconOnly }) => (iconOnly ? theme.spacing(0) : theme.spacing(2)),
   },
+  propertySection: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: theme.spacing(2),
+  },
 }));
 
 export const pushButtonMutation = gql`
@@ -194,7 +199,7 @@ export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
   };
 
   return (
-    <div>
+    <div className={classes.propertySection}>
       <PropertySectionLabel
         editingContextId={editingContextId}
         formId={formId}

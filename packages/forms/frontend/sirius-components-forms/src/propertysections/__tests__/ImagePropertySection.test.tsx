@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ test('render image widget with maxWidth', () => {
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
-  const containerStyle = window.getComputedStyle(container.getElementsByClassName('makeStyles-container-1')[0]);
+  const containerStyle = window.getComputedStyle(container.getElementsByClassName('makeStyles-container-2')[0]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('minmax(auto, 42px)');
 });
@@ -61,7 +61,7 @@ test('render image widget without maxWidth', () => {
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
-  const containerStyle = window.getComputedStyle(container.getElementsByClassName('makeStyles-container-6')[0]);
+  const containerStyle = window.getComputedStyle(container.getElementsByClassName('makeStyles-container-8')[0]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('1fr');
 });
@@ -77,7 +77,7 @@ test('render image widget with help hint', () => {
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
-  const containerStyle = window.getComputedStyle(container.getElementsByClassName('makeStyles-container-11')[0]);
+  const containerStyle = window.getComputedStyle(container.getElementsByClassName('makeStyles-container-14')[0]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('minmax(auto, 42px)');
 });

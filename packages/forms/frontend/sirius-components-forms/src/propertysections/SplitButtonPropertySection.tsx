@@ -78,6 +78,14 @@ const useStyle = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   },
 }));
 
+const useContainerStyle = makeStyles<Theme>((theme) => ({
+  style: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: theme.spacing(2),
+  },
+}));
+
 export const updateWidgetFocusMutation = gql`
   mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
     updateWidgetFocus(input: $input) {
@@ -160,6 +168,8 @@ export const SplitButtonPropertySection = ({
     };
     return useStyle(props);
   });
+
+  const containerClasses = useContainerStyle();
 
   const [pushButton, { loading, data, error }] = useMutation<GQLPushButtonMutationData, GQLPushButtonMutationVariables>(
     pushButtonMutation
@@ -245,7 +255,7 @@ export const SplitButtonPropertySection = ({
   };
 
   return (
-    <div>
+    <div className={containerClasses.style}>
       <PropertySectionLabel
         editingContextId={editingContextId}
         formId={formId}

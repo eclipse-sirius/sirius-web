@@ -2,21 +2,23 @@
 
 exports[`render label widget 1`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-propertySection-2"
+  >
     <div
-      class="makeStyles-propertySectionLabel-3"
+      class="makeStyles-propertySectionLabel-4"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-7 MuiTypography-subtitle2"
       >
         myLabel
       </h6>
       <div
-        class="makeStyles-subscribers-4"
+        class="makeStyles-subscribers-5"
       />
     </div>
     <p
-      class="MuiTypography-root makeStyles-style-1 makeStyles-style-2 MuiTypography-body1"
+      class="MuiTypography-root makeStyles-style-1 makeStyles-style-3 MuiTypography-body1"
     >
       theLabelValue
     </p>
@@ -26,12 +28,14 @@ exports[`render label widget 1`] = `
 
 exports[`render label widget with help hint 1`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-propertySection-16"
+  >
     <div
-      class="makeStyles-propertySectionLabel-13"
+      class="makeStyles-propertySectionLabel-18"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-21 MuiTypography-subtitle2"
       >
         myLabel
       </h6>
@@ -48,11 +52,11 @@ exports[`render label widget with help hint 1`] = `
         />
       </svg>
       <div
-        class="makeStyles-subscribers-14"
+        class="makeStyles-subscribers-19"
       />
     </div>
     <p
-      class="MuiTypography-root makeStyles-style-11 makeStyles-style-12 MuiTypography-body1"
+      class="MuiTypography-root makeStyles-style-15 makeStyles-style-17 MuiTypography-body1"
     >
       theLabelValue
     </p>
@@ -62,21 +66,23 @@ exports[`render label widget with help hint 1`] = `
 
 exports[`render label widget with style 1`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-propertySection-9"
+  >
     <div
-      class="makeStyles-propertySectionLabel-8"
+      class="makeStyles-propertySectionLabel-11"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-14 MuiTypography-subtitle2"
       >
         myLabel
       </h6>
       <div
-        class="makeStyles-subscribers-9"
+        class="makeStyles-subscribers-12"
       />
     </div>
     <p
-      class="MuiTypography-root makeStyles-style-6 makeStyles-style-7 MuiTypography-body1"
+      class="MuiTypography-root makeStyles-style-8 makeStyles-style-10 MuiTypography-body1"
     >
       theLabelValue
     </p>

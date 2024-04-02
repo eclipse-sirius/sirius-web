@@ -27,9 +27,13 @@ const useStyle = makeStyles<Theme, LabelStyleProps>((theme) => ({
     fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     verticalAlign: 'baseline',
-    'align-items': 'center',
+    alignItems: 'center',
     display: 'flex',
-    margingLeft: theme.spacing(2),
+  },
+  propertySection: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: theme.spacing(2),
   },
 }));
 
@@ -49,7 +53,7 @@ export const LabelWidgetPropertySection: PropertySectionComponent<GQLLabelWidget
   };
   const classes = useStyle(props);
   return (
-    <div>
+    <div className={classes.propertySection}>
       <PropertySectionLabel
         editingContextId={editingContextId}
         formId={formId}

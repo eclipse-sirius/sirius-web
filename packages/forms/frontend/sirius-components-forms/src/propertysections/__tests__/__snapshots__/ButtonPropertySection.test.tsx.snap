@@ -3,21 +3,23 @@
 exports[`should display the error received 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="makeStyles-propertySection-30"
+    >
       <div
-        class="makeStyles-propertySectionLabel-26"
+        class="makeStyles-propertySectionLabel-33"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-36 MuiTypography-subtitle2"
         >
           Label
         </h6>
         <div
-          class="makeStyles-subscribers-27"
+          class="makeStyles-subscribers-34"
         />
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-22 makeStyles-style-24 MuiButton-contained MuiButton-containedPrimary"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-31 MuiButton-contained MuiButton-containedPrimary"
         data-testid="ButtonLabel"
         tabindex="0"
         type="button"
@@ -39,21 +41,23 @@ exports[`should display the error received 1`] = `
 exports[`should display the error received 2`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="makeStyles-propertySection-30"
+    >
       <div
-        class="makeStyles-propertySectionLabel-26"
+        class="makeStyles-propertySectionLabel-33"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-36 MuiTypography-subtitle2"
         >
           Label
         </h6>
         <div
-          class="makeStyles-subscribers-27"
+          class="makeStyles-subscribers-34"
         />
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-22 makeStyles-style-24 MuiButton-contained MuiButton-containedPrimary"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-31 MuiButton-contained MuiButton-containedPrimary"
         data-testid="ButtonLabel"
         tabindex="0"
         type="button"
@@ -74,21 +78,23 @@ exports[`should display the error received 2`] = `
 
 exports[`should render a readOnly button 1`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-propertySection-12"
+  >
     <div
-      class="makeStyles-propertySectionLabel-12"
+      class="makeStyles-propertySectionLabel-15"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-18 MuiTypography-subtitle2"
       >
         Label
       </h6>
       <div
-        class="makeStyles-subscribers-13"
+        class="makeStyles-subscribers-16"
       />
     </div>
     <button
-      class="MuiButtonBase-root MuiButton-root makeStyles-style-8 makeStyles-style-10 MuiButton-contained MuiButton-containedPrimary Mui-disabled Mui-disabled"
+      class="MuiButtonBase-root MuiButton-root makeStyles-style-10 makeStyles-style-13 MuiButton-contained MuiButton-containedPrimary Mui-disabled Mui-disabled"
       data-testid="ButtonLabel"
       disabled=""
       tabindex="-1"
@@ -107,21 +113,23 @@ exports[`should render a readOnly button 1`] = `
 exports[`should render a readOnly button from widget properties 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="makeStyles-propertySection-75"
+    >
       <div
-        class="makeStyles-propertySectionLabel-61"
+        class="makeStyles-propertySectionLabel-78"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-81 MuiTypography-subtitle2"
         >
           Label
         </h6>
         <div
-          class="makeStyles-subscribers-62"
+          class="makeStyles-subscribers-79"
         />
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-57 makeStyles-style-59 MuiButton-contained MuiButton-containedPrimary Mui-disabled Mui-disabled"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-73 makeStyles-style-76 MuiButton-contained MuiButton-containedPrimary Mui-disabled Mui-disabled"
         data-testid="ButtonLabel"
         disabled=""
         tabindex="-1"
@@ -140,21 +148,23 @@ exports[`should render a readOnly button from widget properties 1`] = `
 
 exports[`should render the button 1`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-propertySection-3"
+  >
     <div
-      class="makeStyles-propertySectionLabel-5"
+      class="makeStyles-propertySectionLabel-6"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-9 MuiTypography-subtitle2"
       >
         Label
       </h6>
       <div
-        class="makeStyles-subscribers-6"
+        class="makeStyles-subscribers-7"
       />
     </div>
     <button
-      class="MuiButtonBase-root MuiButton-root makeStyles-style-1 makeStyles-style-3 MuiButton-contained MuiButton-containedPrimary"
+      class="MuiButtonBase-root MuiButton-root makeStyles-style-1 makeStyles-style-4 MuiButton-contained MuiButton-containedPrimary"
       data-testid="ButtonLabel"
       tabindex="0"
       type="button"
@@ -175,21 +185,23 @@ exports[`should render the button 1`] = `
 exports[`should render the button with empty style 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="makeStyles-propertySection-57"
+    >
       <div
-        class="makeStyles-propertySectionLabel-47"
+        class="makeStyles-propertySectionLabel-60"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-63 MuiTypography-subtitle2"
         >
           Label
         </h6>
         <div
-          class="makeStyles-subscribers-48"
+          class="makeStyles-subscribers-61"
         />
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-43 makeStyles-style-45 MuiButton-contained MuiButton-containedPrimary"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-55 makeStyles-style-58 MuiButton-contained MuiButton-containedPrimary"
         data-testid="ButtonLabel"
         tabindex="0"
         type="button"
@@ -212,12 +224,14 @@ exports[`should render the button with help hint 1`] = `
 <body>
   <div>
      
-    <div>
+    <div
+      class="makeStyles-propertySection-66"
+    >
       <div
-        class="makeStyles-propertySectionLabel-54"
+        class="makeStyles-propertySectionLabel-69"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-72 MuiTypography-subtitle2"
         >
           Label
         </h6>
@@ -234,11 +248,11 @@ exports[`should render the button with help hint 1`] = `
           />
         </svg>
         <div
-          class="makeStyles-subscribers-55"
+          class="makeStyles-subscribers-70"
         />
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-50 makeStyles-style-52 MuiButton-contained MuiButton-containedPrimary"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-64 makeStyles-style-67 MuiButton-contained MuiButton-containedPrimary"
         data-testid="ButtonLabel"
         tabindex="0"
         type="button"
@@ -260,21 +274,23 @@ exports[`should render the button with help hint 1`] = `
 exports[`should render the button with style 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="makeStyles-propertySection-48"
+    >
       <div
-        class="makeStyles-propertySectionLabel-40"
+        class="makeStyles-propertySectionLabel-51"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-54 MuiTypography-subtitle2"
         >
           Label
         </h6>
         <div
-          class="makeStyles-subscribers-41"
+          class="makeStyles-subscribers-52"
         />
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-36 makeStyles-style-38 MuiButton-contained MuiButton-containedPrimary"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-46 makeStyles-style-49 MuiButton-contained MuiButton-containedPrimary"
         data-testid="ButtonLabel"
         tabindex="0"
         type="button"
@@ -296,21 +312,23 @@ exports[`should render the button with style 1`] = `
 exports[`should render the button without style 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="makeStyles-propertySection-39"
+    >
       <div
-        class="makeStyles-propertySectionLabel-33"
+        class="makeStyles-propertySectionLabel-42"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-45 MuiTypography-subtitle2"
         >
           Label
         </h6>
         <div
-          class="makeStyles-subscribers-34"
+          class="makeStyles-subscribers-43"
         />
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-29 makeStyles-style-31 MuiButton-contained MuiButton-containedPrimary"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-37 makeStyles-style-40 MuiButton-contained MuiButton-containedPrimary"
         data-testid="ButtonLabel"
         tabindex="0"
         type="button"
@@ -331,21 +349,23 @@ exports[`should render the button without style 1`] = `
 
 exports[`should send mutation when clicked 1`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-propertySection-21"
+  >
     <div
-      class="makeStyles-propertySectionLabel-19"
+      class="makeStyles-propertySectionLabel-24"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-27 MuiTypography-subtitle2"
       >
         Label
       </h6>
       <div
-        class="makeStyles-subscribers-20"
+        class="makeStyles-subscribers-25"
       />
     </div>
     <button
-      class="MuiButtonBase-root MuiButton-root makeStyles-style-15 makeStyles-style-17 MuiButton-contained MuiButton-containedPrimary"
+      class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-22 MuiButton-contained MuiButton-containedPrimary"
       data-testid="ButtonLabel"
       tabindex="0"
       type="button"
@@ -365,21 +385,23 @@ exports[`should send mutation when clicked 1`] = `
 
 exports[`should send mutation when clicked 2`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-propertySection-21"
+  >
     <div
-      class="makeStyles-propertySectionLabel-19"
+      class="makeStyles-propertySectionLabel-24"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-27 MuiTypography-subtitle2"
       >
         Label
       </h6>
       <div
-        class="makeStyles-subscribers-20"
+        class="makeStyles-subscribers-25"
       />
     </div>
     <button
-      class="MuiButtonBase-root MuiButton-root makeStyles-style-15 makeStyles-style-17 MuiButton-contained MuiButton-containedPrimary"
+      class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-22 MuiButton-contained MuiButton-containedPrimary"
       data-testid="ButtonLabel"
       tabindex="0"
       type="button"
