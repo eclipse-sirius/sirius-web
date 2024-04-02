@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.view.emf.task;
 
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,12 +131,50 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
             .map(viewTaskDesc -> this.convert(viewTaskDesc, interpreter, taskDescription2Ids))
             .toList();
 
+        Function<VariableManager, Instant> startTimeProvider = variableManager -> {
+            Instant result = null;
+
+            var optionalObject = interpreter.evaluateExpression(variableManager.getVariables(), viewTaskDescription.getStartTimeExpression()).asObject();
+            if (optionalObject.isPresent()) {
+                var object = optionalObject.get();
+                if (object instanceof Instant instant) {
+                    result = instant;
+                } else if (object instanceof String string) {
+                    try {
+                        result = Instant.parse(string);
+                    } catch (DateTimeParseException exception) {
+                        // Not logged on purpose, the user can enter anything
+                    }
+                }
+            }
+            return result;
+        };
+
+        Function<VariableManager, Instant> endTimeProvider = variableManager -> {
+            Instant result = null;
+
+            var optionalObject = interpreter.evaluateExpression(variableManager.getVariables(), viewTaskDescription.getEndTimeExpression()).asObject();
+            if (optionalObject.isPresent()) {
+                var object = optionalObject.get();
+                if (object instanceof Instant instant) {
+                    result = instant;
+                } else if (object instanceof String string) {
+                    try {
+                        result = Instant.parse(string);
+                    } catch (DateTimeParseException exception) {
+                        // Not logged on purpose, the user can enter anything
+                    }
+                }
+            }
+            return result;
+        };
+
         TaskDescription taskDescription = TaskDescription.newTaskDescription(taskDescription2Ids.get(viewTaskDescription))
                 .semanticElementsProvider(variableManager -> this.getSemanticElements(variableManager, interpreter, viewTaskDescription.getSemanticCandidatesExpression()))
                 .nameProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getNameExpression(), String.class, ""))
                 .descriptionProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getDescriptionExpression(), String.class, ""))
-                .startTimeProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getStartTimeExpression(), Instant.class, null))
-                .endTimeProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getEndTimeExpression(), Instant.class, null))
+                .startTimeProvider(startTimeProvider)
+                .endTimeProvider(endTimeProvider)
                 .progressProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getProgressExpression(), Integer.class, 0))
                 .computeStartEndDynamicallyProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getComputeStartEndDynamicallyExpression(), Boolean.class, false))
                 .dependenciesProvider(variableManager -> this.getSemanticElements(variableManager, interpreter, viewTaskDescription.getDependenciesExpression()))
