@@ -73,6 +73,10 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
         return Collections.unmodifiableSet(this.documents);
     }
 
+    public Set<SemanticDataDomain> getDomains() {
+        return Collections.unmodifiableSet(this.domains);
+    }
+
     public Instant getCreatedOn() {
         return this.createdOn;
     }
@@ -87,6 +91,45 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
     }
 
     public void updateDocuments(Set<Document> newDocuments, Set<String> domainUris) {
+        boolean shouldBeUpdated = false;
+
+        Set<Document> documentsToSet = new LinkedHashSet<>();
+        for (var document : newDocuments) {
+            var optionalExistingDocument = this.documents.stream().filter(existingDocument -> existingDocument.getId().equals(document.getId())).findFirst();
+            if (optionalExistingDocument.isPresent()) {
+                var existingDocument = optionalExistingDocument.get();
+                if (this.sameContent(existingDocument, document)) {
+                    // Reuse the existing instance, timestamps included
+                    documentsToSet.add(existingDocument);
+                } else {
+                    var newDocument = Document.newDocument(existingDocument.getId()).name(document.getName()).content(document.getContent()).build();
+                    documentsToSet.add(newDocument);
+                    shouldBeUpdated = true;
+                }
+            } else {
+                // New document which did not exist before
+                documentsToSet.add(document);
+                shouldBeUpdated = true;
+            }
+        }
+        // The previous code will not detect the removal of an existing document as cause for update, so also check if the set of document ids has changed
+        shouldBeUpdated = shouldBeUpdated || !this.documents.stream()
+                .map(Document::getId)
+                .collect(Collectors.toSet())
+                .equals(documentsToSet.stream()
+                        .map(Document::getId)
+                        .collect(Collectors.toSet()));
+
+        if (shouldBeUpdated) {
+            this.doUpdateDocuments(documentsToSet, domainUris);
+        }
+    }
+
+    private boolean sameContent(Document currentDocument, Document newDocument) {
+        return currentDocument.getId().equals(newDocument.getId()) && currentDocument.getName().equals(newDocument.getName()) && currentDocument.getContent().equals(newDocument.getContent());
+    }
+
+    private void doUpdateDocuments(Set<Document> newDocuments, Set<String> domainUris) {
         this.documents = newDocuments;
         this.domains = domainUris.stream()
                 .map(SemanticDataDomain::new)

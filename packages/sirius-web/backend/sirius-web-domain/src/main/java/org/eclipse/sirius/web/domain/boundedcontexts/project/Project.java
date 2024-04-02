@@ -66,10 +66,12 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
     }
 
     public void updateName(String newName) {
-        this.name = newName;
-        this.lastModifiedOn = Instant.now();
+        if (!Objects.equals(this.name, newName)) {
+            this.name = newName;
+            this.lastModifiedOn = Instant.now();
 
-        this.registerEvent(new ProjectNameUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, this));
+            this.registerEvent(new ProjectNameUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, this));
+        }
     }
 
     public Set<Nature> getNatures() {
