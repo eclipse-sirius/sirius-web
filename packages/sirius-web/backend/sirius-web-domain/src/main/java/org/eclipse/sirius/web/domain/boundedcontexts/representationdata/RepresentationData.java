@@ -96,12 +96,14 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
     }
 
     public void updateContent(String newContent) {
-        this.content = newContent;
+        if (!Objects.equals(this.content, newContent)) {
+            this.content = newContent;
 
-        var now = Instant.now();
-        this.lastModifiedOn = now;
+            var now = Instant.now();
+            this.lastModifiedOn = now;
 
-        this.registerEvent(new RepresentationDataContentUpdatedEvent(UUID.randomUUID(), now, this));
+            this.registerEvent(new RepresentationDataContentUpdatedEvent(UUID.randomUUID(), now, this));
+        }
     }
 
     public void dispose() {
@@ -176,7 +178,7 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
         public RepresentationData build() {
             var representationData = new RepresentationData();
             representationData.isNew = true;
-            representationData.id = Objects.requireNonNull(id);
+            representationData.id = Objects.requireNonNull(this.id);
             representationData.project = Objects.requireNonNull(this.project);
             representationData.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             representationData.descriptionId = Objects.requireNonNull(this.descriptionId);

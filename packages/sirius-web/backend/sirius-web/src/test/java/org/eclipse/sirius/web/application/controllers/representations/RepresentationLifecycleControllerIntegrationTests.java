@@ -142,8 +142,9 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
             String typename = JsonPath.read(result, "$.data.renameRepresentation.__typename");
             assertThat(typename).isEqualTo(RenameRepresentationSuccessPayload.class.getSimpleName());
 
-            assertThat(this.domainEventCollector.getDomainEvents()).hasSize(2);
-            assertThat(this.domainEventCollector.getDomainEvents()).allMatch(RepresentationDataContentUpdatedEvent.class::isInstance);
+            assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
+            var event = this.domainEventCollector.getDomainEvents().get(0);
+            assertThat(event).isInstanceOf(RepresentationDataContentUpdatedEvent.class);
         };
 
         StepVerifier.create(flux)
