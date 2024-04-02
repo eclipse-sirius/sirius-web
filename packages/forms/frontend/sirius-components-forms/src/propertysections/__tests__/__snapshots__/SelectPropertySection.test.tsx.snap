@@ -7,15 +7,15 @@ exports[`should render a readOnly select from widget properties 1`] = `
       class="MuiFormControl-root"
     >
       <div
-        class="makeStyles-propertySectionLabel-28"
+        class="makeStyles-propertySectionLabel-32"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-35 MuiTypography-subtitle2"
         >
           SelectLabel
         </h6>
         <div
-          class="makeStyles-subscribers-29"
+          class="makeStyles-subscribers-33"
         />
       </div>
       <div
@@ -64,15 +64,15 @@ exports[`should render the select with empty style 1`] = `
       class="MuiFormControl-root"
     >
       <div
-        class="makeStyles-propertySectionLabel-16"
+        class="makeStyles-propertySectionLabel-18"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-21 MuiTypography-subtitle2"
         >
           SelectLabel
         </h6>
         <div
-          class="makeStyles-subscribers-17"
+          class="makeStyles-subscribers-19"
         />
       </div>
       <div
@@ -81,7 +81,7 @@ exports[`should render the select with empty style 1`] = `
       >
         <div
           aria-haspopup="listbox"
-          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input makeStyles-style-13 makeStyles-style-15"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input makeStyles-style-15 makeStyles-style-17"
           role="button"
           tabindex="0"
         >
@@ -121,10 +121,10 @@ exports[`should render the select with help hint 1`] = `
       class="MuiFormControl-root"
     >
       <div
-        class="makeStyles-propertySectionLabel-22"
+        class="makeStyles-propertySectionLabel-25"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-28 MuiTypography-subtitle2"
         >
           SelectLabel
         </h6>
@@ -141,7 +141,7 @@ exports[`should render the select with help hint 1`] = `
           />
         </svg>
         <div
-          class="makeStyles-subscribers-23"
+          class="makeStyles-subscribers-26"
         />
       </div>
       <div
@@ -190,15 +190,15 @@ exports[`should render the select with style 1`] = `
       class="MuiFormControl-root"
     >
       <div
-        class="makeStyles-propertySectionLabel-10"
+        class="makeStyles-propertySectionLabel-11"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-14 MuiTypography-subtitle2"
         >
           SelectLabel
         </h6>
         <div
-          class="makeStyles-subscribers-11"
+          class="makeStyles-subscribers-12"
         />
       </div>
       <div
@@ -207,7 +207,7 @@ exports[`should render the select with style 1`] = `
       >
         <div
           aria-haspopup="listbox"
-          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input makeStyles-style-7 makeStyles-style-9"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input makeStyles-style-8 makeStyles-style-10"
           role="button"
           tabindex="0"
         >
@@ -250,7 +250,7 @@ exports[`should render the select without style 1`] = `
         class="makeStyles-propertySectionLabel-4"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-7 MuiTypography-subtitle2"
         >
           SelectLabel
         </h6>

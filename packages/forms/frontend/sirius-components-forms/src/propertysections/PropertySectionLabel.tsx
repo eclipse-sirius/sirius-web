@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ const usePropertySectionLabelStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: theme.spacing(2),
   },
   subscribers: {
     marginLeft: 'auto',
@@ -46,21 +45,26 @@ const usePropertySectionLabelStyles = makeStyles((theme) => ({
 
 export const PropertySectionLabel = ({ editingContextId, formId, widget, subscribers }: PropertySectionLabelProps) => {
   const classes = usePropertySectionLabelStyles();
-  return (
-    <div className={classes.propertySectionLabel}>
-      <Typography className={classes.typography} variant="subtitle2">
-        {widget.label}
-      </Typography>
-      {widget.hasHelpText ? (
-        <HelpTooltip editingContextId={editingContextId} formId={formId} widgetId={widget.id} />
-      ) : null}
-      <div className={classes.subscribers}>
-        {subscribers.map((subscriber) => (
-          <Tooltip title={subscriber.username} arrow key={subscriber.username}>
-            <Avatar classes={{ root: classes.avatar }}>{subscriber.username.substring(0, 1).toUpperCase()}</Avatar>
-          </Tooltip>
-        ))}
+
+  if (!widget.label && subscribers.length == 0 && !widget.hasHelpText) {
+    return null;
+  } else {
+    return (
+      <div className={classes.propertySectionLabel}>
+        <Typography className={classes.typography} variant="subtitle2">
+          {widget.label}
+        </Typography>
+        {widget.hasHelpText ? (
+          <HelpTooltip editingContextId={editingContextId} formId={formId} widgetId={widget.id} />
+        ) : null}
+        <div className={classes.subscribers}>
+          {subscribers.map((subscriber) => (
+            <Tooltip title={subscriber.username} arrow key={subscriber.username}>
+              <Avatar classes={{ root: classes.avatar }}>{subscriber.username.substring(0, 1).toUpperCase()}</Avatar>
+            </Tooltip>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };

@@ -4,10 +4,10 @@ exports[`render image widget with help hint 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-13"
+      class="makeStyles-propertySectionLabel-15"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-18 MuiTypography-subtitle2"
       >
         myImage
       </h6>
@@ -24,11 +24,11 @@ exports[`render image widget with help hint 1`] = `
         />
       </svg>
       <div
-        class="makeStyles-subscribers-14"
+        class="makeStyles-subscribers-16"
       />
     </div>
     <div
-      class="makeStyles-container-11 makeStyles-container-12"
+      class="makeStyles-container-13 makeStyles-container-14"
     >
       <img
         id="imageId"
@@ -47,7 +47,7 @@ exports[`render image widget with maxWidth 1`] = `
       class="makeStyles-propertySectionLabel-3"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-6 MuiTypography-subtitle2"
       >
         myImage
       </h6>
@@ -72,19 +72,19 @@ exports[`render image widget without maxWidth 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-8"
+      class="makeStyles-propertySectionLabel-9"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-12 MuiTypography-subtitle2"
       >
         myImage
       </h6>
       <div
-        class="makeStyles-subscribers-9"
+        class="makeStyles-subscribers-10"
       />
     </div>
     <div
-      class="makeStyles-container-6 makeStyles-container-7"
+      class="makeStyles-container-7 makeStyles-container-8"
     >
       <img
         id="imageId"

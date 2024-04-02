@@ -3,17 +3,19 @@
 exports[`should display the error received 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="makeStyles-style-40"
+    >
       <div
-        class="makeStyles-propertySectionLabel-34"
+        class="makeStyles-propertySectionLabel-41"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-44 MuiTypography-subtitle2"
         >
           Label
         </h6>
         <div
-          class="makeStyles-subscribers-35"
+          class="makeStyles-subscribers-42"
         />
       </div>
       <div
@@ -22,7 +24,7 @@ exports[`should display the error received 1`] = `
         role="group"
       >
         <button
-          class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-30 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-34 makeStyles-style-36 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
           data-testid="Label"
           tabindex="0"
           type="button"
@@ -39,7 +41,7 @@ exports[`should display the error received 1`] = `
         <button
           aria-haspopup="menu"
           aria-label="select button action"
-          class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-30 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-34 makeStyles-style-36 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
           role="show-actions"
           tabindex="0"
           type="button"
@@ -71,17 +73,19 @@ exports[`should display the error received 1`] = `
 exports[`should display the error received 2`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="makeStyles-style-40"
+    >
       <div
-        class="makeStyles-propertySectionLabel-34"
+        class="makeStyles-propertySectionLabel-41"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-44 MuiTypography-subtitle2"
         >
           Label
         </h6>
         <div
-          class="makeStyles-subscribers-35"
+          class="makeStyles-subscribers-42"
         />
       </div>
       <div
@@ -90,7 +94,7 @@ exports[`should display the error received 2`] = `
         role="group"
       >
         <button
-          class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-30 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-34 makeStyles-style-36 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
           data-testid="Label"
           tabindex="0"
           type="button"
@@ -107,7 +111,7 @@ exports[`should display the error received 2`] = `
         <button
           aria-haspopup="menu"
           aria-label="select button action"
-          class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-30 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-34 makeStyles-style-36 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
           role="show-actions"
           tabindex="0"
           type="button"
@@ -138,17 +142,19 @@ exports[`should display the error received 2`] = `
 
 exports[`should render a readOnly button and his actions 1`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-style-18"
+  >
     <div
-      class="makeStyles-propertySectionLabel-16"
+      class="makeStyles-propertySectionLabel-19"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-22 MuiTypography-subtitle2"
       >
         Label
       </h6>
       <div
-        class="makeStyles-subscribers-17"
+        class="makeStyles-subscribers-20"
       />
     </div>
     <div
@@ -157,7 +163,7 @@ exports[`should render a readOnly button and his actions 1`] = `
       role="group"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-10 makeStyles-style-12 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary Mui-disabled Mui-disabled"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-12 makeStyles-style-14 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary Mui-disabled Mui-disabled"
         data-testid="Label"
         disabled=""
         tabindex="-1"
@@ -172,7 +178,7 @@ exports[`should render a readOnly button and his actions 1`] = `
       <button
         aria-haspopup="menu"
         aria-label="select button action"
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-10 makeStyles-style-12 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall Mui-disabled Mui-disabled"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-12 makeStyles-style-14 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall Mui-disabled Mui-disabled"
         disabled=""
         role="show-actions"
         tabindex="-1"
@@ -201,17 +207,19 @@ exports[`should render a readOnly button and his actions 1`] = `
 exports[`should render the button and his actions with style 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="makeStyles-style-51"
+    >
       <div
-        class="makeStyles-propertySectionLabel-43"
+        class="makeStyles-propertySectionLabel-52"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-55 MuiTypography-subtitle2"
         >
           Label
         </h6>
         <div
-          class="makeStyles-subscribers-44"
+          class="makeStyles-subscribers-53"
         />
       </div>
       <div
@@ -220,7 +228,7 @@ exports[`should render the button and his actions with style 1`] = `
         role="group"
       >
         <button
-          class="MuiButtonBase-root MuiButton-root makeStyles-style-37 makeStyles-style-39 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-45 makeStyles-style-47 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
           data-testid="Label"
           tabindex="0"
           type="button"
@@ -239,7 +247,7 @@ exports[`should render the button and his actions with style 1`] = `
           aria-expanded="true"
           aria-haspopup="menu"
           aria-label="select button action"
-          class="MuiButtonBase-root MuiButton-root makeStyles-style-37 makeStyles-style-39 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-45 makeStyles-style-47 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
           role="show-actions"
           tabindex="0"
           type="button"
@@ -282,7 +290,7 @@ exports[`should render the button and his actions with style 1`] = `
       >
         <li
           aria-disabled="false"
-          class="MuiButtonBase-root MuiListItem-root MuiMenuItem-root makeStyles-style-37 makeStyles-style-39 Mui-selected MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button Mui-selected"
+          class="MuiButtonBase-root MuiListItem-root MuiMenuItem-root makeStyles-style-45 makeStyles-style-47 Mui-selected MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button Mui-selected"
           role="menuitem"
           tabindex="0"
         >
@@ -293,7 +301,7 @@ exports[`should render the button and his actions with style 1`] = `
         </li>
         <li
           aria-disabled="false"
-          class="MuiButtonBase-root MuiListItem-root MuiMenuItem-root makeStyles-style-37 makeStyles-style-41 MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
+          class="MuiButtonBase-root MuiListItem-root MuiMenuItem-root makeStyles-style-45 makeStyles-style-49 MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
           role="menuitem"
           tabindex="-1"
         >
@@ -312,12 +320,14 @@ exports[`should render the button with help hint 1`] = `
 <body>
   <div>
      
-    <div>
+    <div
+      class="makeStyles-style-62"
+    >
       <div
-        class="makeStyles-propertySectionLabel-52"
+        class="makeStyles-propertySectionLabel-63"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-66 MuiTypography-subtitle2"
         >
           Label
         </h6>
@@ -334,7 +344,7 @@ exports[`should render the button with help hint 1`] = `
           />
         </svg>
         <div
-          class="makeStyles-subscribers-53"
+          class="makeStyles-subscribers-64"
         />
       </div>
       <div
@@ -343,7 +353,7 @@ exports[`should render the button with help hint 1`] = `
         role="group"
       >
         <button
-          class="MuiButtonBase-root MuiButton-root makeStyles-style-46 makeStyles-style-48 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-56 makeStyles-style-58 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
           data-testid="Label"
           tabindex="0"
           type="button"
@@ -360,7 +370,7 @@ exports[`should render the button with help hint 1`] = `
         <button
           aria-haspopup="menu"
           aria-label="select button action"
-          class="MuiButtonBase-root MuiButton-root makeStyles-style-46 makeStyles-style-48 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-56 makeStyles-style-58 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
           role="show-actions"
           tabindex="0"
           type="button"
@@ -391,17 +401,19 @@ exports[`should render the button with help hint 1`] = `
 
 exports[`should render the split button and his actions 1`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-style-7"
+  >
     <div
-      class="makeStyles-propertySectionLabel-7"
+      class="makeStyles-propertySectionLabel-8"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-11 MuiTypography-subtitle2"
       >
         Label
       </h6>
       <div
-        class="makeStyles-subscribers-8"
+        class="makeStyles-subscribers-9"
       />
     </div>
     <div
@@ -459,17 +471,19 @@ exports[`should render the split button and his actions 1`] = `
 
 exports[`should send mutation when clicked 1`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-style-29"
+  >
     <div
-      class="makeStyles-propertySectionLabel-25"
+      class="makeStyles-propertySectionLabel-30"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-33 MuiTypography-subtitle2"
       >
         Label
       </h6>
       <div
-        class="makeStyles-subscribers-26"
+        class="makeStyles-subscribers-31"
       />
     </div>
     <div
@@ -478,7 +492,7 @@ exports[`should send mutation when clicked 1`] = `
       role="group"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-21 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-23 makeStyles-style-25 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
         data-testid="Label"
         tabindex="0"
         type="button"
@@ -495,7 +509,7 @@ exports[`should send mutation when clicked 1`] = `
       <button
         aria-haspopup="menu"
         aria-label="select button action"
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-21 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-23 makeStyles-style-25 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
         role="show-actions"
         tabindex="0"
         type="button"
@@ -525,17 +539,19 @@ exports[`should send mutation when clicked 1`] = `
 
 exports[`should send mutation when clicked 2`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-style-29"
+  >
     <div
-      class="makeStyles-propertySectionLabel-25"
+      class="makeStyles-propertySectionLabel-30"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-33 MuiTypography-subtitle2"
       >
         Label
       </h6>
       <div
-        class="makeStyles-subscribers-26"
+        class="makeStyles-subscribers-31"
       />
     </div>
     <div
@@ -544,7 +560,7 @@ exports[`should send mutation when clicked 2`] = `
       role="group"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-21 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-23 makeStyles-style-25 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
         data-testid="Label"
         tabindex="0"
         type="button"
@@ -561,7 +577,7 @@ exports[`should send mutation when clicked 2`] = `
       <button
         aria-haspopup="menu"
         aria-label="select button action"
-        class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-21 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-23 makeStyles-style-25 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
         role="show-actions"
         tabindex="0"
         type="button"
