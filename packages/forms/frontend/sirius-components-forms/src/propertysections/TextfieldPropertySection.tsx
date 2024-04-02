@@ -59,6 +59,14 @@ const useStyle = makeStyles<Theme, TextfieldStyleProps>((theme) => ({
     fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
+  input: {
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
+  },
+  textfield: {
+    marginTop: theme.spacing(0.5),
+    marginBottom: theme.spacing(0.5),
+  },
 }));
 
 export const getCompletionProposalsQuery = gql`
@@ -385,6 +393,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
         error={widget.diagnostics.length > 0}
         helperText={widget.diagnostics[0]?.message}
         inputRef={inputElt}
+        className={classes.textfield}
         InputProps={
           widget.style
             ? {
@@ -394,6 +403,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
         }
         inputProps={{
           'data-testid': `input-${widget.label}`,
+          className: classes.input,
         }}
       />
       {proposalsList}

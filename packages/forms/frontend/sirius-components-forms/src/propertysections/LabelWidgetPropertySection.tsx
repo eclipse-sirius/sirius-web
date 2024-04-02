@@ -26,6 +26,10 @@ const useStyle = makeStyles<Theme, LabelStyleProps>((theme) => ({
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    verticalAlign: 'baseline',
+    'align-items': 'center',
+    display: 'flex',
+    margingLeft: theme.spacing(2),
   },
 }));
 

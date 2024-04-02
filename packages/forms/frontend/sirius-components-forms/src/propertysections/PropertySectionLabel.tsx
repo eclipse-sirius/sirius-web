@@ -22,6 +22,7 @@ const usePropertySectionLabelStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    marginRight: theme.spacing(2),
   },
   subscribers: {
     marginLeft: 'auto',
@@ -38,13 +39,18 @@ const usePropertySectionLabelStyles = makeStyles((theme) => ({
     width: theme.spacing(2),
     height: theme.spacing(2),
   },
+  typography: {
+    lineHeight: '1.5',
+  },
 }));
 
 export const PropertySectionLabel = ({ editingContextId, formId, widget, subscribers }: PropertySectionLabelProps) => {
   const classes = usePropertySectionLabelStyles();
   return (
     <div className={classes.propertySectionLabel}>
-      <Typography variant="subtitle2">{widget.label}</Typography>
+      <Typography className={classes.typography} variant="subtitle2">
+        {widget.label}
+      </Typography>
       {widget.hasHelpText ? (
         <HelpTooltip editingContextId={editingContextId} formId={formId} widgetId={widget.id} />
       ) : null}

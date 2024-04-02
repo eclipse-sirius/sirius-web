@@ -43,6 +43,8 @@ const useStyle = makeStyles<Theme, ButtonStyleProps>((theme) => ({
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
     '&:hover': {
       backgroundColor: ({ backgroundColor }) =>
         backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,

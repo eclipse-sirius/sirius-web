@@ -89,6 +89,8 @@ const useListPropertySectionStyles = makeStyles<Theme, ListStyleProps>((theme) =
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    paddingTop: theme.spacing(0.25),
+    paddingBottom: theme.spacing(0.25),
   },
   canBeSelectedItem: {
     '&:hover': {
@@ -248,6 +250,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
           aria-label="deleteListItem"
           onClick={(event) => onDelete(event, item)}
           disabled={readOnly || !item.deletable || widget.readOnly}
+          size="small"
           data-testid={`delete-representation-${item.label}`}>
           <DeleteIcon />
         </IconButton>

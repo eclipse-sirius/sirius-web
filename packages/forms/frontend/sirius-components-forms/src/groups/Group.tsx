@@ -54,7 +54,7 @@ const useGroupStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     '& > *': {
-      marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(1),
     },
   },
   adaptableSections: {
@@ -121,7 +121,6 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, re
       </div>
     );
   }
-
   return (
     <div className={classes.group} data-testid={`group-${group.label}`}>
       <div className={classes.groupLabelAndToolbar}>
