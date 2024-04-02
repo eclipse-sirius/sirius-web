@@ -85,6 +85,10 @@ const useRadioPropertySectionStyles = makeStyles<Theme, RadioStyleProps>((theme)
     fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
+  radio: {
+    paddingBottom: theme.spacing(0.5),
+    paddingTop: theme.spacing(0.5),
+  },
 }));
 
 const isErrorPayload = (payload: GQLEditRadioPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
@@ -193,7 +197,15 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
         {widget.options.map((option) => (
           <FormControlLabel
             value={option.id}
-            control={<Radio color="primary" onFocus={onFocus} onBlur={onBlur} data-testid={option.label} />}
+            control={
+              <Radio
+                className={classes.radio}
+                color="primary"
+                onFocus={onFocus}
+                onBlur={onBlur}
+                data-testid={option.label}
+              />
+            }
             label={
               <Typography
                 classes={

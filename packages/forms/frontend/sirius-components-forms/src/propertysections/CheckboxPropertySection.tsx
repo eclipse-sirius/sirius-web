@@ -41,6 +41,8 @@ const useStyle = makeStyles<Theme, CheckboxStyleProps>((theme) => ({
   },
   style: {
     color: ({ color }) => (color ? getCSSColor(color, theme) : theme.palette.primary.light),
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
   },
   disabled: {},
 }));

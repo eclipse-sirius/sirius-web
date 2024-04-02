@@ -43,9 +43,11 @@ const useStyle = makeStyles<Theme, MultiSelectStyleProps>((theme) => ({
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
   },
   iconRoot: {
-    minWidth: theme.spacing(3),
+    minWidth: theme.spacing(1),
   },
 }));
 
