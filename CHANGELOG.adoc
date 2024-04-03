@@ -20,6 +20,8 @@
 - [ADR-144] Add the support for EMF models migration
 - [ADR-145] Add a hook to update nodes in ReactFlow
 - [ADR-146] Add support for contributing representation metadata for transient representations
+- [ADR-147] Add support for overlapping nodes
+
 
 === Deprecation warning
 
