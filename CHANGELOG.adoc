@@ -40,6 +40,7 @@ The use of generics has thus been greatly reduced since they could not create a 
 
 === Dependency update
 
+- Move to docker compose v2 for our GitHub Actions workflow.
 
 === Bug fixes
 
