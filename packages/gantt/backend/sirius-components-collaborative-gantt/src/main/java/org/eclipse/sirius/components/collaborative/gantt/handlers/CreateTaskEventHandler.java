@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.gantt.api.IGanttContext;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventHandler;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttInput;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttTaskService;
@@ -25,7 +26,6 @@ import org.eclipse.sirius.components.collaborative.gantt.message.ICollaborativeG
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.gantt.Gantt;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -60,7 +60,7 @@ public class CreateTaskEventHandler implements IGanttEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Gantt gantt, IGanttInput ganttInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IGanttContext ganttContext, IGanttInput ganttInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(ganttInput.getClass().getSimpleName(), CreateGanttTaskInput.class.getSimpleName());
@@ -68,7 +68,7 @@ public class CreateTaskEventHandler implements IGanttEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, ganttInput.representationId(), ganttInput);
 
         if (ganttInput instanceof CreateGanttTaskInput input) {
-            payload =  this.ganttTaskService.createTask(input, editingContext, gantt);
+            payload =  this.ganttTaskService.createTask(input, editingContext, ganttContext.getGantt());
 
             changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, ganttInput.representationId(), ganttInput);
         }

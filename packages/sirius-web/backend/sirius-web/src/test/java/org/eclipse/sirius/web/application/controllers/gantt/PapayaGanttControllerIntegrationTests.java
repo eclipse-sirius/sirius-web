@@ -15,13 +15,25 @@ package org.eclipse.sirius.web.application.controllers.gantt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.GanttRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeTaskCollapseStateInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.gantt.Gantt;
+import org.eclipse.sirius.components.gantt.tests.graphql.ChangeTaskCollapseStateMutationRunner;
+import org.eclipse.sirius.components.gantt.tests.graphql.CreateTaskMutationRunner;
+import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskMutationRunner;
+import org.eclipse.sirius.components.gantt.tests.navigation.GanttNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCreatedGanttSubscription;
@@ -48,6 +60,8 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTests {
 
+    private static final String MISSING_GANTT = "Missing gantt";
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -56,6 +70,16 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private PapayaGanttDescriptionProvider papayaGanttDescriptionProvider;
+
+    @Autowired
+    private CreateTaskMutationRunner createTaskMutationRunner;
+
+    @Autowired
+    private DeleteTaskMutationRunner deleteTaskMutationRunner;
+
+    @Autowired
+    private ChangeTaskCollapseStateMutationRunner changeTaskCollapseStateMutationRunner;
+
 
     @BeforeEach
     public void beforeEach() {
@@ -68,7 +92,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.papayaGanttDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
-                "Deck"
+                "Gantt"
         );
         return this.givenCreatedGanttSubscription.createAndSubscribe(input);
     }
@@ -82,12 +106,124 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
 
         Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
                 .map(GanttRefreshedEventPayload::gantt)
-                .ifPresentOrElse(deck -> {
-                    assertThat(deck).isNotNull();
-                }, () -> fail("Missing gantt"));
+                .ifPresentOrElse(gantt -> {
+                    assertThat(gantt).isNotNull();
+                    assertThat(gantt.tasks()).hasSize(2);
+                    assertThat(gantt.tasks().get(0).subTasks()).hasSize(3);
+                }, () -> fail(MISSING_GANTT));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialGanttContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a gantt representation, create and delete Task mutations succeed")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenGanttRepresentationThenCrudMutationsSucceed() {
+
+        var flux = this.givenSubscriptionToGantt();
+
+        var ganttRef = new AtomicReference<Gantt>();
+        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    ganttRef.set(gantt);
+                    assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks()).hasSize(2);
+                }, () -> fail(MISSING_GANTT));
+
+
+        Runnable createGanttTask = () -> {
+            var createGanttTaskInput = new CreateGanttTaskInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    ganttRef.get().getId(),
+                    new GanttNavigator(ganttRef.get()).findTaskByName("Improve some features of the deck").id());
+            var result = this.createTaskMutationRunner.run(createGanttTaskInput);
+
+            String typename = JsonPath.read(result, "$.data.createGanttTask.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<GanttRefreshedEventPayload> createGanttTaskConsumer = payload -> Optional.of(payload)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    ganttRef.set(gantt);
+                    assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks()).hasSize(3);
+                }, () -> fail(MISSING_GANTT));
+
+        Runnable deleteGanttTask = () -> {
+            var deleteGanttTaskInput = new DeleteGanttTaskInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    ganttRef.get().getId(),
+                    new GanttNavigator(ganttRef.get()).findTaskByName("New task").id());
+            var result = this.deleteTaskMutationRunner.run(deleteGanttTaskInput);
+
+            String typename = JsonPath.read(result, "$.data.deleteGanttTask.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<GanttRefreshedEventPayload> deleteGanttTaskConsumer = payload -> Optional.of(payload)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks()).hasSize(2);
+                }, () -> fail(MISSING_GANTT));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialGanttContentConsumer)
+                .then(createGanttTask)
+                .consumeNextWith(createGanttTaskConsumer)
+                .then(deleteGanttTask)
+                .consumeNextWith(deleteGanttTaskConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a gantt representation, expand Task mutation succeeds")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenGanttRepresentationThenExpandTaskMutationSucceeds() {
+
+        var flux = this.givenSubscriptionToGantt();
+
+        var ganttRef = new AtomicReference<Gantt>();
+        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    ganttRef.set(gantt);
+                    assertThat(gantt).isNotNull();
+                    assertThat(gantt.tasks()).hasSize(2);
+                }, () -> fail(MISSING_GANTT));
+
+
+        Runnable expandTask = () -> {
+            var changeTaskCollapseStateInput = new ChangeTaskCollapseStateInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    ganttRef.get().getId(),
+                    new GanttNavigator(ganttRef.get()).findTaskByName("2024.3.0").id(), true);
+            var result = this.changeTaskCollapseStateMutationRunner.run(changeTaskCollapseStateInput);
+
+            String typename = JsonPath.read(result, "$.data.changeGanttTaskCollapseState.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<GanttRefreshedEventPayload> collapseGanttTaskConsumer = payload -> Optional.of(payload)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    ganttRef.set(gantt);
+                    assertThat(new GanttNavigator(ganttRef.get()).findTaskByName("2024.3.0").detail().collapsed()).isTrue();
+                }, () -> fail(MISSING_GANTT));
+
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialGanttContentConsumer)
+                .then(expandTask)
+                .consumeNextWith(collapseGanttTaskConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

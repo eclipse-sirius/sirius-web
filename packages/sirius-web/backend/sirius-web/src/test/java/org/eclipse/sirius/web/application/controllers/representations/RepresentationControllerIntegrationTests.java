@@ -19,7 +19,6 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.graphql.tests.AllRepresentationDescriptionsQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.AllRepresentationMetadataQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.RepresentationMetadataQueryRunner;
@@ -60,9 +59,6 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
     @Autowired
     private IDomainEventCollector domainEventCollector;
-
-    @Autowired
-    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     @BeforeEach
     public void beforeEach() {
@@ -117,9 +113,9 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         assertThat(count).isPositive();
 
         List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.id");
-        assertThat(representationIds).hasSizeGreaterThan(0);
-
-        assertThat(representationIds).contains(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        assertThat(representationIds)
+            .contains(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString())
+            .contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
     }
 
     @Test

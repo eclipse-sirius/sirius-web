@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.gantt.api;
 
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeTaskCollapseStateInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
@@ -54,6 +55,12 @@ public interface IGanttTaskService {
     IPayload createTaskDependency(CreateGanttTaskDependencyInput createTaskDependencyInput, IEditingContext editingContext, Gantt gantt);
 
     /**
+     * Change the state collapse of a task.
+     */
+    IPayload changeTaskCollapseState(ChangeTaskCollapseStateInput changeTaskCollapseStateInput, IEditingContext editingContext, IGanttContext ganttContext);
+
+
+    /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
      * @author lfasani
@@ -82,6 +89,11 @@ public interface IGanttTaskService {
 
         @Override
         public IPayload createTaskDependency(CreateGanttTaskDependencyInput createTaskDependencyInput, IEditingContext editingContext, Gantt gantt) {
+            return null;
+        }
+
+        @Override
+        public IPayload changeTaskCollapseState(ChangeTaskCollapseStateInput changeTaskCollapseStateInput, IEditingContext editingContext, IGanttContext ganttContext) {
             return null;
         }
     }

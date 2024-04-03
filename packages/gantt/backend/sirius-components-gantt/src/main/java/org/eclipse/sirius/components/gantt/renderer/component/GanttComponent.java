@@ -58,7 +58,7 @@ public class GanttComponent implements IComponent {
 
         List<Element> children = ganttDescription.taskDescriptions().stream()
                 .map(taskDescription -> {
-                    TaskDescriptionComponentProps taskComponentProps = new TaskDescriptionComponentProps(variableManager, taskDescription, previousTasks, ganttId, id2TaskDescription);
+                    TaskDescriptionComponentProps taskComponentProps = new TaskDescriptionComponentProps(variableManager, taskDescription, previousTasks, ganttId, id2TaskDescription, this.props.ganttEventOptional());
                     return new Element(TaskDescriptionComponent.class, taskComponentProps);
                 }).toList();
 

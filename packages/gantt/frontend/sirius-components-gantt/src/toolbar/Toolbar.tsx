@@ -104,10 +104,12 @@ export const Toolbar = ({
       zoomLevel = ViewMode.HalfDay;
     } else if (fullTime < 24 * 10) {
       zoomLevel = ViewMode.Day;
-    } else if (fullTime < 24 * 25) {
+    } else if (fullTime < 24 * 60) {
       zoomLevel = ViewMode.Week;
-    } else {
+    } else if (fullTime < 24 * 30 * 7) {
       zoomLevel = ViewMode.Month;
+    } else {
+      zoomLevel = ViewMode.Year;
     }
 
     onChangeZoomLevel(zoomLevel);
@@ -145,10 +147,10 @@ export const Toolbar = ({
     }
   };
   const onZoomOut = () => {
-    if (zoomLevel !== ViewMode.Month) {
+    if (zoomLevel !== ViewMode.Year) {
       const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
       const newZoomLevel = Object.values(ViewMode).at(currentIndex + 1);
-      onChangeZoomLevel(newZoomLevel ? newZoomLevel : ViewMode.Month);
+      onChangeZoomLevel(newZoomLevel ? newZoomLevel : ViewMode.Year);
     }
   };
 
@@ -205,6 +207,7 @@ export const Toolbar = ({
             <MenuItem value={ViewMode.Day}>Day</MenuItem>
             <MenuItem value={ViewMode.Week}>Week</MenuItem>
             <MenuItem value={ViewMode.Month}>Month</MenuItem>
+            <MenuItem value={ViewMode.Year}>Year</MenuItem>
           </Select>
         </FormControl>
         <IconButton

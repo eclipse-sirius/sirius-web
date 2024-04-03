@@ -29,6 +29,7 @@ public final class TestIdentifiers {
     public static final UUID ECORE_SAMPLE_DOCUMENT = UUID.fromString("48dc942a-6b76-4133-bca5-5b29ebee133d");
     public static final UUID EPACKAGE_OBJECT = UUID.fromString("3237b215-ae23-48d7-861e-f542a4b9a4b8");
     public static final UUID EPACKAGE_PORTAL_REPRESENTATION = UUID.fromString("e81eec5c-42d6-491c-8bcc-9beb951356f8");
+    public static final UUID EPACKAGE_EMPTY_PORTAL_REPRESENTATION = UUID.fromString("05e44ccc-9363-443f-a816-25fc73e3e7f7");
 
     public static final UUID PORTAL_REPRESENTATION_DESCRIPTION = UUID.fromString("69030a1b-0b5f-3c1d-8399-8ca260e4a672");
 

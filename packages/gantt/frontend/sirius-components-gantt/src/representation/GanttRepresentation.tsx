@@ -110,10 +110,8 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
 
   //---------------------------------
   // Mutations
-  const { deleteTask, editTask, createTask, dropTask, createTaskDependency } = useGanttMutations(
-    editingContextId,
-    representationId
-  );
+  const { deleteTask, editTask, createTask, dropTask, createTaskDependency, changeTaskCollapseState } =
+    useGanttMutations(editingContextId, representationId);
 
   const handleEditTask = (task: TaskOrEmpty) => {
     const newDetail: GQLTaskDetail = {
@@ -123,6 +121,7 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
       endTime: (task as Task)?.end?.toISOString(),
       progress: (task as Task)?.progress,
       computeStartEndDynamically: task.isDisabled,
+      collapsed: (task as Task)?.hideChildren,
     };
 
     // to avoid blink because useMutation implies a re-render as the task value is the old one
@@ -155,6 +154,7 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
         onExpandCollapse={onExpandCollapse}
         onDropTask={dropTask}
         onCreateTaskDependency={createTaskDependency}
+        onChangeTaskCollapseState={changeTaskCollapseState}
       />
     );
   }

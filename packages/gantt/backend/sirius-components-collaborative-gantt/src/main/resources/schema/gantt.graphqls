@@ -46,6 +46,7 @@ type TaskDetail {
   endTime: Instant
   progress: Int!
   computeStartEndDynamically: Boolean!
+  collapsed: Boolean!
 }
 
 type TaskStyle {
@@ -66,6 +67,7 @@ extend type Mutation {
   editGanttTask(input: EditGanttTaskInput!): EditGanttTaskPayload
   dropGanttTask(input: DropGanttTaskInput!): DropGanttTaskPayload
   createGanttTaskDependency(input: CreateGanttTaskDependencyInput!): CreateGanttTaskDependencyPayload
+  changeGanttTaskCollapseState(input: ChangeGanttTaskCollapseStateInput!): ChangeGanttTaskCollapseStatePayload
 }
 
 input CreateGanttTaskInput {
@@ -121,3 +123,12 @@ input CreateGanttTaskDependencyInput {
   targetTaskId: ID!
 }
 union CreateGanttTaskDependencyPayload = SuccessPayload | ErrorPayload
+
+input ChangeGanttTaskCollapseStateInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  taskId: ID!
+  collapsed: Boolean!
+}
+union ChangeGanttTaskCollapseStatePayload = SuccessPayload | ErrorPayload

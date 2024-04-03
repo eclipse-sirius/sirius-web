@@ -17,6 +17,9 @@ import { GQLErrorPayload, useMultiToast } from '@eclipse-sirius/sirius-component
 import { useEffect } from 'react';
 import { GQLTaskDetail } from '../subscription/GanttSubscription.types';
 import {
+  GQLChangeTaskCollapseStateData,
+  GQLChangeTaskCollapseStateInput,
+  GQLChangeTaskCollapseStateVariables,
   GQLCreateGanttTaskDependencyInput,
   GQLCreateGanttTaskInput,
   GQLCreateTaskData,
@@ -36,6 +39,7 @@ import {
   UseGanttMutations,
 } from './GanttMutation.types';
 import {
+  changeTaskCollapseStateMutation,
   createTaskDependencyMutation,
   createTaskMutation,
   deleteTaskMutation,
@@ -166,11 +170,30 @@ export const useGanttMutations = (editingContextId: string, representationId: st
     mutationCreateTaskDependency({ variables: { input } });
   };
 
+  const [mutationChangeTaskCollapseState, mutationChangeTaskCollapseStateResult] = useMutation<
+    GQLChangeTaskCollapseStateData,
+    GQLChangeTaskCollapseStateVariables
+  >(changeTaskCollapseStateMutation);
+  useErrorReporting(mutationChangeTaskCollapseStateResult, (data) => data?.payload, addErrorMessage, addMessages);
+
+  const changeTaskCollapseState = (taskId: string, collapsed: boolean) => {
+    const input: GQLChangeTaskCollapseStateInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      taskId,
+      collapsed,
+    };
+
+    mutationChangeTaskCollapseState({ variables: { input } });
+  };
+
   return {
     deleteTask,
     createTask,
     editTask,
     dropTask,
     createTaskDependency,
+    changeTaskCollapseState,
   };
 };

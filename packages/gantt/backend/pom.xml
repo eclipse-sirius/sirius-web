@@ -35,5 +35,6 @@
 		<module>sirius-components-gantt</module>
 		<module>sirius-components-collaborative-gantt</module>
 		<module>sirius-components-gantt-graphql</module>
+		<module>sirius-components-gantt-tests</module>
 	</modules>
 </project>
