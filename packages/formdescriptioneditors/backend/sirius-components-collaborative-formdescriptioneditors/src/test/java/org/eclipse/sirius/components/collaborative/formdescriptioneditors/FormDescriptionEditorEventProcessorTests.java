@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorContext;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorCreationService;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorEventInput;
@@ -73,74 +74,75 @@ public class FormDescriptionEditorEventProcessorTests {
     @Test
     public void testEmitFormDescriptionEditorOnSubscription() {
         IInput input = new FormDescriptionEditorEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        FormDescriptionEditorEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(new IEditingContext.NoOp(), this.formDescriptionEditorContext, List.of(),
-                new SubscriptionManager(), this.formDescriptionEditorCreationService, new IRepresentationDescriptionSearchService.NoOp(), new IRepresentationRefreshPolicyRegistry.NoOp());
+        FormDescriptionEditorEventProcessor formDescriptionEditorEventProcessor = this.createFormDescriptionEditorEventProcessor();
 
-        // @formatter:off
         StepVerifier.create(formDescriptionEditorEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshFormDescriptionEditorEventPayloadPredicate(1))
                 .thenCancel()
                 .verify();
-        // @formatter:on
     }
+
 
     @Test
     public void testEmitFormDescriptionEditorOnRefresh() {
         FormDescriptionEditorEventInput input = new FormDescriptionEditorEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        FormDescriptionEditorEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(new IEditingContext.NoOp(), this.formDescriptionEditorContext, List.of(),
-                new SubscriptionManager(), this.formDescriptionEditorCreationService, new IRepresentationDescriptionSearchService.NoOp(), new IRepresentationRefreshPolicyRegistry.NoOp());
+        FormDescriptionEditorEventProcessor formDescriptionEditorEventProcessor = this.createFormDescriptionEditorEventProcessor();
 
         Runnable performRefresh = () -> formDescriptionEditorEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.formDescriptionEditorId(), input));
 
-        // @formatter:off
         StepVerifier.create(formDescriptionEditorEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshFormDescriptionEditorEventPayloadPredicate(1))
                 .then(performRefresh)
                 .expectNextMatches(this.getRefreshFormDescriptionEditorEventPayloadPredicate(2))
                 .thenCancel()
                 .verify();
-        // @formatter:on
     }
 
     @Test
     public void testUpdateInitialFormDescriptionEditorForNewSubscription() {
         FormDescriptionEditorEventInput input = new FormDescriptionEditorEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        FormDescriptionEditorEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(new IEditingContext.NoOp(), this.formDescriptionEditorContext, List.of(),
-                new SubscriptionManager(), this.formDescriptionEditorCreationService, new IRepresentationDescriptionSearchService.NoOp(), new IRepresentationRefreshPolicyRegistry.NoOp());
+        FormDescriptionEditorEventProcessor formDescriptionEditorEventProcessor = this.createFormDescriptionEditorEventProcessor();
 
         Runnable performRefresh = () -> formDescriptionEditorEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.formDescriptionEditorId(), input));
 
-        // @formatter:off
         StepVerifier.create(formDescriptionEditorEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshFormDescriptionEditorEventPayloadPredicate(1))
                 .then(performRefresh)
                 .expectNextMatches(this.getRefreshFormDescriptionEditorEventPayloadPredicate(2))
                 .thenCancel()
                 .verify();
-        // @formatter:on
 
-        // @formatter:off
         StepVerifier.create(formDescriptionEditorEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshFormDescriptionEditorEventPayloadPredicate(2))
                 .thenCancel()
                 .verify();
-        // @formatter:on
     }
 
     @Test
     public void testCompleteOnDispose() {
         FormDescriptionEditorEventInput input = new FormDescriptionEditorEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        FormDescriptionEditorEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(new IEditingContext.NoOp(), this.formDescriptionEditorContext, List.of(),
-                new SubscriptionManager(), this.formDescriptionEditorCreationService, new IRepresentationDescriptionSearchService.NoOp(), new IRepresentationRefreshPolicyRegistry.NoOp());
+        FormDescriptionEditorEventProcessor formDescriptionEditorEventProcessor = this.createFormDescriptionEditorEventProcessor();
 
         Runnable disposeFormDescriptionEditorEventProcessor = () -> formDescriptionEditorEventProcessor.dispose();
 
-        // @formatter:off
         StepVerifier.create(formDescriptionEditorEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshFormDescriptionEditorEventPayloadPredicate(1))
                 .then(disposeFormDescriptionEditorEventProcessor)
                 .expectComplete()
                 .verify();
-        // @formatter:on
+    }
+
+    private FormDescriptionEditorEventProcessor createFormDescriptionEditorEventProcessor() {
+        var parameters = new FormDescriptionEditorEventProcessorParameters(
+                new IEditingContext.NoOp(),
+                this.formDescriptionEditorContext,
+                List.of(),
+                new SubscriptionManager(),
+                this.formDescriptionEditorCreationService,
+                new IRepresentationDescriptionSearchService.NoOp(),
+                new IRepresentationSearchService.NoOp(),
+                new IRepresentationRefreshPolicyRegistry.NoOp());
+        FormDescriptionEditorEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(parameters);
+        return formDescriptionEditorEventProcessor;
     }
 }

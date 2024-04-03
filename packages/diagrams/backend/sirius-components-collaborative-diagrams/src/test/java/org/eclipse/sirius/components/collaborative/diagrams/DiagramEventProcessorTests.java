@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
@@ -47,7 +48,6 @@ public class DiagramEventProcessorTests {
 
     private static final String DIAGRAM_DESCRIPTION_ID = UUID.randomUUID().toString();
 
-    // @formatter:off
     private static final Diagram INITIAL_TEST_DIAGRAM = Diagram.newDiagram(DIAGRAM_ID)
             .descriptionId(DIAGRAM_DESCRIPTION_ID)
             .label(String.valueOf(0))
@@ -57,7 +57,6 @@ public class DiagramEventProcessorTests {
             .nodes(List.of())
             .edges(List.of())
             .build();
-    // @formatter:on
 
     private final IDiagramCreationService diagramCreationService = new MockDiagramCreationService(INITIAL_TEST_DIAGRAM);
 
@@ -80,96 +79,64 @@ public class DiagramEventProcessorTests {
     @Test
     public void testEmitDiagramOnSubscription() {
         IInput input = new DiagramEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        var parameters = DiagramEventProcessorParameters.newDiagramEventProcessorParameters()
-                .editingContext(new IEditingContext.NoOp())
-                .diagramContext(this.diagramContext)
-                .diagramEventHandlers(List.of())
-                .subscriptionManager(new SubscriptionManager())
-                .diagramCreationService(this.diagramCreationService)
-                .representationDescriptionSearchService(new IRepresentationDescriptionSearchService.NoOp())
-                .representationRefreshPolicyRegistry(new IRepresentationRefreshPolicyRegistry.NoOp())
-                .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
-                .diagramInputReferencePositionProviders(List.of())
-                .build();
+        DiagramEventProcessor diagramEventProcessor = this.createDiagramEventProcessor();
 
-        DiagramEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
-
-        // @formatter:off
         StepVerifier.create(diagramEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshDiagramEventPayloadPredicate(1))
                 .thenCancel()
                 .verify();
-        // @formatter:on
     }
 
     @Test
     public void testEmitDiagramOnRefresh() {
         DiagramEventInput input = new DiagramEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        var parameters = DiagramEventProcessorParameters.newDiagramEventProcessorParameters()
-                .editingContext(new IEditingContext.NoOp())
-                .diagramContext(this.diagramContext)
-                .diagramEventHandlers(List.of())
-                .subscriptionManager(new SubscriptionManager())
-                .diagramCreationService(this.diagramCreationService)
-                .representationDescriptionSearchService(new IRepresentationDescriptionSearchService.NoOp())
-                .representationRefreshPolicyRegistry(new IRepresentationRefreshPolicyRegistry.NoOp())
-                .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
-                .diagramInputReferencePositionProviders(List.of())
-                .build();
-
-        DiagramEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
+        DiagramEventProcessor diagramEventProcessor = this.createDiagramEventProcessor();
 
         Runnable performRefresh = () -> diagramEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.diagramId(), input));
 
-        // @formatter:off
         StepVerifier.create(diagramEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshDiagramEventPayloadPredicate(1))
                 .then(performRefresh)
                 .expectNextMatches(this.getRefreshDiagramEventPayloadPredicate(2))
                 .thenCancel()
                 .verify();
-        // @formatter:on
     }
 
     @Test
     public void testUpdateInitialDiagramForNewSubscription() {
         DiagramEventInput input = new DiagramEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        var parameters = DiagramEventProcessorParameters.newDiagramEventProcessorParameters()
-                .editingContext(new IEditingContext.NoOp())
-                .diagramContext(this.diagramContext)
-                .diagramEventHandlers(List.of())
-                .subscriptionManager(new SubscriptionManager())
-                .diagramCreationService(this.diagramCreationService)
-                .representationDescriptionSearchService(new IRepresentationDescriptionSearchService.NoOp())
-                .representationRefreshPolicyRegistry(new IRepresentationRefreshPolicyRegistry.NoOp())
-                .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
-                .diagramInputReferencePositionProviders(List.of())
-                .build();
-
-        DiagramEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
+        DiagramEventProcessor diagramEventProcessor = this.createDiagramEventProcessor();
 
         Runnable performRefresh = () -> diagramEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.diagramId(), input));
 
-        // @formatter:off
         StepVerifier.create(diagramEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshDiagramEventPayloadPredicate(1))
                 .then(performRefresh)
                 .expectNextMatches(this.getRefreshDiagramEventPayloadPredicate(2))
                 .thenCancel()
                 .verify();
-        // @formatter:on
 
-        // @formatter:off
         StepVerifier.create(diagramEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshDiagramEventPayloadPredicate(2))
                 .thenCancel()
                 .verify();
-        // @formatter:on
     }
 
     @Test
     public void testCompleteOnDispose() {
         DiagramEventInput input = new DiagramEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        DiagramEventProcessor diagramEventProcessor = this.createDiagramEventProcessor();
+
+        Runnable disposeDiagramEventProcessor = diagramEventProcessor::dispose;
+
+        StepVerifier.create(diagramEventProcessor.getOutputEvents(input))
+                .expectNextMatches(this.getRefreshDiagramEventPayloadPredicate(1))
+                .then(disposeDiagramEventProcessor)
+                .expectComplete()
+                .verify();
+    }
+
+    private DiagramEventProcessor createDiagramEventProcessor() {
         var parameters = DiagramEventProcessorParameters.newDiagramEventProcessorParameters()
                 .editingContext(new IEditingContext.NoOp())
                 .diagramContext(this.diagramContext)
@@ -178,20 +145,10 @@ public class DiagramEventProcessorTests {
                 .diagramCreationService(this.diagramCreationService)
                 .representationDescriptionSearchService(new IRepresentationDescriptionSearchService.NoOp())
                 .representationRefreshPolicyRegistry(new IRepresentationRefreshPolicyRegistry.NoOp())
+                .representationSearchService(new IRepresentationSearchService.NoOp())
                 .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
                 .diagramInputReferencePositionProviders(List.of())
                 .build();
-
-        DiagramEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
-
-        Runnable disposeDiagramEventProcessor = diagramEventProcessor::dispose;
-
-        // @formatter:off
-        StepVerifier.create(diagramEventProcessor.getOutputEvents(input))
-                .expectNextMatches(this.getRefreshDiagramEventPayloadPredicate(1))
-                .then(disposeDiagramEventProcessor)
-                .expectComplete()
-                .verify();
-        // @formatter:on
+        return new DiagramEventProcessor(parameters);
     }
 }

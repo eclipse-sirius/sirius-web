@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ public class FormDescriptionEditorEventProcessorFactory implements IRepresentati
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IFormDescriptionEditorCreationService formDescriptionEditormCreationService;
+    private final IFormDescriptionEditorCreationService formDescriptionEditorCreationService;
 
     private final IRepresentationSearchService representationSearchService;
 
@@ -55,7 +55,7 @@ public class FormDescriptionEditorEventProcessorFactory implements IRepresentati
     public FormDescriptionEditorEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IFormDescriptionEditorCreationService formDescriptionEditormCreationService,
             List<IFormDescriptionEditorEventHandler> formDescriptionEditorEventHandlers) {
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
-        this.formDescriptionEditormCreationService = Objects.requireNonNull(formDescriptionEditormCreationService);
+        this.formDescriptionEditorCreationService = Objects.requireNonNull(formDescriptionEditormCreationService);
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.formDescriptionEditorEventHandlers = Objects.requireNonNull(formDescriptionEditorEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
@@ -78,12 +78,19 @@ public class FormDescriptionEditorEventProcessorFactory implements IRepresentati
             if (optionalFormDescriptionEditor.isPresent()) {
                 FormDescriptionEditor formDescriptionEditor = optionalFormDescriptionEditor.get();
                 FormDescriptionEditorContext formDescriptionEditorContext = new FormDescriptionEditorContext(formDescriptionEditor);
-                // @formatter:off
-                IRepresentationEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(editingContext, formDescriptionEditorContext, this.formDescriptionEditorEventHandlers,
-                        this.subscriptionManagerFactory.create(), this.formDescriptionEditormCreationService, this.representationDescriptionSearchService, this.representationRefreshPolicyRegistry);
+                var parameters = FormDescriptionEditorEventProcessorParameters.newFormDescriptionEditorEventProcessorParameters()
+                        .editingContext(editingContext)
+                        .formDescriptionEditorContext(formDescriptionEditorContext)
+                        .formDescriptionEditorEventHandlers(this.formDescriptionEditorEventHandlers)
+                        .subscriptionManager(this.subscriptionManagerFactory.create())
+                        .formDescriptionEditorCreationService(this.formDescriptionEditorCreationService)
+                        .representationDescriptionSearchService(this.representationDescriptionSearchService)
+                        .representationSearchService(this.representationSearchService)
+                        .representationRefreshPolicyRegistry(this.representationRefreshPolicyRegistry)
+                        .build();
+                IRepresentationEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(parameters);
 
                 return Optional.of(formDescriptionEditorEventProcessor).filter(representationEventProcessorClass::isInstance).map(representationEventProcessorClass::cast);
-                // @formatter:on
             }
         }
         return Optional.empty();

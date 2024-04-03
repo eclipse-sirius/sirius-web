@@ -70,7 +70,7 @@ public class GanttEventProcessorFactory implements IRepresentationEventProcessor
                 GanttContext ganttContext = new GanttContext(optionalGantt.get());
 
                 IRepresentationEventProcessor ganttEventProcessor = new GanttEventProcessor(editingContext, this.subscriptionManagerFactory.create(), this.ganttCreationService,
-                        this.ganttEventHandlers, ganttContext, this.representationPersistenceService);
+                        this.representationSearchService, this.ganttEventHandlers, ganttContext, this.representationPersistenceService);
 
                 return Optional.of(ganttEventProcessor).map(representationEventProcessorClass::cast);
             }

@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventHandler;
@@ -63,8 +64,11 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
     private final List<IGanttEventHandler> ganttEventHandlers;
 
+    private final IRepresentationSearchService representationSearchService;
+
     public GanttEventProcessor(IEditingContext editingContext, ISubscriptionManager subscriptionManager, GanttCreationService ganttCreationService,
-            List<IGanttEventHandler> ganttEventHandlers, GanttContext ganttContext, IRepresentationPersistenceService representationPersistenceService) {
+            IRepresentationSearchService representationSearchService, List<IGanttEventHandler> ganttEventHandlers, GanttContext ganttContext,
+            IRepresentationPersistenceService representationPersistenceService) {
         this.logger.trace("Creating the gantt event processor {}", ganttContext.getGantt().getId());
 
         this.editingContext = Objects.requireNonNull(editingContext);
@@ -73,6 +77,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
         this.ganttEventHandlers = Objects.requireNonNull(ganttEventHandlers);
         this.ganttContext = Objects.requireNonNull(ganttContext);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationSearchService = Objects.requireNonNull(representationSearchService);
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database.
@@ -129,6 +134,12 @@ public class GanttEventProcessor implements IGanttEventProcessor {
             }
 
             this.ganttEventFlux.ganttRefreshed(changeDescription.getInput(), this.ganttContext.getGantt());
+        } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.ganttContext.getGantt().getId())) {
+            Optional<Gantt> reloadedGantt = this.representationSearchService.findById(this.editingContext, this.ganttContext.getGantt().getId(), Gantt.class);
+            if (reloadedGantt.isPresent()) {
+                this.ganttContext.update(reloadedGantt.get());
+                this.ganttEventFlux.ganttRefreshed(changeDescription.getInput(), this.ganttContext.getGantt());
+            }
         }
     }
 

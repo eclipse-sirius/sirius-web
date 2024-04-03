@@ -71,7 +71,7 @@ public class DeckEventProcessorFactory implements IRepresentationEventProcessorF
                 DeckContext deckContext = new DeckContext(deck);
 
                 IRepresentationEventProcessor deckEventProcessor = new DeckEventProcessor(editingContext, this.subscriptionManagerFactory.create(), this.deckCreationService, this.deckEventHandlers,
-                        deckContext, this.representationPersistenceService);
+                        deckContext, this.representationPersistenceService, this.representationSearchService);
 
                 return Optional.of(deckEventProcessor).map(representationEventProcessorClass::cast);
             }

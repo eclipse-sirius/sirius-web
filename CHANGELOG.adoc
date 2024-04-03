@@ -52,6 +52,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3526[#3526] [diagram] Add support for text alignment on node labels
 - https://github.com/eclipse-sirius/sirius-web/issues/3550[#3550] [core] Add ExtensionRegistry merge strategy
 - https://github.com/eclipse-sirius/sirius-web/issues/3563[#3563] [sirius-web] Improve NavigationBar extensibility to allow the contribution of components on the left and right of the navigation bar.
+- https://github.com/eclipse-sirius/sirius-web/issues/3344[#3344] [core] Add support for reloading representations from the database
 
 === Improvements
 

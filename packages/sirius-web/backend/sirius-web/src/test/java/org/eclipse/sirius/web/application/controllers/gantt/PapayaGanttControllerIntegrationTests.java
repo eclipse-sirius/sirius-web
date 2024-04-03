@@ -59,9 +59,9 @@ import reactor.test.StepVerifier;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTests {
-
     private static final String MISSING_GANTT = "Missing gantt";
 
     @Autowired
@@ -124,19 +124,22 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
-    @DisplayName("Given a gantt representation, create and delete Task mutations succeed")
+    @DisplayName("Given a gantt representation, when we create a task, then the new task is visible")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenGanttRepresentationThenCrudMutationsSucceed() {
-
+    public void givenGanttRepresentationWhenWeCreateTaskThenTheNewTaskIsVisible() {
         var flux = this.givenSubscriptionToGantt();
 
-        var ganttRef = new AtomicReference<Gantt>();
+        var ganttId = new AtomicReference<String>();
+        var taskId = new AtomicReference<String>();
         Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
-                    ganttRef.set(gantt);
+                    ganttId.set(gantt.getId());
                     assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks()).hasSize(2);
+
+                    var task = new GanttNavigator(gantt).findTaskByName("Improve some features of the deck");
+                    taskId.set(task.id());
                 }, () -> fail(MISSING_GANTT));
 
 
@@ -144,8 +147,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             var createGanttTaskInput = new CreateGanttTaskInput(
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_PROJECT.toString(),
-                    ganttRef.get().getId(),
-                    new GanttNavigator(ganttRef.get()).findTaskByName("Improve some features of the deck").id());
+                    ganttId.get(),
+                    taskId.get()
+            );
             var result = this.createTaskMutationRunner.run(createGanttTaskInput);
 
             String typename = JsonPath.read(result, "$.data.createGanttTask.__typename");
@@ -155,16 +159,46 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         Consumer<GanttRefreshedEventPayload> createGanttTaskConsumer = payload -> Optional.of(payload)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
-                    ganttRef.set(gantt);
                     assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks()).hasSize(3);
                 }, () -> fail(MISSING_GANTT));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialGanttContentConsumer)
+                .then(createGanttTask)
+                .consumeNextWith(createGanttTaskConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a gantt representation, when we delete a task, then the task is not visible anymore")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenGanttRepresentationWhenWeDeleteTaskThenTheTaskIsNotVisibleAnymore() {
+        var flux = this.givenSubscriptionToGantt();
+
+        var taskName = "Improve some features of the deck";
+
+        var ganttId = new AtomicReference<String>();
+        var taskId = new AtomicReference<String>();
+        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    ganttId.set(gantt.getId());
+                    assertThat(new GanttNavigator(gantt).existTaskByName(taskName)).isTrue();
+
+                    var task = new GanttNavigator(gantt).findTaskByName(taskName);
+                    taskId.set(task.id());
+                }, () -> fail(MISSING_GANTT));
+
 
         Runnable deleteGanttTask = () -> {
             var deleteGanttTaskInput = new DeleteGanttTaskInput(
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_PROJECT.toString(),
-                    ganttRef.get().getId(),
-                    new GanttNavigator(ganttRef.get()).findTaskByName("New task").id());
+                    ganttId.get(),
+                    taskId.get()
+            );
             var result = this.deleteTaskMutationRunner.run(deleteGanttTaskInput);
 
             String typename = JsonPath.read(result, "$.data.deleteGanttTask.__typename");
@@ -174,13 +208,11 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         Consumer<GanttRefreshedEventPayload> deleteGanttTaskConsumer = payload -> Optional.of(payload)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
-                    assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks()).hasSize(2);
+                    assertThat(new GanttNavigator(gantt).existTaskByName(taskName)).isFalse();
                 }, () -> fail(MISSING_GANTT));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialGanttContentConsumer)
-                .then(createGanttTask)
-                .consumeNextWith(createGanttTaskConsumer)
                 .then(deleteGanttTask)
                 .consumeNextWith(deleteGanttTaskConsumer)
                 .thenCancel()
@@ -192,16 +224,19 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenGanttRepresentationWhenTheExpandTaskMutationIsPerformedThenItSucceeds() {
-
         var flux = this.givenSubscriptionToGantt();
 
-        var ganttRef = new AtomicReference<Gantt>();
+        var ganttId = new AtomicReference<String>();
+        var taskId = new AtomicReference<String>();
         Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
-                    ganttRef.set(gantt);
+                    ganttId.set(gantt.getId());
                     assertThat(gantt).isNotNull();
                     assertThat(gantt.tasks()).hasSize(2);
+
+                    var task = new GanttNavigator(gantt).findTaskByName("2024.3.0");
+                    taskId.set(task.id());
                 }, () -> fail(MISSING_GANTT));
 
 
@@ -209,8 +244,10 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             var changeTaskCollapseStateInput = new ChangeTaskCollapseStateInput(
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_PROJECT.toString(),
-                    ganttRef.get().getId(),
-                    new GanttNavigator(ganttRef.get()).findTaskByName("2024.3.0").id(), true);
+                    ganttId.get(),
+                    taskId.get(),
+                    true
+            );
             var result = this.changeTaskCollapseStateMutationRunner.run(changeTaskCollapseStateInput);
 
             String typename = JsonPath.read(result, "$.data.changeGanttTaskCollapseState.__typename");

@@ -34,5 +34,6 @@
 	<modules>
 		<module>sirius-components-charts</module>
 		<module>sirius-components-collaborative-charts</module>
+		<module>sirius-components-charts-graphql</module>
 	</modules>
 </project>
