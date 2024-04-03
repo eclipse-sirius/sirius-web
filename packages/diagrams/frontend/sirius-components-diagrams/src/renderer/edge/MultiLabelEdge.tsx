@@ -12,22 +12,18 @@
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo, useCallback, useContext, useEffect } from 'react';
+import { memo, useCallback } from 'react';
 import {
   BaseEdge,
-  Edge,
   EdgeLabelRenderer,
   EdgeProps,
   Node,
   Position,
   ReactFlowState,
   getSmoothStepPath,
-  useReactFlow,
   useStore,
 } from 'reactflow';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
@@ -67,9 +63,7 @@ export const MultiLabelEdge = memo(
     sourceHandleId,
     targetHandleId,
   }: EdgeProps<MultiLabelEdgeData>) => {
-    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const theme = useTheme();
-    const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
 
     const sourceNode = useStore<Node<NodeData> | undefined>(
       useCallback((store: ReactFlowState) => store.nodeInternals.get(source), [source])
@@ -130,21 +124,6 @@ export const MultiLabelEdge = memo(
     });
 
     const { beginLabel, endLabel, label, faded } = data || {};
-
-    useEffect(() => {
-      reactFlowInstance.setEdges((edges: Edge<EdgeData>[]) =>
-        edges.map((edge) => {
-          if (edge.id === id) {
-            if (selected && !readOnly) {
-              edge.updatable = true;
-            } else {
-              edge.updatable = false;
-            }
-          }
-          return edge;
-        })
-      );
-    }, [selected]);
 
     const getTranslateFromHandlePositon = (position: Position) => {
       switch (position) {
