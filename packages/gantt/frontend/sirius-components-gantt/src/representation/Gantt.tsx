@@ -14,7 +14,9 @@ import '@ObeoNetwork/gantt-task-react';
 import {
   ColorStyles,
   Column,
+  Distances,
   Gantt as GanttDiagram,
+  Icons,
   OnMoveTaskBeforeAfter,
   OnMoveTaskInside,
   OnRelationChange,
@@ -27,6 +29,8 @@ import {
 import '@ObeoNetwork/gantt-task-react/dist/style.css';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useRef, useState } from 'react';
 import { SelectableTask } from '../graphql/subscription/GanttSubscription.types';
 import { getAllColumns } from '../helper/helper';
@@ -37,6 +41,16 @@ import { GanttProps, GanttState, TaskListColumnEnum } from './Gantt.types';
 const useGanttStyle = makeStyles((theme) => ({
   ganttContainer: {
     backgroundColor: theme.palette.background.default,
+    overflowX: 'hidden',
+    overflowY: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  collapseToggleArrow: {
+    cursor: 'pointer',
+  },
+  noChildren: {
+    paddingLeft: '20px',
   },
 }));
 
@@ -51,6 +65,7 @@ export const Gantt = ({
   onDeleteTask,
   onDropTask,
   onCreateTaskDependency,
+  onChangeTaskCollapseState,
 }: GanttProps) => {
   const [{ zoomLevel, selectedColumns, columns, displayColumns }, setState] = useState<GanttState>({
     zoomLevel: ViewMode.Day,
@@ -79,7 +94,7 @@ export const Gantt = ({
           return { ...prevState, zoomLevel: newZoomLevel };
         });
       }
-    } else if (deltaY > 0 && zoomLevel !== ViewMode.Month) {
+    } else if (deltaY > 0 && zoomLevel !== ViewMode.Year) {
       const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
       const newZoomLevel = Object.values(ViewMode).at(currentIndex + 1);
       if (newZoomLevel) {
@@ -169,6 +184,19 @@ export const Gantt = ({
 
   const authorizedRelations: RelationKind[] = ['endToStart'];
 
+  const distances: Partial<Distances> = {
+    expandIconWidth: 25,
+  };
+  const icons: Partial<Icons> = {
+    renderClosedIcon: (task: TaskOrEmpty) => (
+      <ChevronRightIcon className={ganttClasses.collapseToggleArrow} data-testid={`collapsed-task-${task.name}`} />
+    ),
+    renderNoChildrenIcon: () => <div className={ganttClasses.noChildren} />,
+    renderOpenedIcon: (task: TaskOrEmpty) => (
+      <ExpandMoreIcon className={ganttClasses.collapseToggleArrow} data-testid={`expanded-task-${task.name}`} />
+    ),
+  };
+
   return (
     <div ref={ganttContainerRef} className={ganttClasses.ganttContainer} data-testid={`gantt-representation`}>
       <Toolbar
@@ -184,6 +212,7 @@ export const Gantt = ({
       />
       <GanttDiagram
         tasks={tasks}
+        distances={distances}
         columns={tableColumns}
         colors={colors}
         viewMode={zoomLevel}
@@ -206,6 +235,8 @@ export const Gantt = ({
         onMoveTaskInside={handleMoveTaskInside}
         onRelationChange={handleRelationChange}
         authorizedRelations={authorizedRelations}
+        onChangeExpandState={(changedTask) => onChangeTaskCollapseState(changedTask.id, !!changedTask.hideChildren)}
+        icons={icons}
       />
     </div>
   );

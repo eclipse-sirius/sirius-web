@@ -19,7 +19,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+import org.eclipse.sirius.components.collaborative.gantt.api.IGanttContext;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttTaskService;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeTaskCollapseStateInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
@@ -35,6 +37,7 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.Task;
 import org.eclipse.sirius.components.gantt.description.GanttDescription;
+import org.eclipse.sirius.components.gantt.renderer.events.ChangeGanttTaskCollapseStateEvent;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -76,6 +79,7 @@ public class GanttTaskService implements IGanttTaskService {
                 targetObjectOpt = this.objectService.getObject(editingContext, gantt.targetObjectId());
             }
             if (targetObjectOpt.isPresent()) {
+                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 variableManager.put(VariableManager.SELF, targetObjectOpt.get());
                 ganttDescriptionOpt.get().createTaskProvider().accept(variableManager);
             }
@@ -97,6 +101,7 @@ public class GanttTaskService implements IGanttTaskService {
             Optional<Object> targetObjectOpt = this.objectService.getObject(editingContext, taskOpt.get().targetObjectId());
             if (targetObjectOpt.isPresent()) {
                 VariableManager variableManager = new VariableManager();
+                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 variableManager.put(VariableManager.SELF, targetObjectOpt.get());
                 ganttDescriptionOpt.get().deleteTaskProvider().accept(variableManager);
 
@@ -118,6 +123,7 @@ public class GanttTaskService implements IGanttTaskService {
             if (targetObjectOpt.isPresent()) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, targetObjectOpt.get());
+                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 variableManager.put(GanttDescription.NEW_NAME, editGanttTaskInput.newDetail().name());
                 variableManager.put(GanttDescription.NEW_DESCRIPTION, editGanttTaskInput.newDetail().description());
                 variableManager.put(GanttDescription.NEW_START_TIME, editGanttTaskInput.newDetail().startTime());
@@ -178,6 +184,7 @@ public class GanttTaskService implements IGanttTaskService {
             if (draggedObjectOpt.isPresent() && targetObjectOpt.isPresent()) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, draggedObjectOpt.get());
+                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 variableManager.put(GanttDescription.SOURCE_OBJECT, draggedObjectOpt.get());
                 variableManager.put(GanttDescription.TARGET_OBJECT, targetObjectOpt.get());
                 variableManager.put(GanttDescription.SOURCE_TASK, droppedTaskOpt.get());
@@ -199,6 +206,7 @@ public class GanttTaskService implements IGanttTaskService {
 
         if (ganttDescriptionOpt.isPresent()) {
             VariableManager variableManager = new VariableManager();
+            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
             Optional<Object> sourceObjectOpt = Optional.of(createTaskDependencyInput.sourceTaskId())
                     .flatMap(taskId -> this.getTaskSemanticObject(taskId, gantt, editingContext));
@@ -226,5 +234,11 @@ public class GanttTaskService implements IGanttTaskService {
             this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("The current task of id ''{0}'' is not found", taskId), MessageLevel.ERROR));
         }
         return targetObjectOpt;
+    }
+
+    @Override
+    public IPayload changeTaskCollapseState(ChangeTaskCollapseStateInput changeTaskCollapseStateInput, IEditingContext editingContext, IGanttContext ganttContext) {
+        ganttContext.setGanttEvent(new ChangeGanttTaskCollapseStateEvent(changeTaskCollapseStateInput.taskId(), changeTaskCollapseStateInput.collapsed()));
+        return this.getPayload(changeTaskCollapseStateInput.id());
     }
 }

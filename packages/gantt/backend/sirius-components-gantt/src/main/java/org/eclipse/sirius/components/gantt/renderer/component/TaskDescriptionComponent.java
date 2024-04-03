@@ -20,9 +20,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import org.eclipse.sirius.components.gantt.Task;
 import org.eclipse.sirius.components.gantt.TaskDetail;
 import org.eclipse.sirius.components.gantt.description.TaskDescription;
 import org.eclipse.sirius.components.gantt.renderer.elements.TaskElementProps;
+import org.eclipse.sirius.components.gantt.renderer.events.ChangeGanttTaskCollapseStateEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
@@ -82,16 +84,25 @@ public class TaskDescriptionComponent implements IComponent {
                 return UUID.nameUUIDFromBytes(objectId.getBytes()).toString();
             })
             .toList();
-        List<Element> childrenElements = this.getChildren(childVariableManager, taskDescription);
+
+        Optional<Task> previousTaskOptional = this.props.previousTasks().stream()
+                .filter(task -> task.descriptionId().equals(taskDescription.id()) && task.targetObjectId().equals(targetObjectId))
+                .findFirst();
+
+        List<Element> childrenElements = this.getChildren(childVariableManager, taskDescription, previousTaskOptional);
+
         String targetObjectKind = taskDescription.targetObjectKindProvider().apply(childVariableManager);
         String targetObjectLabel = taskDescription.targetObjectLabelProvider().apply(childVariableManager);
 
-        TaskDetail detail = new TaskDetail(name, description, startTime, endTime, progress, computeDatesDynamicallyProvider);
+        boolean collapsed = this.computeCollapsed(previousTaskOptional);
+
+        TaskDetail detail = new TaskDetail(name, description, startTime, endTime, progress, computeDatesDynamicallyProvider, collapsed);
         TaskElementProps taskElementProps = new TaskElementProps(UUID.nameUUIDFromBytes(targetObjectId.getBytes()).toString(), taskDescription.id(), targetObjectId, targetObjectKind, targetObjectLabel, detail, dependencyObjectIds, childrenElements);
         return new Element(TaskElementProps.TYPE, taskElementProps);
     }
 
-    private List<Element> getChildren(VariableManager variableManager, TaskDescription taskDescription) {
+    private List<Element> getChildren(VariableManager variableManager, TaskDescription taskDescription, Optional<Task> previousTaskOptional) {
+        List<Task> previousSubTasks = previousTaskOptional.map(Task::subTasks).orElseGet(ArrayList::new);
         Stream<TaskDescription> childrenTaskDescription = Optional.ofNullable(taskDescription.subTaskDescriptions()).orElse(List.of()).stream();
 
         Stream<TaskDescription> reusedTaskDescriptions = Optional.ofNullable(taskDescription.reusedTaskDescriptionIds()).orElse(List.of()).stream()
@@ -99,7 +110,7 @@ public class TaskDescriptionComponent implements IComponent {
 
         List<Element> childrenElements = Stream.concat(childrenTaskDescription, reusedTaskDescriptions)
                 .map(childTaskDescription -> {
-                    TaskDescriptionComponentProps taskComponentProps = new TaskDescriptionComponentProps(variableManager, childTaskDescription, null, null, this.props.id2tasksDescription());
+                    TaskDescriptionComponentProps taskComponentProps = new TaskDescriptionComponentProps(variableManager, childTaskDescription, previousSubTasks, this.props.parentElementId(), this.props.id2tasksDescription(), this.props.ganttEvent());
                     return new Element(TaskDescriptionComponent.class, taskComponentProps);
                 }).toList();
 
@@ -111,4 +122,15 @@ public class TaskDescriptionComponent implements IComponent {
         return true;
     }
 
+    private boolean computeCollapsed(Optional<Task> previousTaskOptional) {
+        return previousTaskOptional.map(previousTask -> {
+            return this.props.ganttEvent()
+                    .filter(ChangeGanttTaskCollapseStateEvent.class::isInstance)
+                    .map(ChangeGanttTaskCollapseStateEvent.class::cast)
+                    .filter(event -> event.taskId().equals(previousTask.id()))
+                    .map(ChangeGanttTaskCollapseStateEvent::collapsed)
+                    .orElse(previousTask.detail().collapsed());
+        })
+        .orElse(false);
+    }
 }

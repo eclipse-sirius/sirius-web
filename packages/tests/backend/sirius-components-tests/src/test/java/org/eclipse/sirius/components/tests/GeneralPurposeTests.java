@@ -54,6 +54,10 @@ public class GeneralPurposeTests {
 
     private static final String JAVA_FILE_EXTENSION = "java";
 
+    private static final String PROJECT_FILE_EXTENSION = "project";
+
+    private static final String CLASSPATH_FILE_EXTENSION = "classpath";
+
     private static final String SUPPRESS_WARNINGS = "@SuppressWarnings";
 
     private static final String CHECKSTYLE_HIDDEN_FIELD = "@SuppressWarnings(\"checkstyle:HiddenField\")";
@@ -89,6 +93,8 @@ public class GeneralPurposeTests {
     private static final String WIDTH_100 = "width: 100%;";
 
     private static final String HEIGHT_100 = "height: 100%;";
+
+    private static final String ECLIPSE_PDE = "org.eclipse.pde";
 
     private static final String INVALID_MATERIALUI_IMPORT = "from '@material-ui/core';";
 
@@ -135,8 +141,10 @@ public class GeneralPurposeTests {
     /**
      * Finds all the files located under the given source folder path with the given extension.
      *
-     * @param sourceFolderPath           The path of the source folder
-     * @param includesGeneratedCodePaths Used to indicate if we want to consider generated code
+     * @param sourceFolderPath
+     *            The path of the source folder
+     * @param includesGeneratedCodePaths
+     *            Used to indicate if we want to consider generated code
      * @return The path of the files
      */
     private List<Path> findFilePaths(Path sourceFolderPath, String extension, boolean includesGeneratedCodePaths) {
@@ -363,9 +371,12 @@ public class GeneralPurposeTests {
      * highly unlikely. We are in the process of removing such usage, not adding new ones.
      * </p>
      *
-     * @param index       The number of the line
-     * @param line        The line to check
-     * @param cssFilePath The path of the CSS file
+     * @param index
+     *            The number of the line
+     * @param line
+     *            The line to check
+     * @param cssFilePath
+     *            The path of the CSS file
      */
     private void testHeight100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off
@@ -393,9 +404,12 @@ public class GeneralPurposeTests {
      * highly unlikely. We are in the process of removing such usage, not adding new ones.
      * </p>
      *
-     * @param index       The number of the line
-     * @param line        The line to check
-     * @param cssFilePath The path of the CSS file
+     * @param index
+     *            The number of the line
+     * @param line
+     *            The line to check
+     * @param cssFilePath
+     *            The path of the CSS file
      */
     private void testWidth100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off
@@ -408,6 +422,37 @@ public class GeneralPurposeTests {
             if (line.contains(WIDTH_100)) {
                 fail(this.createErrorMessage(WIDTH_100, cssFilePath, index));
             }
+        }
+    }
+
+    @Test
+    public void checkEclipseConfigCode() {
+        File rootFolder = this.getRootFolder();
+        Path backendFolderPath = Paths.get(rootFolder.getAbsolutePath(), BACKEND_FOLDER_PATH);
+
+        List<Path> projectFilePaths = this.findFilePaths(backendFolderPath, PROJECT_FILE_EXTENSION, false);
+        List<Path> classpathFilePaths = this.findFilePaths(backendFolderPath, CLASSPATH_FILE_EXTENSION, false);
+
+        List<Path> eclipseConfigFilesPaths = new ArrayList<>();
+        eclipseConfigFilesPaths.addAll(projectFilePaths);
+        eclipseConfigFilesPaths.addAll(classpathFilePaths);
+
+        for (Path eclipseConfigFilesPath : eclipseConfigFilesPaths) {
+            try {
+                List<String> lines = Files.readAllLines(eclipseConfigFilesPath);
+                for (int index = 0; index < lines.size(); index++) {
+                    String line = lines.get(index);
+                    this.testNoEclipsePDE(index, line, eclipseConfigFilesPath);
+                }
+            } catch (IOException exception) {
+                fail(exception.getMessage());
+            }
+        }
+    }
+
+    private void testNoEclipsePDE(int index, String line, Path eclipseConfigFilesPath) {
+        if (line.contains(ECLIPSE_PDE)) {
+            fail(this.createErrorMessage(ECLIPSE_PDE, eclipseConfigFilesPath, index));
         }
     }
 

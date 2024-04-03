@@ -16,12 +16,17 @@ import {
   DateEndColumn,
   DateStartColumn,
   Dependency,
-  EmptyTask,
   TaskOrEmpty,
   TaskType,
   TitleColumn,
 } from '@ObeoNetwork/gantt-task-react';
-import { GQLGantt, GQLTask, GQLTaskDetail, SelectableTask } from '../graphql/subscription/GanttSubscription.types';
+import {
+  GQLGantt,
+  GQLTask,
+  GQLTaskDetail,
+  SelectableEmptyTask,
+  SelectableTask,
+} from '../graphql/subscription/GanttSubscription.types';
 import { TaskListColumnEnum } from '../representation/Gantt.types';
 
 export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskOrEmpty[] {
@@ -41,7 +46,7 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
         ownTarget: 'startOfTask',
       };
     });
-    let task: SelectableTask | EmptyTask;
+    let task: SelectableTask | SelectableEmptyTask;
     if (gQLTask.detail.startTime && gQLTask.detail.endTime) {
       task = {
         id: gQLTask.id,
@@ -52,7 +57,7 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
         type,
         dependencies,
         parent: parentId,
-        hideChildren: false,
+        hideChildren: gQLTask.detail.collapsed,
         targetObjectId: gQLTask.targetObjectId,
         targetObjectKind: gQLTask.targetObjectKind,
         targetObjectLabel: gQLTask.targetObjectLabel,
@@ -63,6 +68,9 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
         name: gQLTask.detail.name,
         parent: parentId,
         type: 'empty',
+        targetObjectId: gQLTask.targetObjectId,
+        targetObjectKind: gQLTask.targetObjectKind,
+        targetObjectLabel: gQLTask.targetObjectLabel,
       };
     }
 
@@ -102,7 +110,7 @@ const findTask = (tasks: GQLTask[], taskId: string): GQLTask | undefined => {
   return foundTask;
 };
 
-const ProgressColumn: React.FC<ColumnProps> = ({ data: { task } }) => {
+const ProgressColumn = ({ data: { task } }: ColumnProps) => {
   if (task.type === 'project' || task.type === 'task') {
     return <>{task.progress}%</>;
   }

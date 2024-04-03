@@ -39,4 +39,5 @@ export interface GanttProps {
   onExpandCollapse: (task: Task) => void;
   onDropTask: (droppedTask: TaskOrEmpty, targetTask: TaskOrEmpty | undefined, dropIndex: number) => void;
   onCreateTaskDependency: (sourceTaskId: string, targetTaskId: string) => void;
+  onChangeTaskCollapseState: (taskId: string, collapsed: boolean) => void;
 }

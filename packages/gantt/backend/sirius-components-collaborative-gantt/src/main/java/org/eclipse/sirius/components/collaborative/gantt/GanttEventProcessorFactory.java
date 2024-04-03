@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventHandler;
@@ -44,12 +45,15 @@ public class GanttEventProcessorFactory implements IRepresentationEventProcessor
 
     private final List<IGanttEventHandler> ganttEventHandlers;
 
+    private final IRepresentationPersistenceService representationPersistenceService;
+
     public GanttEventProcessorFactory(IRepresentationSearchService representationSearchService, GanttCreationService ganttCreationService, ISubscriptionManagerFactory subscriptionManagerFactory,
-            List<IGanttEventHandler> ganttEventHandlers) {
+            List<IGanttEventHandler> ganttEventHandlers, IRepresentationPersistenceService representationPersistenceService) {
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.ganttCreationService = Objects.requireNonNull(ganttCreationService);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.ganttEventHandlers = Objects.requireNonNull(ganttEventHandlers);
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
     }
 
     @Override
@@ -63,10 +67,10 @@ public class GanttEventProcessorFactory implements IRepresentationEventProcessor
         if (IGanttEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof GanttConfiguration ganttConfiguration) {
             var optionalGantt = this.representationSearchService.findById(editingContext, ganttConfiguration.getId(), Gantt.class);
             if (optionalGantt.isPresent()) {
-                Gantt gantt = optionalGantt.get();
+                GanttContext ganttContext = new GanttContext(optionalGantt.get());
 
-                IRepresentationEventProcessor ganttEventProcessor = new GanttEventProcessor(editingContext, gantt, this.subscriptionManagerFactory.create(), this.ganttCreationService,
-                        this.ganttEventHandlers);
+                IRepresentationEventProcessor ganttEventProcessor = new GanttEventProcessor(editingContext, this.subscriptionManagerFactory.create(), this.ganttCreationService,
+                        this.ganttEventHandlers, ganttContext, this.representationPersistenceService);
 
                 return Optional.of(ganttEventProcessor).map(representationEventProcessorClass::cast);
             }

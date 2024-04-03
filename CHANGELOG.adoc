@@ -57,8 +57,8 @@ They are also now used by the view builder code generator.
 === Dependency update
 
 - Move to docker compose v2 for our GitHub Actions workflow.
-- https://github.com/eclipse-sirius/sirius-web/issues/3277[#3277] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.8 to benefit for enhancements
 - [test] Switch to ArchUnit 1.2.1 to restore architectural tests which were failing recently
+- https://github.com/eclipse-sirius/sirius-web/issues/3277[#3277] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.9 to benefit for enhancements
 
 === Bug fixes
 
@@ -92,7 +92,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3371[#3371] [view] Add new expressions in `NodeDescription` to specify whether a node is hidden/faded/normal by default.
 - https://github.com/eclipse-sirius/sirius-web/issues/3371[#3371] [diagram] Add new predicates in `NodeDescription` to specify whether a node is hidden/faded/normal by default.
 - https://github.com/eclipse-sirius/sirius-web/issues/3372[#3372] [diagram] Add services in `DiagramServices` to hide, reveal, fade, and unfade nodes from AQL expressions and Java services.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2839[#2839] [gantt] Add support for persisting task expand/collapse state
 
 === Improvements
 

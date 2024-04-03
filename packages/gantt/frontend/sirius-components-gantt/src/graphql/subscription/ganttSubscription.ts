@@ -61,6 +61,7 @@ export const ganttEventSubscription = gql`
       endTime
       progress
       computeStartEndDynamically
+      collapsed
     }
     style {
       labelColor

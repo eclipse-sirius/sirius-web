@@ -88,7 +88,7 @@ public class GanttElementFactory implements IElementFactory {
                 newProgress = (int) (numerator / denominator);
             }
 
-            detail = new TaskDetail(detail.name(), detail.description(), startTime, endTime, newProgress, detail.computeStartEndDynamically());
+            detail = new TaskDetail(detail.name(), detail.description(), startTime, endTime, newProgress, detail.computeStartEndDynamically(), detail.collapsed());
         }
 
         return new Task(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), detail, props.dependencyObjectIds(), subTasks);

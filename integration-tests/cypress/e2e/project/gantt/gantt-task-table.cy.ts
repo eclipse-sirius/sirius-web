@@ -73,4 +73,13 @@ describe('Verify the actions in Gantt table', () => {
     ganttHelper.checkTaskPositionInTable('Code Development', 3);
     ganttHelper.checkTaskPositionInTable('Back', 4);
   });
+
+  it('can expand/collapse tasks', () => {
+    const ganttHelper = new GanttTestHelper();
+    ganttHelper.getTask('Back').should('exist');
+    ganttHelper.getGanttRepresentation().findByTestId('expanded-task-Development').click();
+    ganttHelper.getTask('Back').should('not.exist');
+    ganttHelper.getGanttRepresentation().findByTestId('collapsed-task-Development').click();
+    ganttHelper.getTask('Back').should('exist');
+  });
 });

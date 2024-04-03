@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.view.emf.task;
+package org.eclipse.sirius.components.view.emf.gantt;
 
 import java.time.Instant;
 import java.time.format.DateTimeParseException;

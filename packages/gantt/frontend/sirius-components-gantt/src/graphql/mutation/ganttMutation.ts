@@ -111,3 +111,23 @@ export const createTaskDependencyMutation = gql`
     }
   }
 `;
+
+export const changeTaskCollapseStateMutation = gql`
+  mutation changeGanttTaskCollapseState($input: ChangeGanttTaskCollapseStateInput!) {
+    changeGanttTaskCollapseState(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.gantt.GanttContext;
+import org.eclipse.sirius.components.collaborative.gantt.api.IGanttContext;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -27,6 +29,7 @@ import org.eclipse.sirius.components.gantt.description.GanttDescription;
 import org.eclipse.sirius.components.gantt.renderer.GanttRenderer;
 import org.eclipse.sirius.components.gantt.renderer.component.GanttComponent;
 import org.eclipse.sirius.components.gantt.renderer.component.GanttComponentProps;
+import org.eclipse.sirius.components.gantt.renderer.events.IGanttEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
@@ -64,22 +67,22 @@ public class GanttCreationService implements IGanttCreationService {
     }
 
     @Override
-    public Optional<Gantt> refresh(IEditingContext editingContext, Gantt previousGantt) {
-        var optionalObject = this.objectService.getObject(editingContext, previousGantt.targetObjectId());
-        var optionalGanttDescription = this.representationDescriptionSearchService.findById(editingContext, previousGantt.getDescriptionId())
+    public Optional<Gantt> refresh(IEditingContext editingContext, GanttContext ganttContext) {
+        var optionalObject = this.objectService.getObject(editingContext, ganttContext.getGantt().targetObjectId());
+        var optionalGanttDescription = this.representationDescriptionSearchService.findById(editingContext, ganttContext.getGantt().getDescriptionId())
                 .filter(GanttDescription.class::isInstance)
                 .map(GanttDescription.class::cast);
 
         if (optionalObject.isPresent() && optionalGanttDescription.isPresent()) {
             Object object = optionalObject.get();
             GanttDescription ganttDescription = optionalGanttDescription.get();
-            Gantt gantt = this.doRender(previousGantt.getLabel(), object, editingContext, ganttDescription, Optional.of(previousGantt));
+            Gantt gantt = this.doRender(ganttContext.getGantt().getLabel(), object, editingContext, ganttDescription, Optional.of(ganttContext));
             return Optional.of(gantt);
         }
         return Optional.empty();
     }
 
-    private Gantt doRender(String label, Object targetObject, IEditingContext editingContext, GanttDescription ganttDescription, Optional<Gantt> optionalPreviousGantt) {
+    private Gantt doRender(String label, Object targetObject, IEditingContext editingContext, GanttDescription ganttDescription, Optional<GanttContext> optionalGanttContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
@@ -87,8 +90,10 @@ public class GanttCreationService implements IGanttCreationService {
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
+        Optional<Gantt> optionalPreviousGantt = optionalGanttContext.map(IGanttContext::getGantt);
+        Optional<IGanttEvent> optionalGanttEvent = optionalGanttContext.map(IGanttContext::getGanttEvent);
 
-        GanttComponentProps ganttComponentProps = new GanttComponentProps(variableManager, ganttDescription, optionalPreviousGantt);
+        GanttComponentProps ganttComponentProps = new GanttComponentProps(variableManager, ganttDescription, optionalPreviousGantt, optionalGanttEvent);
 
         Element element = new Element(GanttComponent.class, ganttComponentProps);
         Gantt newGantt = new GanttRenderer().render(element);

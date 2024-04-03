@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.gantt.api;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.components.collaborative.gantt.GanttContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.description.GanttDescription;
@@ -51,11 +52,11 @@ public interface IGanttCreationService {
      *
      * @param editingContext
      *            The editing context
-     * @param ganttDiagram
-     *            The gantt diagram
+     * @param ganttContext
+     *            The gantt context
      * @return An updated gantt if we have been able to refresh it.
      */
-    Optional<Gantt> refresh(IEditingContext editingContext, Gantt ganttDiagram);
+    Optional<Gantt> refresh(IEditingContext editingContext, GanttContext ganttContext);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -70,7 +71,7 @@ public interface IGanttCreationService {
         }
 
         @Override
-        public Optional<Gantt> refresh(IEditingContext editingContext, Gantt ganttDiagram) {
+        public Optional<Gantt> refresh(IEditingContext editingContext, GanttContext ganttContext) {
             return Optional.empty();
         }
     }

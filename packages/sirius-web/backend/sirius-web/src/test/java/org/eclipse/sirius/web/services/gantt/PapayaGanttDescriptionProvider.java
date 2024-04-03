@@ -21,12 +21,20 @@ import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.view.ChangeContext;
+import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.CreateInstanceBuilder;
+import org.eclipse.sirius.components.view.builder.generated.DeleteElementBuilder;
+import org.eclipse.sirius.components.view.builder.generated.GanttBuilders;
 import org.eclipse.sirius.components.view.builder.generated.GanttDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.TaskDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
-import org.eclipse.sirius.components.view.emf.task.IGanttIdProvider;
+import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
+import org.eclipse.sirius.components.view.emf.gantt.IGanttIdProvider;
+import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
+import org.eclipse.sirius.components.view.gantt.TaskDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.OnStudioTests;
@@ -82,21 +90,80 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
     }
 
     private GanttDescription createGanttDescription() {
-        var iterationTaskElementDescription = new TaskDescriptionBuilder()
-                .name("Iteration")
-                .semanticCandidatesExpression("aql:self.iterations")
-                .descriptionExpression("aql:self.name")
-                .startTimeExpression("aql:self.startDate")
-                .endTimeExpression("aql:self.endDate")
-                .build();
+        CreateTaskTool createTaskTool = this.createCreateTaskTool();
+        DeleteTaskTool deleteTaskTool = this.createDeleteTaskTool();
 
         this.ganttDescription = new GanttDescriptionBuilder()
                 .name("Gantt")
                 .titleExpression("aql:'Gantt'")
                 .domainType("papaya_planning:Project")
-                .taskElementDescriptions(iterationTaskElementDescription)
+                .taskElementDescriptions(this.createTaskDescriptionInProject())
+                .createTool(createTaskTool)
+                .deleteTool(deleteTaskTool)
                 .build();
 
         return this.ganttDescription;
+    }
+
+    private TaskDescription createTaskDescriptionInProject() {
+        TaskDescription taskDescriptionInTask = this.createTaskDescriptionInTask();
+
+        return new GanttBuilders().newTaskDescription()
+                .name("Iterations In Project")
+                .domainType("papaya_planning::Iteration")
+                .semanticCandidatesExpression("aql:self.iterations")
+                .nameExpression("aql:self.name")
+                .startTimeExpression("aql:self.startTime")
+                .endTimeExpression("aql:self.endTime")
+                .subTaskElementDescriptions(taskDescriptionInTask)
+                .build();
+    }
+
+    private TaskDescription createTaskDescriptionInTask() {
+        TaskDescription taskDescription = new GanttBuilders().newTaskDescription()
+                .name("Sub Tasks")
+                .domainType("papaya_planning::Task")
+                .semanticCandidatesExpression("aql:self.tasks")
+                .nameExpression("aql:self.name")
+                .descriptionExpression("aql:self.description")
+                .startTimeExpression("aql:self.startTime")
+                .endTimeExpression("aql:self.endTime")
+                .progressExpression("aql:self.progress")
+                .build();
+
+        taskDescription.getReusedTaskElementDescriptions().add(taskDescription);
+
+        return taskDescription;
+    }
+
+    private DeleteTaskTool createDeleteTaskTool() {
+        return new GanttBuilders().newDeleteTaskTool()
+                .name("Delete Task")
+                .body(new DeleteElementBuilder()
+                        .build())
+                .build();
+    }
+
+    private CreateTaskTool createCreateTaskTool() {
+        ViewBuilders viewBuilders = new ViewBuilders();
+
+        SetValue setNameValue = viewBuilders.newSetValue()
+                .featureName("name")
+                .valueExpression("New task")
+                .build();
+
+        ChangeContext newInstanceChangeContext = viewBuilders.newChangeContext()
+                .expression("aql:newInstance")
+                .children(setNameValue)
+                .build();
+
+        return new GanttBuilders().newCreateTaskTool()
+                .name("Create Task")
+                .body(new CreateInstanceBuilder()
+                        .typeName("papaya_planning::Task")
+                        .referenceName("tasks")
+                        .children(newInstanceChangeContext)
+                        .build())
+                .build();
     }
 }

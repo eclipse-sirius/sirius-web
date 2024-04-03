@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Task } from '@ObeoNetwork/gantt-task-react';
+import { EmptyTask, Task } from '@ObeoNetwork/gantt-task-react';
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface GQLGanttEventSubscription {
@@ -75,6 +75,11 @@ export interface SelectableTask extends Task {
   targetObjectKind: string;
   targetObjectLabel: string;
 }
+export interface SelectableEmptyTask extends EmptyTask {
+  targetObjectId: string;
+  targetObjectKind: string;
+  targetObjectLabel: string;
+}
 
 export interface GQLTaskDetail {
   name: string;
@@ -83,6 +88,7 @@ export interface GQLTaskDetail {
   endTime?: string;
   progress: number;
   computeStartEndDynamically?: boolean;
+  collapsed?: boolean;
 }
 
 export interface GQLTaskStyle {

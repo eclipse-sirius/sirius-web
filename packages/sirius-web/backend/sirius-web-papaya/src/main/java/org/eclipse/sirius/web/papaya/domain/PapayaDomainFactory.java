@@ -241,11 +241,14 @@ public class PapayaDomainFactory {
         this.taskEntity.getAttributes().add(this.createAttribute("priority", false, false, DataType.NUMBER));
         this.taskEntity.getRelations().add(this.createRelation("targets", false, true, false, this.modelElementEntity));
         this.taskEntity.getAttributes().add(this.createAttribute("done", false, false, DataType.BOOLEAN));
+        this.taskEntity.getAttributes().add(this.createAttribute("startDate", false, false, DataType.STRING));
+        this.taskEntity.getAttributes().add(this.createAttribute("endDate", false, false, DataType.STRING));
+        this.taskEntity.getRelations().add(this.createRelation("tasks", true, true, false, this.taskEntity));
 
         this.iterationEntity.getAttributes().add(this.createAttribute("startDate", false, false, DataType.STRING));
         this.iterationEntity.getAttributes().add(this.createAttribute("endDate", false, false, DataType.STRING));
-        this.iterationEntity.getRelations().add(this.createRelation("tasks", false, true, false, this.taskEntity));
-        this.iterationEntity.getRelations().add(this.createRelation("contributions", false, true, false, this.contributionEntity));
+        this.iterationEntity.getRelations().add(this.createRelation("tasks", true, true, false, this.taskEntity));
+        this.iterationEntity.getRelations().add(this.createRelation("contributions", true, true, false, this.contributionEntity));
 
         this.contributionEntity.getRelations().add(this.createRelation("targets", false, true, false, this.modelElementEntity));
         this.contributionEntity.getRelations().add(this.createRelation("relatedTasks", false, true, false, this.taskEntity));

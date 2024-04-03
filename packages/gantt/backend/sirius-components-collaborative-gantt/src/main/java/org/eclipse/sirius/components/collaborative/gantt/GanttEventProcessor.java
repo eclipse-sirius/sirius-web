@@ -15,10 +15,10 @@ package org.eclipse.sirius.components.collaborative.gantt;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventHandler;
@@ -55,25 +55,29 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
     private final GanttCreationService ganttCreationService;
 
-    private final AtomicReference<Gantt> currentGantt = new AtomicReference<>();
+    private final IRepresentationPersistenceService representationPersistenceService;
+
+    private final GanttContext ganttContext;
 
     private final GanttEventFlux ganttEventFlux;
 
     private final List<IGanttEventHandler> ganttEventHandlers;
 
-    public GanttEventProcessor(IEditingContext editingContext, Gantt ganttDiagram, ISubscriptionManager subscriptionManager, GanttCreationService ganttCreationService,
-            List<IGanttEventHandler> ganttEventHandlers) {
-        this.logger.trace("Creating the gantt event processor {}", ganttDiagram.getId());
+    public GanttEventProcessor(IEditingContext editingContext, ISubscriptionManager subscriptionManager, GanttCreationService ganttCreationService,
+            List<IGanttEventHandler> ganttEventHandlers, GanttContext ganttContext, IRepresentationPersistenceService representationPersistenceService) {
+        this.logger.trace("Creating the gantt event processor {}", ganttContext.getGantt().getId());
 
         this.editingContext = Objects.requireNonNull(editingContext);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.ganttCreationService = Objects.requireNonNull(ganttCreationService);
         this.ganttEventHandlers = Objects.requireNonNull(ganttEventHandlers);
+        this.ganttContext = Objects.requireNonNull(ganttContext);
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database.
-        Gantt gantt = this.ganttCreationService.refresh(this.editingContext, ganttDiagram).orElse(null);
-        this.currentGantt.set(gantt);
+        Gantt gantt = this.ganttCreationService.refresh(this.editingContext, ganttContext).orElse(null);
+        this.ganttContext.update(gantt);
 
         this.ganttEventFlux = new GanttEventFlux(gantt);
 
@@ -81,7 +85,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
     @Override
     public IRepresentation getRepresentation() {
-        return this.currentGantt.get();
+        return this.ganttContext.getGantt();
     }
 
     @Override
@@ -101,7 +105,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
             if (optionalGanttEventHandler.isPresent()) {
                 IGanttEventHandler ganttEventHandler = optionalGanttEventHandler.get();
-                ganttEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.currentGantt.get(), ganttInput);
+                ganttEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.ganttContext, ganttInput);
             } else {
                 this.logger.warn("No handler found for event: {}", ganttInput);
             }
@@ -111,13 +115,20 @@ public class GanttEventProcessor implements IGanttEventProcessor {
     @Override
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
-            Gantt refreshedGanttDiagram = this.ganttCreationService.refresh(this.editingContext, this.currentGantt.get()).orElse(null);
+            String ganttId = this.ganttContext.getGantt().getId();
+            Gantt refreshedGanttRepresentation = this.ganttCreationService.refresh(this.editingContext, this.ganttContext).orElse(null);
 
-            this.currentGantt.set(refreshedGanttDiagram);
+            this.ganttContext.reset();
+            this.ganttContext.update(refreshedGanttRepresentation);
 
-            this.logger.trace("Gantt refreshed: {}", refreshedGanttDiagram.getId());
+            if (refreshedGanttRepresentation != null) {
+                this.representationPersistenceService.save(this.editingContext, refreshedGanttRepresentation);
+                this.logger.trace("Gantt refreshed: {}", ganttId);
+            } else {
+                this.logger.warn("Gantt refresh failed: {}", ganttId);
+            }
 
-            this.ganttEventFlux.ganttRefreshed(changeDescription.getInput(), this.currentGantt.get());
+            this.ganttEventFlux.ganttRefreshed(changeDescription.getInput(), this.ganttContext.getGantt());
         }
     }
 
@@ -125,7 +136,8 @@ public class GanttEventProcessor implements IGanttEventProcessor {
      * A gantt representation is refreshed if there is a semantic change.
      */
     private boolean shouldRefresh(ChangeDescription changeDescription) {
-        return ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
+        String kind = changeDescription.getKind();
+        return ChangeKind.SEMANTIC_CHANGE.equals(kind) || GanttChangeKind.GANTT_REPRESENTATION_UPDATE.equals(kind);
     }
 
     @Override
@@ -138,7 +150,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
     @Override
     public void dispose() {
-        String id = Optional.ofNullable(this.currentGantt.get())
+        String id = Optional.ofNullable(this.ganttContext.getGantt())
                 .map(Gantt::id)
                 .orElse(null);
 

@@ -20,7 +20,7 @@ import java.util.Objects;
  *
  * @author lfasani
  */
-public record TaskDetail(String name, String description, Instant startTime, Instant endTime, int progress, boolean computeStartEndDynamically) {
+public record TaskDetail(String name, String description, Instant startTime, Instant endTime, int progress, boolean computeStartEndDynamically, boolean collapsed) {
 
     public TaskDetail {
         Objects.requireNonNull(name);
