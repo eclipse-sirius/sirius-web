@@ -52,6 +52,7 @@ import reactor.core.publisher.Flux;
     "org.eclipse.sirius.components.emf",
     "org.eclipse.sirius.components.graphql",
     "org.eclipse.sirius.components.web",
+    "org.eclipse.sirius.components.charts",
     "org.eclipse.sirius.components.deck",
     "org.eclipse.sirius.components.diagrams",
     "org.eclipse.sirius.components.forms",

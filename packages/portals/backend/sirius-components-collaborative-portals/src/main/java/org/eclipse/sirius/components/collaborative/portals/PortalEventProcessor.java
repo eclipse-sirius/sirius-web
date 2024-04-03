@@ -104,7 +104,6 @@ public class PortalEventProcessor implements IPortalEventProcessor {
                 IPortalEventHandler portalEventHandler = optionalPortalEventHandler.get();
                 PortalContext context = new PortalContext(this.representationSearchService, this.editingContext, this.currentPortal, portalInput);
                 portalEventHandler.handle(payloadSink, changeDescriptionSink, context);
-                context.getNextPortal().ifPresent(newPortal -> this.updatePortal(portalInput, newPortal));
             } else {
                 this.logger.warn("No handler found for event: {}", portalInput);
             }
@@ -130,8 +129,13 @@ public class PortalEventProcessor implements IPortalEventProcessor {
             // Re-send the portal to all subscribers if one of the embedded representations has been renamed.
             // The Portal's structure itself has not changed, but clients need to refresh to show the updated names.
             String renamedRepresentationId = changeDescription.getSourceId();
-            if (portalServices.referencesRepresentation(this.currentPortal, renamedRepresentationId)) {
+            if (renamedRepresentationId.equals(this.currentPortal.getId()) || portalServices.referencesRepresentation(this.currentPortal, renamedRepresentationId)) {
                 this.emitNewPortal(changeDescription.getInput());
+            }
+        } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.currentPortal.getId())) {
+            Optional<Portal> reloadedPortal = this.representationSearchService.findById(this.editingContext, this.currentPortal.getId(), Portal.class);
+            if (reloadedPortal.isPresent()) {
+                this.updatePortal(changeDescription.getInput(), reloadedPortal.get());
             }
         } else if (changeDescription.getSourceId().equals(this.currentPortal.getId()) && changeDescription.getParameters().get(IPortalEventHandler.NEXT_PORTAL_PARAMETER) instanceof Portal nextPortal) {
             this.updatePortal(changeDescription.getInput(), nextPortal);

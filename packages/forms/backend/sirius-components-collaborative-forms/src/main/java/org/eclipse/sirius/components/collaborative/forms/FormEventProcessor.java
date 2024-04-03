@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
@@ -84,6 +85,8 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final IWidgetSubscriptionManager widgetSubscriptionManager;
 
+    private final IRepresentationSearchService representationSearchService;
+
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
@@ -96,6 +99,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     public FormEventProcessor(FormEventProcessorConfiguration configuration,
             ISubscriptionManager subscriptionManager, IWidgetSubscriptionManager widgetSubscriptionManager,
+            IRepresentationSearchService representationSearchService,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, IFormPostProcessor formPostProcessor) {
         this.logger.trace("Creating the form event processor {}", configuration.formCreationParameters().getId());
         this.editingContext = Objects.requireNonNull(configuration.editingContext());
@@ -103,6 +107,7 @@ public class FormEventProcessor implements IFormEventProcessor {
         this.formCreationParameters = Objects.requireNonNull(configuration.formCreationParameters());
         this.widgetDescriptors = Objects.requireNonNull(configuration.widgetDescriptors());
         this.formEventHandlers = Objects.requireNonNull(configuration.formEventHandlers());
+        this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.widgetSubscriptionManager = Objects.requireNonNull(widgetSubscriptionManager);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
@@ -173,17 +178,23 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public void refresh(ChangeDescription changeDescription) {
-        if (this.shouldRefresh(changeDescription)) {
+        if (this.shouldReload(changeDescription)) {
+            this.representationSearchService.findById(this.editingContext, this.currentForm.get().getId(), Form.class).ifPresent(reloadedForm -> {
+                this.currentForm.set(reloadedForm);
+            });
+        }
+        if (this.shouldRefresh(changeDescription) || this.shouldReload(changeDescription)) {
             Form form = this.refreshForm();
-
             this.currentForm.set(form);
+            this.emitNewForm(changeDescription);
+        }
+    }
 
-            if (this.sink.currentSubscriberCount() > 0) {
-                EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getInput().id(), form));
-                if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting a FormRefreshedEventPayload: {}";
-                    this.logger.warn(pattern, emitResult);
-                }
+    private void emitNewForm(ChangeDescription changeDescription) {
+        if (this.sink.currentSubscriberCount() > 0) {
+            EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getInput().id(), this.currentForm.get()));
+            if (emitResult.isFailure()) {
+                this.logger.warn("An error has occurred while emitting a FormRefreshedEventPayload: {}", emitResult);
             }
         }
     }
@@ -195,6 +206,10 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     }
 
+    private boolean shouldReload(ChangeDescription changeDescription) {
+        return changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.currentForm.get().getId());
+    }
+
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
         return (changeDescription) -> ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
     }
@@ -204,13 +219,13 @@ public class FormEventProcessor implements IFormEventProcessor {
         if (this.currentForm.get() != null) {
             self = this.objectService.getObject(this.editingContext, this.currentForm.get().getTargetObjectId()).orElse(self);
         }
-        variableManager.put(VariableManager.SELF, self);
+        this.variableManager.put(VariableManager.SELF, self);
 
-        FormComponentProps formComponentProps = new FormComponentProps(variableManager, this.formCreationParameters.getFormDescription(), this.widgetDescriptors);
+        FormComponentProps formComponentProps = new FormComponentProps(this.variableManager, this.formCreationParameters.getFormDescription(), this.widgetDescriptors);
         Element element = new Element(FormComponent.class, formComponentProps);
         Form form = new FormRenderer(this.widgetDescriptors).render(element);
 
-        form = this.formPostProcessor.postProcess(form, variableManager);
+        form = this.formPostProcessor.postProcess(form, this.variableManager);
 
         this.logger.trace("Form refreshed: {}", form.getId());
 
@@ -238,8 +253,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}";
-            this.logger.warn(pattern, emitResult);
+            this.logger.warn("An error has occurred while marking the publisher as complete: {}", emitResult);
         }
     }
 

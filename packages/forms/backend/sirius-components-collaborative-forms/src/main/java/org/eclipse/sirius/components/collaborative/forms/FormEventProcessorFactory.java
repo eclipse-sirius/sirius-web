@@ -107,9 +107,12 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                             .selection(List.of())
                             .build();
 
-                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors,
-                            this.formEventHandlers),
-                            this.subscriptionManagerFactory.create(), this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry,
+                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
+                            new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers),
+                            this.subscriptionManagerFactory.create(),
+                            this.widgetSubscriptionManagerFactory.create(),
+                            this.representationSearchService,
+                            this.representationRefreshPolicyRegistry,
                             this.formPostProcessor);
 
                     return Optional.of(formEventProcessor)

@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.gantt.tests.navigation;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.Task;
@@ -32,25 +33,28 @@ public class GanttNavigator {
 
     public Task findTaskByName(String name) {
         return this.gantt.tasks().stream()
-                .map(task -> this.findTaskByName(task, name))
-                .filter(Objects::nonNull)
+                .flatMap(task -> this.findTaskByName(task, name).stream())
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No task found with the given name \"" + name + "\""));
     }
 
-    private Task findTaskByName(Task task, String name) {
-        Task foundTask = null;
+    private Optional<Task> findTaskByName(Task task, String name) {
+        Optional<Task> optionalTask = Optional.empty();
         if (task.detail().name().equals(name)) {
-            foundTask =  task;
+            optionalTask = Optional.of(task);
         } else {
-            for (Task subTask : task.subTasks()) {
-                foundTask = this.findTaskByName(subTask, name);
-                if (foundTask != null) {
-                    break;
-                }
-            }
+            optionalTask = task.subTasks().stream()
+                    .flatMap(subTask -> this.findTaskByName(subTask, name).stream())
+                    .findFirst();
         }
 
-        return foundTask;
+        return optionalTask;
+    }
+
+    public boolean existTaskByName(String name) {
+        return this.gantt.tasks().stream()
+                .flatMap(task -> this.findTaskByName(task, name).stream())
+                .findFirst()
+                .isPresent();
     }
 }

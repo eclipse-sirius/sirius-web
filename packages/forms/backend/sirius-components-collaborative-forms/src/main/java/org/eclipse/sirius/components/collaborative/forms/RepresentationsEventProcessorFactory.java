@@ -20,7 +20,9 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationConfigurat
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
@@ -48,6 +50,8 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
 
     private final IObjectService objectService;
 
+    private final IRepresentationSearchService representationSearchService;
+
     private final List<IWidgetDescriptor> widgetDescriptors;
 
     private final List<IFormEventHandler> formEventHandlers;
@@ -61,9 +65,10 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
     private final IFormPostProcessor formPostProcessor;
 
     public RepresentationsEventProcessorFactory(IRepresentationsDescriptionProvider representationsDescriptionProvider, ISubscriptionManagerFactory subscriptionManagerFactory,
-            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration) {
+            RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration) {
         this.representationsDescriptionProvider = Objects.requireNonNull(representationsDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
+        this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
@@ -95,9 +100,13 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
                         .selection(objects)
                         .build();
 
-                IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors,
-                        this.formEventHandlers), this.subscriptionManagerFactory.create(),
-                        this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry, this.formPostProcessor);
+                IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
+                        new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers),
+                        this.subscriptionManagerFactory.create(),
+                        this.widgetSubscriptionManagerFactory.create(),
+                        this.representationSearchService,
+                        this.representationRefreshPolicyRegistry,
+                        this.formPostProcessor);
 
                 return Optional.of(formEventProcessor)
                         .filter(representationEventProcessorClass::isInstance)

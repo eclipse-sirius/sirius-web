@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
@@ -81,6 +82,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final IRepresentationPersistenceService representationPersistenceService;
 
+    private final IRepresentationSearchService representationSearchService;
+
     private final DiagramEventFlux diagramEventFlux;
 
     private final List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders;
@@ -88,6 +91,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     private UUID currentRevisionId = UUID.randomUUID();
 
     private String currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
+
 
     public DiagramEventProcessor(DiagramEventProcessorParameters parameters) {
         this.logger.trace("Creating the diagram event processor {}", parameters.diagramContext().getDiagram().getId());
@@ -99,6 +103,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.representationDescriptionSearchService = parameters.representationDescriptionSearchService();
         this.representationRefreshPolicyRegistry = parameters.representationRefreshPolicyRegistry();
         this.representationPersistenceService = parameters.representationPersistenceService();
+        this.representationSearchService = parameters.representationSearchService();
         this.diagramCreationService = parameters.diagramCreationService();
         this.diagramInputReferencePositionProviders = parameters.diagramInputReferencePositionProviders();
 
@@ -190,6 +195,15 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
             ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
             this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), refreshedDiagram, DiagramRefreshedEventPayload.CAUSE_REFRESH, referencePosition);
+        } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.diagramContext.getDiagram().getId())) {
+            Optional<Diagram> reloadedDiagram = this.representationSearchService.findById(this.editingContext, this.diagramContext.getDiagram().getId(), Diagram.class);
+            if (reloadedDiagram.isPresent()) {
+                this.diagramContext.update(reloadedDiagram.get());
+                this.currentRevisionId = changeDescription.getInput().id();
+                this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
+                ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
+                this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), reloadedDiagram.get(), DiagramRefreshedEventPayload.CAUSE_LAYOUT, referencePosition);
+            }
         }
     }
 

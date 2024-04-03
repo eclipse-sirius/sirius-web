@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,5 +21,5 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author sbegaudeau
  */
-public record HierarchyEventInput(UUID id, String projectId, UUID hierarchyId) implements IInput {
+public record HierarchyEventInput(UUID id, String editingContextId, UUID hierarchyId) implements IInput {
 }

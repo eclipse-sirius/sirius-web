@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
@@ -39,6 +40,7 @@ public record DiagramEventProcessorParameters(
         IRepresentationDescriptionSearchService representationDescriptionSearchService,
         IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
         IRepresentationPersistenceService representationPersistenceService,
+        IRepresentationSearchService representationSearchService,
         List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders
 ) {
 
@@ -51,6 +53,7 @@ public record DiagramEventProcessorParameters(
         Objects.requireNonNull(representationDescriptionSearchService);
         Objects.requireNonNull(representationRefreshPolicyRegistry);
         Objects.requireNonNull(representationPersistenceService);
+        Objects.requireNonNull(representationSearchService);
         Objects.requireNonNull(diagramInputReferencePositionProviders);
     }
 
@@ -82,6 +85,8 @@ public record DiagramEventProcessorParameters(
         private IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
         private IRepresentationPersistenceService representationPersistenceService;
+
+        private IRepresentationSearchService representationSearchService;
 
         private List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders;
 
@@ -129,6 +134,11 @@ public record DiagramEventProcessorParameters(
             return this;
         }
 
+        public Builder representationSearchService(IRepresentationSearchService representationSearchService) {
+            this.representationSearchService = Objects.requireNonNull(representationSearchService);
+            return this;
+        }
+
         public Builder diagramInputReferencePositionProviders(List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders) {
             this.diagramInputReferencePositionProviders = Objects.requireNonNull(diagramInputReferencePositionProviders);
             return this;
@@ -144,6 +154,7 @@ public record DiagramEventProcessorParameters(
                     this.representationDescriptionSearchService,
                     this.representationRefreshPolicyRegistry,
                     this.representationPersistenceService,
+                    this.representationSearchService,
                     this.diagramInputReferencePositionProviders
             );
         }

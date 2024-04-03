@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,13 +13,13 @@
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorContext;
@@ -64,27 +64,27 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    private final IRepresentationSearchService representationSearchService;
+
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
     private final FormDescriptionEditorEventFlux formDescriptionEditorEventFlux;
 
-    public FormDescriptionEditorEventProcessor(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext,
-            List<IFormDescriptionEditorEventHandler> formDescriptionEditorEventHandlers, ISubscriptionManager subscriptionManager,
-            IFormDescriptionEditorCreationService formDescriptionEditorCreationService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.logger.trace("Creating the form description editor event processor {}", formDescriptionEditorContext.getFormDescriptionEditor().getId());
-        this.editingContext = Objects.requireNonNull(editingContext);
-        this.formDescriptionEditorContext = Objects.requireNonNull(formDescriptionEditorContext);
-        this.formDescriptionEditorEventHandlers = Objects.requireNonNull(formDescriptionEditorEventHandlers);
-        this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.formDescriptionEditorCreationService = Objects.requireNonNull(formDescriptionEditorCreationService);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+    public FormDescriptionEditorEventProcessor(FormDescriptionEditorEventProcessorParameters parameters) {
+        this.logger.trace("Creating the form description editor event processor {}", parameters.formDescriptionEditorContext().getFormDescriptionEditor().getId());
+        this.editingContext = parameters.editingContext();
+        this.formDescriptionEditorContext = parameters.formDescriptionEditorContext();
+        this.formDescriptionEditorEventHandlers = parameters.formDescriptionEditorEventHandlers();
+        this.subscriptionManager = parameters.subscriptionManager();
+        this.representationDescriptionSearchService = parameters.representationDescriptionSearchService();
+        this.formDescriptionEditorCreationService = parameters.formDescriptionEditorCreationService();
+        this.representationSearchService = parameters.representationSearchService();
+        this.representationRefreshPolicyRegistry = parameters.representationRefreshPolicyRegistry();
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
-        FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.refresh(editingContext, formDescriptionEditorContext);
-        formDescriptionEditorContext.update(formDescriptionEditor);
+        FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.refresh(this.editingContext, this.formDescriptionEditorContext);
+        this.formDescriptionEditorContext.update(formDescriptionEditor);
         this.formDescriptionEditorEventFlux = new FormDescriptionEditorEventFlux(formDescriptionEditor);
 
         if (formDescriptionEditor != null) {
@@ -122,7 +122,12 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
 
     @Override
     public void refresh(ChangeDescription changeDescription) {
-        if (this.shouldRefresh(changeDescription)) {
+        if (this.shouldReload(changeDescription)) {
+            this.representationSearchService.findById(this.editingContext, this.formDescriptionEditorContext.getFormDescriptionEditor().getId(), FormDescriptionEditor.class).ifPresent(reloadedFormDescriptionEditor -> {
+                this.formDescriptionEditorContext.update(reloadedFormDescriptionEditor);
+            });
+        }
+        if (this.shouldRefresh(changeDescription) || this.shouldReload(changeDescription)) {
             FormDescriptionEditor refreshedFormDescriptionEditor = this.formDescriptionEditorCreationService.refresh(this.editingContext, this.formDescriptionEditorContext);
             if (refreshedFormDescriptionEditor != null) {
                 this.logger.trace("FormDescriptionEditor refreshed: {}", refreshedFormDescriptionEditor.getId());
@@ -130,6 +135,10 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
                 this.formDescriptionEditorEventFlux.formDescriptionEditorRefreshed(changeDescription.getInput(), refreshedFormDescriptionEditor);
             }
         }
+    }
+
+    private boolean shouldReload(ChangeDescription changeDescription) {
+        return changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.formDescriptionEditorContext.getFormDescriptionEditor().getId());
     }
 
     private boolean shouldRefresh(ChangeDescription changeDescription) {

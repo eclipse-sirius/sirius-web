@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
@@ -44,7 +45,6 @@ public class FormEventProcessorTests {
     private static final String FORM_ID = UUID.randomUUID().toString();
 
     private FormDescription getFormDescription() {
-        // @formatter:off
         return FormDescription.newFormDescription(UUID.randomUUID().toString())
                 .targetObjectIdProvider(targetObjectIdProvider -> "targetObjectId")
                 .canCreatePredicate(variableManager -> true)
@@ -53,7 +53,6 @@ public class FormEventProcessorTests {
                 .labelProvider(variableManager -> "label")
                 .pageDescriptions(List.of())
                 .build();
-        // @formatter:on
     }
 
     private Predicate<IPayload> getRefreshFormEventPayloadPredicate() {
@@ -68,85 +67,60 @@ public class FormEventProcessorTests {
     @Test
     public void testEmitFormOnSubscription() {
         IInput input = new FormEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        IEditingContext.NoOp editingContext = new IEditingContext.NoOp();
+        FormEventProcessor formEventProcessor = this.createFormEventProcessor();
 
-        // @formatter:off
-        FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(FORM_ID)
-                .formDescription(this.getFormDescription())
-                .editingContext(editingContext)
-                .object(new Object())
-                .selection(List.of())
-                .build();
-        // @formatter:on
-
-        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of()),
-                new SubscriptionManager(), new WidgetSubscriptionManager(),
-                new RepresentationRefreshPolicyRegistry(List.of()), new IFormPostProcessor.NoOp());
-
-        // @formatter:off
         StepVerifier.create(formEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshFormEventPayloadPredicate())
                 .thenCancel()
                 .verify();
-        // @formatter:on
     }
 
     @Test
     public void testEmitFormOnRefresh() {
         FormEventInput input = new FormEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        IEditingContext.NoOp editingContext = new IEditingContext.NoOp();
-
-        // @formatter:off
-        FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(FORM_ID)
-                .formDescription(this.getFormDescription())
-                .editingContext(editingContext)
-                .object(new Object())
-                .selection(List.of())
-                .build();
-        // @formatter:on
-
-        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of()),
-                new SubscriptionManager(), new WidgetSubscriptionManager(),
-                new RepresentationRefreshPolicyRegistry(List.of()), new IFormPostProcessor.NoOp());
+        FormEventProcessor formEventProcessor = this.createFormEventProcessor();
 
         Runnable performRefresh = () -> formEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.formId(), input));
 
-        // @formatter:off
         StepVerifier.create(formEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshFormEventPayloadPredicate())
                 .then(performRefresh)
                 .expectNextMatches(this.getRefreshFormEventPayloadPredicate())
                 .thenCancel()
                 .verify();
-        // @formatter:on
     }
 
     @Test
     public void testCompleteOnDispose() {
         FormEventInput input = new FormEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        IEditingContext.NoOp editingContext = new IEditingContext.NoOp();
+        FormEventProcessor formEventProcessor = this.createFormEventProcessor();
 
-        // @formatter:off
+        Runnable disposeFormEventProcessor = formEventProcessor::dispose;
+
+        StepVerifier.create(formEventProcessor.getOutputEvents(input))
+                .expectNextMatches(this.getRefreshFormEventPayloadPredicate())
+                .then(disposeFormEventProcessor)
+                .expectComplete()
+                .verify();
+    }
+
+    private FormEventProcessor createFormEventProcessor() {
+        IEditingContext editingContext = new IEditingContext.NoOp();
+
         FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(FORM_ID)
                 .formDescription(this.getFormDescription())
                 .editingContext(editingContext)
                 .object(new Object())
                 .selection(List.of())
                 .build();
-        // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of()),
-                new SubscriptionManager(), new WidgetSubscriptionManager(),
-                new RepresentationRefreshPolicyRegistry(List.of()), new IFormPostProcessor.NoOp());
-
-        Runnable disposeFormEventProcessor = formEventProcessor::dispose;
-
-        // @formatter:off
-        StepVerifier.create(formEventProcessor.getOutputEvents(input))
-                .expectNextMatches(this.getRefreshFormEventPayloadPredicate())
-                .then(disposeFormEventProcessor)
-                .expectComplete()
-                .verify();
-        // @formatter:on
+        FormEventProcessor formEventProcessor = new FormEventProcessor(
+                new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of()),
+                new SubscriptionManager(),
+                new WidgetSubscriptionManager(),
+                new IRepresentationSearchService.NoOp(),
+                new RepresentationRefreshPolicyRegistry(List.of()),
+                new IFormPostProcessor.NoOp());
+        return formEventProcessor;
     }
 }
