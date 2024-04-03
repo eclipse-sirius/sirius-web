@@ -49,6 +49,7 @@ The use of generics has thus been greatly reduced since they could not create a 
 - https://github.com/eclipse-sirius/sirius-web/issues/3290[#3290] [diagram] Fix an issue that prevent the group palette to be displayed if only list children are selected.
 - https://github.com/eclipse-sirius/sirius-web/issues/3018[3018] [gantt] Fix reference widgets for AbstractTask Details
 - https://github.com/eclipse-sirius/sirius-web/issues/3298[#3298] [diagram] Fix an issue in which the diagram had unnecessary rendering
+- https://github.com/eclipse-sirius/sirius-web/issues/3317[#3317] [diagram] Fix an issue that caused a crash when selection changes were made too quickly
 
 
 === New Features

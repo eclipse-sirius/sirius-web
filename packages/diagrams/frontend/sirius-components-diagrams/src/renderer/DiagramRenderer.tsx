@@ -154,6 +154,10 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     }
   }, [diagramRefreshedEventPayload, diagramDescription]);
 
+  useEffect(() => {
+    setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, updatable: !!edge.selected })));
+  }, [edges.map((edge) => edge.id + edge.selected).join()]);
+
   useDiagramSelection();
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
