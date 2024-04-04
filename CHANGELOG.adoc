@@ -19,7 +19,7 @@
 - [ADR-143] Handle documents upload with other formats than JSON and XMI
 - [ADR-144] Add the support for EMF models migration
 - [ADR-145] Add a hook to update nodes in ReactFlow
-
+- [ADR-146] Add support for contributing representation metadata for transient representations
 
 === Deprecation warning
 
