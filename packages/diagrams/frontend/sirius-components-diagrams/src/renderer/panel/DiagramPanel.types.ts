@@ -10,13 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Node } from 'reactflow';
 
 export interface DiagramPanelProps {
   snapToGrid: boolean;
   onSnapToGrid: (snapToGrid: boolean) => void;
   helperLines: boolean;
   onHelperLines: (helperLines: boolean) => void;
-  refreshEventPayloadId: string;
+  nodeOverlap: boolean;
+  onNodeOverlap: (nodeOverlapping: boolean) => void;
+  resolveNodeOverlap: (nodes: Node[], direction: 'horizontal' | 'vertical') => Node[];
 }
 
 export interface DiagramPanelState {

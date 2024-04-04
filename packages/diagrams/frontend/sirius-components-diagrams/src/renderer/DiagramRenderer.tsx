@@ -63,6 +63,7 @@ import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
 import { useMoveChange } from './move/useMoveChange';
 import { DiagramNodeType } from './node/NodeTypes.types';
 import { useNodeType } from './node/useNodeType';
+import { useOverlap } from './overlap/useOverlap';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { GroupPalette } from './palette/group-tool/GroupPalette';
 import { useGroupPalette } from './palette/group-tool/useGroupPalette';
@@ -145,7 +146,13 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
           .filter((node) => selectedNodeIds.includes(node.id))
           .forEach((node) => (node.selected = true));
 
-        setNodes(laidOutDiagram.nodes);
+        const newlyAddedNode = laidOutDiagram.nodes
+          .map((node) => node.id)
+          .find((nodeId) => !previousDiagram?.nodes.map((n) => n.id).find((n) => n === nodeId));
+
+        const overlapFreeNodes: Node[] = handleNodeOverlapWithPriority(newlyAddedNode, laidOutDiagram.nodes);
+
+        setNodes(overlapFreeNodes);
         setEdges(laidOutDiagram.edges);
         closeAllPalettes();
 
@@ -173,6 +180,13 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     applyHelperLines,
     resetHelperLines,
   } = useHelperLines();
+  const {
+    nodeOverlapEnabled,
+    setNodeOverlapEnabled,
+    resolveNodeOverlap,
+    handleNodeOverlapWithPriority,
+    handleNodeOverlapForChanges,
+  } = useOverlap();
 
   const handleNodesChange: OnNodesChange = useCallback(
     (changes: NodeChange[]) => {
@@ -182,7 +196,10 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         noReadOnlyChanges[0]?.type === 'dimensions' &&
         typeof noReadOnlyChanges[0].resizing !== 'boolean'
       ) {
-        setNodes((oldNodes) => applyNodeChanges(noReadOnlyChanges, oldNodes));
+        setNodes((oldNodes) => {
+          handleNodeOverlapForChanges(changes, oldNodes);
+          return applyNodeChanges(noReadOnlyChanges, oldNodes);
+        });
       } else {
         setNodes((oldNodes) => {
           resetHelperLines(changes);
@@ -196,13 +213,14 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
           newNodes = applyMoveChange(transformedNodeChanges, newNodes);
           newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
           setNodes(newNodes);
+          handleNodeOverlapForChanges(transformedNodeChanges, newNodes);
           layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
 
           return newNodes;
         });
       }
     },
-    [setNodes, targetNodeId, draggedNode?.id]
+    [setNodes, targetNodeId, draggedNode?.id, handleNodeOverlapForChanges]
   );
 
   const handleEdgesChange: OnEdgesChange = useCallback((changes: EdgeChange[]) => {
@@ -353,15 +371,17 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         onSnapToGrid={onSnapToGrid}
         helperLines={helperLinesEnabled}
         onHelperLines={setHelperLinesEnabled}
-        refreshEventPayloadId={diagramRefreshedEventPayload.id}
+        nodeOverlap={nodeOverlapEnabled}
+        onNodeOverlap={setNodeOverlapEnabled}
+        resolveNodeOverlap={resolveNodeOverlap}
       />
       <GroupPalette
-        refreshEventPayloadId={diagramRefreshedEventPayload.id}
         x={groupPalettePosition?.x}
         y={groupPalettePosition?.y}
         isOpened={isGroupPaletteOpened}
         refElementId={groupPaletteRefElementId}
         hidePalette={hideGroupPalette}
+        resolveNodeOverlap={resolveNodeOverlap}
       />
       <DiagramPalette diagramElementId={diagramRefreshedEventPayload.diagram.id} />
       {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}

@@ -10,17 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { UseArrangeAllValue } from './useArrangeAll.types';
+import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
+import { LayoutOptions } from 'elkjs/lib/elk-api';
+import { useContext } from 'react';
 import { Edge, Node, useReactFlow, useViewport } from 'reactflow';
+import { headerVerticalOffset, labelVerticalPadding, labelHorizontalPadding } from './layoutParams';
+import { RawDiagram } from './layout.types';
+import { UseArrangeAllValue } from './useArrangeAll.types';
+import { useLayout } from './useLayout';
+import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ListNodeData } from '../node/ListNode.types';
-import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
-import { LayoutOptions } from 'elkjs/lib/elk-api';
-import { headerVerticalOffset, labelVerticalPadding, labelHorizontalPadding } from './layoutParams';
-import { RawDiagram } from './layout.types';
-import { useLayout } from './useLayout';
-import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { DiagramContext } from '../../contexts/DiagramContext';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
@@ -81,11 +84,14 @@ const computeLabels = (node, viewportZoom: number): ElkLabel[] => {
   return labels;
 };
 
-export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue => {
+export const useArrangeAll = (
+  resolveNodeOverlap: (nodes: Node[], direction: 'horizontal' | 'vertical') => Node[]
+): UseArrangeAllValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<NodeData, EdgeData>();
   const viewport = useViewport();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
+  const { refreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
 
   const elk = new ELK();
 
@@ -109,10 +115,17 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
       const layoutedGraph = await elk.layout(graph);
       return {
         nodes:
-          layoutedGraph?.children?.map((node_1) => ({
-            ...node_1,
-            position: { x: node_1.x ?? 0, y: (node_1.y ?? 0) + (withHeader ? headerVerticalOffset : 0) },
-          })) ?? [],
+          layoutedGraph?.children?.map((node) => {
+            const originalNode = nodes.find((node_1) => node_1.id === node.id);
+            if (originalNode && originalNode.data.pinned) {
+              return { ...node };
+            } else {
+              return {
+                ...node,
+                position: { x: node.x ?? 0, y: (node.y ?? 0) + (withHeader ? headerVerticalOffset : 0) },
+              };
+            }
+          }) ?? [],
         layoutReturn: layoutedGraph,
       };
     } catch (message) {
@@ -186,13 +199,18 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
         })
         .forEach((laidOutNode) => (laidOutNode.data.resizedByUser = true)); // allows elk to resize nodes during layout
 
+      const overlapFreeNodes: Node<NodeData, string>[] = resolveNodeOverlap(laidOutNodesWithElk, 'horizontal') as Node<
+        NodeData,
+        DiagramNodeType
+      >[];
+
       const diagramToLayout: RawDiagram = {
-        nodes: laidOutNodesWithElk,
+        nodes: overlapFreeNodes,
         edges: getEdges(),
       };
 
       layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
-        laidOutNodesWithElk.map((node) => {
+        overlapFreeNodes.map((node) => {
           const existingNode = laidOutDiagram.nodes.find((laidOutNode) => laidOutNode.id === node.id);
           if (existingNode) {
             return {
@@ -209,10 +227,10 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
           }
           return node;
         });
-        setNodes(laidOutNodesWithElk);
+        setNodes(overlapFreeNodes);
         setEdges(laidOutDiagram.edges);
         const finalDiagram: RawDiagram = {
-          nodes: laidOutNodesWithElk,
+          nodes: overlapFreeNodes,
           edges: laidOutDiagram.edges,
         };
         synchronizeLayoutData(refreshEventPayloadId, finalDiagram);

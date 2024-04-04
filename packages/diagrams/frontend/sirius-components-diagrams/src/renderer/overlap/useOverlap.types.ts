@@ -10,27 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node } from 'reactflow';
+import { Node, NodeChange } from 'reactflow';
 
-export interface GroupPaletteProps {
-  x?: number;
-  y?: number;
-  isOpened: boolean;
-  refElementId: string | null;
-  hidePalette: () => void;
+export interface UseOverlapValue {
+  nodeOverlapEnabled: boolean;
+  setNodeOverlapEnabled: (enable: boolean) => void;
   resolveNodeOverlap: (nodes: Node[], direction: 'horizontal' | 'vertical') => Node[];
-}
-
-export interface GroupPaletteState {
-  selectedElementIds: string[];
-  isMinimalPalette: boolean;
-  isDistributeElementToolSectionExpand: boolean;
-  lastDistributeElementToolId: string | null;
-}
-
-export interface GroupPaletteSectionTool {
-  id: string;
-  title: string;
-  action: () => void;
-  icon: JSX.Element;
+  handleNodeOverlapForChanges: (changes: NodeChange[], nodes: Node[]) => Node[];
+  handleNodeOverlapWithPriority: (priorityNodeId: string | undefined, nodes: Node[]) => Node[];
 }

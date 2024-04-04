@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import { Node, XYPosition, useReactFlow } from 'reactflow';
 import { UseDistributeElementsValue } from './useDistributeElements.types';
 import { NodeData, EdgeData } from '../DiagramRenderer.types';
@@ -19,6 +19,8 @@ import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
 import { RawDiagram } from './layout.types';
 import { useLayout } from './useLayout';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { DiagramContext } from '../../contexts/DiagramContext';
 
 function getComparePositionFn(direction: 'horizontal' | 'vertical') {
   return (node1: Node, node2: Node) => {
@@ -32,17 +34,21 @@ function getComparePositionFn(direction: 'horizontal' | 'vertical') {
 }
 
 const arrangeGapBetweenElements: number = 32;
-export const useDistributeElements = (refreshEventPayloadId: string): UseDistributeElementsValue => {
+export const useDistributeElements = (
+  resolveNodeOverlap: (nodes: Node[], direction: 'horizontal' | 'vertical') => Node[]
+): UseDistributeElementsValue => {
   const { getNodes, getEdges, setNodes } = useReactFlow<NodeData, EdgeData>();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { addMessages } = useMultiToast();
+  const { refreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
 
   const processLayoutTool = (
     selectedNodeIds: string[],
     layoutFn: (selectedNodes: Node<NodeData>[], refNode: Node) => Node<NodeData>[],
     sortFn: ((node1: Node, node2: Node) => number) | null = null,
-    refElementId: string | null = null
+    refElementId: string | null = null,
+    direction: 'horizontal' | 'vertical' = 'horizontal'
   ): void => {
     const selectedNodes: Node<NodeData>[] = getNodes().filter((node) => selectedNodeIds.includes(node.id));
     const firstParent = selectedNodes[0]?.parentNode;
@@ -67,14 +73,16 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
     }
     if (refNode) {
       const updatedNodes: Node<NodeData>[] = layoutFn(selectedNodes, refNode);
+      const overlapFreeNodes: Node[] = resolveNodeOverlap(updatedNodes, direction);
       const diagramToLayout: RawDiagram = {
-        nodes: [...updatedNodes] as Node<NodeData, DiagramNodeType>[],
+        nodes: [...overlapFreeNodes] as Node<NodeData, DiagramNodeType>[],
         edges: getEdges(),
       };
       layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
-        setNodes(laidOutDiagram.nodes);
+        const overlapFreeNodesAfterLayout: Node[] = resolveNodeOverlap(laidOutDiagram.nodes, 'horizontal');
+        setNodes(overlapFreeNodesAfterLayout);
         const finalDiagram: RawDiagram = {
-          nodes: laidOutDiagram.nodes,
+          nodes: overlapFreeNodesAfterLayout as Node<NodeData, DiagramNodeType>[],
           edges: laidOutDiagram.edges,
         };
         synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
@@ -137,85 +145,98 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
             },
           };
         });
-
-        setNodes(updatedNodes);
-        const finalDiagram: RawDiagram = {
-          nodes: [...updatedNodes] as Node<NodeData, DiagramNodeType>[],
+        const overlapFreeNodes: Node[] = resolveNodeOverlap(updatedNodes, direction);
+        const diagramToLayout: RawDiagram = {
+          nodes: [...overlapFreeNodes] as Node<NodeData, DiagramNodeType>[],
           edges: getEdges(),
         };
-        synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+        layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
+          setNodes(laidOutDiagram.nodes);
+          const finalDiagram: RawDiagram = {
+            nodes: laidOutDiagram.nodes,
+            edges: laidOutDiagram.edges,
+          };
+          synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+        });
       }
     }, []);
   };
 
   const distributeAlign = (orientation: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'middle') => {
-    return useCallback((selectedNodeIds: string[], refElementId: string | null) => {
-      processLayoutTool(
-        selectedNodeIds,
-        (_selectedNodes, refNode) => {
-          return getNodes().map((node) => {
-            if (!selectedNodeIds.includes(node.id) || node.data.pinned) {
-              return node;
-            }
-            const referencePositionValue: number = (() => {
-              switch (orientation) {
-                case 'left':
-                  return refNode.position.x;
-                case 'right':
-                  return refNode.position.x + (refNode.width ?? 0) - (node.width ?? 0);
-                case 'center':
-                  return refNode.position.x + (refNode.width ?? 0) / 2 - (node.width ?? 0) / 2;
-                case 'top':
-                  return refNode.position.y;
-                case 'bottom':
-                  return refNode.position.y + (refNode.height ?? 0) - (node.height ?? 0);
-                case 'middle':
-                  return refNode.position.y + (refNode.height ?? 0) / 2 - (node.height ?? 0) / 2;
+    return useCallback(
+      (selectedNodeIds: string[], refElementId: string | null) => {
+        processLayoutTool(
+          selectedNodeIds,
+          (_selectedNodes, refNode) => {
+            return getNodes().map((node) => {
+              if (!selectedNodeIds.includes(node.id) || node.data.pinned) {
+                return node;
               }
-            })();
+              const referencePositionValue: number = (() => {
+                switch (orientation) {
+                  case 'left':
+                    return refNode.position.x;
+                  case 'right':
+                    return refNode.position.x + (refNode.width ?? 0) - (node.width ?? 0);
+                  case 'center':
+                    return refNode.position.x + (refNode.width ?? 0) / 2 - (node.width ?? 0) / 2;
+                  case 'top':
+                    return refNode.position.y;
+                  case 'bottom':
+                    return refNode.position.y + (refNode.height ?? 0) - (node.height ?? 0);
+                  case 'middle':
+                    return refNode.position.y + (refNode.height ?? 0) / 2 - (node.height ?? 0) / 2;
+                }
+              })();
 
-            const referencePositionVariable: string = (() => {
-              switch (orientation) {
-                case 'left':
-                case 'right':
-                case 'center':
-                  return 'x';
-                case 'top':
-                case 'bottom':
-                case 'middle':
-                  return 'y';
-              }
-            })();
+              const referencePositionVariable: string = (() => {
+                switch (orientation) {
+                  case 'left':
+                  case 'right':
+                  case 'center':
+                    return 'x';
+                  case 'top':
+                  case 'bottom':
+                  case 'middle':
+                    return 'y';
+                }
+              })();
 
-            return {
-              ...node,
-              position: {
-                ...node.position,
-                [referencePositionVariable]: referencePositionValue,
-              },
-            };
-          });
-        },
-        null,
-        refElementId
-      );
-    }, []);
+              return {
+                ...node,
+                position: {
+                  ...node.position,
+                  [referencePositionVariable]: referencePositionValue,
+                },
+              };
+            });
+          },
+          null,
+          refElementId,
+          ['left', 'right', 'center'].includes(orientation) ? 'vertical' : 'horizontal'
+        );
+      },
+      [resolveNodeOverlap]
+    );
   };
 
   const justifyElements = (
     justifyElementsFn: (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node) => Node[]
   ) => {
-    return useCallback((selectedNodeIds: string[], refElementId: string | null) => {
-      processLayoutTool(
-        selectedNodeIds,
-        (selectedNodes, refNode) => {
-          selectedNodes.sort(getComparePositionFn('horizontal'));
-          return justifyElementsFn(selectedNodes, selectedNodeIds, refNode);
-        },
-        null,
-        refElementId
-      );
-    }, []);
+    return useCallback(
+      (selectedNodeIds: string[], refElementId: string | null) => {
+        processLayoutTool(
+          selectedNodeIds,
+          (selectedNodes, refNode) => {
+            selectedNodes.sort(getComparePositionFn('horizontal'));
+            return justifyElementsFn(selectedNodes, selectedNodeIds, refNode);
+          },
+          null,
+          refElementId
+        );
+      },
+      [resolveNodeOverlap]
+    );
   };
 
   const justifyHorizontally = justifyElements(
@@ -300,7 +321,9 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
           return node;
         });
       },
-      getComparePositionFn('horizontal')
+      getComparePositionFn('horizontal'),
+      null,
+      'vertical'
     );
   };
 
@@ -389,30 +412,33 @@ export const useDistributeElements = (refreshEventPayloadId: string): UseDistrib
   const distributeAlignBottom = distributeAlign('bottom');
   const distributeAlignMiddle = distributeAlign('middle');
 
-  const makeNodesSameSize = useCallback((selectedNodeIds: string[], refElementId: string | null) => {
-    processLayoutTool(
-      selectedNodeIds,
-      (_selectedNodes, refNode) => {
-        return getNodes().map((node) => {
-          if (!selectedNodeIds.includes(node.id) || node.data.nodeDescription?.userResizable === false) {
-            return node;
-          }
+  const makeNodesSameSize = useCallback(
+    (selectedNodeIds: string[], refElementId: string | null) => {
+      processLayoutTool(
+        selectedNodeIds,
+        (_selectedNodes, refNode) => {
+          return getNodes().map((node) => {
+            if (!selectedNodeIds.includes(node.id) || node.data.nodeDescription?.userResizable === false) {
+              return node;
+            }
 
-          return {
-            ...node,
-            width: refNode.width,
-            height: refNode.height,
-            data: {
-              ...node.data,
-              resizedByUser: true,
-            },
-          };
-        });
-      },
-      null,
-      refElementId
-    );
-  }, []);
+            return {
+              ...node,
+              width: refNode.width,
+              height: refNode.height,
+              data: {
+                ...node.data,
+                resizedByUser: true,
+              },
+            };
+          });
+        },
+        null,
+        refElementId
+      );
+    },
+    [resolveNodeOverlap]
+  );
 
   return {
     distributeGapVertically,

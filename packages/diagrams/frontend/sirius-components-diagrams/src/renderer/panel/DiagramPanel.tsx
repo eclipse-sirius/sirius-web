@@ -22,6 +22,8 @@ import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import GridOffIcon from '@material-ui/icons/GridOff';
 import GridOnIcon from '@material-ui/icons/GridOn';
 import ImageIcon from '@material-ui/icons/Image';
+import LayersIcon from '@material-ui/icons/Layers';
+import LayersClearIcon from '@material-ui/icons/LayersClear';
 import ShareIcon from '@material-ui/icons/Share';
 import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
@@ -44,7 +46,15 @@ import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
 import { HelperLinesIconOff } from '../../icons/HelperLinesIconOff';
 
 export const DiagramPanel = memo(
-  ({ snapToGrid, onSnapToGrid, helperLines, onHelperLines, refreshEventPayloadId }: DiagramPanelProps) => {
+  ({
+    snapToGrid,
+    onSnapToGrid,
+    helperLines,
+    onHelperLines,
+    nodeOverlap,
+    onNodeOverlap,
+    resolveNodeOverlap,
+  }: DiagramPanelProps) => {
     const [state, setState] = useState<DiagramPanelState>({
       dialogOpen: null,
     });
@@ -58,7 +68,7 @@ export const DiagramPanel = memo(
     const getSelectedNodes = () => getNodes().filter((node) => node.selected);
 
     const { fullscreen, onFullscreen } = useFullscreen();
-    const { arrangeAll } = useArrangeAll(refreshEventPayloadId);
+    const { arrangeAll } = useArrangeAll(resolveNodeOverlap);
 
     const handleFitToScreen = () => reactFlow.fitView({ duration: 200, nodes: getSelectedNodes() });
     const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
@@ -158,6 +168,27 @@ export const DiagramPanel = memo(
                   onClick={() => onHelperLines(true)}
                   data-testid="show-helper-lines">
                   <HelperLinesIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            {nodeOverlap ? (
+              <Tooltip title="Disable node overlap">
+                <IconButton
+                  size="small"
+                  aria-label="disable node overlap"
+                  onClick={() => onNodeOverlap(false)}
+                  data-testid="disable-node-overlap">
+                  <LayersClearIcon />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Enable node overlap">
+                <IconButton
+                  size="small"
+                  aria-label="enable node overlap"
+                  onClick={() => onNodeOverlap(true)}
+                  data-testid="enable-node-overlap">
+                  <LayersIcon />
                 </IconButton>
               </Tooltip>
             )}

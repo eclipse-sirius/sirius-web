@@ -89,7 +89,7 @@ const isSelectionContainingEdge = (selectedEdges: Edge[]) => selectedEdges.lengt
 const canSelectedNodesBeDistributed = (selectedNodes: Node[]) => selectedNodes.length < 2;
 
 export const GroupPalette = memo(
-  ({ refreshEventPayloadId, x, y, isOpened, refElementId, hidePalette }: GroupPaletteProps) => {
+  ({ x, y, isOpened, refElementId, hidePalette, resolveNodeOverlap }: GroupPaletteProps) => {
     const { hideDiagramElements } = useHideDiagramElements();
     const { fadeDiagramElements } = useFadeDiagramElements();
     const { pinDiagramElements } = usePinDiagramElements();
@@ -108,7 +108,7 @@ export const GroupPalette = memo(
       arrangeInColumn,
       arrangeInGrid,
       makeNodesSameSize,
-    } = useDistributeElements(refreshEventPayloadId);
+    } = useDistributeElements(resolveNodeOverlap);
     const [state, setState] = useState<GroupPaletteState>({
       selectedElementIds: [],
       isMinimalPalette: false,

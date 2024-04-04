@@ -21,6 +21,7 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { cleanLayoutArea, layout, prepareLayoutArea } from './layout';
 import { RawDiagram } from './layout.types';
 import { UseLayoutState, UseLayoutValue } from './useLayout.types';
+import { useOverlap } from '../overlap/useOverlap';
 
 const initialState: UseLayoutState = {
   currentStep: 'INITIAL_STEP',
@@ -36,6 +37,7 @@ export const useLayout = (): UseLayoutValue => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const [state, setState] = useState<UseLayoutState>(initialState);
+  const { resolveNodeOverlap } = useOverlap();
 
   const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
 
@@ -84,7 +86,8 @@ export const useLayout = (): UseLayoutValue => {
         state.previousDiagram,
         state.diagramToLayout,
         state.referencePosition,
-        nodeLayoutHandlers
+        nodeLayoutHandlers,
+        resolveNodeOverlap
       );
       setState((prevState) => ({
         ...prevState,
