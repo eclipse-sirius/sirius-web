@@ -93,6 +93,8 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3371[#3371] [diagram] Add new predicates in `NodeDescription` to specify whether a node is hidden/faded/normal by default.
 - https://github.com/eclipse-sirius/sirius-web/issues/3372[#3372] [diagram] Add services in `DiagramServices` to hide, reveal, fade, and unfade nodes from AQL expressions and Java services.
 - https://github.com/eclipse-sirius/sirius-web/issues/2839[#2839] [gantt] Add support for persisting task expand/collapse state
+- https://github.com/eclipse-sirius/sirius-web/issues/3333[#3333] [emf] Add support for the migration of semantic data
+
 
 === Improvements
 
@@ -114,6 +116,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3377[#3377] [diagram] Only synchronize selection with explorer at the end of the process
 - https://github.com/eclipse-sirius/sirius-web/issues/3359[#3359] Add report on document upload
 - https://github.com/eclipse-sirius/sirius-web/issues/3405[#3405] [diagram] Display layout tools vertically in group palette
+- https://github.com/eclipse-sirius/sirius-web/issues/3333[#3333] [emf] Store the last migration performed in a document
 
 
 == v2024.3.0

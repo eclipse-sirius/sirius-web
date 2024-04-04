@@ -25,6 +25,8 @@ import java.util.Optional;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.sirius.components.emf.migration.MigrationService;
+import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentSanitizedJsonContentProvider;
@@ -45,8 +47,11 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
 
     private final List<IExternalResourceLoaderService> externalResourceLoaderServices;
 
-    public DocumentSanitizedJsonContentProvider(List<IExternalResourceLoaderService> externalResourceLoaderServices) {
+    private final List<IMigrationParticipant> migrationParticipants;
+
+    public DocumentSanitizedJsonContentProvider(List<IExternalResourceLoaderService> externalResourceLoaderServices, List<IMigrationParticipant> migrationParticipants) {
         this.externalResourceLoaderServices = Objects.requireNonNull(externalResourceLoaderServices);
+        this.migrationParticipants = migrationParticipants;
     }
 
     @Override
@@ -63,10 +68,13 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
             ouputResource.getContents().addAll(inputResource.getContents());
 
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                var migrationExtendedMetaData = new MigrationService(this.migrationParticipants);
                 Map<String, Object> saveOptions = new HashMap<>();
                 saveOptions.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
                 saveOptions.put(JsonResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
                 saveOptions.put(JsonResource.OPTION_ID_MANAGER, new EObjectRandomIDManager());
+                saveOptions.put(JsonResource.OPTION_EXTENDED_META_DATA, migrationExtendedMetaData);
+                saveOptions.put(JsonResource.OPTION_JSON_RESSOURCE_PROCESSOR, migrationExtendedMetaData);
 
                 ouputResource.save(outputStream, saveOptions);
 
