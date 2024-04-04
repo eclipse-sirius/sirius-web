@@ -16,7 +16,6 @@ export interface GroupPaletteProps {
   y?: number;
   isOpened: boolean;
   refElementId: string | null;
-  refreshEventPayloadId: string;
   hidePalette: () => void;
 }
 

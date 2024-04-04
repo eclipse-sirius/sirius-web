@@ -109,6 +109,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3382[#3382] [diagram] Add a tool section in Node and Edge palettes with tools to hide/show/reset elements and their children.
 - https://github.com/eclipse-sirius/sirius-web/issues/3135[#3135] [diagram] Add new overflow strategies for node label : _wrap_ and _ellipsis_
 - https://github.com/eclipse-sirius/sirius-web/issues/3425[#3425] [diagram] Make the direction applied during _arrangeAll_ configurable.
+- https://github.com/eclipse-sirius/sirius-web/issues/3354[#3354] [diagram] Add support for overlapping nodes in arrangeAll and distribute elements
 
 === Improvements
 
