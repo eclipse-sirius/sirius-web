@@ -22,6 +22,7 @@
     </genClasses>
     <genClasses ecoreClass="deck.ecore#//LaneDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//LaneDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//LaneDescription/domainType"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//LaneDescription/ownedCardDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//LaneDescription/editTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//LaneDescription/createTool"/>
@@ -30,6 +31,7 @@
     </genClasses>
     <genClasses ecoreClass="deck.ecore#//CardDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//CardDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//CardDescription/domainType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//CardDescription/descriptionExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//CardDescription/editTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//CardDescription/deleteTool"/>

@@ -51,7 +51,7 @@ public class LaneComponent implements IComponent {
 
         List<Element> children = new ArrayList<>();
 
-        List<Object> semanticElements = laneDescription.semanticElementsProvider().apply(variableManager);
+        List<?> semanticElements = laneDescription.semanticElementsProvider().apply(variableManager);
         for (Object semanticElement : semanticElements) {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VariableManager.SELF, semanticElement);

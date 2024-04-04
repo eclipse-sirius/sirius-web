@@ -49,7 +49,7 @@ public class TaskDescriptionComponent implements IComponent {
 
         List<Element> children = new ArrayList<>();
 
-        List<Object> semanticElements = taskDescription.semanticElementsProvider().apply(variableManager);
+        List<?> semanticElements = taskDescription.semanticElementsProvider().apply(variableManager);
         for (Object semanticElement : semanticElements) {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VariableManager.SELF, semanticElement);

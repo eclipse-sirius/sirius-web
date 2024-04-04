@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @PublicApi
 public record TaskDescription(String id, Function<VariableManager, String> targetObjectIdProvider, Function<VariableManager, String> targetObjectKindProvider,
-        Function<VariableManager, String> targetObjectLabelProvider, Function<VariableManager, List<Object>> semanticElementsProvider, Function<VariableManager, String> nameProvider,
+        Function<VariableManager, String> targetObjectLabelProvider, Function<VariableManager, List<?>> semanticElementsProvider, Function<VariableManager, String> nameProvider,
         Function<VariableManager, String> descriptionProvider, Function<VariableManager, Instant> startTimeProvider, Function<VariableManager, Instant> endTimeProvider,
         Function<VariableManager, Integer> progressProvider, Function<VariableManager, Boolean> computeDatesDynamicallyProvider, Function<VariableManager, List<Object>> taskDependenciesProvider,
         List<String> reusedTaskDescriptionIds, List<TaskDescription> subTaskDescriptions) {
@@ -76,7 +76,7 @@ public record TaskDescription(String id, Function<VariableManager, String> targe
 
         private Function<VariableManager, String> targetObjectLabelProvider;
 
-        private Function<VariableManager, List<Object>> semanticElementsProvider;
+        private Function<VariableManager, List<?>> semanticElementsProvider;
 
         private Function<VariableManager, String> nameProvider;
 
@@ -115,7 +115,7 @@ public record TaskDescription(String id, Function<VariableManager, String> targe
             return this;
         }
 
-        public Builder semanticElementsProvider(Function<VariableManager, List<Object>> semanticElementsProvider) {
+        public Builder semanticElementsProvider(Function<VariableManager, List<?>> semanticElementsProvider) {
             this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
             return this;
         }

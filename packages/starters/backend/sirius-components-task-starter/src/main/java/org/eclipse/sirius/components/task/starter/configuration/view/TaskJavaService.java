@@ -17,14 +17,16 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.gantt.TaskDetail;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.task.AbstractTask;
+import org.eclipse.sirius.components.task.KeyResult;
+import org.eclipse.sirius.components.task.Objective;
 import org.eclipse.sirius.components.task.Project;
 import org.eclipse.sirius.components.task.Task;
 import org.eclipse.sirius.components.task.TaskFactory;
@@ -43,18 +45,6 @@ public class TaskJavaService {
 
     public TaskJavaService(IFeedbackMessageService feedbackMessageService) {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-    }
-
-    public TaskDetail getTaskDetail(Task task) {
-
-        String name = Optional.ofNullable(task.getName()).orElse("");
-        String description = Optional.ofNullable(task.getDescription()).orElse("");
-        Instant startTime = task.getStartTime();
-        Instant endTime = task.getEndTime();
-        int progress = task.getProgress();
-        boolean computeStartEndDynamically = task.isComputeStartEndDynamically();
-
-        return new TaskDetail(name, description, startTime, endTime, progress, computeStartEndDynamically);
     }
 
     public void editTask(EObject eObject, String name, String description, Instant startTime, Instant endTime, Integer progress) {
@@ -106,11 +96,14 @@ public class TaskJavaService {
         return Optional.ofNullable(tag.eContainer())
                 .filter(Project.class::isInstance)
                 .map(Project.class::cast).stream()
-                .map(Project::getOwnedTasks)
-                .flatMap(List::stream)
+                .flatMap(project -> {
+                    Iterable<EObject> content = () -> project.eAllContents();
+                    return StreamSupport.stream(content.spliterator(), false);
+                })
+                .filter(Task.class::isInstance)
+                .map(Task.class::cast)
                 .filter(task -> task.getTags().contains(tag))
                 .toList();
-
     }
 
     public String computeTaskDurationDays(Task task) {
@@ -185,6 +178,16 @@ public class TaskJavaService {
         }
     }
 
+    public void moveKeyResultIntoObjective(KeyResult sourceKeyResult, Objective targetObjective, int indexInTarget) {
+        EList<KeyResult> ownedKeyResults = targetObjective.getOwnedKeyResults();
+        if (sourceKeyResult.eContainer().equals(targetObjective)) {
+            ownedKeyResults.move(indexInTarget, sourceKeyResult);
+        } else {
+            ownedKeyResults.add(sourceKeyResult);
+            ownedKeyResults.move(indexInTarget, sourceKeyResult);
+        }
+    }
+
     private void moveTaskInSubTasks(Task sourceTask, int indexInTarget, Task targetTask) {
         List<Task> subTasks = targetTask.getSubTasks();
         if (subTasks.contains(sourceTask)) {
@@ -207,55 +210,51 @@ public class TaskJavaService {
         }
     }
 
-    public Task moveCardAtIndex(Task task, int index, TaskTag targetTag) {
+    public Task moveTaskInTag(Task moveTask, int index, TaskTag targetTag) {
         // We retrieve all tasks with the same tag (in the same lane).
-        List<Task> targetLaneTaskList = this.getTasksWithTag(targetTag);
-        if (!targetLaneTaskList.isEmpty()) {
-            EObject eContainer = task.eContainer();
+        List<Task> allTaskInTheLane = this.getTasksWithTag(targetTag);
+        Optional<Task> firstTaskAfterTheDroppedTaskWithSameParent = allTaskInTheLane.subList(index, allTaskInTheLane.size()).stream()
+                .filter(task -> task.eContainer().equals(moveTask.eContainer()))
+                .findFirst();
+
+        List<Task> tasksBeforeTheDroppedTaskWithSameParent = allTaskInTheLane.subList(0, index).stream()
+                .filter(task -> task.eContainer().equals(moveTask.eContainer()))
+                .toList();
+        Optional<Task> lastTaskBeforeTheDroppedTaskWithSameParent = Optional.empty();
+        if (!tasksBeforeTheDroppedTaskWithSameParent.isEmpty()) {
+            lastTaskBeforeTheDroppedTaskWithSameParent = Optional.of(tasksBeforeTheDroppedTaskWithSameParent.get(tasksBeforeTheDroppedTaskWithSameParent.size() - 1));
+        }
+
+        if (lastTaskBeforeTheDroppedTaskWithSameParent.isPresent() || firstTaskAfterTheDroppedTaskWithSameParent.isPresent()) {
+            EObject eContainer = moveTask.eContainer();
             if (eContainer instanceof Project project) {
-                int newIndex = this.computeIndexOfTaskToReplace(task, index, targetLaneTaskList, project);
-                // We move the current task before the taskToReplace in the project ownTasks list.
-                int oldIndex = project.getOwnedTasks().indexOf(task);
-                // If the moved task was located before the new location, the index after having remove the task is
-                // decremented.
-                if (oldIndex < newIndex) {
-                    newIndex--;
+                int indexInParent = 0;
+                if (lastTaskBeforeTheDroppedTaskWithSameParent.isPresent()) {
+                    indexInParent = project.getOwnedTasks().indexOf(lastTaskBeforeTheDroppedTaskWithSameParent.get()) + 1;
+                } else {
+                    indexInParent = project.getOwnedTasks().indexOf(firstTaskAfterTheDroppedTaskWithSameParent.get());
                 }
-                project.getOwnedTasks().move(newIndex, task);
+                project.getOwnedTasks().move(indexInParent , moveTask);
+            } else if (eContainer instanceof AbstractTask parentTask) {
+                int indexInParent = 0;
+                if (lastTaskBeforeTheDroppedTaskWithSameParent.isPresent()) {
+                    indexInParent = parentTask.getSubTasks().indexOf(lastTaskBeforeTheDroppedTaskWithSameParent.get()) + 1;
+                } else {
+                    indexInParent = parentTask.getSubTasks().indexOf(firstTaskAfterTheDroppedTaskWithSameParent.get());
+                }
+                parentTask.getSubTasks().move(indexInParent , moveTask);
             }
         }
-        return task;
+        return moveTask;
     }
 
-    /**
-     * When a card is moved, we change the underlying task ordering.
-     *
-     * @param task
-     *         the task to move.
-     * @param index
-     *         the new index in the lane task list.
-     * @param targetLaneTaskList
-     *         the current lane task list.
-     * @param project
-     *         the project owning the tasks.
-     * @return the index on which the task should be moved in the project task list to match the new index in the lane.
-     */
-    private int computeIndexOfTaskToReplace(Task task, int index, List<Task> targetLaneTaskList, Project project) {
-        int newIndex;
-        List<Task> unmovedLaneTasks = targetLaneTaskList.stream().filter(currentTask -> currentTask != task).toList();
-        if (index < unmovedLaneTasks.size()) {
-            // We retrieve the Task that will be located after the moved one.
-            Task taskToMoveAround = unmovedLaneTasks.get(index);
-            newIndex = project.getOwnedTasks().indexOf(taskToMoveAround);
-        } else {
-            // We need to locate the task after the last one in the lane
-            Task lastTask = unmovedLaneTasks.get(unmovedLaneTasks.size() - 1);
-            newIndex = project.getOwnedTasks().indexOf(lastTask) + 1;
+    public void moveObjectiveAtIndex(Objective objective, int index) {
+        if (objective.eContainer() instanceof Project project) {
+            project.getOwnedObjectives().move(index, objective);
         }
-        return newIndex;
     }
 
-    public void moveLaneAtIndex(TaskTag movedTag, int index) {
+    public void moveTagAtIndex(TaskTag movedTag, int index) {
         EObject eContainer = movedTag.eContainer();
         if (eContainer instanceof Project project) {
             String prefix = movedTag.getPrefix();

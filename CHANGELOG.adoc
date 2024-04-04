@@ -85,9 +85,10 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [gantt] The expressions `TaskDescription#startTimeExpression` and `TaskDescription#endTimeExpression` can now both accept `String` values as a result if those values can be parsed by `java.timeInstant#parse`.
 They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3309[#3309] [diagram] Hide header border-bottom when the node is collapsed
-- https://github.com/eclipse-sirius/sirius-web/issues/3285[#3285] Make the icons in the diagram palette use the default color of Sirius Web theme
-- https://github.com/eclipse-sirius/sirius-web/issues/3312[#3312] Make the details view more compact
-- https://github.com/eclipse-sirius/sirius-web/issues/3349[#3349] Add a default label when creating a NodeDescription
+- https://github.com/eclipse-sirius/sirius-web/issues/3285[#3285] [diagram] Make the icons in the diagram palette use the default color of Sirius Web theme
+- https://github.com/eclipse-sirius/sirius-web/issues/3312[#3312] [form] Make the details view more compact
+- https://github.com/eclipse-sirius/sirius-web/issues/3349[#3349] [diagram] Add a default label when creating a NodeDescription
+- https://github.com/eclipse-sirius/sirius-web/issues/3342[#3342] [deck] Update deck and gantt view metamodel and deck view examples
 
 
 == v2024.3.0

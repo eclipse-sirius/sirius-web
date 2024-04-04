@@ -53,6 +53,16 @@ public class TaskDescriptionBuilder {
     }
 
     /**
+     * Setter for DomainType.
+     *
+     * @generated
+     */
+    public TaskDescriptionBuilder domainType(java.lang.String value) {
+        this.getTaskDescription().setDomainType(value);
+        return this;
+    }
+
+    /**
      * Setter for SemanticCandidatesExpression.
      *
      * @generated

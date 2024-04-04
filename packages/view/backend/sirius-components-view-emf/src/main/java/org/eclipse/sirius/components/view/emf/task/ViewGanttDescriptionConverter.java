@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.emf.task;
 
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,7 +87,9 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
         this.computeTaskDescription2Ids(viewGanttDescription.getTaskElementDescriptions(), taskDescription2Ids);
 
 
-        List<TaskDescription> taskDescriptions = viewGanttDescription.getTaskElementDescriptions().stream().map(taskDescription -> this.convert(taskDescription, interpreter, taskDescription2Ids)).toList();
+        List<TaskDescription> taskDescriptions = viewGanttDescription.getTaskElementDescriptions().stream()
+                .map(taskDescription -> this.convert(taskDescription, interpreter, taskDescription2Ids))
+                .toList();
 
         return GanttDescription.newGanttDescription(this.ganttIdProvider.getId(viewGanttDescription))
                 .label(Optional.ofNullable(viewGanttDescription.getName()).orElse(DEFAULT_GANTT_DESCRIPTION_LABEL))
@@ -94,11 +97,17 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .canCreatePredicate(variableManager -> this.canCreate(viewGanttDescription.getDomainType(), viewGanttDescription.getPreconditionExpression(), variableManager, interpreter))
                 .labelProvider(variableManager -> this.computeGanttLabel(viewGanttDescription, variableManager, interpreter))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .createTaskProvider(Optional.ofNullable(viewGanttDescription.getCreateTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
-                .editTaskProvider(Optional.ofNullable(viewGanttDescription.getEditTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
-                .deleteTaskProvider(Optional.ofNullable(viewGanttDescription.getDeleteTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
-                .dropTaskProvider(Optional.ofNullable(viewGanttDescription.getDropTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
-                .createTaskDependencyProvider(Optional.ofNullable(viewGanttDescription.getCreateTaskDependencyTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
+                .createTaskProvider(Optional.ofNullable(viewGanttDescription.getCreateTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
+                }))
+                .editTaskProvider(Optional.ofNullable(viewGanttDescription.getEditTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
+                }))
+                .deleteTaskProvider(Optional.ofNullable(viewGanttDescription.getDeleteTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
+                }))
+                .dropTaskProvider(Optional.ofNullable(viewGanttDescription.getDropTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
+                }))
+                .createTaskDependencyProvider(Optional.ofNullable(viewGanttDescription.getCreateTaskDependencyTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
+                        .orElse(variable -> {
+                        }))
                 .taskDescriptions(taskDescriptions)
                 .build();
     }
@@ -127,10 +136,10 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .toList();
 
         List<TaskDescription> subTaskDescriptions = Optional.ofNullable(viewTaskDescription.getSubTaskElementDescriptions())
-            .stream()
-            .flatMap(viewTaskDescs-> viewTaskDescs.stream())
-            .map(viewTaskDesc -> this.convert(viewTaskDesc, interpreter, taskDescription2Ids))
-            .toList();
+                .stream()
+                .flatMap(Collection::stream)
+                .map(viewTaskDesc -> this.convert(viewTaskDesc, interpreter, taskDescription2Ids))
+                .toList();
 
         Function<VariableManager, Instant> startTimeProvider = variableManager -> {
             Instant result = null;
@@ -171,14 +180,14 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
         };
 
         TaskDescription taskDescription = TaskDescription.newTaskDescription(taskDescription2Ids.get(viewTaskDescription))
-                .semanticElementsProvider(variableManager -> this.getSemanticElements(variableManager, interpreter, viewTaskDescription.getSemanticCandidatesExpression()))
+                .semanticElementsProvider(variableManager -> this.getSemanticCandidateElements(variableManager, interpreter, viewTaskDescription))
                 .nameProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getNameExpression(), String.class, ""))
                 .descriptionProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getDescriptionExpression(), String.class, ""))
                 .startTimeProvider(startTimeProvider)
                 .endTimeProvider(endTimeProvider)
                 .progressProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getProgressExpression(), Integer.class, 0))
                 .computeStartEndDynamicallyProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getComputeStartEndDynamicallyExpression(), Boolean.class, false))
-                .taskDependenciesProvider(variableManager -> this.getSemanticElements(variableManager, interpreter, viewTaskDescription.getTaskDependenciesExpression()))
+                .taskDependenciesProvider(variableManager -> this.getTaskDependencies(variableManager, interpreter, viewTaskDescription.getTaskDependenciesExpression()))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)
@@ -198,10 +207,21 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
         return value;
     }
 
-    private List<Object> getSemanticElements(VariableManager variableManager, AQLInterpreter interpreter, String expression) {
+    private List<EObject> getSemanticCandidateElements(VariableManager variableManager, AQLInterpreter interpreter, org.eclipse.sirius.components.view.gantt.TaskDescription viewTaskDescription) {
+        List<EObject> semanticObjects = interpreter.evaluateExpression(variableManager.getVariables(), viewTaskDescription.getSemanticCandidatesExpression())
+                .asObjects()
+                .orElseGet(List::of).stream()
+                .filter(EObject.class::isInstance)
+                .map(EObject.class::cast)
+                .filter(candidate -> new DomainClassPredicate(Optional.ofNullable(viewTaskDescription.getDomainType()).orElse("")).test(candidate.eClass()))
+                .toList();
+        return semanticObjects;
+    }
+
+    private List<Object> getTaskDependencies(VariableManager variableManager, AQLInterpreter interpreter, String expression) {
         List<Object> semanticObjects = interpreter.evaluateExpression(variableManager.getVariables(), expression)
                 .asObjects()
-                .orElseGet(() -> List.of()).stream()
+                .orElseGet(List::of).stream()
                 .filter(EObject.class::isInstance)
                 .toList();
         return semanticObjects;

@@ -63,6 +63,28 @@ public interface TaskDescription extends EObject {
     void setName(String value);
 
     /**
+     * Returns the value of the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Domain Type</em>' attribute.
+     * @see #setDomainType(String)
+     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getTaskDescription_DomainType()
+     * @model dataType="org.eclipse.sirius.components.view.DomainType"
+     * @generated
+     */
+    String getDomainType();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getDomainType <em>Domain
+     * Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Domain Type</em>' attribute.
+     * @see #getDomainType()
+     * @generated
+     */
+    void setDomainType(String value);
+
+    /**
      * Returns the value of the '<em><b>Semantic Candidates Expression</b></em>' attribute. The default value is
      * <code>"aql:self"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

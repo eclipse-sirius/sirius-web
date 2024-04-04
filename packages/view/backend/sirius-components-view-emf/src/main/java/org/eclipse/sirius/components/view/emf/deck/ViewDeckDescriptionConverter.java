@@ -21,13 +21,13 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.deck.DeckElementStyle;
 import org.eclipse.sirius.components.deck.DeckStyle;
 import org.eclipse.sirius.components.deck.description.CardDescription;
 import org.eclipse.sirius.components.deck.description.LaneDescription;
+import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -93,7 +93,8 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
                 interpreter);
         Consumer<VariableManager> dropLaneProvider = Optional.ofNullable(viewDeckDescription.getLaneDropTool())
                 .map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
-                .orElse(variable -> { });
+                .orElse(variable -> {
+                });
 
         Function<VariableManager, DeckStyle> styleProvider = variableManager -> {
             var effectiveStyle = viewDeckDescription.getConditionalStyles().stream()
@@ -121,18 +122,21 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
     private LaneDescription convert(org.eclipse.sirius.components.view.deck.LaneDescription viewLaneDescription, AQLInterpreter interpreter) {
 
         var id = this.deckIdProvider.getId(viewLaneDescription);
-        Function<VariableManager, List<Object>> semanticElementsProvider = variableManager -> this.getSemanticElements(viewLaneDescription, variableManager, interpreter);
+        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> this.getSemanticElements(viewLaneDescription, variableManager, interpreter);
         Function<VariableManager, String> titleProvider = variableManager -> this.evaluateString(interpreter, variableManager, viewLaneDescription.getTitleExpression());
         Function<VariableManager, String> labelProvider = variableManager -> this.evaluateString(interpreter, variableManager, viewLaneDescription.getLabelExpression());
         Consumer<VariableManager> editLaneProvider = Optional.ofNullable(viewLaneDescription.getEditTool())
                 .map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
-                .orElse(variable -> { });
+                .orElse(variable -> {
+                });
         Consumer<VariableManager> createCardProvider = Optional.ofNullable(viewLaneDescription.getCreateTool())
                 .map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
-                .orElse(variable -> { });
+                .orElse(variable -> {
+                });
         Consumer<VariableManager> dropCardProvider = Optional.ofNullable(viewLaneDescription.getCardDropTool()).
                 map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
-                .orElse(variable -> { });
+                .orElse(variable -> {
+                });
         Function<VariableManager, Boolean> collapsibleProvider = variableManager -> this.evaluateBoolean(interpreter, variableManager, viewLaneDescription.getIsCollapsibleExpression());
 
         List<CardDescription> cardDescriptions = viewLaneDescription.getOwnedCardDescriptions().stream()
@@ -158,17 +162,19 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
     private CardDescription convert(org.eclipse.sirius.components.view.deck.CardDescription viewCardDescription, AQLInterpreter interpreter) {
 
         var id = this.deckIdProvider.getId(viewCardDescription);
-        Function<VariableManager, List<Object>> semanticElementsProvider = variableManager -> this.getSemanticElements(viewCardDescription, variableManager, interpreter);
+        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> this.getSemanticElements(viewCardDescription, variableManager, interpreter);
         Function<VariableManager, String> titleProvider = variableManager -> this.evaluateString(interpreter, variableManager, viewCardDescription.getTitleExpression());
         Function<VariableManager, String> labelProvider = variableManager -> this.evaluateString(interpreter, variableManager, viewCardDescription.getLabelExpression());
         Function<VariableManager, String> descriptionProvider = variableManager -> this.evaluateString(interpreter, variableManager, viewCardDescription.getDescriptionExpression());
 
         Consumer<VariableManager> editCardProvider = Optional.ofNullable(viewCardDescription.getEditTool())
                 .map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
-                .orElse(variable -> { });
+                .orElse(variable -> {
+                });
         Consumer<VariableManager> deleteCardProvider = Optional.ofNullable(viewCardDescription.getDeleteTool())
                 .map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
-                .orElse(variable -> { });
+                .orElse(variable -> {
+                });
 
         Function<VariableManager, DeckElementStyle> styleProvider = variableManager -> {
             var effectiveStyle = viewCardDescription.getConditionalStyles().stream()
@@ -186,17 +192,21 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
                 descriptionProvider, editCardProvider, deleteCardProvider, styleProvider);
     }
 
-    private List<Object> getSemanticElements(org.eclipse.sirius.components.view.deck.LaneDescription viewLaneDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        return interpreter.evaluateExpression(variableManager.getVariables(), viewLaneDescription.getSemanticCandidatesExpression())//
-                .asObjects().orElseGet(List::of).stream()//
-                .filter(EObject.class::isInstance)//
+    private List<?> getSemanticElements(org.eclipse.sirius.components.view.deck.LaneDescription viewLaneDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        return interpreter.evaluateExpression(variableManager.getVariables(), viewLaneDescription.getSemanticCandidatesExpression())
+                .asObjects().orElseGet(List::of).stream()
+                .filter(EObject.class::isInstance)
+                .map(EObject.class::cast)
+                .filter(candidate -> new DomainClassPredicate(Optional.ofNullable(viewLaneDescription.getDomainType()).orElse("")).test(candidate.eClass()))
                 .toList();
     }
 
-    private List<Object> getSemanticElements(org.eclipse.sirius.components.view.deck.CardDescription viewCardDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        return interpreter.evaluateExpression(variableManager.getVariables(), viewCardDescription.getSemanticCandidatesExpression())//
-                .asObjects().orElseGet(List::of).stream()//
-                .filter(EObject.class::isInstance)//
+    private List<?> getSemanticElements(org.eclipse.sirius.components.view.deck.CardDescription viewCardDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        return interpreter.evaluateExpression(variableManager.getVariables(), viewCardDescription.getSemanticCandidatesExpression())
+                .asObjects().orElseGet(List::of).stream()
+                .filter(EObject.class::isInstance)
+                .map(EObject.class::cast)
+                .filter(candidate -> new DomainClassPredicate(Optional.ofNullable(viewCardDescription.getDomainType()).orElse("")).test(candidate.eClass()))
                 .toList();
     }
 

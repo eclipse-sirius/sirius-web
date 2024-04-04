@@ -53,6 +53,7 @@ public class CardDescriptionItemProvider extends DeckElementDescriptionItemProvi
             super.getPropertyDescriptors(object);
 
             this.addNamePropertyDescriptor(object);
+            this.addDomainTypePropertyDescriptor(object);
             this.addDescriptionExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -67,6 +68,17 @@ public class CardDescriptionItemProvider extends DeckElementDescriptionItemProvi
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_CardDescription_name_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_CardDescription_name_feature", "_UI_CardDescription_type"),
                 DeckPackage.Literals.CARD_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Domain Type feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDomainTypePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_CardDescription_domainType_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_CardDescription_domainType_feature", "_UI_CardDescription_type"),
+                DeckPackage.Literals.CARD_DESCRIPTION__DOMAIN_TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -157,6 +169,7 @@ public class CardDescriptionItemProvider extends DeckElementDescriptionItemProvi
 
         switch (notification.getFeatureID(CardDescription.class)) {
             case DeckPackage.CARD_DESCRIPTION__NAME:
+            case DeckPackage.CARD_DESCRIPTION__DOMAIN_TYPE:
             case DeckPackage.CARD_DESCRIPTION__DESCRIPTION_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;

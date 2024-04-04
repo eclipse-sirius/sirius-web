@@ -296,13 +296,21 @@ public interface DeckPackage extends EPackage {
     int LANE_DESCRIPTION__NAME = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DESCRIPTION__DOMAIN_TYPE = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
      * The feature id for the '<em><b>Owned Card Descriptions</b></em>' containment reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+    int LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -311,7 +319,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__EDIT_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int LANE_DESCRIPTION__EDIT_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Create Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -320,7 +328,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__CREATE_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+    int LANE_DESCRIPTION__CREATE_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Card Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -329,7 +337,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__CARD_DROP_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+    int LANE_DESCRIPTION__CARD_DROP_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Is Collapsible Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -338,7 +346,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The number of structural features of the '<em>Lane Description</em>' class. <!-- begin-user-doc --> <!--
@@ -347,7 +355,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION_FEATURE_COUNT = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+    int LANE_DESCRIPTION_FEATURE_COUNT = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The number of operations of the '<em>Lane Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -421,13 +429,21 @@ public interface DeckPackage extends EPackage {
     int CARD_DESCRIPTION__NAME = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CARD_DESCRIPTION__DOMAIN_TYPE = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
      * The feature id for the '<em><b>Description Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__DESCRIPTION_EXPRESSION = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+    int CARD_DESCRIPTION__DESCRIPTION_EXPRESSION = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -436,7 +452,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__EDIT_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int CARD_DESCRIPTION__EDIT_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -445,7 +461,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__DELETE_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+    int CARD_DESCRIPTION__DELETE_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The number of structural features of the '<em>Card Description</em>' class. <!-- begin-user-doc --> <!--
@@ -454,7 +470,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION_FEATURE_COUNT = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+    int CARD_DESCRIPTION_FEATURE_COUNT = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Card Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1112,6 +1128,18 @@ public interface DeckPackage extends EPackage {
     EAttribute getLaneDescription_Name();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getDomainType <em>Domain Type</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Domain Type</em>'.
+     * @see org.eclipse.sirius.components.view.deck.LaneDescription#getDomainType()
+     * @see #getLaneDescription()
+     * @generated
+     */
+    EAttribute getLaneDescription_DomainType();
+
+    /**
      * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getOwnedCardDescriptions <em>Owned Card
      * Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1191,6 +1219,18 @@ public interface DeckPackage extends EPackage {
      * @generated
      */
     EAttribute getCardDescription_Name();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.deck.CardDescription#getDomainType <em>Domain Type</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Domain Type</em>'.
+     * @see org.eclipse.sirius.components.view.deck.CardDescription#getDomainType()
+     * @see #getCardDescription()
+     * @generated
+     */
+    EAttribute getCardDescription_DomainType();
 
     /**
      * Returns the meta object for the attribute
@@ -1551,6 +1591,14 @@ public interface DeckPackage extends EPackage {
         EAttribute LANE_DESCRIPTION__NAME = eINSTANCE.getLaneDescription_Name();
 
         /**
+         * The meta object literal for the '<em><b>Domain Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LANE_DESCRIPTION__DOMAIN_TYPE = eINSTANCE.getLaneDescription_DomainType();
+
+        /**
          * The meta object literal for the '<em><b>Owned Card Descriptions</b></em>' containment reference list feature.
          * <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1607,6 +1655,14 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EAttribute CARD_DESCRIPTION__NAME = eINSTANCE.getCardDescription_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Domain Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CARD_DESCRIPTION__DOMAIN_TYPE = eINSTANCE.getCardDescription_DomainType();
 
         /**
          * The meta object literal for the '<em><b>Description Expression</b></em>' attribute feature. <!--

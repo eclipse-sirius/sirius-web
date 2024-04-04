@@ -53,6 +53,16 @@ public class CardDescriptionBuilder {
     }
 
     /**
+     * Setter for DomainType.
+     *
+     * @generated
+     */
+    public CardDescriptionBuilder domainType(java.lang.String value) {
+        this.getCardDescription().setDomainType(value);
+        return this;
+    }
+
+    /**
      * Setter for SemanticCandidatesExpression.
      *
      * @generated

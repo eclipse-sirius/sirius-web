@@ -45,12 +45,12 @@ describe('Verify the Deck Representation lanes selection and editing', () => {
     deck.getLane('Monday').should('have.css', 'border-width', '0px');
     explorer.select('daily::Monday');
     deck.getLane('Monday').should('have.css', 'border', '2px solid rgb(190, 26, 120)');
-    deck.getLane('Wednesday').click();
+    deck.getLane('Saturday').click();
 
     // We verify that when selecting a card, the task is selected too in the model explorer.
     explorer.getSelectedTreeItems();
     explorer.getSelectedTreeItems().should('have.length', 1);
-    explorer.getSelectedTreeItems().contains('daily::Wednesday').should('exist');
+    explorer.getSelectedTreeItems().contains('daily::Saturday').should('exist');
   });
 
   it('We verify the lane direct edit.', () => {

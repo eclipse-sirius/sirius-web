@@ -53,6 +53,16 @@ public class LaneDescriptionBuilder {
     }
 
     /**
+     * Setter for DomainType.
+     *
+     * @generated
+     */
+    public LaneDescriptionBuilder domainType(java.lang.String value) {
+        this.getLaneDescription().setDomainType(value);
+        return this;
+    }
+
+    /**
      * Setter for SemanticCandidatesExpression.
      *
      * @generated
