@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.editingcontext.services;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,10 +24,13 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
+import org.eclipse.sirius.components.emf.migration.MigrationService;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,14 +43,23 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
 
     private final Logger logger = LoggerFactory.getLogger(ResourceToDocumentService.class);
 
+    private final List<IMigrationParticipant> migrationParticipants;
+
+    public ResourceToDocumentService(List<IMigrationParticipant> migrationParticipants) {
+        this.migrationParticipants = migrationParticipants;
+    }
+
     @Override
     public Optional<DocumentData> toDocument(Resource resource) {
         var serializationListener = new JsonResourceSerializationListener();
+        var migrationService = new MigrationService(this.migrationParticipants);
 
         HashMap<Object, Object> options = new HashMap<>();
         options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
         options.put(JsonResource.OPTION_SCHEMA_LOCATION, true);
         options.put(JsonResource.OPTION_SERIALIZATION_LISTENER, serializationListener);
+        options.put(JsonResource.OPTION_JSON_RESSOURCE_PROCESSOR, migrationService);
+        options.put(JsonResource.OPTION_EXTENDED_META_DATA, migrationService);
 
         Optional<DocumentData> optionalDocumentData = Optional.empty();
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -80,5 +93,12 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
             this.logger.warn(exception.getMessage(), exception);
         }
         return optionalDocumentData;
+    }
+
+    public Optional<ResourceMetadataAdapter> getOptionalResourceMetadataAdapter(Resource resource) {
+        return resource.eAdapters().stream()
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast)
+                .findFirst();
     }
 }

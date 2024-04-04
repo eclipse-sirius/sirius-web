@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.sirius.components.emf.migration.api.MigrationData;
 
 /**
  * An EMF adapter used to store some metadata related to EMF Resources.
@@ -33,6 +34,8 @@ import org.eclipse.emf.common.notify.Notifier;
 public class ResourceMetadataAdapter implements Adapter {
     private String name;
 
+    private MigrationData migrationData;
+
     private Notifier notifier;
 
     public ResourceMetadataAdapter(String name) {
@@ -45,6 +48,14 @@ public class ResourceMetadataAdapter implements Adapter {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public MigrationData getMigrationData() {
+        return migrationData;
+    }
+
+    public void setMigrationData(MigrationData migrationData) {
+        this.migrationData = migrationData;
     }
 
     @Override
