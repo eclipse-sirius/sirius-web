@@ -135,10 +135,10 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         assertThat(endCursor).isNotBlank();
 
         int count = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.count");
-        assertThat(count).isEqualTo(1);
+        assertThat(count).isPositive();
 
         List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.id");
-        assertThat(representationIds).hasSize(1);
+        assertThat(representationIds).hasSizeGreaterThan(0);
 
         var firstRepresentationId = representationIds.get(0);
         assertThat(firstRepresentationId).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());

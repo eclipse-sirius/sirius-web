@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,8 +25,6 @@ public interface IRepresentationRefreshPolicyRegistry {
 
     Optional<IRepresentationRefreshPolicy> getRepresentationRefreshPolicy(IRepresentationDescription representationDescription);
 
-    void add(IRepresentationRefreshPolicyProvider representationRefreshPolicyProvider);
-
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -37,10 +35,6 @@ public interface IRepresentationRefreshPolicyRegistry {
         @Override
         public Optional<IRepresentationRefreshPolicy> getRepresentationRefreshPolicy(IRepresentationDescription representationDescription) {
             return Optional.empty();
-        }
-
-        @Override
-        public void add(IRepresentationRefreshPolicyProvider representationRefreshPolicyProvider) {
         }
 
     }
