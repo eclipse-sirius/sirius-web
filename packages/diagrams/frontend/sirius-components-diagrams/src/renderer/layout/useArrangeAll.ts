@@ -10,18 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { UseArrangeAllValue } from './useArrangeAll.types';
-import { Edge, Node, useReactFlow, useViewport } from 'reactflow';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
-import { ListNodeData } from '../node/ListNode.types';
-import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
-import { labelVerticalPadding, labelHorizontalPadding } from './layoutParams';
+import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
+import { useContext } from 'react';
+import { Edge, Node, useReactFlow, useViewport } from 'reactflow';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { ListNodeData } from '../node/ListNode.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
+import { useOverlap } from '../overlap/useOverlap';
 import { RawDiagram } from './layout.types';
+import { labelHorizontalPadding, labelVerticalPadding } from './layoutParams';
+import { UseArrangeAllValue } from './useArrangeAll.types';
 import { useLayout } from './useLayout';
 import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
-import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
@@ -110,15 +114,14 @@ const computeLabels = (
   return labels;
 };
 
-export const useArrangeAll = (
-  refreshEventPayloadId: string,
-  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>
-): UseArrangeAllValue => {
+export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>): UseArrangeAllValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<NodeData, EdgeData>();
   const viewport = useViewport();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { diagramDescription } = useDiagramDescription();
+  const { refreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
+  const { resolveNodeOverlap } = useOverlap();
 
   const elk = new ELK();
 
@@ -142,10 +145,17 @@ export const useArrangeAll = (
       const layoutedGraph = await elk.layout(graph);
       return {
         nodes:
-          layoutedGraph?.children?.map((node_1) => ({
-            ...node_1,
-            position: { x: node_1.x ?? 0, y: (node_1.y ?? 0) + headerVerticalFootprint },
-          })) ?? [],
+          layoutedGraph?.children?.map((node) => {
+            const originalNode = nodes.find((node_1) => node_1.id === node.id);
+            if (originalNode && originalNode.data.pinned) {
+              return { ...node };
+            } else {
+              return {
+                ...node,
+                position: { x: node.x ?? 0, y: (node.y ?? 0) + headerVerticalFootprint },
+              };
+            }
+          }) ?? [],
         layoutReturn: layoutedGraph,
       };
     } catch (message) {
@@ -234,7 +244,11 @@ export const useArrangeAll = (
 
       layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
         laidOutNodesWithElk.map((node) => {
-          const existingNode = laidOutDiagram.nodes.find((laidOutNode) => laidOutNode.id === node.id);
+          const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
+            laidOutDiagram.nodes,
+            'horizontal'
+          ) as Node<NodeData, DiagramNodeType>[];
+          const existingNode = overlapFreeLaidOutNodes.find((laidOutNode) => laidOutNode.id === node.id);
           if (existingNode) {
             return {
               ...node,

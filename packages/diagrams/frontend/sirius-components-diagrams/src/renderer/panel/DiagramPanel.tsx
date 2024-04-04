@@ -44,14 +44,7 @@ import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
 
 export const DiagramPanel = memo(
-  ({
-    snapToGrid,
-    onSnapToGrid,
-    helperLines,
-    onHelperLines,
-    refreshEventPayloadId,
-    reactFlowWrapper,
-  }: DiagramPanelProps) => {
+  ({ snapToGrid, onSnapToGrid, helperLines, onHelperLines, reactFlowWrapper }: DiagramPanelProps) => {
     const [state, setState] = useState<DiagramPanelState>({
       dialogOpen: null,
     });
@@ -64,7 +57,7 @@ export const DiagramPanel = memo(
     const getSelectedNodes = () => getNodes().filter((node) => node.selected);
 
     const { fullscreen, onFullscreen } = useFullscreen();
-    const { arrangeAll } = useArrangeAll(refreshEventPayloadId, reactFlowWrapper);
+    const { arrangeAll } = useArrangeAll(reactFlowWrapper);
 
     const handleFitToScreen = () => fitView({ duration: 200, nodes: getSelectedNodes() });
     const handleZoomIn = () => zoomIn({ duration: 200 });

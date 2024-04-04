@@ -345,11 +345,9 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         onSnapToGrid={onSnapToGrid}
         helperLines={helperLinesEnabled}
         onHelperLines={setHelperLinesEnabled}
-        refreshEventPayloadId={diagramRefreshedEventPayload.id}
         reactFlowWrapper={ref}
       />
       <GroupPalette
-        refreshEventPayloadId={diagramRefreshedEventPayload.id}
         x={groupPalettePosition?.x}
         y={groupPalettePosition?.y}
         isOpened={isGroupPaletteOpened}
