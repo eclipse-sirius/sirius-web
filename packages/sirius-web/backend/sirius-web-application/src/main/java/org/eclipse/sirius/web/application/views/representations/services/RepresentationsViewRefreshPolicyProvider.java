@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.representations;
+package org.eclipse.sirius.web.application.views.representations.services;
 
 import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
@@ -28,7 +27,7 @@ import org.springframework.stereotype.Service;
  * @author gcoutable
  */
 @Service
-public class RepresentationsRepresentationRefreshPolicyProvider implements IRepresentationRefreshPolicyProvider {
+public class RepresentationsViewRefreshPolicyProvider implements IRepresentationRefreshPolicyProvider {
 
     private static final Set<String> IMPACTING_CHANGES = Set.of(
             ChangeKind.REPRESENTATION_CREATION,
@@ -38,14 +37,14 @@ public class RepresentationsRepresentationRefreshPolicyProvider implements IRepr
             PortalChangeKind.PORTAL_VIEW_ADDITION.name(),
             PortalChangeKind.PORTAL_VIEW_REMOVAL.name());
 
+
     @Override
     public boolean canHandle(IRepresentationDescription representationDescription) {
-        return UUID.nameUUIDFromBytes(RepresentationsDescriptionProvider.REPRESENTATIONS_DEFAULT_FORM_DESCRIPTION_ID.getBytes()).toString().equals(representationDescription.getId());
+        return RepresentationsFormDescriptionProvider.FORM_DESCRIPTION_ID.equals(representationDescription.getId());
     }
 
     @Override
     public IRepresentationRefreshPolicy getRepresentationRefreshPolicy(IRepresentationDescription representationDescription) {
         return changeDescription -> IMPACTING_CHANGES.contains(changeDescription.getKind());
     }
-
 }

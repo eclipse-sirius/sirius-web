@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.representations;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
@@ -30,21 +30,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class RepresentationRefreshPolicyRegistry implements IRepresentationRefreshPolicyRegistry {
 
-    private List<IRepresentationRefreshPolicyProvider> representationRefreshPolicyProviders = new ArrayList<>();
+    private final List<IRepresentationRefreshPolicyProvider> representationRefreshPolicyProviders;
+
+    public RepresentationRefreshPolicyRegistry(List<IRepresentationRefreshPolicyProvider> representationRefreshPolicyProviders) {
+        this.representationRefreshPolicyProviders = Objects.requireNonNull(representationRefreshPolicyProviders);
+    }
 
     @Override
     public Optional<IRepresentationRefreshPolicy> getRepresentationRefreshPolicy(IRepresentationDescription representationDescription) {
-        // @formatter:off
         return this.representationRefreshPolicyProviders.stream()
                 .filter(representationRefreshPolicyProvider -> representationRefreshPolicyProvider.canHandle(representationDescription))
                 .findFirst()
                 .map(representationRefreshPolicyProvider -> representationRefreshPolicyProvider.getRepresentationRefreshPolicy(representationDescription));
-        // @formatter:on
     }
-
-    @Override
-    public void add(IRepresentationRefreshPolicyProvider representationRefreshPolicyProvider) {
-        this.representationRefreshPolicyProviders.add(representationRefreshPolicyProvider);
-    }
-
 }

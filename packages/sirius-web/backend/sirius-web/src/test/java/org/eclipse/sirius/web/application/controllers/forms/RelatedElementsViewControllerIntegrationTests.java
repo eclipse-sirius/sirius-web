@@ -66,7 +66,7 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
     @DisplayName("Given a semantic object, when we subscribe to its related elements events, then the form is sent")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenSemanticObjectWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
+    public void givenSemanticObjectWhenWeSubscribeToItsRelatedElementsEventsThenTheFormIsSent() {
         var input = new PropertiesEventInput(UUID.randomUUID(), TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(TestIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
         var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 

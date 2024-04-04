@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.services.relatedelements;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyProvider;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +26,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultRelatedElementsRefreshPolicyProvider implements IRepresentationRefreshPolicyProvider {
 
-    public DefaultRelatedElementsRefreshPolicyProvider(IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        representationRefreshPolicyRegistry.add(this);
-    }
 
     @Override
     public boolean canHandle(IRepresentationDescription representationDescription) {

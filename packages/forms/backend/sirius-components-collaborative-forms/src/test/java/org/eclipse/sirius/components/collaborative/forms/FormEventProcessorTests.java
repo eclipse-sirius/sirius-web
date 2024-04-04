@@ -81,7 +81,7 @@ public class FormEventProcessorTests {
 
         FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of()),
                 new SubscriptionManager(), new WidgetSubscriptionManager(),
-                new RepresentationRefreshPolicyRegistry(), new IFormPostProcessor.NoOp());
+                new RepresentationRefreshPolicyRegistry(List.of()), new IFormPostProcessor.NoOp());
 
         // @formatter:off
         StepVerifier.create(formEventProcessor.getOutputEvents(input))
@@ -107,7 +107,7 @@ public class FormEventProcessorTests {
 
         FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of()),
                 new SubscriptionManager(), new WidgetSubscriptionManager(),
-                new RepresentationRefreshPolicyRegistry(), new IFormPostProcessor.NoOp());
+                new RepresentationRefreshPolicyRegistry(List.of()), new IFormPostProcessor.NoOp());
 
         Runnable performRefresh = () -> formEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.formId(), input));
 
@@ -137,7 +137,7 @@ public class FormEventProcessorTests {
 
         FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of()),
                 new SubscriptionManager(), new WidgetSubscriptionManager(),
-                new RepresentationRefreshPolicyRegistry(), new IFormPostProcessor.NoOp());
+                new RepresentationRefreshPolicyRegistry(List.of()), new IFormPostProcessor.NoOp());
 
         Runnable disposeFormEventProcessor = formEventProcessor::dispose;
 
