@@ -1,0 +1,47 @@
+= [ADR-146] Add support for contributing representation metadata for transient representations
+
+== Context
+
+With ADR-137 transient representations (like the explorer, validation view, etc. ) will have a more uniform format for their id, clearly distinct from non-transient ones.
+From then on, we can provide their metadata just from their id.
+
+However even with that, knowledge about transient representations' metadata is currently hard-coded and not always complete/up to date.
+
+For example in:
+
+* `org.eclipse.sirius.web.services.representations.RepresentationService.findTransientRepresentationById(String)`
+* `org.eclipse.sirius.web.graphql.datafetchers.representation.RepresentationMetadataDescriptionDataFetcher`
+
+== Decision
+
+We will add a new interface `IRepresentationMetadataProvider`:
+
+[source,java]
+----
+public interface IRepresentationMetadataProvider {
+    boolean canHandle(String representationId);
+    RepresentationMetadata handle(String representationId);
+}
+----
+
+Each transient representation will provide its own implementation as a `@Service`.
+
+For example `ExplorerRepresentationMetadataProvider` will only `handle` representations whose id starts with `explorer://``.
+
+A single implementation will also be provided for non-transient representations, which will use the same implementations as currently:
+
+* for the legacy code, use `IRepresentationRepository`
+* for the new code, use `IRepresentationDataSearchService`
+
+The legacy `org.eclipse.sirius.web.services.representations.RepresentationService` and the new `org.eclipse.sirius.web.application.representation.services.RepresentationMetadataSearchService` will leverage these.
+When given a `representationId` they will ask all available `IRepresentationMetadataProvider` in turn.
+Because transient and non-transient representations will now have clearly distinct formats for their ids, we can be sure the correct implementation will be chosen.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+* New transient representations will need to provide a corresponding `IRepresentationMetadataProvider`
+* Custom applications will be able to contribute new ones without needing to for the core `RepresentationService` & co. to hard-code knowledge about them.
