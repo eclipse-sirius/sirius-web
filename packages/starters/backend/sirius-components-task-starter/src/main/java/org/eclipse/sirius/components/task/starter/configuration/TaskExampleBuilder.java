@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.task.Company;
 import org.eclipse.sirius.components.task.KeyResult;
 import org.eclipse.sirius.components.task.Objective;
@@ -37,7 +36,7 @@ import org.eclipse.sirius.components.task.Team;
  */
 public class TaskExampleBuilder {
 
-    private static final String KANBAN = "Kanban";
+    private static final String KANBAN = "kanban";
     private static final String REVIEW = "Review";
     private static final String DEVELOPMENT = "Development";
     private static final String CODE_DEVELOPMENT = "Code Development";
@@ -54,7 +53,7 @@ public class TaskExampleBuilder {
     private static final String DATE_2023_12_16T17_30_00Z = "2023-12-16T17:30:00Z";
     private static final String DATE_2023_12_18T08_30_00Z = "2023-12-18T08:30:00Z";
 
-    public EObject getContent() {
+    public Company getContent() {
         Company company = TaskFactory.eINSTANCE.createCompany();
 
         Person paul = TaskFactory.eINSTANCE.createPerson();

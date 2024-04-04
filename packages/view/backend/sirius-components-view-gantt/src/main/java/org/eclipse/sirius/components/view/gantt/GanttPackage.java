@@ -205,13 +205,21 @@ public interface GanttPackage extends EPackage {
     int TASK_DESCRIPTION__NAME = 0;
 
     /**
+     * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TASK_DESCRIPTION__DOMAIN_TYPE = 1;
+
+    /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 1;
+    int TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 2;
 
     /**
      * The feature id for the '<em><b>Name Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -219,7 +227,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__NAME_EXPRESSION = 2;
+    int TASK_DESCRIPTION__NAME_EXPRESSION = 3;
 
     /**
      * The feature id for the '<em><b>Description Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -228,7 +236,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__DESCRIPTION_EXPRESSION = 3;
+    int TASK_DESCRIPTION__DESCRIPTION_EXPRESSION = 4;
 
     /**
      * The feature id for the '<em><b>Start Time Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -237,7 +245,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__START_TIME_EXPRESSION = 4;
+    int TASK_DESCRIPTION__START_TIME_EXPRESSION = 5;
 
     /**
      * The feature id for the '<em><b>End Time Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -246,7 +254,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__END_TIME_EXPRESSION = 5;
+    int TASK_DESCRIPTION__END_TIME_EXPRESSION = 6;
 
     /**
      * The feature id for the '<em><b>Progress Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -255,7 +263,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__PROGRESS_EXPRESSION = 6;
+    int TASK_DESCRIPTION__PROGRESS_EXPRESSION = 7;
 
     /**
      * The feature id for the '<em><b>Compute Start End Dynamically Expression</b></em>' attribute. <!-- begin-user-doc
@@ -264,7 +272,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION = 7;
+    int TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION = 8;
 
     /**
      * The feature id for the '<em><b>Task Dependencies Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -273,7 +281,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION = 8;
+    int TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION = 9;
 
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -282,7 +290,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__STYLE = 9;
+    int TASK_DESCRIPTION__STYLE = 10;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -291,7 +299,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__CONDITIONAL_STYLES = 10;
+    int TASK_DESCRIPTION__CONDITIONAL_STYLES = 11;
 
     /**
      * The feature id for the '<em><b>Sub Task Element Descriptions</b></em>' containment reference list. <!--
@@ -300,7 +308,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS = 11;
+    int TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS = 12;
 
     /**
      * The feature id for the '<em><b>Reused Task Element Descriptions</b></em>' reference list. <!-- begin-user-doc -->
@@ -309,7 +317,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__REUSED_TASK_ELEMENT_DESCRIPTIONS = 12;
+    int TASK_DESCRIPTION__REUSED_TASK_ELEMENT_DESCRIPTIONS = 13;
 
     /**
      * The number of structural features of the '<em>Task Description</em>' class. <!-- begin-user-doc --> <!--
@@ -318,7 +326,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION_FEATURE_COUNT = 13;
+    int TASK_DESCRIPTION_FEATURE_COUNT = 14;
 
     /**
      * The number of operations of the '<em>Task Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -851,6 +859,18 @@ public interface GanttPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getDomainType <em>Domain Type</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Domain Type</em>'.
+     * @see org.eclipse.sirius.components.view.gantt.TaskDescription#getDomainType()
+     * @see #getTaskDescription()
+     * @generated
+     */
+    EAttribute getTaskDescription_DomainType();
+
+    /**
+     * Returns the meta object for the attribute
      * '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getSemanticCandidatesExpression <em>Semantic
      * Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1249,6 +1269,14 @@ public interface GanttPackage extends EPackage {
          * @generated
          */
         EAttribute TASK_DESCRIPTION__NAME = eINSTANCE.getTaskDescription_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Domain Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TASK_DESCRIPTION__DOMAIN_TYPE = eINSTANCE.getTaskDescription_DomainType();
 
         /**
          * The meta object literal for the '<em><b>Semantic Candidates Expression</b></em>' attribute feature. <!--

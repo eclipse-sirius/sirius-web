@@ -62,6 +62,26 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
     protected String name = NAME_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDomainType()
+     * @generated
+     * @ordered
+     */
+    protected static final String DOMAIN_TYPE_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDomainType()
+     * @generated
+     * @ordered
+     */
+    protected String domainType = DOMAIN_TYPE_EDEFAULT;
+
+    /**
      * The default value of the '{@link #getDescriptionExpression() <em>Description Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -141,6 +161,29 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
         this.name = newName;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.CARD_DESCRIPTION__NAME, oldName, this.name));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getDomainType() {
+        return this.domainType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDomainType(String newDomainType) {
+        String oldDomainType = this.domainType;
+        this.domainType = newDomainType;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.CARD_DESCRIPTION__DOMAIN_TYPE, oldDomainType, this.domainType));
     }
 
     /**
@@ -288,6 +331,8 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
         switch (featureID) {
             case DeckPackage.CARD_DESCRIPTION__NAME:
                 return this.getName();
+            case DeckPackage.CARD_DESCRIPTION__DOMAIN_TYPE:
+                return this.getDomainType();
             case DeckPackage.CARD_DESCRIPTION__DESCRIPTION_EXPRESSION:
                 return this.getDescriptionExpression();
             case DeckPackage.CARD_DESCRIPTION__EDIT_TOOL:
@@ -309,6 +354,9 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
         switch (featureID) {
             case DeckPackage.CARD_DESCRIPTION__NAME:
                 this.setName((String) newValue);
+                return;
+            case DeckPackage.CARD_DESCRIPTION__DOMAIN_TYPE:
+                this.setDomainType((String) newValue);
                 return;
             case DeckPackage.CARD_DESCRIPTION__DESCRIPTION_EXPRESSION:
                 this.setDescriptionExpression((String) newValue);
@@ -334,6 +382,9 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
             case DeckPackage.CARD_DESCRIPTION__NAME:
                 this.setName(NAME_EDEFAULT);
                 return;
+            case DeckPackage.CARD_DESCRIPTION__DOMAIN_TYPE:
+                this.setDomainType(DOMAIN_TYPE_EDEFAULT);
+                return;
             case DeckPackage.CARD_DESCRIPTION__DESCRIPTION_EXPRESSION:
                 this.setDescriptionExpression(DESCRIPTION_EXPRESSION_EDEFAULT);
                 return;
@@ -357,6 +408,8 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
         switch (featureID) {
             case DeckPackage.CARD_DESCRIPTION__NAME:
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case DeckPackage.CARD_DESCRIPTION__DOMAIN_TYPE:
+                return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
             case DeckPackage.CARD_DESCRIPTION__DESCRIPTION_EXPRESSION:
                 return DESCRIPTION_EXPRESSION_EDEFAULT == null ? this.descriptionExpression != null : !DESCRIPTION_EXPRESSION_EDEFAULT.equals(this.descriptionExpression);
             case DeckPackage.CARD_DESCRIPTION__EDIT_TOOL:
@@ -380,6 +433,8 @@ public class CardDescriptionImpl extends DeckElementDescriptionImpl implements C
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: ");
         result.append(this.name);
+        result.append(", domainType: ");
+        result.append(this.domainType);
         result.append(", descriptionExpression: ");
         result.append(this.descriptionExpression);
         result.append(')');

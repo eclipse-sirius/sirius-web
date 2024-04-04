@@ -53,6 +53,7 @@ public class LaneDescriptionItemProvider extends DeckElementDescriptionItemProvi
             super.getPropertyDescriptors(object);
 
             this.addNamePropertyDescriptor(object);
+            this.addDomainTypePropertyDescriptor(object);
             this.addIsCollapsibleExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -67,6 +68,17 @@ public class LaneDescriptionItemProvider extends DeckElementDescriptionItemProvi
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_LaneDescription_name_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LaneDescription_name_feature", "_UI_LaneDescription_type"),
                 DeckPackage.Literals.LANE_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Domain Type feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDomainTypePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LaneDescription_domainType_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LaneDescription_domainType_feature", "_UI_LaneDescription_type"),
+                DeckPackage.Literals.LANE_DESCRIPTION__DOMAIN_TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -159,6 +171,7 @@ public class LaneDescriptionItemProvider extends DeckElementDescriptionItemProvi
 
         switch (notification.getFeatureID(LaneDescription.class)) {
             case DeckPackage.LANE_DESCRIPTION__NAME:
+            case DeckPackage.LANE_DESCRIPTION__DOMAIN_TYPE:
             case DeckPackage.LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;

@@ -49,7 +49,7 @@ public class CardComponent implements IComponent {
 
         List<Element> children = new ArrayList<>();
 
-        List<Object> semanticElements = cardDescription.semanticElementsProvider().apply(variableManager);
+        List<?> semanticElements = cardDescription.semanticElementsProvider().apply(variableManager);
         for (Object semanticElement : semanticElements) {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VariableManager.SELF, semanticElement);

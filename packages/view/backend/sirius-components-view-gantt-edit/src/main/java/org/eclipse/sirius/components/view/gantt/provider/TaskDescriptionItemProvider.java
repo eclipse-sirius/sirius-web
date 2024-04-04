@@ -62,6 +62,7 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
             super.getPropertyDescriptors(object);
 
             this.addNamePropertyDescriptor(object);
+            this.addDomainTypePropertyDescriptor(object);
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
             this.addNameExpressionPropertyDescriptor(object);
             this.addDescriptionExpressionPropertyDescriptor(object);
@@ -84,6 +85,17 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_TaskDescription_name_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_name_feature", "_UI_TaskDescription_type"),
                 GanttPackage.Literals.TASK_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Domain Type feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDomainTypePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TaskDescription_domainType_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_domainType_feature", "_UI_TaskDescription_type"),
+                GanttPackage.Literals.TASK_DESCRIPTION__DOMAIN_TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -278,6 +290,7 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
 
         switch (notification.getFeatureID(TaskDescription.class)) {
             case GanttPackage.TASK_DESCRIPTION__NAME:
+            case GanttPackage.TASK_DESCRIPTION__DOMAIN_TYPE:
             case GanttPackage.TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
             case GanttPackage.TASK_DESCRIPTION__NAME_EXPRESSION:
             case GanttPackage.TASK_DESCRIPTION__DESCRIPTION_EXPRESSION:

@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @PublicApi
 public record LaneDescription(String id, Function<VariableManager, String> targetObjectKindProvider, Function<VariableManager, String> targetObjectLabelProvider,
-        Function<VariableManager, String> targetObjectIdProvider, Function<VariableManager, List<Object>> semanticElementsProvider, Function<VariableManager, String> titleProvider,
+        Function<VariableManager, String> targetObjectIdProvider, Function<VariableManager, List<?>> semanticElementsProvider, Function<VariableManager, String> titleProvider,
         Function<VariableManager, String> labelProvider, List<CardDescription> cardDescriptions, Consumer<VariableManager> editLaneProvider, Consumer<VariableManager> createCardProvider,
         Consumer<VariableManager> dropCardProvider, Function<VariableManager, Boolean> collapsibleProvider, Function<VariableManager, DeckElementStyle> styleProvider) {
 

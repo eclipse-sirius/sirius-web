@@ -70,6 +70,26 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
     protected String name = NAME_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDomainType()
+     * @generated
+     * @ordered
+     */
+    protected static final String DOMAIN_TYPE_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDomainType()
+     * @generated
+     * @ordered
+     */
+    protected String domainType = DOMAIN_TYPE_EDEFAULT;
+
+    /**
      * The cached value of the '{@link #getOwnedCardDescriptions() <em>Owned Card Descriptions</em>}' containment
      * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -169,6 +189,29 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
         this.name = newName;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.LANE_DESCRIPTION__NAME, oldName, this.name));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getDomainType() {
+        return this.domainType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDomainType(String newDomainType) {
+        String oldDomainType = this.domainType;
+        this.domainType = newDomainType;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.LANE_DESCRIPTION__DOMAIN_TYPE, oldDomainType, this.domainType));
     }
 
     /**
@@ -381,6 +424,8 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
         switch (featureID) {
             case DeckPackage.LANE_DESCRIPTION__NAME:
                 return this.getName();
+            case DeckPackage.LANE_DESCRIPTION__DOMAIN_TYPE:
+                return this.getDomainType();
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 return this.getOwnedCardDescriptions();
             case DeckPackage.LANE_DESCRIPTION__EDIT_TOOL:
@@ -406,6 +451,9 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
         switch (featureID) {
             case DeckPackage.LANE_DESCRIPTION__NAME:
                 this.setName((String) newValue);
+                return;
+            case DeckPackage.LANE_DESCRIPTION__DOMAIN_TYPE:
+                this.setDomainType((String) newValue);
                 return;
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 this.getOwnedCardDescriptions().clear();
@@ -438,6 +486,9 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
             case DeckPackage.LANE_DESCRIPTION__NAME:
                 this.setName(NAME_EDEFAULT);
                 return;
+            case DeckPackage.LANE_DESCRIPTION__DOMAIN_TYPE:
+                this.setDomainType(DOMAIN_TYPE_EDEFAULT);
+                return;
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 this.getOwnedCardDescriptions().clear();
                 return;
@@ -467,6 +518,8 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
         switch (featureID) {
             case DeckPackage.LANE_DESCRIPTION__NAME:
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case DeckPackage.LANE_DESCRIPTION__DOMAIN_TYPE:
+                return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 return this.ownedCardDescriptions != null && !this.ownedCardDescriptions.isEmpty();
             case DeckPackage.LANE_DESCRIPTION__EDIT_TOOL:
@@ -494,6 +547,8 @@ public class LaneDescriptionImpl extends DeckElementDescriptionImpl implements L
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: ");
         result.append(this.name);
+        result.append(", domainType: ");
+        result.append(this.domainType);
         result.append(", isCollapsibleExpression: ");
         result.append(this.isCollapsibleExpression);
         result.append(')');

@@ -14,6 +14,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="LaneDescription" eSuperTypes="#//DeckElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
         defaultValueLiteral="New Lane Description"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//DomainType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedCardDescriptions"
         upperBound="-1" eType="#//CardDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="editTool" eType="#//EditLaneTool"
@@ -29,6 +30,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="CardDescription" eSuperTypes="#//DeckElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
         defaultValueLiteral="New Card Description"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//DomainType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="descriptionExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self"/>

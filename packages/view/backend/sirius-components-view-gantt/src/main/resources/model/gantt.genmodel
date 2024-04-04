@@ -25,6 +25,7 @@
     </genClasses>
     <genClasses ecoreClass="gantt.ecore#//TaskDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/domainType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/semanticCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/nameExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/descriptionExpression"/>
