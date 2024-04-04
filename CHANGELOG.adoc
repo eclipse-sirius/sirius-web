@@ -37,6 +37,40 @@ For further information, please refer to ADR _130_add_support_for_outside_inside
 - https://github.com/eclipse-sirius/sirius-web/issues/2567[#2567] [form] The `Slider` widget is now a standard widget
 - https://github.com/eclipse-sirius/sirius-web/issues/2567[#2567] [form] The TypeScript API used to contribute custom widgets has changed a little to fix some types which could not work in a strict TypeScript environment.
 The use of generics has thus been greatly reduced since they could not create a set of coherent TypeScript type signatures.
+- https://github.com/eclipse-sirius/sirius-web/issues/2418[#2418] [sirius-web] [tree] Extract synchronize with selection into a hook.
+The component `SynchronizedWithSelectionContribution` should be contributed to the `TreeToolBar` thanks to a `TreeToolBarContribution`.
+[source,jsx]
+----
+const treeToolBarContributions: TreeToolBarContextValue = [
+  <TreeToolBarContribution component={SynchronizedWithSelectionContribution} />,
+];
+
+return (
+  <TreeToolBarContext.Provider value={treeToolBarContributions}>
+    <Workbench>
+      {children}
+    </Workbench>
+  </TreeToolBarContext.Provider>
+);
+----
+
+The component `SynchronizeWithSelectionContextProvider` should be put around the component that use the contribution:
+[source, jsx]
+----
+
+/**
+ * The explorer contains the tree tool
+ */
+export const ExplorerView = (props: WorkbenchViewComponentProps) => {
+  return (
+    <SynchronizeWithSelectionContextProvider>
+      <ExplorerViewContent {...props} />
+    </SynchronizeWithSelectionContextProvider>
+  );
+};
+
+----
+
 
 === Dependency update
 

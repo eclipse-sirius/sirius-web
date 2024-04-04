@@ -10,7 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import {
+  SynchronizeWithSelectionContextProvider,
+  WorkbenchViewComponentProps,
+  useSynchronizedWithSelection,
+} from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { TreeToolBar } from '../toolbar/TreeToolBar';
@@ -34,17 +38,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
+export const ExplorerView = (props: WorkbenchViewComponentProps) => {
+  return (
+    <SynchronizeWithSelectionContextProvider>
+      <ExplorerViewContent {...props} />
+    </SynchronizeWithSelectionContextProvider>
+  );
+};
+
+const ExplorerViewContent = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const styles = useStyles();
   const { converter } = useExplorerViewConfiguration();
 
   const initialState: ExplorerViewState = {
-    synchronizedWithSelection: true,
     filterBar: false,
     filterBarText: '',
     filterBarTreeFiltering: false,
     treeFilters: [],
   };
+  const { isSynchronized } = useSynchronizedWithSelection();
   const [state, setState] = useState<ExplorerViewState>(initialState);
   const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
     (contribution) => contribution.props.component
@@ -117,12 +129,6 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       <TreeToolBar
         editingContextId={editingContextId}
         readOnly={readOnly}
-        onSynchronizedClick={() =>
-          setState((prevState) => {
-            return { ...prevState, synchronizedWithSelection: !state.synchronizedWithSelection };
-          })
-        }
-        synchronized={state.synchronizedWithSelection}
         treeFilters={state.treeFilters}
         onTreeFilterMenuItemClick={(treeFilters) =>
           setState((prevState) => {
@@ -138,8 +144,8 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
           readOnly={readOnly}
           treeId={'explorer://'}
           enableMultiSelection={true}
-          synchronizedWithSelection={state.synchronizedWithSelection}
           activeFilterIds={activeTreeFilterIds}
+          synchronizedWithSelection={isSynchronized}
           textToHighlight={state.filterBarText}
           textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
           converter={converter}
