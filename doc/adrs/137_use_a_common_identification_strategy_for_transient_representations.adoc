@@ -19,6 +19,7 @@ This will change the id of the following representations to:
 - RelatedElements: `relatedElements://?objectIds=[]`
 - Representations: `representations://?objectIds=[]`
 - Selection: `selection://`
+- Model Browser (used by the reference widget): `modelBrowser://?expandedIds=[]`
 
 As a result, all transient representations should start with a identifier of the type of representation `explorer`, `details`, `validation`, etc followed by `://` and various parameters specific to the instance.
 
@@ -26,7 +27,7 @@ On top of that, the frontend should be able to create the identifier directly in
 
 == Status
 
-Work in progress
+Accepted
 
 == Consequences
 

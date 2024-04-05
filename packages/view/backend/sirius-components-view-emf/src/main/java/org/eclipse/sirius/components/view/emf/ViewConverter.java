@@ -31,9 +31,9 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.selection.Selection;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -126,7 +126,7 @@ public class ViewConverter implements IViewConverter {
                     }
                     return message;
                 })
-                .idProvider(new GetOrCreateRandomIdProvider())
+                .idProvider(variableManager -> Selection.PREFIX)
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null))
                 .iconURLProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(null))
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))

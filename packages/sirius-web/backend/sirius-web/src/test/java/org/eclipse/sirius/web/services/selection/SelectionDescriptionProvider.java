@@ -21,8 +21,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.selection.Selection;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.springframework.stereotype.Service;
@@ -34,6 +34,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SelectionDescriptionProvider implements IEditingContextProcessor {
+
+    public static final String LABEL = "Selection";
 
     public static final String REPRESENTATION_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=selectionDescription&sourceElementId=Test";
 
@@ -77,8 +79,8 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .orElse(null);
 
         return SelectionDescription.newSelectionDescription(REPRESENTATION_DESCRIPTION_ID)
-                .label("Selection")
-                .idProvider(new GetOrCreateRandomIdProvider())
+                .label(LABEL)
+                .idProvider(variableManager -> Selection.PREFIX)
                 .labelProvider(labelProvider)
                 .iconURLProvider(iconURLProvider)
                 .messageProvider(variableManager -> "Select the objects to consider")

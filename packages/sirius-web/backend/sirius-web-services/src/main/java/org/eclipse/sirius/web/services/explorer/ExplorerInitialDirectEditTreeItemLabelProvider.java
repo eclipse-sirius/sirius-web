@@ -33,7 +33,7 @@ public class ExplorerInitialDirectEditTreeItemLabelProvider implements IInitialD
 
     @Override
     public boolean canHandle(Tree tree) {
-        return tree.getId().startsWith(ExplorerDescriptionProvider.REPRESENTATION_ID);
+        return tree.getId().startsWith(ExplorerDescriptionProvider.PREFIX);
     }
 
     @Override

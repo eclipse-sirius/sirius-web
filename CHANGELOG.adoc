@@ -206,7 +206,14 @@ Having `Viewer` as a type did not bring any additional value and it created some
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [form] Allow consumers of Sirius Components to reuse the reference widget without the form description editor or the view DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/3246[#3246] [view] Remove representation specific code from `ViewRepresentationDescriptionSearchService`
 - https://github.com/eclipse-sirius/sirius-web/issues/3250[#3250] [form] Change the base package of the reference widget from `org.eclipse.sirius.components.widgets.reference` to `org.eclipse.sirius.components.widgets.reference.view`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3303[#3303] [core] The identifiers for all transient representations have changed.
+They are now more uniform and more importantly clearly distinct from persisted representations (which all use plain UUIDs):
+** Explorer: `explorer://?expandedIds=[...]&activeFilterIds=[...]`
+** Details: `details://?objectIds=[...]`
+** Validation: `validation://`
+** RelatedElements: `relatedElements://?objectIds=[...]`
+** Representations: `representations://?objectIds=[...]`
+** Selection: `selection://`
 
 === Dependency update
 

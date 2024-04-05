@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,13 +21,14 @@ import java.util.function.Function;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.collaborative.forms.api.IRelatedElementsDescriptionProvider;
+import org.eclipse.sirius.components.collaborative.forms.api.RelatedElementsConfiguration;
+import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +42,12 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
 
     public static final UUID FORM_DESCRIPTION_ID = UUID.nameUUIDFromBytes("defaultRelatedElementsForm".getBytes());
 
+    public static final String FORM_TITLE = "Related Elements";
+
     private static final String GROUP_DESCRIPTION_ID = "defaultRelatedElementsGroup";
 
     private static final String PAGE_DESCRIPTION_ID = "defaultRelatedElementsPage";
 
-    private static final String FORM_TITLE = "Related Elements";
 
     private final IObjectService objectService;
 
@@ -67,7 +69,7 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
 
         return FormDescription.newFormDescription(FORM_DESCRIPTION_ID.toString())
                 .label(FORM_TITLE)
-                .idProvider(new GetOrCreateRandomIdProvider())
+                .idProvider(this::getFormId)
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .labelProvider(variableManager -> FORM_TITLE)
                 .targetObjectIdProvider(targetObjectIdProvider)
@@ -75,6 +77,14 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
                 .pageDescriptions(List.of(this.getPageDescription(groupDescriptions)))
                 .build();
         // @formatter:on
+    }
+
+    private String getFormId(VariableManager variableManager) {
+        List<?> selectedObjects = variableManager.get(FormVariableProvider.SELECTION.name(), List.class).orElse(List.of());
+        List<String> selectedObjectIds = selectedObjects.stream()
+                .map(this.objectService::getId)
+                .toList();
+        return new RelatedElementsConfiguration(selectedObjectIds).getId();
     }
 
     private GroupDescription getGroupDescription() {

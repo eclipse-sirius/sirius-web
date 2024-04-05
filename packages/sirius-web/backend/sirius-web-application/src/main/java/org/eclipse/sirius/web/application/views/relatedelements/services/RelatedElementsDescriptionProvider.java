@@ -19,13 +19,14 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.forms.api.IRelatedElementsDescriptionProvider;
+import org.eclipse.sirius.components.collaborative.forms.api.RelatedElementsConfiguration;
+import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.relatedelements.services.api.ICurrentTreeDescriptionProvider;
 import org.eclipse.sirius.web.application.views.relatedelements.services.api.IIncomingTreeDescriptionProvider;
@@ -42,11 +43,11 @@ public class RelatedElementsDescriptionProvider implements IRelatedElementsDescr
 
     public static final String FORM_DESCRIPTION_ID = "relatedElements_form_description";
 
+    public static final String FORM_TITLE = "Related Elements";
+
     private static final String GROUP_DESCRIPTION_ID = "defaultRelatedElementsGroup";
 
     private static final String PAGE_DESCRIPTION_ID = "defaultRelatedElementsPage";
-
-    private static final String FORM_TITLE = "Related Elements";
 
     private final IObjectService objectService;
 
@@ -73,13 +74,21 @@ public class RelatedElementsDescriptionProvider implements IRelatedElementsDescr
 
         return FormDescription.newFormDescription(FORM_DESCRIPTION_ID)
                 .label(FORM_TITLE)
-                .idProvider(new GetOrCreateRandomIdProvider())
+                .idProvider(this::getFormId)
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .labelProvider(variableManager -> FORM_TITLE)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(List.of(this.getPageDescription(groupDescriptions)))
                 .build();
+    }
+
+    private String getFormId(VariableManager variableManager) {
+        List<?> selectedObjects = variableManager.get(FormVariableProvider.SELECTION.name(), List.class).orElse(List.of());
+        List<String> selectedObjectIds = selectedObjects.stream()
+                .map(this.objectService::getId)
+                .toList();
+        return new RelatedElementsConfiguration(selectedObjectIds).getId();
     }
 
     private GroupDescription getGroupDescription() {

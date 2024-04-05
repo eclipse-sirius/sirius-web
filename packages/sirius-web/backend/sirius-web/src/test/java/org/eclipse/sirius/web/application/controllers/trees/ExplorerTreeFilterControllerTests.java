@@ -67,7 +67,7 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     public void givenTreeIdWhenWeRequestItsTreeFiltersThenTheListIsReturned() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(),
-                "representationId", ExplorerDescriptionProvider.REPRESENTATION_ID
+                "representationId", ExplorerDescriptionProvider.PREFIX
         );
         var result = this.treeFiltersQueryRunner.run(variables);
 
@@ -82,7 +82,7 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenFilterToHideDefaultPaletteIsActiveThenTheDefaultPaletteIsHidden() {
-        var input = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), ExplorerDescriptionProvider.REPRESENTATION_ID, List.of(), List.of(StudioExplorerTreeFilterProvider.HIDE_STUDIO_COLOR_PALETTES_TREE_FILTER_ID));
+        var input = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, List.of(), List.of(StudioExplorerTreeFilterProvider.HIDE_STUDIO_COLOR_PALETTES_TREE_FILTER_ID));
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Consumer<Object> projectContentConsumer = object -> Optional.of(object)
@@ -107,7 +107,7 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenFilterToHideDefaultPaletteIsInactiveThenTheDefaultPaletteIsHidden() {
-        var input = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), ExplorerDescriptionProvider.REPRESENTATION_ID, List.of(), List.of());
+        var input = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, List.of(), List.of());
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         var defaultPaletteTreeItemId = ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI.substring((IEMFEditingContext.RESOURCE_SCHEME + ":///").length());

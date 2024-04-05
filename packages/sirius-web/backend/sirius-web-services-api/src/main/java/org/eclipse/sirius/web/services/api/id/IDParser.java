@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,9 +15,6 @@ package org.eclipse.sirius.web.services.api.id;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Used to parse safely an identifier.
  *
@@ -25,15 +22,14 @@ import org.slf4j.LoggerFactory;
  */
 public class IDParser {
 
-    private final Logger logger = LoggerFactory.getLogger(IDParser.class);
-
     public Optional<UUID> parse(String id) {
         try {
             UUID uuid = UUID.fromString(id);
             return Optional.of(uuid);
         } catch (IllegalArgumentException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            // Ignore, the information that the id is invalid is returned as an empty Optional.
         }
         return Optional.empty();
     }
+
 }

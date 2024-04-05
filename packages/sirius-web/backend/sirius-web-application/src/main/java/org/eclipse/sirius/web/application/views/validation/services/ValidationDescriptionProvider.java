@@ -33,6 +33,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ValidationDescriptionProvider implements IValidationDescriptionProvider {
 
+    public static final String LABEL = "Validation";
+
     public static final String DESCRIPTION_ID = "validation_description";
 
     private final List<IValidationService> validationServices;
@@ -44,7 +46,7 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
     @Override
     public ValidationDescription getDescription() {
         return ValidationDescription.newValidationDescription(DESCRIPTION_ID)
-                .label("Validation")
+                .label(LABEL)
                 .canCreatePredicate(variableManager -> false)
                 .diagnosticsProvider(this::getDiagnosticsProvider)
                 .kindProvider(this::kindProvider)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ public class ValidationComponent implements IComponent {
         ValidationDescription validationDescription = this.props.getValidationDescription();
         Optional<Validation> optionalPreviousValidation = this.props.getPreviousValidation();
 
-        String id = optionalPreviousValidation.map(Validation::getId).orElseGet(() -> "validation");
+        String id = optionalPreviousValidation.map(Validation::getId).orElseGet(() -> Validation.PREFIX);
         String label = validationDescription.getLabel();
 
         List<?> diagnostics = validationDescription.getDiagnosticsProvider().apply(variableManager);

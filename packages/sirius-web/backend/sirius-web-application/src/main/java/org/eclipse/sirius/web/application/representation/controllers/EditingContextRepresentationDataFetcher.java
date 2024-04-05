@@ -18,9 +18,9 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
-import org.eclipse.sirius.web.application.representation.services.api.IRepresentationApplicationService;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
@@ -35,10 +35,10 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
 
     private static final String REPRESENTATION_ID_ARGUMENT = "representationId";
 
-    private final IRepresentationApplicationService representationApplicationService;
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    public EditingContextRepresentationDataFetcher(IRepresentationApplicationService representationApplicationService) {
-        this.representationApplicationService = Objects.requireNonNull(representationApplicationService);
+    public EditingContextRepresentationDataFetcher(IRepresentationMetadataSearchService representationMetadataSearchService) {
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
         Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
         localContext.put(LocalContextConstants.REPRESENTATION_ID, representationId);
 
-        var representationMetadata = this.representationApplicationService.findRepresentationMetadataById(representationId).orElse(null);
+        var representationMetadata = this.representationMetadataSearchService.findByRepresentationId(representationId).orElse(null);
 
         return DataFetcherResult.<RepresentationMetadata>newResult()
                 .data(representationMetadata)

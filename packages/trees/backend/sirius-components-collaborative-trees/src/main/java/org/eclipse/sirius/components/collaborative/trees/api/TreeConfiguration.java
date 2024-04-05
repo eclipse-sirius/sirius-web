@@ -12,9 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.trees.api;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 
@@ -33,11 +34,24 @@ public class TreeConfiguration implements IRepresentationConfiguration {
 
     private final List<String> expanded;
 
-    public TreeConfiguration(String editingContextId, String treeId, List<String> expanded, List<String> activeFilterIds) {
-        String uniqueId = editingContextId + expanded.toString() + activeFilterIds.toString();
-        this.treeId = treeId + "&uniqueId=" + UUID.nameUUIDFromBytes(uniqueId.getBytes()).toString();
-        this.activeFilterIds = Objects.requireNonNull(activeFilterIds);
+    public TreeConfiguration(String editingContextId, String treeId, List<String> expanded, List<String> activeFilters) {
+        this.activeFilterIds = Objects.requireNonNull(activeFilters);
         this.expanded = Objects.requireNonNull(expanded);
+
+        StringBuilder idBuilder = new StringBuilder(treeId);
+        if (treeId.endsWith("://")) {
+            idBuilder.append("?");
+        } else {
+            idBuilder.append("&");
+        }
+
+        List<String> expandedObjectIds = expanded.stream().map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8)).toList();
+        idBuilder.append("expandedIds=[").append(String.join(",", expandedObjectIds)).append("]");
+
+        List<String> activatedFilterIds = activeFilters.stream().map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8)).toList();
+        idBuilder.append("&activeFilterIds=[").append(String.join(",", activatedFilterIds)).append("]");
+
+        this.treeId = idBuilder.toString();
     }
 
     @Override

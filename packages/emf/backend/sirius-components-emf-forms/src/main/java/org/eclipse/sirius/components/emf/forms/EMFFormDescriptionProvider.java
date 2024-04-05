@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.forms;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +39,6 @@ import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -99,12 +100,21 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
 
         return FormDescription.newFormDescription(IEMFFormDescriptionProvider.DESCRIPTION_ID)
                 .label("Default form description")
-                .idProvider(new GetOrCreateRandomIdProvider())
+                .idProvider(this::getFormId)
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(pageDescriptions)
                 .build();
+    }
+
+    private String getFormId(VariableManager variableManager) {
+        List<?> selectedObjects = variableManager.get("selection", List.class).orElse(List.of());
+        List<String> selectedObjectIds = selectedObjects.stream()
+                .map(this.objectService::getId)
+                .toList();
+        var encodedIds = selectedObjectIds.stream().map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8)).toList();
+        return "details://?objectIds=[" + String.join(",", encodedIds) + "]";
     }
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
