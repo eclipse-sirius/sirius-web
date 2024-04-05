@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.core.configuration;
 
-import org.eclipse.sirius.components.annotations.PublicApi;
+import { gql } from '@apollo/client';
 
-/**
- * Interface to be implemented as a Spring configuration in order to configure the stereotype description registry.
- *
- * @author sbegaudeau
- */
-@PublicApi
-public interface IStereotypeDescriptionRegistryConfigurer {
-    void addStereotypeDescriptions(IStereotypeDescriptionRegistry registry);
-}
+export const EditingContextStereotypesFragment = gql`
+  fragment EditingContextStereotypes on EditingContext {
+    stereotypes {
+      edges {
+        node {
+          ...Stereotype
+        }
+      }
+    }
+  }
+`;
+
+export const StereotypeFragment = gql`
+  fragment Stereotype on Stereotype {
+    id
+    label
+  }
+`;

@@ -17,9 +17,9 @@ import fr.obeo.dsl.designer.sample.flow.FlowFactory;
 import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
+import org.eclipse.sirius.web.services.api.document.IStereotypeRegistry;
+import org.eclipse.sirius.web.services.api.document.IStereotypeRegistryConfigurer;
+import org.eclipse.sirius.web.services.api.document.Stereotype;
 import org.eclipse.sirius.components.flow.starter.helper.StereotypeBuilder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -32,7 +32,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author sbegaudeau
  */
 @Configuration
-public class FlowStereotypeDescriptionRegistryConfigurer implements IStereotypeDescriptionRegistryConfigurer {
+public class FlowStereotypeRegistryConfigurer implements IStereotypeRegistryConfigurer {
 
 
     public static final UUID EMPTY_FLOW_ID = UUID.nameUUIDFromBytes("empty_flow".getBytes());
@@ -51,15 +51,15 @@ public class FlowStereotypeDescriptionRegistryConfigurer implements IStereotypeD
 
     private final StereotypeBuilder stereotypeBuilder;
 
-    public FlowStereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry) {
+    public FlowStereotypeRegistryConfigurer(MeterRegistry meterRegistry) {
         this.stereotypeBuilder = new StereotypeBuilder(TIMER_NAME, meterRegistry);
     }
 
     @Override
-    public void addStereotypeDescriptions(IStereotypeDescriptionRegistry registry) {
-        registry.add(new StereotypeDescription(EMPTY_FLOW_ID, EMPTY_FLOW_LABEL, this::getEmptyFlowContent));
-        registry.add(new StereotypeDescription(ROBOT_FLOW_ID, ROBOT_FLOW_LABEL, this::getRobotFlowContent));
-        registry.add(new StereotypeDescription(BIG_GUY_FLOW_ID, BIG_GUY_FLOW_LABEL, this::getBigGuyFlowContent));
+    public void addStereotypes(IStereotypeRegistry registry) {
+        registry.add(new Stereotype(EMPTY_FLOW_ID, EMPTY_FLOW_LABEL, this::getEmptyFlowContent));
+        registry.add(new Stereotype(ROBOT_FLOW_ID, ROBOT_FLOW_LABEL, this::getRobotFlowContent));
+        registry.add(new Stereotype(BIG_GUY_FLOW_ID, BIG_GUY_FLOW_LABEL, this::getBigGuyFlowContent));
     }
 
     private String getEmptyFlowContent() {

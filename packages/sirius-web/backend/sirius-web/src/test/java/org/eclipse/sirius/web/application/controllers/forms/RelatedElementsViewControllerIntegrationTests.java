@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.tests.graphql.RelatedElementsEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -64,10 +64,10 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
 
     @Test
     @DisplayName("Given a semantic object, when we subscribe to its related elements events, then the form is sent")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSemanticObjectWhenWeSubscribeToItsRelatedElementsEventsThenTheFormIsSent() {
-        var input = new PropertiesEventInput(UUID.randomUUID(), TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(TestIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
+        var input = new PropertiesEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
         var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {

@@ -39,7 +39,7 @@ import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
-import org.eclipse.sirius.web.sample.configuration.StereotypeDescriptionRegistryConfigurer;
+import org.eclipse.sirius.web.sample.configuration.StereotypeRegistryConfigurer;
 import org.eclipse.sirius.web.sample.tests.integration.AbstractIntegrationTests;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
@@ -152,7 +152,7 @@ public class ReferenceWidgetIntegrationTests extends AbstractIntegrationTests {
 
         assertThat(this.projectRepository.existsById(this.projectId)).isTrue();
 
-        var createDocumentInput = new CreateDocumentInput(UUID.randomUUID(), this.projectId.toString(), "New", StereotypeDescriptionRegistryConfigurer.EMPTY_ID);
+        var createDocumentInput = new CreateDocumentInput(UUID.randomUUID(), this.projectId.toString(), "New", StereotypeRegistryConfigurer.EMPTY_ID);
 
         var createDocumentExecutionInput = ExecutionInput.newExecutionInput().query(createDocumentQuery)
                 .variables(Map.of("input", this.objectMapper.convertValue(createDocumentInput, new TypeReference<Map<String, Object>>() { }))).build();

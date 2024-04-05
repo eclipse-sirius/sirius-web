@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.collaborative.selection.dto.SelectionEventI
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionRefreshedEventPayload;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.PapayaSampleIdentifiers;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.selection.SelectionDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,7 +72,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSemanticObjectWhenWeSubscribeToItsSelectionEventsThenTheSelectionIsSent() {
-        var input = new SelectionEventInput(UUID.randomUUID(), PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, PapayaSampleIdentifiers.ROOT_OBJECT.toString());
+        var input = new SelectionEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, PapayaIdentifiers.ROOT_OBJECT.toString());
         var flux = this.graphQLRequestor.subscribe(GET_SELECTION_EVENT_SUBSCRIPTION, input)
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)

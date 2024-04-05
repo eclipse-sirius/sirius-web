@@ -58,6 +58,24 @@ type ViewerProjectTemplateEdge {
   node: ProjectTemplate!
 }
 
+extend type EditingContext {
+  stereotypes: EditingContextStereotypesConnection!
+}
+
+type EditingContextStereotypesConnection {
+  edges: [EditingContextStereotypesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type EditingContextStereotypesEdge {
+  node: Stereotype!
+}
+
+type Stereotype {
+  id: ID!
+  label: String!
+}
+
 extend type Mutation {
   createProject(input: CreateProjectInput!): CreateProjectPayload!
   createProjectFromTemplate(input: CreateProjectFromTemplateInput!): CreateProjectFromTemplatePayload!
@@ -133,13 +151,11 @@ type UploadProjectSuccessPayload {
   project: Project!
 }
 
-
-
 input CreateDocumentInput {
   editingContextId: ID!
   id: ID!
   name: String!
-  stereotypeDescriptionId: ID!
+  stereotypeId: ID!
 }
 
 union CreateDocumentPayload = ErrorPayload | CreateDocumentSuccessPayload
@@ -152,6 +168,7 @@ type CreateDocumentSuccessPayload {
 type Document {
   id: ID!
   name: String!
+  kind: String!
 }
 
 input RenameDocumentInput {

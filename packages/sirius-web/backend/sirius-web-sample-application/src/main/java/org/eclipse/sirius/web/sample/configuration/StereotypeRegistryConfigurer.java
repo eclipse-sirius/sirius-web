@@ -15,9 +15,9 @@ package org.eclipse.sirius.web.sample.configuration;
 import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
+import org.eclipse.sirius.web.services.api.document.IStereotypeRegistry;
+import org.eclipse.sirius.web.services.api.document.IStereotypeRegistryConfigurer;
+import org.eclipse.sirius.web.services.api.document.Stereotype;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.view.View;
@@ -32,12 +32,12 @@ import org.springframework.context.annotation.Configuration;
 import io.micrometer.core.instrument.MeterRegistry;
 
 /**
- * Configuration used to register new stereotype descriptions.
+ * Configuration used to register new stereotypes.
  *
  * @author sbegaudeau
  */
 @Configuration
-public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescriptionRegistryConfigurer {
+public class StereotypeRegistryConfigurer implements IStereotypeRegistryConfigurer {
 
     public static final UUID EMPTY_ID = UUID.nameUUIDFromBytes("empty".getBytes());
 
@@ -67,21 +67,21 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     private final boolean studiosEnabled;
 
-    public StereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry, @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean studiosEnabled) {
+    public StereotypeRegistryConfigurer(MeterRegistry meterRegistry, @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean studiosEnabled) {
         this.stereotypeBuilder = new StereotypeBuilder(TIMER_NAME, meterRegistry);
         this.studiosEnabled = studiosEnabled;
         this.domainNameProvider = new SampleDomainNameProvider();
     }
 
     @Override
-    public void addStereotypeDescriptions(IStereotypeDescriptionRegistry registry) {
+    public void addStereotypes(IStereotypeRegistry registry) {
         if (this.studiosEnabled) {
-            registry.add(new StereotypeDescription(EMPTY_DOMAIN_ID, EMPTY_DOMAIN_LABEL, this::getEmptyDomainContent));
-            registry.add(new StereotypeDescription(EMPTY_VIEW_ID, EMPTY_VIEW_LABEL, this::getEmptyViewContent));
-            registry.add(new StereotypeDescription(PAPAYA_DOMAIN_ID, PAPAYA_DOMAIN_LABEL, this::getPapayaDomainContent));
-            registry.add(new StereotypeDescription(PAPAYA_VIEW_ID, PAPAYA_VIEW_LABEL, this::getPapayaViewContent));
+            registry.add(new Stereotype(EMPTY_DOMAIN_ID, EMPTY_DOMAIN_LABEL, this::getEmptyDomainContent));
+            registry.add(new Stereotype(EMPTY_VIEW_ID, EMPTY_VIEW_LABEL, this::getEmptyViewContent));
+            registry.add(new Stereotype(PAPAYA_DOMAIN_ID, PAPAYA_DOMAIN_LABEL, this::getPapayaDomainContent));
+            registry.add(new Stereotype(PAPAYA_VIEW_ID, PAPAYA_VIEW_LABEL, this::getPapayaViewContent));
         }
-        registry.add(new StereotypeDescription(EMPTY_ID, EMPTY_LABEL, "New", this::getEmptyContent));
+        registry.add(new Stereotype(EMPTY_ID, EMPTY_LABEL, this::getEmptyContent));
     }
 
     private String getEmptyDomainContent() {

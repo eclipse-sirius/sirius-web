@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,17 +24,6 @@ export interface NewDocumentAreaProps {
   editingContextId: string;
   editingContextActions: EditingContextAction[];
   readOnly: boolean;
-}
-
-export interface GQLCreateDocumentMutationInput {
-  id: string;
-  editingContextId: string;
-  name: string;
-  stereotypeDescriptionId: string;
-}
-
-export interface GQLCreateDocumentMutationVariables {
-  input: GQLCreateDocumentMutationInput;
 }
 
 export interface GQLInvokeEditingContextActionInput {

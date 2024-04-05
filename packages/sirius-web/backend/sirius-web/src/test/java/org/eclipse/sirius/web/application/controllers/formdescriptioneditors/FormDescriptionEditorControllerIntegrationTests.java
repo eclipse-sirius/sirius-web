@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorRefreshedEventPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCreatedFormDescriptionEditorSubscription;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,9 +61,9 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
     private Flux<FormDescriptionEditorRefreshedEventPayload> givenSubscriptionToFormDescriptionEditor() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
                 UUID.nameUUIDFromBytes("FormDescriptionEditor".getBytes()).toString(),
-                TestIdentifiers.FORM_DESCRIPTION_OBJECT.toString(),
+                StudioIdentifiers.FORM_DESCRIPTION_OBJECT.toString(),
                 "FormDescriptionEditor"
         );
         return this.givenCreatedFormDescriptionEditorSubscription.createAndSubscribe(input);
@@ -71,7 +71,7 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
 
     @Test
     @DisplayName("Given a form description editor, when we subscribe to its events, then the representation data are received")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeSubscribeToItsEventsThenTheRepresentationDataAreReceived() {
         var flux = this.givenSubscriptionToFormDescriptionEditor();

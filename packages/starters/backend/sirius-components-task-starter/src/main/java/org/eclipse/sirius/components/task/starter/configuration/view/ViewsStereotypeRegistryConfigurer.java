@@ -18,9 +18,9 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
-import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
+import org.eclipse.sirius.web.services.api.document.IStereotypeRegistry;
+import org.eclipse.sirius.web.services.api.document.IStereotypeRegistryConfigurer;
+import org.eclipse.sirius.web.services.api.document.Stereotype;
 import org.eclipse.sirius.components.task.starter.helper.StereotypeBuilder;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -34,7 +34,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author lfasani
  */
 @Configuration
-public class ViewsStereotypeDescriptionRegistryConfigurer implements IStereotypeDescriptionRegistryConfigurer {
+public class ViewsStereotypeRegistryConfigurer implements IStereotypeRegistryConfigurer {
 
     public static final UUID GANTT_VIEW_ID = UUID.nameUUIDFromBytes("gantt_view".getBytes());
 
@@ -48,14 +48,14 @@ public class ViewsStereotypeDescriptionRegistryConfigurer implements IStereotype
 
     private final StereotypeBuilder stereotypeBuilder;
 
-    public ViewsStereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry) {
+    public ViewsStereotypeRegistryConfigurer(MeterRegistry meterRegistry) {
         this.stereotypeBuilder = new StereotypeBuilder(TIMER_NAME, meterRegistry);
     }
 
     @Override
-    public void addStereotypeDescriptions(IStereotypeDescriptionRegistry registry) {
-        registry.add(new StereotypeDescription(GANTT_VIEW_ID, GANTT_VIEW_LABEL, this::getGanttViewContent));
-        registry.add(new StereotypeDescription(DECK_VIEW_ID, DECK_VIEW_LABEL, this::getDeckViewContent));
+    public void addStereotypes(IStereotypeRegistry registry) {
+        registry.add(new Stereotype(GANTT_VIEW_ID, GANTT_VIEW_LABEL, this::getGanttViewContent));
+        registry.add(new Stereotype(DECK_VIEW_ID, DECK_VIEW_LABEL, this::getDeckViewContent));
     }
 
     private String getGanttViewContent() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,28 +17,28 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
-import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
+import org.eclipse.sirius.web.services.api.document.Stereotype;
+import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeService;
 
 /**
  * Service used to query the stereotype descriptions available.
  *
  * @author sbegaudeau
  */
-public class StereotypeDescriptionService implements IStereotypeDescriptionService {
-    private final StereotypeDescriptionRegistry registry;
+public class StereotypeService implements IStereotypeService {
+    private final StereotypeRegistry registry;
 
-    public StereotypeDescriptionService(StereotypeDescriptionRegistry registry) {
+    public StereotypeService(StereotypeRegistry registry) {
         this.registry = Objects.requireNonNull(registry);
     }
 
     @Override
-    public List<StereotypeDescription> getStereotypeDescriptions(String editingContextId) {
-        return this.registry.getStereotypeDescriptions();
+    public List<Stereotype> getStereotypes(String editingContextId) {
+        return this.registry.getStereotypes();
     }
 
     @Override
-    public Optional<StereotypeDescription> getStereotypeDescriptionById(String editingContextId, UUID id) {
-        return this.registry.getStereotypeDescription(id);
+    public Optional<Stereotype> getStereotypeById(String editingContextId, UUID id) {
+        return this.registry.getStereotype(id);
     }
 }

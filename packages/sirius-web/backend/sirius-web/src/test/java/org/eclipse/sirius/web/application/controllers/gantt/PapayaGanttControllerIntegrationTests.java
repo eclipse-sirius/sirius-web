@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.GanttRefreshedEventPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.PapayaSampleIdentifiers;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCreatedGanttSubscription;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.gantt.PapayaGanttDescriptionProvider;
@@ -65,9 +65,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     private Flux<GanttRefreshedEventPayload> givenSubscriptionToGantt() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.papayaGanttDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaSampleIdentifiers.PROJECT_OBJECT.toString(),
+                PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "Deck"
         );
         return this.givenCreatedGanttSubscription.createAndSubscribe(input);

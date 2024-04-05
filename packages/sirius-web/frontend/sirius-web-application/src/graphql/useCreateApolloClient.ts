@@ -27,6 +27,7 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { useData } from '@eclipse-sirius/sirius-components-core';
 import { useMemo } from 'react';
+import { EditingContextStereotypesFragment, StereotypeFragment } from '../modals/new-document/useStereotypes.fragments';
 import {
   ProjectFragment,
   ViewerProjectsFragment,
@@ -60,7 +61,12 @@ export const useCreateApolloClient = (httpOrigin: string, wsOrigin: string): Apo
   });
 
   let fragmentRegistry: FragmentRegistryAPI = createFragmentRegistry();
-  fragmentRegistry.register(ViewerProjectsFragment, ProjectFragment);
+  fragmentRegistry.register(
+    ViewerProjectsFragment,
+    ProjectFragment,
+    EditingContextStereotypesFragment,
+    StereotypeFragment
+  );
 
   let cacheOptions: InMemoryCacheConfig = {
     fragments: fragmentRegistry,

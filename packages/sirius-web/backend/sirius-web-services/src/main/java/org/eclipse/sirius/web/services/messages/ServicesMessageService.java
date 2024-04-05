@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,7 @@ public class ServicesMessageService implements IServicesMessageService {
     }
 
     @Override
-    public String stereotypeDescriptionNotFound(UUID stereotypeDescriptionId) {
-        return this.messageSourceAccessor.getMessage("STEREOTYPE_DESCRIPTION_NOT_FOUND", new Object[] { stereotypeDescriptionId });
+    public String stereotypeNotFound(UUID stereotypeId) {
+        return this.messageSourceAccessor.getMessage("STEREOTYPE_NOT_FOUND", new Object[] { stereotypeId });
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
+import org.eclipse.sirius.web.services.api.document.Stereotype;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
+import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeService;
 
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;
@@ -39,43 +39,43 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * <pre>
  * type EditingContext {
- *   stereotypeDescriptions: EditingContextStereotypeDescriptionConnection!
+ *   stereotypes: EditingContextStereotypesConnection!
  * }
  * </pre>
  *
  * @author hmarchadour
  */
-@QueryDataFetcher(type = "EditingContext", field = "stereotypeDescriptions")
-public class EditingContextStereotypeDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<StereotypeDescription>> {
+@QueryDataFetcher(type = "EditingContext", field = "stereotypes")
+public class EditingContextStereotypesDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<Stereotype>> {
 
-    private final IStereotypeDescriptionService stereotypeDescriptionService;
+    private final IStereotypeService stereotypeService;
 
-    public EditingContextStereotypeDescriptionsDataFetcher(IStereotypeDescriptionService stereotypeDescriptionService) {
-        this.stereotypeDescriptionService = Objects.requireNonNull(stereotypeDescriptionService);
+    public EditingContextStereotypesDataFetcher(IStereotypeService stereotypeService) {
+        this.stereotypeService = Objects.requireNonNull(stereotypeService);
     }
 
     @Override
-    public Connection<StereotypeDescription> get(DataFetchingEnvironment environment) throws Exception {
+    public Connection<Stereotype> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
-        var stereotypeDescriptions = this.stereotypeDescriptionService.getStereotypeDescriptions(editingContextId);
+        var stereotypes = this.stereotypeService.getStereotypes(editingContextId);
 
         // @formatter:off
-        List<Edge<StereotypeDescription>> stereotypeDescriptionEdges = stereotypeDescriptions.stream()
-                .map(stereotypeDescription -> {
-                    String value = Base64.getEncoder().encodeToString(stereotypeDescription.getId().toString().getBytes());
+        List<Edge<Stereotype>> stereotypeEdges = stereotypes.stream()
+                .map(stereotype -> {
+                    String value = Base64.getEncoder().encodeToString(stereotype.getId().toString().getBytes());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
-                    Edge<StereotypeDescription> edge = new DefaultEdge<>(stereotypeDescription, cursor);
+                    Edge<Stereotype> edge = new DefaultEdge<>(stereotype, cursor);
                     return edge;
                 })
                 .toList();
         // @formatter:on
 
-        ConnectionCursor startCursor = stereotypeDescriptionEdges.stream().findFirst().map(Edge::getCursor).orElse(null);
+        ConnectionCursor startCursor = stereotypeEdges.stream().findFirst().map(Edge::getCursor).orElse(null);
         ConnectionCursor endCursor = null;
-        if (!stereotypeDescriptionEdges.isEmpty()) {
-            endCursor = stereotypeDescriptionEdges.get(stereotypeDescriptionEdges.size() - 1).getCursor();
+        if (!stereotypeEdges.isEmpty()) {
+            endCursor = stereotypeEdges.get(stereotypeEdges.size() - 1).getCursor();
         }
         PageInfo pageInfo = new DefaultPageInfo(startCursor, endCursor, false, false);
-        return new DefaultConnection<>(stereotypeDescriptionEdges, pageInfo);
+        return new DefaultConnection<>(stereotypeEdges, pageInfo);
     }
 }

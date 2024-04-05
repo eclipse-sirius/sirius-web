@@ -20,8 +20,8 @@ import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +45,10 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a regular project, when it is loaded, then the domains from all studios are available")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRegularProjectWhenItIsLoadedThenTheDomainsFromAllStudiosAreAvailable() {
-        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
@@ -63,10 +63,10 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a regularProject, when it is loaded, then the views from all studios are available")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRegularProjectWhenItIsLoadedThenTheViewsFromAllStudiosAreAvailable() {
-        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
@@ -86,10 +86,10 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a studio, when it is loaded, then the palette is available")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenItIsLoadedThenThenPaletteIsAvailable() {
-        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.EMPTY_STUDIO_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
@@ -106,10 +106,10 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a studio, when it is loaded, then its content can be manipulated")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenItIsLoadedThenItsContentCanBeManipulated() {
-        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
