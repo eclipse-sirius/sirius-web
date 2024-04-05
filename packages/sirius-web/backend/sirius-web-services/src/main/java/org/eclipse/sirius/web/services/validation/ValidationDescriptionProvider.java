@@ -13,13 +13,12 @@
 package org.eclipse.sirius.web.services.validation;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationDescriptionProvider;
-import org.eclipse.sirius.components.core.api.IValidationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IValidationService;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.validation.description.ValidationDescription;
 import org.springframework.stereotype.Service;
@@ -31,6 +30,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ValidationDescriptionProvider implements IValidationDescriptionProvider {
+
+    public static final String LABEL = "Validation";
+
+    public static final String DESCRIPTION_ID = "validation_description";
 
     private final IValidationService validationService;
 
@@ -45,8 +48,8 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
         Predicate<VariableManager> canCreatePredicate = variableManager -> false;
 
         // @formatter:off
-        return ValidationDescription.newValidationDescription(UUID.nameUUIDFromBytes("validation_description".getBytes()).toString())
-                .label("Validation")
+        return ValidationDescription.newValidationDescription(DESCRIPTION_ID)
+                .label(LABEL)
                 .canCreatePredicate(canCreatePredicate)
                 .diagnosticsProvider(this::getDiagnosticsProvider)
                 .kindProvider(this::kindProvider)
@@ -88,8 +91,7 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
     }
 
     private String messageProvider(Object object) {
-        if (object instanceof Diagnostic) {
-            Diagnostic diagnostic = (Diagnostic) object;
+        if (object instanceof Diagnostic diagnostic) {
             return diagnostic.getMessage();
         }
         return "";

@@ -123,11 +123,43 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
     }
 
     private DiagramDescription domainDiagramDescription() {
+        var newEntitySetValue = new ViewBuilders().newSetValue()
+                .featureName("name")
+                .valueExpression("NewEntity")
+                .build();
+
+        var newEntityChangeContext = new ViewBuilders().newChangeContext()
+                .expression("aql:newEntity")
+                .children(newEntitySetValue)
+                .build();
+
+        var createEntityInstance = new ViewBuilders().newCreateInstance()
+                .referenceName("types")
+                .typeName("domain::Entity")
+                .variableName("newEntity")
+                .children(newEntityChangeContext)
+                .build();
+
+        var initialChangeContext = new ViewBuilders().newChangeContext()
+                .expression("aql:self")
+                .children(createEntityInstance)
+                .build();
+
+        var newEntityNodeTool = new DiagramBuilders().newNodeTool()
+                .name("New entity")
+                .body(initialChangeContext)
+                .build();
+
+        var palette = new DiagramBuilders().newDiagramPalette()
+                .nodeTools(newEntityNodeTool)
+                .build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name("Domain")
                 .domainType("domain::Domain")
                 .titleExpression("aql:'Domain'")
+                .palette(palette)
                 .build();
     }
 

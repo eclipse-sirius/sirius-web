@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,8 @@ import org.eclipse.sirius.components.compatibility.services.selection.api.ISelec
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.selection.Selection;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
 import org.eclipse.sirius.viewpoint.description.tool.SelectModelElementVariable;
 import org.springframework.stereotype.Service;
@@ -52,8 +52,7 @@ public class SelectModelElementVariableConverter implements ISelectModelElementV
     @Override
     public SelectionDescription convert(SelectModelElementVariable selectModelElementVariable, org.eclipse.sirius.diagram.description.DiagramDescription diagramDescription) {
         AQLInterpreter interpreter = this.interpreterFactory.create(diagramDescription);
-        // @formatter:off
-        SelectionDescription selectionDescription = SelectionDescription.newSelectionDescription(this.identifierProvider.getIdentifier(selectModelElementVariable))
+        return SelectionDescription.newSelectionDescription(this.identifierProvider.getIdentifier(selectModelElementVariable))
                 .objectsProvider(variableManager -> {
                     Result result = interpreter.evaluateExpression(variableManager.getVariables(), selectModelElementVariable.getCandidatesExpression());
                     return result.asObjects().orElse(List.of()).stream()
@@ -67,7 +66,7 @@ public class SelectModelElementVariableConverter implements ISelectModelElementV
                     }
                     return message;
                 })
-                .idProvider(new GetOrCreateRandomIdProvider())
+                .idProvider(variableManager -> Selection.PREFIX)
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null))
                 .iconURLProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of()))
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
@@ -75,8 +74,6 @@ public class SelectModelElementVariableConverter implements ISelectModelElementV
                 .label("Selection Description")
                 .canCreatePredicate(variableManager -> false)
                 .build();
-        // @formatter:on
-        return selectionDescription;
     }
 
 }

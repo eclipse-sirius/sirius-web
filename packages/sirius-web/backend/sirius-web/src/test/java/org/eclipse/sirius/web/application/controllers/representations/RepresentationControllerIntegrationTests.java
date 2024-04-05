@@ -67,10 +67,10 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
-    @DisplayName("Given a representation id, when a query is performed, then the representation metadata are returned")
+    @DisplayName("Given a persistent representation id, when a query is performed, then the representation metadata are returned")
     @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenRepresentationIdWhenQueryIsPerformedThenTheRepresentationMetadataAreReturned() {
+    public void givenPresistentRepresentationIdWhenQueryIsPerformedThenTheRepresentationMetadataAreReturned() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
                 "representationId", TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()
@@ -85,6 +85,28 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
         String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
         assertThat(label).isEqualTo("Portal");
+    }
+
+    @Test
+    @DisplayName("Given a transient representation id, when a query is performed, then the representation metadata are returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenTransientRepresentationIdWhenQueryIsPerformedThenTheRepresentationMetadataAreReturned() {
+        String initialExplorerId = "explorer://?expandedIds=[]&activeFilterIds=[]";
+        Map<String, Object> variables = Map.of(
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                "representationId", initialExplorerId
+        );
+        var result = this.representationMetadataQueryRunner.run(variables);
+
+        String representationId = JsonPath.read(result, "$.data.viewer.editingContext.representation.id");
+        assertThat(representationId).isEqualTo(initialExplorerId);
+
+        String kind = JsonPath.read(result, "$.data.viewer.editingContext.representation.kind");
+        assertThat(kind).isEqualTo("siriusComponents://representation?type=Tree");
+
+        String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
+        assertThat(label).isEqualTo("Explorer");
     }
 
     @Test

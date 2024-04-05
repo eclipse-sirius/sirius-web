@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.forms.api;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 
@@ -25,7 +26,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationConfigurat
  */
 public class RelatedElementsConfiguration implements IRepresentationConfiguration {
 
-    private static final String RELATED_PREFIX = "related:";
+    public static final String RELATED_PREFIX = "relatedElements://";
 
     private final String formId;
 
@@ -33,7 +34,8 @@ public class RelatedElementsConfiguration implements IRepresentationConfiguratio
 
     public RelatedElementsConfiguration(List<String> objectIds) {
         this.objectIds = Objects.requireNonNull(objectIds);
-        this.formId = UUID.nameUUIDFromBytes((RELATED_PREFIX + objectIds).getBytes()).toString();
+        var encodedIds = objectIds.stream().map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8)).toList();
+        this.formId = RELATED_PREFIX + "?objectIds=[" + String.join(",", encodedIds) + "]";
     }
 
     @Override

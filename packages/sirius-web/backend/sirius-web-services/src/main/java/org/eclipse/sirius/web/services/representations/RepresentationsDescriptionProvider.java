@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.representations;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvi
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IRepresentationsDescriptionProvider;
+import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -45,7 +48,6 @@ import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.components.portals.PortalView;
 import org.eclipse.sirius.components.representations.Failure;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -60,6 +62,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RepresentationsDescriptionProvider implements IRepresentationsDescriptionProvider {
+
+    public static final String TITLE = "Representations";
+
+    public static final String PREFIX = "representations://";
 
     public static final String REPRESENTATIONS_DEFAULT_FORM_DESCRIPTION_ID = "representations_default_form_description";
 
@@ -95,16 +101,25 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.objectService::getFullLabel)
-                .orElse("Properties");
+                .orElse(TITLE);
 
         return FormDescription.newFormDescription(UUID.nameUUIDFromBytes(REPRESENTATIONS_DEFAULT_FORM_DESCRIPTION_ID.getBytes()).toString())
                 .label("Representations default form description")
-                .idProvider(new GetOrCreateRandomIdProvider())
+                .idProvider(this::getRepresentationsFormId)
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(pageDescriptions)
                 .build();
+    }
+
+    private String getRepresentationsFormId(VariableManager variableManager) {
+        List<?> selectedObjects = variableManager.get(FormVariableProvider.SELECTION.name(), List.class).orElse(List.of());
+        List<String> selectedObjectIds = selectedObjects.stream()
+                .map(this.objectService::getId)
+                .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
+                .toList();
+        return PREFIX + "?objectIds=[" + String.join(",", selectedObjectIds) + "]";
     }
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
@@ -122,7 +137,7 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
 
         ListDescription listDescription = ListDescription.newListDescription("RepresentationsList")
             .idProvider(new WidgetIdProvider())
-            .labelProvider(variableManager -> "Representations")
+            .labelProvider(variableManager -> TITLE)
             .itemsProvider(this.getItemsProvider())
             .itemIdProvider(this.getItemIdProvider())
             .itemLabelProvider(this.getItemLabelProvider())

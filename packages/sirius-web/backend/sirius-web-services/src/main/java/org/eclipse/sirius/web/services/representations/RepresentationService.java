@@ -20,26 +20,22 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
-import org.eclipse.sirius.components.collaborative.widget.reference.browser.ModelBrowsersDescriptionProvider;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
-import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
-import org.eclipse.sirius.web.services.api.representations.ITransientRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
-import org.eclipse.sirius.web.services.explorer.ExplorerDescriptionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -53,7 +49,7 @@ import io.micrometer.core.instrument.Timer;
  * @author gcoutable
  */
 @Service
-public class RepresentationService implements IRepresentationService, IRepresentationPersistenceService, IDanglingRepresentationDeletionService, ITransientRepresentationMetadataSearchService {
+public class RepresentationService implements IRepresentationService, IRepresentationPersistenceService, IDanglingRepresentationDeletionService {
 
     private static final String TIMER_NAME = "siriusweb_representation_save";
 
@@ -65,14 +61,18 @@ public class RepresentationService implements IRepresentationService, IRepresent
 
     private final ObjectMapper objectMapper;
 
+    private final List<IRepresentationMetadataProvider> representationMetadataProviders;
+
     private final Timer timer;
 
     private final Logger logger = LoggerFactory.getLogger(RepresentationService.class);
 
-    public RepresentationService(IObjectSearchService objectSearchService, IProjectRepository projectRepository, IRepresentationRepository representationRepository, ObjectMapper objectMapper, MeterRegistry meterRegistry) {
+    public RepresentationService(IObjectSearchService objectSearchService, IProjectRepository projectRepository, IRepresentationRepository representationRepository, ObjectMapper objectMapper,
+            List<IRepresentationMetadataProvider> representationMetadataProviders, MeterRegistry meterRegistry) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.representationRepository = Objects.requireNonNull(representationRepository);
+        this.representationMetadataProviders = Objects.requireNonNull(representationMetadataProviders);
         this.objectMapper = Objects.requireNonNull(objectMapper);
 
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
@@ -102,7 +102,7 @@ public class RepresentationService implements IRepresentationService, IRepresent
                 .orElseGet(List::of)
                 .stream()
                 .map(new RepresentationMapper(this.objectMapper)::toDTO)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     @Override
@@ -166,8 +166,7 @@ public class RepresentationService implements IRepresentationService, IRepresent
 
     @Override
     public boolean isDangling(IEditingContext editingContext, IRepresentation representation) {
-        if (representation instanceof ISemanticRepresentation) {
-            ISemanticRepresentation semanticRepresentation = (ISemanticRepresentation) representation;
+        if (representation instanceof ISemanticRepresentation semanticRepresentation) {
             String targetObjectId = semanticRepresentation.getTargetObjectId();
             Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, targetObjectId);
             return optionalObject.isEmpty();
@@ -182,17 +181,10 @@ public class RepresentationService implements IRepresentationService, IRepresent
 
     @Override
     public Optional<RepresentationMetadata> findByRepresentationId(String representationId) {
-        Optional<RepresentationMetadata> transientRepresentation = this.findTransientRepresentationById(representationId);
-        if (transientRepresentation.isPresent()) {
-            return transientRepresentation;
-        }
-        return new IDParser().parse(representationId)
-                .flatMap(this.representationRepository::findById)
-                .map(new RepresentationMapper(this.objectMapper)::toDTO)
-                .map(RepresentationDescriptor::getRepresentation)
-                .filter(IRepresentation.class::isInstance)
-                .map(IRepresentation.class::cast)
-                .map(representation -> new RepresentationMetadata(representation.getId(), representation.getKind(), representation.getLabel(), representation.getDescriptionId()));
+        return this.representationMetadataProviders.stream()
+            .filter(provider -> provider.canHandle(representationId))
+            .map(provider -> provider.handle(representationId))
+            .findFirst();
     }
 
     @Override
@@ -209,16 +201,4 @@ public class RepresentationService implements IRepresentationService, IRepresent
                 .toList();
     }
 
-    @Override
-    public Optional<RepresentationMetadata> findTransientRepresentationById(String representationId) {
-        Optional<RepresentationMetadata> representationMetadata = Optional.empty();
-        if (representationId.startsWith(ExplorerDescriptionProvider.REPRESENTATION_ID)) {
-            representationMetadata = Optional.of(new RepresentationMetadata(ExplorerDescriptionProvider.REPRESENTATION_ID, Tree.KIND, ExplorerDescriptionProvider.REPRESENTATION_NAME, ExplorerDescriptionProvider.DESCRIPTION_ID));
-        } else if (representationId.startsWith(ModelBrowsersDescriptionProvider.MODEL_BROWSER_CONTAINER_KIND)) {
-            representationMetadata = Optional.of(new RepresentationMetadata(ModelBrowsersDescriptionProvider.MODEL_BROWSER_CONTAINER_KIND, Tree.KIND, ModelBrowsersDescriptionProvider.REPRESENTATION_NAME, ModelBrowsersDescriptionProvider.CONTAINER_DESCRIPTION_ID));
-        } else if (representationId.startsWith(ModelBrowsersDescriptionProvider.MODEL_BROWSER_REFERENCE_KIND)) {
-            representationMetadata = Optional.of(new RepresentationMetadata(ModelBrowsersDescriptionProvider.MODEL_BROWSER_REFERENCE_KIND, Tree.KIND, ModelBrowsersDescriptionProvider.REPRESENTATION_NAME, ModelBrowsersDescriptionProvider.REFERENCE_DESCRIPTION_ID));
-        }
-        return representationMetadata;
-    }
 }

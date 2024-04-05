@@ -17,14 +17,10 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
-import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
-import org.eclipse.sirius.web.services.api.representations.ITransientRepresentationMetadataSearchService;
-import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
@@ -48,49 +44,19 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
 
     private static final String REPRESENTATION_ID_ARGUMENT = "representationId";
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    private final IRepresentationService representationService;
-
-    private final ITransientRepresentationMetadataSearchService transientRepresentationMetadataSearchService;
-
-    public EditingContextRepresentationDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IRepresentationService representationService, ITransientRepresentationMetadataSearchService transientRepresentationMetadataSearchService) {
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
-        this.representationService = Objects.requireNonNull(representationService);
-        this.transientRepresentationMetadataSearchService =  Objects.requireNonNull(transientRepresentationMetadataSearchService);
+    public EditingContextRepresentationDataFetcher(IRepresentationMetadataSearchService representationMetadataSearchService) {
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
     }
 
     @Override
     public DataFetcherResult<RepresentationMetadata> get(DataFetchingEnvironment environment) throws Exception {
-        String editingContextId = environment.getSource();
         String representationId = environment.getArgument(REPRESENTATION_ID_ARGUMENT);
 
         Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
         localContext.put(LocalContextConstants.REPRESENTATION_ID, representationId);
-        // Search among the active representations first. They are already loaded in memory and include transient
-        // representations.
-        var representationMetadata = this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                    .flatMap(editingContextEventProcessor -> editingContextEventProcessor.getRepresentationEventProcessors().stream())
-                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getRepresentation().getId().equals(representationId))
-                    .map(IRepresentationEventProcessor::getRepresentation)
-                    .map(representation -> {
-                        return new RepresentationMetadata(representation.getId(),
-                                                          representation.getKind(),
-                                                          representation.getLabel(),
-                                                          representation.getDescriptionId());
-                    })
-                    .findFirst();
-        if (representationMetadata.isEmpty()) {
-            representationMetadata = this.transientRepresentationMetadataSearchService.findTransientRepresentationById(representationId);
-        }
-        if (representationMetadata.isEmpty()) {
-            representationMetadata = this.representationService.getRepresentationDescriptorForProjectId(editingContextId, representationId)
-                    .map(RepresentationDescriptor::getRepresentation)
-                    .map(representation -> new RepresentationMetadata(representation.getId(),
-                                                                      representation.getKind(),
-                                                                      representation.getLabel(),
-                                                                      representation.getDescriptionId()));
-        }
+        var representationMetadata = this.representationMetadataSearchService.findByRepresentationId(representationId);
 
         return DataFetcherResult.<RepresentationMetadata>newResult()
                 .data(representationMetadata.orElse(null))

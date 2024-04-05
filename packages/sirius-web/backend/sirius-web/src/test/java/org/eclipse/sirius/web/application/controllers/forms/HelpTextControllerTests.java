@@ -18,7 +18,6 @@ import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertion
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,14 +26,14 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.components.forms.tests.graphql.ReferenceValueOptionsQueryRunner;
+import org.eclipse.sirius.components.forms.Textfield;
+import org.eclipse.sirius.components.forms.tests.graphql.HelpTextQueryRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
-import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
-import org.eclipse.sirius.web.services.forms.FormWithReferenceWidgetDescriptionProvider;
+import org.eclipse.sirius.web.services.forms.FormWithTextfieldDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,14 +46,14 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests of the reference widget.
+ * Integration tests of the help text controllers.
  *
  * @author sbegaudeau
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
-public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
+public class HelpTextControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -63,10 +62,10 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     private IGivenCreatedFormSubscription givenCreatedFormSubscription;
 
     @Autowired
-    private FormWithReferenceWidgetDescriptionProvider formWithReferenceWidgetDescriptionProvider;
+    private FormWithTextfieldDescriptionProvider formWithTextfieldDescriptionProvider;
 
     @Autowired
-    private ReferenceValueOptionsQueryRunner referenceValueOptionsQueryRunner;
+    private HelpTextQueryRunner helpTextQueryRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -74,52 +73,21 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a reference widget, when it is displayed, then it is properly initialized")
+    @DisplayName("Given a textfield widget, when its help text is requested, then it is properly received")
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenReferenceWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
+    public void givenTextfieldWidgetWhenItsHelpTextIsRequestedThenItIsProperlyReceived() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
-                this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
-                StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
-                "FormWithReferenceWidget"
-        );
-        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
-
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
-
-                    assertThat(referenceWidget)
-                            .hasLabel("Super types")
-                            .hasValueWithLabel("NamedElement");
-                }, () -> fail("Missing form"));
-
-        StepVerifier.create(flux)
-                .consumeNextWith(initialFormContentConsumer)
-                .thenCancel()
-                .verify(Duration.ofSeconds(10));
-    }
-
-    @Test
-    @DisplayName("Given a reference widget, when its options are requested, then some values are returned")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenReferenceWidgetWhenItsOptionsAreRequestedThenSomeValuesAreReturned() {
-        var input = new CreateRepresentationInput(
-                UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
-                this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
-                StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
-                "FormWithReferenceWidget"
+                this.formWithTextfieldDescriptionProvider.getRepresentationDescriptionId(),
+                StudioIdentifiers.DOMAIN_OBJECT.toString(),
+                "FormWithTextfield"
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
 
         var formId = new AtomicReference<String>();
-        var referenceWidgetId = new AtomicReference<String>();
+        var textfieldId = new AtomicReference<String>();
 
         Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
                 .map(FormRefreshedEventPayload::form)
@@ -127,29 +95,26 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                     formId.set(form.getId());
 
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+                    var textfield = groupNavigator.findWidget("Name", Textfield.class);
 
-                    referenceWidgetId.set(referenceWidget.getId());
+                    textfieldId.set(textfield.getId());
                 }, () -> fail("Missing form"));
 
-        Runnable requestReferenceValueOptions = () -> {
+        Runnable requestHelpText = () -> {
             Map<String, Object> variables = Map.of(
                     "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
                     "representationId", formId.get(),
-                    "referenceWidgetId", referenceWidgetId.get()
+                    "widgetId", textfieldId.get()
             );
-            var result = this.referenceValueOptionsQueryRunner.run(variables);
+            var result = this.helpTextQueryRunner.run(variables);
 
-            List<String> referenceValueOptionLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.referenceValueOptions[*].label");
-            assertThat(referenceValueOptionLabels)
-                    .isNotEmpty()
-                    .anySatisfy(label -> assertThat(label).isEqualTo("Human"));
-
+            String helpText = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.helpText");
+            assertThat(helpText).isEqualTo("The name of the object");
         };
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
-                .then(requestReferenceValueOptions)
+                .then(requestHelpText)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

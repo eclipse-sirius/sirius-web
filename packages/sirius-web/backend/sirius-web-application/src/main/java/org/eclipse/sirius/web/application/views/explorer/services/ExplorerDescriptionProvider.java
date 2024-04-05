@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer.services;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,12 +31,12 @@ import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.representations.Failure;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
+import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.images.ImageConstants;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
@@ -54,7 +56,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     public static final String DOCUMENT_KIND = "siriusWeb://document";
 
-    public static final String REPRESENTATION_ID = "explorer://";
+    public static final String PREFIX = "explorer://";
 
     public static final String REPRESENTATION_NAME = "Explorer";
 
@@ -85,12 +87,12 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
         Predicate<VariableManager> canCreatePredicate = variableManager -> variableManager.get("treeId", String.class)
-                .map(treeId -> treeId.startsWith(REPRESENTATION_ID))
+                .map(treeId -> treeId.startsWith(PREFIX))
                 .orElse(false);
 
         var explorerTreeDescription = TreeDescription.newTreeDescription(DESCRIPTION_ID)
                 .label(REPRESENTATION_NAME)
-                .idProvider(new GetOrCreateRandomIdProvider())
+                .idProvider(this::getTreeId)
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
@@ -106,6 +108,28 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .renameHandler(this::getRenameHandler)
                 .build();
         return List.of(explorerTreeDescription);
+    }
+
+    private String getTreeId(VariableManager variableManager) {
+        List<?> expandedObjects = variableManager.get(TreeRenderer.EXPANDED, List.class).orElse(List.of());
+        List<?> activatedFilters = variableManager.get(TreeRenderer.ACTIVE_FILTER_IDS, List.class).orElse(List.of());
+        return this.getExplorerTreeId(expandedObjects, activatedFilters);
+    }
+
+    private String getExplorerTreeId(List<?> expandedObjects, List<?> activatedFilters) {
+        List<String> expandedObjectIds = expandedObjects.stream()
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
+                .toList();
+
+        List<String> activatedFilterIds = activatedFilters.stream()
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
+                .toList();
+
+        return "explorer://?expandedIds=[" + String.join(",", expandedObjectIds) + "]?&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
     }
 
     private String getTreeItemId(VariableManager variableManager) {

@@ -10,22 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.representation.services.api;
-
-import java.util.Optional;
+package org.eclipse.sirius.components.core.api;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
- * Used to interact with representations.
+ * Used to obtain the representation metadata from a representation id.
+ * The representation may not be loaded/active.
  *
- * @author sbegaudeau
+ * @author pcdavid
  */
-public interface IRepresentationApplicationService {
-
-    Page<RepresentationMetadata> findAllByEditingContextId(String editingContextId, Pageable pageable);
-
-    Optional<String> findEditingContextIdFromRepresentationId(String representationId);
+public interface IRepresentationMetadataProvider {
+    boolean canHandle(String representationId);
+    RepresentationMetadata handle(String representationId);
 }

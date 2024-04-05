@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.explorer;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,21 +25,21 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.compatibility.services.ImageConstants;
+import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
-import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.representations.Failure;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
+import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.web.services.explorer.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.web.services.explorer.api.IExplorerChildrenProvider;
@@ -55,7 +57,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     public static final String DESCRIPTION_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString();
 
-    public static final String REPRESENTATION_ID = "explorer://";
+    public static final String PREFIX = "explorer://";
 
     public static final String REPRESENTATION_NAME = "Explorer";
 
@@ -96,12 +98,12 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
         // However the same predicate will also be called by TreeEventProcessorFactory to select the appropriate TreeDescription
         // when a frontend component subscribes to a treeEvent with a given treeId.
         Predicate<VariableManager> canCreatePredicate = variableManager -> {
-            return variableManager.get(TreeConfiguration.TREE_ID, String.class).map(treeId -> treeId.startsWith(REPRESENTATION_ID)).orElse(false);
+            return variableManager.get(TreeConfiguration.TREE_ID, String.class).map(treeId -> treeId.startsWith(PREFIX)).orElse(false);
         };
 
         return TreeDescription.newTreeDescription(DESCRIPTION_ID)
                 .label(REPRESENTATION_NAME)
-                .idProvider(new GetOrCreateRandomIdProvider())
+                .idProvider(this::getTreeId)
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
@@ -116,6 +118,28 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
                 .build();
+    }
+
+    private String getTreeId(VariableManager variableManager) {
+        List<?> expandedObjects = variableManager.get(TreeRenderer.EXPANDED, List.class).orElse(List.of());
+        List<?> activatedFilters = variableManager.get(TreeRenderer.ACTIVE_FILTER_IDS, List.class).orElse(List.of());
+        return this.getExplorerTreeId(expandedObjects, activatedFilters);
+    }
+
+    private String getExplorerTreeId(List<?> expandedObjects, List<?> activatedFilters) {
+        List<String> expandedObjectIds = expandedObjects.stream()
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
+                .toList();
+
+        List<String> activatedFilterIds = activatedFilters.stream()
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
+                .toList();
+
+        return "explorer://?expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
     }
 
     private String getTreeItemId(VariableManager variableManager) {
