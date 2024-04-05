@@ -69,7 +69,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
     @Test
     @DisplayName("Given a semantic object, when we subscribe to its selection events, then the selection is sent")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSemanticObjectWhenWeSubscribeToItsSelectionEventsThenTheSelectionIsSent() {
         var input = new SelectionEventInput(UUID.randomUUID(), PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, PapayaSampleIdentifiers.ROOT_OBJECT.toString());

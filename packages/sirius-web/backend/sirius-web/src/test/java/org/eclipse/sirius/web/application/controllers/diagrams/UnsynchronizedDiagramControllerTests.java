@@ -89,7 +89,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
 
     @Test
     @DisplayName("Given an unsynchronous diagram, when it is opened, then unsynchronized nodes should not appear")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenUnsynchronousDiagramWhenItIsOpenedThenUnsynchronizedNodesShouldNotAppear() {
         var flux = this.givenSubscriptionToUnsynchronizedDiagram();
@@ -108,7 +108,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
 
     @Test
     @DisplayName("Given an unsynchronous diagram, when a node is created, then it appears in the diagram")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenUnsynchronousDiagramWhenNodeIsCreatedThenItAppearsInTheDiagram() {
         var flux = this.givenSubscriptionToUnsynchronizedDiagram();

@@ -87,7 +87,7 @@ public class SliderControllerTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a slider widget, when it is displayed, then it is properly initialized")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSliderWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToSliderForm();
@@ -113,7 +113,7 @@ public class SliderControllerTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a slider widget, when it is edited, then its value is updated")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSliderWidgetWhenItIsEditedThenTheValueIsUpdated() {
         var flux = this.givenSubscriptionToSliderForm();

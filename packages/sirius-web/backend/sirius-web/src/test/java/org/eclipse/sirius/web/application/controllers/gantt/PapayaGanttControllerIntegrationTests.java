@@ -75,7 +75,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
 
     @Test
     @DisplayName("Given a gantt representation, when we subscribe to its event, then the representation data are received")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenGanttRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var flux = this.givenSubscriptionToGantt();
