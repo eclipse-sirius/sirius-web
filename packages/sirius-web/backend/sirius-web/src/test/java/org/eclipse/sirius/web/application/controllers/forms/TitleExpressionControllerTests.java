@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.PapayaSampleIdentifiers;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.forms.FormWithTitleExpressionDescriptionProvider;
@@ -65,9 +65,9 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
     private Flux<FormRefreshedEventPayload> givenSubscriptionToTitleExpressionForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.formWithTitleExpressionDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaSampleIdentifiers.SIRIUS_COMPONENTS_REPRESENTATIONS_OBJECT.toString(),
+                PapayaIdentifiers.SIRIUS_COMPONENTS_REPRESENTATIONS_OBJECT.toString(),
                 "FormWithTitleExpression"
         );
         return this.givenCreatedFormSubscription.createAndSubscribe(input);

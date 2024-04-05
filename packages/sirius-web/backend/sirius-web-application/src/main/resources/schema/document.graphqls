@@ -1,0 +1,41 @@
+extend type EditingContext {
+  stereotypes: EditingContextStereotypesConnection!
+}
+
+type EditingContextStereotypesConnection {
+  edges: [EditingContextStereotypesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type EditingContextStereotypesEdge {
+  node: Stereotype!
+}
+
+type Stereotype {
+  id: ID!
+  label: String!
+}
+
+extend type Mutation {
+  createDocument(input: CreateDocumentInput!): CreateDocumentPayload!
+}
+
+input CreateDocumentInput {
+  id: ID!
+  editingContextId: ID!
+  stereotypeId: ID!
+  name: String!
+}
+
+union CreateDocumentPayload = ErrorPayload | CreateDocumentSuccessPayload
+
+type CreateDocumentSuccessPayload {
+  id: ID!
+  document: Document!
+}
+
+type Document {
+  id: ID!
+  name: String!
+  kind: String!
+}

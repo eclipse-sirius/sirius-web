@@ -15,9 +15,9 @@ package org.eclipse.sirius.components.task.starter.configuration;
 import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
+import org.eclipse.sirius.web.services.api.document.IStereotypeRegistry;
+import org.eclipse.sirius.web.services.api.document.IStereotypeRegistryConfigurer;
+import org.eclipse.sirius.web.services.api.document.Stereotype;
 import org.eclipse.sirius.components.task.starter.helper.StereotypeBuilder;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,7 +29,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author lfasani
  */
 @Configuration
-public class TaskStereotypeDescriptionRegistryConfigurer implements IStereotypeDescriptionRegistryConfigurer {
+public class TaskStereotypeRegistryConfigurer implements IStereotypeRegistryConfigurer {
 
     private static final UUID TASK_EXAMPLE_ID = UUID.nameUUIDFromBytes("task_example".getBytes());
 
@@ -39,13 +39,13 @@ public class TaskStereotypeDescriptionRegistryConfigurer implements IStereotypeD
 
     private final StereotypeBuilder stereotypeBuilder;
 
-    public TaskStereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry) {
+    public TaskStereotypeRegistryConfigurer(MeterRegistry meterRegistry) {
         this.stereotypeBuilder = new StereotypeBuilder(TIMER_NAME, meterRegistry);
     }
 
     @Override
-    public void addStereotypeDescriptions(IStereotypeDescriptionRegistry registry) {
-        registry.add(new StereotypeDescription(TASK_EXAMPLE_ID, TASK_EXAMPLE_LABEL, this::getTaskExampleContent));
+    public void addStereotypes(IStereotypeRegistry registry) {
+        registry.add(new Stereotype(TASK_EXAMPLE_ID, TASK_EXAMPLE_LABEL, this::getTaskExampleContent));
     }
 
     private String getTaskExampleContent() {

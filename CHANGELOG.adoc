@@ -38,6 +38,10 @@ For further information, please refer to ADR _130_add_support_for_outside_inside
 - https://github.com/eclipse-sirius/sirius-web/issues/2567[#2567] [form] The TypeScript API used to contribute custom widgets has changed a little to fix some types which could not work in a strict TypeScript environment.
 The use of generics has thus been greatly reduced since they could not create a set of coherent TypeScript type signatures.
 - https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [core] Remove `IRepresentationRefreshPolicyRegistry#add` since it can easily be replaced with a plain old Spring service dependency injection
+- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [core] Remove the field `EditingContext#stereotypeDescriptions` from `core.graphqls` since it is not provided by Sirius Components and only used by Sirius Web
+- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [core] Remove all references to the Stereotype API from `sirius-components-core` since it has always been a Sirius Web API.
+This will make the dependency to the old Sirius Web architecture more explicit.
+- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [sirius-web] Simplify the lifecycle and API of the documentation creation in order to provide a simpler yet more powerful API for the new architecture
 
 === Dependency update
 
@@ -2015,7 +2019,7 @@ Some improvements have also been made to the incremental layout in order to supp
 - https://github.com/eclipse-sirius/sirius-components/issues/348[#348] [core] Add a correlation identifier on `IInput` and `IPayload`. From now on all payloads created must have, as an identifier, the identifier of the input which has trigger their creation. This will give us the ability to provide advanced features in the future and improve our debugging capabilities now
 - https://github.com/eclipse-sirius/sirius-components/issues/351[#351] [core] Transform `ChangeKind` into `ChangeDescription` in order to encapsulate the source of the change too. This will allow a representation to distinguish between a `SEMANTIC_CHANGE` coming from another representation and one coming from itself
 - https://github.com/eclipse-sirius/sirius-components/issues/347[#347] [diagram] Replace `Size` and `Position` builders by `Size#of` and `Position#at`
-- https://github.com/eclipse-sirius/sirius-components/issues/378[#378] [core] Make the stereotype description editing context aware. As a result, the `IStereotypeDescriptionService` and some related classes are now manipulating an extra parameter in some methods, the `editingContextId`
+- https://github.com/eclipse-sirius/sirius-components/issues/378[#378] [core] Make the stereotype description editing context aware. As a result, the `IStereotypeService` and some related classes are now manipulating an extra parameter in some methods, the `editingContextId`
 - https://github.com/eclipse-sirius/sirius-components/issues/368[#368] [core] Remove the now useless `PreDestroyPayload`
 - [properties] Remove the `PropertiesEventProcessor` which has never been used. Both the properties and the form representation are using the `FormEventProcessor`
 - https://github.com/eclipse-sirius/sirius-components/issues/357[#357] [core] Remove the `SubscriptionDescription` and use instead the Spring `SecurityContextHolder` to retrieve the user subscribing to a reactive flux. As a result, this change will give us the ability to use much more easily other GraphQL integration in Spring such as Netflix DGS

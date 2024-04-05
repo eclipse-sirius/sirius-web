@@ -24,7 +24,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
+import org.eclipse.sirius.web.services.api.document.Stereotype;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
@@ -32,7 +32,7 @@ import org.eclipse.sirius.web.services.api.document.CreateDocumentSuccessPayload
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.projects.Project;
-import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
+import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeService;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
 import org.junit.jupiter.api.Test;
@@ -80,7 +80,7 @@ public class CreateDocumentEventHandlerTests {
 
     private static final String DOCUMENT_NAME = "name";
 
-    private static final UUID STEREOTYPE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("stereotypeDescriptionId".getBytes());
+    private static final UUID STEREOTYPE_ID = UUID.nameUUIDFromBytes("stereotypeId".getBytes());
 
     @Test
     public void testCreateDocument() {
@@ -90,17 +90,17 @@ public class CreateDocumentEventHandlerTests {
                 return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), ""), name, content));
             }
         };
-        IStereotypeDescriptionService stereotypeDescriptionService = new IStereotypeDescriptionService.NoOp() {
+        IStereotypeService stereotypeService = new IStereotypeService.NoOp() {
             @Override
-            public Optional<StereotypeDescription> getStereotypeDescriptionById(String editingContextId, UUID stereotypeId) {
-                StereotypeDescription stereotypeDescription = new StereotypeDescription(stereotypeId, "label", () -> CONTENT);
-                return Optional.of(stereotypeDescription);
+            public Optional<Stereotype> getStereotypeById(String editingContextId, UUID stereotypeId) {
+                Stereotype stereotype = new Stereotype(stereotypeId, "label", () -> CONTENT);
+                return Optional.of(stereotype);
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
 
-        CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService, new SimpleMeterRegistry());
-        var input = new CreateDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeService, messageService, new SimpleMeterRegistry());
+        var input = new CreateDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), DOCUMENT_NAME, STEREOTYPE_ID);
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
@@ -130,24 +130,24 @@ public class CreateDocumentEventHandlerTests {
                 return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), ""), name, content));
             }
         };
-        IStereotypeDescriptionService stereotypeDescriptionService = new IStereotypeDescriptionService.NoOp() {
+        IStereotypeService stereotypeService = new IStereotypeService.NoOp() {
             @Override
-            public Optional<StereotypeDescription> getStereotypeDescriptionById(String editingContextId, UUID stereotypeId) {
-                StereotypeDescription stereotypeDescription = new StereotypeDescription(stereotypeId, "label", () -> CONTENT);
-                return Optional.of(stereotypeDescription);
+            public Optional<Stereotype> getStereotypeById(String editingContextId, UUID stereotypeId) {
+                Stereotype stereotype = new Stereotype(stereotypeId, "label", () -> CONTENT);
+                return Optional.of(stereotype);
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
 
-        CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService, new SimpleMeterRegistry());
+        CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeService, messageService, new SimpleMeterRegistry());
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         changeDescriptionSink.asFlux().subscribe(changeDescription -> {
             assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
         });
 
-        var firstCreateInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        var firstCreateInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_ID);
         assertThat(handler.canHandle(editingContext, firstCreateInput)).isTrue();
         One<IPayload> firstPayloadSink = Sinks.one();
         handler.handle(firstPayloadSink, changeDescriptionSink, editingContext, firstCreateInput);
@@ -155,7 +155,7 @@ public class CreateDocumentEventHandlerTests {
         IPayload firstPayload = firstPayloadSink.asMono().block();
         assertThat(firstPayload).isInstanceOf(CreateDocumentSuccessPayload.class);
 
-        var secondCreatedInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
+        var secondCreatedInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_ID);
         assertThat(handler.canHandle(editingContext, secondCreatedInput)).isTrue();
         One<IPayload> secondPayloadSink = Sinks.one();
         handler.handle(secondPayloadSink, changeDescriptionSink, editingContext, secondCreatedInput);

@@ -15,11 +15,11 @@ package org.eclipse.sirius.web.data;
 import java.util.UUID;
 
 /**
- * Used to store some test identifiers related to the Papaya Sample project.
+ * Used to store some test identifiers related to the Papaya projects.
  *
  * @author sbegaudeau
  */
-public final class PapayaSampleIdentifiers {
+public final class PapayaIdentifiers {
 
     public static final UUID PAPAYA_PROJECT = UUID.fromString("c3d7df85-e0bd-472c-aec1-c05cc88276e4");
 
@@ -31,7 +31,7 @@ public final class PapayaSampleIdentifiers {
 
     public static final UUID PROJECT_OBJECT = UUID.fromString("24430514-64bc-4b78-a904-4dab25d55a09");
 
-    private PapayaSampleIdentifiers() {
+    private PapayaIdentifiers() {
         // Prevent instantiation
     }
 }

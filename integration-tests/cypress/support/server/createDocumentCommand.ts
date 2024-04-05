@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import { MutationResponse } from './graphql.types';
 
 const url = Cypress.env('baseAPIUrl') + '/api/graphql';
 
-Cypress.Commands.add('createDocument', (editingContextId: string, stereotypeDescriptionId: string, name: string) => {
+Cypress.Commands.add('createDocument', (editingContextId: string, stereotypeId: string, name: string) => {
   const query = `
   mutation createDocument($input: CreateDocumentInput!) {
     createDocument(input: $input) {
@@ -30,7 +30,7 @@ Cypress.Commands.add('createDocument', (editingContextId: string, stereotypeDesc
     input: {
       id: crypto.randomUUID(),
       editingContextId,
-      stereotypeDescriptionId,
+      stereotypeId,
       name,
     },
   };

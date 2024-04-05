@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.tests.graphql.EditSelectMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.services.FormVariableViewPreEditingContextProcessor;
 import org.eclipse.sirius.web.services.MasterDetailsFormDescriptionProvider;
@@ -135,14 +136,14 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a view based form description, when form variables are initialized, then widgets can read their value")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenViewBasedFormDescriptionWhenFormVariablesAreInitializedThenWidgetsCanReadTheirValue() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
                 FormVariableViewPreEditingContextProcessor.REPRESENTATION_DESCRIPTION_ID,
-                TestIdentifiers.DOMAIN_OBJECT.toString(),
+                StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "Shared Variables Form"
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);

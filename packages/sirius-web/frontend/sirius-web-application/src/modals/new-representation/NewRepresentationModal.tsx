@@ -252,7 +252,7 @@ export const NewRepresentationModal = ({
               value={selectedRepresentationDescriptionId}
               onChange={onRepresentationDescriptionChange}
               disabled={newRepresentationModal === 'loading' || newRepresentationModal === 'creatingRepresentation'}
-              labelId="newDocumentModalStereotypeDescriptionLabel"
+              labelId="newRepresentationModalRepresentationDescriptionLabel"
               inputProps={{ 'data-testid': 'representationDescription-input' }}
               fullWidth
               data-testid="representationDescription">

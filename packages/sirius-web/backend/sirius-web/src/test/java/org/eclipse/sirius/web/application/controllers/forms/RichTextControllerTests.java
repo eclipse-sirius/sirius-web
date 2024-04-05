@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.tests.graphql.EditRichTextMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.PapayaSampleIdentifiers;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.forms.FormWithRichTextDescriptionProvider;
@@ -77,9 +77,9 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
     private Flux<FormRefreshedEventPayload> givenSubscriptionToRichTextForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.formWithRichTextDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaSampleIdentifiers.FIRST_TASK_OBJECT.toString(),
+                PapayaIdentifiers.FIRST_TASK_OBJECT.toString(),
                 "FormWithRichText"
         );
         return this.givenCreatedFormSubscription.createAndSubscribe(input);
@@ -133,7 +133,7 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editRichText = () -> {
-            var input = new EditRichTextInput(UUID.randomUUID(), PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), richTextId.get(), "None");
+            var input = new EditRichTextInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), richTextId.get(), "None");
             var result = this.editRichTextMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editRichText.__typename");

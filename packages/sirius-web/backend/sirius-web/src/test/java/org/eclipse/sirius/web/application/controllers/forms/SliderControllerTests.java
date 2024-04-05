@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.forms.Slider;
 import org.eclipse.sirius.components.forms.tests.graphql.EditSliderMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.PapayaSampleIdentifiers;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.forms.FormWithSliderDescriptionProvider;
@@ -77,9 +77,9 @@ public class SliderControllerTests extends AbstractIntegrationTests {
     private Flux<FormRefreshedEventPayload> givenSubscriptionToSliderForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.formWithSliderDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaSampleIdentifiers.FIRST_TASK_OBJECT.toString(),
+                PapayaIdentifiers.FIRST_TASK_OBJECT.toString(),
                 "FormWithSlider"
         );
         return this.givenCreatedFormSubscription.createAndSubscribe(input);
@@ -133,7 +133,7 @@ public class SliderControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editSlider = () -> {
-            var input = new EditSliderInput(UUID.randomUUID(), PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), sliderId.get(), 5);
+            var input = new EditSliderInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), sliderId.get(), 5);
             var result = this.editSliderMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editSlider.__typename");

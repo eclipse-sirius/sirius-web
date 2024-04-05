@@ -155,7 +155,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(endCursor).isNotBlank();
 
         int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
-        assertThat(count).isGreaterThan(4);
+        assertThat(count).isGreaterThan(2);
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds).hasSize(2);

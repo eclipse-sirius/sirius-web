@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.forms.FormWithTextfieldDescriptionProvider;
@@ -77,9 +77,9 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
     private Flux<FormRefreshedEventPayload> givenSubscriptionToTextfieldForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
                 this.formWithTextfieldDescriptionProvider.getRepresentationDescriptionId(),
-                TestIdentifiers.DOMAIN_OBJECT.toString(),
+                StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithTextfield"
         );
         return this.givenCreatedFormSubscription.createAndSubscribe(input);
@@ -87,7 +87,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a textfield widget, when it is displayed, then it is properly initialized")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTextfieldWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToTextfieldForm();
@@ -115,7 +115,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a textfield widget, when it is edited, then its value is updated")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTextfieldWidgetWhenItIsEditedThenItsValueIsUpdated() {
         var flux = this.givenSubscriptionToTextfieldForm();
@@ -135,7 +135,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editTextfield = () -> {
-            var input = new EditTextfieldInput(UUID.randomUUID(), TestIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), textfieldId.get(), "A new and very long value");
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), textfieldId.get(), "A new and very long value");
             var result = this.editTextfieldMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");

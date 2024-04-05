@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.graphql.tests.EditingContextEventSubscripti
 import org.eclipse.sirius.components.graphql.tests.EditingContextQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.InvokeEditingContextActionMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.application.project.services.DefaultEditingContextActionProvider;
 import org.eclipse.sirius.web.application.studio.services.StudioEditingContextActionProvider;
@@ -131,10 +132,10 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
 
     @Test
     @DisplayName("Given a project, when an editing context action is invoked, then the editing context is modified")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenAnEditingContextActionIsInvokedThenTheEditingContextIsModified() {
-        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), TestIdentifiers.EMPTY_STUDIO_PROJECT.toString());
+        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString());
         var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
 
         Consumer<InvokeEditingContextActionInput> invokeEditingContextActionTask = (input) -> {
@@ -148,9 +149,9 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        var createEmptyDomainInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_DOMAIN_ID);
-        var createEmptyViewInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_VIEW_ID);
-        var createEmptyDocumentInput = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.EMPTY_STUDIO_PROJECT.toString(), DefaultEditingContextActionProvider.EMPTY_ACTION_ID);
+        var createEmptyDomainInput = new InvokeEditingContextActionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_DOMAIN_ID);
+        var createEmptyViewInput = new InvokeEditingContextActionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_VIEW_ID);
+        var createEmptyDocumentInput = new InvokeEditingContextActionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), DefaultEditingContextActionProvider.EMPTY_ACTION_ID);
         StepVerifier.create(flux)
                 .then(() -> invokeEditingContextActionTask.accept(createEmptyDomainInput))
                 .then(() -> invokeEditingContextActionTask.accept(createEmptyViewInput))

@@ -15,7 +15,6 @@ type EditingContext {
   representation(representationId: ID!): RepresentationMetadata
   representations: EditingContextRepresentationConnection!
   representationDescriptions(objectId: ID!): EditingContextRepresentationDescriptionConnection!
-  stereotypeDescriptions: EditingContextStereotypeDescriptionConnection!
   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!, referenceKind: String): [ChildCreationDescription!]!
   childCreationDescriptions(kind: ID!, referenceKind: String): [ChildCreationDescription!]!
   queryBasedString(query: String!): String
@@ -48,12 +47,6 @@ interface RepresentationDescription {
   label: String!
 }
 
-type StereotypeDescription {
-  id: ID!
-  label: String!
-  documentName: String!
-}
-
 type ChildCreationDescription {
   id: ID!
   label: String!
@@ -82,15 +75,6 @@ type RepresentationDescriptionMetadadata {
   id: ID!
   label: String!
   defaultName: String!
-}
-
-type EditingContextStereotypeDescriptionConnection {
-  edges: [EditingContextStereotypeDescriptionEdge!]!
-  pageInfo: PageInfo!
-}
-
-type EditingContextStereotypeDescriptionEdge {
-  node: StereotypeDescription!
 }
 
 type EditingContextActionsConnection {
