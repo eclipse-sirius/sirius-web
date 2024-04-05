@@ -13,21 +13,8 @@
 import { Box, Node, Rect, XYPosition, boxToRect, rectToBox } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from './layout.types';
-import {
-  getBorderNodeExtent,
-  isEastBorderNode,
-  isNorthBorderNode,
-  isSouthBorderNode,
-  isWestBorderNode,
-} from './layoutBorderNodes';
-import {
-  borderNodeOffset,
-  defaultHeight,
-  defaultNodeMargin,
-  defaultWidth,
-  gap,
-  rectangularNodePadding,
-} from './layoutParams';
+import { getBorderNodeExtent, isEastBorderNode, isNorthBorderNode, isSouthBorderNode, isWestBorderNode, } from './layoutBorderNodes';
+import { borderNodeOffset, defaultHeight, defaultNodeMargin, defaultWidth, gap, rectangularNodePadding, } from './layoutParams';
 
 /**
  * It requires that nodes are already positioned
@@ -167,7 +154,6 @@ const getNodeFootprint = (allVisibleNodes: Node<NodeData>[], node: Node<NodeData
         width: child.width ?? 0,
         height: (child.height ?? 0) + outsideLabelHeightFootPrint,
       });
-
       return getBoundsOfBoxes(currentFootPrint, nodeBox);
     },
     { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity }

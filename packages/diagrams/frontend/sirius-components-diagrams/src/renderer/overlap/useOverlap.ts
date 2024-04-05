@@ -54,7 +54,12 @@ export const useOverlap = (): UseOverlapValue => {
     });
   }, []);
 
-  const applyOverlap = (movingNode: Node, nodes: Node[], direction: 'horizontal' | 'vertical' = 'horizontal'): void => {
+  const applyOverlap = (
+    movingNode: Node,
+    nodes: Node[],
+    direction: 'horizontal' | 'vertical' = 'horizontal'
+  ): boolean => {
+    let overlapDetected: boolean = false;
     getIntersectingNodes(movingNode, nodes)
       .filter((n) => n.parentNode === movingNode.parentNode)
       .forEach((node) => {
@@ -72,7 +77,7 @@ export const useOverlap = (): UseOverlapValue => {
                 y: overlapNode.position.y + (overlapNode.height ?? 0) + 40,
               };
             }
-            applyOverlap(movingNode, nodes, direction);
+            overlapDetected = applyOverlap(movingNode, nodes, direction) || overlapDetected;
           } else {
             if (direction === 'horizontal') {
               overlapNode.position = {
@@ -85,10 +90,12 @@ export const useOverlap = (): UseOverlapValue => {
                 y: movingNode.position.y + (movingNode.height ?? 0) + 40,
               };
             }
-            applyOverlap(overlapNode, nodes, direction);
+            overlapDetected = applyOverlap(overlapNode, nodes, direction) || overlapDetected;
           }
+          overlapDetected = true;
         }
       });
+    return overlapDetected;
   };
 
   const handleNodeOverlapForChanges = useCallback(
@@ -118,6 +125,21 @@ export const useOverlap = (): UseOverlapValue => {
     [enabled]
   );
 
+  const resolveNodeOverlapV2 = useCallback(
+    (nodes: Node[]): boolean => {
+      let overlapDetected: boolean = false;
+      if (enabled) {
+        nodes
+          .filter((node) => !node.data.pinned)
+          .forEach((node) => {
+            overlapDetected = applyOverlap(node, nodes) || overlapDetected;
+          });
+      }
+      return overlapDetected;
+    },
+    [enabled]
+  );
+
   const handleNodeOverlapWithPriority = useCallback(
     (priorityNodeId: string | undefined, nodes: Node[]): Node[] => {
       if (enabled) {
@@ -135,6 +157,7 @@ export const useOverlap = (): UseOverlapValue => {
     nodeOverlapEnabled: enabled,
     setNodeOverlapEnabled: setEnabled,
     resolveNodeOverlap,
+    resolveNodeOverlapV2,
     handleNodeOverlapForChanges,
     handleNodeOverlapWithPriority,
   };

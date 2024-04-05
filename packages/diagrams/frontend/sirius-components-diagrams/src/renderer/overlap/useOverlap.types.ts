@@ -16,6 +16,7 @@ export interface UseOverlapValue {
   nodeOverlapEnabled: boolean;
   setNodeOverlapEnabled: (enable: boolean) => void;
   resolveNodeOverlap: (nodes: Node[], direction: 'horizontal' | 'vertical') => Node[];
+  resolveNodeOverlapV2: (nodes: Node[]) => boolean;
   handleNodeOverlapForChanges: (changes: NodeChange[], nodes: Node[]) => Node[];
   handleNodeOverlapWithPriority: (priorityNodeId: string | undefined, nodes: Node[]) => Node[];
 }

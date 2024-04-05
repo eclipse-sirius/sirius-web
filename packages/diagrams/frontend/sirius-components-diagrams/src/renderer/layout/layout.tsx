@@ -213,11 +213,10 @@ export const layout = (
   previousDiagram: RawDiagram | null,
   diagram: RawDiagram,
   referencePosition: GQLReferencePosition | null,
-  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[],
-  resolveNodeOverlap: any
+  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ): RawDiagram => {
+  console.log(diagram.nodes, diagram.nodes.map((n) => n.position.x).join());
   layoutDiagram(previousDiagram, diagram, referencePosition, nodeLayoutHandlerContributions);
-  diagram.nodes = resolveNodeOverlap(diagram.nodes);
   return diagram;
 };
 
