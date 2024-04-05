@@ -39,6 +39,7 @@ extend type Mutation {
   createProjectFromTemplate(input: CreateProjectFromTemplateInput!): CreateProjectFromTemplatePayload!
   renameProject(input: RenameProjectInput!): RenameProjectPayload!
   deleteProject(input: DeleteProjectInput!): DeleteProjectPayload!
+  renameRepresentation(input: RenameRepresentationInput!): RenameRepresentationPayload!
   deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
 }
 
@@ -102,6 +103,20 @@ type ProjectRenamedEventPayload {
   id: ID!
   projectId: ID!
   newName: String!
+}
+
+input RenameRepresentationInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  newLabel: String!
+}
+
+union RenameRepresentationPayload = ErrorPayload | RenameRepresentationSuccessPayload
+
+type RenameRepresentationSuccessPayload {
+  id: ID!
+  representation: Representation!
 }
 
 input DeleteRepresentationInput {
