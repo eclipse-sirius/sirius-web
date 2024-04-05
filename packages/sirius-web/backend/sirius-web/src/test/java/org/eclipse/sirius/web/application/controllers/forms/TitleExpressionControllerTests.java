@@ -75,7 +75,7 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a form with a title expression, when it is created, then its label is initialized")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormWithTitleExpressionWhenItIsCreatedThenItsLabelIsInitialized() {
         var flux = this.givenSubscriptionToTitleExpressionForm();

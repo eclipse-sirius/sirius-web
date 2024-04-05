@@ -87,7 +87,7 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a rich text widget, when it is displayed, then it is properly initialized")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRichTextWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToRichTextForm();
@@ -113,7 +113,7 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a rich text widget, when it is edited, then its value is updated")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRichTextWidgetWhenItIsEditedThenItsValueIsUpdated() {
         var flux = this.givenSubscriptionToRichTextForm();
