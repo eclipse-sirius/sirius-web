@@ -27,10 +27,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 
 /**
@@ -293,6 +291,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         nodeChild.setStyle(DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription());
         nodeChild.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
+        nodeChild.setInsideLabel(defaultToolsFactory.createDefaultInsideLabelDescription());
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, nodeChild));
 
         NodeDescription borderNodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
@@ -300,6 +299,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         borderNodeChild.setStyle(DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription());
         borderNodeChild.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         borderNodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
+        borderNodeChild.getOutsideLabels().add(defaultToolsFactory.createDefaultOutsideLabelDescription());
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS, borderNodeChild));
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE, DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription()));
@@ -310,12 +310,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, DiagramFactory.eINSTANCE.createListLayoutStrategyDescription()));
-        InsideLabelDescription insideLabelDescription = DiagramFactory.eINSTANCE.createInsideLabelDescription();
-        insideLabelDescription.setStyle(DiagramFactory.eINSTANCE.createInsideLabelStyle());
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__INSIDE_LABEL, insideLabelDescription));
-        OutsideLabelDescription outsideLabelDescription = DiagramFactory.eINSTANCE.createOutsideLabelDescription();
-        outsideLabelDescription.setStyle(DiagramFactory.eINSTANCE.createOutsideLabelStyle());
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__OUTSIDE_LABELS, outsideLabelDescription));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__INSIDE_LABEL, defaultToolsFactory.createDefaultInsideLabelDescription()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__OUTSIDE_LABELS, defaultToolsFactory.createDefaultOutsideLabelDescription()));
     }
 
     /**

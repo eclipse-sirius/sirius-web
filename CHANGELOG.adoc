@@ -86,6 +86,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3309[#3309] [diagram] Hide header border-bottom when the node is collapsed
 - https://github.com/eclipse-sirius/sirius-web/issues/3285[#3285] Make the icons in the diagram palette use the default color of Sirius Web theme
 - https://github.com/eclipse-sirius/sirius-web/issues/3312[#3312] Make the details view more compact
+- https://github.com/eclipse-sirius/sirius-web/issues/3349[#3349] Add a default label when creating a NodeDescription
 
 
 == v2024.3.0
