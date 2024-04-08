@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,9 +20,11 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 
@@ -118,5 +120,17 @@ public class DefaultToolsFactory {
         body.setExpression("aql:self.defaultDelete()");
         newDeleteTool.getBody().add(body);
         return newDeleteTool;
+    }
+
+    public InsideLabelDescription createDefaultInsideLabelDescription() {
+        InsideLabelDescription insideLabelDescription = DiagramFactory.eINSTANCE.createInsideLabelDescription();
+        insideLabelDescription.setStyle(DiagramFactory.eINSTANCE.createInsideLabelStyle());
+        return insideLabelDescription;
+    }
+
+    public OutsideLabelDescription createDefaultOutsideLabelDescription() {
+        OutsideLabelDescription outsideLabelDescription = DiagramFactory.eINSTANCE.createOutsideLabelDescription();
+        outsideLabelDescription.setStyle(DiagramFactory.eINSTANCE.createOutsideLabelStyle());
+        return outsideLabelDescription;
     }
 }
