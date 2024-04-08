@@ -54,13 +54,15 @@ describe('Diagram - Node aspect ratio', () => {
         const studio = new Studio();
         studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
           instanceProjectId = res.projectId;
-          new Explorer().createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
         });
 
         explorer.createObject('Root', 'Entity1s Entity1');
         explorer.select('Entity1');
         details.getTextField('Name').type('Node{enter}');
 
+        explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
+
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(400); // wait for automatique zoom to apply
 
         const diagram = new Diagram();
@@ -124,7 +126,6 @@ describe('Diagram - Node aspect ratio', () => {
           const studio = new Studio();
           studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
             instanceProjectId = res.projectId;
-            new Explorer().createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
           });
 
           explorer.createObject('Root', 'Entity1s Entity1');
@@ -132,6 +133,8 @@ describe('Diagram - Node aspect ratio', () => {
           details.getTextField('Name').type('Node{enter}');
 
           explorer.createObject('Node', 'Relation Sub Node');
+
+          explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
 
           new Diagram().getNodes('diagram', 'Node').then(($node) => {
             const nodeWidth = $node.width() ?? 1;
@@ -151,7 +154,6 @@ describe('Diagram - Node aspect ratio', () => {
           const studio = new Studio();
           studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
             instanceProjectId = res.projectId;
-            new Explorer().createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
           });
 
           explorer.createObject('Root', 'Entity1s Entity1');
@@ -159,6 +161,8 @@ describe('Diagram - Node aspect ratio', () => {
           details.getTextField('Name').type('Node{enter}');
 
           explorer.createObject('Node', 'Relation Sub Node');
+
+          explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
 
           new Diagram().getNodes('diagram', 'Node').then(($node) => {
             const nodeWidth = $node.width() ?? 1;

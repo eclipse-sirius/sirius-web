@@ -122,7 +122,6 @@ describe('Diagram - group palette', () => {
         });
         const explorer = new Explorer();
         explorer.expand('Others...');
-        explorer.createRepresentation('Root', 'Diagram', 'diagram');
       });
       afterEach(() => cy.deleteProject(instanceId));
 
@@ -145,9 +144,10 @@ describe('Diagram - group palette', () => {
         explorer.createObject('class', 'Operations Operation');
         details.getTextField('Name').invoke('text').should('eq', '');
         details.getTextField('Name').type('operation{enter}');
+        explorer.createRepresentation('Root', 'Diagram', 'diagram');
+        diagram.fitToScreen();
         explorer.select('attribute');
         explorer.select('operation', true);
-        diagram.fitToScreen();
         diagram.getNodes('diagram', 'attribute').click();
         diagram.getGroupPalette().should('exist');
         diagram.getGroupPalette().findByTestId('Distribute elements horizontally').should('not.exist');
