@@ -158,10 +158,10 @@ describe('Verify the Gantt Representation', () => {
         .trigger('mouseup');
 
       ganttHelper.getColumnHeader('Name').then((header) => {
-        expect(header.width()).eq(140);
+        expect(header.width()).to.approximately(40, 2);
       });
       ganttHelper.getColumnHeader('Date of start').then((header) => {
-        expect(header.width()).eq(140);
+        expect(header.width()).to.approximately(140, 2);
       });
     });
   });

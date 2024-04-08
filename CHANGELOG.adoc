@@ -93,6 +93,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3312[#3312] [form] Make the details view more compact
 - https://github.com/eclipse-sirius/sirius-web/issues/3349[#3349] [diagram] Add a default label when creating a NodeDescription
 - https://github.com/eclipse-sirius/sirius-web/issues/3342[#3342] [deck] Update deck and gantt view metamodel and deck view examples
+- https://github.com/eclipse-sirius/sirius-web/issues/3346[#3346] [workbench] Make the _Explorer_ panel wider by default.
 
 
 == v2024.3.0
