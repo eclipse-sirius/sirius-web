@@ -25,6 +25,8 @@ public final class StudioIdentifiers {
 
     public static final UUID SAMPLE_STUDIO_PROJECT = UUID.fromString("01234836-0902-418a-900a-4c0afd20323e");
 
+    public static final UUID DOMAIN_DOCUMENT = UUID.fromString("f0e490c1-79f1-49a0-b1f2-3637f2958148");
+
     public static final UUID DOMAIN_OBJECT = UUID.fromString("f8204cb6-3705-48a5-bee3-ad7e7d6cbdaf");
 
     public static final UUID HUMAN_ENTITY_OBJECT = UUID.fromString("1731ffb5-bfb0-46f3-a23d-0c0650300005");
