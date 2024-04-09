@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,30 +34,28 @@ public abstract class AbstractConfigurationTests {
 
     @Test
     public void configurationClassesShouldBeInAConfigurationPackage() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .and()
                 .areAnnotatedWith(Configuration.class)
                 .should()
-                .resideInAPackage(CONFIGURATION_PACKAGE);
-        // @formatter:on
+                .resideInAPackage(CONFIGURATION_PACKAGE)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     @Test
     public void configurationClassShouldOnlyHaveFinalFields() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .and()
                 .areAnnotatedWith(Configuration.class)
                 .should()
-                .haveOnlyFinalFields();
-        // @formatter:on
+                .haveOnlyFinalFields()
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }

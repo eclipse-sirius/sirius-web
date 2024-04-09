@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,37 +43,34 @@ public abstract class AbstractImmutableTests {
 
     @Test
     public void immutableClassesShouldBeFinal() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .and()
                 .areAnnotatedWith(Immutable.class)
                 .should()
-                .haveModifier(FINAL);
-        // @formatter:on
+                .haveModifier(FINAL)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     @Test
     public void immutableClassesShouldHaveAPrivateConstructor() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .and()
                 .areAnnotatedWith(Immutable.class)
                 .should()
-                .haveOnlyPrivateConstructors();
-        // @formatter:on
+                .haveOnlyPrivateConstructors()
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     @Test
     public void immutableClassesShouldHavePublicGetters() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.fields()
                 .that()
                 .areDeclaredInClassesThat()
@@ -81,8 +78,8 @@ public abstract class AbstractImmutableTests {
                 .and()
                 .areDeclaredInClassesThat()
                 .areAnnotatedWith(Immutable.class)
-                .should(this.haveAPublicGetter());
-        // @formatter:on
+                .should(this.haveAPublicGetter())
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -120,14 +117,13 @@ public abstract class AbstractImmutableTests {
 
     @Test
     public void immutableClassesShouldNotHaveSetters() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .and()
                 .areAnnotatedWith(Immutable.class)
-                .should(this.notHaveSetters());
-        // @formatter:on
+                .should(this.notHaveSetters())
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -136,11 +132,9 @@ public abstract class AbstractImmutableTests {
         return new ArchCondition<>("not have setters") {
             @Override
             public void check(JavaClass javaClass, ConditionEvents events) {
-                // @formatter:off
                 long settersCount = javaClass.getMethods().stream()
                         .filter(javaMethod -> javaMethod.getName().startsWith("set"))
                         .count();
-                // @formatter:on
 
                 boolean isConditionSatisfied = settersCount == 0;
                 String message = "The class does not have any setters";
@@ -154,14 +148,13 @@ public abstract class AbstractImmutableTests {
 
     @Test
     public void immutableClassesShouldHaveABuilderMethod() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .and()
                 .areAnnotatedWith(Immutable.class)
-                .should(this.haveABuilderMethod());
-        // @formatter:on
+                .should(this.haveABuilderMethod())
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -170,12 +163,10 @@ public abstract class AbstractImmutableTests {
         return new ArchCondition<>("have a builder method") {
             @Override
             public void check(JavaClass javaClass, ConditionEvents events) {
-                // @formatter:off
                 long count = javaClass.getMethods().stream()
                         .filter(method -> method.getName().equals("new" + javaClass.getSimpleName()))
                         .filter(method -> "Builder".equals(method.getRawReturnType().getSimpleName()))
                         .count();
-                // @formatter:on
 
                 boolean isConditionSatisfied = count > 0;
                 String message = "The class has a builder method";
@@ -189,14 +180,13 @@ public abstract class AbstractImmutableTests {
 
     @Test
     public void immutableClassesShouldHaveANestedBuilder() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .and()
                 .areAnnotatedWith(Immutable.class)
-                .should(new HaveAValidBuilderCondition(this.getClasses()));
-        // @formatter:on
+                .should(new HaveAValidBuilderCondition(this.getClasses()))
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
