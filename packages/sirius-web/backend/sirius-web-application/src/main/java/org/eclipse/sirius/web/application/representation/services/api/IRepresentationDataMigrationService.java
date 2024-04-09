@@ -10,18 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.document.dto;
+package org.eclipse.sirius.web.application.representation.services.api;
 
-import java.util.UUID;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import org.eclipse.sirius.components.core.api.IPayload;
+import java.util.Optional;
 
-import jakarta.validation.constraints.NotNull;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataContentOnly;
 
 /**
- * The payload of the upload document mutation.
+ * Used to retrieved the migrated content of the representation data.
  *
  * @author sbegaudeau
  */
-public record UploadDocumentSuccessPayload(@NotNull UUID id, @NotNull DocumentDTO document, String report) implements IPayload {
+public interface IRepresentationDataMigrationService {
+
+    Optional<ObjectNode> getMigratedContent(RepresentationDataContentOnly representationData);
 }

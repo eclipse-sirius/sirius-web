@@ -41,6 +41,7 @@ extend type Mutation {
   deleteProject(input: DeleteProjectInput!): DeleteProjectPayload!
   renameRepresentation(input: RenameRepresentationInput!): RenameRepresentationPayload!
   deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
+  uploadProject(input: UploadProjectInput!): UploadProjectPayload!
 }
 
 input CreateProjectInput {
@@ -129,4 +130,16 @@ union DeleteRepresentationPayload = ErrorPayload | DeleteRepresentationSuccessPa
 type DeleteRepresentationSuccessPayload {
   id: ID!
   representationId: ID!
+}
+
+input UploadProjectInput {
+  id: ID!
+  file: Upload!
+}
+
+union UploadProjectPayload = ErrorPayload | UploadProjectSuccessPayload
+
+type UploadProjectSuccessPayload {
+  id: ID!
+  project: Project!
 }
