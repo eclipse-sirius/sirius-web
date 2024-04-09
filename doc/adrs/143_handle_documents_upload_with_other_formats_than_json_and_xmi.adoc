@@ -1,0 +1,34 @@
+= [ADR-143] Handle documents upload with other formats than JSON and XMI
+
+== Context
+
+Sirius Web doesn't provide a way for specifiers to handle documents uploads with other formats than JSON and XMI.
+
+== Decision
+
+=== Backend
+
+A new `IResourceLoaderService.java` interface will be introduced:
+
+[source,java]
+----
+public interface IResourceLoaderService {
+    boolean canHandle(InputStream inputStream, URI resourceURI, ResourceSet resourceSet);
+    Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet);
+}
+----
+
+`UploadDocumentEventHandler.java` will be updated with a list of `IResourceLoaderService`.
+The first `IResourceLoaderService` able to handle the creation & loading of a `Resource` pointing to the given `resourceURI` will be used to create & load the `Resource`.
+
+Two `IResourceLoaderService` implementations will be provided in Sirius Web:
+- A JSON one
+- An XMI one
+
+== Status
+
+Work in progress
+
+== Consequences
+
+No consequences detected.
