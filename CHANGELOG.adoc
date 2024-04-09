@@ -9,6 +9,7 @@
 - Add support for representations migration
 - Add Assertions and Navigators to improve Diagram testability
 - Improve document upload
+- Configurable visibility
 
 === Architectural decision records
 
@@ -22,7 +23,8 @@
 - [ADR-146] Add support for contributing representation metadata for transient representations
 - [ADR-147] Add support for overlapping nodes
 - [ADR-148] Improve edge layout
-
+- [ADR-149] Add Default Visibility Fields in View DSL
+- [ADR-150] Add hide/reveal/fade/unfade services
 
 === Deprecation warning
 

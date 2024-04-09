@@ -1,0 +1,28 @@
+= ADR-150 Add hide/reveal/fade/unfade services
+
+== Context
+
+Sirius Web doesn't provide a way for specifiers to define tools that hide/reveal/fade/unfade nodes as part of other operations (e.g. to reveal a hidden node when a child node is created).
+
+We will update the `diagramServices` variable with services to hide/reveal/fade/unfade nodes from AQL expressions and Java services.
+
+== Decision
+
+We will update the interface `IDiagramServices` in `org.eclipse.sirius.components.collaborative.diagrams.api` with the following methods:
+```java
+public interface IDiagramServices {
+    void hide(IDiagramServicesContext context, List<Node> nodes);
+    void reveal(IDiagramServicesContext context, List<Node> nodes);
+    void fade(IDiagramServicesContext context, List<Node> nodes);
+    void unfade(IDiagramServicesContext context, List<Node> nodes);
+}
+```
+
+These services will store instances of `HideDiagramElementEvent` and `FadeDiagramElementEvent` to notify the renderer about the operation to perform.
+
+We will update the `NodeComponent#doRender` method to use this information to compute the modifiers of a node.
+
+== Status
+
+Work in progress
+
