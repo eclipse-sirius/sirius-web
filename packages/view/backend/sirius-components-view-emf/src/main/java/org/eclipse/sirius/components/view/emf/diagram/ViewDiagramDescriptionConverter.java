@@ -246,7 +246,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         Function<VariableManager, Size> sizeProvider = variableManager -> this.computeSize(viewNodeDescription, interpreter, variableManager);
 
-        Predicate<VariableManager> isCollapsedByDefaultPredicate = variableManager -> this.computeDefaultCollapsingStateProvider(viewNodeDescription.getIsCollapsedByDefaultExpression(), interpreter, variableManager);
+        Predicate<VariableManager> isCollapsedByDefaultPredicate = variableManager -> this.computeBooleanProvider(viewNodeDescription.getIsCollapsedByDefaultExpression(), interpreter, variableManager);
+
+        Predicate<VariableManager> isHiddenByDefaultPredicate = variableManager -> this.computeBooleanProvider(viewNodeDescription.getIsHiddenByDefaultExpression(), interpreter, variableManager);
+
+        Predicate<VariableManager> isFadedByDefaultPredicate = variableManager -> this.computeBooleanProvider(viewNodeDescription.getIsFadedByDefaultExpression(), interpreter, variableManager);
 
         Function<VariableManager, Integer> defaultWidthProvider = variableManager -> this.computeDefaultSizeProvider(viewNodeDescription.getDefaultWidthExpression(), interpreter,
                 variableManager);
@@ -287,6 +291,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
                 .shouldRenderPredicate(shouldRenderPredicate)
                 .isCollapsedByDefaultPredicate(isCollapsedByDefaultPredicate)
+                .isHiddenByDefaultPredicate(isHiddenByDefaultPredicate)
+                .isFadedByDefaultPredicate(isFadedByDefaultPredicate)
                 .defaultWidthProvider(defaultWidthProvider)
                 .defaultHeightProvider(defaultHeightProvider)
                 .keepAspectRatio(viewNodeDescription.isKeepAspectRatio());
@@ -318,9 +324,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return builder.build();
     }
 
-    private Boolean computeDefaultCollapsingStateProvider(String defaultCollapsingStateExpression, AQLInterpreter interpreter, VariableManager variableManager) {
-        if (defaultCollapsingStateExpression != null && !defaultCollapsingStateExpression.isBlank()) {
-            Result result = interpreter.evaluateExpression(variableManager.getVariables(), defaultCollapsingStateExpression);
+    private Boolean computeBooleanProvider(String booleanExpression, AQLInterpreter interpreter, VariableManager variableManager) {
+        if (booleanExpression != null && !booleanExpression.isBlank()) {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), booleanExpression);
             if (result.getStatus().compareTo(Status.WARNING) <= 0) {
                 return result.asBoolean().orElse(false);
             }

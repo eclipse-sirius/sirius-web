@@ -66,6 +66,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.addDefaultHeightExpressionPropertyDescriptor(object);
             this.addKeepAspectRatioPropertyDescriptor(object);
             this.addIsCollapsedByDefaultExpressionPropertyDescriptor(object);
+            this.addIsHiddenByDefaultExpressionPropertyDescriptor(object);
+            this.addIsFadedByDefaultExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -171,6 +173,32 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
+     * This adds a property descriptor for the Is Hidden By Default Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addIsHiddenByDefaultExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeDescription_isHiddenByDefaultExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_isHiddenByDefaultExpression_feature", "_UI_NodeDescription_type"),
+                DiagramPackage.Literals.NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Is Faded By Default Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addIsFadedByDefaultExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeDescription_isFadedByDefaultExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_isFadedByDefaultExpression_feature", "_UI_NodeDescription_type"),
+                DiagramPackage.Literals.NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
      * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
      * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
@@ -256,6 +284,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
             case DiagramPackage.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION:
+            case DiagramPackage.NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION:
+            case DiagramPackage.NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:

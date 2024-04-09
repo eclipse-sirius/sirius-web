@@ -50,9 +50,9 @@ public class OutsideLabelDescriptionImpl extends LabelDescriptionImpl implements
      * The default value of the '{@link #getPosition() <em>Position</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getPosition()
      * @generated
      * @ordered
-     * @see #getPosition()
      */
     protected static final OutsideLabelPosition POSITION_EDEFAULT = OutsideLabelPosition.BOTTOM_CENTER;
 
@@ -60,9 +60,9 @@ public class OutsideLabelDescriptionImpl extends LabelDescriptionImpl implements
      * The cached value of the '{@link #getPosition() <em>Position</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getPosition()
      * @generated
      * @ordered
-     * @see #getPosition()
      */
     protected OutsideLabelPosition position = POSITION_EDEFAULT;
 
@@ -70,9 +70,9 @@ public class OutsideLabelDescriptionImpl extends LabelDescriptionImpl implements
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getStyle()
      * @generated
      * @ordered
-     * @see #getStyle()
      */
     protected OutsideLabelStyle style;
 
@@ -80,9 +80,9 @@ public class OutsideLabelDescriptionImpl extends LabelDescriptionImpl implements
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getConditionalStyles()
      * @generated
      * @ordered
-     * @see #getConditionalStyles()
      */
     protected EList<ConditionalOutsideLabelStyle> conditionalStyles;
 
@@ -258,7 +258,7 @@ public class OutsideLabelDescriptionImpl extends LabelDescriptionImpl implements
                 this.setPosition(POSITION_EDEFAULT);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_DESCRIPTION__STYLE:
-                this.setStyle(null);
+                this.setStyle((OutsideLabelStyle) null);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
@@ -295,10 +295,11 @@ public class OutsideLabelDescriptionImpl extends LabelDescriptionImpl implements
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (position: " +
-                this.position +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (position: ");
+        result.append(this.position);
+        result.append(')');
+        return result.toString();
     }
 
 } // OutsideLabelDescriptionImpl

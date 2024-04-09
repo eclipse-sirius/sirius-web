@@ -25,9 +25,9 @@ import org.eclipse.sirius.components.view.Conditional;
  * <li>{@link org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle#getStyle <em>Style</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getConditionalInsideLabelStyle()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getConditionalInsideLabelStyle()
  */
 public interface ConditionalInsideLabelStyle extends Conditional {
 
@@ -48,9 +48,9 @@ public interface ConditionalInsideLabelStyle extends Conditional {
      * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Style</em>' containment reference.
-     * @generated
+     *            the new value of the '<em>Style</em>' containment reference.
      * @see #getStyle()
+     * @generated
      */
     void setStyle(InsideLabelStyle value);
 

@@ -28,9 +28,9 @@ import org.eclipse.emf.common.util.EList;
  * Styles</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelDescription()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelDescription()
  */
 public interface InsideLabelDescription extends LabelDescription {
 
@@ -53,10 +53,10 @@ public interface InsideLabelDescription extends LabelDescription {
      * <em>Position</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Position</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Position</em>' attribute.
      * @see org.eclipse.sirius.components.view.diagram.InsideLabelPosition
      * @see #getPosition()
+     * @generated
      */
     void setPosition(InsideLabelPosition value);
 
@@ -77,9 +77,9 @@ public interface InsideLabelDescription extends LabelDescription {
      * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Style</em>' containment reference.
-     * @generated
+     *            the new value of the '<em>Style</em>' containment reference.
      * @see #getStyle()
+     * @generated
      */
     void setStyle(InsideLabelStyle value);
 
@@ -89,9 +89,9 @@ public interface InsideLabelDescription extends LabelDescription {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelDescription_ConditionalStyles()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelDescription_ConditionalStyles()
      */
     EList<ConditionalInsideLabelStyle> getConditionalStyles();
 

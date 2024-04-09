@@ -41,9 +41,9 @@ public class ConditionalOutsideLabelStyleImpl extends ConditionalImpl implements
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getStyle()
      * @generated
      * @ordered
-     * @see #getStyle()
      */
     protected OutsideLabelStyle style;
 
@@ -166,7 +166,7 @@ public class ConditionalOutsideLabelStyleImpl extends ConditionalImpl implements
     public void eUnset(int featureID) {
         switch (featureID) {
             case DiagramPackage.CONDITIONAL_OUTSIDE_LABEL_STYLE__STYLE:
-                this.setStyle(null);
+                this.setStyle((OutsideLabelStyle) null);
                 return;
         }
         super.eUnset(featureID);

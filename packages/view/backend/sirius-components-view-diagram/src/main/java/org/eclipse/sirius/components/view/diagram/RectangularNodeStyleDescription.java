@@ -16,9 +16,10 @@ package org.eclipse.sirius.components.view.diagram;
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Rectangular Node Style Description</b></em>'.
  * <!-- end-user-doc -->
  *
+ *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getRectangularNodeStyleDescription()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getRectangularNodeStyleDescription()
  */
 public interface RectangularNodeStyleDescription extends NodeStyleDescription {
 

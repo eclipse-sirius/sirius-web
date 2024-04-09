@@ -70,51 +70,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @see #getBeginLabelExpression()
      */
     protected static final String BEGIN_LABEL_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getCenterLabelExpression() <em>Center Label Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getCenterLabelExpression()
-     */
-    protected static final String CENTER_LABEL_EXPRESSION_EDEFAULT = "aql:self.name";
-    /**
-     * The default value of the '{@link #getEndLabelExpression() <em>End Label Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getEndLabelExpression()
-     */
-    protected static final String END_LABEL_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #isIsDomainBasedEdge() <em>Is Domain Based Edge</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isIsDomainBasedEdge()
-     */
-    protected static final boolean IS_DOMAIN_BASED_EDGE_EDEFAULT = false;
-    /**
-     * The default value of the '{@link #getSourceNodesExpression() <em>Source Nodes Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getSourceNodesExpression()
-     */
-    protected static final String SOURCE_NODES_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getTargetNodesExpression() <em>Target Nodes Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getTargetNodesExpression()
-     */
-    protected static final String TARGET_NODES_EXPRESSION_EDEFAULT = "aql:self.eCrossReferences()";
+
     /**
      * The cached value of the '{@link #getBeginLabelExpression() <em>Begin Label Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -124,6 +80,17 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @see #getBeginLabelExpression()
      */
     protected String beginLabelExpression = BEGIN_LABEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getCenterLabelExpression() <em>Center Label Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getCenterLabelExpression()
+     */
+    protected static final String CENTER_LABEL_EXPRESSION_EDEFAULT = "aql:self.name";
+
     /**
      * The cached value of the '{@link #getCenterLabelExpression() <em>Center Label Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -133,6 +100,17 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @see #getCenterLabelExpression()
      */
     protected String centerLabelExpression = CENTER_LABEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getEndLabelExpression() <em>End Label Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getEndLabelExpression()
+     */
+    protected static final String END_LABEL_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getEndLabelExpression() <em>End Label Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -142,6 +120,17 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @see #getEndLabelExpression()
      */
     protected String endLabelExpression = END_LABEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isIsDomainBasedEdge() <em>Is Domain Based Edge</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isIsDomainBasedEdge()
+     */
+    protected static final boolean IS_DOMAIN_BASED_EDGE_EDEFAULT = false;
+
     /**
      * The cached value of the '{@link #isIsDomainBasedEdge() <em>Is Domain Based Edge</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -151,33 +140,47 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @see #isIsDomainBasedEdge()
      */
     protected boolean isDomainBasedEdge = IS_DOMAIN_BASED_EDGE_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getPalette()
      * @generated
      * @ordered
-     * @see #getPalette()
      */
     protected EdgePalette palette;
+
     /**
      * The cached value of the '{@link #getSourceNodeDescriptions() <em>Source Node Descriptions</em>}' reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getSourceNodeDescriptions()
      * @generated
      * @ordered
-     * @see #getSourceNodeDescriptions()
      */
     protected EList<NodeDescription> sourceNodeDescriptions;
+
     /**
      * The cached value of the '{@link #getTargetNodeDescriptions() <em>Target Node Descriptions</em>}' reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getTargetNodeDescriptions()
      * @generated
      * @ordered
-     * @see #getTargetNodeDescriptions()
      */
     protected EList<NodeDescription> targetNodeDescriptions;
+
+    /**
+     * The default value of the '{@link #getSourceNodesExpression() <em>Source Nodes Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSourceNodesExpression()
+     */
+    protected static final String SOURCE_NODES_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getSourceNodesExpression() <em>Source Nodes Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -187,6 +190,17 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @see #getSourceNodesExpression()
      */
     protected String sourceNodesExpression = SOURCE_NODES_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getTargetNodesExpression() <em>Target Nodes Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getTargetNodesExpression()
+     */
+    protected static final String TARGET_NODES_EXPRESSION_EDEFAULT = "aql:self.eCrossReferences()";
+
     /**
      * The cached value of the '{@link #getTargetNodesExpression() <em>Target Nodes Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -201,9 +215,9 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getStyle()
      * @generated
      * @ordered
-     * @see #getStyle()
      */
     protected EdgeStyle style;
 
@@ -211,9 +225,9 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getConditionalStyles()
      * @generated
      * @ordered
-     * @see #getConditionalStyles()
      */
     protected EList<ConditionalEdgeStyle> conditionalStyles;
 

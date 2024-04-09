@@ -48,23 +48,55 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNodeStyleDescription {
 
     /**
+     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getBorderColor()
+     * @generated
+     * @ordered
+     */
+    protected UserColor borderColor;
+
+    /**
      * The default value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getBorderRadius()
      * @generated
      * @ordered
-     * @see #getBorderRadius()
      */
     protected static final int BORDER_RADIUS_EDEFAULT = 3;
+
+    /**
+     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getBorderRadius()
+     * @generated
+     * @ordered
+     */
+    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
+
     /**
      * The default value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getBorderSize()
      * @generated
      * @ordered
-     * @see #getBorderSize()
      */
     protected static final int BORDER_SIZE_EDEFAULT = 1;
+
+    /**
+     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getBorderSize()
+     * @generated
+     * @ordered
+     */
+    protected int borderSize = BORDER_SIZE_EDEFAULT;
+
     /**
      * The default value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -74,60 +106,27 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
      * @see #getBorderLineStyle()
      */
     protected static final LineStyle BORDER_LINE_STYLE_EDEFAULT = LineStyle.SOLID;
-    /**
-     * The default value of the '{@link #getShape() <em>Shape</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getShape()
-     */
-    protected static final String SHAPE_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #isPositionDependentRotation() <em>Position Dependent Rotation</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isPositionDependentRotation()
-     */
-    protected static final boolean POSITION_DEPENDENT_ROTATION_EDEFAULT = false;
-    /**
-     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderColor()
-     */
-    protected UserColor borderColor;
-    /**
-     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderRadius()
-     */
-    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
-    /**
-     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderSize()
-     */
-    protected int borderSize = BORDER_SIZE_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getBorderLineStyle()
      * @generated
      * @ordered
-     * @see #getBorderLineStyle()
      */
     protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getShape() <em>Shape</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getShape()
+     * @generated
+     * @ordered
+     */
+    protected static final String SHAPE_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getShape() <em>Shape</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -137,13 +136,24 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
      * @see #getShape()
      */
     protected String shape = SHAPE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isPositionDependentRotation() <em>Position Dependent Rotation</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isPositionDependentRotation()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean POSITION_DEPENDENT_ROTATION_EDEFAULT = false;
+
     /**
      * The cached value of the '{@link #isPositionDependentRotation() <em>Position Dependent Rotation</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #isPositionDependentRotation()
      * @generated
      * @ordered
-     * @see #isPositionDependentRotation()
      */
     protected boolean positionDependentRotation = POSITION_DEPENDENT_ROTATION_EDEFAULT;
 

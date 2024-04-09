@@ -36,10 +36,10 @@ public interface InsideLabelStyle extends NodeLabelStyle {
      * Returns the value of the '<em><b>With Header</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>With Header</em>' attribute.
-     * @model
-     * @generated
      * @see #setWithHeader(boolean)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelStyle_WithHeader()
+     * @model
+     * @generated
      */
     boolean isWithHeader();
 
@@ -48,9 +48,9 @@ public interface InsideLabelStyle extends NodeLabelStyle {
      * Header</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>With Header</em>' attribute.
-     * @generated
+     *            the new value of the '<em>With Header</em>' attribute.
      * @see #isWithHeader()
+     * @generated
      */
     void setWithHeader(boolean value);
 
@@ -59,10 +59,10 @@ public interface InsideLabelStyle extends NodeLabelStyle {
      * end-user-doc -->
      *
      * @return the value of the '<em>Display Header Separator</em>' attribute.
-     * @model
-     * @generated
      * @see #setDisplayHeaderSeparator(boolean)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelStyle_DisplayHeaderSeparator()
+     * @model
+     * @generated
      */
     boolean isDisplayHeaderSeparator();
 
@@ -72,9 +72,9 @@ public interface InsideLabelStyle extends NodeLabelStyle {
      * Separator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Display Header Separator</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Display Header Separator</em>' attribute.
      * @see #isDisplayHeaderSeparator()
+     * @generated
      */
     void setDisplayHeaderSeparator(boolean value);
 

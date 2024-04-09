@@ -22,27 +22,27 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Inside Label Position</b></em>',
  * and utility methods for working with them. <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelPosition()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelPosition()
  */
 public enum InsideLabelPosition implements Enumerator {
     /**
      * The '<em><b>TOP CENTER</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #TOP_CENTER_VALUE
      * @generated
      * @ordered
-     * @see #TOP_CENTER_VALUE
      */
     TOP_CENTER(0, "TOP_CENTER", "TOP_CENTER");
 
     /**
      * The '<em><b>TOP CENTER</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #TOP_CENTER
      * @model
      * @generated
      * @ordered
-     * @see #TOP_CENTER
      */
     public static final int TOP_CENTER_VALUE = 0;
 
@@ -88,7 +88,7 @@ public enum InsideLabelPosition implements Enumerator {
      *
      * @generated
      */
-    InsideLabelPosition(int value, String name, String literal) {
+    private InsideLabelPosition(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -99,7 +99,7 @@ public enum InsideLabelPosition implements Enumerator {
      * --> <!-- end-user-doc -->
      *
      * @param literal
-     *         the literal.
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -118,7 +118,7 @@ public enum InsideLabelPosition implements Enumerator {
      * end-user-doc -->
      *
      * @param name
-     *         the name.
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -137,7 +137,7 @@ public enum InsideLabelPosition implements Enumerator {
      * --> <!-- end-user-doc -->
      *
      * @param value
-     *         the integer value.
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */

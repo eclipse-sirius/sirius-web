@@ -44,23 +44,55 @@ import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescriptio
 public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements RectangularNodeStyleDescription {
 
     /**
+     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getBorderColor()
+     * @generated
+     * @ordered
+     */
+    protected UserColor borderColor;
+
+    /**
      * The default value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getBorderRadius()
      * @generated
      * @ordered
-     * @see #getBorderRadius()
      */
     protected static final int BORDER_RADIUS_EDEFAULT = 3;
+
+    /**
+     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getBorderRadius()
+     * @generated
+     * @ordered
+     */
+    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
+
     /**
      * The default value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getBorderSize()
      * @generated
      * @ordered
-     * @see #getBorderSize()
      */
     protected static final int BORDER_SIZE_EDEFAULT = 1;
+
+    /**
+     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getBorderSize()
+     * @generated
+     * @ordered
+     */
+    protected int borderSize = BORDER_SIZE_EDEFAULT;
+
     /**
      * The default value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -70,40 +102,14 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
      * @see #getBorderLineStyle()
      */
     protected static final LineStyle BORDER_LINE_STYLE_EDEFAULT = LineStyle.SOLID;
-    /**
-     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderColor()
-     */
-    protected UserColor borderColor;
-    /**
-     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderRadius()
-     */
-    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
-    /**
-     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderSize()
-     */
-    protected int borderSize = BORDER_SIZE_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getBorderLineStyle()
      * @generated
      * @ordered
-     * @see #getBorderLineStyle()
      */
     protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
 
