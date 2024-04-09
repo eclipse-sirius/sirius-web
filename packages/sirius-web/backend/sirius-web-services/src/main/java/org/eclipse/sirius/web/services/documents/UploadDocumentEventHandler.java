@@ -12,14 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.documents;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +31,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -48,15 +43,14 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
-import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.Nature;
+import org.eclipse.sirius.web.services.documents.api.IExternalResourceLoaderService;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.slf4j.Logger;
@@ -85,18 +79,19 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
     private final IEditingContextMetadataProvider editingContextMetadataProvider;
 
+    private final List<IExternalResourceLoaderService> externalResourceLoaderService;
+
     private final Counter counter;
 
     public UploadDocumentEventHandler(IDocumentService documentService, IServicesMessageService messageService, MeterRegistry meterRegistry,
-                                      IEditingContextMetadataProvider editingContextMetadataProvider) {
+                                      IEditingContextMetadataProvider editingContextMetadataProvider, List<IExternalResourceLoaderService> externalResourceLoaderService) {
         this.documentService = Objects.requireNonNull(documentService);
         this.messageService = Objects.requireNonNull(messageService);
         this.editingContextMetadataProvider = Objects.requireNonNull(editingContextMetadataProvider);
-        // @formatter:off
+        this.externalResourceLoaderService = Objects.requireNonNull(externalResourceLoaderService);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -223,13 +218,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
     }
 
     /**
-     * Returns the {@link Resource} with the given {@link URI} or {@link Optional#empty()} regarding to the content of
-     * the first line of the given {@link InputStream}.
-     *
-     * <p>
-     * Returns a {@link JsonResourceImpl} if the first line contains a '{', a {@link XMIResourceImpl} if the first line
-     * contains '<', {@link Optional#empty()} otherwise.
-     * </p>
+     * Returns the {@link Resource} with the given {@link URI} or {@link Optional#empty()}.
      *
      * @param inputStream
      *            The {@link InputStream} used to determine which {@link Resource} to create
@@ -237,32 +226,19 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
      *            The {@link URI} to use to create the {@link Resource}
      * @param resourceSet
      *            The {@link ResourceSet} used to store the loaded resource
-     * @return a {@link JsonResourceImpl}, a {@link XMIResourceImpl} or {@link Optional#empty()}
+     * @return a {@link Resource} or {@link Optional#empty()}
      */
     private Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {
-        Resource resource = null;
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        bufferedInputStream.mark(Integer.MAX_VALUE);
-        try (var reader = new BufferedReader(new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8))) {
-            String line = reader.readLine();
-            Map<String, Object> options = new HashMap<>();
-            if (line != null) {
-                if (line.contains("{")) {
-                    resource = new JSONResourceFactory().createResource(resourceURI);
-                } else if (line.contains("<")) {
-                    resource = new XMIResourceImpl(resourceURI);
-                    options = new EMFResourceUtils().getXMILoadOptions();
-                }
-            }
-            bufferedInputStream.reset();
-            if (resource != null) {
-                resourceSet.getResources().add(resource);
-                resource.load(bufferedInputStream, options);
-            }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            inputStream.transferTo(baos);
         } catch (IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
-        return Optional.ofNullable(resource);
+        return this.externalResourceLoaderService.stream()
+                .filter(loader -> loader.canHandle(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet))
+                .findFirst()
+                .flatMap(loader -> loader.getResource(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet));
     }
 
     private void loadStudioColorPalettes(ResourceSet resourceSet) {

@@ -152,6 +152,20 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), "test", content);
     }
 
+    @Test
+    @DisplayName("Given a studio, when the upload of a new domain XMI document is performed, then the domain is created")
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenStudioWhenTheUploadOfDomainXMIDocumentIsPerformedThenTheDomainIsCreated() {
+        var content = """
+                <?xml version="1.0" encoding="utf-8"?>
+                <domain:Domain xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:domain="http://www.eclipse.org/sirius-web/domain" name="test">
+                  <types name="NewEntity"/>
+                </domain:Domain>
+                """;
+        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), "test", content);
+    }
+
     private void createDocument(String editingContextId, String stereotypeId, String name) {
         this.givenCommittedTransaction.commit();
 

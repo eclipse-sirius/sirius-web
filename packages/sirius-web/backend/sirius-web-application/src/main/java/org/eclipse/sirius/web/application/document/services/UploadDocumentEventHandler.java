@@ -95,11 +95,11 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
             var resourceSet = optionalResourceSet.get();
             var fileName = uploadDocumentInput.file().getName();
 
-            URI resourceURI = new JSONResourceFactory().createResourceURI(uploadDocumentInput.file().getName());
             var optionalContent = this.getContent(resourceSet, uploadDocumentInput);
             if (optionalContent.isPresent()) {
                 var content = optionalContent.get();
 
+                URI resourceURI = new JSONResourceFactory().createResourceURI(uploadDocumentInput.file().getName());
                 var resource = resourceSet.getResource(resourceURI, false);
 
                 var hasProxies = this.proxyValidator.hasProxies(resource);
