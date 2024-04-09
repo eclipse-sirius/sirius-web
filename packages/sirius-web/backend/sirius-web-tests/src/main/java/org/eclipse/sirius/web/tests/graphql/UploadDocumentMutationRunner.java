@@ -32,6 +32,9 @@ public class UploadDocumentMutationRunner implements IMutationRunner<UploadDocum
             mutation uploadDocument($input: UploadDocumentInput!) {
               uploadDocument(input: $input) {
                 __typename
+                ... on UploadDocumentSuccessPayload {
+                    report
+                }
               }
             }
             """;

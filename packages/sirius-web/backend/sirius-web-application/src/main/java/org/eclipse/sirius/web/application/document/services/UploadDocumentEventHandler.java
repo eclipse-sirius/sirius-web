@@ -13,11 +13,14 @@
 package org.eclipse.sirius.web.application.document.services;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -35,6 +38,7 @@ import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentSanitizedJsonContentProvider;
 import org.eclipse.sirius.web.application.document.services.api.IProxyValidator;
+import org.eclipse.sirius.web.application.document.services.api.IUploadDocumentReportProvider;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.slf4j.Logger;
@@ -61,17 +65,20 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
     private final IResourceLoader resourceLoader;
 
+    private final List<IUploadDocumentReportProvider> uploadDocumentReportProviders;
+
     private final IMessageService messageService;
 
     private final Counter counter;
 
     private final Logger logger = LoggerFactory.getLogger(UploadDocumentEventHandler.class);
 
-    public UploadDocumentEventHandler(IEditingContextSearchService editingContextSearchService, IDocumentSanitizedJsonContentProvider documentSanitizedJsonContentProvider, IProxyValidator proxyValidator, IResourceLoader resourceLoader, IMessageService messageService, MeterRegistry meterRegistry) {
+    public UploadDocumentEventHandler(IEditingContextSearchService editingContextSearchService, IDocumentSanitizedJsonContentProvider documentSanitizedJsonContentProvider, IProxyValidator proxyValidator, IResourceLoader resourceLoader, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, IMessageService messageService, MeterRegistry meterRegistry) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.documentSanitizedJsonContentProvider = Objects.requireNonNull(documentSanitizedJsonContentProvider);
         this.proxyValidator = Objects.requireNonNull(proxyValidator);
         this.resourceLoader = Objects.requireNonNull(resourceLoader);
+        this.uploadDocumentReportProviders = Objects.requireNonNull(uploadDocumentReportProviders);
         this.messageService = Objects.requireNonNull(messageService);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -106,9 +113,12 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                 if (hasProxies) {
                     this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", uploadDocumentInput.file().getName());
                 } else {
-                    this.resourceLoader.toResource(emfEditingContext.getDomain().getResourceSet(), UUID.randomUUID().toString(), fileName, content);
-
-                    payload = new UploadDocumentSuccessPayload(input.id());
+                    Optional<Resource> newResource = this.resourceLoader.toResource(emfEditingContext.getDomain().getResourceSet(), UUID.randomUUID().toString(), fileName, content);
+                    String report = null;
+                    if (newResource.isPresent()) {
+                        report = this.getReport(newResource.get());
+                    }
+                    payload = new UploadDocumentSuccessPayload(input.id(), report);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 }
             }
@@ -136,5 +146,12 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         }
 
         return optionalContent;
+    }
+
+    private String getReport(Resource resource) {
+        return this.uploadDocumentReportProviders.stream()
+                .filter(provider -> provider.canHandle(resource))
+                .map(provider -> provider.createReport(resource))
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }

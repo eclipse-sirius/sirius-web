@@ -215,6 +215,9 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         String typename = JsonPath.read(result, "$.data.uploadDocument.__typename");
         assertThat(typename).isEqualTo(UploadDocumentSuccessPayload.class.getSimpleName());
 
+        String report = JsonPath.read(result, "$.data.uploadDocument.report");
+        assertThat(report).isEqualTo("This is a test report");
+
         Function<IEditingContext, Object> function = editingContext -> Optional.of(editingContext)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast)

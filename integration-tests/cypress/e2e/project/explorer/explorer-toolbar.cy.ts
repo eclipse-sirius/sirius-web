@@ -102,6 +102,8 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
 
         cy.getByTestId('upload-document-submit').click();
 
+        cy.getByTestId('upload-document-close').click();
+
         cy.get('.MuiDialog-container').should('not.exist');
         cy.getByTestId('explorer://').contains('robot');
       });

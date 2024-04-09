@@ -51,4 +51,5 @@ union UploadDocumentPayload = ErrorPayload | UploadDocumentSuccessPayload
 
 type UploadDocumentSuccessPayload {
   id: ID!
+  report: String
 }

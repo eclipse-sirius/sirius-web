@@ -10,18 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.document.dto;
 
-import java.util.UUID;
+import { GQLUploadDocumentSuccessPayload } from './useUploadDocument.types';
 
-import org.eclipse.sirius.components.core.api.IPayload;
+export interface UploadDocumentReportProps {
+  uploadedDocument: GQLUploadDocumentSuccessPayload | null;
+}
 
-import jakarta.validation.constraints.NotNull;
-
-/**
- * The payload of the upload document mutation.
- *
- * @author sbegaudeau
- */
-public record UploadDocumentSuccessPayload(@NotNull UUID id, String report) implements IPayload {
+export interface UploadDocumentReportState {
+  downloaded: boolean;
 }

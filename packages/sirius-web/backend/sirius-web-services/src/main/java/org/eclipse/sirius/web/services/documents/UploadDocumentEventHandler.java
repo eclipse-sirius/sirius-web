@@ -51,6 +51,7 @@ import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.Nature;
 import org.eclipse.sirius.web.services.documents.api.IExternalResourceLoaderService;
+import org.eclipse.sirius.web.services.documents.api.IUploadDocumentReportProvider;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.slf4j.Logger;
@@ -79,16 +80,19 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
     private final IEditingContextMetadataProvider editingContextMetadataProvider;
 
-    private final List<IExternalResourceLoaderService> externalResourceLoaderService;
+    private final List<IExternalResourceLoaderService> externalResourceLoaderServices;
+
+    private final List<IUploadDocumentReportProvider> uploadDocumentReportProviders;
 
     private final Counter counter;
 
-    public UploadDocumentEventHandler(IDocumentService documentService, IServicesMessageService messageService, MeterRegistry meterRegistry,
-                                      IEditingContextMetadataProvider editingContextMetadataProvider, List<IExternalResourceLoaderService> externalResourceLoaderService) {
+    public UploadDocumentEventHandler(IDocumentService documentService, IServicesMessageService messageService, IEditingContextMetadataProvider editingContextMetadataProvider,
+                                      List<IExternalResourceLoaderService> externalResourceLoaderServices, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, MeterRegistry meterRegistry) {
         this.documentService = Objects.requireNonNull(documentService);
         this.messageService = Objects.requireNonNull(messageService);
         this.editingContextMetadataProvider = Objects.requireNonNull(editingContextMetadataProvider);
-        this.externalResourceLoaderService = Objects.requireNonNull(externalResourceLoaderService);
+        this.externalResourceLoaderServices = Objects.requireNonNull(externalResourceLoaderServices);
+        this.uploadDocumentReportProviders = Objects.requireNonNull(uploadDocumentReportProviders);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
@@ -144,7 +148,8 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                         resource.eAdapters().add(new ResourceMetadataAdapter(name));
                         resourceSet.getResources().add(resource);
 
-                        payload = new UploadDocumentSuccessPayload(input.id(), document);
+                        String report = this.getReport(resource);
+                        payload = new UploadDocumentSuccessPayload(input.id(), document, report);
                         changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                     }
                 }
@@ -153,6 +158,17 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
+    }
+
+    private String getReport(Resource resource) {
+        String report = null;
+        var optionalReport = this.uploadDocumentReportProviders.stream()
+                .filter(provider -> provider.canHandle(resource))
+                .findFirst();
+        if (optionalReport.isPresent()) {
+            report = optionalReport.get().createReport(resource);
+        }
+        return report;
     }
 
     private Optional<String> getContent(EPackage.Registry registry, UploadFile file, boolean checkProxies, String editingContextId) {
@@ -235,7 +251,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         } catch (IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
-        return this.externalResourceLoaderService.stream()
+        return this.externalResourceLoaderServices.stream()
                 .filter(loader -> loader.canHandle(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet))
                 .findFirst()
                 .flatMap(loader -> loader.getResource(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet));
