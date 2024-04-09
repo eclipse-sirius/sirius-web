@@ -12,21 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.domain.DomainPackage;
-import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
 import org.eclipse.sirius.components.view.deck.adapters.DeckColorAdapter;
@@ -36,9 +27,7 @@ import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.adapters.FormColorAdapter;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
+import org.eclipse.sirius.web.application.studio.services.api.IStudioColorPalettesLoader;
 import org.springframework.stereotype.Service;
 
 /**
@@ -51,10 +40,11 @@ public class StudioEditingContextInitializer implements IEditingContextProcessor
 
     private final IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate;
 
-    private final Logger logger = LoggerFactory.getLogger(StudioEditingContextInitializer.class);
+    private final IStudioColorPalettesLoader studioColorPalettesLoader;
 
-    public StudioEditingContextInitializer(IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate) {
+    public StudioEditingContextInitializer(IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate, IStudioColorPalettesLoader studioColorPalettesLoader) {
         this.studioCapableEditingContextPredicate = Objects.requireNonNull(studioCapableEditingContextPredicate);
+        this.studioColorPalettesLoader = Objects.requireNonNull(studioColorPalettesLoader);
     }
 
     @Override
@@ -70,7 +60,7 @@ public class StudioEditingContextInitializer implements IEditingContextProcessor
             packageRegistry.put(GanttPackage.eNS_URI, GanttPackage.eINSTANCE);
 
             var resourceSet = emfEditingContext.getDomain().getResourceSet();
-            this.loadStudioColorPalettes(resourceSet).ifPresent(view -> {
+            this.studioColorPalettesLoader.loadStudioColorPalettes(resourceSet).ifPresent(view -> {
                 resourceSet.eAdapters().add(new DiagramColorAdapter(view));
                 resourceSet.eAdapters().add(new FormColorAdapter(view));
                 resourceSet.eAdapters().add(new DeckColorAdapter(view));
@@ -78,23 +68,4 @@ public class StudioEditingContextInitializer implements IEditingContextProcessor
         }
     }
 
-    private Optional<View> loadStudioColorPalettes(ResourceSet resourceSet) {
-        ClassPathResource classPathResource = new ClassPathResource("studioColorPalettes.json");
-        URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
-        var resource = new JSONResourceFactory().createResource(uri);
-        try (var inputStream = new ByteArrayInputStream(classPathResource.getContentAsByteArray())) {
-            resourceSet.getResources().add(resource);
-            resource.load(inputStream, null);
-            resource.eAdapters().add(new ResourceMetadataAdapter("studioColorPalettes"));
-        } catch (IOException exception) {
-            this.logger.warn("An error occured while loading document studioColorPalettes.json: {}.", exception.getMessage());
-            resourceSet.getResources().remove(resource);
-        }
-
-        return resource.getContents()
-                .stream()
-                .filter(View.class::isInstance)
-                .map(View.class::cast)
-                .findFirst();
-    }
 }

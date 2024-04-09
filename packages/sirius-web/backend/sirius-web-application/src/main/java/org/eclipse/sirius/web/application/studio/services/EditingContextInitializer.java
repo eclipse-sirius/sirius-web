@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IDocumentToResourceService;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.application.studio.services.api.IDomainProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.stereotype.Service;
@@ -47,13 +47,13 @@ public class EditingContextInitializer implements IEditingContextProcessor {
 
     private final ISemanticDataSearchService semanticDataSearchService;
 
-    private final IDocumentToResourceService documentToResourceService;
+    private final IResourceLoader resourceLoader;
 
     private final List<IDomainProvider> domainProviders;
 
-    public EditingContextInitializer(ISemanticDataSearchService semanticDataSearchService, IDocumentToResourceService documentToResourceService, List<IDomainProvider> domainProviders) {
+    public EditingContextInitializer(ISemanticDataSearchService semanticDataSearchService, IResourceLoader resourceLoader, List<IDomainProvider> domainProviders) {
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
-        this.documentToResourceService = Objects.requireNonNull(documentToResourceService);
+        this.resourceLoader = Objects.requireNonNull(resourceLoader);
         this.domainProviders = Objects.requireNonNull(domainProviders);
     }
 
@@ -80,7 +80,7 @@ public class EditingContextInitializer implements IEditingContextProcessor {
                 resourceSet.getPackageRegistry().put(FormPackage.eNS_URI, FormPackage.eINSTANCE);
                 resourceSet.getPackageRegistry().put(GanttPackage.eNS_URI, GanttPackage.eINSTANCE);
 
-                semanticData.getDocuments().forEach(document -> this.documentToResourceService.toResource(resourceSet, document));
+                semanticData.getDocuments().forEach(document -> this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent()));
                 resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
 
                 var treeIterator = resourceSet.getAllContents();
