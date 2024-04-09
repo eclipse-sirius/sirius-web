@@ -1,0 +1,31 @@
+= ADR-149 Add Default Visibility Fields in View DSL
+
+== Context
+
+Sirius Web doesn't provide a way for specifiers to set the default visibility of a node (hidden/visible/faded). 
+We will add two new fields in NodeDescription to handle that: _Is Hidden By Default Expression_ and _Is Faded By Default Expression_. 
+Each field contains an boolean expression which is evaluated on the first rendering of the node to set its initial visibility.
+
+== Decision
+
+We will add a new field `isHiddenByDefaultExpression : InterpretedExpression` in the `NodeDescription` element of the diagram metamodel. 
+This expression should return a boolean value, where `true` means hidden, and `false` means visible.
+This field is empty by default, which is evaluated to `false` (visible) to keep the existing default behavior of Sirius Web.
+
+We will add the field `Predicate<VariableManager> hiddenByDefaultPredicate` in `org.eclipse.sirius.components.diagrams.description.NodeDescription` and its builder, and update the `ViewDiagramDescriptionConverter` to handle it. 
+
+We will add a new field `isFadedByDefaultExpression : InterpretedExpression` in the `NodeDescription` element of the diagram metamodel. 
+This expression should return a boolean value, where `true` means faded, and `false` means unfaded.
+This field is empty by default, which is evaluated to `false` (unfaded) to keep the existing default behavior of Sirius Web.
+
+We will add the field `Predicate<VariableManager> fadedByDefaultPredicate` in `org.eclipse.sirius.components.diagrams.description.NodeDescription` and its builder, and update the `ViewDiagramDescriptionConverter` to handle it. 
+
+We will update the `NodeComponent#doRender` method to evaluate these expressions as part of the rendering process. 
+These expressions should be used only for the first rendering of a node.
+
+We won't update the GraphQL schemas nor the frontend, since visibility is handled via `ViewModifier`, and the existing code already handles it.
+
+== Status
+
+Work in progress
+

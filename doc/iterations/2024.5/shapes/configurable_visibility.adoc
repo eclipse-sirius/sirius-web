@@ -1,0 +1,56 @@
+= Configurable visibility
+
+== Problem
+
+Sirius Web doesn't provide a way for specifiers to set the default visibility of a node (hidden/visible/faded). 
+It also doesn't provide a way to let specifiers define tools that hide/reveal/fade/unfade nodes as part of other operations (e.g. to reveal a hidden node when a child node is created).
+Nodes are always created visible and unfaded, and the only way to hide/fade them right now is that the end user does it manually.
+
+== Key Result
+
+- Specifiers must be able to define NodeDescriptions that are hidden/faded/visible by default.
+- Specifiers must be able to call hide/reveal/fade/unfade services in their tool to hide/reveal/fade/unfade a set of nodes.
+
+== Solution
+
+A new field _Is Hidden By Default Expression_ should be displayed in NodeDescription. 
+The field contains an boolean expression which is evaluated on the first rendering of the node to set its initial hidden/visible state.
+If the expression is empty it is evaluated to `false`, which means that the node is visible by default (this preserves Sirius Web's default behavior to show new nodes by default). 
+
+A new field _Is Faded By Default Expression_ should be displayed in NodeDescription.
+The field contains a boolean expression which is evaluated on the first rendering of the node to set its initial faded/unfaded state.
+If the expression is empty it is evaluated to `false`, which means that the node is not faded by default (this preserves Sirius Web's default behavior to not fade new nodes by default).
+
+A node that is faded and not visible won't be displayed.
+Revealing a faded node keeps it faded.
+
+The `diagramServices` variable should contain new services to hide/reveal/fade/unfade nodes.
+
+== Scenario
+
+1. Default Visibility State
+- A specifier adds a NodeDescription in the view DSL
+- The _Is Hidden By Default Expression_ field is available and its default value is empty, which means visible
+- The _Is Faded By Default Expression_ field is available and its default value is empty, which means unfaded (i.e. normal)
+- The specifier can define an AQL expression that returns a boolean value to set whether a node is hidden by default (`true` for hidden, `false` for visible)
+- The specifier can define an AQL expression that returns a boolean value to set whether a node is faded by default (`true` for faded, `false` for unfaded)
+- When an end user creates a node represented in this manner in a diagram, the node is hidden/visible/faded/unfaded according to these expression
+- If the user manually hides/reveals/fades/unfades the node the value returned by the expression is not taken into account (the expression can't override user-defined state).
+
+2. Hide/Reveal/Fade/Unfade operation
+- A specifier creates a tool in the view DSL
+- The specifier creates an operation, for example ChangeContext
+- The specifier fills the expression of its operation with a call to the hide/reveal/fade/unfade service, for example `diagramServices.hide(nodeId)`
+- When an end user uses the tool defined this way, the appropriate nodes are hidden/revealed/faded/unfaded
+
+=== Cutting backs
+
+Nothing identified for now
+
+== Rabbit holes
+
+Nothing identified for now
+
+== No-gos
+
+Nothing identified for now
