@@ -317,7 +317,7 @@ public class NodeComponent implements IComponent {
     }
 
     private boolean isPinned(List<IDiagramEvent> diagramEvents, String nodeId, Optional<Node> optionalPreviousNode) {
-        boolean isPinned = false;
+        boolean isPinned = optionalPreviousNode.map(Node::isPinned).orElse(false);
         for (IDiagramEvent diagramEvent : diagramEvents) {
             if (diagramEvent instanceof PinDiagramElementEvent pinDiagramElementEvent) {
                 if (pinDiagramElementEvent.elementIds().contains(nodeId)) {
