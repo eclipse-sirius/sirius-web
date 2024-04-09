@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.services.documents;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -43,7 +44,6 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -53,6 +53,7 @@ import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.Project;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
 import org.eclipse.sirius.web.services.projects.api.EditingContextMetadata;
@@ -151,7 +152,10 @@ public class UploadDocumentEventHandlerTests {
 
     private EditingDomain uploadDocument(File file) {
         try {
-            return this.uploadDocument(new FileInputStream(file), ChangeKind.SEMANTIC_CHANGE, UploadDocumentSuccessPayload.class);
+            FileInputStream fis = new FileInputStream(file);
+            BufferedInputStream inputstream = new BufferedInputStream(fis);
+            inputstream.mark(Integer.MAX_VALUE);
+            return this.uploadDocument(inputstream, ChangeKind.SEMANTIC_CHANGE, UploadDocumentSuccessPayload.class);
         } catch (FileNotFoundException exception) {
             fail(exception.getMessage());
         }
@@ -169,7 +173,7 @@ public class UploadDocumentEventHandlerTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry(), editingContextMetadataProvider);
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry(), editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONResourceLoaderService()));
 
         UploadFile file = new UploadFile(FILE_NAME, inputstream);
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
@@ -251,7 +255,7 @@ public class UploadDocumentEventHandlerTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry(), editingContextMetadataProvider);
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry(), editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONResourceLoaderService()));
         UploadFile file = new UploadFile(FILE_NAME, new ByteArrayInputStream(resourceBytes));
 
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);

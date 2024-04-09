@@ -12,26 +12,23 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.document.services;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
-import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentSanitizedJsonContentProvider;
+import org.eclipse.sirius.web.application.document.services.api.IExternalResourceLoaderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -45,6 +42,12 @@ import org.springframework.stereotype.Service;
 public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJsonContentProvider {
 
     private final Logger logger = LoggerFactory.getLogger(DocumentSanitizedJsonContentProvider.class);
+
+    private final List<IExternalResourceLoaderService> externalResourceLoaderServices;
+
+    public DocumentSanitizedJsonContentProvider(List<IExternalResourceLoaderService> externalResourceLoaderServices) {
+        this.externalResourceLoaderServices = Objects.requireNonNull(externalResourceLoaderServices);
+    }
 
     @Override
     public Optional<String> getContent(ResourceSet resourceSet, String name, InputStream inputStream) {
@@ -77,13 +80,7 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
     }
 
     /**
-     * Returns the {@link Resource} with the given {@link URI} or {@link Optional#empty()} regarding the content of
-     * the first line of the given {@link InputStream}.
-     *
-     * <p>
-     * Returns a {@link JsonResourceImpl} if the first line contains a '{', a {@link XMIResourceImpl} if the first line
-     * contains '<', {@link Optional#empty()} otherwise.
-     * </p>
+     * Returns the {@link Resource} with the given {@link URI} or {@link Optional#empty()}.
      *
      * @param resourceSet
      *            The {@link ResourceSet} used to store the loaded resource
@@ -91,32 +88,18 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
      *            The {@link URI} to use to create the {@link Resource}
      * @param inputStream
      *            The {@link InputStream} used to determine which {@link Resource} to create
-     *
-     * @return a {@link JsonResourceImpl}, a {@link XMIResourceImpl} or {@link Optional#empty()}
+     * @return a {@link Resource} or {@link Optional#empty()}
      */
     private Optional<Resource> getResource(ResourceSet resourceSet, URI resourceURI, InputStream inputStream) {
-        Resource resource = null;
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        bufferedInputStream.mark(Integer.MAX_VALUE);
-        try (var reader = new BufferedReader(new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8))) {
-            String line = reader.readLine();
-            Map<String, Object> options = new HashMap<>();
-            if (line != null) {
-                if (line.contains("{")) {
-                    resource = new JSONResourceFactory().createResource(resourceURI);
-                } else if (line.contains("<")) {
-                    resource = new XMIResourceImpl(resourceURI);
-                    options = new EMFResourceUtils().getXMILoadOptions();
-                }
-            }
-            bufferedInputStream.reset();
-            if (resource != null) {
-                resourceSet.getResources().add(resource);
-                resource.load(bufferedInputStream, options);
-            }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            inputStream.transferTo(baos);
         } catch (IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
-        return Optional.ofNullable(resource);
+        return this.externalResourceLoaderServices.stream()
+                .filter(loader -> loader.canHandle(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet))
+                .findFirst()
+                .flatMap(loader -> loader.getResource(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet));
     }
 }
