@@ -221,6 +221,29 @@ public class DiagramRendererNodeTests {
                 .extracting(ImageNodeStyle::getScalingFactor).allMatch(scalingFactor -> scalingFactor == 1);
     }
 
+    @Test
+    public void testPinEventRendering() {
+        Function<VariableManager, INodeStyle> styleProvider = variableManager -> RectangularNodeStyle.newRectangularNodeStyle()
+                .color("")
+                .borderColor("")
+                .borderSize(0)
+                .borderStyle(LineStyle.Solid)
+                .build();
+
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.UNDEFINED, Optional.empty());
+        assertThat(diagram).isNotNull();
+        assertThat(diagram.getNodes().get(0).isPinned()).isEqualTo(false);
+
+        Node nodePinned = Node.newNode(diagram.getNodes().get(0))
+                .pinned(true)
+                .build();
+        Diagram newDiagram = Diagram.newDiagram(diagram)
+                .nodes(List.of(nodePinned))
+                .build();
+        diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.UNDEFINED, Optional.of(newDiagram));
+        assertThat(diagram.getNodes().get(0).isPinned()).isEqualTo(true);
+    }
+
     /**
      * Create a diagram with one element that match with the given styleProvider/typeProvider.
      */

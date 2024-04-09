@@ -57,6 +57,7 @@ This will make the dependency to the old Sirius Web architecture more explicit.
 - https://github.com/eclipse-sirius/sirius-web/issues/3298[#3298] [diagram] Fix an issue in which the diagram had unnecessary rendering
 - https://github.com/eclipse-sirius/sirius-web/issues/3317[#3317] [diagram] Fix an issue that caused a crash when selection changes were made too quickly
 - https://github.com/eclipse-sirius/sirius-web/issues/3269[#3269] [diagram] Disable node drag and drop during multi selection
+- https://github.com/eclipse-sirius/sirius-web/issues/3352[#3352] [diagram] Fix an issue that prevents pinned elements from being unpinned unintentionally
 
 
 === New Features
