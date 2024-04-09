@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,13 +35,12 @@ public abstract class AbstractServicesTests {
 
     @Test
     public void serviceClassShouldOnlyUseAuditedRepositoryMethods() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .should()
-                .callMethodWhere(this.nonAuditedRepositoryMethod());
-        // @formatter:on
+                .callMethodWhere(this.nonAuditedRepositoryMethod())
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -49,7 +48,7 @@ public abstract class AbstractServicesTests {
     private DescribedPredicate<JavaMethodCall> nonAuditedRepositoryMethod() {
         return new DescribedPredicate<>("the repository method called has not been audited") {
             @Override
-            public boolean apply(JavaMethodCall javaMethodCall) {
+            public boolean test(JavaMethodCall javaMethodCall) {
                 JavaClass targetJavaClass = javaMethodCall.getTargetOwner();
                 String fullName = targetJavaClass.getFullName();
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -101,14 +101,14 @@ public abstract class AbstractCodingRulesTests {
                 .resideInAPackage(this.getProjectRootPackage())
                 .should()
                 .dependOnClassesThat()
-                .resideInAnyPackage(GRAPHQL_GUAVA);
+                .resideInAnyPackage(GRAPHQL_GUAVA)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     @Test
     public void noClassesShouldUseGuava() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
@@ -130,28 +130,26 @@ public abstract class AbstractCodingRulesTests {
                         GUAVA_UTIL,
                         GUAVA_XML,
                         GUAVA_THIRDPARTY
-                );
-        // @formatter:on
+                )
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     @Test
     public void noClassesShouldUseJacksonAnnotations() {
-        // @formatter:off
         var rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .should()
                 .dependOnClassesThat()
-                .resideInAPackage(JACKSON_ANNOTATION);
-        // @formatter:on
+                .resideInAPackage(JACKSON_ANNOTATION)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     public void noClassesShouldUseEMF() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
@@ -160,96 +158,91 @@ public abstract class AbstractCodingRulesTests {
                 .resideInAPackage(EMF)
                 .orShould()
                 .dependOnClassesThat()
-                .resideInAPackage(EMFJSON);
-        // @formatter:on
+                .resideInAPackage(EMFJSON)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     public void noClassesShouldUseApacheCommons() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .should()
                 .dependOnClassesThat()
-                .resideInAPackage(APACHE_COMMONS);
-        // @formatter:on
+                .resideInAPackage(APACHE_COMMONS)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     @Test
     public void noClassesShouldUseSpringStringUtils() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .should()
                 .dependOnClassesThat()
-                .areAssignableTo(SPRING_STRINGUTILS);
-        // @formatter:on
+                .areAssignableTo(SPRING_STRINGUTILS)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     @Test
     public void noClassesShouldUseStandardStreams() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
-                .should(GeneralCodingRules.ACCESS_STANDARD_STREAMS);
-        // @formatter:on
+                .should(GeneralCodingRules.ACCESS_STANDARD_STREAMS)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     @Test
     public void noClassesShouldThrowGenericExceptions() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
-                .should(GeneralCodingRules.THROW_GENERIC_EXCEPTIONS);
-        // @formatter:on
+                .should(GeneralCodingRules.THROW_GENERIC_EXCEPTIONS)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     @Test
     public void noClassesShouldUseJavaLogging() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
-                .should(GeneralCodingRules.USE_JAVA_UTIL_LOGGING);
-        // @formatter:on
+                .should(GeneralCodingRules.USE_JAVA_UTIL_LOGGING)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     @Test
     public void classesShouldUsePublicVisibility() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
                 .should().bePackagePrivate()
                 .andShould().bePrivate()
-                .andShould().beProtected();
-        // @formatter:on
+                .andShould().beProtected()
+                .allowEmptyShould(true);
+
         rule.check(this.getClasses());
     }
 
     @Test
     public void classesShouldHavePublicOrPrivateConstructors() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
-                .should(this.haveProtectedOrPackageConstructor());
-        // @formatter:on
+                .should(this.haveProtectedOrPackageConstructor())
+                .allowEmptyShould(true);
+
         rule.check(this.getClasses());
     }
 
@@ -257,17 +250,13 @@ public abstract class AbstractCodingRulesTests {
         return new ArchCondition<>("have a package private constructor") {
             @Override
             public void check(JavaClass javaClass, ConditionEvents events) {
-                // @formatter:off
                 boolean hasProtectedOrPackageConstructor = javaClass.getAllConstructors().stream()
-                        .filter(javaConstructor -> {
-                            return javaConstructor.reflect().getDeclaringClass().equals(javaClass.reflect());
-                        })
+                        .filter(javaConstructor -> javaConstructor.reflect().getDeclaringClass().equals(javaClass.reflect()))
                         .anyMatch(javaConstructor -> {
                             boolean isProtected  = javaConstructor.getModifiers().contains(JavaModifier.PROTECTED);
                             boolean isPackage = !javaConstructor.getModifiers().contains(JavaModifier.PRIVATE) && !javaConstructor.getModifiers().contains(JavaModifier.PROTECTED) && !javaConstructor.getModifiers().contains(JavaModifier.PUBLIC);
                             return isProtected || isPackage;
                         });
-                // @formatter:on
 
                 boolean isAnonymousClass = javaClass.isAnonymousClass();
                 boolean isEnum = javaClass.isEnum();
@@ -283,7 +272,6 @@ public abstract class AbstractCodingRulesTests {
 
     @Test
     public void interfacesShouldRespectNamingConventions() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
@@ -292,15 +280,14 @@ public abstract class AbstractCodingRulesTests {
                 .and()
                 .areNotAnnotatedWith(Target.class)
                 .should()
-                .haveSimpleNameStartingWith("I");
-        // @formatter:on
+                .haveSimpleNameStartingWith("I")
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
 
     @Test
     public void abstractClassesShouldRespectNamingConventions() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
@@ -309,8 +296,8 @@ public abstract class AbstractCodingRulesTests {
                 .and()
                 .haveModifier(ABSTRACT)
                 .should()
-                .haveSimpleNameStartingWith("Abstract");
-        // @formatter:on
+                .haveSimpleNameStartingWith("Abstract")
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -321,7 +308,6 @@ public abstract class AbstractCodingRulesTests {
      */
     @Test
     public void abstractClassesShouldNotContainBusinessCode() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
@@ -329,8 +315,8 @@ public abstract class AbstractCodingRulesTests {
                 .areNotInterfaces()
                 .and()
                 .haveModifier(ABSTRACT)
-                .should(this.notContainBusinessCode());
-        // @formatter:on
+                .should(this.notContainBusinessCode())
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -409,7 +395,6 @@ public abstract class AbstractCodingRulesTests {
      */
     @Test
     public void noMethodsShouldBeStatic() {
-        // @formatter:off
         ArchRule rule = ArchRuleDefinition.noMethods()
                 .that()
                 .areDeclaredInClassesThat()
@@ -430,8 +415,8 @@ public abstract class AbstractCodingRulesTests {
                 .and(this.isNotRecordStaticBuilder())
                 .and(this.isNotReturningAnnotatedBuilder())
                 .should()
-                .beStatic();
-        // @formatter:on
+                .beStatic()
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -439,7 +424,7 @@ public abstract class AbstractCodingRulesTests {
     private DescribedPredicate<JavaClass> isNotTestCase() {
         return new DescribedPredicate<>("is not a test case") {
             @Override
-            public boolean apply(JavaClass javaClass) {
+            public boolean test(JavaClass javaClass) {
                 return !javaClass.getName().endsWith(TESTCASE_SUFFIX);
             }
         };
@@ -453,7 +438,7 @@ public abstract class AbstractCodingRulesTests {
     private DescribedPredicate<JavaMethod> isNotLambda() {
         return new DescribedPredicate<>("is not a lambda") {
             @Override
-            public boolean apply(JavaMethod javaMethod) {
+            public boolean test(JavaMethod javaMethod) {
                 return !javaMethod.getName().startsWith("lambda$");
             }
         };
@@ -468,7 +453,7 @@ public abstract class AbstractCodingRulesTests {
     private DescribedPredicate<JavaMethod> isNotSwitchTable() {
         return new DescribedPredicate<>("is not a switch table (whatever that is...)") {
             @Override
-            public boolean apply(JavaMethod javaMethod) {
+            public boolean test(JavaMethod javaMethod) {
                 return !javaMethod.getFullName().contains("$SWITCH_TABLE$");
             }
         };
@@ -482,7 +467,7 @@ public abstract class AbstractCodingRulesTests {
     private DescribedPredicate<JavaMethod> isNotRecordStaticBuilder() {
         return new DescribedPredicate<>("is not an alternate builder in a record") {
             @Override
-            public boolean apply(JavaMethod javaMethod) {
+            public boolean test(JavaMethod javaMethod) {
                 return !(javaMethod.getOwner().isRecord() && javaMethod.getRawReturnType().equals(javaMethod.getOwner()));
             }
         };
@@ -496,7 +481,7 @@ public abstract class AbstractCodingRulesTests {
     private DescribedPredicate<JavaMethod> isNotReturningAnnotatedBuilder() {
         return new DescribedPredicate<>("is not returning a type annotated with @Builder") {
             @Override
-            public boolean apply(JavaMethod javaMethod) {
+            public boolean test(JavaMethod javaMethod) {
                 return !javaMethod.getRawReturnType().isAnnotatedWith(Builder.class);
             }
         };

@@ -54,6 +54,7 @@ This will make the dependency to the old Sirius Web architecture more explicit.
 
 - Move to docker compose v2 for our GitHub Actions workflow.
 - https://github.com/eclipse-sirius/sirius-web/issues/3277[#3277] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.8 to benefit for enhancements
+- [test] Switch to ArchUnit 1.2.1 to restore architectural tests which were failing recently
 
 === Bug fixes
 
