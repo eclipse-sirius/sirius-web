@@ -1,0 +1,44 @@
+= [ADR-142] Add report on document upload
+
+== Context
+
+Sirius Web doesn't provide a way for specifiers to send a report with the upload of a document.
+
+== Decision
+
+=== Backend
+
+A new `IUploadDocumentReportProvider.java` interface will be introduced:
+
+[source,java]
+----
+public interface IUploadDocumentReportProvider {
+    boolean canHandle(Resource resource);
+    String createReport(Resource resource);
+}
+----
+
+`UploadDocumentSuccessPayload.java` will be updated with a new `String` parameter named `report`.
+
+`UploadDocumentEventHandler.java` will be updated with a list of `IUploadDocumentReportProvider`.
+
+The first `IUploadDocumentReportProvider` able to handle the newly created document will be used to create a report and this report will be passed to `UploadDocumentSuccessPayload`.
+
+=== GraphQL
+
+In `siriusweb.graphql`, a new `report: String` field will be added to the `UploadDocumentSuccessPayload`.
+
+=== Frontend
+
+The `UploadDocumentModal.tsx` will be modified:
+- A new `Download Report` button will be added.
+- The modal will not automatically closed after the upload, allowing users to download the report.
+- A new `Close` button will be added.
+
+== Status
+
+Work in progress
+
+== Consequences
+
+No consequences detected.

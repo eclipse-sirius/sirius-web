@@ -15,7 +15,8 @@
 - [ADR-139] Add Is Collapsed By Default Expression in NodeDescription entity in the view DSL
 - [ADR-140] Add collapse and expand services
 - [ADR-141] Factorize GraphQL queries in tests
-
+- [ADR-142] Add report on document upload
+- [ADR-143] Handle documents upload with other formats than JSON and XMI
 
 === Deprecation warning
 
