@@ -98,6 +98,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3342[#3342] [deck] Update deck and gantt view metamodel and deck view examples
 - https://github.com/eclipse-sirius/sirius-web/issues/3346[#3346] [workbench] Make the _Explorer_ panel wider by default.
 - https://github.com/eclipse-sirius/sirius-web/issues/3313[#3313] [core] Avoid sending events for no-op updates of domain objects
+- https://github.com/eclipse-sirius/sirius-web/issues/3362[#3362] [diagram] Ignore edge during multi-selection to apply distribution tools on nodes
 
 
 == v2024.3.0
