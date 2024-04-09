@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.services.documents;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -53,6 +54,7 @@ import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.Project;
+import org.eclipse.sirius.web.services.documents.api.IUploadDocumentReportProvider;
 import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
@@ -76,7 +78,6 @@ public class UploadDocumentEventHandlerTests {
 
     private static final String PATH_TO_XMI_DOCUMENT = "test_import/document.xmi";
 
-    // @formatter:off
     private static final String JSON_CONTENT = """
         {
           "json": {
@@ -116,7 +117,6 @@ public class UploadDocumentEventHandlerTests {
           <eClassifiers xsi:type="ecore:EClass" name="AClass"/>
         </ecore:EPackage>
         """;
-    // @formatter:on
 
     @Test
     public void testUploadXMIDocument() {
@@ -134,6 +134,18 @@ public class UploadDocumentEventHandlerTests {
         this.testUploadXMIDocument(editingDomain);
     }
 
+    @Test
+    public void testUploadEmptyDocument() {
+        EditingDomain editingDomain = this.uploadDocument(new ByteArrayInputStream(new byte[0]), ChangeKind.NOTHING, ErrorPayload.class);
+
+        assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testUploadDocumentAndGetReport() {
+        this.uploadDocumentAndCheckReport(new ByteArrayInputStream(XMI_CONTENT.getBytes()), ChangeKind.SEMANTIC_CHANGE, UploadDocumentSuccessPayload.class);
+    }
+
     private void testUploadXMIDocument(EditingDomain editingDomain) {
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
         Resource res = editingDomain.getResourceSet().getResources().get(0);
@@ -141,13 +153,6 @@ public class UploadDocumentEventHandlerTests {
         assertThat(res.getContents()).hasSize(1);
         EObject root = res.getContents().get(0);
         assertThat(root).isInstanceOf(EPackage.class);
-    }
-
-    @Test
-    public void testUploadEmptyDocument() {
-        EditingDomain editingDomain = this.uploadDocument(new ByteArrayInputStream(new byte[0]), ChangeKind.NOTHING, ErrorPayload.class);
-
-        assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(0);
     }
 
     private EditingDomain uploadDocument(File file) {
@@ -173,7 +178,7 @@ public class UploadDocumentEventHandlerTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry(), editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONResourceLoaderService()));
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONResourceLoaderService()), List.of(), new SimpleMeterRegistry());
 
         UploadFile file = new UploadFile(FILE_NAME, inputstream);
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
@@ -193,6 +198,55 @@ public class UploadDocumentEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(expectedPayload);
+
+        return editingDomain;
+    }
+
+    private EditingDomain uploadDocumentAndCheckReport(InputStream inputstream, String expectedChangeKind, Class<?> expectedPayload) {
+        IDocumentService documentService = new IDocumentService.NoOp() {
+            @Override
+            public Optional<Document> createDocument(String projectId, String name, String content) {
+                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), ""), name, content));
+            }
+        };
+        IServicesMessageService messageService = new NoOpServicesMessageService();
+        var editingContextMetadata = new EditingContextMetadata(List.of());
+        IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
+        List<IUploadDocumentReportProvider> uploadDocumentReportProvider = List.of(new IUploadDocumentReportProvider() {
+
+            @Override
+            public String createReport(Resource resource) {
+                return "This is a report";
+            }
+
+            @Override
+            public boolean canHandle(Resource resource) {
+                return true;
+            }
+        });
+
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONResourceLoaderService()), uploadDocumentReportProvider, new SimpleMeterRegistry());
+
+        UploadFile file = new UploadFile(FILE_NAME, inputstream);
+        var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
+
+        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
+
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
+
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        assertThat(handler.canHandle(editingContext, input)).isTrue();
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(expectedChangeKind);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(expectedPayload);
+
+        assertEquals("This is a report", ((UploadDocumentSuccessPayload) payload).report());
 
         return editingDomain;
     }
@@ -255,7 +309,7 @@ public class UploadDocumentEventHandlerTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry(), editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONResourceLoaderService()));
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONResourceLoaderService()), List.of(), new SimpleMeterRegistry());
         UploadFile file = new UploadFile(FILE_NAME, new ByteArrayInputStream(resourceBytes));
 
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);

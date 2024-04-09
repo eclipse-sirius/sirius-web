@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,18 +12,9 @@
  *******************************************************************************/
 export interface UploadDocumentModalProps {
   editingContextId: string;
-  onDocumentUploaded: () => void;
   onClose: () => void;
 }
 
-export interface GQLUploadDocumentMutationData {
-  uploadDocument: GQLUploadDocumentPayload;
-}
-
-export interface GQLUploadDocumentPayload {
-  __typename: string;
-}
-
-export interface GQLErrorPayload extends GQLUploadDocumentPayload {
-  message: string;
+export interface UploadDocumentModalState {
+  file: File | null;
 }
