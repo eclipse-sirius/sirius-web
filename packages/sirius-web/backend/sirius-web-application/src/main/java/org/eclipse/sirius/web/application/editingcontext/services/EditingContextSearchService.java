@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAd
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IDocumentToResourceService;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
@@ -60,7 +60,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final ISemanticDataSearchService semanticDataSearchService;
 
-    private final IDocumentToResourceService documentToResourceService;
+    private final IResourceLoader resourceLoader;
 
     private final IEditingDomainFactory editingDomainFactory;
 
@@ -70,11 +70,11 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final Timer timer;
 
-    public EditingContextSearchService(IProjectSearchService projectSearchService, ISemanticDataSearchService semanticDataSearchService, IDocumentToResourceService documentToResourceService, IEditingDomainFactory editingDomainFactory,
+    public EditingContextSearchService(IProjectSearchService projectSearchService, ISemanticDataSearchService semanticDataSearchService, IResourceLoader resourceLoader, IEditingDomainFactory editingDomainFactory,
                                        List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors, MeterRegistry meterRegistry) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
-        this.documentToResourceService = Objects.requireNonNull(documentToResourceService);
+        this.resourceLoader = Objects.requireNonNull(resourceLoader);
         this.editingDomainFactory = Objects.requireNonNull(editingDomainFactory);
         this.representationDescriptionProviders = Objects.requireNonNull(representationDescriptionProviders);
         this.editingContextProcessors = Objects.requireNonNull(editingContextProcessors);
@@ -125,7 +125,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
         ResourceSet resourceSet = editingContext.getDomain().getResourceSet();
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
 
-        semanticData.getDocuments().forEach(document -> this.documentToResourceService.toResource(resourceSet, document));
+        semanticData.getDocuments().forEach(document -> this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent()));
 
         // The ECrossReferenceAdapter must be set after the resource loading because it needs to resolve proxies in case
         // of inter-resources references

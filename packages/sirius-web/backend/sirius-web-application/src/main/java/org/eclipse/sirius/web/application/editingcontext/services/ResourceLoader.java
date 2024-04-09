@@ -14,14 +14,14 @@ package org.eclipse.sirius.web.application.editingcontext.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IDocumentToResourceService;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -32,24 +32,24 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class DocumentToResourceService implements IDocumentToResourceService {
+public class ResourceLoader implements IResourceLoader {
 
-    private final Logger logger = LoggerFactory.getLogger(DocumentToResourceService.class);
+    private final Logger logger = LoggerFactory.getLogger(ResourceLoader.class);
 
     @Override
-    public Optional<Resource> toResource(ResourceSet resourceSet, Document document) {
+    public Optional<Resource> toResource(ResourceSet resourceSet, String id, String name, String content) {
         Optional<Resource> optionalResource = Optional.empty();
 
-        var resource = new JSONResourceFactory().createResourceFromPath(document.getId().toString());
-        try (var inputStream = new ByteArrayInputStream(document.getContent().getBytes())) {
+        var resource = new JSONResourceFactory().createResourceFromPath(id);
+        try (var inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8))) {
             resourceSet.getResources().add(resource);
             resource.load(inputStream, null);
 
-            resource.eAdapters().add(new ResourceMetadataAdapter(document.getName()));
+            resource.eAdapters().add(new ResourceMetadataAdapter(name));
 
             optionalResource = Optional.of(resource);
         } catch (IOException | IllegalArgumentException exception) {
-            this.logger.warn("An error occured while loading document {}: {}.", document.getId(), exception.getMessage());
+            this.logger.warn("An error occured while loading document {}: {}.", id, exception.getMessage());
             resourceSet.getResources().remove(resource);
         }
 

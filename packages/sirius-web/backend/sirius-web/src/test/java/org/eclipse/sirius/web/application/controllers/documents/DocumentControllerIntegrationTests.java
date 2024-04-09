@@ -16,6 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,18 +28,22 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.document.dto.CreateDocumentInput;
 import org.eclipse.sirius.web.application.document.dto.CreateDocumentSuccessPayload;
+import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
+import org.eclipse.sirius.web.application.document.dto.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.application.studio.services.StudioStereotypeProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.graphql.CreateDocumentMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.StereotypesQueryRunner;
+import org.eclipse.sirius.web.tests.graphql.UploadDocumentMutationRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -70,6 +76,9 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
 
     @Autowired
     private CreateDocumentMutationRunner createDocumentMutationRunner;
+
+    @Autowired
+    private UploadDocumentMutationRunner uploadDocumentMutationRunner;
 
     @Autowired
     private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
@@ -112,6 +121,37 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         this.createDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioStereotypeProvider.VIEW_STEREOTYPE, "View");
     }
 
+    @Test
+    @DisplayName("Given a studio, when the upload of a new domain document is performed, then the domain is created")
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenStudioWhenTheUploadOfDomainDocumentIsPerformedThenTheDomainIsCreated() {
+        var content = """
+                {
+                  "json": {
+                    "version": "1.0",
+                    "encoding": "utf-8"
+                  },
+                  "ns": {
+                    "domain":"http://www.eclipse.org/sirius-web/domain"
+                  },
+                  "content": [
+                    {
+                      "id":"b213a94d-fa13-4f76-bc5b-fd1125a8aaaf",
+                      "eClass":"domain:Domain",
+                      "data": {
+                        "name":"test",
+                        "types": [
+                          {"id":"1fb6fd00-5800-4ec5-abb8-76e95309ba55","eClass":"domain:Entity","data":{"name":"NewEntity"}}
+                        ]
+                      }
+                    }
+                  ]
+                }
+                """;
+        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), "test", content);
+    }
+
     private void createDocument(String editingContextId, String stereotypeId, String name) {
         this.givenCommittedTransaction.commit();
 
@@ -123,6 +163,43 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
 
         String typename = JsonPath.read(result, "$.data.createDocument.__typename");
         assertThat(typename).isEqualTo(CreateDocumentSuccessPayload.class.getSimpleName());
+
+        Function<IEditingContext, Object> function = editingContext -> Optional.of(editingContext)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(emfEditingContext -> emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                        .anyMatch(resource -> resource.eAdapters().stream()
+                                .filter(ResourceMetadataAdapter.class::isInstance)
+                                .map(ResourceMetadataAdapter.class::cast)
+                                .map(ResourceMetadataAdapter::getName)
+                                .anyMatch(name::equals)))
+                .orElse(false);
+        var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, function));
+
+        Predicate<ExecuteEditingContextFunctionSuccessPayload> predicate = payload -> Optional.of(payload)
+                .map(ExecuteEditingContextFunctionSuccessPayload::result)
+                .filter(Boolean.class::isInstance)
+                .map(Boolean.class::cast)
+                .orElse(false);
+
+        StepVerifier.create(mono)
+                .expectNextMatches(predicate)
+                .thenCancel()
+                .verify();
+    }
+
+    private void uploadDocument(String editingContextId, String name, String content) {
+        this.givenCommittedTransaction.commit();
+
+        var file = new UploadFile(name, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
+        var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file);
+        var result = this.uploadDocumentMutationRunner.run(input);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        String typename = JsonPath.read(result, "$.data.uploadDocument.__typename");
+        assertThat(typename).isEqualTo(UploadDocumentSuccessPayload.class.getSimpleName());
 
         Function<IEditingContext, Object> function = editingContext -> Optional.of(editingContext)
                 .filter(IEMFEditingContext.class::isInstance)

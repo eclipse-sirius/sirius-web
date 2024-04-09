@@ -18,6 +18,7 @@ type Stereotype {
 
 extend type Mutation {
   createDocument(input: CreateDocumentInput!): CreateDocumentPayload!
+  uploadDocument(input: UploadDocumentInput!): UploadDocumentPayload!
 }
 
 input CreateDocumentInput {
@@ -38,4 +39,16 @@ type Document {
   id: ID!
   name: String!
   kind: String!
+}
+
+input UploadDocumentInput {
+  editingContextId: ID!
+  file: Upload!
+  id: ID!
+}
+
+union UploadDocumentPayload = ErrorPayload | UploadDocumentSuccessPayload
+
+type UploadDocumentSuccessPayload {
+  id: ID!
 }

@@ -10,19 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.services.api;
+package org.eclipse.sirius.web.application.document.services.api;
 
+import java.io.InputStream;
 import java.util.Optional;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 
 /**
- * Used to load documents as EMF resources.
+ * Used to compute a sanitized content for a given resource.
  *
  * @author sbegaudeau
  */
-public interface IDocumentToResourceService {
-    Optional<Resource> toResource(ResourceSet resourceSet, Document document);
+public interface IDocumentSanitizedJsonContentProvider {
+    Optional<String> getContent(ResourceSet resourceSet, String name, InputStream inputStream);
 }
