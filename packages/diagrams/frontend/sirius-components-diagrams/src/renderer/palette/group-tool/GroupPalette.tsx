@@ -24,7 +24,7 @@ import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import ViewStreamIcon from '@material-ui/icons/ViewStream';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { memo, useCallback, useRef, useState } from 'react';
-import { Edge, Node, OnSelectionChangeFunc, useOnSelectionChange, useReactFlow } from 'reactflow';
+import { Node, OnSelectionChangeFunc, useOnSelectionChange, useReactFlow } from 'reactflow';
 import { AlignHorizontalCenterIcon } from '../../../icons/AlignHorizontalCenterIcon';
 import { AlignHorizontalLeftIcon } from '../../../icons/AlignHorizontalLeftIcon';
 import { AlignHorizontalRightIcon } from '../../../icons/AlignHorizontalRightIcon';
@@ -85,8 +85,7 @@ const usePaletteStyle = makeStyles((theme) => ({
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
-const isSelectionContainingEdge = (selectedEdges: Edge[]) => selectedEdges.length > 0;
-const canSelectedNodesBeDistributed = (selectedNodes: Node[]) => selectedNodes.length < 2;
+const canSelectedNodesBeDistributed = (selectedNodes: Node[]) => selectedNodes.length > 1;
 
 export const GroupPalette = memo(
   ({ refreshEventPayloadId, x, y, isOpened, refElementId, hidePalette }: GroupPaletteProps) => {
@@ -128,11 +127,9 @@ export const GroupPalette = memo(
       });
       const selectedEdges = edges.filter((edge) => edge.selected);
 
-      const isMinimalPalette =
-        isSelectionContainingEdge(selectedEdges) || canSelectedNodesBeDistributed(selectedListChildFiltered);
+      const isMinimalPalette = !canSelectedNodesBeDistributed(selectedListChildFiltered);
 
-      const computeSelectedNodes = isMinimalPalette ? selectedNodes : selectedListChildFiltered;
-      const selectedElements = [...computeSelectedNodes, ...selectedEdges];
+      const selectedElements = isMinimalPalette ? [...selectedNodes, ...selectedEdges] : [...selectedListChildFiltered];
       if (selectedElements.length > 1) {
         setState((prevState) => ({
           ...prevState,
