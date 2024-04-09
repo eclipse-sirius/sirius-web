@@ -158,7 +158,8 @@ public class NodeComponent implements IComponent {
 
         String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
 
-        Set<ViewModifier> modifiers = this.computeModifiers(diagramEvents, optionalPreviousNode, nodeId);
+        Set<ViewModifier> defaultModifiers = this.computeDefaultModifiers(nodeDescription, nodeVariableManager);
+        Set<ViewModifier> modifiers = this.computeModifiers(diagramEvents, optionalPreviousNode, nodeId, defaultModifiers);
         ViewModifier state = this.computeState(modifiers);
 
         boolean isPinned = this.isPinned(diagramEvents, nodeId, optionalPreviousNode);
@@ -277,6 +278,17 @@ public class NodeComponent implements IComponent {
         return newCollapsingState;
     }
 
+    private Set<ViewModifier> computeDefaultModifiers(NodeDescription nodeDescription, VariableManager nodeVariableManager) {
+        Set<ViewModifier> viewModifiers = new HashSet<>();
+        if (nodeDescription.getIsHiddenByDefaultPredicate().test(nodeVariableManager)) {
+            viewModifiers.add(ViewModifier.Hidden);
+        }
+        if (nodeDescription.getIsFadedByDefaultPredicate().test(nodeVariableManager)) {
+            viewModifiers.add(ViewModifier.Faded);
+        }
+        return viewModifiers;
+    }
+
     /**
      * Compute the modifiers set applied on the new node. The set is by default the set of the previous node or is empty
      * if it does not exist.
@@ -291,9 +303,11 @@ public class NodeComponent implements IComponent {
      *         empty Set
      * @param id
      *         The ID of the current node
+     * @param defaultModifiers
+     *         The default modifiers to use if it is the first render of the node
      */
-    private Set<ViewModifier> computeModifiers(List<IDiagramEvent> diagramEvents, Optional<Node> optionalPreviousNode, String id) {
-        Set<ViewModifier> modifiers = new HashSet<>(optionalPreviousNode.map(Node::getModifiers).orElse(Set.of()));
+    private Set<ViewModifier> computeModifiers(List<IDiagramEvent> diagramEvents, Optional<Node> optionalPreviousNode, String id, Set<ViewModifier> defaultModifiers) {
+        Set<ViewModifier> modifiers = new HashSet<>(optionalPreviousNode.map(Node::getModifiers).orElse(defaultModifiers));
         for (IDiagramEvent diagramEvent : diagramEvents) {
             if (diagramEvent instanceof HideDiagramElementEvent hideDiagramElementEvent) {
                 if (hideDiagramElementEvent.getElementIds().contains(id)) {

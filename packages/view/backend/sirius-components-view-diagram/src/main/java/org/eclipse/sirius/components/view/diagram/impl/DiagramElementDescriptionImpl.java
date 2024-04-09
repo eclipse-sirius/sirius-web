@@ -51,42 +51,7 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @see #getName()
      */
     protected static final String NAME_EDEFAULT = "NewRepresentationDescription";
-    /**
-     * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getDomainType()
-     */
-    protected static final String DOMAIN_TYPE_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getSemanticCandidatesExpression()
-     */
-    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "aql:self.eContents()";
-    /**
-     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getPreconditionExpression()
-     */
-    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getSynchronizationPolicy() <em>Synchronization Policy</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getSynchronizationPolicy()
-     */
-    protected static final SynchronizationPolicy SYNCHRONIZATION_POLICY_EDEFAULT = SynchronizationPolicy.SYNCHRONIZED;
+
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -96,24 +61,57 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @see #getName()
      */
     protected String name = NAME_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDomainType()
+     * @generated
+     * @ordered
+     */
+    protected static final String DOMAIN_TYPE_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getDomainType()
      * @generated
      * @ordered
-     * @see #getDomainType()
      */
     protected String domainType = DOMAIN_TYPE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getSemanticCandidatesExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "aql:self.eContents()";
+
     /**
      * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getSemanticCandidatesExpression()
      * @generated
      * @ordered
-     * @see #getSemanticCandidatesExpression()
      */
     protected String semanticCandidatesExpression = SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPreconditionExpression()
+     */
+    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -123,6 +121,17 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @see #getPreconditionExpression()
      */
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getSynchronizationPolicy() <em>Synchronization Policy</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSynchronizationPolicy()
+     */
+    protected static final SynchronizationPolicy SYNCHRONIZATION_POLICY_EDEFAULT = SynchronizationPolicy.SYNCHRONIZED;
+
     /**
      * The cached value of the '{@link #getSynchronizationPolicy() <em>Synchronization Policy</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->

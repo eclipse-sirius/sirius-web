@@ -274,5 +274,25 @@ public class NodeDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for IsHiddenByDefaultExpression.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder isHiddenByDefaultExpression(java.lang.String value) {
+        this.getNodeDescription().setIsHiddenByDefaultExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for IsFadedByDefaultExpression.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder isFadedByDefaultExpression(java.lang.String value) {
+        this.getNodeDescription().setIsFadedByDefaultExpression(value);
+        return this;
+    }
+
 }
 

@@ -81,6 +81,10 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private Predicate<VariableManager> isCollapsedByDefaultPredicate;
 
+    private Predicate<VariableManager> isHiddenByDefaultPredicate;
+
+    private Predicate<VariableManager> isFadedByDefaultPredicate;
+
     private Function<VariableManager, Integer> defaultWidthProvider;
 
     private Function<VariableManager, Integer> defaultHeightProvider;
@@ -196,6 +200,14 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.isCollapsedByDefaultPredicate;
     }
 
+    public Predicate<VariableManager> getIsHiddenByDefaultPredicate() {
+        return this.isHiddenByDefaultPredicate;
+    }
+
+    public Predicate<VariableManager> getIsFadedByDefaultPredicate() {
+        return this.isFadedByDefaultPredicate;
+    }
+
     public Function<VariableManager, Integer> getDefaultWidthProvider() {
         return this.defaultWidthProvider;
     }
@@ -264,6 +276,10 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Predicate<VariableManager> isCollapsedByDefaultPredicate = variableManager -> false;
 
+        private Predicate<VariableManager> isHiddenByDefaultPredicate = variableManager -> false;
+
+        private Predicate<VariableManager> isFadedByDefaultPredicate = variableManager -> false;
+
         private Function<VariableManager, Integer> defaultWidthProvider = variableManager -> null;
 
         private Function<VariableManager, Integer> defaultHeightProvider = variableManager -> null;
@@ -298,6 +314,8 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.dropNodeHandler = nodeDescription.getDropNodeHandler();
             this.keepAspectRatio = nodeDescription.isKeepAspectRatio();
             this.isCollapsedByDefaultPredicate = nodeDescription.getIsCollapsedByDefaultPredicate();
+            this.isHiddenByDefaultPredicate = nodeDescription.getIsHiddenByDefaultPredicate();
+            this.isFadedByDefaultPredicate = nodeDescription.getIsFadedByDefaultPredicate();
             this.defaultWidthProvider = nodeDescription.getDefaultWidthProvider();
             this.defaultHeightProvider = nodeDescription.getDefaultHeightProvider();
         }
@@ -417,6 +435,16 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
+        public Builder isHiddenByDefaultPredicate(Predicate<VariableManager> isHiddenByDefaultPredicate) {
+            this.isHiddenByDefaultPredicate = Objects.requireNonNull(isHiddenByDefaultPredicate);
+            return this;
+        }
+
+        public Builder isFadedByDefaultPredicate(Predicate<VariableManager> isFadedByDefaultPredicate) {
+            this.isFadedByDefaultPredicate = Objects.requireNonNull(isFadedByDefaultPredicate);
+            return this;
+        }
+
         public Builder defaultWidthProvider(Function<VariableManager, Integer> defaultWidthProvider) {
             this.defaultWidthProvider = Objects.requireNonNull(defaultWidthProvider);
             return this;
@@ -453,6 +481,8 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.dropNodeHandler = this.dropNodeHandler; // Optional on purpose.
             nodeDescription.keepAspectRatio = this.keepAspectRatio;
             nodeDescription.isCollapsedByDefaultPredicate = Objects.requireNonNull(this.isCollapsedByDefaultPredicate);
+            nodeDescription.isHiddenByDefaultPredicate = Objects.requireNonNull(this.isHiddenByDefaultPredicate);
+            nodeDescription.isFadedByDefaultPredicate = Objects.requireNonNull(this.isFadedByDefaultPredicate);
             nodeDescription.defaultWidthProvider = Objects.requireNonNull(this.defaultWidthProvider);
             nodeDescription.defaultHeightProvider = Objects.requireNonNull(this.defaultHeightProvider);
             return nodeDescription;

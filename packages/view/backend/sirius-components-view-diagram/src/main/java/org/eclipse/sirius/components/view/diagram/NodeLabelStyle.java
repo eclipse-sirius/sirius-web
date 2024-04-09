@@ -36,10 +36,10 @@ public interface NodeLabelStyle extends LabelStyle {
      * Returns the value of the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Label Color</em>' reference.
-     * @model required="true"
-     * @generated
      * @see #setLabelColor(UserColor)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_LabelColor()
+     * @model required="true"
+     * @generated
      */
     UserColor getLabelColor();
 
@@ -48,9 +48,9 @@ public interface NodeLabelStyle extends LabelStyle {
      * Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Label Color</em>' reference.
-     * @generated
+     *            the new value of the '<em>Label Color</em>' reference.
      * @see #getLabelColor()
+     * @generated
      */
     void setLabelColor(UserColor value);
 
@@ -71,9 +71,9 @@ public interface NodeLabelStyle extends LabelStyle {
      * Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Show Icon</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Show Icon</em>' attribute.
      * @see #isShowIcon()
+     * @generated
      */
     void setShowIcon(boolean value);
 
@@ -81,10 +81,10 @@ public interface NodeLabelStyle extends LabelStyle {
      * Returns the value of the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Label Icon</em>' attribute.
-     * @model
-     * @generated
      * @see #setLabelIcon(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_LabelIcon()
+     * @model
+     * @generated
      */
     String getLabelIcon();
 
@@ -93,9 +93,9 @@ public interface NodeLabelStyle extends LabelStyle {
      * Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Label Icon</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Label Icon</em>' attribute.
      * @see #getLabelIcon()
+     * @generated
      */
     void setLabelIcon(String value);
 

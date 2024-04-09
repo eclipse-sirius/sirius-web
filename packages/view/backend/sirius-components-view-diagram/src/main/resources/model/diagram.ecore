@@ -95,6 +95,10 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="outsideLabels" upperBound="-1"
         eType="#//OutsideLabelDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isHiddenByDefaultExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isFadedByDefaultExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeDescription" eSuperTypes="#//DiagramElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="beginLabelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"

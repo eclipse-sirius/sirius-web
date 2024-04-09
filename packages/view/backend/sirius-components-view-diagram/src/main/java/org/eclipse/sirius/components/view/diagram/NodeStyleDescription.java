@@ -16,9 +16,10 @@ package org.eclipse.sirius.components.view.diagram;
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Node Style Description</b></em>'. <!--
  * end-user-doc -->
  *
+ *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeStyleDescription()
  * @model interface="true" abstract="true"
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeStyleDescription()
  */
 public interface NodeStyleDescription extends Style, BorderStyle {
 

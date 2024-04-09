@@ -483,10 +483,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
+     * @generated
      */
     public static DiagramPackage init() {
         if (isInited)
@@ -793,6 +793,26 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EReference getNodeDescription_OutsideLabels() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(15);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getNodeDescription_IsHiddenByDefaultExpression() {
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(16);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getNodeDescription_IsFadedByDefaultExpression() {
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(17);
     }
 
     /**
@@ -2147,6 +2167,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__INSIDE_LABEL);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__OUTSIDE_LABELS);
+        this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION);
+        this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION);
 
         this.edgeDescriptionEClass = this.createEClass(EDGE_DESCRIPTION);
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION);
@@ -2439,6 +2461,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_OutsideLabels(), this.getOutsideLabelDescription(), null, "outsideLabels", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeDescription_IsHiddenByDefaultExpression(), theViewPackage.getInterpretedExpression(), "isHiddenByDefaultExpression", null, 0, 1, NodeDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeDescription_IsFadedByDefaultExpression(), theViewPackage.getInterpretedExpression(), "isFadedByDefaultExpression", null, 0, 1, NodeDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.edgeDescriptionEClass, EdgeDescription.class, "EdgeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getEdgeDescription_BeginLabelExpression(), theViewPackage.getInterpretedExpression(), "beginLabelExpression", "", 0, 1, EdgeDescription.class, !IS_TRANSIENT,

@@ -86,6 +86,8 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3237[#3237] [diagram] Add a `DiagramServices` class containing services to expand and collapse nodes from AQL expressions (via the new `diagramServices` variable) and Java services.
 - https://github.com/eclipse-sirius/sirius-web/issues/3282[#3282] [diagram] Add diagram assertions and navigators to ease the definition of diagram tests.
 - https://github.com/eclipse-sirius/sirius-web/issues/3277[#3277] [gantt] Add support for dependency creation
+- https://github.com/eclipse-sirius/sirius-web/issues/3371[#3371] [view] Add new expressions in `NodeDescription` to specify whether a node is hidden/faded/normal by default.
+- https://github.com/eclipse-sirius/sirius-web/issues/3371[#3371] [diagram] Add new predicates in `NodeDescription` to specify whether a node is hidden/faded/normal by default.
 
 
 === Improvements
