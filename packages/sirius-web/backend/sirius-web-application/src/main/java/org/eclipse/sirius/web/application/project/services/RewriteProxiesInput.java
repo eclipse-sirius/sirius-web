@@ -10,18 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.document.dto;
+package org.eclipse.sirius.web.application.project.services;
 
+import java.util.Map;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IPayload;
-
-import jakarta.validation.constraints.NotNull;
+import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * The payload of the upload document mutation.
+ * The input object for the operation to rewrite broken proxy URIs in documents.
  *
- * @author sbegaudeau
+ * @author pcdavid
  */
-public record UploadDocumentSuccessPayload(@NotNull UUID id, @NotNull DocumentDTO document, String report) implements IPayload {
+public record RewriteProxiesInput(UUID id, String editingContextId, Map<String, String> oldDocumentIdToNewDocumentId) implements IInput {
 }

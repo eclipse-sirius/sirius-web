@@ -10,18 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.document.dto;
+package org.eclipse.sirius.web.application.project.dto;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.graphql.api.UploadFile;
 
 import jakarta.validation.constraints.NotNull;
 
 /**
- * The payload of the upload document mutation.
+ * Input used to upload a new project.
  *
  * @author sbegaudeau
  */
-public record UploadDocumentSuccessPayload(@NotNull UUID id, @NotNull DocumentDTO document, String report) implements IPayload {
+public record UploadProjectInput(@NotNull UUID id, UploadFile file) implements IInput {
 }

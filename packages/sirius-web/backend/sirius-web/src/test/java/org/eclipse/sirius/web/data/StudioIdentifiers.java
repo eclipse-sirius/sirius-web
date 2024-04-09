@@ -31,6 +31,8 @@ public final class StudioIdentifiers {
 
     public static final UUID HUMAN_ENTITY_OBJECT = UUID.fromString("1731ffb5-bfb0-46f3-a23d-0c0650300005");
 
+    public static final UUID VIEW_DOCUMENT = UUID.fromString("ed2a5355-991d-458f-87f1-ea3a18b1f104");
+
     public static final UUID FORM_DESCRIPTION_OBJECT = UUID.fromString("ed20cb85-a58a-47ad-bc0d-749ec8b2ea03");
 
     public static final UUID GROUP_OBJECT = UUID.fromString("28d8d6de-7d6f-4434-9293-0ac4ef2461ac");

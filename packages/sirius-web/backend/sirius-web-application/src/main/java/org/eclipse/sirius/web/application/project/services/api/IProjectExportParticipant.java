@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.document.dto;
+package org.eclipse.sirius.web.application.project.services.api;
 
-import java.util.UUID;
+import java.util.Map;
+import java.util.zip.ZipOutputStream;
 
-import org.eclipse.sirius.components.core.api.IPayload;
-
-import jakarta.validation.constraints.NotNull;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 
 /**
- * The payload of the upload document mutation.
+ * Used to participate in the export of a project.
  *
  * @author sbegaudeau
  */
-public record UploadDocumentSuccessPayload(@NotNull UUID id, @NotNull DocumentDTO document, String report) implements IPayload {
+public interface IProjectExportParticipant {
+    Map<String, Object> exportData(Project project, ZipOutputStream outputStream);
 }

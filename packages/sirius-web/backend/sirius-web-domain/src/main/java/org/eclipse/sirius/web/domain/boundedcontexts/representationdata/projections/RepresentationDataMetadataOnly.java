@@ -14,6 +14,9 @@ package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.project
 
 import java.util.UUID;
 
+import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
+
 /**
  * Projection used to retrieve only the representation metadata of the representation data.
  *
@@ -24,5 +27,6 @@ public record RepresentationDataMetadataOnly(
         String label,
         String kind,
         String targetObjectId,
-        String descriptionId) {
+        String descriptionId,
+        AggregateReference<Project, UUID> project) {
 }

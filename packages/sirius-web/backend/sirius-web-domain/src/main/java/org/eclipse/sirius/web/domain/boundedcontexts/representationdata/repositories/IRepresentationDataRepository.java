@@ -32,21 +32,21 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IRepresentationDataRepository extends ListPagingAndSortingRepository<RepresentationData, UUID>, ListCrudRepository<RepresentationData, UUID> {
     @Query("""
-        SELECT id, label, kind, target_object_id, description_id
+        SELECT id, label, kind, target_object_id, description_id, project_id AS project
         FROM representation_data representationData
         WHERE representationData.id = :id
         """)
     Optional<RepresentationDataMetadataOnly> findMetadataById(UUID id);
 
     @Query("""
-        SELECT id, label, kind, target_object_id, description_id
+        SELECT id, label, kind, target_object_id, description_id, project_id AS project
         FROM representation_data representationData
         WHERE representationData.project_id = :projectId
         """)
     List<RepresentationDataMetadataOnly> findAllMetadataByProjectId(UUID projectId);
 
     @Query("""
-        SELECT id, label, kind, target_object_id, description_id
+        SELECT id, label, kind, target_object_id, description_id, project_id AS project
         FROM representation_data representationData
         WHERE representationData.target_object_id = :targetObjectId
         """)

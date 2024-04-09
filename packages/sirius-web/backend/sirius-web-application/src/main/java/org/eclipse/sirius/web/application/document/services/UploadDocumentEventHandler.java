@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.document.services;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,14 +33,18 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.document.dto.DocumentDTO;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentSanitizedJsonContentProvider;
 import org.eclipse.sirius.web.application.document.services.api.IProxyValidator;
 import org.eclipse.sirius.web.application.document.services.api.IUploadDocumentReportProvider;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -114,12 +119,26 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                     this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", uploadDocumentInput.file().getName());
                 } else {
                     Optional<Resource> newResource = this.resourceLoader.toResource(emfEditingContext.getDomain().getResourceSet(), UUID.randomUUID().toString(), fileName, content);
-                    String report = null;
-                    if (newResource.isPresent()) {
-                        report = this.getReport(newResource.get());
+
+                    var optionalId = newResource.map(Resource::getURI)
+                            .map(uri -> uri.path().substring(1))
+                            .flatMap(new UUIDParser()::parse);
+
+                    var optionalName = newResource.map(Resource::eAdapters).stream()
+                            .flatMap(Collection::stream)
+                            .filter(ResourceMetadataAdapter.class::isInstance)
+                            .map(ResourceMetadataAdapter.class::cast)
+                            .findFirst()
+                            .map(ResourceMetadataAdapter::getName);
+                    if (newResource.isPresent() && optionalId.isPresent() && optionalName.isPresent()) {
+                        var uploadedResource = newResource.get();
+                        var id = optionalId.get();
+                        var name = optionalName.get();
+
+                        String report = this.getReport(uploadedResource);
+                        payload = new UploadDocumentSuccessPayload(input.id(), new DocumentDTO(id, name, ExplorerDescriptionProvider.DOCUMENT_KIND), report);
+                        changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                     }
-                    payload = new UploadDocumentSuccessPayload(input.id(), report);
-                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 }
             }
         }
