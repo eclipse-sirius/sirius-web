@@ -34,6 +34,7 @@ public class RootObjectCreationDescriptionsQueryRunner implements IQueryRunner {
                   rootObjectCreationDescriptions(domainId: $domainId, suggested: $suggested, referenceKind: $referenceKind) {
                     id
                     label
+                    iconURL
                   }
                 }
               }

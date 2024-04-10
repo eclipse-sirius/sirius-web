@@ -34,6 +34,7 @@ public class ChildCreationDescriptionsQueryRunner implements IQueryRunner {
                   childCreationDescriptions(kind: $kind, referenceKind: $referenceKind) {
                     id
                     label
+                    iconURL
                   }
                 }
               }
