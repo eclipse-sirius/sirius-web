@@ -51,6 +51,8 @@ The use of generics has thus been greatly reduced since they could not create a 
 - https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [core] Remove all references to the Stereotype API from `sirius-components-core` since it has always been a Sirius Web API.
 This will make the dependency to the old Sirius Web architecture more explicit.
 - https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [sirius-web] Simplify the lifecycle and API of the documentation creation in order to provide a simpler yet more powerful API for the new architecture
+- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [sirius-web] The custom nodes project and its edit project have been renamed from `sirius-web-customnodes{-edit}` to `sirius-components-view-diagram-customnodes{-edit}` and moved to match other view based projects.
+They are also now used by the view builder code generator.
 
 === Dependency update
 

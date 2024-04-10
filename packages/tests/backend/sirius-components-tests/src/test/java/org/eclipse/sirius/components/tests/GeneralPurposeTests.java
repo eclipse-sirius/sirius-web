@@ -112,7 +112,7 @@ public class GeneralPurposeTests {
             "/sirius-components-view",
             "/sirius-web-customwidgets",
             "/sirius-components-widget-reference-view",
-            "/sirius-web-customnodes"
+            "/sirius-components-view-diagram-customnodes"
     );
 
     /**

@@ -92,13 +92,13 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-view-deck", 44.0),
   new ModuleCoverage("sirius-components-view-deck-edit", 4.0),
   new ModuleCoverage("sirius-components-view-emf", 68.0),
-  new ModuleCoverage("sirius-components-view-builder", 32.0),
+  new ModuleCoverage("sirius-components-view-builder", 34.0),
   new ModuleCoverage("sirius-components-task", 58.0),
   new ModuleCoverage("sirius-components-task-edit", 3.0),
   new ModuleCoverage("sirius-components-task-starter", 73.0),
   new ModuleCoverage("sirius-components-flow-starter", 78.0),
-  new ModuleCoverage("sirius-web-customnodes", 22.0),
-  new ModuleCoverage("sirius-web-customnodes-edit", 8.0),
+  new ModuleCoverage("sirius-components-view-diagram-customnodes", 34.0),
+  new ModuleCoverage("sirius-components-view-diagram-customnodes-edit", 11.0),
   new ModuleCoverage("sirius-web-domain", 86.0),
   new ModuleCoverage("sirius-web-application", 92.0),
   new ModuleCoverage("sirius-web-infrastructure", 86.0),
@@ -133,7 +133,7 @@ System.out.println();
 
 // Check global code coverage
 double global = checkCoverage("");
-double expectedGlobalCoverage = 55.0;
+double expectedGlobalCoverage = 56.0;
 boolean isValidCoverage = global >= expectedGlobalCoverage;
 display("total", global, expectedGlobalCoverage);
 

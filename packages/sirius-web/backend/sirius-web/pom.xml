@@ -41,21 +41,19 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-starter</artifactId>
 			<version>2024.3.2</version>
 		</dependency>
 
+		<!-- Sirius Web Specific Dependencies -->
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-papaya</artifactId>
 			<version>2024.3.2</version>
 		</dependency>
 
+		<!-- Test Dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

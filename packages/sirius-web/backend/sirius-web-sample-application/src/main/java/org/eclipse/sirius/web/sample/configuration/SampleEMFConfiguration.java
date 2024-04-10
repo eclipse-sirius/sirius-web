@@ -19,12 +19,12 @@ import org.eclipse.sirius.components.domain.provider.DomainItemProviderAdapterFa
 import org.eclipse.sirius.components.emf.configuration.ChildExtenderProvider;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.customnodes.CustomnodesPackage;
+import org.eclipse.sirius.components.view.diagram.customnodes.provider.CustomnodesItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.diagram.provider.DiagramItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.provider.FormItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.provider.ViewItemProviderAdapterFactory;
-import org.eclipse.sirius.web.customnodes.CustomnodesPackage;
-import org.eclipse.sirius.web.customnodes.provider.CustomnodesItemProviderAdapterFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
