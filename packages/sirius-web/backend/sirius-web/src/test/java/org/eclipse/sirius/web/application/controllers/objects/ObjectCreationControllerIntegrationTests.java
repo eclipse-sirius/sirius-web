@@ -116,6 +116,11 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
         assertThat(creationDescriptionIds)
                 .isNotEmpty()
                 .contains("Root");
+
+        List<List<String>> creationDescriptionIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.rootObjectCreationDescriptions[*].iconURL");
+        assertThat(creationDescriptionIconURLs).hasSize(2);
+        assertThat(creationDescriptionIconURLs.get(0)).isEqualTo(List.of("/api/images/icons/svg/Default.svg"));
+        assertThat(creationDescriptionIconURLs.get(1)).isEqualTo(List.of("/api/images/icons/svg/Default.svg"));
     }
 
     @Test
@@ -133,6 +138,10 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
         assertThat(creationDescriptionIds)
                 .isNotEmpty()
                 .contains("Humans Human");
+
+        List<List<String>> creationDescriptionIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.childCreationDescriptions[*].iconURL");
+        assertThat(creationDescriptionIconURLs).hasSize(1);
+        assertThat(creationDescriptionIconURLs.get(0)).isEqualTo(List.of("/api/images/icons/svg/Default.svg"));
     }
 
     @Test
