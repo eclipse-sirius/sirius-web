@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.deck.DeckPackage;
 import org.eclipse.sirius.components.view.deck.adapters.DeckColorAdapter;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.adapters.DiagramColorAdapter;
+import org.eclipse.sirius.components.view.diagram.customnodes.CustomnodesPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.adapters.FormColorAdapter;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
@@ -56,6 +57,7 @@ public class StudioEditingContextInitializer implements IEditingContextProcessor
             packageRegistry.put(ViewPackage.eNS_URI, ViewPackage.eINSTANCE);
             packageRegistry.put(DeckPackage.eNS_URI, DeckPackage.eINSTANCE);
             packageRegistry.put(DiagramPackage.eNS_URI, DiagramPackage.eINSTANCE);
+            packageRegistry.put(CustomnodesPackage.eNS_URI, CustomnodesPackage.eINSTANCE);
             packageRegistry.put(FormPackage.eNS_URI, FormPackage.eINSTANCE);
             packageRegistry.put(GanttPackage.eNS_URI, GanttPackage.eINSTANCE);
 

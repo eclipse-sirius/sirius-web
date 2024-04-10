@@ -72,6 +72,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-diagram-customnodes</artifactId>
+			<version>2024.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
 			<version>2024.3.2</version>
 		</dependency>		

@@ -422,12 +422,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-customnodes</artifactId>
+			<artifactId>sirius-components-view-diagram-customnodes</artifactId>
 			<version>2024.3.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-customnodes-edit</artifactId>
+			<artifactId>sirius-components-view-diagram-customnodes-edit</artifactId>
 			<version>2024.3.2</version>
 		</dependency>
 		<dependency>

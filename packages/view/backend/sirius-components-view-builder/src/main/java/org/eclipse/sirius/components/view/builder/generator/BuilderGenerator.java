@@ -108,6 +108,10 @@ public class BuilderGenerator {
         Resource referenceResource = resourceSet.getResource(referenceURI, true);
         allViewContent.addAll(referenceResource.getContents());
 
+        URI customNodesURI = URI.createFileURI(args[1] + "/../sirius-components-view-diagram-customnodes/src/main/resources/model/customnodes.genmodel");
+        Resource customNodesResource = resourceSet.getResource(customNodesURI, true);
+        allViewContent.addAll(customNodesResource.getContents());
+
         var gen = new BuilderGenerator(args[0], args[2], args[3]);
 
         StreamSupport.stream(Spliterators.spliterator(allViewContent, Spliterator.ORDERED), false).filter(GenModel.class::isInstance).map(GenModel.class::cast).forEach(model -> {

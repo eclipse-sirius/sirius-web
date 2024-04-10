@@ -101,7 +101,6 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
                     var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
                     assertThat(siriusWebDomainNode).hasCollapsingState(CollapsingState.COLLAPSED);
 
-
                     var nonDomainNodes = diagram.getNodes().stream()
                             .filter(node -> !node.getInsideLabel().getText().endsWith("-domain"));
                     assertThat(nonDomainNodes)

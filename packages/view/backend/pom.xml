@@ -47,5 +47,7 @@
 		<module>sirius-components-view-form-edit</module>
 		<module>sirius-components-widget-reference-view</module>
 		<module>sirius-components-widget-reference-view-edit</module>
+		<module>sirius-components-view-diagram-customnodes</module>
+		<module>sirius-components-view-diagram-customnodes-edit</module>
 	</modules>
 </project>

@@ -39,8 +39,6 @@
 		<module>sirius-web-graphql</module>
 		<module>sirius-web-spring</module>
 		<module>sirius-web-sample-application</module>
-		<module>sirius-web-customnodes</module>
-		<module>sirius-web-customnodes-edit</module>
 
 		<module>sirius-web-papaya</module>
 
