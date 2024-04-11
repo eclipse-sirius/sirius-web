@@ -107,6 +107,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3313[#3313] [core] Avoid sending events for no-op updates of domain objects
 - https://github.com/eclipse-sirius/sirius-web/issues/3362[#3362] [diagram] Ignore edge during multi-selection to apply distribution tools on nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/3360[#3360] Handle documents upload with other formats than JSON and XMI.
+- https://github.com/eclipse-sirius/sirius-web/issues/3376[#3376] [diagram] Prevent `getToolSection` to be called during multi-selection
 
 
 == v2024.3.0

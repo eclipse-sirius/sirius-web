@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { useEffect, useMemo } from 'react';
 import {
   GQLDiagramDescription,
@@ -80,6 +80,7 @@ export const useConnectionCandidatesQuery = (
   nodeId: string
 ): GQLNodeDescription[] | null => {
   const { addErrorMessage } = useMultiToast();
+  const { selection } = useSelection();
 
   const { data, error } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(getToolSectionsQuery, {
     variables: {
@@ -87,6 +88,7 @@ export const useConnectionCandidatesQuery = (
       diagramId,
       diagramElementId: nodeId,
     },
+    skip: selection.entries.length > 1,
   });
   const diagramDescription: GQLRepresentationDescription | null =
     data?.viewer.editingContext.representation.description ?? null;
