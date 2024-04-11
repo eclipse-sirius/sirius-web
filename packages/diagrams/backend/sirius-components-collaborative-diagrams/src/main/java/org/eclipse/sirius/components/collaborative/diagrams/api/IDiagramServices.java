@@ -23,8 +23,16 @@ import org.eclipse.sirius.components.diagrams.Node;
  */
 public interface IDiagramServices {
 
-    Object collapse(IDiagramService diagramService, List<Node> node);
+    Object collapse(IDiagramService diagramService, List<Node> nodes);
 
-    Object expand(IDiagramService diagramService, List<Node> node);
+    Object expand(IDiagramService diagramService, List<Node> nodes);
+
+    Object hide(IDiagramService diagramService, List<Node> nodes);
+
+    Object reveal(IDiagramService diagramService, List<Node> nodes);
+
+    Object fade(IDiagramService diagramService, List<Node> nodes);
+
+    Object unfade(IDiagramService diagramService, List<Node> nodes);
 
 }

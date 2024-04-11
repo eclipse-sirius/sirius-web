@@ -22,14 +22,18 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.NodePaletteBuilder;
+import org.eclipse.sirius.components.view.builder.generated.NodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -52,6 +56,14 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
 
     private DiagramDescription diagramDescription;
 
+    private NodeTool hideNodeTool;
+
+    private NodeTool revealNodeTool;
+
+    private NodeTool fadeNodeTool;
+
+    private NodeTool unfadeNodeTool;
+
     public VisibilityDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.view = this.createView();
@@ -66,6 +78,22 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
 
     public String getRepresentationDescriptionId() {
         return this.diagramIdProvider.getId(this.diagramDescription);
+    }
+
+    public String getHideNodeToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.hideNodeTool).toString().getBytes()).toString();
+    }
+
+    public String getRevealNodeToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.revealNodeTool).toString().getBytes()).toString();
+    }
+
+    public String getFadeNodeToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.fadeNodeTool).toString().getBytes()).toString();
+    }
+
+    public String getUnfadeNodeToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.unfadeNodeTool).toString().getBytes()).toString();
     }
 
     private View createView() {
@@ -94,6 +122,48 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 .position(InsideLabelPosition.TOP_CENTER)
                 .build();
 
+        this.hideNodeTool = new NodeToolBuilder()
+                .name("Hide")
+                .body(
+                        new ChangeContextBuilder()
+                            .expression("aql:diagramServices.hide(Sequence{ selectedNode })")
+                            .build()
+                )
+                .build();
+
+        this.revealNodeTool = new NodeToolBuilder()
+                .name("Reveal")
+                .body(
+                        new ChangeContextBuilder()
+                            .expression("aql:diagramServices.reveal(Sequence{ selectedNode })")
+                            .build()
+                )
+                .build();
+
+        this.fadeNodeTool = new NodeToolBuilder()
+                .name("Fade")
+                .body(
+                        new ChangeContextBuilder()
+                            .expression("aql:diagramServices.fade(Sequence{ selectedNode })")
+                            .build()
+                )
+                .build();
+
+        this.unfadeNodeTool = new NodeToolBuilder()
+                .name("Unfade")
+                .body(
+                        new ChangeContextBuilder()
+                            .expression("aql:diagramServices.unfade(Sequence{ selectedNode })")
+                            .build()
+                )
+                .build();
+
+
+
+        var nodePalette = new NodePaletteBuilder()
+                .nodeTools(this.hideNodeTool, this.revealNodeTool, this.fadeNodeTool, this.unfadeNodeTool)
+                .build();
+
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
                 .domainType("papaya_logical_architecture:Component")
@@ -102,6 +172,7 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 .style(nodeStyle)
                 .isHiddenByDefaultExpression("aql:self.name.endsWith('-domain')")
                 .isFadedByDefaultExpression("aql:self.name.endsWith('-application')")
+                .palette(nodePalette)
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()

@@ -88,6 +88,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3277[#3277] [gantt] Add support for dependency creation
 - https://github.com/eclipse-sirius/sirius-web/issues/3371[#3371] [view] Add new expressions in `NodeDescription` to specify whether a node is hidden/faded/normal by default.
 - https://github.com/eclipse-sirius/sirius-web/issues/3371[#3371] [diagram] Add new predicates in `NodeDescription` to specify whether a node is hidden/faded/normal by default.
+- https://github.com/eclipse-sirius/sirius-web/issues/3372[#3372] [diagram] Add services in `DiagramServices` to hide, reveal, fade, and unfade nodes from AQL expressions and Java services.
 
 
 === Improvements
