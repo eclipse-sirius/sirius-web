@@ -131,6 +131,7 @@ export const ConnectionCreationHandles = memo(({ nodeId }: ConnectionCreationHan
                 isConnectableStart={true}
                 isConnectableEnd={false}
                 key={position}
+                data-testid={`creationhandle-${position}`}
               />
             );
           })

@@ -103,6 +103,16 @@ describe('Diagram - group palette', () => {
       diagram.getGroupPalette().findByTestId('Distribute elements horizontally').should('not.exist');
       diagram.getGroupPalette().findByTestId('Arrange in column').should('exist');
     });
+
+    it('Then during multi selection the connection handles are not compute', () => {
+      const diagram = new Diagram();
+      const explorer = new Explorer();
+      diagram.fitToScreen();
+      explorer.select('Wifi');
+      cy.getByTestId('creationhandle-top').should('exist');
+      explorer.select('Central_Unit', true);
+      cy.getByTestId('creationhandle-top').should('not.exist');
+    });
   });
 
   context('Given a papaya studio', () => {
