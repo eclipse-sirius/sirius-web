@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,15 +53,18 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
     @Override
     public Optional<String> getNodeType(NodeStyleDescription nodeStyle) {
         Optional<String> nodeType = Optional.empty();
-        if (nodeStyle instanceof ImageNodeStyleDescription) {
-            String svgName = ((ImageNodeStyleDescription) nodeStyle).getShape();
+        if (nodeStyle instanceof ImageNodeStyleDescription imageNodeStyleDescription) {
+            String svgName = imageNodeStyleDescription.getShape();
             if (svgName != null) {
-                // @formatter:off
-                boolean parametricImageFound = this.parametricSVGImageServices.stream()
-                        .flatMap(service -> service.getImages().stream())
-                        .map(ParametricSVGImage::getId)
-                        .anyMatch(UUID.fromString(svgName)::equals);
-                // @formatter:on
+                boolean parametricImageFound = false;
+                Optional<UUID> optionalSVGUUID = this.safeUUIDGetter(svgName);
+                if (optionalSVGUUID.isPresent()) {
+                    UUID svgUUID = optionalSVGUUID.get();
+                    parametricImageFound = this.parametricSVGImageServices.stream()
+                            .flatMap(service -> service.getImages().stream())
+                            .map(ParametricSVGImage::getId)
+                            .anyMatch(svgUUID::equals);
+                }
                 if (parametricImageFound) {
                     nodeType = Optional.of(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE);
                 } else {
@@ -72,6 +75,14 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
         return nodeType;
     }
 
+    private Optional<UUID> safeUUIDGetter(String uuid) {
+        try {
+            return Optional.of(UUID.fromString(uuid));
+        } catch (IllegalArgumentException e) {
+            // We do nothing.
+        }
+        return Optional.empty();
+    }
     @Override
     public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
         Optional<INodeStyle> iNodeStyle = Optional.empty();
