@@ -13,11 +13,15 @@
 package org.eclipse.sirius.components.collaborative.diagrams;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramServices;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramServices;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
+import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.springframework.stereotype.Service;
 
@@ -45,4 +49,31 @@ public class DiagramServices implements IDiagramServices {
         return nodes;
     }
 
+    @Override
+    public Object hide(IDiagramService diagramService, List<Node> nodes) {
+        Set<String> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toSet());
+        diagramService.getDiagramContext().getDiagramEvents().add(new HideDiagramElementEvent(nodeIds, true));
+        return nodes;
+    }
+
+    @Override
+    public Object reveal(IDiagramService diagramService, List<Node> nodes) {
+        Set<String> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toSet());
+        diagramService.getDiagramContext().getDiagramEvents().add(new HideDiagramElementEvent(nodeIds, false));
+        return nodes;
+    }
+
+    @Override
+    public Object fade(IDiagramService diagramService, List<Node> nodes) {
+        Set<String> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toSet());
+        diagramService.getDiagramContext().getDiagramEvents().add(new FadeDiagramElementEvent(nodeIds, true));
+        return nodes;
+    }
+
+    @Override
+    public Object unfade(IDiagramService diagramService, List<Node> nodes) {
+        Set<String> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toSet());
+        diagramService.getDiagramContext().getDiagramEvents().add(new FadeDiagramElementEvent(nodeIds, false));
+        return nodes;
+    }
 }
