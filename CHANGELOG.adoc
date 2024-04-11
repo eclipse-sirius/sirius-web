@@ -69,6 +69,7 @@ This will make the dependency to the old Sirius Web architecture more explicit.
 - https://github.com/eclipse-sirius/sirius-web/issues/3269[#3269] [diagram] Disable node drag and drop during multi selection
 - https://github.com/eclipse-sirius/sirius-web/issues/3352[#3352] [diagram] Fix an issue that prevents pinned elements from being unpinned unintentionally
 - https://github.com/eclipse-sirius/sirius-web/issues/3301[#3301] [diagram] Fix an issue that caused direct edit to fail if a node didn't have an inside label.
+- https://github.com/eclipse-sirius/sirius-web/issues/3373[#3373] [diagram] Fix potential IllegalArgumentException with non uuid shape.
 
 === New Features
 
