@@ -108,6 +108,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3362[#3362] [diagram] Ignore edge during multi-selection to apply distribution tools on nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/3360[#3360] Handle documents upload with other formats than JSON and XMI.
 - https://github.com/eclipse-sirius/sirius-web/issues/3376[#3376] [diagram] Prevent `getToolSection` to be called during multi-selection
+- https://github.com/eclipse-sirius/sirius-web/issues/3377[#3377] [diagram] Only synchronize selection with explorer at the end of the process
 
 
 == v2024.3.0

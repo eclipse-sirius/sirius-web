@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
-import { useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useNodes } from 'reactflow';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect, useMemo } from 'react';
 import {
   GQLDiagramDescription,
@@ -22,6 +23,7 @@ import {
   GQLSingleClickOnTwoDiagramElementsTool,
   GQLTool,
 } from '../connector/useConnector.types';
+import { NodeData } from '../DiagramRenderer.types';
 
 const getToolSectionsQuery = gql`
   query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
@@ -80,7 +82,7 @@ export const useConnectionCandidatesQuery = (
   nodeId: string
 ): GQLNodeDescription[] | null => {
   const { addErrorMessage } = useMultiToast();
-  const { selection } = useSelection();
+  const nodes = useNodes<NodeData>();
 
   const { data, error } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(getToolSectionsQuery, {
     variables: {
@@ -88,7 +90,7 @@ export const useConnectionCandidatesQuery = (
       diagramId,
       diagramElementId: nodeId,
     },
-    skip: selection.entries.length > 1,
+    skip: nodes.filter((node) => node.selected).length > 1,
   });
   const diagramDescription: GQLRepresentationDescription | null =
     data?.viewer.editingContext.representation.description ?? null;
