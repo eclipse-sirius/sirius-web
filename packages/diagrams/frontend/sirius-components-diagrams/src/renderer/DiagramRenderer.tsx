@@ -72,6 +72,7 @@ import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
+import { useShiftSelection } from './selection/useShiftSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
 import 'reactflow/dist/style.css';
@@ -158,7 +159,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, updatable: !!edge.selected })));
   }, [edges.map((edge) => edge.id + edge.selected).join()]);
 
-  useDiagramSelection();
+  const { onShiftSelection, setShiftSelection } = useShiftSelection();
+  useDiagramSelection(onShiftSelection);
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { transformResizeListNodeChanges } = useResizeChange();
@@ -272,13 +274,15 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
 
   const handleSelectionStart = useCallback(() => {
     closeAllPalettes();
-  }, [closeAllPalettes]);
+    setShiftSelection(true);
+  }, [closeAllPalettes, setShiftSelection]);
 
   const handleSelectionEnd = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>) => {
       groupPaletteOnDiagramElementClick(event, null);
+      setShiftSelection(false);
     },
-    [groupPaletteOnDiagramElementClick]
+    [groupPaletteOnDiagramElementClick, setShiftSelection]
   );
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();

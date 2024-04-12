@@ -36,6 +36,7 @@ describe('Diagram - group palette', () => {
     it('Then the group palette is displayed when using multi selection', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
+      diagram.getDiagram('diagram').should('exist');
       explorer.select('Wifi');
       explorer.select('Central_Unit', true);
       diagram.fitToScreen();
@@ -51,6 +52,7 @@ describe('Diagram - group palette', () => {
     it('Then the default tools are available', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
+      diagram.getDiagram('diagram').should('exist');
       explorer.select('Wifi');
       explorer.select('Central_Unit', true);
       diagram.fitToScreen();
@@ -64,6 +66,7 @@ describe('Diagram - group palette', () => {
     it('Then the distribute elements tools are available', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
+      diagram.getDiagram('diagram').should('exist');
       explorer.select('Wifi');
       explorer.select('Central_Unit', true);
       diagram.fitToScreen();
@@ -88,6 +91,7 @@ describe('Diagram - group palette', () => {
     it('Then the last distribute elements tool used is memorized', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
+      diagram.getDiagram('diagram').should('exist');
       explorer.select('Wifi');
       explorer.select('Central_Unit', true);
       diagram.fitToScreen();

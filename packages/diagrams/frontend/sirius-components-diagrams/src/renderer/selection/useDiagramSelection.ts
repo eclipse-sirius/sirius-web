@@ -12,12 +12,13 @@
  *******************************************************************************/
 
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useOnSelectionChange, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 
-export const useDiagramSelection = (): void => {
+export const useDiagramSelection = (onShiftSelection: boolean): void => {
   const { selection, setSelection } = useSelection();
+  const [shiftSelection, setShiftSelection] = useState<SelectionEntry[]>([]);
 
   const { getNodes, setNodes, getEdges, setEdges, fitView } = useReactFlow<NodeData, EdgeData>();
 
@@ -77,12 +78,23 @@ export const useDiagramSelection = (): void => {
         .sort((id1: string, id2: string) => id1.localeCompare(id2));
 
       if (JSON.stringify(selectedDiagramElementIds) !== JSON.stringify(selectionDiagramEntryIds)) {
-        setSelection({ entries: selectionEntries });
+        if (onShiftSelection) {
+          setShiftSelection(selectionEntries);
+        } else {
+          setSelection({ entries: selectionEntries });
+        }
       }
     },
-    [selection]
+    [selection, onShiftSelection]
   );
   useOnSelectionChange({
     onChange: onSelectionChange,
   });
+
+  useEffect(() => {
+    if (shiftSelection.length > 0 && !onShiftSelection) {
+      setSelection({ entries: shiftSelection });
+      setShiftSelection([]);
+    }
+  }, [onShiftSelection]);
 };
