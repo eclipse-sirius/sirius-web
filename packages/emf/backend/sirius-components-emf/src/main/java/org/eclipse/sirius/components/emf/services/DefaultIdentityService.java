@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IDefaultIdentityService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,6 @@ public class DefaultIdentityService implements IDefaultIdentityService {
     public String getId(Object object) {
         String id = null;
         if (object instanceof EObject eObject) {
-
             id = this.getIdFromIDAdapter(eObject);
             if (id == null) {
                 id = this.getIdFromURIFragment(eObject);
@@ -51,7 +51,9 @@ public class DefaultIdentityService implements IDefaultIdentityService {
                 id = ((InternalEObject) eObject).eProxyURI().toString();
             }
         } else if (object instanceof IRepresentation representation) {
-            return representation.getId();
+            id = representation.getId();
+        } else if (object instanceof IEditingContext editingContext) {
+            id = editingContext.getId();
         }
         return id;
     }
@@ -63,6 +65,8 @@ public class DefaultIdentityService implements IDefaultIdentityService {
             kind = this.emfKindService.getKind(eObject.eClass());
         } else if (object instanceof IRepresentation representation) {
             kind = representation.getKind();
+        } else if (object instanceof IEditingContext) {
+            return "siriusComponents://" + IEditingContext.EDITING_CONTEXT;
         }
         return kind;
     }

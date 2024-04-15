@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,8 @@ public final class ValidationElementProps implements IProps {
 
     private String descriptionId;
 
+    private String targetObjectId;
+
     private List<Element> children;
 
     private ValidationElementProps() {
@@ -51,6 +53,10 @@ public final class ValidationElementProps implements IProps {
 
     public String getDescriptionId() {
         return this.descriptionId;
+    }
+
+    public String getTargetObjectId() {
+        return this.targetObjectId;
     }
 
     @Override
@@ -82,6 +88,8 @@ public final class ValidationElementProps implements IProps {
 
         private String descriptionId;
 
+        private String targetObjectId;
+
         private List<Element> children;
 
         private Builder(String id) {
@@ -98,6 +106,11 @@ public final class ValidationElementProps implements IProps {
             return this;
         }
 
+        public Builder targetObjectId(String targetObjectId) {
+            this.targetObjectId = Objects.requireNonNull(targetObjectId);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -108,6 +121,7 @@ public final class ValidationElementProps implements IProps {
             validationElementProps.id = Objects.requireNonNull(this.id);
             validationElementProps.label = Objects.requireNonNull(this.label);
             validationElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
+            validationElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             validationElementProps.children = Objects.requireNonNull(this.children);
             return validationElementProps;
         }

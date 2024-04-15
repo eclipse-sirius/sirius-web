@@ -56,6 +56,10 @@ They are also now used by the view builder code generator.
 - https://github.com/eclipse-sirius/sirius-web/issues/3382[#3382] [diagram] Remove the hardcoded show/hide tools in the frontend and move it to the backend.
 Specifiers now need to manually add the hide tools they want in their node/edge palette.
 New default implementations are available in `DefaultToolsFactory` to ease the migration.
+- https://github.com/eclipse-sirius/sirius-web/issues/3304[#3304] [core] The `ISemanticRepresentation` interface has been removed.
+Its single method, `getTargetObjectId`, has been moved up into the main `IRepresentation` interface.
+For representations which were *not* `ISemanticRepresentation` before, their target object is the `IEditingContext` itself if nothing more relevant is available.
+Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IEditingContext` instances as objects.
 
 === Dependency update
 

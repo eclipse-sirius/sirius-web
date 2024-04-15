@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,8 @@ public final class TreeDescription implements IRepresentationDescription {
     private Function<VariableManager, String> kindProvider;
 
     private Function<VariableManager, String> labelProvider;
+
+    private Function<VariableManager, String> targetObjectIdProvider;
 
     private Function<VariableManager, List<String>> iconURLProvider;
 
@@ -96,6 +98,10 @@ public final class TreeDescription implements IRepresentationDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, String> getTargetObjectIdProvider() {
+        return this.targetObjectIdProvider;
     }
 
     public Function<VariableManager, List<String>> getIconURLProvider() {
@@ -165,6 +171,8 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, List<String>> iconURLProvider;
 
         private Function<VariableManager, Boolean> editableProvider;
@@ -211,6 +219,11 @@ public final class TreeDescription implements IRepresentationDescription {
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -272,6 +285,7 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.treeItemIdProvider = Objects.requireNonNull(this.treeItemIdProvider);
             treeDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             treeDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            treeDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             treeDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             treeDescription.editableProvider = Objects.requireNonNull(this.editableProvider);
             treeDescription.deletableProvider = Objects.requireNonNull(this.deletableProvider);

@@ -154,6 +154,7 @@ public class FormElementFactory implements IElementFactory {
         Builder builder = BarChart.newBarChart(props.getId())
                 .descriptionId(props.getDescriptionId())
                 .label(props.getLabel())
+                .targetObjectId(props.getTargetObjectId())
                 .width(props.getWidth())
                 .height(props.getHeight())
                 .entries(entries);
@@ -171,6 +172,7 @@ public class FormElementFactory implements IElementFactory {
         // @formatter:off
         org.eclipse.sirius.components.charts.piechart.PieChart.Builder builder = PieChart.newPieChart(props.getId())
                 .descriptionId(props.getDescriptionId())
+                .targetObjectId(props.getTargetObjectId())
                 .label(props.getLabel())
                 .entries(entries);
         // @formatter:on

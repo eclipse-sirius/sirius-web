@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,8 @@ public final class BarChart implements IChart {
 
     private String kind;
 
+    private String targetObjectId;
+
     private List<BarChartEntry> entries;
 
     private BarChartStyle style;
@@ -45,6 +47,7 @@ public final class BarChart implements IChart {
     private int width;
 
     private int height;
+
 
     private BarChart() {
         // Prevent instantiation
@@ -68,6 +71,11 @@ public final class BarChart implements IChart {
     @Override
     public String getKind() {
         return this.kind;
+    }
+
+    @Override
+    public String getTargetObjectId() {
+        return this.targetObjectId;
     }
 
     public List<BarChartEntry> getEntries() {
@@ -112,6 +120,8 @@ public final class BarChart implements IChart {
 
         private String kind = KIND;
 
+        private String targetObjectId;
+
         private List<BarChartEntry> entries;
 
         private BarChartStyle style;
@@ -131,6 +141,11 @@ public final class BarChart implements IChart {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder targetObjectId(String targetObjectId) {
+            this.targetObjectId = Objects.requireNonNull(targetObjectId);
             return this;
         }
 
@@ -160,6 +175,7 @@ public final class BarChart implements IChart {
             barChart.descriptionId = Objects.requireNonNull(this.descriptionId);
             barChart.label = Objects.requireNonNull(this.label);
             barChart.kind = Objects.requireNonNull(this.kind);
+            barChart.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             barChart.entries = Objects.requireNonNull(this.entries);
             barChart.style = this.style;
             barChart.width = this.width;

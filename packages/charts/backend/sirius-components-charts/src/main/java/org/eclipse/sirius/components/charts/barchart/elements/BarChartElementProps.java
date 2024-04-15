@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,8 @@ public final class BarChartElementProps implements IProps {
 
     private String label;
 
+    private String targetObjectId;
+
     private List<Number> values;
 
     private List<String> keys;
@@ -59,6 +61,10 @@ public final class BarChartElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getTargetObjectId() {
+        return this.targetObjectId;
     }
 
     public List<Number> getValues() {
@@ -98,6 +104,8 @@ public final class BarChartElementProps implements IProps {
 
         private String label;
 
+        private String targetObjectId;
+
         private List<Number> values;
 
         private List<String> keys;
@@ -119,6 +127,11 @@ public final class BarChartElementProps implements IProps {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder targetObjectId(String targetObjectId) {
+            this.targetObjectId = Objects.requireNonNull(targetObjectId);
             return this;
         }
 
@@ -152,6 +165,7 @@ public final class BarChartElementProps implements IProps {
             barChartElementProps.id = Objects.requireNonNull(this.id);
             barChartElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             barChartElementProps.label = Objects.requireNonNull(this.label);
+            barChartElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             barChartElementProps.values = Objects.requireNonNull(this.values);
             barChartElementProps.keys = Objects.requireNonNull(this.keys);
             barChartElementProps.style = this.style; // Optional on purpose

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,8 @@ public final class ValidationDescription implements IRepresentationDescription {
 
     private Function<VariableManager, List<?>> diagnosticsProvider;
 
+    private Function<VariableManager, String> targetObjectIdProvider;
+
     private Function<Object, String> kindProvider;
 
     private Function<Object, String> messageProvider;
@@ -60,6 +62,10 @@ public final class ValidationDescription implements IRepresentationDescription {
     @Override
     public Predicate<VariableManager> getCanCreatePredicate() {
         return this.canCreatePredicate;
+    }
+
+    public Function<VariableManager, String> getTargetObjectIdProvider() {
+        return this.targetObjectIdProvider;
     }
 
     public Function<VariableManager, List<?>> getDiagnosticsProvider() {
@@ -97,6 +103,8 @@ public final class ValidationDescription implements IRepresentationDescription {
 
         private Predicate<VariableManager> canCreatePredicate;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, List<?>> diagnosticsProvider;
 
         private Function<Object, String> kindProvider;
@@ -114,6 +122,11 @@ public final class ValidationDescription implements IRepresentationDescription {
 
         public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
             this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -137,10 +150,12 @@ public final class ValidationDescription implements IRepresentationDescription {
             validationDescription.id = Objects.requireNonNull(this.id);
             validationDescription.label = Objects.requireNonNull(this.label);
             validationDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
+            validationDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             validationDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             validationDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             validationDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             return validationDescription;
         }
     }
+
 }

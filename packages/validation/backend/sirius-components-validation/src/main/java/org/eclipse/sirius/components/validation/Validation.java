@@ -38,6 +38,8 @@ public final class Validation implements IRepresentation {
 
     private String descriptionId;
 
+    private String targetObjectId;
+
     private List<Diagnostic> diagnostics;
 
     private Validation() {
@@ -62,6 +64,11 @@ public final class Validation implements IRepresentation {
     @Override
     public String getKind() {
         return this.kind;
+    }
+
+    @Override
+    public String getTargetObjectId() {
+        return this.targetObjectId;
     }
 
     public List<Diagnostic> getDiagnostics() {
@@ -94,6 +101,8 @@ public final class Validation implements IRepresentation {
 
         private String descriptionId;
 
+        private String targetObjectId;
+
         private List<Diagnostic> diagnostics;
 
         private Builder(String id) {
@@ -110,6 +119,11 @@ public final class Validation implements IRepresentation {
             return this;
         }
 
+        public Builder targetObjectId(String targetObjectId) {
+            this.targetObjectId = Objects.requireNonNull(targetObjectId);
+            return this;
+        }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = diagnostics;
             return this;
@@ -121,6 +135,7 @@ public final class Validation implements IRepresentation {
             validation.kind = Objects.requireNonNull(this.kind);
             validation.label = Objects.requireNonNull(this.label);
             validation.descriptionId = Objects.requireNonNull(this.descriptionId);
+            validation.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             validation.diagnostics = Objects.requireNonNull(this.diagnostics);
             return validation;
         }

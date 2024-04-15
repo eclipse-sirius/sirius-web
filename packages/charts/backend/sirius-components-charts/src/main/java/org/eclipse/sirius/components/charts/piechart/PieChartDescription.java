@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,8 @@ public final class PieChartDescription implements IChartDescription {
 
     private String label;
 
+    private Function<VariableManager, String> targetObjectIdProvider;
+
     private Function<VariableManager, List<Number>> valuesProvider;
 
     private Function<VariableManager, List<String>> keysProvider;
@@ -51,6 +53,10 @@ public final class PieChartDescription implements IChartDescription {
     @Override
     public String getLabel() {
         return this.label;
+    }
+
+    public Function<VariableManager, String> getTargetObjectIdProvider() {
+        return this.targetObjectIdProvider;
     }
 
     public Function<VariableManager, List<Number>> getValuesProvider() {
@@ -80,6 +86,8 @@ public final class PieChartDescription implements IChartDescription {
 
         private String label;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, List<Number>> valuesProvider;
 
         private Function<VariableManager, List<String>> keysProvider;
@@ -92,6 +100,11 @@ public final class PieChartDescription implements IChartDescription {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -114,6 +127,7 @@ public final class PieChartDescription implements IChartDescription {
             PieChartDescription pieChartDescription = new PieChartDescription();
             pieChartDescription.id = Objects.requireNonNull(this.id);
             pieChartDescription.label = Objects.requireNonNull(this.label);
+            pieChartDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             pieChartDescription.valuesProvider = Objects.requireNonNull(this.valuesProvider);
             pieChartDescription.keysProvider = Objects.requireNonNull(this.keysProvider);
             pieChartDescription.styleProvider = Objects.requireNonNull(this.styleProvider);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.dto.GetRepresentationDescript
 import org.eclipse.sirius.components.collaborative.forms.PropertiesEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.trees.TreeEventProcessorFactory;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
@@ -45,21 +46,19 @@ import reactor.core.publisher.Mono;
 @QueryDataFetcher(type = "RepresentationMetadata", field = "description")
 public class RepresentationMetadataDescriptionDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IRepresentationDescription>> {
 
-    // @formatter:off
     private static final IRepresentationDescription FAKE_DETAILS_DESCRIPTION = FormDescription.newFormDescription(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
             .label(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
             .idProvider(new GetOrCreateRandomIdProvider())
             .labelProvider(variableManager -> PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
-            .targetObjectIdProvider(variableManager -> PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
+            .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
             .canCreatePredicate(variableManager -> true)
             .pageDescriptions(List.of())
             .build();
-    // @formatter:on
 
-    // @formatter:off
     private static final IRepresentationDescription FAKE_DETAILS_TREE = TreeDescription.newTreeDescription(TreeEventProcessorFactory.TREE_ID)
             .label("Explorer")
             .idProvider(new GetOrCreateRandomIdProvider())
+            .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
             .treeItemIdProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
             .kindProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
             .labelProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
@@ -73,7 +72,6 @@ public class RepresentationMetadataDescriptionDataFetcher implements IDataFetche
             .deleteHandler(variableManager -> null)
             .renameHandler((variableManager, newValue) -> new Failure(""))
             .build();
-    // @formatter:on
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 

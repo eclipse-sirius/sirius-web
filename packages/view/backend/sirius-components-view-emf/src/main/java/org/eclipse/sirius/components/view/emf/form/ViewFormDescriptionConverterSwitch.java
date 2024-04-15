@@ -27,10 +27,6 @@ import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
 import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.forms.WidgetIdProvider;
-import org.eclipse.sirius.components.forms.description.SliderDescription;
-import org.eclipse.sirius.components.interpreter.BooleanValueProvider;
-import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
@@ -47,6 +43,7 @@ import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.forms.TextfieldStyle;
+import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.ListComponent;
 import org.eclipse.sirius.components.forms.components.RadioComponent;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
@@ -65,12 +62,15 @@ import org.eclipse.sirius.components.forms.description.ListDescription;
 import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
+import org.eclipse.sirius.components.forms.description.SliderDescription;
 import org.eclipse.sirius.components.forms.description.SplitButtonDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.BooleanValueProvider;
 import org.eclipse.sirius.components.interpreter.Result;
+import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
@@ -443,6 +443,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         BarChartDescription.Builder builder = BarChartDescription.newBarChartDescription(this.getDescriptionId(viewBarChartDescription))
                 .label(viewBarChartDescription.getName())
                 .labelProvider(this.getStringValueProvider(labelExpression))
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .keysProvider(this.getMultiValueProvider(keysExpression, String.class))
                 .valuesProvider(this.getMultiValueProvider(valuesExpression, Number.class))
                 .styleProvider(styleProvider)
@@ -464,6 +465,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         // @formatter:off
         IChartDescription chartDescription =  PieChartDescription.newPieChartDescription(this.getDescriptionId(viewPieChartDescription))
                 .label(viewPieChartDescription.getName())
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .keysProvider(this.getMultiValueProvider(keysExpression, String.class))
                 .valuesProvider(this.getMultiValueProvider(valuesExpression, Number.class))
                 .styleProvider(styleProvider)
