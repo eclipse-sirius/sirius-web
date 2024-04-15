@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 
 /**
@@ -24,7 +23,7 @@ import org.eclipse.sirius.web.data.TestIdentifiers;
  *
  * @author sbegaudeau
  */
-public class TestRepresentation implements IRepresentation, ISemanticRepresentation {
+public class TestRepresentation implements IRepresentation {
     @Override
     public String getId() {
         return UUID.nameUUIDFromBytes("testId".getBytes(StandardCharsets.UTF_8)).toString();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
 /**
  * Root concept of the form representation.
@@ -28,7 +27,7 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
  * @author hmarchadour
  */
 @Immutable
-public final class Form implements IRepresentation, ISemanticRepresentation {
+public final class Form implements IRepresentation {
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Form";
 

@@ -16,14 +16,13 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
 /**
  * Root concept of the Deck representation.
  *
  * @author fbarbin
  */
-public record Deck(String id, String descriptionId, String targetObjectId, String label, DeckStyle style, List<Lane> lanes) implements IRepresentation, ISemanticRepresentation {
+public record Deck(String id, String descriptionId, String targetObjectId, String label, DeckStyle style, List<Lane> lanes) implements IRepresentation {
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Deck";
 

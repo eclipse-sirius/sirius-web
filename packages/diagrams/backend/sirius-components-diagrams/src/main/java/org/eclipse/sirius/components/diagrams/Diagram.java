@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
 /**
  * Root concept of the diagram representation.
@@ -28,7 +27,7 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
  * @author sbegaudeau
  */
 @Immutable
-public final class Diagram implements IRepresentation, ISemanticRepresentation {
+public final class Diagram implements IRepresentation {
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Diagram";
 
     private String id;

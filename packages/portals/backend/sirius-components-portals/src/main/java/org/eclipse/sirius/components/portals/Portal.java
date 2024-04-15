@@ -18,7 +18,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
 /**
  * The root concept of a Portal representation.
@@ -26,7 +25,7 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
  * @author pcdavid
  */
 @Immutable
-public final class Portal implements ISemanticRepresentation {
+public final class Portal implements IRepresentation {
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Portal";
 

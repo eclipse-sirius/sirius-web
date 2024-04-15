@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,14 +16,13 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
 /**
  * Root concept of the Gantt representation.
  *
  * @author lfasani
  */
-public record Gantt(String id, String descriptionId, String targetObjectId, String label, List<Task> tasks) implements IRepresentation, ISemanticRepresentation {
+public record Gantt(String id, String descriptionId, String targetObjectId, String label, List<Task> tasks) implements IRepresentation {
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Gantt";
 

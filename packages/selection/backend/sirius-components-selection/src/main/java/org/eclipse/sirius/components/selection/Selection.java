@@ -18,7 +18,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
 /**
  * The root concept of the selection representation.
@@ -26,7 +25,7 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
  * @author arichard
  */
 @Immutable
-public final class Selection implements IRepresentation, ISemanticRepresentation {
+public final class Selection implements IRepresentation {
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Selection";
 
