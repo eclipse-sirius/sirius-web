@@ -13,7 +13,8 @@
 package org.eclipse.sirius.components.emf.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -24,9 +25,9 @@ import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
-
-import java.util.List;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for the EMF-base {@link org.eclipse.sirius.components.core.api.IDefaultIdentityService} implementation.
@@ -47,5 +48,18 @@ public class DefaultIdentityServiceTests {
         resource.unload();
         assertThat(eObject.eIsProxy()).isTrue();
         assertThat(identityService.getId(eObject)).isNotNull();
+    }
+
+    @Test
+    public void testGetIdOnEditingContext() {
+        ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
+        composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
+        composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+        DefaultIdentityService identityService = new DefaultIdentityService(new IEMFKindService.NoOp());
+
+        IEditingContext editingContext = () -> "editingContextId";
+
+        assertThat(identityService.getId(editingContext)).isEqualTo("editingContextId");
+        assertThat(identityService.getKind(editingContext)).isEqualTo("siriusComponents://editingContext");
     }
 }

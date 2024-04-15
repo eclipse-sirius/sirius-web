@@ -20,7 +20,6 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataCreationService;
@@ -59,7 +58,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
     @Override
     @Transactional
-    public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
+    public void save(IEditingContext editingContext, IRepresentation representation) {
         var optionalProjectId = new UUIDParser().parse(editingContext.getId());
         var optionalRepresentationId = new UUIDParser().parse(representation.getId());
 

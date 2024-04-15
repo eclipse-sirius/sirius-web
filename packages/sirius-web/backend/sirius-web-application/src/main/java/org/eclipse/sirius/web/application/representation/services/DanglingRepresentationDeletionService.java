@@ -12,8 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.services;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +28,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DanglingRepresentationDeletionService implements IDanglingRepresentationDeletionService {
+
+    private final IObjectSearchService objectSearchService;
+
+    public DanglingRepresentationDeletionService(IObjectSearchService objectSearchService) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+    }
+
     @Override
     public boolean isDangling(IEditingContext editingContext, IRepresentation representation) {
-        return false;
+        String targetObjectId = representation.getTargetObjectId();
+        Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, targetObjectId);
+        return optionalObject.isEmpty();
     }
 
     @Override

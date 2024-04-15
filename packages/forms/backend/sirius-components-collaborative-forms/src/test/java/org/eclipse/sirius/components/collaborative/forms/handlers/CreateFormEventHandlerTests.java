@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,8 +30,8 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -69,7 +69,7 @@ public class CreateFormEventHandlerTests {
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
         IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService.NoOp() {
             @Override
-            public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
+            public void save(IEditingContext editingContext, IRepresentation representation) {
                 hasBeenExecuted.set(true);
             }
         };

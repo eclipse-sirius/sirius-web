@@ -37,9 +37,11 @@ public class ModelBrowserTests {
 
     @Test
     public void testModelBrowserDescriptionProvider() {
+        IEditingContext editingContext = () -> "editingContextId";
+
         var urlParser = new URLParser();
         var provider = new ModelBrowsersDescriptionProvider(new IObjectService.NoOp(), urlParser, new EMFKindService(urlParser), List.of());
-        var descriptions = provider.getRepresentationDescriptions(new IEditingContext.NoOp());
+        var descriptions = provider.getRepresentationDescriptions(editingContext);
         assertThat(descriptions).hasSize(2);
         var treeDescriptions = descriptions.stream().filter(TreeDescription.class::isInstance).map(TreeDescription.class::cast).toList();
         assertThat(treeDescriptions).hasSize(2);
@@ -50,6 +52,8 @@ public class ModelBrowserTests {
         assertThat(referenceBrowserDescription).isPresent();
 
         var variableManager = new VariableManager();
+        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+
         var referenceTreeId = "modelBrowser://reference";
         variableManager.put(TreeConfiguration.TREE_ID, referenceTreeId);
         var tree = new TreeRenderer(variableManager, referenceBrowserDescription.get()).render();

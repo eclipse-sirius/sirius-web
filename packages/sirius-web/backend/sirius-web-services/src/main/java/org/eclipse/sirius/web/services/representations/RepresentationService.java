@@ -28,7 +28,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
@@ -106,7 +105,7 @@ public class RepresentationService implements IRepresentationService, IRepresent
     }
 
     @Override
-    public void save(IEditingContext editingContext, ISemanticRepresentation representation) {
+    public void save(IEditingContext editingContext, IRepresentation representation) {
         long start = System.currentTimeMillis();
 
         var editingContextId = new IDParser().parse(editingContext.getId());
@@ -129,7 +128,7 @@ public class RepresentationService implements IRepresentationService, IRepresent
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
     }
 
-    private RepresentationEntity toEntity(ProjectEntity projectEntity, UUID representationId, ISemanticRepresentation representation) {
+    private RepresentationEntity toEntity(ProjectEntity projectEntity, UUID representationId, IRepresentation representation) {
         RepresentationEntity representationEntity = new RepresentationEntity();
 
         representationEntity.setId(representationId);
@@ -166,12 +165,9 @@ public class RepresentationService implements IRepresentationService, IRepresent
 
     @Override
     public boolean isDangling(IEditingContext editingContext, IRepresentation representation) {
-        if (representation instanceof ISemanticRepresentation semanticRepresentation) {
-            String targetObjectId = semanticRepresentation.getTargetObjectId();
-            Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, targetObjectId);
-            return optionalObject.isEmpty();
-        }
-        return false;
+        String targetObjectId = representation.getTargetObjectId();
+        Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, targetObjectId);
+        return optionalObject.isEmpty();
     }
 
     @Override
