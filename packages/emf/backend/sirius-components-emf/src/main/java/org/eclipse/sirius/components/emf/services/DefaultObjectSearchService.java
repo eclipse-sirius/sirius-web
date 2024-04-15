@@ -51,7 +51,15 @@ public class DefaultObjectSearchService implements IDefaultObjectSearchService {
                 .map(EditingDomain::getResourceSet)
                 .flatMap(resourceSet -> this.getEObject(resourceSet, objectId));
 
-        return optionalObject.or(() -> this.getRepresentation(editingContext, objectId));
+        return optionalObject
+                .or(() -> this.getRepresentation(editingContext, objectId))
+                .or(() -> {
+                    if (Objects.equals(editingContext.getId(), objectId)) {
+                        return Optional.of(editingContext);
+                    } else {
+                        return Optional.empty();
+                    }
+                });
     }
 
     private Optional<Object> getEObject(ResourceSet resourceSet, String objectId) {

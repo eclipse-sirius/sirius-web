@@ -98,6 +98,7 @@ class ExpandAllTreePathProviderTests {
         Tree tree = Tree.newTree("treeId")
                 .descriptionId("")
                 .label("label")
+                .targetObjectId("editingContextId")
                 .children(List.of())
                 .build();
         assertThat(expandAllTreePathProvider.canHandle(tree)).isTrue();
@@ -121,25 +122,25 @@ class ExpandAllTreePathProviderTests {
     private Resource createResourceWith4Elements() {
         Map<String, EObject> cache = new HashMap<>();
 
-        ePackage = EcoreFactory.eINSTANCE.createEPackage();
-        ePackage.setName("root1");
+        this.ePackage = EcoreFactory.eINSTANCE.createEPackage();
+        this.ePackage.setName("root1");
         UUID ePackageUUID = UUID.nameUUIDFromBytes("ePackage".getBytes());
-        ePackage.eAdapters().add(new IDAdapter(ePackageUUID));
-        cache.put(ePackageUUID.toString(), ePackage);
+        this.ePackage.eAdapters().add(new IDAdapter(ePackageUUID));
+        cache.put(ePackageUUID.toString(), this.ePackage);
 
         this.class1 = EcoreFactory.eINSTANCE.createEClass();
         this.class1.setName("content1");
         UUID class1UUID = UUID.nameUUIDFromBytes("class1".getBytes());
         this.class1.eAdapters().add(new IDAdapter(class1UUID));
-        cache.put(class1UUID.toString(), ePackage);
+        cache.put(class1UUID.toString(), this.ePackage);
 
-        ePackage.getEClassifiers().add(this.class1);
+        this.ePackage.getEClassifiers().add(this.class1);
 
-        ePackage2 = EcoreFactory.eINSTANCE.createEPackage();
-        ePackage2.setName("root2");
+        this.ePackage2 = EcoreFactory.eINSTANCE.createEPackage();
+        this.ePackage2.setName("root2");
         UUID ePackage2UUID = UUID.nameUUIDFromBytes("ePackage2".getBytes());
-        ePackage2.eAdapters().add(new IDAdapter(ePackage2UUID));
-        cache.put(ePackage2UUID.toString(), ePackage2);
+        this.ePackage2.eAdapters().add(new IDAdapter(ePackage2UUID));
+        cache.put(ePackage2UUID.toString(), this.ePackage2);
 
         XMIResource resource = new XMIResourceImpl() {
             @Override
@@ -148,8 +149,8 @@ class ExpandAllTreePathProviderTests {
             }
         };
         resource.setURI(URI.createURI("/documentItemId"));
-        resource.getContents().add(ePackage);
-        resource.getContents().add(ePackage2);
+        resource.getContents().add(this.ePackage);
+        resource.getContents().add(this.ePackage2);
         return resource;
     }
 

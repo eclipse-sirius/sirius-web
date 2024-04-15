@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,17 +46,17 @@ public class PieChartComponent implements IComponent {
 
         String id = optionalPreviousPieChart.map(PieChart::getId).orElseGet(() -> UUID.randomUUID().toString());
         String label = Optional.ofNullable(pieChartDescription.getLabel()).orElse("");
+        String targetObjectId = pieChartDescription.getTargetObjectIdProvider().apply(variableManager);
         List<Number> values = pieChartDescription.getValuesProvider().apply(variableManager);
         List<String> keys = pieChartDescription.getKeysProvider().apply(variableManager);
         PieChartStyle pieChartStyle = pieChartDescription.getStyleProvider().apply(variableManager);
 
-        // @formatter:off
         Builder builder = PieChartElementProps.newPieChartElementProps(id)
                 .label(label)
                 .descriptionId(pieChartDescription.getId())
+                .targetObjectId(targetObjectId)
                 .values(values)
                 .keys(keys);
-        // @formatter:on
         if (pieChartStyle != null) {
             builder.style(pieChartStyle);
         }

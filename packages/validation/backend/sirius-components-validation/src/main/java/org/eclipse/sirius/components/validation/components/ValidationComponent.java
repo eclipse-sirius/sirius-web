@@ -44,6 +44,7 @@ public class ValidationComponent implements IComponent {
 
         String id = optionalPreviousValidation.map(Validation::getId).orElseGet(() -> Validation.PREFIX);
         String label = validationDescription.getLabel();
+        String targetObjectId = validationDescription.getTargetObjectIdProvider().apply(variableManager);
 
         List<?> diagnostics = validationDescription.getDiagnosticsProvider().apply(variableManager);
         List<Element> children = new ArrayList<>(diagnostics.size());
@@ -56,6 +57,7 @@ public class ValidationComponent implements IComponent {
         ValidationElementProps validationElementProps = ValidationElementProps.newValidationElementProps(id)
                 .label(label)
                 .descriptionId(validationDescription.getId())
+                .targetObjectId(targetObjectId)
                 .children(children)
                 .build();
         // @formatter:on

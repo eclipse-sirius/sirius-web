@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.charts.barchart.descriptions.BarChartDescri
 import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
 import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorForDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorIfDescription;
@@ -562,6 +563,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
         IChartDescription chartDescription = BarChartDescription.newBarChartDescription(UUID.randomUUID().toString())
                 .label(Optional.ofNullable(viewBarChartDescription.getName()).orElse(""))
                 .labelProvider(vm -> this.getWidgetLabel(viewBarChartDescription, "BarChart"))
+                .targetObjectIdProvider(vm -> vm.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .keysProvider(vm -> List.of())
                 .valuesProvider(vm -> List.of())
                 .styleProvider(styleProvider)
@@ -585,6 +587,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
         // @formatter:off
         IChartDescription chartDescription =  PieChartDescription.newPieChartDescription(UUID.randomUUID().toString())
                 .label(this.getWidgetLabel(viewPieChartDescription, "PieChart"))
+                .targetObjectIdProvider(vm -> vm.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .keysProvider(vm -> List.of())
                 .valuesProvider(vm -> List.of())
                 .styleProvider(styleProvider)
@@ -679,9 +682,9 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
     @Override
     public AbstractWidgetDescription caseSliderDescription(SliderDescription sliderDescription) {
-        VariableManager childVariableManager = variableManager.createChild();
+        VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, sliderDescription);
-        String id = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
         var builder =  org.eclipse.sirius.components.forms.description.SliderDescription.newSliderDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .targetObjectIdProvider(vm -> "")

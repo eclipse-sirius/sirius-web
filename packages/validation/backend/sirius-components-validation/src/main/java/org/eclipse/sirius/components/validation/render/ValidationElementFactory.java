@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,17 +32,16 @@ public class ValidationElementFactory implements IElementFactory {
     public Object instantiateElement(String type, IProps props, List<Object> children) {
         Object object = null;
 
-        if (ValidationElementProps.TYPE.equals(type) && props instanceof ValidationElementProps) {
-            object = this.instantiateValidation((ValidationElementProps) props, children);
-        } else if (DiagnosticElementProps.TYPE.equals(type) && props instanceof DiagnosticElementProps) {
-            object = this.instantiateDiagnostic((DiagnosticElementProps) props, children);
+        if (ValidationElementProps.TYPE.equals(type) && props instanceof ValidationElementProps validationElementProps) {
+            object = this.instantiateValidation(validationElementProps, children);
+        } else if (DiagnosticElementProps.TYPE.equals(type) && props instanceof DiagnosticElementProps diagnosticElementProps) {
+            object = this.instantiateDiagnostic(diagnosticElementProps, children);
         }
 
         return object;
     }
 
     private Validation instantiateValidation(ValidationElementProps props, List<Object> children) {
-        // @formatter:off
         List<Diagnostic> diagnostics = children.stream()
                 .filter(Diagnostic.class::isInstance)
                 .map(Diagnostic.class::cast)
@@ -51,18 +50,16 @@ public class ValidationElementFactory implements IElementFactory {
         return Validation.newValidation(props.getId())
                 .label(props.getLabel())
                 .descriptionId(props.getDescriptionId())
+                .targetObjectId(props.getTargetObjectId())
                 .diagnostics(diagnostics)
                 .build();
-        // @formatter:on
     }
 
     private Diagnostic instantiateDiagnostic(DiagnosticElementProps props, List<Object> children) {
-        // @formatter:off
         return Diagnostic.newDiagnostic(props.getId())
                 .kind(props.getKind())
                 .message(props.getMessage())
                 .build();
-        // @formatter:on
     }
 
 }

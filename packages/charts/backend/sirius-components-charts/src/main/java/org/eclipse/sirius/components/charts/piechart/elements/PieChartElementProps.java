@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,8 @@ public final class PieChartElementProps implements IProps {
 
     private String label;
 
+    private String targetObjectId;
+
     private String descriptionId;
 
     private List<Number> values;
@@ -51,6 +53,10 @@ public final class PieChartElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getTargetObjectId() {
+        return this.targetObjectId;
     }
 
     public String getDescriptionId() {
@@ -84,6 +90,8 @@ public final class PieChartElementProps implements IProps {
 
         private String label;
 
+        private String targetObjectId;
+
         private String descriptionId;
 
         private List<Number> values;
@@ -98,6 +106,11 @@ public final class PieChartElementProps implements IProps {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder targetObjectId(String targetObjectId) {
+            this.targetObjectId = Objects.requireNonNull(targetObjectId);
             return this;
         }
 
@@ -126,6 +139,7 @@ public final class PieChartElementProps implements IProps {
             pieChartElementProps.id = Objects.requireNonNull(this.id);
             pieChartElementProps.label = Objects.requireNonNull(this.label);
             pieChartElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
+            pieChartElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             pieChartElementProps.values = Objects.requireNonNull(this.values);
             pieChartElementProps.keys = Objects.requireNonNull(this.keys);
             pieChartElementProps.style = this.style; // Optional on purpose

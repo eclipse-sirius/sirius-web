@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,8 @@ public final class PieChart implements IChart {
 
     private String kind;
 
+    private String targetObjectId;
+
     private List<PieChartEntry> entries;
 
     private PieChartStyle style;
@@ -64,6 +66,11 @@ public final class PieChart implements IChart {
     @Override
     public String getKind() {
         return this.kind;
+    }
+
+    @Override
+    public String getTargetObjectId() {
+        return this.targetObjectId;
     }
 
     public List<PieChartEntry> getEntries() {
@@ -100,6 +107,8 @@ public final class PieChart implements IChart {
 
         private String kind = KIND;
 
+        private String targetObjectId;
+
         private List<PieChartEntry> entries;
 
         private PieChartStyle style;
@@ -115,6 +124,11 @@ public final class PieChart implements IChart {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder targetObjectId(String targetObjectId) {
+            this.targetObjectId = Objects.requireNonNull(targetObjectId);
             return this;
         }
 
@@ -134,6 +148,7 @@ public final class PieChart implements IChart {
             pieChart.label = Objects.requireNonNull(this.label);
             pieChart.descriptionId = Objects.requireNonNull(this.descriptionId);
             pieChart.kind = Objects.requireNonNull(this.kind);
+            pieChart.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             pieChart.entries = Objects.requireNonNull(this.entries);
             pieChart.style = this.style; // Optional on purpose
             return pieChart;

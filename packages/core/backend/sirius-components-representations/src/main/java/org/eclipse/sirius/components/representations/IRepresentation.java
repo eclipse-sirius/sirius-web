@@ -28,6 +28,8 @@ public interface IRepresentation {
 
     String getKind();
 
+    String getTargetObjectId();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -51,6 +53,11 @@ public interface IRepresentation {
 
         @Override
         public String getKind() {
+            return "";
+        }
+
+        @Override
+        public String getTargetObjectId() {
             return "";
         }
     }

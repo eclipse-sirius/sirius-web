@@ -51,6 +51,7 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
         return ValidationDescription.newValidationDescription(DESCRIPTION_ID)
                 .label(LABEL)
                 .canCreatePredicate(canCreatePredicate)
+                .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .diagnosticsProvider(this::getDiagnosticsProvider)
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)

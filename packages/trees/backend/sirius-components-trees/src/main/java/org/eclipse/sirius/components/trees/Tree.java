@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,9 +36,12 @@ public final class Tree implements IRepresentation {
 
     private String descriptionId;
 
+    private String targetObjectId;
+
     private String label;
 
     private List<TreeItem> children;
+
 
     private Tree() {
         // Prevent instantiation
@@ -62,6 +65,11 @@ public final class Tree implements IRepresentation {
     @Override
     public String getLabel() {
         return this.label;
+    }
+
+    @Override
+    public String getTargetObjectId() {
+        return this.targetObjectId;
     }
 
     public List<TreeItem> getChildren() {
@@ -91,6 +99,8 @@ public final class Tree implements IRepresentation {
 
         private String descriptionId;
 
+        private String targetObjectId;
+
         private String label;
 
         private List<TreeItem> children;
@@ -109,6 +119,11 @@ public final class Tree implements IRepresentation {
             return this;
         }
 
+        public Builder targetObjectId(String targetObjectId) {
+            this.targetObjectId = Objects.requireNonNull(targetObjectId);
+            return this;
+        }
+
         public Builder children(List<TreeItem> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -119,6 +134,7 @@ public final class Tree implements IRepresentation {
             tree.id = Objects.requireNonNull(this.id);
             tree.kind = Objects.requireNonNull(this.kind);
             tree.descriptionId = Objects.requireNonNull(this.descriptionId);
+            tree.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             tree.label = Objects.requireNonNull(this.label);
             tree.children = Objects.requireNonNull(this.children);
             return tree;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,7 @@ public class BarChartComponent implements IComponent {
 
         String id = optionalPreviousBarChart.map(BarChart::getId).orElseGet(() -> UUID.randomUUID().toString());
         String label = barChartDescription.getLabelProvider().apply(variableManager);
+        String targetObjectId = barChartDescription.getTargetObjectIdProvider().apply(variableManager);
         List<Number> values = barChartDescription.getValuesProvider().apply(variableManager);
         List<String> keys = barChartDescription.getKeysProvider().apply(variableManager);
         BarChartStyle barChartStyle = barChartDescription.getStyleProvider().apply(variableManager);
@@ -54,6 +55,7 @@ public class BarChartComponent implements IComponent {
         Builder builder = BarChartElementProps.newBarChartElementProps(id)
                 .label(label)
                 .descriptionId(barChartDescription.getId())
+                .targetObjectId(targetObjectId)
                 .values(values)
                 .width(barChartDescription.getWidth())
                 .height(barChartDescription.getHeight())

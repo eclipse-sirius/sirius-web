@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,8 @@ public final class BarChartDescription implements IChartDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, String> targetObjectIdProvider;
+
     private Function<VariableManager, List<Number>> valuesProvider;
 
     private Function<VariableManager, List<String>> keysProvider;
@@ -61,6 +63,10 @@ public final class BarChartDescription implements IChartDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, String> getTargetObjectIdProvider() {
+        return this.targetObjectIdProvider;
     }
 
     public Function<VariableManager, List<Number>> getValuesProvider() {
@@ -100,6 +106,8 @@ public final class BarChartDescription implements IChartDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, List<Number>> valuesProvider;
 
         private Function<VariableManager, List<String>> keysProvider;
@@ -121,6 +129,11 @@ public final class BarChartDescription implements IChartDescription {
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -154,6 +167,7 @@ public final class BarChartDescription implements IChartDescription {
             barChartDescription.id = Objects.requireNonNull(this.id);
             barChartDescription.label = Objects.requireNonNull(this.label);
             barChartDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            barChartDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             barChartDescription.valuesProvider = Objects.requireNonNull(this.valuesProvider);
             barChartDescription.keysProvider = Objects.requireNonNull(this.keysProvider);
             barChartDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
