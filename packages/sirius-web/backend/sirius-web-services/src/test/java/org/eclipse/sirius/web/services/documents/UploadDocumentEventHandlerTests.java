@@ -178,7 +178,7 @@ public class UploadDocumentEventHandlerTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONResourceLoaderService()), List.of(), new SimpleMeterRegistry());
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONExternalResourceLoaderService()), List.of(), new SimpleMeterRegistry());
 
         UploadFile file = new UploadFile(FILE_NAME, inputstream);
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
@@ -225,7 +225,7 @@ public class UploadDocumentEventHandlerTests {
             }
         });
 
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONResourceLoaderService()), uploadDocumentReportProvider, new SimpleMeterRegistry());
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONExternalResourceLoaderService()), uploadDocumentReportProvider, new SimpleMeterRegistry());
 
         UploadFile file = new UploadFile(FILE_NAME, inputstream);
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
@@ -309,7 +309,7 @@ public class UploadDocumentEventHandlerTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONResourceLoaderService()), List.of(), new SimpleMeterRegistry());
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, editingContextMetadataProvider, List.of(new XMIExternalResourceLoaderService(), new JSONExternalResourceLoaderService()), List.of(), new SimpleMeterRegistry());
         UploadFile file = new UploadFile(FILE_NAME, new ByteArrayInputStream(resourceBytes));
 
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);

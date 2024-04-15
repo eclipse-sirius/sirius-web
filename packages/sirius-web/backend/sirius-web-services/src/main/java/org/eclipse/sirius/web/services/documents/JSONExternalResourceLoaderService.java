@@ -24,6 +24,7 @@ import java.util.Optional;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.services.documents.api.IExternalResourceLoaderService;
 import org.slf4j.Logger;
@@ -36,9 +37,9 @@ import org.springframework.stereotype.Service;
  * @author arichard
  */
 @Service
-public class JSONResourceLoaderService implements IExternalResourceLoaderService {
+public class JSONExternalResourceLoaderService implements IExternalResourceLoaderService {
 
-    private final Logger logger = LoggerFactory.getLogger(JSONResourceLoaderService.class);
+    private final Logger logger = LoggerFactory.getLogger(JSONExternalResourceLoaderService.class);
 
     @Override
     public boolean canHandle(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {
@@ -47,7 +48,7 @@ public class JSONResourceLoaderService implements IExternalResourceLoaderService
         bufferedInputStream.mark(Integer.MAX_VALUE);
         try (var reader = new BufferedReader(new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8))) {
             String line = reader.readLine();
-            if (line != null && line.contains("{")) {
+            if (line != null && line.startsWith("{")) {
                 canHandle = true;
             }
             bufferedInputStream.reset();
@@ -58,7 +59,7 @@ public class JSONResourceLoaderService implements IExternalResourceLoaderService
     }
 
     @Override
-    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {
+    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, AdapterFactoryEditingDomain adapterFactoryEditingDomain) {
         Resource resource = null;
         try {
             resource = new JSONResourceFactory().createResource(resourceURI);

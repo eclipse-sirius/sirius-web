@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.web.services.documents.api.IExternalResourceLoaderService;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ public class XMIExternalResourceLoaderService implements IExternalResourceLoader
         bufferedInputStream.mark(Integer.MAX_VALUE);
         try (var reader = new BufferedReader(new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8))) {
             String line = reader.readLine();
-            if (line != null && line.contains("<")) {
+            if (line != null && line.startsWith("<?xml")) {
                 canHandle = true;
             }
         } catch (IOException exception) {
@@ -57,7 +58,7 @@ public class XMIExternalResourceLoaderService implements IExternalResourceLoader
     }
 
     @Override
-    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {
+    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, AdapterFactoryEditingDomain adapterFactoryEditingDomain) {
         Resource resource = null;
         try {
             resource = new XMIResourceImpl(resourceURI);

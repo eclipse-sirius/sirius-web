@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 
 /**
  * Use to to create and load resource when uploading a document into Sirius Web.
@@ -28,6 +29,6 @@ public interface IExternalResourceLoaderService {
 
     boolean canHandle(InputStream inputStream, URI resourceURI, ResourceSet resourceSet);
 
-    Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet);
+    Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, AdapterFactoryEditingDomain adapterFactoryEditingDomain);
 
 }
