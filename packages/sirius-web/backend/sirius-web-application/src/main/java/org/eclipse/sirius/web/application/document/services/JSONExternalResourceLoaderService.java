@@ -47,7 +47,7 @@ public class JSONExternalResourceLoaderService implements IExternalResourceLoade
         bufferedInputStream.mark(Integer.MAX_VALUE);
         try (var reader = new BufferedReader(new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8))) {
             String line = reader.readLine();
-            if (line != null && line.contains("{")) {
+            if (line != null && line.startsWith("{")) {
                 canHandle = true;
             }
             bufferedInputStream.reset();

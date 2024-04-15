@@ -26,7 +26,6 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -124,7 +123,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
             if (optionalEditingDomain.isPresent()) {
                 AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
 
-                Optional<String> contentOpt = this.getContent(adapterFactoryEditingDomain.getResourceSet().getPackageRegistry(), file, uploadDocumentInput.checkProxies(), projectId);
+                Optional<String> contentOpt = this.getContent(adapterFactoryEditingDomain, file, uploadDocumentInput.checkProxies(), projectId);
                 var optionalDocument = contentOpt.flatMap(content -> this.documentService.createDocument(projectId, name, content));
 
                 if (optionalDocument.isPresent()) {
@@ -171,19 +170,19 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         return report;
     }
 
-    private Optional<String> getContent(EPackage.Registry registry, UploadFile file, boolean checkProxies, String editingContextId) {
+    private Optional<String> getContent(AdapterFactoryEditingDomain adapterFactoryEditingDomain, UploadFile file, boolean checkProxies, String editingContextId) {
         var isStudioProjectNature = this.editingContextMetadataProvider.getMetadata(editingContextId).natures().stream().map(Nature::natureId)
                 .anyMatch("siriusComponents://nature?kind=studio"::equals);
         String fileName = file.getName();
         Optional<String> content = Optional.empty();
         ResourceSet resourceSet = new ResourceSetImpl();
-        resourceSet.setPackageRegistry(registry);
+        resourceSet.setPackageRegistry(adapterFactoryEditingDomain.getResourceSet().getPackageRegistry());
         if (isStudioProjectNature) {
             this.loadStudioColorPalettes(resourceSet);
         }
         try (var inputStream = file.getInputStream()) {
             URI resourceURI = new JSONResourceFactory().createResourceURI(fileName);
-            Optional<Resource> optionalInputResource = this.getResource(inputStream, resourceURI, resourceSet);
+            Optional<Resource> optionalInputResource = this.getResource(inputStream, resourceURI, resourceSet, adapterFactoryEditingDomain);
             if (optionalInputResource.isPresent()) {
                 Resource inputResource = optionalInputResource.get();
 
@@ -242,9 +241,11 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
      *            The {@link URI} to use to create the {@link Resource}
      * @param resourceSet
      *            The {@link ResourceSet} used to store the loaded resource
+     * @param adapterFactoryEditingDomain
+     *            The {@link AdapterFactoryEditingDomain} used by the project.
      * @return a {@link Resource} or {@link Optional#empty()}
      */
-    private Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {
+    private Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, AdapterFactoryEditingDomain adapterFactoryEditingDomain) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             inputStream.transferTo(baos);
@@ -254,7 +255,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         return this.externalResourceLoaderServices.stream()
                 .filter(loader -> loader.canHandle(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet))
                 .findFirst()
-                .flatMap(loader -> loader.getResource(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet));
+                .flatMap(loader -> loader.getResource(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet, adapterFactoryEditingDomain));
     }
 
     private void loadStudioColorPalettes(ResourceSet resourceSet) {
