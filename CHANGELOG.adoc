@@ -57,7 +57,7 @@ They are also now used by the view builder code generator.
 === Dependency update
 
 - Move to docker compose v2 for our GitHub Actions workflow.
-- [test] Switch to ArchUnit 1.2.1 to restore architectural tests which were failing recently
+- [test] Switch to ArchUnit 1.3.0 to restore architectural tests which were failing recently
 - https://github.com/eclipse-sirius/sirius-web/issues/3277[#3277] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.9 to benefit for enhancements
 
 === Bug fixes
