@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.charts.piechart.elements.PieChartElementPro
 import org.eclipse.sirius.components.forms.elements.ButtonElementProps;
 import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
+import org.eclipse.sirius.components.forms.elements.DateTimeElementProps;
 import org.eclipse.sirius.components.forms.elements.FlexboxContainerElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
@@ -109,6 +110,8 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof ToolbarActionElementProps;
         } else if (SliderElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof SliderElementProps;
+        } else if (DateTimeElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof DateTimeElementProps;
         } else {
             checkValidProps = this.widgetDescriptors.stream()
                     .map(widgetDescriptor -> widgetDescriptor.validateInstanceProps(type, props))

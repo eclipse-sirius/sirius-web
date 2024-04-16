@@ -416,6 +416,30 @@ type Slider implements Widget {
   currentValue: Int!
 }
 
+type DateTime implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
+  label: String!
+  iconURL: [String!]!
+  readOnly: Boolean!
+  stringValue: String!
+  type: DateTimeType!
+  style: DateTimeStyle
+}
+
+enum DateTimeType {
+  DATE_TIME
+  DATE
+  TIME
+}
+
+type DateTimeStyle {
+  foregroundColor: String
+  backgroundColor: String
+  italic: Boolean
+  bold: Boolean
+}
 
 type FormDescription implements RepresentationDescription {
   id: ID!
@@ -443,6 +467,7 @@ extend type Mutation {
   deleteListItem(input: DeleteListItemInput!): DeleteListItemPayload!
   pushButton(input: PushButtonInput!): PushButtonPayload!
   editSlider(input: EditSliderInput!): EditSliderPayload!
+  editDateTime(input: EditDateTimeInput!): EditDateTimePayload!
 }
 
 input EditCheckboxInput {
@@ -575,3 +600,13 @@ input EditSliderInput {
 }
 
 union EditSliderPayload = SuccessPayload | ErrorPayload
+
+input EditDateTimeInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  widgetId: ID!
+  newValue: String!
+}
+
+union EditDateTimePayload = SuccessPayload | ErrorPayload

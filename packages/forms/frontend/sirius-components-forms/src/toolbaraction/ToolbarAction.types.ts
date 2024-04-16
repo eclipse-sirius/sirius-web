@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLButton, GQLMessage } from '../form/FormEventFragments.types';
-
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLButton } from '../form/FormEventFragments.types';
 export interface ToolbarActionProps {
   editingContextId: string;
   formId: string;

@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
+
 export interface UsePortalMutationsValue {
   addPortalView: (viewRepresentationId: string, x: number, y: number, width: number, height: number) => void;
   removePortalView: (portalViewId: string) => void;
@@ -35,8 +37,10 @@ export interface GQLAddPortalViewInput {
 }
 
 export interface GQLAddPortalViewMutationData {
-  addPortalView: GQLPayload;
+  addPortalView: GQLAddPortalViewPayload;
 }
+
+export type GQLAddPortalViewPayload = GQLErrorPayload | GQLSuccessPayload;
 
 // mutation removePortalView
 export interface GQLRemovePortalViewMutationVariables {
@@ -51,15 +55,17 @@ export interface GQLRemovePortalViewInput {
 }
 
 export interface GQLRemovePortalViewMutationData {
-  removePortalView: GQLPayload;
+  removePortalView: GQLRemovePortalViewPayload;
 }
+
+export type GQLRemovePortalViewPayload = GQLErrorPayload | GQLSuccessPayload;
 
 // mutation layoutPortal
-export interface GQLLayoutPortalViewMutationVariables {
-  input: GQLLayoutPortalMutationVariables;
+export interface GQLLayoutPortalMutationVariables {
+  input: GQLLayoutPortalInput;
 }
 
-export interface GQLLayoutPortalMutationVariables {
+export interface GQLLayoutPortalInput {
   id: string;
   editingContextId: string;
   representationId: string;
@@ -74,14 +80,8 @@ export interface GQLLayoutPortalLayoutData {
   height: number;
 }
 
-export interface GQLLayoutPortalViewMutationData {
-  layoutPortalView: GQLPayload;
+export interface GQLLayoutPortalMutationData {
+  layoutPortal: GQLLayoutPortalPayload;
 }
 
-export interface GQLPayload {
-  __typename: string;
-}
-
-export interface GQLErrorPayload extends GQLPayload {
-  message: string;
-}
+export type GQLLayoutPortalPayload = GQLErrorPayload | GQLSuccessPayload;

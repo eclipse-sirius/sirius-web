@@ -35,6 +35,11 @@
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//ContainerBorderLineStyle/Dashed"/>
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//ContainerBorderLineStyle/Dotted"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="form.ecore#//DateTimeType">
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//DateTimeType/DATE_TIME"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//DateTimeType/DATE"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//DateTimeType/TIME"/>
+    </genEnums>
     <genClasses ecoreClass="form.ecore#//FormDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FormDescription/pages"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FormDescription/formVariables"/>
@@ -92,6 +97,14 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//CheckboxDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//CheckboxDescription/conditionalStyles"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//CheckboxDescription/IsEnabledExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="form.ecore#//DateTimeDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//DateTimeDescription/stringValueExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//DateTimeDescription/body"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//DateTimeDescription/isEnabledExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//DateTimeDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//DateTimeDescription/conditionalStyles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//DateTimeDescription/type"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//FlexboxContainerDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FlexboxContainerDescription/children"/>
@@ -212,6 +225,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//CheckboxDescriptionStyle/labelPlacement"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//ConditionalCheckboxDescriptionStyle"/>
+    <genClasses ecoreClass="form.ecore#//DateTimeDescriptionStyle">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference form.ecore#//DateTimeDescriptionStyle/backgroundColor"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference form.ecore#//DateTimeDescriptionStyle/foregroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//DateTimeDescriptionStyle/italic"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//DateTimeDescriptionStyle/bold"/>
+    </genClasses>
+    <genClasses ecoreClass="form.ecore#//ConditionalDateTimeDescriptionStyle"/>
     <genClasses ecoreClass="form.ecore#//LabelDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EReference form.ecore#//LabelDescriptionStyle/color"/>
     </genClasses>

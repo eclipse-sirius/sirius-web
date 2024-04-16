@@ -17,6 +17,7 @@ import {
   GQLButton,
   GQLChartWidget,
   GQLCheckbox,
+  GQLDateTime,
   GQLFlexboxContainer,
   GQLImage,
   GQLLabelWidget,
@@ -36,6 +37,7 @@ import {
 import { ButtonPropertySection } from './ButtonPropertySection';
 import { ChartWidgetPropertySection } from './ChartWidgetPropertySection';
 import { CheckboxPropertySection } from './CheckboxPropertySection';
+import { DateTimeWidgetPropertySection } from './DateTimeWidgetPropertySection';
 import { FlexboxContainerPropertySection } from './FlexboxContainerPropertySection';
 import { ImagePropertySection } from './ImagePropertySection';
 import { LabelWidgetPropertySection } from './LabelWidgetPropertySection';
@@ -61,6 +63,7 @@ const isList = (widget: GQLWidget): widget is GQLList => widget.__typename === '
 const isLink = (widget: GQLWidget): widget is GQLLink => widget.__typename === 'Link';
 const isButton = (widget: GQLWidget): widget is GQLButton => widget.__typename === 'Button';
 const isSlider = (widget: GQLWidget): widget is GQLSlider => widget.__typename === 'Slider';
+const isDateTime = (widget: GQLWidget): widget is GQLDateTime => widget.__typename === 'DateTime';
 const isSplitButton = (widget: GQLWidget): widget is GQLSplitButton => widget.__typename === 'SplitButton';
 const isLabelWidget = (widget: GQLWidget): widget is GQLLabelWidget => widget.__typename === 'LabelWidget';
 const isChartWidget = (widget: GQLWidget): widget is GQLChartWidget => widget.__typename === 'ChartWidget';
@@ -254,6 +257,17 @@ export const PropertySection = ({
   } else if (isSlider(widget)) {
     propertySection = (
       <SliderPropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+        key={widget.id}
+        readOnly={readOnly}
+      />
+    );
+  } else if (isDateTime(widget)) {
+    propertySection = (
+      <DateTimeWidgetPropertySection
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}

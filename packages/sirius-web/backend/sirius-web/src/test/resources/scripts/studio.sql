@@ -162,7 +162,8 @@ INSERT INTO document (
                      "id":"e86d3f45-d043-441e-b8ab-12e4b3f8915a",
                      "eClass":"domain:Attribute",
                      "data":{
-                       "name":"description"
+                       "name":"description",
+                       "type":"STRING"
                      }
                    },
                    {
@@ -171,6 +172,14 @@ INSERT INTO document (
                      "data":{
                        "name":"promoted",
                        "type":"BOOLEAN"
+                     }
+                   },
+                   {
+                     "id": "a480dbc0-14b7-4f06-a4f7-4c86139a803a",
+                     "eClass": "domain:Attribute",
+                     "data":{
+                       "name": "birthDate",
+                       "type":"STRING"
                      }
                    }
                  ],
@@ -317,6 +326,17 @@ INSERT INTO document (
                                        }
                                      }
                                    ]
+                                 }
+                               },
+                               {
+                                 "id":"91a4fcd9-a176-4df1-8f88-52a406fc3f73",
+                                 "eClass":"form:DateTimeDescription",
+                                 "data":{
+                                   "name":"BirthDate",
+                                   "labelExpression":"Birth Date",
+                                   "helpExpression":"The birth date of the human",
+                                   "stringValueExpression":"aql:self.birthDate",
+                                   "type":"DATE"
                                  }
                                }
                              ]

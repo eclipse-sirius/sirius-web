@@ -31,6 +31,8 @@ import org.eclipse.sirius.components.formdescriptioneditors.description.FormDesc
 import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.ContainerBorderStyle;
+import org.eclipse.sirius.components.forms.DateTimeStyle;
+import org.eclipse.sirius.components.forms.DateTimeType;
 import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.LinkStyle;
@@ -63,6 +65,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.form.BarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.DateTimeDescription;
+import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
 import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
@@ -700,6 +704,42 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
             builder.helpTextProvider(vm -> this.getWidgetHelpText(sliderDescription));
         }
         return builder.build();
+    }
+
+    @Override
+    public AbstractWidgetDescription caseDateTimeDescription(DateTimeDescription dateTimeDescription) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, dateTimeDescription);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
+
+        Function<VariableManager, DateTimeStyle> styleProvider = vm -> {
+            DateTimeDescriptionStyle style = dateTimeDescription.getStyle();
+            if (style == null) {
+                return null;
+            }
+            return new DateTimeStyleProvider(style).build();
+        };
+
+        var builder =  org.eclipse.sirius.components.forms.description.DateTimeDescription.newDateTimeDescription(UUID.randomUUID().toString())
+                .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
+                .labelProvider(vm -> this.getWidgetLabel(dateTimeDescription, "DateTime"))
+                .stringValueProvider(vm -> "2030-06-20T10:30:00Z")
+                .newValueHandler((vm, newValue) -> new Success())
+                .diagnosticsProvider(vm -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
+                .type(this.getDateTimeType(dateTimeDescription))
+                .styleProvider(styleProvider);
+        if (dateTimeDescription.getHelpExpression() != null && !dateTimeDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(dateTimeDescription));
+        }
+        return builder.build();
+    }
+
+    private DateTimeType getDateTimeType(org.eclipse.sirius.components.view.form.DateTimeDescription viewDateTimeDescription) {
+        org.eclipse.sirius.components.view.form.DateTimeType viewDisplayMode = viewDateTimeDescription.getType();
+        return DateTimeType.valueOf(viewDisplayMode.getLiteral());
     }
 
     public String getWidgetLabel(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription, String defaultLabel) {

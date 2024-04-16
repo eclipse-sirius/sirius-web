@@ -29,6 +29,7 @@ export type Kind =
   | 'FormElementFor'
   | 'FormElementIf'
   | 'SplitButton'
+  | 'DateTime'
   | 'Tree';
 
 export type WidgetDescriptor = {

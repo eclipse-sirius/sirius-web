@@ -419,7 +419,15 @@ export interface GQLSlider extends GQLWidget {
   currentValue: number;
 }
 
-export interface GQLMessage {
-  body: string;
-  level: string;
+export interface GQLDateTime extends GQLWidget {
+  stringValue: string;
+  type: string;
+  style: GQLDateTimeStyle | null;
+}
+
+export interface GQLDateTimeStyle {
+  foregroundColor: string | null;
+  backgroundColor: string | null;
+  italic: boolean | null;
+  bold: boolean | null;
 }

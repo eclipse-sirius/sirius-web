@@ -452,6 +452,30 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
 
     /**
      * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.form.DateTimeDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DateTimeDescriptionItemProvider dateTimeDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.form.DateTimeDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDateTimeDescriptionAdapter() {
+        if (this.dateTimeDescriptionItemProvider == null) {
+            this.dateTimeDescriptionItemProvider = new DateTimeDescriptionItemProvider(this);
+        }
+
+        return this.dateTimeDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.form.SliderDescription} instances. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -1201,6 +1225,55 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
 
     /**
      * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DateTimeDescriptionStyleItemProvider dateTimeDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDateTimeDescriptionStyleAdapter() {
+        if (this.dateTimeDescriptionStyleItemProvider == null) {
+            this.dateTimeDescriptionStyleItemProvider = new DateTimeDescriptionStyleItemProvider(this);
+        }
+
+        return this.dateTimeDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.form.ConditionalDateTimeDescriptionStyle} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalDateTimeDescriptionStyleItemProvider conditionalDateTimeDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.sirius.components.view.form.ConditionalDateTimeDescriptionStyle}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalDateTimeDescriptionStyleAdapter() {
+        if (this.conditionalDateTimeDescriptionStyleItemProvider == null) {
+            this.conditionalDateTimeDescriptionStyleItemProvider = new ConditionalDateTimeDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalDateTimeDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.form.ContainerBorderStyle} instances. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -1436,6 +1509,8 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
             this.buttonDescriptionItemProvider.dispose();
         if (this.checkboxDescriptionItemProvider != null)
             this.checkboxDescriptionItemProvider.dispose();
+        if (this.dateTimeDescriptionItemProvider != null)
+            this.dateTimeDescriptionItemProvider.dispose();
         if (this.flexboxContainerDescriptionItemProvider != null)
             this.flexboxContainerDescriptionItemProvider.dispose();
         if (this.imageDescriptionItemProvider != null)
@@ -1478,6 +1553,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
             this.checkboxDescriptionStyleItemProvider.dispose();
         if (this.conditionalCheckboxDescriptionStyleItemProvider != null)
             this.conditionalCheckboxDescriptionStyleItemProvider.dispose();
+        if (this.dateTimeDescriptionStyleItemProvider != null)
+            this.dateTimeDescriptionStyleItemProvider.dispose();
+        if (this.conditionalDateTimeDescriptionStyleItemProvider != null)
+            this.conditionalDateTimeDescriptionStyleItemProvider.dispose();
         if (this.labelDescriptionStyleItemProvider != null)
             this.labelDescriptionStyleItemProvider.dispose();
         if (this.conditionalLabelDescriptionStyleItemProvider != null)

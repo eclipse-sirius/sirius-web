@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionSty
 import org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle;
+import org.eclipse.sirius.components.view.form.ConditionalDateTimeDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle;
@@ -39,6 +40,9 @@ import org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionSty
 import org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ContainerBorderLineStyle;
 import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
+import org.eclipse.sirius.components.view.form.DateTimeDescription;
+import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
+import org.eclipse.sirius.components.view.form.DateTimeType;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
@@ -129,6 +133,8 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createButtonDescription();
             case FormPackage.CHECKBOX_DESCRIPTION:
                 return this.createCheckboxDescription();
+            case FormPackage.DATE_TIME_DESCRIPTION:
+                return this.createDateTimeDescription();
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION:
                 return this.createFlexboxContainerDescription();
             case FormPackage.IMAGE_DESCRIPTION:
@@ -171,6 +177,10 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createCheckboxDescriptionStyle();
             case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE:
                 return this.createConditionalCheckboxDescriptionStyle();
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE:
+                return this.createDateTimeDescriptionStyle();
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE:
+                return this.createConditionalDateTimeDescriptionStyle();
             case FormPackage.LABEL_DESCRIPTION_STYLE:
                 return this.createLabelDescriptionStyle();
             case FormPackage.CONDITIONAL_LABEL_DESCRIPTION_STYLE:
@@ -236,6 +246,8 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createLabelPlacementFromString(eDataType, initialValue);
             case FormPackage.CONTAINER_BORDER_LINE_STYLE:
                 return this.createContainerBorderLineStyleFromString(eDataType, initialValue);
+            case FormPackage.DATE_TIME_TYPE:
+                return this.createDateTimeTypeFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -257,6 +269,8 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.convertLabelPlacementToString(eDataType, instanceValue);
             case FormPackage.CONTAINER_BORDER_LINE_STYLE:
                 return this.convertContainerBorderLineStyleToString(eDataType, instanceValue);
+            case FormPackage.DATE_TIME_TYPE:
+                return this.convertDateTimeTypeToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -425,6 +439,17 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
     public TreeDescription createTreeDescription() {
         TreeDescriptionImpl treeDescription = new TreeDescriptionImpl();
         return treeDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DateTimeDescription createDateTimeDescription() {
+        DateTimeDescriptionImpl dateTimeDescription = new DateTimeDescriptionImpl();
+        return dateTimeDescription;
     }
 
     /**
@@ -774,6 +799,28 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
      * @generated
      */
     @Override
+    public DateTimeDescriptionStyle createDateTimeDescriptionStyle() {
+        DateTimeDescriptionStyleImpl dateTimeDescriptionStyle = new DateTimeDescriptionStyleImpl();
+        return dateTimeDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalDateTimeDescriptionStyle createConditionalDateTimeDescriptionStyle() {
+        ConditionalDateTimeDescriptionStyleImpl conditionalDateTimeDescriptionStyle = new ConditionalDateTimeDescriptionStyleImpl();
+        return conditionalDateTimeDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public ContainerBorderStyle createContainerBorderStyle() {
         ContainerBorderStyleImpl containerBorderStyle = new ContainerBorderStyleImpl();
         return containerBorderStyle;
@@ -893,6 +940,27 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
      * @generated
      */
     public String convertContainerBorderLineStyleToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public DateTimeType createDateTimeTypeFromString(EDataType eDataType, String initialValue) {
+        DateTimeType result = DateTimeType.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertDateTimeTypeToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

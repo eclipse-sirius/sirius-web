@@ -11,9 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { MutationResult, gql, useMutation } from '@apollo/client';
-import { GQLErrorPayload, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useEffect } from 'react';
+import { gql, useMutation } from '@apollo/client';
+import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import { Card, Lane } from '../Deck.types';
 import {
   GQLChangeCardsVisibilityData,
@@ -22,9 +21,9 @@ import {
   GQLChangeLaneCollapsedStateData,
   GQLChangeLaneCollapsedStateInput,
   GQLChangeLaneCollapsedStateVariables,
-  GQLCreateCardData,
-  GQLCreateCardVariables,
+  GQLCreateDeckCardData,
   GQLCreateDeckCardInput,
+  GQLCreateDeckCardVariables,
   GQLDeleteCardData,
   GQLDeleteCardVariables,
   GQLDeleteDeckCardInput,
@@ -40,7 +39,6 @@ import {
   GQLEditDeckLaneInput,
   GQLEditLaneData,
   GQLEditLaneVariables,
-  GQLPayload,
   UseDeckMutationsValue,
 } from './useDeckMutation.types';
 
@@ -84,7 +82,7 @@ const editCardMutation = gql`
   }
 `;
 
-const createCardMutation = gql`
+const createDeckCardMutation = gql`
   mutation createDeckCard($input: CreateDeckCardInput!) {
     createDeckCard(input: $input) {
       __typename
@@ -204,31 +202,11 @@ const changeCardsVisibilityMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (payload): payload is GQLPayload => payload.__typename === 'SuccessPayload';
-
-function useErrorReporting<T>(result: MutationResult<T>, extractPayload: (data: T | null) => GQLPayload | undefined) {
-  const { addErrorMessage, addMessages } = useMultiToast();
-  useEffect(() => {
-    const { loading, data, error } = result;
-    if (!loading) {
-      if (error) {
-        addErrorMessage(error.message);
-      }
-      const payload: GQLPayload | undefined = extractPayload(data || null);
-      if (payload && (isSuccessPayload(payload) || isErrorPayload(payload))) {
-        const { messages } = payload;
-        addMessages(messages);
-      }
-    }
-  }, [result.loading, result.data, result.error]);
-}
-
 export const useDeckMutations = (editingContextId: string, representationId: string): UseDeckMutationsValue => {
   const [rawDeleteDeckCard, rawDeleteDeckCardResult] = useMutation<GQLDeleteCardData, GQLDeleteCardVariables>(
     deleteCardMutation
   );
-  useErrorReporting(rawDeleteDeckCardResult, (data) => data?.deleteDeckCard);
+  useReporting(rawDeleteDeckCardResult, (data: GQLDeleteCardData) => data.deleteDeckCard);
 
   const deleteCard = (cardId: string) => {
     const input: GQLDeleteDeckCardInput = {
@@ -241,7 +219,7 @@ export const useDeckMutations = (editingContextId: string, representationId: str
   };
 
   const [rawEditDeckCard, rawEditDeckCardResult] = useMutation<GQLEditCardData, GQLEditCardVariables>(editCardMutation);
-  useErrorReporting(rawEditDeckCardResult, (data) => data?.editDeckCard);
+  useReporting(rawEditDeckCardResult, (data: GQLEditCardData) => data.editDeckCard);
 
   const editDeckCard = (card: Card) => {
     const input: GQLEditDeckCardInput = {
@@ -256,10 +234,10 @@ export const useDeckMutations = (editingContextId: string, representationId: str
     rawEditDeckCard({ variables: { input } });
   };
 
-  const [rawcreateCard, rawCreateCardResult] = useMutation<GQLCreateCardData, GQLCreateCardVariables>(
-    createCardMutation
+  const [rawCreateDeckCard, rawCreateDeckCardResult] = useMutation<GQLCreateDeckCardData, GQLCreateDeckCardVariables>(
+    createDeckCardMutation
   );
-  useErrorReporting(rawCreateCardResult, (data) => data?.createCard);
+  useReporting(rawCreateDeckCardResult, (data: GQLCreateDeckCardData) => data.createDeckCard);
 
   const createCard = (card: Card, laneId: string) => {
     const input: GQLCreateDeckCardInput = {
@@ -271,13 +249,13 @@ export const useDeckMutations = (editingContextId: string, representationId: str
       label: card.label,
       description: card.description,
     };
-    rawcreateCard({ variables: { input } });
+    rawCreateDeckCard({ variables: { input } });
   };
 
   const [rawDropDeckCard, rawDropDeckCardResult] = useMutation<GQLDropDeckCardData, GQLDropDeckCardVariables>(
     dropDeckCardMutation
   );
-  useErrorReporting(rawDropDeckCardResult, (data) => data?.dropDeckCard);
+  useReporting(rawDropDeckCardResult, (data: GQLDropDeckCardData) => data.dropDeckCard);
 
   const dropDeckCard = (oldLaneId: string, newLaneId: string, cardId: string, addedIndex: number) => {
     const input: GQLDropDeckCardInput = {
@@ -293,7 +271,7 @@ export const useDeckMutations = (editingContextId: string, representationId: str
   };
 
   const [rawEditDeckLane, rawEditDeckLaneResult] = useMutation<GQLEditLaneData, GQLEditLaneVariables>(editLaneMutation);
-  useErrorReporting(rawEditDeckLaneResult, (data) => data?.editDeckLane);
+  useReporting(rawEditDeckLaneResult, (data: GQLEditLaneData) => data.editDeckLane);
 
   const editDeckLane = (laneId: string, newValue: { title: string }) => {
     const input: GQLEditDeckLaneInput = {
@@ -309,7 +287,7 @@ export const useDeckMutations = (editingContextId: string, representationId: str
   const [rawDropDeckLane, rawDropDeckLaneResult] = useMutation<GQLDropDeckLaneData, GQLDropDeckLaneVariables>(
     dropDeckLaneMutation
   );
-  useErrorReporting(rawDropDeckLaneResult, (data) => data?.dropDeckLane);
+  useReporting(rawDropDeckLaneResult, (data: GQLDropDeckLaneData) => data.dropDeckLane);
 
   const dropDeckLane = (newIndex: number, lane: Lane) => {
     const input: GQLDropDeckLaneInput = {
@@ -326,7 +304,10 @@ export const useDeckMutations = (editingContextId: string, representationId: str
     GQLChangeLaneCollapsedStateData,
     GQLChangeLaneCollapsedStateVariables
   >(changeLaneCollapsedStateMutation);
-  useErrorReporting(rawChangeLaneCollapsedStateResult, (data) => data?.changeLaneCollapsedState);
+  useReporting(
+    rawChangeLaneCollapsedStateResult,
+    (data: GQLChangeLaneCollapsedStateData) => data.changeLaneCollapsedState
+  );
 
   const changeLaneCollapsedState = (laneId: string, collapsed: boolean) => {
     const input: GQLChangeLaneCollapsedStateInput = {
@@ -344,7 +325,7 @@ export const useDeckMutations = (editingContextId: string, representationId: str
     GQLChangeCardsVisibilityData,
     GQLChangeCardsVisibilityVariables
   >(changeCardsVisibilityMutation);
-  useErrorReporting(rawChangeCardsVisibilityResult, (data) => data?.changeCardsVisibility);
+  useReporting(rawChangeCardsVisibilityResult, (data: GQLChangeCardsVisibilityData) => data.changeCardsVisibility);
 
   const changeCardsVisibility = (hiddenCardsIds: string[], visibleCardsIds: string[]) => {
     const input: GQLChangeCardsVisibilityInput = {

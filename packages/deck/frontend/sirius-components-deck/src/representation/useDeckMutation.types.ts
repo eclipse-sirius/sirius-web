@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 import { Card, Lane } from '../Deck.types';
 
 export interface GQLDeleteCardVariables {
@@ -26,8 +26,10 @@ export interface GQLDeleteDeckCardInput {
 }
 
 export interface GQLDeleteCardData {
-  deleteDeckCard: GQLPayload;
+  deleteDeckCard: GQLDeleteDeckCardPayload;
 }
+
+export type GQLDeleteDeckCardPayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLEditCardVariables {
   input: GQLEditDeckCardInput;
@@ -44,10 +46,12 @@ export interface GQLEditDeckCardInput {
 }
 
 export interface GQLEditCardData {
-  editDeckCard: GQLPayload;
+  editDeckCard: GQLEditDeckCardPayload;
 }
 
-export interface GQLCreateCardVariables {
+export type GQLEditDeckCardPayload = GQLErrorPayload | GQLSuccessPayload;
+
+export interface GQLCreateDeckCardVariables {
   input: GQLCreateDeckCardInput;
 }
 
@@ -61,9 +65,11 @@ export interface GQLCreateDeckCardInput {
   description: string;
 }
 
-export interface GQLCreateCardData {
-  createCard: GQLPayload;
+export interface GQLCreateDeckCardData {
+  createDeckCard: GQLCreateDeckCardPayload;
 }
+
+export type GQLCreateDeckCardPayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLDropDeckCardVariables {
   input: GQLDropDeckCardInput;
@@ -79,8 +85,10 @@ export interface GQLDropDeckCardInput {
 }
 
 export interface GQLDropDeckCardData {
-  dropDeckCard: GQLPayload;
+  dropDeckCard: GQLDropDeckCardPayload;
 }
+
+export type GQLDropDeckCardPayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLEditLaneVariables {
   input: GQLEditDeckLaneInput;
@@ -95,8 +103,10 @@ export interface GQLEditDeckLaneInput {
 }
 
 export interface GQLEditLaneData {
-  editDeckLane: GQLPayload;
+  editDeckLane: GQLEditDeckLanePayload;
 }
+
+export type GQLEditDeckLanePayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLDropDeckLaneVariables {
   input: GQLDropDeckLaneInput;
@@ -110,8 +120,10 @@ export interface GQLDropDeckLaneInput {
 }
 
 export interface GQLDropDeckLaneData {
-  dropDeckLane: GQLPayload;
+  dropDeckLane: GQLDropDeckLanePayload;
 }
+
+export type GQLDropDeckLanePayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLChangeLaneCollapsedStateVariables {
   input: GQLChangeLaneCollapsedStateInput;
@@ -126,8 +138,10 @@ export interface GQLChangeLaneCollapsedStateInput {
 }
 
 export interface GQLChangeLaneCollapsedStateData {
-  changeLaneCollapsedState: GQLPayload;
+  changeLaneCollapsedState: GQLChangeLaneCollapsedStatePayload;
 }
+
+export type GQLChangeLaneCollapsedStatePayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLChangeCardsVisibilityVariables {
   input: GQLChangeCardsVisibilityInput;
@@ -142,13 +156,10 @@ export interface GQLChangeCardsVisibilityInput {
 }
 
 export interface GQLChangeCardsVisibilityData {
-  changeCardsVisibility: GQLPayload;
+  changeCardsVisibility: GQLChangeCardsVisibilityPayload;
 }
 
-export interface GQLPayload {
-  __typename: string;
-  messages: GQLMessage[];
-}
+export type GQLChangeCardsVisibilityPayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface UseDeckMutationsValue {
   editDeckCard: (card: Card) => void;

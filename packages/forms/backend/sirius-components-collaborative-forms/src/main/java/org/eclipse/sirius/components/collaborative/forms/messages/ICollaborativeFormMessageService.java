@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,8 @@ package org.eclipse.sirius.components.collaborative.forms.messages;
 public interface ICollaborativeFormMessageService {
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
 
+    String readOnlyWidgetCannotBeEdited();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -32,5 +34,9 @@ public interface ICollaborativeFormMessageService {
             return "";
         }
 
+        @Override
+        public String readOnlyWidgetCannotBeEdited() {
+            return "";
+        }
     }
 }

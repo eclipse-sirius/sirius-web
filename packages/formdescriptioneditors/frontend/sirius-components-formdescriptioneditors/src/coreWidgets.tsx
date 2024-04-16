@@ -14,6 +14,7 @@ import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import EventIcon from '@material-ui/icons/Event';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import ImageIcon from '@material-ui/icons/Image';
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
@@ -104,5 +105,9 @@ export const coreWidgets: WidgetDescriptor[] = [
   {
     name: 'Textfield',
     icon: <TextFieldsIcon />,
+  },
+  {
+    name: 'DateTime',
+    icon: <EventIcon />,
   },
 ];

@@ -13,11 +13,6 @@
 package org.eclipse.sirius.components.collaborative.forms.handlers;
 
 import java.util.Objects;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Sinks.Many;
-import reactor.core.publisher.Sinks.One;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -37,6 +32,12 @@ import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
+import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks.Many;
+import reactor.core.publisher.Sinks.One;
 
 /**
  * The handler of the edit checkbox event.
@@ -85,7 +86,7 @@ public class EditTreeCheckBoxEventHandler implements IFormEventHandler {
 
             IStatus status;
             if (optionalTree.map(TreeWidget::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
-                status = new Failure("Read-only widget cannot be edited");
+                status = new Failure(this.messageService.readOnlyWidgetCannotBeEdited());
             } else {
                 status = optionalCheckbox.map(TreeNode::getNewValueHandler)
                         .map(handler -> handler.apply(input.newValue()))

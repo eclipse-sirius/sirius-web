@@ -14,6 +14,7 @@ import {
   GQLButton,
   GQLChartWidget,
   GQLCheckbox,
+  GQLDateTime,
   GQLFlexDirection,
   GQLFlexboxContainer,
   GQLGroup,
@@ -51,6 +52,7 @@ export interface WidgetProps<WidgetType extends GQLWidget> {
 export type BarChartWidgetProps = WidgetProps<GQLChartWidget>;
 export type ButtonWidgetProps = WidgetProps<GQLButton>;
 export type CheckboxWidgetProps = WidgetProps<GQLCheckbox>;
+export type DateTimeWidgetProps = WidgetProps<GQLDateTime>;
 
 export interface SplitButtonWidgetProps extends WidgetProps<GQLSplitButton> {
   editingContextId: string;

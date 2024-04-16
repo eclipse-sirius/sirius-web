@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.forms.tests.assertions;
 
 import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.forms.Checkbox;
+import org.eclipse.sirius.components.forms.DateTime;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.MultiSelect;
@@ -66,6 +67,10 @@ public class FormAssertions extends Assertions {
 
     public static SliderAssert assertThat(Slider slider) {
         return new SliderAssert(slider);
+    }
+
+    public static DateTimeAssert assertThat(DateTime dateTime) {
+        return new DateTimeAssert(dateTime);
     }
 
     public static TextareaAssert assertThat(Textarea textarea) {

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLMessage } from '../form/FormEventFragments.types';
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface RadioStyleProps {
   color: string | null;

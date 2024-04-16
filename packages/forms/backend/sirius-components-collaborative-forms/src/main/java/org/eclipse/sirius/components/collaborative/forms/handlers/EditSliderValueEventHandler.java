@@ -82,7 +82,7 @@ public class EditSliderValueEventHandler implements IFormEventHandler {
 
             IStatus status;
             if (optionalSlider.map(Slider::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
-                status = new Failure("Read-only widget can not be edited");
+                status = new Failure(this.messageService.readOnlyWidgetCannotBeEdited());
             } else {
                 status = optionalSlider.map(Slider::getNewValueHandler)
                         .map(handler -> handler.apply(Integer.valueOf(input.newValue())))

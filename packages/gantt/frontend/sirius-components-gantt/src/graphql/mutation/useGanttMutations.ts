@@ -12,9 +12,8 @@
  *******************************************************************************/
 
 import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
-import { MutationResult, useMutation } from '@apollo/client';
-import { GQLErrorPayload, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useEffect } from 'react';
+import { useMutation } from '@apollo/client';
+import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import { GQLTaskDetail } from '../subscription/GanttSubscription.types';
 import {
   GQLChangeTaskCollapseStateData,
@@ -35,7 +34,6 @@ import {
   GQLEditGanttTaskInput,
   GQLEditTaskData,
   GQLEditTaskVariables,
-  GQLPayload,
   UseGanttMutations,
 } from './GanttMutation.types';
 import {
@@ -47,37 +45,11 @@ import {
   editTaskMutation,
 } from './ganttMutation';
 
-const isErrorPayload = (payload): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (payload): payload is GQLPayload => payload.__typename === 'SuccessPayload';
-
-function useErrorReporting<T>(
-  result: MutationResult<T>,
-  extractPayload: (data: T | null) => GQLPayload | undefined,
-  addErrorMessage: (message: string) => any,
-  addMessages: (messages: any) => any
-) {
-  useEffect(() => {
-    const { loading, data, error } = result;
-    if (!loading) {
-      if (error) {
-        addErrorMessage(error.message);
-      }
-      const payload: GQLPayload | undefined = extractPayload(data || null);
-      if (payload && (isSuccessPayload(payload) || isErrorPayload(payload))) {
-        const { messages } = payload;
-        addMessages(messages);
-      }
-    }
-  }, [result.loading, result.data, result.error]);
-}
-
 export const useGanttMutations = (editingContextId: string, representationId: string): UseGanttMutations => {
-  const { addErrorMessage, addMessages } = useMultiToast();
-
   const [mutationDeleteGanttTask, mutationDeleteTaskResult] = useMutation<GQLDeleteTaskData, GQLDeleteTaskVariables>(
     deleteTaskMutation
   );
-  useErrorReporting(mutationDeleteTaskResult, (data) => data?.deleteGanttTask, addErrorMessage, addMessages);
+  useReporting(mutationDeleteTaskResult, (data: GQLDeleteTaskData) => data.deleteGanttTask);
 
   const deleteTask = (tasks: readonly TaskOrEmpty[]) => {
     const taskId = tasks?.at(0)?.id;
@@ -95,7 +67,7 @@ export const useGanttMutations = (editingContextId: string, representationId: st
   const [mutationCreateTask, mutationCreateTaskResult] = useMutation<GQLCreateTaskData, GQLCreateTaskVariables>(
     createTaskMutation
   );
-  useErrorReporting(mutationCreateTaskResult, (data) => data?.createTask, addErrorMessage, addMessages);
+  useReporting(mutationCreateTaskResult, (data: GQLCreateTaskData) => data.createGanttTask);
 
   const createTask = (task: Task) => {
     const input: GQLCreateGanttTaskInput = {
@@ -110,7 +82,7 @@ export const useGanttMutations = (editingContextId: string, representationId: st
   const [mutationEditTask, mutationEditTaskResult] = useMutation<GQLEditTaskData, GQLEditTaskVariables>(
     editTaskMutation
   );
-  useErrorReporting(mutationEditTaskResult, (data) => data?.editGanttTask, addErrorMessage, addMessages);
+  useReporting(mutationEditTaskResult, (data: GQLEditTaskData) => data.editGanttTask);
 
   const editTask = (task: TaskOrEmpty) => {
     const newDetail: GQLTaskDetail = {
@@ -135,7 +107,7 @@ export const useGanttMutations = (editingContextId: string, representationId: st
   const [mutationDropTask, mutationDropTaskResult] = useMutation<GQLDropTaskData, GQLDropTaskVariables>(
     dropTaskMutation
   );
-  useErrorReporting(mutationDropTaskResult, (data) => data?.payload, addErrorMessage, addMessages);
+  useReporting(mutationDropTaskResult, (data: GQLDropTaskData) => data.dropGanttTask);
 
   const dropTask = (droppedTask: TaskOrEmpty, targetTask: TaskOrEmpty | undefined, dropIndex: number) => {
     const input: GQLDropGanttTaskInput = {
@@ -156,7 +128,10 @@ export const useGanttMutations = (editingContextId: string, representationId: st
     GQLCreateTaskDependencyData,
     GQLCreateTaskDependencyVariables
   >(createTaskDependencyMutation);
-  useErrorReporting(mutationCreateTaskDependencyResult, (data) => data?.payload, addErrorMessage, addMessages);
+  useReporting(
+    mutationCreateTaskDependencyResult,
+    (data: GQLCreateTaskDependencyData) => data.createGanttTaskDependency
+  );
 
   const createTaskDependency = (sourceTaskId: string, targetTaskId: string) => {
     const input: GQLCreateGanttTaskDependencyInput = {
@@ -174,7 +149,10 @@ export const useGanttMutations = (editingContextId: string, representationId: st
     GQLChangeTaskCollapseStateData,
     GQLChangeTaskCollapseStateVariables
   >(changeTaskCollapseStateMutation);
-  useErrorReporting(mutationChangeTaskCollapseStateResult, (data) => data?.payload, addErrorMessage, addMessages);
+  useReporting(
+    mutationChangeTaskCollapseStateResult,
+    (data: GQLChangeTaskCollapseStateData) => data.changeGanttTaskCollapseState
+  );
 
   const changeTaskCollapseState = (taskId: string, collapsed: boolean) => {
     const input: GQLChangeTaskCollapseStateInput = {
