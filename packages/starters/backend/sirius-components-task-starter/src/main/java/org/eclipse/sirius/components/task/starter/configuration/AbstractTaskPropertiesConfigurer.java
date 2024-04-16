@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -31,11 +32,15 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.forms.DateTimeType;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
+import org.eclipse.sirius.components.forms.description.DateTimeDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.IfDescription;
-import org.eclipse.sirius.components.forms.description.TextfieldDescription;
+import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.task.AbstractTask;
 import org.eclipse.sirius.components.task.Person;
@@ -45,6 +50,7 @@ import org.eclipse.sirius.components.task.TaskPackage;
 import org.eclipse.sirius.components.task.TaskTag;
 import org.eclipse.sirius.components.task.Team;
 import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesWidgetCreationService;
+import org.eclipse.sirius.components.view.emf.compatibility.PropertiesConfigurerService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -58,15 +64,20 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
     private final IPropertiesWidgetCreationService propertiesWidgetCreationService;
 
     private final IObjectService objectService;
+    private final PropertiesConfigurerService propertiesConfigurerService;
 
-    public AbstractTaskPropertiesConfigurer(IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService) {
+    public AbstractTaskPropertiesConfigurer(PropertiesConfigurerService propertiesConfigurerService,
+            IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService) {
+        this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.propertiesWidgetCreationService = Objects.requireNonNull(propertiesWidgetCreationService);
         this.objectService = Objects.requireNonNull(objectService);
     }
 
     @Override
     public void addPropertiesDescriptions(IPropertiesDescriptionRegistry registry) {
+
         String formDescriptionId = UUID.nameUUIDFromBytes("abstractTask".getBytes()).toString();
+
         List<AbstractControlDescription> controls = new ArrayList<>(this.getGeneralControlDescription());
 
         Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
@@ -76,6 +87,7 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
         registry.add(this.propertiesWidgetCreationService.createSimplePageDescription(formDescriptionId, groupDescription, canCreatePagePredicate));
+
     }
 
     private List<AbstractControlDescription> getGeneralControlDescription() {
@@ -139,58 +151,92 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
         return controls;
     }
 
-    private TextfieldDescription getEndTimeWidget() {
-        var endTime = this.propertiesWidgetCreationService.createTextField("abstractTask.endTime", "End Time",
-                task -> {
-                    Instant endInstant = ((AbstractTask) task).getEndTime();
-                    try {
-                        return DateTimeFormatter.ISO_INSTANT.format(endInstant);
-                    } catch (DateTimeException  | NullPointerException e) {
-                        // Ignore
-                    }
-                    return "";
-                },
-                (task, newValue) -> {
-                    if (newValue != null && newValue.isBlank()) {
-                        ((AbstractTask) task).setEndTime(null);
-                    } else {
-                        try {
-                            Instant instant =  Instant.parse(newValue);
-                            ((AbstractTask) task).setEndTime(instant);
-                        } catch (DateTimeParseException e) {
-                            // Ignore
-                        }
-                    }
-                },
-                TaskPackage.Literals.ABSTRACT_TASK__END_TIME);
-        return endTime;
-    }
-
-    private TextfieldDescription getStartTimeWidget() {
-        var startTime = this.propertiesWidgetCreationService.createTextField("abstractTask.startTime", "Start Time",
-                task -> {
-                    Instant startInstant = ((AbstractTask) task).getStartTime();
+    private DateTimeDescription getStartTimeWidget() {
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, AbstractTask.class)
+                .map(task -> {
+                    Instant startInstant = task.getStartTime();
                     try {
                         return DateTimeFormatter.ISO_INSTANT.format(startInstant);
                     } catch (DateTimeException | NullPointerException e) {
                         // Ignore
                     }
                     return "";
-                },
-                (task, newValue) -> {
-                    if (newValue != null && newValue.isBlank()) {
-                        ((AbstractTask) task).setStartTime(null);
-                    } else {
-                        try {
-                            Instant instant =  Instant.parse(newValue);
-                            ((AbstractTask) task).setStartTime(instant);
-                        } catch (DateTimeParseException e) {
-                            // Ignore
-                        }
+                })
+                .orElse("");
+        BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
+            var taskOpt = variableManager.get(VariableManager.SELF, AbstractTask.class);
+            if (taskOpt.isPresent()) {
+                if (newValue == null || newValue.isBlank()) {
+                    taskOpt.get().setStartTime(null);
+                } else {
+                    try {
+                        Instant instant = Instant.parse(newValue);
+                        taskOpt.get().setStartTime(instant);
+                    } catch (DateTimeParseException e) {
+                        // Ignore
                     }
-                },
-                TaskPackage.Literals.ABSTRACT_TASK__START_TIME);
-        return startTime;
+                }
+                return new Success();
+            } else {
+                return new Failure("");
+            }
+        };
+        String id = "abstractTask.startTime";
+        return DateTimeDescription.newDateTimeDescription(id)
+                .idProvider(variableManager -> id)
+                .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
+                .labelProvider(variableManager -> "Start Time")
+                .stringValueProvider(valueProvider)
+                .newValueHandler(newValueHandler)
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(TaskPackage.Literals.ABSTRACT_TASK__START_TIME))
+                .kindProvider(this.propertiesConfigurerService.getKindProvider())
+                .messageProvider(this.propertiesConfigurerService.getMessageProvider())
+                .type(DateTimeType.DATE_TIME)
+                .build();
+    }
+
+    private DateTimeDescription getEndTimeWidget() {
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(task -> {
+                    Instant endInstant = ((AbstractTask) task).getEndTime();
+                    try {
+                        return DateTimeFormatter.ISO_INSTANT.format(endInstant);
+                    } catch (DateTimeException | NullPointerException e) {
+                        // Ignore
+                    }
+                    return "";
+                })
+                .orElse("");
+        BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
+            var taskOpt = variableManager.get(VariableManager.SELF, Object.class);
+            if (taskOpt.isPresent()) {
+                if (newValue == null || newValue.isBlank()) {
+                    ((AbstractTask) taskOpt.get()).setEndTime(null);
+                } else {
+                    try {
+                        Instant instant = Instant.parse(newValue);
+                        ((AbstractTask) taskOpt.get()).setEndTime(instant);
+                    } catch (DateTimeParseException e) {
+                        // Ignore
+                    }
+                }
+                return new Success();
+            } else {
+                return new Failure("");
+            }
+        };
+        String id = "abstractTask.endTime";
+        return DateTimeDescription.newDateTimeDescription(id)
+                .idProvider(variableManager -> id)
+                .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
+                .labelProvider(variableManager -> "End Time")
+                .stringValueProvider(valueProvider)
+                .newValueHandler(newValueHandler)
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(TaskPackage.Literals.ABSTRACT_TASK__END_TIME))
+                .kindProvider(this.propertiesConfigurerService.getKindProvider())
+                .messageProvider(this.propertiesConfigurerService.getMessageProvider())
+                .type(DateTimeType.DATE_TIME)
+                .build();
     }
 
     private Function<VariableManager, List<?>> getDependenciesProvider() {
