@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -66,6 +67,7 @@ public class CEDComponentNodeProvider implements INodeDescriptionProvider {
         newComponentPortNodeTool.setName("New ComponentPort");
         nodePalette.getNodeTools().add(newComponentPortNodeTool);
         nodePalette.getEdgeTools().add(this.createComponentExchangeEdgeTool(nodeDescription));
+        nodePalette.getToolSections().add(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection());
         nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
         nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
 

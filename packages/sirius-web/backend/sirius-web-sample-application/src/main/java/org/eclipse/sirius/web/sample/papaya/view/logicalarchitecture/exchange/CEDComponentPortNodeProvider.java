@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -51,6 +52,7 @@ public class CEDComponentPortNodeProvider implements INodeDescriptionProvider {
         nodeDescription.setStyle(nodeStyle);
 
         var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
+        nodePalette.getToolSections().add(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection());
         nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
         nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
         nodeDescription.setPalette(nodePalette);

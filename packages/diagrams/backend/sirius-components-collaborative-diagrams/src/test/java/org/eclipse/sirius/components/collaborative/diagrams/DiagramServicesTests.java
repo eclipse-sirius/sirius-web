@@ -17,12 +17,17 @@ import static org.assertj.core.api.InstanceOfAssertFactories.collection;
 import static org.assertj.core.api.InstanceOfAssertFactories.type;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.handlers.TestDiagramBuilder;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
+import org.eclipse.sirius.components.diagrams.events.ResetViewModifiersEvent;
 import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.junit.jupiter.api.Test;
 
@@ -125,6 +130,58 @@ public class DiagramServicesTests {
             .returns(false, FadeDiagramElementEvent::fadeElement)
             .extracting(FadeDiagramElementEvent::getElementIds, collection(String.class))
             .hasSameElementsAs(List.of(nodeId));
+    }
+
+    @Test
+    public void testResetViewModifiers() {
+        var diagramServices = new DiagramServices();
+        var diagramServicesContext = new DiagramService(new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString())));
+        var nodeId = UUID.randomUUID().toString();
+        var nodesToReset = List.of(new TestDiagramBuilder().getNode(nodeId, false));
+        diagramServices.resetViewModifiers(diagramServicesContext, nodesToReset);
+
+        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents())
+            .hasSize(1)
+            .first()
+            .asInstanceOf(type(ResetViewModifiersEvent.class))
+            .extracting(ResetViewModifiersEvent::getElementIds, collection(String.class))
+            .hasSameElementsAs(List.of(nodeId));
+    }
+
+    @Test
+    public void testIsHidden() {
+        var diagramServices = new DiagramServices();
+        var revealedNode = new TestDiagramBuilder().getNode(UUID.randomUUID().toString(), false);
+        assertThat(diagramServices.isHidden(revealedNode)).isFalse();
+        var hiddenNode = Node.newNode(revealedNode)
+                .modifiers(Set.of(ViewModifier.Hidden))
+                .build();
+        assertThat(diagramServices.isHidden(hiddenNode)).isTrue();
+
+        var revealedEdge = new TestDiagramBuilder().getEdge(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        assertThat(diagramServices.isHidden(revealedEdge)).isFalse();
+        var hiddenEdge = Edge.newEdge(revealedEdge)
+                .modifiers(Set.of(ViewModifier.Hidden))
+                .build();
+        assertThat(diagramServices.isHidden(hiddenEdge)).isTrue();
+    }
+
+    @Test
+    public void testIsFaded() {
+        var diagramServices = new DiagramServices();
+        var revealedNode = new TestDiagramBuilder().getNode(UUID.randomUUID().toString(), false);
+        assertThat(diagramServices.isFaded(revealedNode)).isFalse();
+        var fadedNode = Node.newNode(revealedNode)
+                .modifiers(Set.of(ViewModifier.Faded))
+                .build();
+        assertThat(diagramServices.isFaded(fadedNode)).isTrue();
+
+        var revealedEdge = new TestDiagramBuilder().getEdge(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        assertThat(diagramServices.isFaded(revealedEdge)).isFalse();
+        var fadedEdge = Edge.newEdge(revealedEdge)
+                .modifiers(Set.of(ViewModifier.Faded))
+                .build();
+        assertThat(diagramServices.isFaded(fadedEdge)).isTrue();
     }
 
 }

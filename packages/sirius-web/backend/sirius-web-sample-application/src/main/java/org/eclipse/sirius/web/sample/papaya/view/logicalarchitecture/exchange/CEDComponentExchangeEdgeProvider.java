@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 
 /**
@@ -55,6 +56,10 @@ public class CEDComponentExchangeEdgeProvider implements IEdgeDescriptionProvide
         componentExchangeEdgeDescription.setSourceNodesExpression("aql:self.ports->excluding(self.ports->last())");
         componentExchangeEdgeDescription.setTargetNodesExpression("aql:self.ports->at(self.ports->indexOf(semanticEdgeSource) +1)");
         componentExchangeEdgeDescription.setIsDomainBasedEdge(true);
+
+        var palette = DiagramFactory.eINSTANCE.createEdgePalette();
+        palette.getToolSections().add(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection());
+        componentExchangeEdgeDescription.setPalette(palette);
 
         return componentExchangeEdgeDescription;
     }

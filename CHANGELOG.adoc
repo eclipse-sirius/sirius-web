@@ -53,6 +53,9 @@ This will make the dependency to the old Sirius Web architecture more explicit.
 - https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [sirius-web] Simplify the lifecycle and API of the documentation creation in order to provide a simpler yet more powerful API for the new architecture
 - https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [sirius-web] The custom nodes project and its edit project have been renamed from `sirius-web-customnodes{-edit}` to `sirius-components-view-diagram-customnodes{-edit}` and moved to match other view based projects.
 They are also now used by the view builder code generator.
+- https://github.com/eclipse-sirius/sirius-web/issues/3382[#3382] [diagram] Remove the hardcoded show/hide tools in the frontend and move it to the backend.
+Specifiers now need to manually add the hide tools they want in their node/edge palette.
+New default implementations are available in `DefaultToolsFactory` to ease the migration.
 
 === Dependency update
 
@@ -95,6 +98,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3372[#3372] [diagram] Add services in `DiagramServices` to hide, reveal, fade, and unfade nodes from AQL expressions and Java services.
 - https://github.com/eclipse-sirius/sirius-web/issues/2839[#2839] [gantt] Add support for persisting task expand/collapse state
 - https://github.com/eclipse-sirius/sirius-web/issues/3333[#3333] [emf] Add support for the migration of semantic data
+- https://github.com/eclipse-sirius/sirius-web/issues/3382[#3382] [diagram] Add a tool section in Node and Edge palettes with tools to hide/show/reset elements and their children.
 
 
 === Improvements
@@ -120,7 +124,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3333[#3333] [emf] Store the last migration performed in a document
 - https://github.com/eclipse-sirius/sirius-web/issues/3409[#3409] [diagram] Make border node movement smoother
 - https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [sirius-web] Restore support for project images
-- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [core] Image URLs are now satinized in a similar manner in all datafetchers, as a result absolute URLs to external images are better supported and a leading slash is now required anymore.
+- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [core] Image URLs are now sanitized in a similar manner in all datafetchers, as a result absolute URLs to external images are better supported and a leading slash is now required anymore.
 
 
 == v2024.3.0

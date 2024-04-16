@@ -19,9 +19,13 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramServices;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
+import org.eclipse.sirius.components.diagrams.events.ResetViewModifiersEvent;
 import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.springframework.stereotype.Service;
 
@@ -50,30 +54,59 @@ public class DiagramServices implements IDiagramServices {
     }
 
     @Override
-    public Object hide(IDiagramService diagramService, List<Node> nodes) {
-        Set<String> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toSet());
-        diagramService.getDiagramContext().getDiagramEvents().add(new HideDiagramElementEvent(nodeIds, true));
-        return nodes;
+    public Object hide(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements) {
+        Set<String> diagramElementIds = diagramElements.stream().map(IDiagramElement::getId).collect(Collectors.toSet());
+        diagramService.getDiagramContext().getDiagramEvents().add(new HideDiagramElementEvent(diagramElementIds, true));
+        return diagramElements;
     }
 
     @Override
-    public Object reveal(IDiagramService diagramService, List<Node> nodes) {
-        Set<String> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toSet());
-        diagramService.getDiagramContext().getDiagramEvents().add(new HideDiagramElementEvent(nodeIds, false));
-        return nodes;
+    public Object reveal(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements) {
+        Set<String> diagramElementIds = diagramElements.stream().map(IDiagramElement::getId).collect(Collectors.toSet());
+        diagramService.getDiagramContext().getDiagramEvents().add(new HideDiagramElementEvent(diagramElementIds, false));
+        return diagramElements;
     }
 
     @Override
-    public Object fade(IDiagramService diagramService, List<Node> nodes) {
-        Set<String> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toSet());
-        diagramService.getDiagramContext().getDiagramEvents().add(new FadeDiagramElementEvent(nodeIds, true));
-        return nodes;
+    public Object fade(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements) {
+        Set<String> diagramElementIds = diagramElements.stream().map(IDiagramElement::getId).collect(Collectors.toSet());
+        diagramService.getDiagramContext().getDiagramEvents().add(new FadeDiagramElementEvent(diagramElementIds, true));
+        return diagramElements;
     }
 
     @Override
-    public Object unfade(IDiagramService diagramService, List<Node> nodes) {
-        Set<String> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toSet());
-        diagramService.getDiagramContext().getDiagramEvents().add(new FadeDiagramElementEvent(nodeIds, false));
-        return nodes;
+    public Object unfade(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements) {
+        Set<String> diagramElementIds = diagramElements.stream().map(IDiagramElement::getId).collect(Collectors.toSet());
+        diagramService.getDiagramContext().getDiagramEvents().add(new FadeDiagramElementEvent(diagramElementIds, false));
+        return diagramElements;
+    }
+
+    @Override
+    public Object resetViewModifiers(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements) {
+        Set<String> diagramElementIds = diagramElements.stream().map(IDiagramElement::getId).collect(Collectors.toSet());
+        diagramService.getDiagramContext().getDiagramEvents().add(new ResetViewModifiersEvent(diagramElementIds));
+        return diagramElementIds;
+    }
+
+    @Override
+    public boolean isHidden(IDiagramElement diagramElement) {
+        boolean isHidden = false;
+        if (diagramElement instanceof Node node) {
+            isHidden = node.getModifiers().contains(ViewModifier.Hidden);
+        } else if (diagramElement instanceof Edge edge) {
+            isHidden = edge.getModifiers().contains(ViewModifier.Hidden);
+        }
+        return isHidden;
+    }
+
+    @Override
+    public boolean isFaded(IDiagramElement diagramElement) {
+        boolean isFaded = false;
+        if (diagramElement instanceof Node node) {
+            isFaded = node.getModifiers().contains(ViewModifier.Faded);
+        } else if (diagramElement instanceof Edge edge) {
+            isFaded = edge.getModifiers().contains(ViewModifier.Faded);
+        }
+        return isFaded;
     }
 }

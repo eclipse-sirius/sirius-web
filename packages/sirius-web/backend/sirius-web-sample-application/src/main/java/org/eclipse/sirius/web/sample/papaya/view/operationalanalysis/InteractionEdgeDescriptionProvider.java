@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 /**
@@ -56,6 +57,10 @@ public class InteractionEdgeDescriptionProvider implements IEdgeDescriptionProvi
         interactionEdgeDescription.setSourceNodesExpression("aql:self.eContainer()");
         interactionEdgeDescription.setTargetNodesExpression("aql:self.target");
         interactionEdgeDescription.setStyle(interactionEdgeStyle);
+
+        var palette = DiagramFactory.eINSTANCE.createEdgePalette();
+        palette.getToolSections().add(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection());
+        interactionEdgeDescription.setPalette(palette);
 
         return interactionEdgeDescription;
     }

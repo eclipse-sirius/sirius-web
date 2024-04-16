@@ -21,10 +21,14 @@ import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IServiceProvider;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
@@ -62,7 +66,8 @@ public class ViewConverter implements IViewConverter {
     public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext, IObjectService objectService) {
         this.javaServiceProviders = new ArrayList<>();
         this.javaServiceProviders.addAll(Objects.requireNonNull(javaServiceProviders));
-        this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class, DiagramServices.class));
+        IServiceProvider nodeServiceProvider = (IReadOnlyQueryEnvironment queryEnvironment) -> ServiceUtils.getReceiverServices(null, Node.class).stream().toList();
+        this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class, DiagramServices.class, nodeServiceProvider.getClass()));
         this.representationDescriptionConverters = Objects.requireNonNull(representationDescriptionConverters);
         this.applicationContext = Objects.requireNonNull(applicationContext);
         this.objectService = Objects.requireNonNull(objectService);

@@ -14,11 +14,14 @@ package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.NODE;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -309,5 +312,93 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
             .consumeNextWith(updatedDiagramContentConsumer)
             .thenCancel()
             .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a diagram with faded and hidden nodes, when a tool resetting the visibility modifiers is invoked, then faded and hidden nodes are reset to their default visibility")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenDiagramWithFadedAndHiddenNodesWhenToolResettingVisibilityModifierIsInvokedThenFadedAndHiddenNodesAreResetToDefaultVisibility() {
+        var flux = this.givenSubscriptionToVisibilityDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var nodeToFadeId = new AtomicReference<String>();
+        var nodeToHideId = new AtomicReference<String>();
+
+        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+
+                    List<Node> revealedNodes = diagram.getNodes().stream().filter(n -> n.getModifiers().isEmpty()).toList();
+                    nodeToFadeId.set(revealedNodes.get(0).getId());
+                    nodeToHideId.set(revealedNodes.get(1).getId());
+                }, () -> fail("Missing diagram"));
+
+        Runnable fadeNode = () -> {
+            String fadeNodeToolId = this.visibilityDiagramDescriptionProvider.getFadeNodeToolId();
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), nodeToFadeId.get(), fadeNodeToolId, 0, 0, null);
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+        };
+
+        Runnable hideNode = () -> {
+            String hideNodeToolId = this.visibilityDiagramDescriptionProvider.getHideNodeToolId();
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), nodeToHideId.get(), hideNodeToolId, 0, 0, null);
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+        };
+
+        Runnable resetFadedNodeVisibility = () -> {
+            String resetNodeToolId = this.visibilityDiagramDescriptionProvider.getResetNodeToolId();
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), nodeToFadeId.get(), resetNodeToolId, 0, 0, null);
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+
+        };
+
+        Runnable resetHiddenNodeVisibility = () -> {
+            String resetNodeToolId = this.visibilityDiagramDescriptionProvider.getResetNodeToolId();
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), nodeToHideId.get(), resetNodeToolId, 0, 0, null);
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<DiagramRefreshedEventPayload> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    var nodeToFade = diagram.getNodes().stream().filter(node -> Objects.equals(node.getId(), nodeToFadeId.get())).findFirst();
+                    assertThat(nodeToFade)
+                        .isPresent()
+                        .get(NODE)
+                        .hasModifiers(Set.of());
+                    var nodeToHide = diagram.getNodes().stream().filter(node -> Objects.equals(node.getId(), nodeToHideId.get())).findFirst();
+                    assertThat(nodeToHide)
+                        .isPresent()
+                        .get(NODE)
+                        .hasModifiers(Set.of());
+                }, () -> fail("Missing diagram"));
+
+        StepVerifier.create(flux)
+            .consumeNextWith(initialDiagramContentConsumer)
+            .then(fadeNode)
+            .consumeNextWith((payload) -> { })
+            .then(hideNode)
+            .consumeNextWith((payload) -> { })
+            .then(resetFadedNodeVisibility)
+            .consumeNextWith((payload) -> { })
+            .then(resetHiddenNodeVisibility)
+            .consumeNextWith(updatedDiagramContentConsumer)
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+
     }
 }

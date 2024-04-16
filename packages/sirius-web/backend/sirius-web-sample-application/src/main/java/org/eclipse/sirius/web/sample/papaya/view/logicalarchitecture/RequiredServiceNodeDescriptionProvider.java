@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 /**
@@ -47,6 +48,10 @@ public class RequiredServiceNodeDescriptionProvider implements INodeDescriptionP
         nodeDescription.getOutsideLabels().add(new PapayaViewBuilder().createOutsideLabelDescription("aql:if self.contract = null then 'undefined' else self.contract.name endif",
                 this.colorProvider.getColor("label_black")));
         nodeDescription.setStyle(nodeStyle);
+
+        var palette = DiagramFactory.eINSTANCE.createNodePalette();
+        palette.getToolSections().add(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection());
+        nodeDescription.setPalette(palette);
 
         return nodeDescription;
     }

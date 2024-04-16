@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Description implements interface.
@@ -60,6 +61,7 @@ public class ImplementsInterfaceEdgeDescriptionProvider implements IEdgeDescript
 
         var edgePalette = DiagramFactory.eINSTANCE.createEdgePalette();
         implementsInterfaceEdgeDescription.setPalette(edgePalette);
+        edgePalette.getToolSections().add(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection());
         edgePalette.setBeginLabelEditTool(this.editImplementsInterfaceEdgeBeginLabel());
         edgePalette.setEndLabelEditTool(this.editImplementsInterfaceEdgeEndLabel());
 

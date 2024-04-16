@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.api;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 
 /**
@@ -27,12 +28,17 @@ public interface IDiagramServices {
 
     Object expand(IDiagramService diagramService, List<Node> nodes);
 
-    Object hide(IDiagramService diagramService, List<Node> nodes);
+    Object hide(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements);
 
-    Object reveal(IDiagramService diagramService, List<Node> nodes);
+    Object reveal(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements);
 
-    Object fade(IDiagramService diagramService, List<Node> nodes);
+    Object fade(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements);
 
-    Object unfade(IDiagramService diagramService, List<Node> nodes);
+    Object unfade(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements);
 
+    Object resetViewModifiers(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements);
+
+    boolean isHidden(IDiagramElement diagramElement);
+
+    boolean isFaded(IDiagramElement diagramElement);
 }

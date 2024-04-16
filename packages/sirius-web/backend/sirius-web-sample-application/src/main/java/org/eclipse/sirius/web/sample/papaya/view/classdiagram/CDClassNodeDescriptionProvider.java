@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -94,6 +95,7 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
         if (optionalClassNodeDescription.isPresent() && optionalInterfaceNodeDescription.isPresent()) {
             var nodePalette = nodePaletteBuilder.edgeTools(this.createExtendsClassEdgeTool(optionalClassNodeDescription.get()),
                     this.createImplementsInterfaceEdgeTool(optionalInterfaceNodeDescription.get()))
+                .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .labelEditTool(new PapayaToolsFactory().editName())
                 .deleteTool(new PapayaToolsFactory().deleteTool())
                 .build();
