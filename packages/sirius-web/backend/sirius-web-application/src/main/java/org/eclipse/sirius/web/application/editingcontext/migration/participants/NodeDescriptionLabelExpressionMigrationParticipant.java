@@ -12,18 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.migration.participants;
 
+import com.google.gson.JsonObject;
+
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
-
-import com.google.gson.JsonObject;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
  * @author mcharfadi
  */
 @Service
-public class NodeDescriptionLabelExpressionMigrationParticipant  implements IMigrationParticipant {
+public class NodeDescriptionLabelExpressionMigrationParticipant implements IMigrationParticipant {
 
     private static final String PARTICIPANT_VERSION = "2024.5.0-202404221400";
 

@@ -42,7 +42,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -79,12 +78,11 @@ public class DynamicDiagramsTests {
     }
 
     private void setBasicNodeStyle(NodeDescription nodeDescription, String color) {
-        NodeStyleDescription eClassNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        var eClassNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         var userColor = ViewFactory.eINSTANCE.createFixedColor();
         userColor.setName("color");
         userColor.setValue(color);
-
-        eClassNodeStyle.setColor(userColor);
+        eClassNodeStyle.setBackground(userColor);
         nodeDescription.setStyle(eClassNodeStyle);
     }
 

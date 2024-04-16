@@ -43,7 +43,7 @@ const freeFormNodeStyle = (
     opacity: faded ? '0.4' : '',
     transform: rotation,
     ...style,
-    backgroundColor: getCSSColor(String(style.backgroundColor), theme),
+    background: getCSSColor(String(style.background), theme),
   };
   if (selected || hovered) {
     freeFormNodeStyle.outline = `${theme.palette.selected} solid 1px`;

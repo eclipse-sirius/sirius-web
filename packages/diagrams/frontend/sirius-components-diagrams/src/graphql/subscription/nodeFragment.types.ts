@@ -72,7 +72,7 @@ export interface GQLNodeStyle {
 }
 
 export interface GQLRectangularNodeStyle extends GQLNodeStyle {
-  color: string;
+  background: string;
   borderColor: string;
   borderStyle: string;
   borderSize: string;
@@ -89,7 +89,7 @@ export interface GQLImageNodeStyle extends GQLNodeStyle {
 }
 
 export interface GQLIconLabelNodeStyle extends GQLNodeStyle {
-  backgroundColor: string;
+  background: string;
 }
 
 export interface GraphQLNodeStyleFragment {

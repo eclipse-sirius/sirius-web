@@ -70,7 +70,7 @@ const toEllipseNode = (
     descriptionId,
     style: {
       display: 'flex',
-      backgroundColor: style.color,
+      background: style.background,
       borderColor: style.borderColor,
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),

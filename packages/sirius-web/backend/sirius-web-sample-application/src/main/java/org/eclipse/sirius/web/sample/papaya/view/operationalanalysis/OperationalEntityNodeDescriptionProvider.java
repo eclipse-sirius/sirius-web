@@ -40,7 +40,7 @@ public class OperationalEntityNodeDescriptionProvider implements INodeDescriptio
     @Override
     public NodeDescription create() {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_gray"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_gray"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_gray"));
 
         var builder = new PapayaViewBuilder();

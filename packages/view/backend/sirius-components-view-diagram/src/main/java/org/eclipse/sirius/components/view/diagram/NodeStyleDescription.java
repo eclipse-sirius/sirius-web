@@ -21,6 +21,6 @@ package org.eclipse.sirius.components.view.diagram;
  * @model interface="true" abstract="true"
  * @generated
  */
-public interface NodeStyleDescription extends Style, BorderStyle {
+public interface NodeStyleDescription extends BorderStyle {
 
 } // NodeStyleDescription

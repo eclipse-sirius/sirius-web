@@ -114,11 +114,11 @@ public final class StylesFactory {
         INodeStyle result = null;
         switch (this.getNodeType(nodeStyle)) {
             case NodeType.NODE_ICON_LABEL:
-                result = IconLabelNodeStyle.newIconLabelNodeStyle().backgroundColor("transparent").build();
+                result = IconLabelNodeStyle.newIconLabelNodeStyle().background("transparent").build();
                 break;
             case NodeType.NODE_RECTANGLE:
                 result = RectangularNodeStyle.newRectangularNodeStyle()
-                        .color(Optional.ofNullable(nodeStyle.getColor())
+                        .background(Optional.ofNullable(((RectangularNodeStyleDescription) nodeStyle).getBackground())
                                 .filter(FixedColor.class::isInstance)
                                 .map(FixedColor.class::cast)
                                 .map(FixedColor::getValue)
@@ -144,7 +144,7 @@ public final class StylesFactory {
         }
         if (result == null) {
             result = RectangularNodeStyle.newRectangularNodeStyle()
-                    .color(Optional.ofNullable(nodeStyle.getColor())
+                    .background(Optional.ofNullable(((RectangularNodeStyleDescription) nodeStyle).getBackground())
                             .filter(FixedColor.class::isInstance)
                             .map(FixedColor.class::cast)
                             .map(FixedColor::getValue)

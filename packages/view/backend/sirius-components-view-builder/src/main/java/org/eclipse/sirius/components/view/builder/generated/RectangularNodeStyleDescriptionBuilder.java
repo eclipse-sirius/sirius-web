@@ -46,16 +46,6 @@ public class RectangularNodeStyleDescriptionBuilder {
     }
 
     /**
-     * Setter for Color.
-     *
-     * @generated
-     */
-    public RectangularNodeStyleDescriptionBuilder color(org.eclipse.sirius.components.view.UserColor value) {
-        this.getRectangularNodeStyleDescription().setColor(value);
-        return this;
-    }
-
-    /**
      * Setter for BorderColor.
      *
      * @generated
@@ -92,6 +82,16 @@ public class RectangularNodeStyleDescriptionBuilder {
      */
     public RectangularNodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getRectangularNodeStyleDescription().setBorderLineStyle(value);
+        return this;
+    }
+
+    /**
+     * Setter for Background.
+     *
+     * @generated
+     */
+    public RectangularNodeStyleDescriptionBuilder background(org.eclipse.sirius.components.view.UserColor value) {
+        this.getRectangularNodeStyleDescription().setBackground(value);
         return this;
     }
 

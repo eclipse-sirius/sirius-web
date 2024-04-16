@@ -32,10 +32,10 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.domain.Entity;
+import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -342,8 +342,8 @@ public class FormDescriptionValidator implements EValidator {
         allEPackage.addAll(eSubpackages);
 
         eSubpackages.stream()
-            .map(this::getSubPackages)
-            .forEach(allEPackage::addAll);
+                .map(this::getSubPackages)
+                .forEach(allEPackage::addAll);
 
         return allEPackage;
     }

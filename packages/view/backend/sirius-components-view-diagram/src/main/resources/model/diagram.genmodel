@@ -164,12 +164,16 @@
     <genClasses ecoreClass="diagram.ecore#//ConditionalOutsideLabelStyle">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//ConditionalOutsideLabelStyle/style"/>
     </genClasses>
-    <genClasses ecoreClass="diagram.ecore#//RectangularNodeStyleDescription"/>
+    <genClasses ecoreClass="diagram.ecore#//RectangularNodeStyleDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//RectangularNodeStyleDescription/background"/>
+    </genClasses>
     <genClasses ecoreClass="diagram.ecore#//ImageNodeStyleDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ImageNodeStyleDescription/shape"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ImageNodeStyleDescription/positionDependentRotation"/>
     </genClasses>
-    <genClasses ecoreClass="diagram.ecore#//IconLabelNodeStyleDescription"/>
+    <genClasses ecoreClass="diagram.ecore#//IconLabelNodeStyleDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//IconLabelNodeStyleDescription/background"/>
+    </genClasses>
     <genClasses ecoreClass="diagram.ecore#//EdgeStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeStyle/lineStyle"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeStyle/sourceArrowStyle"/>

@@ -83,17 +83,13 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
         }
         return Optional.empty();
     }
+
     @Override
     public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
         Optional<INodeStyle> optionalNodeStyle = Optional.empty();
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.equals(Optional.of(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE))) {
             optionalNodeStyle = Optional.of(ParametricSVGNodeStyle.newParametricSVGNodeStyle()
-                    .backgroundColor(Optional.ofNullable(nodeStyle.getColor())
-                            .filter(FixedColor.class::isInstance)
-                            .map(FixedColor.class::cast)
-                            .map(FixedColor::getValue)
-                            .orElse(DEFAULT_BACKGROUND_COLOR))
                     .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
                             .filter(FixedColor.class::isInstance)
                             .map(FixedColor.class::cast)

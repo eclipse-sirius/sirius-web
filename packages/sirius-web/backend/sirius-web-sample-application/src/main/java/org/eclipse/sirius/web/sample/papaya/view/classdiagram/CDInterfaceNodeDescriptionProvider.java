@@ -45,7 +45,7 @@ public class CDInterfaceNodeDescriptionProvider implements INodeDescriptionProvi
     @Override
     public NodeDescription create() {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_blue_3"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_2"));
 
         var builder = new PapayaViewBuilder();

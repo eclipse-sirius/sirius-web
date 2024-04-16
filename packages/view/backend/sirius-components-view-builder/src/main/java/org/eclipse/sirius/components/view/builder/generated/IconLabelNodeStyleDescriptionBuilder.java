@@ -46,16 +46,6 @@ public class IconLabelNodeStyleDescriptionBuilder {
     }
 
     /**
-     * Setter for Color.
-     *
-     * @generated
-     */
-    public IconLabelNodeStyleDescriptionBuilder color(org.eclipse.sirius.components.view.UserColor value) {
-        this.getIconLabelNodeStyleDescription().setColor(value);
-        return this;
-    }
-
-    /**
      * Setter for BorderColor.
      *
      * @generated
@@ -92,6 +82,16 @@ public class IconLabelNodeStyleDescriptionBuilder {
      */
     public IconLabelNodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getIconLabelNodeStyleDescription().setBorderLineStyle(value);
+        return this;
+    }
+
+    /**
+     * Setter for Background.
+     *
+     * @generated
+     */
+    public IconLabelNodeStyleDescriptionBuilder background(org.eclipse.sirius.components.view.UserColor value) {
+        this.getIconLabelNodeStyleDescription().setBackground(value);
         return this;
     }
 

@@ -39,7 +39,7 @@ public class CEDComponentPortNodeProvider implements INodeDescriptionProvider {
     @Override
     public NodeDescription create() {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_red"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_red"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("color_red"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("ComponentPort");

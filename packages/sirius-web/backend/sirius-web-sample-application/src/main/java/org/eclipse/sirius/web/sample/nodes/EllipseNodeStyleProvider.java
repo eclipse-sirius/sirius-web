@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,7 @@ public class EllipseNodeStyleProvider implements INodeStyleProvider {
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.isPresent()) {
             return Optional.of(EllipseNodeStyle.newEllipseNodeStyle()
-                    .color(Optional.ofNullable(nodeStyle.getColor())
+                    .background(Optional.ofNullable(((EllipseNodeStyleDescription) nodeStyle).getBackground())
                             .filter(FixedColor.class::isInstance)
                             .map(FixedColor.class::cast)
                             .map(FixedColor::getValue)

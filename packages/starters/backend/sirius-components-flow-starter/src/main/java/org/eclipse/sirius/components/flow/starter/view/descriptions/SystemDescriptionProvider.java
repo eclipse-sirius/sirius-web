@@ -104,7 +104,7 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
 
     private RectangularNodeStyleDescription getRectangularNodeStyleDescription(String borderColor, String labelColor) {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .color(this.colorProvider.getColor("Flow_LightGray"))
+                .background(this.colorProvider.getColor("Flow_LightGray"))
                 .borderColor(this.colorProvider.getColor(borderColor))
                 .borderRadius(0)
                 .build();
@@ -266,7 +266,7 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
                 .defaultWidthExpression("120")
                 .keepAspectRatio(false)
                 .style(this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                        .color(this.colorProvider.getColor("Flow_White"))
+                        .background(this.colorProvider.getColor("Flow_White"))
                         .borderColor(this.colorProvider.getColor("Flow_Black"))
                         .borderRadius(3)
                         .build())

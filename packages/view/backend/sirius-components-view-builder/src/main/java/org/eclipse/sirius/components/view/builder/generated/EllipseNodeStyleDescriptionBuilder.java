@@ -43,12 +43,12 @@ public class EllipseNodeStyleDescriptionBuilder {
     }
 
     /**
-     * Setter for Color.
+     * Setter for Background.
      *
      * @generated
      */
-    public EllipseNodeStyleDescriptionBuilder color(org.eclipse.sirius.components.view.UserColor value) {
-        this.getEllipseNodeStyleDescription().setColor(value);
+    public EllipseNodeStyleDescriptionBuilder background(org.eclipse.sirius.components.view.UserColor value) {
+        this.getEllipseNodeStyleDescription().setBackground(value);
         return this;
     }
     /**

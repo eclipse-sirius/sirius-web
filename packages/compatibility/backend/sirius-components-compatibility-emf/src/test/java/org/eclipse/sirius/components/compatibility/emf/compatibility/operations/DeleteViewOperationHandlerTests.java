@@ -190,14 +190,12 @@ public class DeleteViewOperationHandlerTests {
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .build();
 
-        Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
-            return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("")
-                    .borderColor("")
-                    .borderSize(0)
-                    .borderStyle(LineStyle.Solid)
-                    .build();
-        };
+        Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> RectangularNodeStyle.newRectangularNodeStyle()
+                .background("")
+                .borderColor("")
+                .borderSize(0)
+                .borderStyle(LineStyle.Solid)
+                .build();
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);

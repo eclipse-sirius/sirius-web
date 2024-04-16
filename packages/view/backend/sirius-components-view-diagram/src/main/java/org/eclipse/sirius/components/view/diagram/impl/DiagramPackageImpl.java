@@ -1377,6 +1377,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getRectangularNodeStyleDescription_Background() {
+        return (EReference) this.rectangularNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getImageNodeStyleDescription() {
         return this.imageNodeStyleDescriptionEClass;
     }
@@ -1409,6 +1419,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EClass getIconLabelNodeStyleDescription() {
         return this.iconLabelNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getIconLabelNodeStyleDescription_Background() {
+        return (EReference) this.iconLabelNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2296,12 +2316,14 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.conditionalOutsideLabelStyleEClass, CONDITIONAL_OUTSIDE_LABEL_STYLE__STYLE);
 
         this.rectangularNodeStyleDescriptionEClass = this.createEClass(RECTANGULAR_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.rectangularNodeStyleDescriptionEClass, RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND);
 
         this.imageNodeStyleDescriptionEClass = this.createEClass(IMAGE_NODE_STYLE_DESCRIPTION);
         this.createEAttribute(this.imageNodeStyleDescriptionEClass, IMAGE_NODE_STYLE_DESCRIPTION__SHAPE);
         this.createEAttribute(this.imageNodeStyleDescriptionEClass, IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION);
 
         this.iconLabelNodeStyleDescriptionEClass = this.createEClass(ICON_LABEL_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.iconLabelNodeStyleDescriptionEClass, ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND);
 
         this.edgeStyleEClass = this.createEClass(EDGE_STYLE);
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__LINE_STYLE);
@@ -2438,7 +2460,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.insideLabelStyleEClass.getESuperTypes().add(this.getNodeLabelStyle());
         this.outsideLabelStyleEClass.getESuperTypes().add(this.getNodeLabelStyle());
         this.nodeLabelStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
-        this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getStyle());
         this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getBorderStyle());
         this.conditionalNodeStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalInsideLabelStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
@@ -2634,6 +2655,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.rectangularNodeStyleDescriptionEClass, RectangularNodeStyleDescription.class, "RectangularNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getRectangularNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, RectangularNodeStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.imageNodeStyleDescriptionEClass, ImageNodeStyleDescription.class, "ImageNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getImageNodeStyleDescription_Shape(), this.ecorePackage.getEString(), "shape", null, 0, 1, ImageNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
@@ -2642,6 +2665,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.iconLabelNodeStyleDescriptionEClass, IconLabelNodeStyleDescription.class, "IconLabelNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getIconLabelNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, IconLabelNodeStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.edgeStyleEClass, EdgeStyle.class, "EdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getEdgeStyle_LineStyle(), this.getLineStyle(), "lineStyle", "Solid", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,

@@ -47,7 +47,7 @@ public class EllipseNodeStyleProvider implements INodeStyleProvider {
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.isPresent()) {
             return Optional.of(EllipseNodeStyle.newEllipseNodeStyle()
-                    .color(Optional.ofNullable(nodeStyle.getColor())
+                    .background(Optional.ofNullable(((EllipseNodeStyleDescription) nodeStyle).getBackground())
                             .filter(FixedColor.class::isInstance)
                             .map(FixedColor.class::cast)
                             .map(FixedColor::getValue)

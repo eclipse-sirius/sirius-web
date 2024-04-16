@@ -43,7 +43,7 @@ public class OperationalActivityNodeDescriptionProvider implements INodeDescript
     @Override
     public NodeDescription create() {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_orange"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_orange"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_orange"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("OperationalActivity");

@@ -289,14 +289,12 @@ public class UnsynchronizedDiagramTests {
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .build();
 
-        Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("")
-                    .borderColor("")
-                    .borderSize(0)
-                    .borderStyle(LineStyle.Solid)
-                    .build();
-        };
+        Function<VariableManager, INodeStyle> styleProvider = variableManager -> RectangularNodeStyle.newRectangularNodeStyle()
+                .background("")
+                .borderColor("")
+                .borderSize(0)
+                .borderStyle(LineStyle.Solid)
+                .build();
 
         Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
             return new FreeFormLayoutStrategy();

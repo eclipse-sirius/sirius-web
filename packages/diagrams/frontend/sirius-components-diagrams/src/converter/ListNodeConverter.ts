@@ -66,7 +66,7 @@ const toListNode = (
     targetObjectKind,
     descriptionId,
     style: {
-      backgroundColor: style.color,
+      background: style.background,
       borderTopColor: style.borderColor,
       borderBottomColor: style.borderColor,
       borderLeftColor: style.borderColor,

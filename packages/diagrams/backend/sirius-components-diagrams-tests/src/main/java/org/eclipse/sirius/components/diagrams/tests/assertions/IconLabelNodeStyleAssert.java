@@ -28,7 +28,7 @@ public class IconLabelNodeStyleAssert extends NodeStyleAssert<IconLabelNodeStyle
     }
 
     public IconLabelNodeStyleAssert hasBackgroundColor(String backgroundColor) {
-        assertThat(this.actual.getBackgroundColor()).isEqualTo(backgroundColor);
+        assertThat(this.actual.getBackground()).isEqualTo(backgroundColor);
         return this;
     }
 }

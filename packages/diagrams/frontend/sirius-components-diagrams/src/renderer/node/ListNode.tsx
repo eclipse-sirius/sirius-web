@@ -39,7 +39,7 @@ const listNodeStyle = (
     height: '100%',
     opacity: faded ? '0.4' : '',
     ...style,
-    backgroundColor: getCSSColor(String(style.backgroundColor), theme),
+    background: getCSSColor(String(style.background), theme),
     borderTopColor: getCSSColor(String(style.borderTopColor), theme),
     borderBottomColor: getCSSColor(String(style.borderBottomColor), theme),
     borderLeftColor: getCSSColor(String(style.borderLeftColor), theme),

@@ -401,7 +401,7 @@ INSERT INTO document (
                          "id":"d8f8f5f4-5044-45ec-860a-aa1122e192e7",
                          "eClass":"diagram:RectangularNodeStyleDescription",
                          "data":{
-                           "color":"//@colorPalettes.0/@colors.1",
+                           "background":"//@colorPalettes.0/@colors.1",
                            "bordercolor":"//@colorPalettes.0/@colors.0"
                          }
                        },
@@ -471,6 +471,106 @@ INSERT INTO document (
   '2024-01-02 9:42:0.000'
 );
 
+
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '356e45e8-7d70-439e-b2dd-d0313cd65174',
+  'e344d967-a639-4f6c-9c00-a466d51063c6',
+  'Ellipse Diagram View',
+  '{
+     "json":{
+       "version":"1.0",
+       "encoding":"utf-8"
+     },
+     "ns":{
+       "customnodes":"http://www.eclipse.org/sirius-web/customnodes",
+       "diagram":"http://www.eclipse.org/sirius-web/diagram",
+       "view":"http://www.eclipse.org/sirius-web/view"
+     },
+     "content":[
+       {
+         "id":"7ea6016a-89ea-4de9-9b4b-c1ff954ef0fd",
+         "eClass":"view:View",
+         "data":{
+           "descriptions":[
+             {
+               "id":"99cb5ddd-4241-4474-8866-2b3b84cb440f",
+               "eClass":"diagram:DiagramDescription",
+               "data":{
+                 "name":"Root Diagram",
+                 "domainType":"buck::Root",
+                 "nodeDescriptions":[
+                   {
+                     "id":"b4e36182-3577-4758-b8fe-7a74ae8d5b9d",
+                     "eClass":"diagram:NodeDescription",
+                     "data":{
+                       "name":"Human Node",
+                       "domainType":"buck::Human",
+                       "semanticCandidatesExpression":"aql:self.humans",
+                       "style":{
+                         "id":"3b3637a2-c397-4837-b42f-25fee34e5af2",
+                         "eClass":"customnodes:EllipseNodeStyleDescription",
+                         "data":{
+                           "background":"//@colorPalettes.0/@colors.1",
+                           "bordercolor":"//@colorPalettes.0/@colors.0"
+                         }
+                       },
+                       "insideLabel":{
+                         "id":"fa2ebcb8-0069-49e4-8713-f4e94680e218",
+                         "eClass":"diagram:InsideLabelDescription",
+                         "data":{
+                           "style":{
+                             "id":"d22b407b-4c81-4a64-9fa7-2608e4253cde",
+                             "eClass":"diagram:InsideLabelStyle"
+                           }
+                         }
+                       }
+                     }
+                   }
+                 ]
+               }
+             }
+           ],
+           "colorPalettes":[
+             {
+               "id":"110ac232-b1da-48eb-bfbe-86f9867d043b",
+               "eClass":"view:ColorPalette",
+               "data":{
+                 "colors":[
+                   {
+                     "id":"52167425-b389-40c1-8a04-b17e9188fc31",
+                     "eClass":"view:FixedColor",
+                     "data":{
+                       "name":"Black",
+                       "value":"#000000"
+                     }
+                   },
+                   {
+                     "id":"cb50d6b9-632c-46f2-968b-dbdb107234fa",
+                     "eClass":"view:FixedColor",
+                     "data":{
+                       "name":"White",
+                       "value":"#FFFFFF"
+                     }
+                   }
+                 ]
+               }
+             }
+           ]
+         }
+       }
+     ]
+   }',
+  '2024-05-07 9:45:0.000',
+  '2024-05-07 9:45:0.000'
+);
+
 INSERT INTO project_image (
   id,
   project_id,
@@ -488,6 +588,19 @@ INSERT INTO project_image (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 
 -- Studio instance project
 INSERT INTO project (

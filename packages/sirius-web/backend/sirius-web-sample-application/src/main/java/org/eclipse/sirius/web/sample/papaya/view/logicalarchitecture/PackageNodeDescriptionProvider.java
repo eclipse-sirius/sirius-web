@@ -43,7 +43,7 @@ public class PackageNodeDescriptionProvider implements INodeDescriptionProvider 
     @Override
     public NodeDescription create() {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_blue_7"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_blue_7"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_3"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Package");

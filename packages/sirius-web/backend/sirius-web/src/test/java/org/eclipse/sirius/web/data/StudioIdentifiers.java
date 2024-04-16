@@ -43,6 +43,8 @@ public final class StudioIdentifiers {
 
     public static final UUID ROOT_OBJECT = UUID.fromString("87fa4553-6889-4ce6-b017-d013987f9fae");
 
+    public static final UUID ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT = UUID.fromString("3b3637a2-c397-4837-b42f-25fee34e5af2");
+
     private StudioIdentifiers() {
         // Prevent instantiation
     }

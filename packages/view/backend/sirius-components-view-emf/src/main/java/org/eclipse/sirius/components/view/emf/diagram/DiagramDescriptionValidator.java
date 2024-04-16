@@ -31,10 +31,10 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.domain.Entity;
+import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -42,8 +42,10 @@ import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 
 /**
  * The validator for {@link DiagramDescription}.
@@ -138,7 +140,13 @@ public class DiagramDescriptionValidator implements EValidator {
     }
 
     private boolean hasProperColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
-        boolean isValid = Objects.nonNull(nodeStyle.getColor());
+        boolean isValid = true;
+        if (nodeStyle instanceof RectangularNodeStyleDescription rectangularNodeStyleDescription) {
+            isValid =  Objects.nonNull(rectangularNodeStyleDescription.getBackground());
+        }
+        if (nodeStyle instanceof IconLabelNodeStyleDescription iconLabelNodeStyleDescription) {
+            isValid =  Objects.nonNull(iconLabelNodeStyleDescription.getBackground());
+        }
 
         if (!isValid && diagnostics != null) {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
@@ -342,8 +350,8 @@ public class DiagramDescriptionValidator implements EValidator {
         allEPackage.addAll(eSubpackages);
 
         eSubpackages.stream()
-            .map(this::getSubPackages)
-            .forEach(allEPackage::addAll);
+                .map(this::getSubPackages)
+                .forEach(allEPackage::addAll);
 
         return allEPackage;
     }

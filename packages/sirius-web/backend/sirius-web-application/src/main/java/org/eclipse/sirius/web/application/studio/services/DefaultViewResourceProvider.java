@@ -76,6 +76,32 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
 
         view.getColorPalettes().add(this.createColorPalette());
 
+        var entity1Node = this.createNodeDescriptionsEntity1(view, domainName, defaultToolsFactory);
+
+        viewDiagramDescription.getNodeDescriptions().add(entity1Node);
+        viewDiagramDescription.getPalette().getNodeTools().add(this.createNewInstanceTool(domainName + "::Entity1", "entity1s"));
+
+        var entity2Node = this.createNodeDescriptionsEntity2(view, domainName, defaultToolsFactory);
+
+        viewDiagramDescription.getNodeDescriptions().add(entity2Node);
+        viewDiagramDescription.getPalette().getNodeTools().add(this.createNewInstanceTool(domainName + "::Entity2", "entity2s"));
+
+        this.addEdgeTool(entity1Node, entity2Node);
+
+        this.addEdgeDescription(entity1Node, entity2Node, defaultToolsFactory, viewDiagramDescription, view);
+
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
+        var resourceMetadataAdapter = new ResourceMetadataAdapter(VIEW_DOCUMENT_NAME);
+        var migrationService = new MigrationService(this.migrationParticipants);
+
+        resourceMetadataAdapter.setMigrationData(migrationService.getMostRecentParticipantMigrationData());
+        resource.getContents().add(view);
+        resource.eAdapters().add(resourceMetadataAdapter);
+
+        return resource;
+    }
+
+    private NodeDescription createNodeDescriptionsEntity1(View view, String domainName, DefaultToolsFactory defaultToolsFactory) {
         NodeDescription entity1Node = DiagramFactory.eINSTANCE.createNodeDescription();
         entity1Node.setName("Entity1 Node");
         entity1Node.setDomainType(domainName + "::Entity1");
@@ -84,10 +110,10 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         entity1Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
         entity1Node.setStyle(this.createRectangularNodeStyle(view, "color_blue", "border_blue"));
         entity1Node.setPalette(defaultToolsFactory.createDefaultNodePalette());
+        return entity1Node;
+    }
 
-        viewDiagramDescription.getNodeDescriptions().add(entity1Node);
-        viewDiagramDescription.getPalette().getNodeTools().add(this.createNewInstanceTool(domainName + "::Entity1", "entity1s"));
-
+    private NodeDescription createNodeDescriptionsEntity2(View view, String domainName, DefaultToolsFactory defaultToolsFactory) {
         NodeDescription entity2Node = DiagramFactory.eINSTANCE.createNodeDescription();
         entity2Node.setName("Entity2 Node");
         entity2Node.setDomainType(domainName + "::Entity2");
@@ -96,10 +122,10 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         entity2Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
         entity2Node.setStyle(this.createRectangularNodeStyle(view, "color_green", "border_green"));
         entity2Node.setPalette(defaultToolsFactory.createDefaultNodePalette());
+        return entity2Node;
+    }
 
-        viewDiagramDescription.getNodeDescriptions().add(entity2Node);
-        viewDiagramDescription.getPalette().getNodeTools().add(this.createNewInstanceTool(domainName + "::Entity2", "entity2s"));
-
+    private void addEdgeTool(NodeDescription entity1Node, NodeDescription entity2Node) {
         EdgeTool createLinkTo = DiagramFactory.eINSTANCE.createEdgeTool();
         createLinkTo.setName("Link to");
         createLinkTo.getTargetElementDescriptions().add(entity2Node);
@@ -111,7 +137,9 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         setLink.setValueExpression("aql:semanticEdgeTarget");
         gotoSemanticSource.getChildren().add(setLink);
         entity1Node.getPalette().getEdgeTools().add(createLinkTo);
+    }
 
+    private void addEdgeDescription(NodeDescription entity1Node, NodeDescription entity2Node, DefaultToolsFactory defaultToolsFactory, org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, View view) {
         EdgeDescription linkedToEdge = DiagramFactory.eINSTANCE.createEdgeDescription();
         linkedToEdge.setName("LinkedTo Edge");
         linkedToEdge.setSemanticCandidatesExpression("");
@@ -126,16 +154,6 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         EdgeStyle edgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         edgeStyle.setColor(this.getColorFromPalette(view, "color_dark"));
         linkedToEdge.setStyle(edgeStyle);
-
-        JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
-        var resourceMetadataAdapter = new ResourceMetadataAdapter(VIEW_DOCUMENT_NAME);
-        var migrationService = new MigrationService(this.migrationParticipants);
-
-        resourceMetadataAdapter.setMigrationData(migrationService.getMostRecentParticipantMigrationData());
-        resource.getContents().add(view);
-        resource.eAdapters().add(resourceMetadataAdapter);
-
-        return resource;
     }
 
     private InsideLabelDescription createInsideLabelDescription() {
@@ -148,7 +166,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
 
     private RectangularNodeStyleDescription createRectangularNodeStyle(View view, String color, String borderColor) {
         RectangularNodeStyleDescription entity2Style = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        entity2Style.setColor(this.getColorFromPalette(view, color));
+        entity2Style.setBackground(this.getColorFromPalette(view, color));
         entity2Style.setBorderColor(this.getColorFromPalette(view, borderColor));
         entity2Style.setBorderRadius(3);
         return entity2Style;

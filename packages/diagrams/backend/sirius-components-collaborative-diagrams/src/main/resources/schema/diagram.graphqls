@@ -161,7 +161,7 @@ type ImageNodeStyle {
 }
 
 type IconLabelNodeStyle {
-  backgroundColor: String!
+  background: String!
 }
 
 type RectangularNodeStyle {
@@ -169,7 +169,7 @@ type RectangularNodeStyle {
   borderRadius: Int!
   borderSize: Int!
   borderStyle: LineStyle!
-  color: String!
+  background: String!
 }
 
 enum LineStyle {

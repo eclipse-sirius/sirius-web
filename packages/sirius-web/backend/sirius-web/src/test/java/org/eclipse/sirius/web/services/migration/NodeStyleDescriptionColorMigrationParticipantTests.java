@@ -12,9 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.migration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.jayway.jsonpath.JsonPath;
+
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +28,6 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.migration.MigrationService;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.migration.api.MigrationData;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
@@ -33,7 +35,6 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
-import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
@@ -42,11 +43,6 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.data.MigrationIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.graphql.UploadDocumentMutationRunner;
-
-import reactor.test.StepVerifier;
-
-import com.jayway.jsonpath.JsonPath;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,14 +52,16 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.test.StepVerifier;
+
 /**
- * Integration tests of NodeDescriptionLabelExpressionMigrationParticipant.
+ * Integration tests of NodeStyleDescriptionColorMigrationParticipant.
  *
- * @author mcharfadi
+ * @author frouene
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MigrationParticipantTests extends AbstractIntegrationTests {
+public class NodeStyleDescriptionColorMigrationParticipantTests extends AbstractIntegrationTests {
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
@@ -81,19 +79,19 @@ public class MigrationParticipantTests extends AbstractIntegrationTests {
     private List<IMigrationParticipant> migrationParticipants;
 
     @Test
-    @DisplayName("Given a project with an old model, NodeDescriptionLabelExpressionMigrationParticipant migrates the model correctly")
-    @Sql(scripts = {"/scripts/migration.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @DisplayName("Given a project with an old model, NodeStyleDescriptionColorMigrationParticipant migrates the model correctly")
+    @Sql(scripts = { "/scripts/migration.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnOldModelMigrationParticipantCanBeContributedToUpdateTheModel() {
-        var optionalEditingContext = this.editingContextSearchService.findById(MigrationIdentifiers.MIGRATION_STUDIO.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(MigrationIdentifiers.MIGRATION_NODE_STYLE_DESCRIPTION_COLOR_STUDIO.toString());
         assertThat(optionalEditingContext).isPresent();
-        testIsMigrationSuccessful(optionalEditingContext.get());
+        this.testIsMigrationSuccessful(optionalEditingContext.get());
     }
 
     @Test
-    @DisplayName("Given an uploaded project with an old model, NodeDescriptionLabelExpressionMigrationParticipant migrates the model correctly")
-    @Sql(scripts = {"/scripts/migration.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @DisplayName("Given an uploaded project with an old model, NodeStyleDescriptionColorMigrationParticipant migrates the model correctly")
+    @Sql(scripts = { "/scripts/migration.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnOldViewDiagramMigrationServiceIsExecutedProperly() {
         var content = """
                 {
@@ -107,12 +105,30 @@ public class MigrationParticipantTests extends AbstractIntegrationTests {
                       "id": "9674f8f7-ff1a-4061-bb32-a4a235a9c2ca",
                       "eClass": "view:View",
                       "data": {
+                      "colorPalettes": [
+                          {
+                            "data": {
+                              "colors": [
+                                {
+                                  "data": {
+                                    "name": "color_empty",
+                                    "value": ""
+                                  },
+                                  "eClass": "view:FixedColor",
+                                  "id": "63184ddc-74c4-4888-bb65-418361689e2b"
+                                }
+                              ]
+                            },
+                            "eClass": "view:ColorPalette",
+                            "id": "d315989f-826f-490d-b898-d94200b0caa2"
+                          }
+                        ],
                         "descriptions": [
                           {
                             "id": "22fb1f4d-109d-4e73-bff0-f7cd96fb5fbb",
                             "eClass": "diagram:DiagramDescription",
                             "data": {
-                              "name": "NodeDescription#labelExpression migration_upload",
+                              "name": "NodeStyleDescription#color migration_upload",
                               "domainType": "flow::System",
                               "nodeDescriptions": [
                                 {
@@ -121,31 +137,17 @@ public class MigrationParticipantTests extends AbstractIntegrationTests {
                                   "data": {
                                     "name": "NodeWithoutImage migration",
                                     "domainType": "flow::CompositeProcessor",
-                                    "labelExpression": "aql:''NodeWithoutImage''",
                                     "childrenLayoutStrategy": {
                                       "id": "20651d93-2ee5-41cb-b2bd-1e75958c73cf",
                                       "eClass": "diagram:FreeFormLayoutStrategyDescription"
                                     },
                                     "style": {
                                       "id": "92fe9d3f-2c5b-41ab-81ea-8482c8cd57b9",
-                                      "eClass": "diagram:RectangularNodeStyleDescription"
-                                    }
-                                  }
-                                },
-                                {
-                                  "id": "88f95390-ac15-4381-ae82-7b23a2017bd4",
-                                  "eClass": "diagram:NodeDescription",
-                                  "data": {
-                                    "name": "NodeWithImage migration",
-                                    "domainType": "flow::CompositeProcessor",
-                                    "labelExpression": "aql:''NodeWithImage''",
-                                    "childrenLayoutStrategy": {
-                                      "id": "db92e810-5d51-4d0c-a6cf-6a1e00cea6d9",
-                                      "eClass": "diagram:FreeFormLayoutStrategyDescription"
-                                    },
-                                    "style": {
-                                      "id": "fa35806a-bdd0-4ba7-81bf-8cfba8f8fef5",
-                                      "eClass": "diagram:ImageNodeStyleDescription"
+                                      "eClass": "diagram:RectangularNodeStyleDescription",
+                                      "data": {
+                                        "borderColor": "//@colorPalettes.0/@colors.0",
+                                        "color": "//@colorPalettes.0/@colors.0"
+                                      }
                                     }
                                   }
                                 }
@@ -158,13 +160,13 @@ public class MigrationParticipantTests extends AbstractIntegrationTests {
                   ]
                 }
                 """;
-        this.uploadDocument(MigrationIdentifiers.MIGRATION_STUDIO.toString(), "test_upload", content);
+        this.uploadDocument(MigrationIdentifiers.MIGRATION_NODE_STYLE_DESCRIPTION_COLOR_STUDIO.toString(), content);
     }
 
-    private void uploadDocument(String editingContextId, String name, String content) {
+    private void uploadDocument(String editingContextId, String content) {
         this.givenCommittedTransaction.commit();
 
-        var file = new UploadFile(name, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
+        var file = new UploadFile("test_upload", new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
         var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file);
         var result = this.uploadDocumentMutationRunner.run(input);
 
@@ -180,13 +182,10 @@ public class MigrationParticipantTests extends AbstractIntegrationTests {
                 .map(Boolean.class::cast)
                 .orElse(false);
 
-        var migrationService = new MigrationService(this.migrationParticipants);
         var optionalLastMigrationData = this.migrationParticipants.stream()
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
-                .sorted(Collections.reverseOrder())
+                .sorted(Comparator.comparing(IMigrationParticipant::getVersion).reversed())
                 .map(migrationParticipant -> new MigrationData(migrationParticipant.getClass().getSimpleName(), migrationParticipant.getVersion()))
                 .findFirst();
-
         assertThat(optionalLastMigrationData).isPresent();
         var lastMigrationData = optionalLastMigrationData.get();
 
@@ -195,7 +194,7 @@ public class MigrationParticipantTests extends AbstractIntegrationTests {
                 .map(EditingContext.class::cast)
                 .map(siriusWebEditingContext -> siriusWebEditingContext.getViews().stream()
                         .anyMatch(view -> view.eResource().eAdapters().stream()
-                                .filter(adapter -> adapter instanceof ResourceMetadataAdapter)
+                                .filter(ResourceMetadataAdapter.class::isInstance)
                                 .map(ResourceMetadataAdapter.class::cast)
                                 .filter(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData() != null)
                                 .anyMatch(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData().migrationVersion().equals(lastMigrationData.migrationVersion())
@@ -212,23 +211,23 @@ public class MigrationParticipantTests extends AbstractIntegrationTests {
 
     private void testIsMigrationSuccessful(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            var optionalDiagramDescription = siriusWebEditingContext.getViews().stream().flatMap(view -> view.getDescriptions().stream()).filter(representationDescription -> representationDescription.getName().equals(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM)).findFirst();
+            var optionalDiagramDescription = siriusWebEditingContext.getViews().stream().flatMap(view -> view.getDescriptions().stream())
+                    .filter(representationDescription -> representationDescription.getName().equals(MigrationIdentifiers.MIGRATION_NODE_STYLE_DESCRIPTION_COLOR_STUDIO_DIAGRAM)).findFirst();
             assertThat(optionalDiagramDescription).isPresent();
             assertThat(optionalDiagramDescription.get()).isInstanceOf(DiagramDescription.class);
             optionalDiagramDescription.ifPresent(representationDescription -> {
                 if (representationDescription instanceof DiagramDescription diagramDescription) {
-                    assertThat(diagramDescription.getNodeDescriptions()).hasSize(2);
+                    assertThat(diagramDescription.getNodeDescriptions()).hasSize(1);
                     diagramDescription.getNodeDescriptions().forEach(nodeDescription -> {
-                        if (nodeDescription.getStyle() instanceof RectangularNodeStyleDescription) {
-                            assertThat(nodeDescription.getInsideLabel().getLabelExpression()).isEqualTo("aql:'NodeWithoutImage'");
-                        }
-                        if (nodeDescription.getStyle() instanceof ImageNodeStyleDescription) {
-                            assertThat(nodeDescription.getOutsideLabels().get(0).getLabelExpression()).isEqualTo("aql:'NodeWithImage'");
+                        if (nodeDescription.getStyle() instanceof RectangularNodeStyleDescription rectangularNodeStyleDescription) {
+                            assertThat(rectangularNodeStyleDescription.getBackground()).isNotNull();
+                            assertThat(rectangularNodeStyleDescription.getBackground().getName()).isEqualTo("color_empty");
                         }
                     });
                 }
             });
         }
     }
+
 
 }

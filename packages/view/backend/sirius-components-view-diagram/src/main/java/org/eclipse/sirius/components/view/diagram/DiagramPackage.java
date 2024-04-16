@@ -1340,40 +1340,12 @@ public interface DiagramPackage extends EPackage {
     int NODE_STYLE_DESCRIPTION = 15;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE_DESCRIPTION__COLOR = STYLE__COLOR;
-    /**
-     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__COLOR = NODE_STYLE_DESCRIPTION__COLOR;
-    /**
-     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int IMAGE_NODE_STYLE_DESCRIPTION__COLOR = NODE_STYLE_DESCRIPTION__COLOR;
-    /**
-     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__COLOR = NODE_STYLE_DESCRIPTION__COLOR;
-    /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__BORDER_COLOR = STYLE_FEATURE_COUNT;
+    int NODE_STYLE_DESCRIPTION__BORDER_COLOR = BORDER_STYLE__BORDER_COLOR;
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1401,7 +1373,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__BORDER_RADIUS = STYLE_FEATURE_COUNT + 1;
+    int NODE_STYLE_DESCRIPTION__BORDER_RADIUS = BORDER_STYLE__BORDER_RADIUS;
     /**
      * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1429,7 +1401,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__BORDER_SIZE = STYLE_FEATURE_COUNT + 2;
+    int NODE_STYLE_DESCRIPTION__BORDER_SIZE = BORDER_STYLE__BORDER_SIZE;
     /**
      * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1458,7 +1430,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = STYLE_FEATURE_COUNT + 3;
+    int NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = BORDER_STYLE__BORDER_LINE_STYLE;
     /**
      * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1490,7 +1462,14 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 4;
+    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = BORDER_STYLE_FEATURE_COUNT;
+    /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND = NODE_STYLE_DESCRIPTION_FEATURE_COUNT;
     /**
      * The number of structural features of the '<em>Rectangular Node Style Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -1498,7 +1477,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
     /**
      * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1523,13 +1502,20 @@ public interface DiagramPackage extends EPackage {
      */
     int IMAGE_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 2;
     /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND = NODE_STYLE_DESCRIPTION_FEATURE_COUNT;
+    /**
      * The number of structural features of the '<em>Icon Label Node Style Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
     /**
      * The number of operations of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1537,7 +1523,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION_OPERATION_COUNT = STYLE_OPERATION_COUNT;
+    int NODE_STYLE_DESCRIPTION_OPERATION_COUNT = BORDER_STYLE_OPERATION_COUNT;
     /**
      * The number of operations of the '<em>Rectangular Node Style Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -3095,12 +3081,6 @@ public interface DiagramPackage extends EPackage {
      */
     int DROP_NODE_TOOL__ACCEPTED_NODE_TYPES = TOOL_FEATURE_COUNT;
     /**
-     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    DiagramPackage eINSTANCE = org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl.init();
-    /**
      * The number of structural features of the '<em>Drop Node Tool</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -3196,6 +3176,12 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrangeLayoutDirection()
      */
     int ARRANGE_LAYOUT_DIRECTION = 52;
+    /**
+     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    DiagramPackage eINSTANCE = org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl.init();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
@@ -4168,6 +4154,18 @@ public interface DiagramPackage extends EPackage {
     EClass getRectangularNodeStyleDescription();
 
     /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription#getBackground
+     * <em>Background</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Background</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription#getBackground()
+     * @see #getRectangularNodeStyleDescription()
+     */
+    EReference getRectangularNodeStyleDescription_Background();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription
      * <em>Image Node Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4211,6 +4209,18 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription
      */
     EClass getIconLabelNodeStyleDescription();
+
+    /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription#getBackground
+     * <em>Background</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Background</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription#getBackground()
+     * @see #getIconLabelNodeStyleDescription()
+     */
+    EReference getIconLabelNodeStyleDescription_Background();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle <em>Edge
@@ -5807,6 +5817,14 @@ public interface DiagramPackage extends EPackage {
         EClass RECTANGULAR_NODE_STYLE_DESCRIPTION = eINSTANCE.getRectangularNodeStyleDescription();
 
         /**
+         * The meta object literal for the '<em><b>Background</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND = eINSTANCE.getRectangularNodeStyleDescription_Background();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl <em>Image Node Style
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5843,6 +5861,14 @@ public interface DiagramPackage extends EPackage {
          * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getIconLabelNodeStyleDescription()
          */
         EClass ICON_LABEL_NODE_STYLE_DESCRIPTION = eINSTANCE.getIconLabelNodeStyleDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Background</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND = eINSTANCE.getIconLabelNodeStyleDescription_Background();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl

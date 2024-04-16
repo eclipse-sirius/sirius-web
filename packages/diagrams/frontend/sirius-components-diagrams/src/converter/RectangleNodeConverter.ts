@@ -67,7 +67,7 @@ const toRectangularNode = (
     descriptionId,
     style: {
       display: 'flex',
-      backgroundColor: style.color,
+      background: style.background,
       borderColor: style.borderColor,
       borderRadius: style.borderRadius,
       borderWidth: style.borderSize,

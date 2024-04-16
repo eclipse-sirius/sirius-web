@@ -28,8 +28,8 @@ public class RectangularNodeStyleAssert extends NodeStyleAssert<RectangularNodeS
         super(rectangularNodeStyle, RectangularNodeStyleAssert.class);
     }
 
-    public RectangularNodeStyleAssert hasColor(String color) {
-        assertThat(this.actual.getColor()).isEqualTo(color);
+    public RectangularNodeStyleAssert hasBackground(String color) {
+        assertThat(this.actual.getBackground()).isEqualTo(color);
         return this;
     }
 

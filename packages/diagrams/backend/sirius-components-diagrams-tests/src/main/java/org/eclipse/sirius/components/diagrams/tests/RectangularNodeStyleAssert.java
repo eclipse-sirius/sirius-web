@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
  * @author sbegaudeau
  */
 public class RectangularNodeStyleAssert extends AbstractAssert<RectangularNodeStyleAssert, RectangularNodeStyle> {
+
     public RectangularNodeStyleAssert(RectangularNodeStyle rectangularNodeStyle) {
         super(rectangularNodeStyle, RectangularNodeStyleAssert.class);
     }
@@ -30,7 +31,7 @@ public class RectangularNodeStyleAssert extends AbstractAssert<RectangularNodeSt
     public RectangularNodeStyleAssert matches(RectangularNodeStyle rectangularNodeStyle) {
         this.isNotNull();
 
-        assertThat(this.actual.getColor()).isEqualTo(rectangularNodeStyle.getColor());
+        assertThat(this.actual.getBackground()).isEqualTo(rectangularNodeStyle.getBackground());
         assertThat(this.actual.getBorderColor()).isEqualTo(rectangularNodeStyle.getBorderColor());
         assertThat(this.actual.getBorderSize()).isEqualTo(rectangularNodeStyle.getBorderSize());
         assertThat(this.actual.getBorderStyle()).isEqualTo(rectangularNodeStyle.getBorderStyle());
