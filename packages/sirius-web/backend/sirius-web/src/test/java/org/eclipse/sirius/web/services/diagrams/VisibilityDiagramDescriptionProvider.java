@@ -64,6 +64,8 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
 
     private NodeTool unfadeNodeTool;
 
+    private NodeTool resetNodeTool;
+
     public VisibilityDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.view = this.createView();
@@ -94,6 +96,10 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
 
     public String getUnfadeNodeToolId() {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.unfadeNodeTool).toString().getBytes()).toString();
+    }
+
+    public String getResetNodeToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.resetNodeTool).toString().getBytes()).toString();
     }
 
     private View createView() {
@@ -158,10 +164,19 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 )
                 .build();
 
+        this.resetNodeTool = new NodeToolBuilder()
+                .name("Reset Visibility")
+                .body(
+                        new ChangeContextBuilder()
+                            .expression("aql:diagramServices.resetViewModifiers(Sequence{ selectedNode })")
+                            .build()
+                )
+                .build();
+
 
 
         var nodePalette = new NodePaletteBuilder()
-                .nodeTools(this.hideNodeTool, this.revealNodeTool, this.fadeNodeTool, this.unfadeNodeTool)
+                .nodeTools(this.hideNodeTool, this.revealNodeTool, this.fadeNodeTool, this.unfadeNodeTool, this.resetNodeTool)
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()

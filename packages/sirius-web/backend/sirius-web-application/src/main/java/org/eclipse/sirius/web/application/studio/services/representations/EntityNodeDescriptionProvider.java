@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Used to create the entity node description.
@@ -71,6 +72,11 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .condition("aql:self.abstract")
                 .build();
 
+        var palette = new DiagramBuilders()
+                .newNodePalette()
+                .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
+                .build();
+
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name("Entity")
@@ -81,6 +87,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .childrenLayoutStrategy(childrenLayoutStrategy)
                 .style(nodeStyle)
                 .conditionalStyles(conditionalNodeStyle)
+                .palette(palette)
                 .build();
     }
 
@@ -123,6 +130,11 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .color(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BACKGROUND_COLOR))
                 .build();
 
+        var palette = new DiagramBuilders()
+                .newNodePalette()
+                .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
+                .build();
+
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name("Attribute")
@@ -130,6 +142,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .semanticCandidatesExpression("aql:self.attributes")
                 .style(nodeStyle)
                 .insideLabel(this.attributeNodeLabelDescription())
+                .palette(palette)
                 .build();
     }
 

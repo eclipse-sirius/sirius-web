@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -55,6 +56,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
         var newOperationNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Operation", "operations", "Operation");
         newOperationNodeTool.setName("New Operation");
         nodePalette.getNodeTools().add(newOperationNodeTool);
+        nodePalette.getToolSections().add(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection());
 
         var extendsInterfaceEdgeTool = DiagramFactory.eINSTANCE.createEdgeTool();
         extendsInterfaceEdgeTool.setName("Extends");

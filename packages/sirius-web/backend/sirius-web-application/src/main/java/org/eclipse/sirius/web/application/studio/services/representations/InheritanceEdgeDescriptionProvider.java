@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Used to create the inheritance edge description.
@@ -38,11 +39,17 @@ public class InheritanceEdgeDescriptionProvider implements IEdgeDescriptionProvi
 
     @Override
     public EdgeDescription create() {
+        var palette = new DiagramBuilders()
+                .newEdgePalette()
+                .toolSections(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection())
+                .build();
+
         return new DiagramBuilders()
                 .newEdgeDescription()
                 .name("Inheritance")
                 .targetNodesExpression("aql:self.superTypes")
                 .style(this.inheritanceEdgeStyle())
+                .palette(palette)
                 .build();
     }
 

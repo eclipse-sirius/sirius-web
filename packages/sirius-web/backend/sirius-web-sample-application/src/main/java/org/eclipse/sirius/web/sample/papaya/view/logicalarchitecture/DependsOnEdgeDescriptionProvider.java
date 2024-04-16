@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 
@@ -53,6 +54,10 @@ public class DependsOnEdgeDescriptionProvider implements IEdgeDescriptionProvide
         dependsOnEdgeDescription.setSourceNodesExpression("aql:self");
         dependsOnEdgeDescription.setTargetNodesExpression("aql:self.eResource().getContents(" + builder.domainType(builder.entity("ProvidedService"))
                 + ")->select(providedService | providedService.contract <> null and providedService.contract = self.contract)->first()");
+
+        var palette = DiagramFactory.eINSTANCE.createEdgePalette();
+        palette.getToolSections().add(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection());
+        dependsOnEdgeDescription.setPalette(palette);
 
         return dependsOnEdgeDescription;
     }

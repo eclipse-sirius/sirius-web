@@ -19,7 +19,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import AdjustIcon from '@material-ui/icons/Adjust';
 import TonalityIcon from '@material-ui/icons/Tonality';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useReactFlow, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -30,7 +29,6 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Tool } from '../Tool';
 import { useAdjustSize } from '../adjust-size/useAdjustSize';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
-import { useHideDiagramElements } from '../hide/useHideDiagramElements';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { DiagramPaletteToolContextValue } from './DiagramPalette.types';
 import { DiagramPaletteToolContext } from './DiagramPaletteToolContext';
@@ -222,7 +220,6 @@ export const Palette = ({
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { pinDiagramElements } = usePinDiagramElements();
   const { adjustSize } = useAdjustSize();
-  const { hideDiagramElements } = useHideDiagramElements();
   const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
@@ -256,7 +253,7 @@ export const Palette = ({
           (toolSection) => toolSection.tools.filter(isSingleClickOnDiagramElementTool).length > 0
         ).length
       : 0) +
-    (hideableDiagramElement ? (node ? 4 : 2) : 0) +
+    (hideableDiagramElement ? (node ? 3 : 1) : 0) +
     diagramPaletteToolComponents.length;
   const classes = usePaletteStyle({ toolCount });
 
@@ -444,10 +441,6 @@ export const Palette = ({
     fadeDiagramElements([diagramElementId], true);
   };
 
-  const invokeHideDiagramElementTool = () => {
-    hideDiagramElements([diagramElementId], true);
-  };
-
   const shouldRender = palette && (node || (!node && toolCount > 0));
   if (!shouldRender) {
     return null;
@@ -482,16 +475,6 @@ export const Palette = ({
         })}
         {hideableDiagramElement ? (
           <>
-            <Tooltip title="Hide element">
-              <IconButton
-                className={classes.toolIcon}
-                size="small"
-                aria-label="Hide element"
-                onClick={invokeHideDiagramElementTool}
-                data-testid="Hide-element">
-                <VisibilityOffIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
             <Tooltip title="Fade element">
               <IconButton
                 className={classes.toolIcon}

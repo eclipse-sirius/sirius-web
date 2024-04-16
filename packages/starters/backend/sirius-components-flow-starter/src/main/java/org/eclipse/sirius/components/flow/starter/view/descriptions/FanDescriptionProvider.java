@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Used to create the fan node description.
@@ -77,6 +78,7 @@ public class FanDescriptionProvider implements INodeDescriptionProvider {
     private NodePalette createNodePalette() {
 
         return this.diagramBuilderHelper.newNodePalette()
+                .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
                 .labelEditTool(this.flowViewBuilder.createLabelEditTool())
                 .build();

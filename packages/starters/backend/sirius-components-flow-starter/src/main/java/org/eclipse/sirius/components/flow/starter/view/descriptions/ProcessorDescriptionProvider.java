@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Used to create the processor node description.
@@ -151,6 +152,7 @@ public class ProcessorDescriptionProvider implements INodeDescriptionProvider {
     private NodePalette createNodePalette(NodeDescription processorNodeDescription) {
 
         return this.diagramBuilderHelper.newNodePalette()
+                .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
                 .labelEditTool(this.flowViewBuilder.createLabelEditTool())
                 .edgeTools(this.flowViewBuilder.createEdgeToProcessorTool(processorNodeDescription))

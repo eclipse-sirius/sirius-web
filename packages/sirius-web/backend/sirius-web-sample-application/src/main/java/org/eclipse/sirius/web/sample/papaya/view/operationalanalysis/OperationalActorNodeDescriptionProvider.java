@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProv
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -68,6 +69,7 @@ public class OperationalActorNodeDescriptionProvider implements INodeDescription
         var newOperationalActivityNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalActivity", "operationalActivities", "Operational Activity");
         newOperationalActivityNodeTool.setName("New Operational Activity");
         nodePalette.getNodeTools().add(newOperationalActivityNodeTool);
+        nodePalette.getToolSections().add(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection());
 
         return nodeDescription;
     }

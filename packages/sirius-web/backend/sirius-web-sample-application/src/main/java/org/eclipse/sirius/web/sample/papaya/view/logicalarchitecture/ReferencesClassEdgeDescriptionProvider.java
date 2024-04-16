@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Description of the references class.
@@ -54,6 +55,10 @@ public class ReferencesClassEdgeDescriptionProvider implements IEdgeDescriptionP
         extendsClassEdgeDescription.setSourceNodesExpression("aql:self.eContainer()");
         extendsClassEdgeDescription.setTargetNodesExpression("aql:self.type");
         extendsClassEdgeDescription.setIsDomainBasedEdge(true);
+
+        var palette = DiagramFactory.eINSTANCE.createEdgePalette();
+        palette.getToolSections().add(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection());
+        extendsClassEdgeDescription.setPalette(palette);
 
         return extendsClassEdgeDescription;
     }

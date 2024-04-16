@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.PinDiagramElementEvent;
+import org.eclipse.sirius.components.diagrams.events.ResetViewModifiersEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -324,6 +325,11 @@ public class NodeComponent implements IComponent {
                     } else {
                         modifiers.remove(ViewModifier.Faded);
                     }
+                }
+            } else if (diagramEvent instanceof ResetViewModifiersEvent resetViewModifiersEvent) {
+                if (resetViewModifiersEvent.getElementIds().contains(id)) {
+                    modifiers.clear();
+                    modifiers.addAll(defaultModifiers);
                 }
             }
         }

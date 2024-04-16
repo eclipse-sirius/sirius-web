@@ -12,11 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IServiceProvider;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.view.View;
@@ -43,10 +49,14 @@ public class ViewAQLInterpreterFactory implements IViewAQLInterpreterFactory {
     private final Logger logger = LoggerFactory.getLogger(ViewAQLInterpreterFactory.class);
 
     public ViewAQLInterpreterFactory(List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext) {
-        this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
+        this.javaServiceProviders = new ArrayList<>();
+        this.javaServiceProviders.addAll(Objects.requireNonNull(javaServiceProviders));
+        IServiceProvider nodeServiceProvider = (IReadOnlyQueryEnvironment queryEnvironment) -> ServiceUtils.getReceiverServices(null, Node.class).stream().toList();
+        this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class, DiagramServices.class, nodeServiceProvider.getClass()));
         this.applicationContext = Objects.requireNonNull(applicationContext);
     }
 
+    @Override
     public AQLInterpreter createInterpreter(IEditingContext editingContext, View view) {
         List<EPackage> visibleEPackages = this.getAccessibleEPackages(editingContext);
         AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
