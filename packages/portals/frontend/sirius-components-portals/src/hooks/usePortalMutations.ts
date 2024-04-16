@@ -10,18 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { MutationResult, gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { gql, useMutation } from '@apollo/client';
+import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import { useEffect, useState } from 'react';
-import { GQLErrorPayload } from './usePortal.types';
 import {
   GQLAddPortalViewMutationData,
   GQLAddPortalViewMutationVariables,
+  GQLLayoutPortalInput,
   GQLLayoutPortalLayoutData,
+  GQLLayoutPortalMutationData,
   GQLLayoutPortalMutationVariables,
-  GQLLayoutPortalViewMutationData,
-  GQLLayoutPortalViewMutationVariables,
-  GQLPayload,
   GQLRemovePortalViewMutationData,
   GQLRemovePortalViewMutationVariables,
   UsePortalMutationsValue,
@@ -32,10 +30,16 @@ const addPortalViewMutation = gql`
     addPortalView(input: $input) {
       __typename
       ... on SuccessPayload {
-        id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -46,10 +50,16 @@ const removePortalViewMutation = gql`
     removePortalView(input: $input) {
       __typename
       ... on SuccessPayload {
-        id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -60,34 +70,20 @@ const layoutPortalMutation = gql`
     layoutPortal(input: $input) {
       __typename
       ... on SuccessPayload {
-        id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
 `;
-
-function useErrorReporting<T>(result: MutationResult<T>, extractPayload: (data: T | null) => GQLPayload | undefined) {
-  const { addErrorMessage } = useMultiToast();
-
-  useEffect(() => {
-    const { loading, data, error } = result;
-    if (!loading) {
-      if (error) {
-        addErrorMessage(error.message);
-      }
-      const payload: GQLPayload | undefined = extractPayload(data || null);
-      if (payload && isErrorPayload(payload)) {
-        const { message } = payload;
-        addErrorMessage(message);
-      }
-    }
-  }, [result.loading, result.data, result.error]);
-}
-
-const isErrorPayload = (payload): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 
 export const usePortalMutations = (editingContextId: string, portalId: string): UsePortalMutationsValue => {
   const [rawAddPortalView, rawAddPortalViewResult] = useMutation<
@@ -109,7 +105,7 @@ export const usePortalMutations = (editingContextId: string, portalId: string): 
     rawAddPortalView({ variables: { input } });
   };
 
-  useErrorReporting(rawAddPortalViewResult, (data) => data?.addPortalView);
+  useReporting(rawAddPortalViewResult, (data: GQLAddPortalViewMutationData) => data.addPortalView);
 
   const [rawRemovePortalView, rawRemovePortalViewResult] = useMutation<
     GQLRemovePortalViewMutationData,
@@ -126,17 +122,17 @@ export const usePortalMutations = (editingContextId: string, portalId: string): 
     rawRemovePortalView({ variables: { input } });
   };
 
-  useErrorReporting(rawRemovePortalViewResult, (data) => data?.removePortalView);
+  useReporting(rawRemovePortalViewResult, (data: GQLRemovePortalViewMutationData) => data.removePortalView);
 
   const [layoutsInProgress, setLayoutsInProgress] = useState<number>(0);
 
   const [rawLayoutPortal, rawLayoutPortalResult] = useMutation<
-    GQLLayoutPortalViewMutationData,
-    GQLLayoutPortalViewMutationVariables
+    GQLLayoutPortalMutationData,
+    GQLLayoutPortalMutationVariables
   >(layoutPortalMutation);
 
   const layoutPortal = (layoutData: GQLLayoutPortalLayoutData[]) => {
-    const input: GQLLayoutPortalMutationVariables = {
+    const input: GQLLayoutPortalInput = {
       id: crypto.randomUUID(),
       editingContextId,
       representationId: portalId,
@@ -152,7 +148,7 @@ export const usePortalMutations = (editingContextId: string, portalId: string): 
     }
   }, [rawLayoutPortalResult.loading]);
 
-  useErrorReporting(rawLayoutPortalResult, (data) => data?.layoutPortalView);
+  useReporting(rawLayoutPortalResult, (data: GQLLayoutPortalMutationData) => data.layoutPortal);
 
   return {
     addPortalView,

@@ -151,6 +151,14 @@ public interface FormFactory extends EFactory {
     TreeDescription createTreeDescription();
 
     /**
+     * Returns a new object of class '<em>Date Time Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Date Time Description</em>'.
+     * @generated
+     */
+    DateTimeDescription createDateTimeDescription();
+
+    /**
      * Returns a new object of class '<em>Slider Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Slider Description</em>'.
@@ -415,6 +423,24 @@ public interface FormFactory extends EFactory {
      * @generated
      */
     ConditionalTextfieldDescriptionStyle createConditionalTextfieldDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Date Time Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Date Time Description Style</em>'.
+     * @generated
+     */
+    DateTimeDescriptionStyle createDateTimeDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Date Time Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Date Time Description Style</em>'.
+     * @generated
+     */
+    ConditionalDateTimeDescriptionStyle createConditionalDateTimeDescriptionStyle();
 
     /**
      * Returns a new object of class '<em>Container Border Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

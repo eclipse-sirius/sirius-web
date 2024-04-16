@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionSty
 import org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle;
+import org.eclipse.sirius.components.view.form.ConditionalDateTimeDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle;
@@ -39,6 +40,8 @@ import org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle
 import org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
+import org.eclipse.sirius.components.view.form.DateTimeDescription;
+import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
@@ -171,6 +174,11 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseDateTimeDescription(DateTimeDescription object) {
+            return FormAdapterFactory.this.createDateTimeDescriptionAdapter();
+        }
+
+        @Override
         public Adapter caseFlexboxContainerDescription(FlexboxContainerDescription object) {
             return FormAdapterFactory.this.createFlexboxContainerDescriptionAdapter();
         }
@@ -278,6 +286,16 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalCheckboxDescriptionStyle(ConditionalCheckboxDescriptionStyle object) {
             return FormAdapterFactory.this.createConditionalCheckboxDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseDateTimeDescriptionStyle(DateTimeDescriptionStyle object) {
+            return FormAdapterFactory.this.createDateTimeDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalDateTimeDescriptionStyle(ConditionalDateTimeDescriptionStyle object) {
+            return FormAdapterFactory.this.createConditionalDateTimeDescriptionStyleAdapter();
         }
 
         @Override
@@ -659,6 +677,20 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTreeDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.DateTimeDescription
+     * <em>Date Time Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.DateTimeDescription
+     * @generated
+     */
+    public Adapter createDateTimeDescriptionAdapter() {
         return null;
     }
 
@@ -1117,6 +1149,35 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalTextfieldDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle <em>Date Time Description Style</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle
+     * @generated
+     */
+    public Adapter createDateTimeDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.form.ConditionalDateTimeDescriptionStyle <em>Conditional Date Time
+     * Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.ConditionalDateTimeDescriptionStyle
+     * @generated
+     */
+    public Adapter createConditionalDateTimeDescriptionStyleAdapter() {
         return null;
     }
 

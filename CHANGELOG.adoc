@@ -11,6 +11,7 @@
 - Improve document upload
 - Configurable visibility
 - Create a representation using the content of another representation as input
+- Add support for DateTime widget
 
 === Architectural decision records
 
@@ -112,6 +113,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3135[#3135] [diagram] Add new overflow strategies for node label : _wrap_ and _ellipsis_
 - https://github.com/eclipse-sirius/sirius-web/issues/3425[#3425] [diagram] Make the direction applied during _arrangeAll_ configurable.
 - https://github.com/eclipse-sirius/sirius-web/issues/3354[#3354] [diagram] Add support for overlapping nodes in arrangeAll and distribute elements
+- https://github.com/eclipse-sirius/sirius-web/issues/3389[#3389] [form] Add support for DateTime widget
 
 === Improvements
 

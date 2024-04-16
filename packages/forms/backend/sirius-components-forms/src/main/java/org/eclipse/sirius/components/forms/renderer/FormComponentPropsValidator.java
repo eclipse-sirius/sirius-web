@@ -26,6 +26,8 @@ import org.eclipse.sirius.components.forms.components.ChartWidgetComponent;
 import org.eclipse.sirius.components.forms.components.ChartWidgetComponentProps;
 import org.eclipse.sirius.components.forms.components.CheckboxComponent;
 import org.eclipse.sirius.components.forms.components.CheckboxComponentProps;
+import org.eclipse.sirius.components.forms.components.DateTimeComponent;
+import org.eclipse.sirius.components.forms.components.DateTimeComponentProps;
 import org.eclipse.sirius.components.forms.components.FlexboxContainerComponent;
 import org.eclipse.sirius.components.forms.components.FlexboxContainerComponentProps;
 import org.eclipse.sirius.components.forms.components.ForComponent;
@@ -144,6 +146,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof ToolbarActionComponentProps;
         } else if (SliderComponent.class.equals(componentType)) {
             checkValidProps = props instanceof SliderComponentProps;
+        } else if (DateTimeComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof DateTimeComponentProps;
         } else {
             checkValidProps = this.widgetDescriptors.stream()
                     .map(widgetDescriptor -> widgetDescriptor.validateComponentProps(componentType, props))

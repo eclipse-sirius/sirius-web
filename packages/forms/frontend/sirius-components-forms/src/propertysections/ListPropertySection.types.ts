@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLList, GQLMessage, GQLSubscriber } from '../form/FormEventFragments.types';
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLList, GQLSubscriber } from '../form/FormEventFragments.types';
 
 export interface ListStyleProps {
   color: string | null;

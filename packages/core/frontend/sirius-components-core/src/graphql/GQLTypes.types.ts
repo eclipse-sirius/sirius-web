@@ -17,5 +17,13 @@ export interface GQLMessage {
 }
 
 export interface GQLErrorPayload {
-  messages: GQLMessage[];
+  __typename: 'ErrorPayload';
+  id: string | null;
+  messages: GQLMessage[] | null;
+}
+
+export interface GQLSuccessPayload {
+  __typename: 'SuccessPayload';
+  id: string | null;
+  messages: GQLMessage[] | null;
 }

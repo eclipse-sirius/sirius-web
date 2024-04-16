@@ -182,6 +182,8 @@ public class FormElementForItemProvider extends FormElementDescriptionItemProvid
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createCheckboxDescription()));
 
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createDateTimeDescription()));
+
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createFlexboxContainerDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createImageDescription()));

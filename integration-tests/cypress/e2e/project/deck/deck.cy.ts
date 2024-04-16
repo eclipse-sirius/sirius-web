@@ -119,7 +119,9 @@ describe('Verify the Deck Representation', () => {
       explorer.select('::');
       const details = new Details();
       details.getTextField('Prefix').type('daily{enter}');
+      explorer.getTreeItemByLabel('daily::').should('exist');
       details.getTextField('Suffix').type('Today{enter}');
+      explorer.getTreeItemByLabel('daily::Today').should('exist');
       new Deck().getLane('Today').should('exist');
     });
 

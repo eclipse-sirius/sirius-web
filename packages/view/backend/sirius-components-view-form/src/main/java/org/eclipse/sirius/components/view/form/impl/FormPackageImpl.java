@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionSty
 import org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle;
+import org.eclipse.sirius.components.view.form.ConditionalDateTimeDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle;
@@ -40,6 +41,9 @@ import org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionSty
 import org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ContainerBorderLineStyle;
 import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
+import org.eclipse.sirius.components.view.form.DateTimeDescription;
+import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
+import org.eclipse.sirius.components.view.form.DateTimeType;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
@@ -203,6 +207,13 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     private EClass treeDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass dateTimeDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -433,6 +444,20 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      *
      * @generated
      */
+    private EClass dateTimeDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalDateTimeDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass containerBorderStyleEClass = null;
 
     /**
@@ -483,6 +508,13 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     private EEnum containerBorderLineStyleEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum dateTimeTypeEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -1504,6 +1536,76 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EClass getDateTimeDescription() {
+        return this.dateTimeDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDateTimeDescription_StringValueExpression() {
+        return (EAttribute) this.dateTimeDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDateTimeDescription_Body() {
+        return (EReference) this.dateTimeDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDateTimeDescription_IsEnabledExpression() {
+        return (EAttribute) this.dateTimeDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDateTimeDescription_Style() {
+        return (EReference) this.dateTimeDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDateTimeDescription_ConditionalStyles() {
+        return (EReference) this.dateTimeDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDateTimeDescription_Type() {
+        return (EAttribute) this.dateTimeDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getSliderDescription() {
         return this.sliderDescriptionEClass;
     }
@@ -2404,6 +2506,66 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EClass getDateTimeDescriptionStyle() {
+        return this.dateTimeDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDateTimeDescriptionStyle_BackgroundColor() {
+        return (EReference) this.dateTimeDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDateTimeDescriptionStyle_ForegroundColor() {
+        return (EReference) this.dateTimeDescriptionStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDateTimeDescriptionStyle_Italic() {
+        return (EAttribute) this.dateTimeDescriptionStyleEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDateTimeDescriptionStyle_Bold() {
+        return (EAttribute) this.dateTimeDescriptionStyleEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalDateTimeDescriptionStyle() {
+        return this.conditionalDateTimeDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getContainerBorderStyle() {
         return this.containerBorderStyleEClass;
     }
@@ -2574,6 +2736,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EEnum getDateTimeType() {
+        return this.dateTimeTypeEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public FormFactory getFormFactory() {
         return (FormFactory) this.getEFactoryInstance();
     }
@@ -2654,6 +2826,14 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEReference(this.checkboxDescriptionEClass, CHECKBOX_DESCRIPTION__STYLE);
         this.createEReference(this.checkboxDescriptionEClass, CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES);
         this.createEAttribute(this.checkboxDescriptionEClass, CHECKBOX_DESCRIPTION__IS_ENABLED_EXPRESSION);
+
+        this.dateTimeDescriptionEClass = this.createEClass(DATE_TIME_DESCRIPTION);
+        this.createEAttribute(this.dateTimeDescriptionEClass, DATE_TIME_DESCRIPTION__STRING_VALUE_EXPRESSION);
+        this.createEReference(this.dateTimeDescriptionEClass, DATE_TIME_DESCRIPTION__BODY);
+        this.createEAttribute(this.dateTimeDescriptionEClass, DATE_TIME_DESCRIPTION__IS_ENABLED_EXPRESSION);
+        this.createEReference(this.dateTimeDescriptionEClass, DATE_TIME_DESCRIPTION__STYLE);
+        this.createEReference(this.dateTimeDescriptionEClass, DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEAttribute(this.dateTimeDescriptionEClass, DATE_TIME_DESCRIPTION__TYPE);
 
         this.flexboxContainerDescriptionEClass = this.createEClass(FLEXBOX_CONTAINER_DESCRIPTION);
         this.createEReference(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN);
@@ -2778,6 +2958,14 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
 
         this.conditionalCheckboxDescriptionStyleEClass = this.createEClass(CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE);
 
+        this.dateTimeDescriptionStyleEClass = this.createEClass(DATE_TIME_DESCRIPTION_STYLE);
+        this.createEReference(this.dateTimeDescriptionStyleEClass, DATE_TIME_DESCRIPTION_STYLE__BACKGROUND_COLOR);
+        this.createEReference(this.dateTimeDescriptionStyleEClass, DATE_TIME_DESCRIPTION_STYLE__FOREGROUND_COLOR);
+        this.createEAttribute(this.dateTimeDescriptionStyleEClass, DATE_TIME_DESCRIPTION_STYLE__ITALIC);
+        this.createEAttribute(this.dateTimeDescriptionStyleEClass, DATE_TIME_DESCRIPTION_STYLE__BOLD);
+
+        this.conditionalDateTimeDescriptionStyleEClass = this.createEClass(CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE);
+
         this.labelDescriptionStyleEClass = this.createEClass(LABEL_DESCRIPTION_STYLE);
         this.createEReference(this.labelDescriptionStyleEClass, LABEL_DESCRIPTION_STYLE__COLOR);
 
@@ -2853,6 +3041,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.groupDisplayModeEEnum = this.createEEnum(GROUP_DISPLAY_MODE);
         this.labelPlacementEEnum = this.createEEnum(LABEL_PLACEMENT);
         this.containerBorderLineStyleEEnum = this.createEEnum(CONTAINER_BORDER_LINE_STYLE);
+        this.dateTimeTypeEEnum = this.createEEnum(DATE_TIME_TYPE);
     }
 
     /**
@@ -2891,6 +3080,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.barChartDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.buttonDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.checkboxDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
+        this.dateTimeDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.flexboxContainerDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.imageDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.labelDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
@@ -2917,6 +3107,9 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.checkboxDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.conditionalCheckboxDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalCheckboxDescriptionStyleEClass.getESuperTypes().add(this.getCheckboxDescriptionStyle());
+        this.dateTimeDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
+        this.conditionalDateTimeDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
+        this.conditionalDateTimeDescriptionStyleEClass.getESuperTypes().add(this.getDateTimeDescriptionStyle());
         this.labelDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.labelDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
         this.conditionalLabelDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
@@ -3056,6 +3249,20 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getCheckboxDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, CheckboxDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.dateTimeDescriptionEClass, DateTimeDescription.class, "DateTimeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getDateTimeDescription_StringValueExpression(), theViewPackage.getInterpretedExpression(), "stringValueExpression", null, 1, 1, DateTimeDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDateTimeDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, DateTimeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDateTimeDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1, DateTimeDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDateTimeDescription_Style(), this.getDateTimeDescriptionStyle(), null, "style", null, 0, 1, DateTimeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDateTimeDescription_ConditionalStyles(), this.getConditionalDateTimeDescriptionStyle(), null, "conditionalStyles", null, 0, -1, DateTimeDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDateTimeDescription_Type(), this.getDateTimeType(), "type", "DATE_TIME", 1, 1, DateTimeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.flexboxContainerDescriptionEClass, FlexboxContainerDescription.class, "FlexboxContainerDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getFlexboxContainerDescription_Children(), this.getFormElementDescription(), null, "children", null, 0, -1, FlexboxContainerDescription.class, !IS_TRANSIENT,
@@ -3262,6 +3469,19 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEClass(this.conditionalCheckboxDescriptionStyleEClass, ConditionalCheckboxDescriptionStyle.class, "ConditionalCheckboxDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
+        this.initEClass(this.dateTimeDescriptionStyleEClass, DateTimeDescriptionStyle.class, "DateTimeDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getDateTimeDescriptionStyle_BackgroundColor(), theViewPackage.getUserColor(), null, "backgroundColor", null, 0, 1, DateTimeDescriptionStyle.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDateTimeDescriptionStyle_ForegroundColor(), theViewPackage.getUserColor(), null, "foregroundColor", null, 0, 1, DateTimeDescriptionStyle.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDateTimeDescriptionStyle_Italic(), this.ecorePackage.getEBoolean(), "italic", "false", 1, 1, DateTimeDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDateTimeDescriptionStyle_Bold(), this.ecorePackage.getEBoolean(), "bold", "false", 1, 1, DateTimeDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.conditionalDateTimeDescriptionStyleEClass, ConditionalDateTimeDescriptionStyle.class, "ConditionalDateTimeDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+
         this.initEClass(this.labelDescriptionStyleEClass, LabelDescriptionStyle.class, "LabelDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getLabelDescriptionStyle_Color(), theViewPackage.getUserColor(), null, "color", null, 0, 1, LabelDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3386,6 +3606,11 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.addEEnumLiteral(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.SOLID);
         this.addEEnumLiteral(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.DASHED);
         this.addEEnumLiteral(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.DOTTED);
+
+        this.initEEnum(this.dateTimeTypeEEnum, DateTimeType.class, "DateTimeType");
+        this.addEEnumLiteral(this.dateTimeTypeEEnum, DateTimeType.DATE_TIME);
+        this.addEEnumLiteral(this.dateTimeTypeEEnum, DateTimeType.DATE);
+        this.addEEnumLiteral(this.dateTimeTypeEEnum, DateTimeType.TIME);
 
         // Create resource
         this.createResource(eNS_URI);

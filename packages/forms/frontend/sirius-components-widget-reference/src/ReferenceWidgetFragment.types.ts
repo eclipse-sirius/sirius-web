@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLMessage, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 
 export interface GQLReferenceWidget extends GQLWidget {
   label: string;

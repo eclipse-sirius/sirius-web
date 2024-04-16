@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionSty
 import org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle;
+import org.eclipse.sirius.components.view.form.ConditionalDateTimeDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle;
@@ -38,6 +39,8 @@ import org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle
 import org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
+import org.eclipse.sirius.components.view.form.DateTimeDescription;
+import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
@@ -199,6 +202,17 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.caseWidgetDescription(checkboxDescription);
                 if (result == null)
                     result = this.caseFormElementDescription(checkboxDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case FormPackage.DATE_TIME_DESCRIPTION: {
+                DateTimeDescription dateTimeDescription = (DateTimeDescription) theEObject;
+                T result = this.caseDateTimeDescription(dateTimeDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(dateTimeDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(dateTimeDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -445,6 +459,28 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.caseCheckboxDescriptionStyle(conditionalCheckboxDescriptionStyle);
                 if (result == null)
                     result = this.caseWidgetDescriptionStyle(conditionalCheckboxDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE: {
+                DateTimeDescriptionStyle dateTimeDescriptionStyle = (DateTimeDescriptionStyle) theEObject;
+                T result = this.caseDateTimeDescriptionStyle(dateTimeDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(dateTimeDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE: {
+                ConditionalDateTimeDescriptionStyle conditionalDateTimeDescriptionStyle = (ConditionalDateTimeDescriptionStyle) theEObject;
+                T result = this.caseConditionalDateTimeDescriptionStyle(conditionalDateTimeDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalDateTimeDescriptionStyle);
+                if (result == null)
+                    result = this.caseDateTimeDescriptionStyle(conditionalDateTimeDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalDateTimeDescriptionStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -978,6 +1014,21 @@ public class FormSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Date Time Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Date Time Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDateTimeDescription(DateTimeDescription object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Slider Description</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
@@ -1460,6 +1511,37 @@ public class FormSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseConditionalTextfieldDescriptionStyle(ConditionalTextfieldDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Date Time Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Date Time Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDateTimeDescriptionStyle(DateTimeDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Date Time Description
+     * Style</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+     * the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Date Time Description
+     *         Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalDateTimeDescriptionStyle(ConditionalDateTimeDescriptionStyle object) {
         return null;
     }
 

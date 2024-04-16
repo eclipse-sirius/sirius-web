@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,7 +86,7 @@ public class ClickListItemEventHandler implements IFormEventHandler {
 
             IStatus status;
             if (optionalList.map(List::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
-                status = new Failure("Read-only widget cannot be edited");
+                status = new Failure(this.messageService.readOnlyWidgetCannotBeEdited());
             } else {
                 var optionalListItem = optionalList
                         .stream()

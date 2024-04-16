@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription
 import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
+import org.eclipse.sirius.components.forms.description.DateTimeDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
 import org.eclipse.sirius.components.forms.description.ImageDescription;
 import org.eclipse.sirius.components.forms.description.LabelDescription;
@@ -112,6 +113,9 @@ public class WidgetComponent implements IComponent {
         } else if (widgetDescription instanceof SliderDescription) {
             SliderComponentProps sliderComponentProps = new SliderComponentProps(variableManager, (SliderDescription) widgetDescription);
             element = new Element(SliderComponent.class, sliderComponentProps);
+        } else if (widgetDescription instanceof DateTimeDescription) {
+            DateTimeComponentProps dateTimeComponentProps = new DateTimeComponentProps(variableManager, (DateTimeDescription) widgetDescription);
+            element = new Element(DateTimeComponent.class, dateTimeComponentProps);
         } else {
             element = this.props.getWidgetDescriptors().stream()
                     .map(widgetDescriptor -> widgetDescriptor.createElement(variableManager, widgetDescription))

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo and others.
+ * Copyright (c) 2022, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ export * from './form/FormEventFragments';
 export * from './form/FormEventFragments.types';
 export type { ButtonStyleProps } from './propertysections/ButtonPropertySection.types';
 export type { CheckboxStyleProps } from './propertysections/CheckboxPropertySection.types';
+export type { DateTimeStyleProps } from './propertysections/DateTimeWidgetPropertySection.types';
 export type { ImageStyleProps } from './propertysections/ImagePropertySection.types';
 export type { LabelStyleProps } from './propertysections/LabelWidgetPropertySection.types';
 export type { LinkStyleProps } from './propertysections/LinkPropertySection.types';

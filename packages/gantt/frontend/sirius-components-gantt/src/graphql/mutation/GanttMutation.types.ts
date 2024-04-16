@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
-import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseGanttMutations {
   editTask: (task: TaskOrEmpty) => void;
@@ -33,8 +33,10 @@ export interface GQLDeleteGanttTaskInput {
   taskId: string;
 }
 export interface GQLDeleteTaskData {
-  deleteGanttTask: GQLPayload;
+  deleteGanttTask: GQLDeleteGanttTaskPayload;
 }
+
+export type GQLDeleteGanttTaskPayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLEditTaskVariables {
   input: GQLEditGanttTaskInput;
@@ -54,8 +56,10 @@ export interface GQLEditGanttTaskInput {
   newDetail: GQLEditGanttTaskDetailInput;
 }
 export interface GQLEditTaskData {
-  editGanttTask: GQLPayload;
+  editGanttTask: GQLEditGanttTaskPayload;
 }
+
+export type GQLEditGanttTaskPayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLCreateTaskVariables {
   input: GQLCreateGanttTaskInput;
@@ -67,8 +71,10 @@ export interface GQLCreateGanttTaskInput {
   currentTaskId: string;
 }
 export interface GQLCreateTaskData {
-  createTask: GQLPayload;
+  createGanttTask: GQLCreateGanttTaskPayload;
 }
+
+export type GQLCreateGanttTaskPayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLDropTaskVariables {
   input: GQLDropGanttTaskInput;
@@ -83,13 +89,10 @@ export interface GQLDropGanttTaskInput {
 }
 
 export interface GQLDropTaskData {
-  payload: GQLPayload;
+  dropGanttTask: GQLDropGanttTaskPayload;
 }
 
-export interface GQLPayload {
-  __typename: string;
-  messages: GQLMessage[];
-}
+export type GQLDropGanttTaskPayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLCreateTaskDependencyVariables {
   input: GQLCreateGanttTaskDependencyInput;
@@ -102,8 +105,10 @@ export interface GQLCreateGanttTaskDependencyInput {
   targetTaskId: string;
 }
 export interface GQLCreateTaskDependencyData {
-  payload: GQLPayload;
+  createGanttTaskDependency: GQLCreateGanttTaskDependencyPayload;
 }
+
+export type GQLCreateGanttTaskDependencyPayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLChangeTaskCollapseStateVariables {
   input: GQLChangeTaskCollapseStateInput;
@@ -116,5 +121,7 @@ export interface GQLChangeTaskCollapseStateInput {
   collapsed: boolean;
 }
 export interface GQLChangeTaskCollapseStateData {
-  payload: GQLPayload;
+  changeGanttTaskCollapseState: GQLChangeGanttTaskCollapseStatePayload;
 }
+
+export type GQLChangeGanttTaskCollapseStatePayload = GQLErrorPayload | GQLSuccessPayload;

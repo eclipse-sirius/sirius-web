@@ -321,6 +321,19 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
     maxValue
     currentValue
   }
+  
+  fragment dateTimeFields on DateTime {
+    label
+    iconURL
+    stringValue
+    type
+    style {
+      backgroundColor
+      foregroundColor
+      italic
+      bold
+    }
+  }
 
   ${contributions.map(
     (widget) =>
@@ -383,6 +396,9 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
     }
     ... on Slider {
       ...sliderFields
+    }
+    ... on DateTime {
+      ...dateTimeFields
     }
 
     ${contributions.map(

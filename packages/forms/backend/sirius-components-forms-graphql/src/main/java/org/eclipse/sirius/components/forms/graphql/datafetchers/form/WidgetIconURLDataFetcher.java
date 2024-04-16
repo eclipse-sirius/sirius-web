@@ -40,6 +40,7 @@ public class WidgetIconURLDataFetcher implements IDataFetcherWithFieldCoordinate
             "Button",
             "ChartWidget",
             "Checkbox",
+            "DateTime",
             "FlexboxContainer",
             "Image",
             "LabelWidget",

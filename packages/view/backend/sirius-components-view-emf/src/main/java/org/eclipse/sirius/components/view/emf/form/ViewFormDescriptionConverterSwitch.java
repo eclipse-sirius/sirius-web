@@ -34,6 +34,8 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.ContainerBorderStyle;
+import org.eclipse.sirius.components.forms.DateTimeStyle;
+import org.eclipse.sirius.components.forms.DateTimeType;
 import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.LinkStyle;
@@ -52,6 +54,7 @@ import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription
 import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
+import org.eclipse.sirius.components.forms.description.DateTimeDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.IfDescription;
@@ -81,6 +84,7 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.form.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
@@ -862,6 +866,54 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
     public Optional<AbstractControlDescription> caseWidgetDescription(WidgetDescription widgetDescription) {
         return this.customWidgetConverters.doSwitch(widgetDescription).map(AbstractControlDescription.class::cast);
     }
+
+    @Override
+    public Optional<AbstractControlDescription> caseDateTimeDescription(org.eclipse.sirius.components.view.form.DateTimeDescription viewDateTimeDescription) {
+        String descriptionId = this.getDescriptionId(viewDateTimeDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(viewDateTimeDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewDateTimeDescription.getIsEnabledExpression());
+        Function<VariableManager, String> stringValueProvider = this.getStringValueProvider(viewDateTimeDescription.getStringValueExpression());
+        BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(viewDateTimeDescription.getBody());
+
+        Function<VariableManager, DateTimeStyle> styleProvider = variableManager -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VARIABLE_MANAGER, variableManager);
+            var effectiveStyle = viewDateTimeDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
+                    .map(DateTimeDescriptionStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewDateTimeDescription::getStyle);
+            if (effectiveStyle == null) {
+                return null;
+            }
+            return new DateTimeStyleProvider(effectiveStyle).apply(childVariableManager);
+        };
+
+        var builder = DateTimeDescription.newDateTimeDescription(descriptionId)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
+                .type(this.getDateTimeType(viewDateTimeDescription))
+                .stringValueProvider(stringValueProvider)
+                .newValueHandler(newValueHandler)
+                .diagnosticsProvider(vm -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
+                .styleProvider(styleProvider);
+        if (viewDateTimeDescription.getHelpExpression() != null && !viewDateTimeDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(viewDateTimeDescription.getHelpExpression()));
+        }
+        return Optional.of(builder.build());
+    }
+
+
+    private DateTimeType getDateTimeType(org.eclipse.sirius.components.view.form.DateTimeDescription viewDateTimeDescription) {
+        org.eclipse.sirius.components.view.form.DateTimeType viewDisplayMode = viewDateTimeDescription.getType();
+        return DateTimeType.valueOf(viewDisplayMode.getLiteral());
+    }
+
 
     @Override
     public Optional<AbstractControlDescription> caseSliderDescription(org.eclipse.sirius.components.view.form.SliderDescription viewSliderDescription) {

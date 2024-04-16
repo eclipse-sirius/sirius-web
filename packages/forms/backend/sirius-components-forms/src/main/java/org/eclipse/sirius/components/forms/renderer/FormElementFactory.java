@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Button;
 import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
+import org.eclipse.sirius.components.forms.DateTime;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
@@ -49,6 +50,7 @@ import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.elements.ButtonElementProps;
 import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
+import org.eclipse.sirius.components.forms.elements.DateTimeElementProps;
 import org.eclipse.sirius.components.forms.elements.FlexboxContainerElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
@@ -136,6 +138,8 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateToolbarAction((ToolbarActionElementProps) props, children);
         } else if (SliderElementProps.TYPE.equals(type) && props instanceof SliderElementProps) {
             object = this.instantiateSlider((SliderElementProps) props, children);
+        } else if (DateTimeElementProps.TYPE.equals(type) && props instanceof DateTimeElementProps) {
+            object = this.instantiateDateTime((DateTimeElementProps) props, children);
         } else {
             object = this.widgetDescriptors.stream()
                          .map(widgetDescriptor -> widgetDescriptor.instanciate(type, props, children))
@@ -561,6 +565,26 @@ public class FormElementFactory implements IElementFactory {
             sliderBuilder.helpTextProvider(props.getHelpTextProvider());
         }
         return sliderBuilder.build();
+    }
+
+    private DateTime instantiateDateTime(DateTimeElementProps props, List<Object> children) {
+        var dateTimeBuilder = DateTime.newDateTime(props.getId())
+                .label(props.getLabel())
+                .stringValue(props.getStringValue())
+                .diagnostics(List.of())
+                .readOnly(props.isReadOnly())
+                .type(props.getType())
+                .newValueHandler(props.getNewValueHandler());
+        if (props.getIconURL() != null) {
+            dateTimeBuilder.iconURL(props.getIconURL());
+        }
+        if (props.getHelpTextProvider() != null) {
+            dateTimeBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
+        if (props.getStyle() != null) {
+            dateTimeBuilder.style(props.getStyle());
+        }
+        return dateTimeBuilder.build();
     }
 
     private LabelWidget instantiateLabel(LabelWidgetElementProps props, List<Object> children) {

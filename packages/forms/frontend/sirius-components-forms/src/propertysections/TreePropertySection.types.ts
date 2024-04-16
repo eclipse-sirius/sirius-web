@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLMessage, GQLTreeNode } from '../form/FormEventFragments.types';
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLTreeNode } from '../form/FormEventFragments.types';
 
 export interface TreeItemProps {
   node: GQLTreeNode;

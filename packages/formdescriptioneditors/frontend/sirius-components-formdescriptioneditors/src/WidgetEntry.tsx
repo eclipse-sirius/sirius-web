@@ -16,6 +16,7 @@ import {
   GQLButton,
   GQLChartWidget,
   GQLCheckbox,
+  GQLDateTime,
   GQLFlexboxContainer,
   GQLGroup,
   GQLImage,
@@ -43,6 +44,7 @@ import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
 import { CheckboxWidget } from './CheckboxWidget';
 import { CustomWidget } from './CustomWidget';
+import { DateTimeWidget } from './DateTimeWidget';
 import { FlexboxContainerWidget } from './FlexboxContainerWidget';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -333,6 +335,14 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
       <CheckboxWidget
         data-testid={widget.id}
         widget={widget as GQLCheckbox}
+        onDropBefore={readOnly ? noop : onDropBefore}
+      />
+    );
+  } else if (widget.__typename === 'DateTime') {
+    widgetElement = (
+      <DateTimeWidget
+        data-testid={widget.id}
+        widget={widget as GQLDateTime}
         onDropBefore={readOnly ? noop : onDropBefore}
       />
     );

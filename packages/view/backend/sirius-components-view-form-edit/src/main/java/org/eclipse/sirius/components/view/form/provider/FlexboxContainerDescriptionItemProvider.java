@@ -25,6 +25,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.form.BarChartDescription;
 import org.eclipse.sirius.components.view.form.ButtonDescription;
 import org.eclipse.sirius.components.view.form.CheckboxDescription;
+import org.eclipse.sirius.components.view.form.DateTimeDescription;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormFactory;
@@ -214,6 +215,10 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
         CheckboxDescription checkboxDescription = FormFactory.eINSTANCE.createCheckboxDescription();
         checkboxDescription.setStyle(FormFactory.eINSTANCE.createCheckboxDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, checkboxDescription));
+
+        DateTimeDescription dateTimeDescription = FormFactory.eINSTANCE.createDateTimeDescription();
+        dateTimeDescription.setStyle(FormFactory.eINSTANCE.createDateTimeDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, dateTimeDescription));
 
         FlexboxContainerDescription flexboxContainerDescription = FormFactory.eINSTANCE.createFlexboxContainerDescription();
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, flexboxContainerDescription));

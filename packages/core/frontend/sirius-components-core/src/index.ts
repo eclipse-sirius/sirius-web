@@ -46,6 +46,7 @@ export * from './selection/useSelection.types';
 export * from './theme';
 export * from './toast/MultiToast';
 export * from './toast/Toast';
+export * from './toast/useReporting';
 export * from './workbench/Panels';
 export * from './workbench/RepresentationContext';
 export * from './workbench/RepresentationContext.types';

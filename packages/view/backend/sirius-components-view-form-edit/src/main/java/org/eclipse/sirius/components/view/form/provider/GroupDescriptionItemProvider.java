@@ -231,6 +231,8 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createCheckboxDescription()));
 
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createDateTimeDescription()));
+
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createFlexboxContainerDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createImageDescription()));

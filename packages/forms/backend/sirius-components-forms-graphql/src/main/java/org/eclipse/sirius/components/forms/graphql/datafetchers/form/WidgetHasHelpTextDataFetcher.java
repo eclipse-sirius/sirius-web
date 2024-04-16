@@ -30,13 +30,14 @@ import graphql.schema.FieldCoordinates;
  */
 @QueryDataFetcher(type = "Widget", field = "hasHelpText")
 public class WidgetHasHelpTextDataFetcher  implements IDataFetcherWithFieldCoordinates<Boolean> {
-    
+
     private static final String HAS_HELP_TEXT_FIELD = "hasHelpText";
 
     private static final List<String> CORE_WIDGET_TYPES = List.of(
             "Button",
             "ChartWidget",
             "Checkbox",
+            "DateTime",
             "FlexboxContainer",
             "Image",
             "LabelWidget",
