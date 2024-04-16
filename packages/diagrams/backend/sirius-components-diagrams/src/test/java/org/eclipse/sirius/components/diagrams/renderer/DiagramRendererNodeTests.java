@@ -75,14 +75,12 @@ public class DiagramRendererNodeTests {
      */
     @Test
     public void testSimpleNodeRendering() {
-        Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("")
-                    .borderColor("")
-                    .borderSize(0)
-                    .borderStyle(LineStyle.Solid)
-                    .build();
-        };
+        Function<VariableManager, INodeStyle> styleProvider = variableManager -> RectangularNodeStyle.newRectangularNodeStyle()
+                .background("")
+                .borderColor("")
+                .borderSize(0)
+                .borderStyle(LineStyle.Solid)
+                .build();
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.UNDEFINED, Optional.empty());
 
         assertThat(diagram).isNotNull();
@@ -110,14 +108,12 @@ public class DiagramRendererNodeTests {
 
     @Test
     public void testSimpleNodeRenderingWithSizeProvider() {
-        Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("")
-                    .borderColor("")
-                    .borderSize(0)
-                    .borderStyle(LineStyle.Solid)
-                    .build();
-        };
+        Function<VariableManager, INodeStyle> styleProvider = variableManager -> RectangularNodeStyle.newRectangularNodeStyle()
+                .background("")
+                .borderColor("")
+                .borderSize(0)
+                .borderStyle(LineStyle.Solid)
+                .build();
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.empty());
 
         assertThat(diagram).isNotNull();
@@ -145,14 +141,12 @@ public class DiagramRendererNodeTests {
 
     @Test
     public void testSimpleNodeRenderingWithSizeProviderWithPreviousDiagram() {
-        Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("")
-                    .borderColor("")
-                    .borderSize(0)
-                    .borderStyle(LineStyle.Solid)
-                    .build();
-        };
+        Function<VariableManager, INodeStyle> styleProvider = variableManager -> RectangularNodeStyle.newRectangularNodeStyle()
+                .background("")
+                .borderColor("")
+                .borderSize(0)
+                .borderStyle(LineStyle.Solid)
+                .build();
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.empty());
 
         // We modified the created diagram to change the node previous size.
@@ -225,7 +219,7 @@ public class DiagramRendererNodeTests {
     @Test
     public void testPinEventRendering() {
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> RectangularNodeStyle.newRectangularNodeStyle()
-                .color("")
+                .background("")
                 .borderColor("")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)

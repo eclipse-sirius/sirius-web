@@ -65,7 +65,7 @@ const toIconLabelNode = (
     descriptionId,
     style: {
       textAlign: 'left',
-      backgroundColor: style.backgroundColor,
+      background: style.background,
     },
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),

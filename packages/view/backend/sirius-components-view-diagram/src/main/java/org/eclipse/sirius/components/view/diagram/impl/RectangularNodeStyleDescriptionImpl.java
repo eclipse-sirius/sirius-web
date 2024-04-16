@@ -16,8 +16,8 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.components.view.UserColor;
-import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
@@ -37,11 +37,13 @@ import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescriptio
  * <em>Border Size</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.RectangularNodeStyleDescriptionImpl#getBorderLineStyle
  * <em>Border Line Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.RectangularNodeStyleDescriptionImpl#getBackground
+ * <em>Background</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements RectangularNodeStyleDescription {
+public class RectangularNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container implements RectangularNodeStyleDescription {
 
     /**
      * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
@@ -112,6 +114,16 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
      * @ordered
      */
     protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getBackground()
+     * @generated
+     * @ordered
+     */
+    protected UserColor background;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -247,6 +259,46 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
      * @generated
      */
     @Override
+    public UserColor getBackground() {
+        if (this.background != null && this.background.eIsProxy()) {
+            InternalEObject oldBackground = (InternalEObject) this.background;
+            this.background = (UserColor) this.eResolveProxy(oldBackground);
+            if (this.background != oldBackground) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND, oldBackground, this.background));
+            }
+        }
+        return this.background;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetBackground() {
+        return this.background;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBackground(UserColor newBackground) {
+        UserColor oldBackground = this.background;
+        this.background = newBackground;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND, oldBackground, this.background));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
@@ -259,6 +311,10 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
                 return this.getBorderSize();
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.getBorderLineStyle();
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND:
+                if (resolve)
+                    return this.getBackground();
+                return this.basicGetBackground();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -282,6 +338,9 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
                 return;
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 this.setBorderLineStyle((LineStyle) newValue);
+                return;
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND:
+                this.setBackground((UserColor) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -307,6 +366,9 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
                 return;
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND:
+                this.setBackground((UserColor) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -327,56 +389,10 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
                 return this.borderSize != BORDER_SIZE_EDEFAULT;
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND:
+                return this.background != null;
         }
         return super.eIsSet(featureID);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == BorderStyle.class) {
-            switch (derivedFeatureID) {
-                case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
-                    return DiagramPackage.BORDER_STYLE__BORDER_COLOR;
-                case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
-                    return DiagramPackage.BORDER_STYLE__BORDER_RADIUS;
-                case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
-                    return DiagramPackage.BORDER_STYLE__BORDER_SIZE;
-                case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
-                    return DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE;
-                default:
-                    return -1;
-            }
-        }
-        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == BorderStyle.class) {
-            switch (baseFeatureID) {
-                case DiagramPackage.BORDER_STYLE__BORDER_COLOR:
-                    return DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR;
-                case DiagramPackage.BORDER_STYLE__BORDER_RADIUS:
-                    return DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
-                case DiagramPackage.BORDER_STYLE__BORDER_SIZE:
-                    return DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE;
-                case DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE:
-                    return DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
-                default:
-                    return -1;
-            }
-        }
-        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
     /**

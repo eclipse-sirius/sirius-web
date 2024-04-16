@@ -45,7 +45,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
     @Override
     public NodeDescription create() {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_blue"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Class");
@@ -66,7 +66,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodePalette.getNodeTools().add(newOperationNodeTool);
 
         var abstractNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        abstractNodeStyle.setColor(this.colorProvider.getColor("color_green"));
+        abstractNodeStyle.setBackground(this.colorProvider.getColor("color_green"));
         abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
 
         var abstractConditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
@@ -112,7 +112,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription attributesNodeDescription() {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_blue"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
         nodeStyle.setBorderRadius(0);
 
@@ -130,7 +130,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.setPalette(nodePalette);
 
         var abstractNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        abstractNodeStyle.setColor(this.colorProvider.getColor("color_green"));
+        abstractNodeStyle.setBackground(this.colorProvider.getColor("color_green"));
         abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
 
         var abstractConditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
@@ -143,7 +143,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription attributeNodeDescription() {
         var nodeStyle = DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_blue"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Attribute");
@@ -157,7 +157,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription operationsNodeDescription() {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_blue"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
         nodeStyle.setBorderRadius(0);
 
@@ -175,7 +175,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.setPalette(nodePalette);
 
         var abstractNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        abstractNodeStyle.setColor(this.colorProvider.getColor("color_green"));
+        abstractNodeStyle.setBackground(this.colorProvider.getColor("color_green"));
         abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
 
         var abstractConditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
@@ -188,7 +188,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription operationNodeDescription() {
         var nodeStyle = DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Operation");

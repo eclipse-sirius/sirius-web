@@ -61,7 +61,6 @@ public class FlowViewBuilder {
     public ImageNodeStyleDescription createImageNodeStyleDescription(String shapeId, IColorProvider colorProvider) {
         return this.diagramBuilderHelper.newImageNodeStyleDescription()
                 .shape(shapeId)
-                .color(colorProvider.getColor("transparent"))
                 .borderColor(colorProvider.getColor("transparent"))
                 .borderSize(0)
                 .build();

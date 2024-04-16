@@ -43,7 +43,6 @@ public class ProvidedServiceNodeDescriptionProvider implements INodeDescriptionP
     public NodeDescription create() {
         var nodeStyle = DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
         nodeStyle.setShape("f13acf89-e0bc-3b42-a0f6-c39e459e311e");
-        nodeStyle.setColor(this.colorProvider.getColor("color_white"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
         nodeStyle.setBorderSize(0);
         nodeStyle.setPositionDependentRotation(true);

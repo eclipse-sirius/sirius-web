@@ -65,6 +65,9 @@ Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IE
 - https://github.com/eclipse-sirius/sirius-web/issues/3425[#3425] [diagram] In our GraphQL schema, `DiagramDescription` must now declare an `ArrangeLayoutDirection`.
 - https://github.com/eclipse-sirius/sirius-web/issues/2655[#2655] [diagram] Add optional `calculateCustomNodeEdgeHandlePosition` method to `INodeLayoutHandler`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3456[#3456] [diagram] `ConnectionTargetHandle` now expects `isHovered` props for custom nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/3391[#3391] [diagram] Some changes have been made in the View DSL for diagram:
+* super types `style` has been removed from `NodeStyleDescription`
+* attribute `background` has been added to `RectangularNodeStyleDescription` and `IconLabelNodeStyleDescription`
 
 === Dependency update
 
@@ -148,6 +151,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3397[#3397] [diagram] Add helper lines when resizing nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/2655[#2655] [diagram] Add `calculateCustomNodeEdgeHandlePosition` method to position edge handles according to the real layout of the custom node
 - https://github.com/eclipse-sirius/sirius-web/issues/3456[#3456] [diagram] Fix an issue that were causing a large delay when opening a diagram, creating an edge or reconnecting an edge
+- https://github.com/eclipse-sirius/sirius-web/issues/3391[#3391] [diagram] Accept gradient for node background
 
 == v2024.3.0
 

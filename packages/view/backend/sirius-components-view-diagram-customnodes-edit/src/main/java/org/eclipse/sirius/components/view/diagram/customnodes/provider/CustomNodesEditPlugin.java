@@ -73,7 +73,7 @@ public final class CustomNodesEditPlugin extends EMFPlugin {
         int index = key.lastIndexOf('.');
         if (index != -1) {
             String extension = key.substring(index + 1);
-            if ("png".equalsIgnoreCase(extension)|| "gif".equalsIgnoreCase(extension) || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension) || "jpg".equalsIgnoreCase(extension)
+            if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension) || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension) || "jpg".equalsIgnoreCase(extension)
                     || "jpeg".equalsIgnoreCase(extension) || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension) || "svg".equalsIgnoreCase(extension)) {
                 result = "";
             }
@@ -95,6 +95,7 @@ public final class CustomNodesEditPlugin extends EMFPlugin {
      * @return the singleton instance.
      * @generated NOT
      */
+    @Override
     public ResourceLocator getPluginResourceLocator() {
         return plugin;
     }

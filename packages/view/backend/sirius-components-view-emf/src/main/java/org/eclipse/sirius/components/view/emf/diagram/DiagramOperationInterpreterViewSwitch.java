@@ -186,7 +186,7 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .build();
 
         var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
-                .color("")
+                .background("")
                 .borderColor("")
                 .borderStyle(LineStyle.Solid)
                 .build();

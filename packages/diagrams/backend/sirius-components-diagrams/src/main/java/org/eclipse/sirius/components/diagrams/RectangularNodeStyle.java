@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,8 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class RectangularNodeStyle implements INodeStyle {
-    private String color;
+
+    private String background;
 
     private String borderColor;
 
@@ -38,8 +39,12 @@ public final class RectangularNodeStyle implements INodeStyle {
         // Prevent instantiation
     }
 
-    public String getColor() {
-        return this.color;
+    public static Builder newRectangularNodeStyle() {
+        return new Builder();
+    }
+
+    public String getBackground() {
+        return this.background;
     }
 
     public String getBorderColor() {
@@ -58,14 +63,10 @@ public final class RectangularNodeStyle implements INodeStyle {
         return this.borderStyle;
     }
 
-    public static Builder newRectangularNodeStyle() {
-        return new Builder();
-    }
-
     @Override
     public String toString() {
-        String pattern = "{0} '{'color: {1}, border: '{' color: {2}, size: {3}, radius: {4}, style: {5} '}''}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.color, this.borderColor, this.borderSize, this.borderRadius, this.borderStyle);
+        String pattern = "{0} '{'color: {1}, border: '{' background: {2}, size: {3}, radius: {4}, style: {5} '}''}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.background, this.borderColor, this.borderSize, this.borderRadius, this.borderStyle);
     }
 
     /**
@@ -75,7 +76,8 @@ public final class RectangularNodeStyle implements INodeStyle {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String color;
+
+        private String background;
 
         private String borderColor;
 
@@ -89,8 +91,8 @@ public final class RectangularNodeStyle implements INodeStyle {
             // Prevent instantiation
         }
 
-        public Builder color(String color) {
-            this.color = Objects.requireNonNull(color);
+        public Builder background(String background) {
+            this.background = Objects.requireNonNull(background);
             return this;
         }
 
@@ -116,7 +118,7 @@ public final class RectangularNodeStyle implements INodeStyle {
 
         public RectangularNodeStyle build() {
             RectangularNodeStyle nodeStyleDescription = new RectangularNodeStyle();
-            nodeStyleDescription.color = Objects.requireNonNull(this.color);
+            nodeStyleDescription.background = Objects.requireNonNull(this.background);
             nodeStyleDescription.borderColor = Objects.requireNonNull(this.borderColor);
             nodeStyleDescription.borderSize = this.borderSize;
             nodeStyleDescription.borderRadius = this.borderRadius;

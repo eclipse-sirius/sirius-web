@@ -41,7 +41,7 @@ public class OperationalPerimeterNodeDescriptionProvider implements INodeDescrip
     @Override
     public NodeDescription create() {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_gray_2"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_gray_2"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_gray_2"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("OperationalPerimeter");

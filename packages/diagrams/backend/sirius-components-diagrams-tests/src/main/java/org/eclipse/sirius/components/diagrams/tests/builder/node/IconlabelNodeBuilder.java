@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,11 +44,11 @@ import org.eclipse.sirius.components.diagrams.tests.builder.label.LabelBuilder;
 @SuppressWarnings("checkstyle:HiddenField")
 public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
 
-    private NodesBuilder<T> nodesBuilder;
+    private final NodesBuilder<T> nodesBuilder;
 
-    private boolean isBorderNode;
+    private final boolean isBorderNode;
 
-    private InsideLabel insideLabel;
+    private final InsideLabel insideLabel;
 
     private Position position;
 
@@ -100,11 +100,9 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
         List<Node> borderNodes = Optional.ofNullable(this.borderNodesBuilder).map(nodesBuilder -> nodesBuilder.build(targetObjectIdToNodeId)).orElse(List.of());
         List<Node> childNodes = Optional.ofNullable(this.childNodesBuilder).map(nodesBuilder -> nodesBuilder.build(targetObjectIdToNodeId)).orElse(List.of());
 
-        // @formatter:off
         INodeStyle style = IconLabelNodeStyle.newIconLabelNodeStyle()
-                .backgroundColor("white")
+                .background("white")
                 .build();
-        // @formatter:on
 
         String labelText = this.insideLabel.getText();
         String nodeId = UUID.randomUUID().toString();

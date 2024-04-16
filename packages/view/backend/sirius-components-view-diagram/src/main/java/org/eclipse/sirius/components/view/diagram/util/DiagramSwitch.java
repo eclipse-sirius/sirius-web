@@ -250,8 +250,6 @@ public class DiagramSwitch<T> extends Switch<T> {
                 NodeStyleDescription nodeStyleDescription = (NodeStyleDescription) theEObject;
                 T result = this.caseNodeStyleDescription(nodeStyleDescription);
                 if (result == null)
-                    result = this.caseStyle(nodeStyleDescription);
-                if (result == null)
                     result = this.caseBorderStyle(nodeStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -290,8 +288,6 @@ public class DiagramSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNodeStyleDescription(rectangularNodeStyleDescription);
                 if (result == null)
-                    result = this.caseStyle(rectangularNodeStyleDescription);
-                if (result == null)
                     result = this.caseBorderStyle(rectangularNodeStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -303,8 +299,6 @@ public class DiagramSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNodeStyleDescription(imageNodeStyleDescription);
                 if (result == null)
-                    result = this.caseStyle(imageNodeStyleDescription);
-                if (result == null)
                     result = this.caseBorderStyle(imageNodeStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -315,8 +309,6 @@ public class DiagramSwitch<T> extends Switch<T> {
                 T result = this.caseIconLabelNodeStyleDescription(iconLabelNodeStyleDescription);
                 if (result == null)
                     result = this.caseNodeStyleDescription(iconLabelNodeStyleDescription);
-                if (result == null)
-                    result = this.caseStyle(iconLabelNodeStyleDescription);
                 if (result == null)
                     result = this.caseBorderStyle(iconLabelNodeStyleDescription);
                 if (result == null)

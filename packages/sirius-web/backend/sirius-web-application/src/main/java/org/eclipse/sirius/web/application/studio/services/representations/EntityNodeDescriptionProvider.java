@@ -53,7 +53,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .borderRadius(8)
                 .borderSize(3)
                 .borderColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.MAIN_COLOR))
-                .color(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BACKGROUND_COLOR))
+                .background(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BACKGROUND_COLOR))
                 .borderLineStyle(LineStyle.SOLID)
                 .build();
 
@@ -62,7 +62,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .borderRadius(8)
                 .borderSize(3)
                 .borderColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.MAIN_COLOR))
-                .color(this.colorProvider.getColor(DomainDiagramDescriptionProvider.LIGHT_GREY_COLOR))
+                .background(this.colorProvider.getColor(DomainDiagramDescriptionProvider.LIGHT_GREY_COLOR))
                 .borderLineStyle(LineStyle.SOLID)
                 .build();
 
@@ -127,7 +127,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
     private NodeDescription attributeNodeDescription() {
         var nodeStyle = new DiagramBuilders()
                 .newIconLabelNodeStyleDescription()
-                .color(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BACKGROUND_COLOR))
+                .background(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BACKGROUND_COLOR))
                 .build();
 
         var palette = new DiagramBuilders()

@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.migration;
 
-import java.util.Collections;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -29,18 +31,15 @@ import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.migration.api.MigrationData;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 /**
  * Specialized BasicExtendedMetaData.
  *
  * @author mcharfadi
  */
 public class MigrationService extends BasicExtendedMetaData implements JsonResource.IJsonResourceProcessor {
-    private MigrationData documentMigrationData;
 
     private final List<IMigrationParticipant> migrationParticipants;
+    private MigrationData documentMigrationData;
 
     public MigrationService(List<IMigrationParticipant> migrationParticipants) {
         this.migrationParticipants = Objects.requireNonNull(migrationParticipants);
@@ -52,10 +51,9 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     }
 
     public MigrationData getMostRecentParticipantMigrationData() {
-        var migrationParticipantsCandidate = migrationParticipants.stream()
+        var migrationParticipantsCandidate = this.migrationParticipants.stream()
                 .filter(this::isCandidateVersion)
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
-                .sorted(Collections.reverseOrder())
+                .sorted(Comparator.comparing(IMigrationParticipant::getVersion).reversed())
                 .map(migrationParticipant -> new MigrationData("none", migrationParticipant.getVersion()))
                 .findFirst();
 
@@ -65,7 +63,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     @Override
     public EStructuralFeature getElement(EClass eClass, String namespace, String eStructuralFeatureName) {
         EStructuralFeature structuralFeature = eClass.getEStructuralFeature(eStructuralFeatureName);
-        var migrationParticipantsCandidate = migrationParticipants.stream()
+        var migrationParticipantsCandidate = this.migrationParticipants.stream()
                 .filter(this::isCandidateVersion)
                 .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
                 .toList();
@@ -81,7 +79,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     @Override
     public EClassifier getType(EPackage ePackage, String typeName) {
         EClassifier eClassifier = ePackage.getEClassifier(typeName);
-        var migrationParticipantsCandidate = migrationParticipants.stream()
+        var migrationParticipantsCandidate = this.migrationParticipants.stream()
                 .filter(this::isCandidateVersion)
                 .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
                 .toList();
@@ -97,7 +95,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     @Override
     public EPackage getPackage(String nsURI) {
         EPackage ePackage = super.getPackage(nsURI);
-        var migrationParticipantsCandidate = migrationParticipants.stream()
+        var migrationParticipantsCandidate = this.migrationParticipants.stream()
                 .filter(this::isCandidateVersion)
                 .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
                 .toList();
@@ -114,19 +112,19 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     public void preDeserialization(JsonResource resource, JsonObject jsonObject) {
         this.setMigrationDataFromDocumentContent(jsonObject);
         this.setResourceMetadataAdapterMigrationData(resource, this.documentMigrationData);
-        var migrationParticipantsCandidates = migrationParticipants.stream()
+        var migrationParticipantsCandidates = this.migrationParticipants.stream()
                 .filter(this::isCandidateVersion)
                 .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
                 .toList();
         for (IMigrationParticipant migrationParticipant : migrationParticipantsCandidates) {
             migrationParticipant.preDeserialization(resource, jsonObject);
-            setResourceMetadataAdapterMigrationData(resource, new MigrationData(migrationParticipant.getClass().getSimpleName(), migrationParticipant.getVersion()));
+            this.setResourceMetadataAdapterMigrationData(resource, new MigrationData(migrationParticipant.getClass().getSimpleName(), migrationParticipant.getVersion()));
         }
     }
 
     @Override
     public void postSerialization(JsonResource resource, JsonObject jsonObject) {
-        getOptionalResourceMetadataAdapter(resource).ifPresent(resourceMetadataAdapter -> {
+        this.getOptionalResourceMetadataAdapter(resource).ifPresent(resourceMetadataAdapter -> {
             if (resourceMetadataAdapter.getMigrationData() != null) {
                 var rootMigration = new Gson().toJsonTree(resourceMetadataAdapter.getMigrationData(), MigrationData.class);
                 if (rootMigration != null) {
@@ -134,7 +132,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
                 }
             }
         });
-        var migrationParticipantsCandidates = migrationParticipants.stream()
+        var migrationParticipantsCandidates = this.migrationParticipants.stream()
                 .filter(this::isCandidateVersion)
                 .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
                 .toList();
@@ -145,7 +143,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
 
     @Override
     public void postObjectLoading(EObject eObject, JsonObject jsonObject, boolean isTopObject) {
-        var migrationParticipantsCandidates = migrationParticipants.stream()
+        var migrationParticipantsCandidates = this.migrationParticipants.stream()
                 .filter(this::isCandidateVersion)
                 .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
                 .toList();
@@ -157,7 +155,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     @Override
     public Object getValue(EObject object, EStructuralFeature feature, Object value) {
         Object returnValue = value;
-        var migrationParticipantsCandidates = migrationParticipants.stream()
+        var migrationParticipantsCandidates = this.migrationParticipants.stream()
                 .filter(this::isCandidateVersion)
                 .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
                 .toList();
@@ -178,7 +176,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     }
 
     private void setResourceMetadataAdapterMigrationData(JsonResource resource, MigrationData migrationData) {
-        getOptionalResourceMetadataAdapter(resource).ifPresent(resourceMetadataAdapter -> resourceMetadataAdapter.setMigrationData(migrationData));
+        this.getOptionalResourceMetadataAdapter(resource).ifPresent(resourceMetadataAdapter -> resourceMetadataAdapter.setMigrationData(migrationData));
     }
 
     private void setMigrationDataFromDocumentContent(JsonObject jsonObject) {

@@ -201,8 +201,13 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         Function<VariableManager, List<?>> colorOptionsProvider = variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList();
 
-        if (!Objects.equals(nodeType, NodeType.NODE_IMAGE)) {
-            var color = this.propertiesWidgetCreationService.createReferenceWidget("nodestyle.color", "Color", DiagramPackage.Literals.STYLE__COLOR, colorOptionsProvider);
+        if (Objects.equals(nodeType, NodeType.NODE_RECTANGLE)) {
+            var color = this.propertiesWidgetCreationService.createReferenceWidget("rectangular.nodestyle.background", "Background", DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND, colorOptionsProvider);
+            controls.add(color);
+        }
+        if (Objects.equals(nodeType, NodeType.NODE_ICON_LABEL)) {
+            var color = this.propertiesWidgetCreationService.createReferenceWidget("icon.nodestyle.background", "Background", DiagramPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND,
+                    colorOptionsProvider);
             controls.add(color);
         }
         var borderColor = this.propertiesWidgetCreationService.createReferenceWidget("nodestyle.borderColor", "Border Color", DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, colorOptionsProvider);

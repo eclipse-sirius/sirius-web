@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,17 +40,17 @@ import org.eclipse.sirius.components.diagrams.tests.builder.label.LabelBuilder;
  * Builder used to build a rectangle node.
  *
  * @param <T>
- *            The parent builder type
+ *         The parent builder type
  * @author gcoutable
  */
 @SuppressWarnings("checkstyle:HiddenField")
 public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
-    private NodesBuilder<T> nodesBuilder;
+    private final NodesBuilder<T> nodesBuilder;
 
-    private boolean isBorderNode;
+    private final boolean isBorderNode;
 
-    private InsideLabel insideLabel;
+    private final InsideLabel insideLabel;
 
     private Position position;
 
@@ -124,7 +124,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         List<Node> childNodes = Optional.ofNullable(this.childNodesBuilder).map(nodesBuilder -> nodesBuilder.build(targetObjectIdToNodeId)).orElse(List.of());
 
         INodeStyle style = RectangularNodeStyle.newRectangularNodeStyle()
-                .color("#E5F5F8")
+                .background("#E5F5F8")
                 .borderColor("#33B0C3")
                 .borderSize(1)
                 .borderRadius(3)

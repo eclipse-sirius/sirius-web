@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.diagram.customnodes;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 
 /**
@@ -72,14 +73,6 @@ public interface CustomnodesPackage extends EPackage {
     int ELLIPSE_NODE_STYLE_DESCRIPTION = 0;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__COLOR;
-
-    /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -113,13 +106,21 @@ public interface CustomnodesPackage extends EPackage {
     int ELLIPSE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
 
     /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
      * The number of structural features of the '<em>Ellipse Node Style Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
+    int ELLIPSE_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Ellipse Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -140,6 +141,18 @@ public interface CustomnodesPackage extends EPackage {
      * @generated
      */
     EClass getEllipseNodeStyleDescription();
+
+    /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription#getBackground
+     * <em>Background</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Background</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription#getBackground()
+     * @see #getEllipseNodeStyleDescription()
+     * @generated
+     */
+    EReference getEllipseNodeStyleDescription_Background();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -173,6 +186,14 @@ public interface CustomnodesPackage extends EPackage {
          * @generated
          */
         EClass ELLIPSE_NODE_STYLE_DESCRIPTION = eINSTANCE.getEllipseNodeStyleDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Background</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND = eINSTANCE.getEllipseNodeStyleDescription_Background();
 
     }
 

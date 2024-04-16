@@ -61,14 +61,14 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
                 .childrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())
                 .insideLabel(new PapayaViewBuilder().createInsideLabelDescription("aql:self.name", this.colorProvider.getColor("label_white")))
                 .style(this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                        .color(this.colorProvider.getColor("color_blue"))
+                        //.color(this.colorProvider.getColor("color_blue"))
                         .borderColor(this.colorProvider.getColor("border_blue"))
                         .build())
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .conditionalStyles(this.diagramBuilderHelper.newConditionalNodeStyle()
                         .condition("aql:self.abstract")
                         .style(this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                                .color(this.colorProvider.getColor("color_green"))
+                                .background(this.colorProvider.getColor("color_green"))
                                 .borderColor(this.colorProvider.getColor("border_green"))
                                 .build())
                         .build())
@@ -94,11 +94,11 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
         var nodePaletteBuilder = this.diagramBuilderHelper.newNodePalette();
         if (optionalClassNodeDescription.isPresent() && optionalInterfaceNodeDescription.isPresent()) {
             var nodePalette = nodePaletteBuilder.edgeTools(this.createExtendsClassEdgeTool(optionalClassNodeDescription.get()),
-                    this.createImplementsInterfaceEdgeTool(optionalInterfaceNodeDescription.get()))
-                .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
-                .labelEditTool(new PapayaToolsFactory().editName())
-                .deleteTool(new PapayaToolsFactory().deleteTool())
-                .build();
+                            this.createImplementsInterfaceEdgeTool(optionalInterfaceNodeDescription.get()))
+                    .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
+                    .labelEditTool(new PapayaToolsFactory().editName())
+                    .deleteTool(new PapayaToolsFactory().deleteTool())
+                    .build();
             optionalClassNodeDescription.get().setPalette(nodePalette);
             return nodePalette;
         }
@@ -110,12 +110,12 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
                 .name("Extends Class")
                 .targetElementDescriptions(classNodeDescription)
                 .body(this.viewBuilderHelper.newChangeContext()
-                    .expression("aql:semanticEdgeSource")
-                    .children(this.viewBuilderHelper.newSetValue()
-                        .featureName("extends")
-                        .valueExpression("aql:semanticEdgeTarget")
+                        .expression("aql:semanticEdgeSource")
+                        .children(this.viewBuilderHelper.newSetValue()
+                                .featureName("extends")
+                                .valueExpression("aql:semanticEdgeTarget")
+                                .build())
                         .build())
-                    .build())
                 .build();
     }
 
@@ -126,9 +126,9 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression("aql:semanticEdgeSource")
                         .children(this.viewBuilderHelper.newSetValue()
-                            .featureName("implements")
-                            .valueExpression("aql:semanticEdgeTarget")
-                            .build())
+                                .featureName("implements")
+                                .valueExpression("aql:semanticEdgeTarget")
+                                .build())
                         .build())
                 .build();
     }

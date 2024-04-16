@@ -68,7 +68,7 @@ public class TestDiagramBuilder {
                 .borderColor("#000000")
                 .borderSize(1)
                 .borderStyle(LineStyle.Solid)
-                .color("#FFFFFF")
+                .background("#FFFFFF")
                 .build();
     }
 

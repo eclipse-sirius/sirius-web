@@ -31,7 +31,7 @@ fragment nodeFragment on Node {
   style {
     __typename
     ... on RectangularNodeStyle {
-      color
+      background
       borderColor
       borderStyle
       borderSize
@@ -46,7 +46,7 @@ fragment nodeFragment on Node {
       positionDependentRotation
     }
     ... on IconLabelNodeStyle {
-      backgroundColor
+      background
     }
      ${contributions.map(
        (nodeStyle) =>

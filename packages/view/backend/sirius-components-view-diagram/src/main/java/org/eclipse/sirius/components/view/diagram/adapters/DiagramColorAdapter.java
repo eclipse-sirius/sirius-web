@@ -20,8 +20,10 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 
 /**
@@ -69,8 +71,11 @@ public class DiagramColorAdapter extends EContentAdapter {
     }
 
     private void setNodeColors(NodeStyleDescription style, Object object) {
-        if (style != null && style.getColor() == null) {
-            style.setColor(this.colorPaletteService.getColorFromPalette(object, "white"));
+        if (style instanceof RectangularNodeStyleDescription rectangularNodeStyleDescription && rectangularNodeStyleDescription.getBackground() == null) {
+            rectangularNodeStyleDescription.setBackground(this.colorPaletteService.getColorFromPalette(object, "white"));
+        }
+        if (style instanceof IconLabelNodeStyleDescription iconLabelNodeStyleDescription && iconLabelNodeStyleDescription.getBackground() == null) {
+            iconLabelNodeStyleDescription.setBackground(this.colorPaletteService.getColorFromPalette(object, "white"));
         }
         if (style != null && style.getBorderColor() == null) {
             style.setBorderColor(this.colorPaletteService.getColorFromPalette(object, "black"));

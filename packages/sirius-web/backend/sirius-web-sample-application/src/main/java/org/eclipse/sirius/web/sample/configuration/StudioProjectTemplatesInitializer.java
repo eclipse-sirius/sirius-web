@@ -335,7 +335,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
 
     private RectangularNodeStyleDescription createRectangularNodeStyle(View view, String color, String borderColor) {
         RectangularNodeStyleDescription entity2Style = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        entity2Style.setColor(this.getColorFromPalette(view, color));
+        entity2Style.setBackground(this.getColorFromPalette(view, color));
         entity2Style.setBorderColor(this.getColorFromPalette(view, borderColor));
         entity2Style.setBorderRadius(3);
         return entity2Style;

@@ -38,7 +38,7 @@ const nodeTypeRegistry: NodeTypeRegistry = {
   graphQLNodeStyleFragments: [
     {
       type: 'EllipseNodeStyle',
-      fields: `borderColor borderSize borderStyle color`,
+      fields: `borderColor borderSize borderStyle background`,
     },
   ],
   nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],

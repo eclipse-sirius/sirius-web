@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.diagram.customnodes.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
@@ -116,6 +117,16 @@ public class CustomnodesPackageImpl extends EPackageImpl implements CustomnodesP
      * @generated
      */
     @Override
+    public EReference getEllipseNodeStyleDescription_Background() {
+        return (EReference) this.ellipseNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public CustomnodesFactory getCustomnodesFactory() {
         return (CustomnodesFactory) this.getEFactoryInstance();
     }
@@ -140,6 +151,7 @@ public class CustomnodesPackageImpl extends EPackageImpl implements CustomnodesP
 
         // Create classes and their features
         this.ellipseNodeStyleDescriptionEClass = this.createEClass(ELLIPSE_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.ellipseNodeStyleDescriptionEClass, ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND);
     }
 
     /**
@@ -167,6 +179,7 @@ public class CustomnodesPackageImpl extends EPackageImpl implements CustomnodesP
 
         // Obtain other dependent packages
         DiagramPackage theDiagramPackage = (DiagramPackage) EPackage.Registry.INSTANCE.getEPackage(DiagramPackage.eNS_URI);
+        ViewPackage theViewPackage = (ViewPackage) EPackage.Registry.INSTANCE.getEPackage(ViewPackage.eNS_URI);
 
         // Create type parameters
 
@@ -177,6 +190,8 @@ public class CustomnodesPackageImpl extends EPackageImpl implements CustomnodesP
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.ellipseNodeStyleDescriptionEClass, EllipseNodeStyleDescription.class, "EllipseNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getEllipseNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, EllipseNodeStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

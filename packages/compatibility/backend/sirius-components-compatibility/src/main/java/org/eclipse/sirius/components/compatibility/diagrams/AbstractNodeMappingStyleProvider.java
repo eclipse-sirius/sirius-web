@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,27 +60,23 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
 
         if (this.shouldBeConsideredAsListItemNodeStyle(variableManager, nodeStyleDescription)) {
             style = this.createListItemNodeStyle(variableManager, nodeStyleDescription);
-        } else if (nodeStyleDescription instanceof SquareDescription) {
-            SquareDescription squareDescription = (SquareDescription) nodeStyleDescription;
+        } else if (nodeStyleDescription instanceof SquareDescription squareDescription) {
             style = this.createRectangularNodeStyle(variableManager, squareDescription);
-        } else if (nodeStyleDescription instanceof DotDescription) {
-            DotDescription dotDescription = (DotDescription) nodeStyleDescription;
+        } else if (nodeStyleDescription instanceof DotDescription dotDescription) {
             style = this.createRectangularNodeStyle(variableManager, dotDescription);
-        } else if (nodeStyleDescription instanceof FlatContainerStyleDescription) {
-            FlatContainerStyleDescription flatContainerStyleDescription = (FlatContainerStyleDescription) nodeStyleDescription;
+        } else if (nodeStyleDescription instanceof FlatContainerStyleDescription flatContainerStyleDescription) {
             if (this.abstractNodeMapping instanceof ContainerMapping && new ContainerMappingQuery((ContainerMapping) this.abstractNodeMapping).isListContainer()) {
                 style = this.createListNodeStyle(variableManager, flatContainerStyleDescription);
             } else {
                 style = this.createRectangularNodeStyle(variableManager, flatContainerStyleDescription);
             }
-        } else if (nodeStyleDescription instanceof WorkspaceImageDescription) {
-            WorkspaceImageDescription workspaceImageDescription = (WorkspaceImageDescription) nodeStyleDescription;
+        } else if (nodeStyleDescription instanceof WorkspaceImageDescription workspaceImageDescription) {
             WorkspaceImageDescriptionConverter workspaceImageDescriptionConverter = new WorkspaceImageDescriptionConverter(this.interpreter, variableManager, workspaceImageDescription);
             style = workspaceImageDescriptionConverter.convert();
         } else {
             // Fallback on Rectangular node style for now, until other styles are supported
             style = RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("rgb(200, 200, 200)")
+                    .background("rgb(200, 200, 200)")
                     .borderColor("rgb(0, 0, 0)")
                     .borderSize(1)
                     .borderStyle(LineStyle.Solid)
@@ -95,14 +91,13 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
      * lozenge) and the {@link #nodeMapping} container represents his children in a list, <code>false</code> otherwise.
      *
      * @param variableManager
-     *            The variable manager
+     *         The variable manager
      * @param nodeStyleDescription
-     *            the node style description that could be considered as a list item node style
+     *         the node style description that could be considered as a list item node style
      * @return <code>true</code> if the <em>nodeStyleDescription</em> should be considered as a list item node style
      */
     private boolean shouldBeConsideredAsListItemNodeStyle(VariableManager variableManager, LabelStyleDescription nodeStyleDescription) {
-        if (this.abstractNodeMapping.eContainer() instanceof ContainerMapping) {
-            ContainerMapping parentMapping = (ContainerMapping) this.abstractNodeMapping.eContainer();
+        if (this.abstractNodeMapping.eContainer() instanceof ContainerMapping parentMapping) {
             return new ContainerMappingQuery(parentMapping).isListContainer();
         }
         return false;
@@ -110,7 +105,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
 
     private INodeStyle createListItemNodeStyle(VariableManager variableManager, LabelStyleDescription nodeStyleDescription) {
         return IconLabelNodeStyle.newIconLabelNodeStyle()
-                .backgroundColor("transparent")
+                .background("transparent")
                 .build();
     }
 
@@ -128,7 +123,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         int borderSize = result.asInt().getAsInt();
 
         return RectangularNodeStyle.newRectangularNodeStyle()
-                .color(color)
+                .background(color)
                 .borderColor(borderColor)
                 .borderSize(borderSize)
                 .borderRadius(borderRadius)
@@ -161,7 +156,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         int borderSize = result.asInt().getAsInt();
 
         return RectangularNodeStyle.newRectangularNodeStyle()
-                .color(color)
+                .background(color)
                 .borderColor(borderColor)
                 .borderSize(borderSize)
                 .borderStyle(borderStyle)
@@ -181,7 +176,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         int borderSize = result.asInt().getAsInt();
 
         return RectangularNodeStyle.newRectangularNodeStyle()
-                .color(color)
+                .background(color)
                 .borderColor(borderColor)
                 .borderSize(borderSize)
                 .borderRadius(borderRadius)
@@ -202,7 +197,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         int borderSize = result.asInt().getAsInt();
 
         return RectangularNodeStyle.newRectangularNodeStyle()
-                .color(color)
+                .background(color)
                 .borderColor(borderColor)
                 .borderSize(borderSize)
                 .borderRadius(borderRadius)

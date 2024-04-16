@@ -40,12 +40,11 @@ public class OperationalActorNodeDescriptionProvider implements INodeDescription
     @Override
     public NodeDescription create() {
         var operationalActorNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        operationalActorNodeStyle.setColor(this.colorProvider.getColor("color_gray"));
+        operationalActorNodeStyle.setBackground(this.colorProvider.getColor("color_gray"));
         operationalActorNodeStyle.setBorderColor(this.colorProvider.getColor("border_gray"));
 
         var operationalActorEmptyNodeStyle = DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
         operationalActorEmptyNodeStyle.setShape("4d9a22c0-dc36-31c9-bb6a-c18c66b51d93");
-        operationalActorEmptyNodeStyle.setColor(this.colorProvider.getColor("color_white"));
         operationalActorEmptyNodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
         operationalActorEmptyNodeStyle.setBorderSize(0);
 

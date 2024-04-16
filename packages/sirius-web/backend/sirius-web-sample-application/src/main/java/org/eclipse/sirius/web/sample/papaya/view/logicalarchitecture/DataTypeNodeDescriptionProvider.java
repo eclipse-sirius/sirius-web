@@ -38,7 +38,7 @@ public class DataTypeNodeDescriptionProvider implements INodeDescriptionProvider
     @Override
     public NodeDescription create() {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_blue_5"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_blue_5"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("bordre_green"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("DataType");

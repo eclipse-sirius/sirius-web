@@ -39,7 +39,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
     @Override
     public NodeDescription create() {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_blue_3"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_2"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Interface");
@@ -76,7 +76,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
 
     private NodeDescription operationNodeDescription() {
         var nodeStyle = DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
+        nodeStyle.setBackground(this.colorProvider.getColor("color_blue_3"));
 
         var builder = new PapayaViewBuilder();
         var nodeDescription = builder.createNodeDescription("Operation");

@@ -64,7 +64,7 @@ describe('/projects/:projectId/edit - Color Palette', () => {
     cy.get('[title="diagram::DiagramDescription"]').dblclick();
     cy.getByTestId('Entity1 Node-toggle').click();
     cy.get('[title="diagram::RectangularNodeStyleDescription"]').click();
-    cy.getByTestId('Color').click();
+    cy.getByTestId('Background').click();
     cy.getByTestId('option-color_dark').should('exist').click();
     cy.getByTestId('Border Color').click();
     cy.getByTestId('option-border_green').should('exist').click();
