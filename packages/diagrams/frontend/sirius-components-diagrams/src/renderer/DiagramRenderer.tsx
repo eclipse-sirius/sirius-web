@@ -199,7 +199,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         });
       }
     },
-    [setNodes, targetNodeId, draggedNode?.id, layoutOnBoundsChange, getNodes]
+    [setNodes, targetNodeId, draggedNode?.id, helperLinesEnabled, layoutOnBoundsChange, getNodes]
   );
 
   const handleEdgesChange: OnEdgesChange = useCallback(

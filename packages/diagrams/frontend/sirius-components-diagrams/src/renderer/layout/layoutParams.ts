@@ -23,3 +23,5 @@ export const headerVerticalOffset = 25;
 export const labelVerticalPadding = 8;
 export const labelHorizontalPadding = 16;
 export const borderNodeReferencePositionRatio = 0.2;
+export const verticalHelperLinesSnapGap = 10;
+export const horizontalHelperLinesSnapGap = 10;
