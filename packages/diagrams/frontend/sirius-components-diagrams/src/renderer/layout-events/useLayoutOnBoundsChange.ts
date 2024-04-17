@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { useCallback } from 'react';
 import { Node, NodeChange, NodeDimensionChange, NodePositionChange, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDropNode } from '../dropNode/useDropNode';
@@ -59,45 +60,48 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
     });
   };
 
-  const layoutOnBoundsChange = (changes: NodeChange[], nodes: Node<NodeData, DiagramNodeType>[]): void => {
-    const change = isBoundsChangeFinished(changes);
-    if (change) {
-      const updatedNodes = updateNodeResizeByUserState(changes, nodes);
+  const layoutOnBoundsChange = useCallback(
+    (changes: NodeChange[], nodes: Node<NodeData, DiagramNodeType>[]): void => {
+      const change = isBoundsChangeFinished(changes);
+      if (change) {
+        const updatedNodes = updateNodeResizeByUserState(changes, nodes);
 
-      const diagramToLayout: RawDiagram = {
-        nodes: updatedNodes,
-        edges: getEdges(),
-      };
-
-      layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
-        updatedNodes.map((node) => {
-          const existingNode = laidOutDiagram.nodes.find((laidoutNode) => laidoutNode.id === node.id);
-          if (existingNode) {
-            return {
-              ...node,
-              position: existingNode.position,
-              width: existingNode.width,
-              height: existingNode.height,
-              style: {
-                ...node.style,
-                width: `${existingNode.width}px`,
-                height: `${existingNode.height}px`,
-              },
-            };
-          }
-          return node;
-        });
-        setNodes(updatedNodes);
-        setEdges(laidOutDiagram.edges);
-        const finalDiagram: RawDiagram = {
+        const diagramToLayout: RawDiagram = {
           nodes: updatedNodes,
-          edges: laidOutDiagram.edges,
+          edges: getEdges(),
         };
 
-        synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
-      });
-    }
-  };
+        layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
+          updatedNodes.map((node) => {
+            const existingNode = laidOutDiagram.nodes.find((laidoutNode) => laidoutNode.id === node.id);
+            if (existingNode) {
+              return {
+                ...node,
+                position: existingNode.position,
+                width: existingNode.width,
+                height: existingNode.height,
+                style: {
+                  ...node.style,
+                  width: `${existingNode.width}px`,
+                  height: `${existingNode.height}px`,
+                },
+              };
+            }
+            return node;
+          });
+          setNodes(updatedNodes);
+          setEdges(laidOutDiagram.edges);
+          const finalDiagram: RawDiagram = {
+            nodes: updatedNodes,
+            edges: laidOutDiagram.edges,
+          };
+
+          synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+        });
+      }
+    },
+    [refreshEventPayloadId]
+  );
 
   return { layoutOnBoundsChange };
 };
