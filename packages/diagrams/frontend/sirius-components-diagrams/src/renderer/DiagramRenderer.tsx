@@ -204,7 +204,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         });
       }
     },
-    [setNodes, targetNodeId, draggedNode?.id]
+    [setNodes, targetNodeId, draggedNode?.id, layoutOnBoundsChange]
   );
 
   const handleEdgesChange: OnEdgesChange = useCallback((changes: EdgeChange[]) => {
