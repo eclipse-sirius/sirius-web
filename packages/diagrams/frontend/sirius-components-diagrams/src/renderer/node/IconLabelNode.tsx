@@ -12,15 +12,13 @@
  *******************************************************************************/
 
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo, useContext } from 'react';
+import { memo } from 'react';
 import { NodeProps } from 'reactflow';
 import { Label } from '../Label';
+import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { IconLabelNodeData } from './IconsLabelNode.types';
-import { NodeContext } from './NodeContext';
-import { NodeContextValue } from './NodeContext.types';
-import { useDrop } from '../drop/useDrop';
 
 const iconlabelStyle = (
   style: React.CSSProperties,
@@ -41,11 +39,10 @@ const iconlabelStyle = (
   return iconLabelNodeStyle;
 };
 
-export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNodeData>) => {
+export const IconLabelNode = memo(({ data, id, selected, dragging }: NodeProps<IconLabelNodeData>) => {
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
-  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -55,7 +52,7 @@ export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNo
     <div style={{ paddingLeft: '8px', paddingRight: '8px' }}>
       <div
         style={{
-          ...iconlabelStyle(data.style, theme, selected, hoveredNode?.id === id, data.faded),
+          ...iconlabelStyle(data.style, theme, selected, data.isHovered, data.faded),
           ...dropFeedbackStyle,
         }}
         onDragOver={onDragOver}

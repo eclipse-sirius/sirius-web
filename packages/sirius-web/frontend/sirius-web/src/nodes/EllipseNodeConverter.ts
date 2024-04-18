@@ -24,8 +24,8 @@ import {
   IConvertEngine,
   INodeConverter,
   convertHandles,
-  convertLineStyle,
   convertInsideLabel,
+  convertLineStyle,
   convertOutsideLabels,
   isListLayoutStrategy,
 } from '@eclipse-sirius/sirius-components-diagrams';
@@ -89,6 +89,9 @@ const toEllipseNode = (
     isNew,
     resizedByUser,
     isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    isDropNodeTarget: false,
+    isDropNodeCandidate: false,
+    isHovered: false,
   };
 
   data.insideLabel = convertInsideLabel(

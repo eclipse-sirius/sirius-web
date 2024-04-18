@@ -11,11 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from 'reactflow';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
-import { useDropNode } from '../dropNode/useDropNode';
+import { DropNodeContext } from '../dropNode/DropNodeContext';
+import { DropNodeContextValue } from '../dropNode/DropNodeContext.types';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
@@ -24,23 +25,38 @@ import { UseLayoutOnBoundsChangeValue } from './useLayoutOnBoundsChange.types';
 
 export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayoutOnBoundsChangeValue => {
   const { layout } = useLayout();
-  const { hasDroppedNodeParentChanged } = useDropNode();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
-  const { getEdges } = useStore();
+  const { getEdges, getNodes } = useStore();
+  const { droppableOnDiagram } = useContext<DropNodeContextValue>(DropNodeContext);
 
-  const isMoveFinished = (change: NodeChange): change is NodePositionChange => {
+  const isMoveFinished = (change: NodeChange, nodes: Node<NodeData>[]): change is NodePositionChange => {
     return (
       change.type === 'position' &&
       typeof change.dragging === 'boolean' &&
       !change.dragging &&
-      !hasDroppedNodeParentChanged()
+      hasDropBeenTriggered(nodes)
     );
   };
   const isResizeFinished = (change: NodeChange): change is NodeDimensionChange =>
     change.type === 'dimensions' && typeof change.resizing === 'boolean' && !change.resizing;
 
-  const isBoundsChangeFinished = (changes: NodeChange[]): NodeChange | undefined => {
-    return changes.find((change) => isMoveFinished(change) || isResizeFinished(change));
+  const isBoundsChangeFinished = (changes: NodeChange[], nodes: Node<NodeData>[]): NodeChange | undefined => {
+    return changes.find((change) => isMoveFinished(change, nodes) || isResizeFinished(change));
+  };
+
+  const hasDropBeenTriggered = (nodes: Node<NodeData>[]): boolean => {
+    const targetNode = nodes.find((node) => node.data.isDropNodeTarget);
+    const draggedNode = nodes.find((node) => node.dragging);
+    const isDropOnNode: boolean = !!targetNode;
+
+    const isDropOnSameParent: boolean =
+      isDropOnNode && !!draggedNode?.parentNode && draggedNode.parentNode === targetNode?.id;
+    const isDropFromDiagramToDiagram: boolean = !isDropOnNode && !draggedNode?.parentNode;
+
+    const isValidDropOnNode: boolean = isDropOnNode && !!targetNode?.data.isDropNodeCandidate;
+    const isValidDropOnDiagram: boolean = !isDropOnNode && droppableOnDiagram;
+
+    return isValidDropOnDiagram || isValidDropOnNode || isDropOnSameParent || isDropFromDiagramToDiagram;
   };
 
   const updateNodeResizeByUserState = (
@@ -63,7 +79,7 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
 
   const layoutOnBoundsChange = useCallback(
     (changes: NodeChange[], nodes: Node<NodeData, DiagramNodeType>[]): void => {
-      const change = isBoundsChangeFinished(changes);
+      const change = isBoundsChangeFinished(changes, getNodes());
       if (change) {
         const updatedNodes = updateNodeResizeByUserState(changes, nodes);
 
@@ -100,7 +116,7 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
         });
       }
     },
-    [refreshEventPayloadId, synchronizeLayoutData]
+    [refreshEventPayloadId, synchronizeLayoutData, getNodes]
   );
 
   return { layoutOnBoundsChange };

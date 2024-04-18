@@ -20,8 +20,6 @@ import {
   DiagramContextValue,
   DiagramElementPalette,
   Label,
-  NodeContext,
-  NodeContextValue,
   useConnectorNodeStyle,
   useDrop,
   useDropNodeStyle,
@@ -70,13 +68,12 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   };
 };
 
-export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeData>) => {
+export const EllipseNode = memo(({ data, id, selected, dragging }: NodeProps<EllipseNodeData>) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -98,7 +95,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
       ) : null}
       <div
         style={{
-          ...ellipseNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
+          ...ellipseNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
           ...connectionFeedbackStyle,
           ...dropFeedbackStyle,
         }}

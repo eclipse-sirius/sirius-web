@@ -13,28 +13,33 @@
 
 import { useTheme } from '@material-ui/core/styles';
 import { useContext } from 'react';
+import { ReactFlowState, useStore } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { DropNodeContext } from './DropNodeContext';
-import { DropNodeContextValue } from './DropNodeContext.types';
 import { useDropNodeStyleValue } from './useDropNodeStyle.types';
 
-export const useDropNodeStyle = (nodeId: string): useDropNodeStyleValue => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { draggedNode, targetNodeId, compatibleNodeIds } = useContext<DropNodeContextValue>(DropNodeContext);
-  const theme = useTheme();
+const draggedNodeSelector = (state: ReactFlowState) =>
+  Array.from(state.nodeInternals.values()).find((n) => n.dragging)?.id || '';
 
-  const isCompatibleDropTarget: boolean = compatibleNodeIds.includes(nodeId);
-  const isSelectedDropTarget: boolean = nodeId === targetNodeId;
+export const useDropNodeStyle = (
+  isDropNodeTarget: boolean,
+  isDropNodeCandidate,
+  isDragging: boolean
+): useDropNodeStyleValue => {
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const draggedNode = useStore(draggedNodeSelector);
+
+  const theme = useTheme();
   const style: React.CSSProperties = {};
 
-  if (draggedNode !== null && !readOnly) {
-    if (draggedNode.id !== nodeId && !isCompatibleDropTarget) {
+  if (draggedNode && !readOnly) {
+    if (!isDragging && !isDropNodeCandidate) {
       style.opacity = '0.4';
     }
-    if (isSelectedDropTarget && isCompatibleDropTarget) {
+    if (isDropNodeTarget) {
       style.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
     }
   }
+
   return { style };
 };

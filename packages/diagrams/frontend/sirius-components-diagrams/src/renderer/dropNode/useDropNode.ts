@@ -139,10 +139,9 @@ export const useDropNode = (): UseDropNodeValue => {
   } = useContext<DropNodeContextValue>(DropNodeContext);
 
   const { diagramDescription } = useDiagramDescription();
-
-  const onDropNode = useDropNodeMutation();
   const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
-  const { setNodes, getNodes } = reactFlowInstance;
+  const onDropNode = useDropNodeMutation();
+  const { getNodes, getIntersectingNodes } = useReactFlow<NodeData, EdgeData>();
 
   const getNodeById: (string) => Node | undefined = (id: string) => getNodes().find((n) => n.id === id);
 
@@ -179,32 +178,61 @@ export const useDropNode = (): UseDropNodeValue => {
         compatibleNodeIds: compatibleNodes,
         droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
       });
+
+      reactFlowInstance.setNodes((nds) =>
+        nds.map((n) => {
+          if (compatibleNodes.includes(n.id)) {
+            n.data = {
+              ...n.data,
+              isDropNodeCandidate: true,
+            };
+          }
+          return n;
+        })
+      );
     },
-    [getNodes]
+    [reactFlowInstance.setNodes]
   );
 
   const onNodeDrag: NodeDragHandler = useCallback(
-    (_event, node) => {
+    (_event, _node) => {
       if (draggedNode && !draggedNode.data.isBorderNode) {
-        const intersections = reactFlowInstance
-          .getIntersectingNodes(node)
-          .filter((intersectingNode) => !intersectingNode.hidden);
+        const intersections = getIntersectingNodes(draggedNode).filter((intersectingNode) => !intersectingNode.hidden);
         const newParentId =
           [...intersections]
             .filter((intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, getNodeById))
             .sort((n1, n2) => getNodeDepth(n2, intersections) - getNodeDepth(n1, intersections))[0]?.id || null;
         setTargetNodeId(newParentId);
+
+        reactFlowInstance.setNodes((nds) =>
+          nds.map((n) => {
+            if (n.id === newParentId) {
+              n.data = {
+                ...n.data,
+                isDropNodeTarget: true,
+              };
+            } else if (n.data.isDropNodeTarget && n.id !== newParentId) {
+              n.data = {
+                ...n.data,
+                isDropNodeTarget: false,
+              };
+            }
+            return n;
+          })
+        );
       }
     },
-    [draggedNode?.id]
+
+    [draggedNode?.id, reactFlowInstance.setNodes]
   );
 
   const onNodeDragStop: NodeDragHandler = useCallback(
-    (event) => {
+    (event, _node) => {
       const dropPosition = reactFlowInstance.screenToFlowPosition({
         x: event.clientX,
         y: event.clientY,
       });
+
       if (draggedNode) {
         const oldParentId: string | null = draggedNode.parentNode || null;
         const newParentId: string | null = targetNodeId;
@@ -224,12 +252,25 @@ export const useDropNode = (): UseDropNodeValue => {
         }
       }
       resetDrop();
+
+      reactFlowInstance.setNodes((nds) =>
+        nds.map((n) => {
+          if (n.data.isDropNodeCandidate || n.data.isDropNodeTarget) {
+            n.data = {
+              ...n.data,
+              isDropNodeCandidate: false,
+              isDropNodeTarget: false,
+            };
+          }
+          return n;
+        })
+      );
     },
-    [draggedNode?.id, targetNodeId, droppableOnDiagram, compatibleNodeIds.join('-'), reactFlowInstance, setNodes]
+    [draggedNode?.id, targetNodeId, droppableOnDiagram, compatibleNodeIds.join('-'), reactFlowInstance]
   );
 
   const cancelDrop = (node: Node) => {
-    setNodes((nds) =>
+    reactFlowInstance.setNodes((nds) =>
       nds.map((n) => {
         if (n.id === node.id) {
           n.position = node.position;
@@ -238,6 +279,7 @@ export const useDropNode = (): UseDropNodeValue => {
             ...n.data,
           };
         }
+        n.dragging = false;
         return n;
       })
     );

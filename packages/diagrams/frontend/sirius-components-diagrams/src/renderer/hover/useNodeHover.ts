@@ -11,24 +11,47 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useCallback, useContext } from 'react';
-import { Node, NodeMouseHandler } from 'reactflow';
-import { NodeData } from '../DiagramRenderer.types';
-import { NodeContext } from '../node/NodeContext';
-import { NodeContextValue } from '../node/NodeContext.types';
+import { useCallback } from 'react';
+import { Node, NodeMouseHandler, useReactFlow } from 'reactflow';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { UseNodeHoverValue } from './useNodeHover.types';
 
 export const useNodeHover = (): UseNodeHoverValue => {
-  const { setHoveredNode } = useContext<NodeContextValue>(NodeContext);
+  const { setNodes } = useReactFlow<NodeData, EdgeData>();
 
   const onNodeMouseEnter: NodeMouseHandler = useCallback(
     (_: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData>) => {
-      setHoveredNode(node);
+      setNodes((nds) =>
+        nds.map((n) => {
+          if (n.id === node.id) {
+            if (!n.data.isHovered) {
+              n.data = {
+                ...n.data,
+                isHovered: true,
+              };
+            }
+          }
+          return n;
+        })
+      );
     },
-    []
+    [setNodes]
   );
 
-  const onNodeMouseLeave: NodeMouseHandler = useCallback(() => setHoveredNode(null), []);
+  const onNodeMouseLeave: NodeMouseHandler = useCallback(() => {
+    setNodes((nds) =>
+      nds.map((n) => {
+        if (n.data.isHovered) {
+          n.data = {
+            ...n.data,
+            isHovered: false,
+          };
+        }
+        return n;
+      })
+    );
+  }, [setNodes]);
+
   return {
     onNodeMouseEnter,
     onNodeMouseLeave,

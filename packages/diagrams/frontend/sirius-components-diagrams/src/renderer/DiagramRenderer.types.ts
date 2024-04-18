@@ -59,6 +59,9 @@ export interface NodeData {
   isNew: boolean;
   resizedByUser: boolean;
   isListChild: boolean;
+  isDropNodeTarget: boolean;
+  isDropNodeCandidate: boolean;
+  isHovered: boolean;
 }
 
 export enum BorderNodePosition {
