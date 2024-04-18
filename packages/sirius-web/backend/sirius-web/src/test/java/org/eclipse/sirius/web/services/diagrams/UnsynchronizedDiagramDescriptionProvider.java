@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.builder.generated.CreateInstanceBuilde
 import org.eclipse.sirius.components.view.builder.generated.CreateViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramPaletteBuilder;
+import org.eclipse.sirius.components.view.builder.generated.DropToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeToolBuilder;
@@ -35,6 +36,7 @@ import org.eclipse.sirius.components.view.builder.generated.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -64,6 +66,8 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
 
     private NodeTool createNodeTool;
 
+    private DropTool dropOnDiagramTool;
+
     public UnsynchronizedDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.view = this.createView();
@@ -82,6 +86,10 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
 
     public String getCreateNodeToolId() {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.createNodeTool).toString().getBytes()).toString();
+    }
+
+    public String getDropToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.dropOnDiagramTool).toString().getBytes()).toString();
     }
 
     private View createView() {
@@ -150,8 +158,26 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 )
                 .build();
 
+        var createNewComponentView = new CreateViewBuilder()
+                .elementDescription(nodeDescription)
+                .semanticElementExpression("aql:self")
+                .parentViewExpression("aql:selectedNode")
+                .containmentKind(NodeContainmentKind.CHILD_NODE)
+                .build();
+
+        this.dropOnDiagramTool = new DropToolBuilder()
+                .name("Drop on diagram")
+                .body(
+                        new ChangeContextBuilder()
+                                .expression("aql:self")
+                                .children(createNewComponentView)
+                                .build()
+                )
+                .build();
+
         var diagramPalette = new DiagramPaletteBuilder()
                 .nodeTools(this.createNodeTool)
+                .dropTool(dropOnDiagramTool)
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()

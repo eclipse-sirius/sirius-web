@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -25,10 +26,13 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.tests.graphql.DiagramEventSubscriptionRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.DropOnDiagramMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -53,6 +57,7 @@ import reactor.test.StepVerifier;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTests {
 
@@ -64,6 +69,9 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
 
     @Autowired
     private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
+
+    @Autowired
+    private DropOnDiagramMutationRunner dropOnDiagramMutationRunner;
 
     @Autowired
     private DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
@@ -119,6 +127,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
+                    assertThat(diagram.getNodes()).isEmpty();
                 }, () -> fail("Missing diagram"));
 
         Runnable createNode = () -> {
@@ -142,6 +151,51 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(createNode)
                 .expectNextMatches(updatedDiagramContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given an unsynchronous diagram, when an object is dropped, then it appears in the diagram")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenUnsynchronousDiagramWhenObjectIsDroppedThenItAppearsInTheDiagram() {
+        var flux = this.givenSubscriptionToUnsynchronizedDiagram();
+
+        var diagramId = new AtomicReference<String>();
+
+        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+                    assertThat(diagram.getNodes()).isEmpty();
+                }, () -> fail("Missing diagram"));
+
+        Runnable dropOnDiagram = () -> {
+            var input = new DropOnDiagramInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    diagramId.get(),
+                    diagramId.get(),
+                    List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString()),
+                    0,
+                    0);
+            var result = this.dropOnDiagramMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.dropOnDiagram.__typename");
+            assertThat(typename).isEqualTo(DropOnDiagramSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<DiagramRefreshedEventPayload> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    assertThat(diagram.getNodes()).isNotEmpty();
+                }, () -> fail("Missing diagram"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(dropOnDiagram)
+                .consumeNextWith(updatedDiagramContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
