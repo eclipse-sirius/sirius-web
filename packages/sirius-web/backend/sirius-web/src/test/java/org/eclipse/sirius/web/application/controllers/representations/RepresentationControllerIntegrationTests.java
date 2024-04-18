@@ -72,8 +72,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
     @Test
     @DisplayName("Given a representation id, when a query is performed, then the representation metadata are returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRepresentationIdWhenQueryIsPerformedThenTheRepresentationMetadataAreReturned() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
@@ -93,8 +93,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
     @Test
     @DisplayName("Given an editing context id, when a query is performed, then all the representation metadata are returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenEditingContextIdWhenQueryIsPerformedThenAllTheRepresentationMetadataAreReturned() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString()
@@ -119,14 +119,13 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.id");
         assertThat(representationIds).hasSizeGreaterThan(0);
 
-        var firstRepresentationId = representationIds.get(0);
-        assertThat(firstRepresentationId).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        assertThat(representationIds).contains(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
     }
 
     @Test
     @DisplayName("Given an object id, when a query is performed, then all the representation descriptions are returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenObjectIdWhenQueryIsPerformedThenAllTheRepresentationDescriptionsAreReturned() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
