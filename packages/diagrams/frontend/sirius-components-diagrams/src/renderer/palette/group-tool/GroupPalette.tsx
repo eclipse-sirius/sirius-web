@@ -23,7 +23,7 @@ import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import ViewStreamIcon from '@material-ui/icons/ViewStream';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import { memo, useCallback, useRef, useState } from 'react';
+import { memo, useCallback, useRef, useState, Fragment } from 'react';
 import { Node, OnSelectionChangeFunc, useOnSelectionChange, useReactFlow } from 'reactflow';
 import { AlignHorizontalCenterIcon } from '../../../icons/AlignHorizontalCenterIcon';
 import { AlignHorizontalLeftIcon } from '../../../icons/AlignHorizontalLeftIcon';
@@ -73,6 +73,17 @@ const usePaletteStyle = makeStyles((theme) => ({
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: '2px',
     width: 'max-content',
+  },
+  distributeElementList: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  distributeElementSeparator: {
+    borderTop: `1px solid ${theme.palette.divider}`,
+  },
+  distributeElementTool: {
+    flexDirection: 'row',
+    cursor: 'pointer',
   },
   arrow: {
     cursor: 'pointer',
@@ -148,97 +159,113 @@ export const GroupPalette = memo(
     const classes = usePaletteStyle({ toolCount });
     const anchorRef = useRef<SVGSVGElement | null>(null);
 
-    const distributeElementTools: GroupPaletteSectionTool[] = state.isMinimalPalette
+    const distributeElementTools: GroupPaletteSectionTool[][] = state.isMinimalPalette
       ? []
       : [
-          {
-            id: 'distribute-element-horizontally',
-            title: 'Distribute elements horizontally',
-            action: () => distributeGapHorizontally(state.selectedElementIds),
-            icon: <VerticalAlignCenterIcon style={{ transform: 'rotate(90deg)' }} fontSize="small" />,
-          },
-          {
-            id: 'distribute-element-vertically',
-            title: 'Distribute elements vertically',
-            action: () => distributeGapVertically(state.selectedElementIds),
-            icon: <VerticalAlignCenterIcon fontSize="small" />,
-          },
-          {
-            id: 'align-left',
-            title: 'Align left',
-            action: () => distributeAlignLeft(state.selectedElementIds, refElementId),
-            icon: <AlignHorizontalLeftIcon fontSize="small" />,
-          },
-          {
-            id: 'align-right',
-            title: 'Align right',
-            action: () => distributeAlignRight(state.selectedElementIds, refElementId),
-            icon: <AlignHorizontalRightIcon fontSize="small" />,
-          },
-          {
-            id: 'align-center',
-            title: 'Align center',
-            action: () => distributeAlignCenter(state.selectedElementIds, refElementId),
-            icon: <AlignHorizontalCenterIcon fontSize="small" />,
-          },
-          {
-            id: 'align-top',
-            title: 'Align top',
-            action: () => distributeAlignTop(state.selectedElementIds, refElementId),
-            icon: <AlignVerticalTopIcon fontSize="small" />,
-          },
-          {
-            id: 'align-bottom',
-            title: 'Align bottom',
-            action: () => distributeAlignBottom(state.selectedElementIds, refElementId),
-            icon: <AlignVerticalBottomIcon fontSize="small" />,
-          },
-          {
-            id: 'align-middle',
-            title: 'Align middle',
-            action: () => distributeAlignMiddle(state.selectedElementIds, refElementId),
-            icon: <AlignVerticalCenterIcon fontSize="small" />,
-          },
-          {
-            id: 'justify-horizontally',
-            title: 'Justify horizontally',
-            action: () => justifyHorizontally(state.selectedElementIds, refElementId),
-            icon: <JustifyHorizontalIcon fontSize="small" />,
-          },
-          {
-            id: 'justify-vertically',
-            title: 'Justify vertically',
-            action: () => justifyVertically(state.selectedElementIds, refElementId),
-            icon: <JustifyVerticalIcon fontSize="small" />,
-          },
-          {
-            id: 'arrange-in-row',
-            title: 'Arrange in row',
-            action: () => arrangeInRow(state.selectedElementIds),
-            icon: <ViewColumnIcon fontSize="small" />,
-          },
-          {
-            id: 'arrange-in-column',
-            title: 'Arrange in column',
-            action: () => arrangeInColumn(state.selectedElementIds),
-            icon: <ViewStreamIcon fontSize="small" />,
-          },
-          {
-            id: 'arrange-in-grid',
-            title: 'Arrange in grid',
-            action: () => arrangeInGrid(state.selectedElementIds),
-            icon: <ViewModuleIcon fontSize="small" />,
-          },
-          {
-            id: 'make-same-size',
-            title: 'Make same size',
-            action: () => makeNodesSameSize(state.selectedElementIds, refElementId),
-            icon: <PhotoSizeSelectSmallIcon fontSize="small" />,
-          },
+          [
+            {
+              id: 'align-left',
+              title: 'Align left',
+              action: () => distributeAlignLeft(state.selectedElementIds, refElementId),
+              icon: <AlignHorizontalLeftIcon fontSize="small" />,
+            },
+            {
+              id: 'align-center',
+              title: 'Align center',
+              action: () => distributeAlignCenter(state.selectedElementIds, refElementId),
+              icon: <AlignHorizontalCenterIcon fontSize="small" />,
+            },
+            {
+              id: 'align-right',
+              title: 'Align right',
+              action: () => distributeAlignRight(state.selectedElementIds, refElementId),
+              icon: <AlignHorizontalRightIcon fontSize="small" />,
+            },
+          ],
+          [
+            {
+              id: 'align-top',
+              title: 'Align top',
+              action: () => distributeAlignTop(state.selectedElementIds, refElementId),
+              icon: <AlignVerticalTopIcon fontSize="small" />,
+            },
+            {
+              id: 'align-middle',
+              title: 'Align middle',
+              action: () => distributeAlignMiddle(state.selectedElementIds, refElementId),
+              icon: <AlignVerticalCenterIcon fontSize="small" />,
+            },
+            {
+              id: 'align-bottom',
+              title: 'Align bottom',
+              action: () => distributeAlignBottom(state.selectedElementIds, refElementId),
+              icon: <AlignVerticalBottomIcon fontSize="small" />,
+            },
+          ],
+
+          [
+            {
+              id: 'arrange-in-row',
+              title: 'Arrange in row',
+              action: () => arrangeInRow(state.selectedElementIds),
+              icon: <ViewColumnIcon fontSize="small" />,
+            },
+            {
+              id: 'arrange-in-column',
+              title: 'Arrange in column',
+              action: () => arrangeInColumn(state.selectedElementIds),
+              icon: <ViewStreamIcon fontSize="small" />,
+            },
+            {
+              id: 'arrange-in-grid',
+              title: 'Arrange in grid',
+              action: () => arrangeInGrid(state.selectedElementIds),
+              icon: <ViewModuleIcon fontSize="small" />,
+            },
+          ],
+          [
+            {
+              id: 'distribute-horizontal-spacing',
+              title: 'Distribute horizontal spacing',
+              action: () => distributeGapHorizontally(state.selectedElementIds),
+              icon: <VerticalAlignCenterIcon style={{ transform: 'rotate(90deg)' }} fontSize="small" />,
+            },
+            {
+              id: 'distribute-vertical-spacing',
+              title: 'Distribute vertical spacing',
+              action: () => distributeGapVertically(state.selectedElementIds),
+              icon: <VerticalAlignCenterIcon fontSize="small" />,
+            },
+          ],
+          [
+            {
+              id: 'justify-horizontally',
+              title: 'Justify horizontally',
+              action: () => justifyHorizontally(state.selectedElementIds, refElementId),
+              icon: <JustifyHorizontalIcon fontSize="small" />,
+            },
+            {
+              id: 'justify-vertically',
+              title: 'Justify vertically',
+              action: () => justifyVertically(state.selectedElementIds, refElementId),
+              icon: <JustifyVerticalIcon fontSize="small" />,
+            },
+          ],
+          [
+            {
+              id: 'make-same-size',
+              title: 'Make same size',
+              action: () => makeNodesSameSize(state.selectedElementIds, refElementId),
+              icon: <PhotoSizeSelectSmallIcon fontSize="small" />,
+            },
+          ],
         ];
 
     const shouldRender = state.selectedElementIds.length > 1 && isOpened && x && y;
     if (!shouldRender) {
+      if (state.isDistributeElementToolSectionExpand) {
+        setState((prevState) => ({ ...prevState, isDistributeElementToolSectionExpand: false }));
+      }
       return null;
     }
 
@@ -266,7 +293,9 @@ export const GroupPalette = memo(
     };
 
     const defaultDistributeTool: GroupPaletteSectionTool | undefined =
-      distributeElementTools.find((tool) => tool.id === state.lastDistributeElementToolId) ?? distributeElementTools[0];
+      distributeElementTools
+        .flatMap((toolSection) => toolSection)
+        .find((tool) => tool.id === state.lastDistributeElementToolId) ?? distributeElementTools[0]?.[0];
 
     return (
       <PalettePortal>
@@ -292,17 +321,30 @@ export const GroupPalette = memo(
               style={{ zIndex: 9999 }}>
               <Paper className={classes.toolList} elevation={2}>
                 <ClickAwayListener
-                  onClickAway={() =>
-                    setState((prevState) => ({ ...prevState, isDistributeElementToolSectionExpand: false }))
-                  }>
-                  <div>
-                    {distributeElementTools.map((tool) => (
-                      <PaletteTool
-                        toolName={tool.title}
-                        onClick={() => handleDistributeElementToolClick(tool)}
-                        key={tool.id}>
-                        {tool.icon}
-                      </PaletteTool>
+                  onClickAway={() => {
+                    setState((prevState) => ({ ...prevState, isDistributeElementToolSectionExpand: false }));
+                  }}>
+                  <div className={classes.distributeElementList}>
+                    {distributeElementTools.map((toolSection, index) => (
+                      <Fragment key={index}>
+                        {toolSection.map((tool) => (
+                          <div
+                            className={classes.distributeElementTool}
+                            onClick={() => handleDistributeElementToolClick(tool)}
+                            key={tool.id}>
+                            <PaletteTool
+                              toolName={tool.title}
+                              onClick={() => handleDistributeElementToolClick(tool)}
+                              key={tool.id}>
+                              {tool.icon}
+                            </PaletteTool>
+                            {tool.title}
+                          </div>
+                        ))}
+                        {index < distributeElementTools.length - 1 && (
+                          <hr className={classes.distributeElementSeparator} />
+                        )}
+                      </Fragment>
                     ))}
                   </div>
                 </ClickAwayListener>
