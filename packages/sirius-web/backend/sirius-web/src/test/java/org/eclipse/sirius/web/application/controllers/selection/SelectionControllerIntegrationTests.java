@@ -15,13 +15,17 @@ package org.eclipse.sirius.web.application.controllers.selection;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionEventInput;
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionRefreshedEventPayload;
+import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -52,6 +56,15 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
             subscription selectionEvent($input: SelectionEventInput!) {
               selectionEvent(input: $input) {
                 __typename
+                ... on SelectionRefreshedEventPayload {
+                  selection {
+                    objects {
+                      id
+                      label
+                      iconURL
+                    }
+                  }
+                }
               }
             }
             """;
@@ -84,6 +97,36 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 .map(SelectionRefreshedEventPayload::selection)
                 .ifPresentOrElse(selection -> {
                     assertThat(selection.getObjects()).hasSizeGreaterThanOrEqualTo(5);
+                }, () -> fail("Missing selection"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(selectionContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a semantic object, when we subscribe to its selection events, then the URL of its objects is valid")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSemanticObjectWhenWeSubscribeToItsSelectionEventsThenTheURLOfItsObjectsIsValid() {
+        var input = new SelectionEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, PapayaIdentifiers.ROOT_OBJECT.toString());
+        var flux = this.graphQLRequestor.subscribeToSpecification(GET_SELECTION_EVENT_SUBSCRIPTION, input);
+
+        Consumer<String> selectionContentConsumer = payload -> Optional.of(payload)
+                .ifPresentOrElse(body -> {
+                    String typename = JsonPath.read(body, "$.data.selectionEvent.__typename");
+                    assertThat(typename).isEqualTo(SelectionRefreshedEventPayload.class.getSimpleName());
+
+                    List<List<String>> objectIconURLs = JsonPath.read(body, "$.data.selectionEvent.selection.objects[*].iconURL");
+                    assertThat(objectIconURLs)
+                            .isNotEmpty()
+                            .allSatisfy(iconURLs -> {
+                                assertThat(iconURLs)
+                                        .isNotEmpty()
+                                        .hasSize(1)
+                                        .allSatisfy(iconURL -> assertThat(iconURL).startsWith(URLConstants.IMAGE_BASE_PATH));
+                            });
                 }, () -> fail("Missing selection"));
 
         StepVerifier.create(flux)

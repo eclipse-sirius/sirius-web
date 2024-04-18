@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.springframework.stereotype.Service;
 
 import graphql.ExecutionInput;
+import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.execution.reactive.SubscriptionPublisher;
 import reactor.core.publisher.Flux;
@@ -37,6 +38,7 @@ import reactor.core.publisher.Flux;
  * @author sbegaudeau
  */
 @Service
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class GraphQLRequestor implements IGraphQLRequestor {
 
     private final ObjectMapper objectMapper;
@@ -85,5 +87,33 @@ public class GraphQLRequestor implements IGraphQLRequestor {
 
         SubscriptionPublisher result = executionResult.getData();
         return Flux.from(result.getUpstreamPublisher());
+    }
+
+    @Override
+    public Flux<String> subscribeToSpecification(String query, IInput input) {
+        Map<String, Object> variables = Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { }));
+
+        var executionInput = ExecutionInput.newExecutionInput()
+                .query(query)
+                .variables(variables)
+                .build();
+
+        var executionResult = this.graphQL.execute(executionInput);
+        assertThat(executionResult.getErrors()).isEmpty();
+
+        SubscriptionPublisher publisher = executionResult.getData();
+        return Flux.from(publisher)
+                .map(ExecutionResult::toSpecification)
+                .flatMap(this::toString);
+    }
+
+    private Flux<String> toString(Map<String, Object> response) {
+        Flux<String> body = Flux.empty();
+        try {
+            body = Flux.just(this.objectMapper.writeValueAsString(response));
+        } catch (JsonProcessingException exception) {
+            fail(exception.getMessage());
+        }
+        return body;
     }
 }

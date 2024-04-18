@@ -17,7 +17,7 @@ type Project {
   id: ID!
   name: String!
   currentEditingContext: EditingContext!
-  customImages: [CustomImage!]!
+  images: [ImageMetadata!]!
 }
 
 extend type Subscription {
@@ -37,7 +37,7 @@ type ProjectRenamedEventPayload {
   newName: String!
 }
 
-type CustomImage {
+type ImageMetadata {
   id: ID!
   label: String!
   url: String!
@@ -227,8 +227,8 @@ type RenameRepresentationSuccessPayload {
 
 input UploadImageInput {
   id: ID!
-  editingContextId: ID
-  label: String
+  projectId: ID!
+  label: String!
   file: Upload!
 }
 

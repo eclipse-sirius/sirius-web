@@ -14,8 +14,10 @@ package org.eclipse.sirius.components.forms.graphql.datafetchers.form;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.api.IImageURLSanitizer;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -57,7 +59,10 @@ public class WidgetIconURLDataFetcher implements IDataFetcherWithFieldCoordinate
 
     private final List<FieldCoordinates> allFieldCoordinates;
 
-    public WidgetIconURLDataFetcher(List<IWidgetDescriptor> customWidgetDescriptors) {
+    private final IImageURLSanitizer imageURLSanitizer;
+
+    public WidgetIconURLDataFetcher(List<IWidgetDescriptor> customWidgetDescriptors, IImageURLSanitizer imageURLSanitizer) {
+        this.imageURLSanitizer = Objects.requireNonNull(imageURLSanitizer);
         this.allFieldCoordinates = new ArrayList<>();
         CORE_WIDGET_TYPES.stream()
                 .map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD))
@@ -76,7 +81,9 @@ public class WidgetIconURLDataFetcher implements IDataFetcherWithFieldCoordinate
     @Override
     public List<String> get(DataFetchingEnvironment environment) throws Exception {
         AbstractWidget item = environment.getSource();
-        return item.getIconURL().stream().map(url -> URLConstants.IMAGE_BASE_PATH + url).toList();
+        return item.getIconURL().stream()
+                .map(url -> this.imageURLSanitizer.sanitize(URLConstants.IMAGE_BASE_PATH, url))
+                .toList();
     }
 
 }

@@ -65,7 +65,7 @@ They are also now used by the view builder code generator.
 - https://github.com/eclipse-sirius/sirius-web/issues/3183[#3183] [diagram] Fix an issue in which an edge between a child and its parent passed entirely through the child.
 - https://github.com/eclipse-sirius/sirius-web/issues/3287[#3287] [form] The label sent with the form refreshed event payload is the representation name, not the always the `FormRepresentationDescription#titleExpression`
 - https://github.com/eclipse-sirius/sirius-web/issues/3290[#3290] [diagram] Fix an issue that prevent the group palette to be displayed if only list children are selected.
-- https://github.com/eclipse-sirius/sirius-web/issues/3018[3018] [gantt] Fix reference widgets for AbstractTask Details
+- https://github.com/eclipse-sirius/sirius-web/issues/3018[#3018] [gantt] Fix reference widgets for AbstractTask Details
 - https://github.com/eclipse-sirius/sirius-web/issues/3298[#3298] [diagram] Fix an issue in which the diagram had unnecessary rendering
 - https://github.com/eclipse-sirius/sirius-web/issues/3317[#3317] [diagram] Fix an issue that caused a crash when selection changes were made too quickly
 - https://github.com/eclipse-sirius/sirius-web/issues/3269[#3269] [diagram] Disable node drag and drop during multi selection
@@ -112,13 +112,15 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3346[#3346] [workbench] Make the _Explorer_ panel wider by default.
 - https://github.com/eclipse-sirius/sirius-web/issues/3313[#3313] [core] Avoid sending events for no-op updates of domain objects
 - https://github.com/eclipse-sirius/sirius-web/issues/3362[#3362] [diagram] Ignore edge during multi-selection to apply distribution tools on nodes
-- https://github.com/eclipse-sirius/sirius-web/issues/3360[#3360] Handle documents upload with other formats than JSON and XMI.
+- https://github.com/eclipse-sirius/sirius-web/issues/3360[#3360] [sirius-web] Handle documents upload with other formats than JSON and XMI.
 - https://github.com/eclipse-sirius/sirius-web/issues/3376[#3376] [diagram] Prevent `getToolSection` to be called during multi-selection
 - https://github.com/eclipse-sirius/sirius-web/issues/3377[#3377] [diagram] Only synchronize selection with explorer at the end of the process
-- https://github.com/eclipse-sirius/sirius-web/issues/3359[#3359] Add report on document upload
+- https://github.com/eclipse-sirius/sirius-web/issues/3359[#3359] [sirius-web] Add report on document upload
 - https://github.com/eclipse-sirius/sirius-web/issues/3405[#3405] [diagram] Display layout tools vertically in group palette
 - https://github.com/eclipse-sirius/sirius-web/issues/3333[#3333] [emf] Store the last migration performed in a document
 - https://github.com/eclipse-sirius/sirius-web/issues/3409[#3409] [diagram] Make border node movement smoother
+- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [sirius-web] Restore support for project images
+- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [core] Image URLs are now satinized in a similar manner in all datafetchers, as a result absolute URLs to external images are better supported and a leading slash is now required anymore.
 
 
 == v2024.3.0

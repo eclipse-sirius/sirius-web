@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,8 +48,7 @@ public class ProjectCustomImageMetadataSearchService implements IProjectCustomIm
     }
 
     private CustomImageMetadata toDTO(CustomImageMetadataEntity customImageMetadataEntity) {
-        String url = String.format("/custom/%s", customImageMetadataEntity.getId().toString());
-        return new CustomImageMetadata(customImageMetadataEntity.getId(), customImageMetadataEntity.getLabel(), url, customImageMetadataEntity.getContentType());
+        return new CustomImageMetadata(customImageMetadataEntity.getId(), customImageMetadataEntity.getLabel(), customImageMetadataEntity.getId().toString(), customImageMetadataEntity.getContentType());
     }
 
 }

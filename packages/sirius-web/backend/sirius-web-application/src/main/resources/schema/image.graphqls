@@ -1,0 +1,44 @@
+extend type Project {
+  images: [ImageMetadata!]!
+}
+
+type ImageMetadata {
+  id: ID!
+  label: String!
+  url: String!
+}
+
+extend type Mutation {
+  uploadImage(input: UploadImageInput!): UploadImagePayload!
+  renameImage(input: RenameImageInput!): RenameImagePayload!
+  deleteImage(input: DeleteImageInput!): DeleteImagePayload!
+}
+
+input UploadImageInput {
+  id: ID!
+  projectId: ID!
+  label: String!
+  file: Upload!
+}
+
+union UploadImagePayload = ErrorPayload | UploadImageSuccessPayload
+
+type UploadImageSuccessPayload {
+  id: ID!
+  imageId: ID!
+}
+
+input RenameImageInput {
+  id: ID!
+  imageId: ID!
+  newLabel: String!
+}
+
+union RenameImagePayload = ErrorPayload | SuccessPayload
+
+input DeleteImageInput {
+  id: ID!
+  imageId: ID!
+}
+
+union DeleteImagePayload = ErrorPayload | SuccessPayload

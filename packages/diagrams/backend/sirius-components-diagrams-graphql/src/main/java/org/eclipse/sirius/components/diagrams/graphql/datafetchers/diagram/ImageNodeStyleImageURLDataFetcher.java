@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.graphql.datafetchers.diagram;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.api.IImageURLSanitizer;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
@@ -31,9 +34,15 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "ImageNodeStyle", field = "imageURL")
 public class ImageNodeStyleImageURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
 
+    private final IImageURLSanitizer imageURLSanitizer;
+
+    public ImageNodeStyleImageURLDataFetcher(IImageURLSanitizer imageURLSanitizer) {
+        this.imageURLSanitizer = Objects.requireNonNull(imageURLSanitizer);
+    }
+
     @Override
     public String get(DataFetchingEnvironment environment) throws Exception {
         ImageNodeStyle style = environment.getSource();
-        return URLConstants.IMAGE_BASE_PATH + style.getImageURL();
+        return this.imageURLSanitizer.sanitize(URLConstants.IMAGE_BASE_PATH, style.getImageURL());
     }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2024 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="01-add-image-support" author="sbegaudeau">
+        <createTable tableName="image">
+            <column name="id"  type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="project_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="label" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content_type" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="BYTEA">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="image" baseColumnNames="project_id" constraintName="fk_image_project_id" referencedTableName="project" referencedColumnNames="id" onDelete="CASCADE"/>
+
+    </changeSet>
+</databaseChangeLog>
