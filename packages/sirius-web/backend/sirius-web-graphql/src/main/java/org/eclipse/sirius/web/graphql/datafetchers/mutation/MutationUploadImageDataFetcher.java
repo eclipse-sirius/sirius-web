@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,7 +52,7 @@ public class MutationUploadImageDataFetcher implements IDataFetcherWithFieldCoor
 
     private static final String LABEL = "label";
 
-    private static final String EDITING_CONTEXT_ID = "editingContextId";
+    private static final String PROJECT_ID = "projectId";
 
     private final ICustomImageImportService customImageImportService;
 
@@ -78,7 +78,7 @@ public class MutationUploadImageDataFetcher implements IDataFetcherWithFieldCoor
                 .map(String.class::cast)
                 .orElse(null);
 
-        String editingContextId = Optional.ofNullable(inputArgument.get(EDITING_CONTEXT_ID))
+        String projectId = Optional.ofNullable(inputArgument.get(PROJECT_ID))
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .orElse(null);
@@ -89,7 +89,7 @@ public class MutationUploadImageDataFetcher implements IDataFetcherWithFieldCoor
                 .orElse(null);
         // @formatter:on
 
-        return CompletableFuture.completedFuture(this.customImageImportService.importImage(id, editingContextId, label, file));
+        return CompletableFuture.completedFuture(this.customImageImportService.importImage(id, projectId, label, file));
     }
 
 }

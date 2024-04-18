@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.eclipse.sirius.components.core.api.IImagePathService;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.images.ICustomImageContentService;
@@ -40,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * The entry point of the HTTP API to get images.
@@ -83,8 +82,6 @@ public class ImagesController {
 
     private static final String IMAGE_SVG_EXTENSION = "svg";
 
-    private static final String CUSTOM_IMAGE_PREFIX = "/custom/";
-
     private static final MediaType IMAGE_SVG = MediaType.valueOf("image/svg+xml");
 
     private static final String TIMER = "siriusweb_images";
@@ -121,7 +118,8 @@ public class ImagesController {
                     response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
                 }
             }
-        } else if (imagePath.startsWith(CUSTOM_IMAGE_PREFIX)) {
+        }
+        if (response.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
             response = this.getCustomImage(imagePath);
         }
 
@@ -133,11 +131,8 @@ public class ImagesController {
 
     private ResponseEntity<Resource> getCustomImage(String imagePath) {
         ResponseEntity<Resource> response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
-        String[] imageDescriptor = imagePath.substring(CUSTOM_IMAGE_PREFIX.length()).split("/");
-        Optional<UUID> optionalImageId = Optional.empty();
-        if (imageDescriptor.length == 1) {
-            optionalImageId = new IDParser().parse(imageDescriptor[0]);
-        }
+        var rawImageId = imagePath.substring("/".length());
+        Optional<UUID> optionalImageId = new IDParser().parse(rawImageId);
         Optional<String> mediaType = optionalImageId.flatMap(this.customImageContentService::getImageContentTypeById);
         Optional<byte[]> contents = optionalImageId.flatMap(this.customImageContentService::getImageContentById);
         if (mediaType.isPresent() && contents.isPresent()) {

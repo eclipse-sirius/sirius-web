@@ -59,6 +59,24 @@ INSERT INTO semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+INSERT INTO image (
+  id,
+  project_id,
+  label,
+  content_type,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  'ff37f0eb-effb-4c57-b17f-76bc7ea64f5b',
+  '4164c661-e0cb-4071-b25d-8516440bb8e8',
+  'Placeholder',
+  'image/svg+xml',
+  '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"><rect width="10px" height="10px" fill="black" /></svg>'::bytea,
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+
 
 -- Sample Ecore project
 INSERT INTO project (

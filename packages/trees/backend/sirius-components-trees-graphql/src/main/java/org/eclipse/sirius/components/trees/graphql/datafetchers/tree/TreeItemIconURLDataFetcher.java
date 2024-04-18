@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,10 @@
 package org.eclipse.sirius.components.trees.graphql.datafetchers.tree;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.api.IImageURLSanitizer;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -32,9 +34,17 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "TreeItem", field = "iconURL")
 public class TreeItemIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
 
+    private final IImageURLSanitizer imageURLSanitizer;
+
+    public TreeItemIconURLDataFetcher(IImageURLSanitizer imageURLSanitizer) {
+        this.imageURLSanitizer = Objects.requireNonNull(imageURLSanitizer);
+    }
+
     @Override
     public List<String> get(DataFetchingEnvironment environment) throws Exception {
         TreeItem item = environment.getSource();
-        return item.getIconURL().stream().map(url -> URLConstants.IMAGE_BASE_PATH + url).toList();
+        return item.getIconURL().stream()
+                .map(url -> this.imageURLSanitizer.sanitize(URLConstants.IMAGE_BASE_PATH, url))
+                .toList();
     }
 }

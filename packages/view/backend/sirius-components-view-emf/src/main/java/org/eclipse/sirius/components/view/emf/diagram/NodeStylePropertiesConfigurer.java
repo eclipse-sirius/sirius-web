@@ -73,8 +73,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
-    private static final String EMPTY = "";
-    private static final String CUSTOM = "/custom/%s";
     private final List<IParametricSVGImageRegistry> parametricSVGImageRegistries;
     private final ICustomImageMetadataSearchService customImageSearchService;
     private final IPropertiesConfigurerService propertiesConfigurerService;
@@ -245,11 +243,13 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .idProvider(variableManager -> "nodestyle.borderstyle")
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Border Line Style")
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, BorderStyle.class).map(BorderStyle::getBorderLineStyle).map(LineStyle::toString)
-                        .orElse(EMPTY))
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, BorderStyle.class)
+                        .map(BorderStyle::getBorderLineStyle)
+                        .map(LineStyle::toString)
+                        .orElse(""))
                 .optionsProvider(variableManager -> LineStyle.VALUES.stream().toList())
-                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getLiteral).orElse(EMPTY))
-                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getName).orElse(EMPTY))
+                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getLiteral).orElse(""))
+                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getName).orElse(""))
                 .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath)
                         .orElse(List.of()))
                 .newValueHandler((variableManager, newValue) -> {
@@ -296,7 +296,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .idProvider(variableManager -> "nodestyle.shapeSelector")
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Shape")
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(EMPTY))
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(""))
                 .optionsProvider(variableManager -> {
                     Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
 
@@ -313,10 +313,10 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
                         .map(CustomImageMetadata::getId)
                         .map(UUID::toString)
-                        .orElse(EMPTY))
+                        .orElse(""))
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
                         .map(CustomImageMetadata::getLabel)
-                        .orElse(EMPTY))
+                        .orElse(""))
                 .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath)
                         .orElse(List.of()))
                 .newValueHandler(this.getNewShapeValueHandler())
@@ -331,13 +331,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .idProvider(variableManager -> "nodestyle.shapePreview")
                 .labelProvider(variableManager -> "Shape Preview")
-                .urlProvider(variableManager -> {
-                    var optionalShape = variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape);
-                    if (optionalShape.isPresent()) {
-                        return String.format(CUSTOM, optionalShape.get());
-                    }
-                    return "";
-                })
+                .urlProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(""))
                 .maxWidthProvider(variableManager -> "300px")
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { Footer } from '../../footer/Footer';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
-import { ProjectImagesSettings } from './ProjectImagesSettings';
+import { ProjectImagesSettings } from './images/ProjectImagesSettings';
 
 const useProjectSettingsViewStyles = makeStyles((theme) => ({
   projectSettingsView: {

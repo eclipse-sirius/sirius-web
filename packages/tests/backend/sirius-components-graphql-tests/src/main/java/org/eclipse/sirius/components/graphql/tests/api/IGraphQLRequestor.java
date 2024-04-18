@@ -29,4 +29,6 @@ public interface IGraphQLRequestor {
     String execute(String query, IInput input);
 
     Flux<Object> subscribe(String query, IInput input);
+
+    Flux<String> subscribeToSpecification(String query, IInput input);
 }

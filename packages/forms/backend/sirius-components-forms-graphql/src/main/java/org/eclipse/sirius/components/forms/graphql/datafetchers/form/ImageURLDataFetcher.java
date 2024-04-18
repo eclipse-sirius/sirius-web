@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.graphql.datafetchers.form;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.api.IImageURLSanitizer;
 import org.eclipse.sirius.components.forms.Image;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
@@ -29,13 +32,16 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @QueryDataFetcher(type = "Image", field = "url")
 public class ImageURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
+
+    private final IImageURLSanitizer imageURLSanitizer;
+
+    public ImageURLDataFetcher(IImageURLSanitizer imageURLSanitizer) {
+        this.imageURLSanitizer = Objects.requireNonNull(imageURLSanitizer);
+    }
+
     @Override
     public String get(DataFetchingEnvironment environment) throws Exception {
         Image image = environment.getSource();
-        if (image.getUrl().startsWith("http://") || image.getUrl().startsWith("https://")) {
-            return image.getUrl();
-        } else {
-            return URLConstants.IMAGE_BASE_PATH + image.getUrl();
-        }
+        return this.imageURLSanitizer.sanitize(URLConstants.IMAGE_BASE_PATH, image.getUrl());
     }
 }

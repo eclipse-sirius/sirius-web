@@ -13,8 +13,10 @@
 package org.eclipse.sirius.components.forms.graphql.datafetchers.form;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.api.IImageURLSanitizer;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
@@ -32,11 +34,17 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "TreeNode", field = "endIconsURL")
 public class TreeNodeEndIconsURLDataFetcher implements IDataFetcherWithFieldCoordinates<List<List<String>>> {
 
+    private final IImageURLSanitizer imageURLSanitizer;
+
+    public TreeNodeEndIconsURLDataFetcher(IImageURLSanitizer imageURLSanitizer) {
+        this.imageURLSanitizer = Objects.requireNonNull(imageURLSanitizer);
+    }
+
     @Override
     public List<List<String>> get(DataFetchingEnvironment environment) throws Exception {
         TreeNode node = environment.getSource();
         return node.getEndIconsURL().stream()
-                .map(list -> list.stream().map(url -> URLConstants.IMAGE_BASE_PATH + url).toList())
+                .map(list -> list.stream().map(url -> this.imageURLSanitizer.sanitize(URLConstants.IMAGE_BASE_PATH, url)).toList())
                 .toList();
     }
 }
