@@ -110,6 +110,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3376[#3376] [diagram] Prevent `getToolSection` to be called during multi-selection
 - https://github.com/eclipse-sirius/sirius-web/issues/3377[#3377] [diagram] Only synchronize selection with explorer at the end of the process
 - https://github.com/eclipse-sirius/sirius-web/issues/3359[#3359] Add report on document upload
+- https://github.com/eclipse-sirius/sirius-web/issues/3405[#3405] Display layout tools vertically in group palette
 
 
 == v2024.3.0
