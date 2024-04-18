@@ -13,7 +13,7 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo, useContext } from 'react';
+import { memo } from 'react';
 import { NodeProps } from 'reactflow';
 import { Label } from '../Label';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
@@ -25,8 +25,6 @@ import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ListNodeData } from './ListNode.types';
-import { NodeContext } from './NodeContext';
-import { NodeContextValue } from './NodeContext.types';
 import { Resizer } from './Resizer';
 
 const listNodeStyle = (
@@ -54,12 +52,11 @@ const listNodeStyle = (
   return listNodeStyle;
 };
 
-export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) => {
+export const ListNode = memo(({ data, id, selected, dragging }: NodeProps<ListNodeData>) => {
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -71,7 +68,7 @@ export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) =
       <Resizer data={data} selected={selected} />
       <div
         style={{
-          ...listNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
+          ...listNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
           ...connectionFeedbackStyle,
           ...dropFeedbackStyle,
         }}

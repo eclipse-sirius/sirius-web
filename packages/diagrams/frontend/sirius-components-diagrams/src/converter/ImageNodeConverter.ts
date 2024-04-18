@@ -22,7 +22,7 @@ import { GQLDiagramDescription } from '../representation/DiagramRepresentation.t
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
-import { convertOutsideLabels, convertInsideLabel } from './convertLabel';
+import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -82,6 +82,9 @@ const toImageNode = (
     isNew,
     resizedByUser,
     isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    isDropNodeTarget: false,
+    isDropNodeCandidate: false,
+    isHovered: false,
   };
 
   data.insideLabel = convertInsideLabel(

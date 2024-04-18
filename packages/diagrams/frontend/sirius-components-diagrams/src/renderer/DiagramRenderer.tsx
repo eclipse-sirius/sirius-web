@@ -111,8 +111,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
-  const { onNodeDragStart, onNodeDrag, onNodeDragStop, diagramBackgroundStyle, targetNodeId, draggedNode } =
-    useDropNode();
+  const { onNodeDragStart, onNodeDrag, onNodeDragStop, diagramBackgroundStyle } = useDropNode();
   const { nodeTypes } = useNodeType();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
@@ -199,7 +198,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         });
       }
     },
-    [setNodes, targetNodeId, draggedNode?.id, helperLinesEnabled, layoutOnBoundsChange, getNodes]
+    [setNodes, layoutOnBoundsChange, getNodes]
   );
 
   const handleEdgesChange: OnEdgesChange = useCallback(

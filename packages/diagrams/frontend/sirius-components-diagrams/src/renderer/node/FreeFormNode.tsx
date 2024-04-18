@@ -26,8 +26,6 @@ import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { FreeFormNodeData } from './FreeFormNode.types';
-import { NodeContext } from './NodeContext';
-import { NodeContextValue } from './NodeContext.types';
 import { Resizer } from './Resizer';
 
 const freeFormNodeStyle = (
@@ -74,14 +72,14 @@ const computeBorderRotation = (data: FreeFormNodeData): string | undefined => {
   return undefined;
 };
 
-export const FreeFormNode = memo(({ data, id, selected }: NodeProps<FreeFormNodeData>) => {
+export const FreeFormNode = memo(({ data, id, selected, dragging }: NodeProps<FreeFormNodeData>) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+
   const rotation = computeBorderRotation(data);
   let imageURL: string | undefined = undefined;
   if (data.imageURL) {
@@ -109,7 +107,7 @@ export const FreeFormNode = memo(({ data, id, selected }: NodeProps<FreeFormNode
       <Resizer data={data} selected={selected} />
       <div
         style={{
-          ...freeFormNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded, rotation, imageURL),
+          ...freeFormNodeStyle(theme, data.style, selected, data.isHovered, data.faded, rotation, imageURL),
           ...connectionFeedbackStyle,
           ...dropFeedbackStyle,
         }}

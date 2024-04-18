@@ -85,6 +85,7 @@ Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IE
 - https://github.com/eclipse-sirius/sirius-web/issues/3416[#3416] [explorer] Add a tooltip for Filter menu in Explorer view.
 - https://github.com/eclipse-sirius/sirius-web/issues/3420[#3420] [diagram] Fix an issue that prevents position reset after a rejected drag&drop.
 - https://github.com/eclipse-sirius/sirius-web/issues/3422[#3422] [diagram] Fix an issue that prevents element not present on diagram to be selected on first click.
+- https://github.com/eclipse-sirius/sirius-web/issues/3407[#3407] [diagram] Fix performance issue during node drag.
 
 === New Features
 

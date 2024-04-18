@@ -25,9 +25,9 @@ import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { ListNodeData } from '../renderer/node/ListNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
-import { convertHandles } from './convertHandles';
-import { convertOutsideLabels, convertInsideLabel } from './convertLabel';
 import { isListLayoutStrategy } from './convertDiagram';
+import { convertHandles } from './convertHandles';
+import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -100,6 +100,9 @@ const toListNode = (
     growableNodeIds: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
       ? gqlNode.childrenLayoutStrategy.growableNodeIds
       : [],
+    isDropNodeTarget: false,
+    isDropNodeCandidate: false,
+    isHovered: false,
   };
 
   data.insideLabel = convertInsideLabel(
