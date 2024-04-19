@@ -44,7 +44,7 @@ export const useMoveChange = (): UseMoveChangeValue => {
     return changes.map((change) => {
       if (isMove(change)) {
         const movedNode = getNodes().find((node) => change.id === node.id);
-        if (movedNode?.parentNode) {
+        if (movedNode?.parentNode && !movedNode.data.isBorderNode) {
           applyPositionChangeToParentIfUndraggable(movedNode, getNodes(), change);
         }
         if (movedNode?.data.pinned) {

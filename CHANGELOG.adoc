@@ -73,6 +73,7 @@ They are also now used by the view builder code generator.
 - https://github.com/eclipse-sirius/sirius-web/issues/3301[#3301] [diagram] Fix an issue that caused direct edit to fail if a node didn't have an inside label.
 - https://github.com/eclipse-sirius/sirius-web/issues/3373[#3373] [diagram] Fix potential IllegalArgumentException with non uuid shape.
 - https://github.com/eclipse-sirius/sirius-web/issues/3383[#3383] [diagram] Fix an issue where the first resizing after node creation was not persisted.
+- https://github.com/eclipse-sirius/sirius-web/issues/3411[#3411] [diagram] Fix an issue that prevents border node to be  move if `AreChildNodesDraggableExpression` is false
 
 === New Features
 
