@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { useCallback } from 'react';
 import { Node, NodeChange, useReactFlow, XYPosition } from 'reactflow';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { EdgeData, NodeData, BorderNodePosition } from '../DiagramRenderer.types';
 import { findBorderNodePosition } from '../layout/layoutBorderNodes';
 import { borderNodeOffset } from '../layout/layoutParams';
 import { UseBorderChangeValue } from './useBorderChange.types';
@@ -29,19 +29,62 @@ const isNewPositionInsideIsParent = (newNodePosition: XYPosition, movedNode: Nod
   return false;
 };
 
+const findNearestBorderPosition = (
+  newNodePosition: XYPosition,
+  parentNode: Node<NodeData>
+): BorderNodePosition | null => {
+  if (parentNode.positionAbsolute) {
+    const northDistance = Math.abs(newNodePosition.y - parentNode.positionAbsolute.y);
+    const eastDistance = Math.abs((parentNode.width ?? 0) + parentNode.positionAbsolute.x - newNodePosition.x);
+    const southDistance = Math.abs(newNodePosition.y - (parentNode.height ?? 0) - parentNode.positionAbsolute.y);
+    const westDistance = Math.abs(parentNode.positionAbsolute.x - newNodePosition.x);
+
+    const minDistance = Math.min(...[northDistance, eastDistance, southDistance, westDistance]);
+    if (minDistance === northDistance) {
+      return BorderNodePosition.NORTH;
+    } else if (minDistance === eastDistance) {
+      return BorderNodePosition.EAST;
+    } else if (minDistance === southDistance) {
+      return BorderNodePosition.SOUTH;
+    } else {
+      return BorderNodePosition.WEST;
+    }
+  }
+  return null;
+};
+
 export const useBorderChange = (): UseBorderChangeValue => {
   const { getNodes } = useReactFlow<NodeData, EdgeData>();
 
   const transformBorderNodeChanges = useCallback((changes: NodeChange[]): NodeChange[] => {
     return changes.map((change) => {
-      if (change.type === 'position' && change.positionAbsolute) {
+      if (change.type === 'position' && change.position && change.positionAbsolute) {
         const movedNode = getNodes().find((node) => change.id === node.id);
-        if (movedNode?.data.isBorderNode) {
-          const parentNode = getNodes().find((node) => movedNode?.parentNode === node.id);
-          if (parentNode && isNewPositionInsideIsParent(change.positionAbsolute, movedNode, parentNode)) {
-            //Invalid position, reset to the initial one
-            change.position = movedNode.position;
-            change.positionAbsolute = movedNode.positionAbsolute;
+        if (movedNode && movedNode.data.isBorderNode) {
+          const parentNode = getNodes().find((node) => movedNode.parentNode === node.id);
+          if (
+            parentNode &&
+            parentNode.positionAbsolute &&
+            isNewPositionInsideIsParent(change.positionAbsolute, movedNode, parentNode)
+          ) {
+            const nearestBorder = findNearestBorderPosition(change.positionAbsolute, parentNode);
+            if (nearestBorder === BorderNodePosition.NORTH) {
+              change.position.y = borderNodeOffset - (movedNode.height ?? 0);
+              change.positionAbsolute.y = parentNode.positionAbsolute.y + borderNodeOffset - (movedNode.height ?? 0);
+            } else if (nearestBorder === BorderNodePosition.SOUTH) {
+              change.position.y = (parentNode.height ?? 0) - borderNodeOffset;
+              change.positionAbsolute.y = parentNode.positionAbsolute.y + (parentNode.height ?? 0) - borderNodeOffset;
+            } else if (nearestBorder === BorderNodePosition.WEST) {
+              change.position.x = borderNodeOffset - (movedNode.width ?? 0);
+              change.positionAbsolute.x = parentNode.positionAbsolute.x + borderNodeOffset - (movedNode.width ?? 0);
+            } else if (nearestBorder === BorderNodePosition.EAST) {
+              change.position.x = (parentNode.width ?? 0) - borderNodeOffset;
+              change.positionAbsolute.x = parentNode.positionAbsolute.x + (parentNode.width ?? 0) - borderNodeOffset;
+            } else {
+              //Invalid position, reset to the initial one
+              change.position = movedNode.position;
+              change.positionAbsolute = movedNode.positionAbsolute;
+            }
           } else {
             movedNode.data.borderNodePosition = findBorderNodePosition(change.position, movedNode, parentNode);
           }
