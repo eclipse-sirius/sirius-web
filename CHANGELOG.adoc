@@ -117,6 +117,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3359[#3359] Add report on document upload
 - https://github.com/eclipse-sirius/sirius-web/issues/3405[#3405] [diagram] Display layout tools vertically in group palette
 - https://github.com/eclipse-sirius/sirius-web/issues/3333[#3333] [emf] Store the last migration performed in a document
+- https://github.com/eclipse-sirius/sirius-web/issues/3409[#3409] [diagram] Make border node movement smoother
 
 
 == v2024.3.0
