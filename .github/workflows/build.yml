@@ -149,6 +149,9 @@ jobs:
           path: packages/trees/frontend/sirius-components-trees/coverage
           retention-days: 5
 
+      - name: Check the global code coverage
+        run: jshell scripts/check-coverage.jsh
+
       - name: Publish the backend
         if: startsWith(github.ref, 'refs/tags/v')
         env:
@@ -199,9 +202,6 @@ jobs:
           name: cypress-screenshots
           path: integration-tests/target/screenshots/**/*.png
           retention-days: 5
-
-      - name: Check the global code coverage
-        run: jshell scripts/check-coverage.jsh
 
       - name: Configure AWS CLI for Sirius Web
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
