@@ -76,10 +76,10 @@ public class TemplateBasedProjectInitializer implements ITemplateBasedProjectIni
             var editingContext = optionalEditingContext.get();
             var initializer = optionalProjectTemplateInitializer.get();
 
-            initializer.handle(input.templateId(), editingContext);
+            var optionalRepresentationMetadata = initializer.handle(input.templateId(), editingContext);
             this.editingContextPersistenceService.persist(editingContext);
 
-            return new CreateProjectFromTemplateSuccessPayload(input.id(), this.projectMapper.toDTO(project), null);
+            return new CreateProjectFromTemplateSuccessPayload(input.id(), this.projectMapper.toDTO(project), optionalRepresentationMetadata.orElse(null));
         }
         return new ErrorPayload(input.id(), "");
     }
