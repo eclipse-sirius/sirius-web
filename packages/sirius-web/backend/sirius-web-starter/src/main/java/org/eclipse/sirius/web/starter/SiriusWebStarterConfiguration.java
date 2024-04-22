@@ -55,6 +55,7 @@ import reactor.core.publisher.Flux;
     "org.eclipse.sirius.components.deck",
     "org.eclipse.sirius.components.diagrams",
     "org.eclipse.sirius.components.forms",
+    "org.eclipse.sirius.components.widget.reference",
     "org.eclipse.sirius.components.formdescriptioneditors",
     "org.eclipse.sirius.components.gantt",
     "org.eclipse.sirius.components.portals",

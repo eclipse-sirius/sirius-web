@@ -66,6 +66,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-widget-reference-graphql</artifactId>
+			<version>2024.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-formdescriptioneditors-widget-reference</artifactId>
+			<version>2024.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-formdescriptioneditors-graphql</artifactId>
 			<version>2024.3.2</version>
 		</dependency>
@@ -102,6 +112,16 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-web</artifactId>
+			<version>2024.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-emf</artifactId>
+			<version>2024.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-emf-widget-reference</artifactId>
 			<version>2024.3.2</version>
 		</dependency>
 		<dependency>
@@ -157,6 +177,16 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt-edit</artifactId>
+			<version>2024.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-widget-reference-view</artifactId>
+			<version>2024.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-widget-reference-view-edit</artifactId>
 			<version>2024.3.2</version>
 		</dependency>
 	</dependencies>
