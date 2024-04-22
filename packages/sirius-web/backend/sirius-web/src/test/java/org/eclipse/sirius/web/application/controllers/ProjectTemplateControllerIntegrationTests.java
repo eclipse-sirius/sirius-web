@@ -112,6 +112,9 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         String projectId = JsonPath.read(result, "$.data.createProjectFromTemplate.project.id");
         assertThat(projectId).isNotBlank();
 
+        String representationId = JsonPath.read(result, "$.data.createProjectFromTemplate.representationToOpen.id");
+        assertThat(representationId).isNotBlank();
+
         var optionalEditingContext = this.editingContextSearchService.findById(projectId);
         assertThat(optionalEditingContext).isPresent();
 

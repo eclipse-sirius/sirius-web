@@ -24,5 +24,5 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author pcdavid
  */
-public record CreateProjectFromTemplateSuccessPayload(@NotNull UUID id, @NotNull ProjectDTO project, RepresentationMetadata representationMetadata) implements IPayload {
+public record CreateProjectFromTemplateSuccessPayload(@NotNull UUID id, @NotNull ProjectDTO project, RepresentationMetadata representationToOpen) implements IPayload {
 }
