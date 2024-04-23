@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.image.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,5 +50,10 @@ public class ImageSearchService implements IImageSearchService {
         var count = this.imageRepository.countByProjectId(projectId);
 
         return new PageImpl<>(images, pageable, count);
+    }
+
+    @Override
+    public List<Image> findAll(UUID projectId) {
+        return this.imageRepository.findAllByProjectId(projectId);
     }
 }

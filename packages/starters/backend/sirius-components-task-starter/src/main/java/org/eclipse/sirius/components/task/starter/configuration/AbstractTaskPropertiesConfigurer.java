@@ -44,9 +44,7 @@ import org.eclipse.sirius.components.task.Task;
 import org.eclipse.sirius.components.task.TaskPackage;
 import org.eclipse.sirius.components.task.TaskTag;
 import org.eclipse.sirius.components.task.Team;
-import org.eclipse.sirius.components.view.emf.ICustomImageMetadataSearchService;
 import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesWidgetCreationService;
-import org.eclipse.sirius.components.view.emf.compatibility.PropertiesConfigurerService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -61,17 +59,14 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
 
     private final IObjectService objectService;
 
-    public AbstractTaskPropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService, PropertiesConfigurerService propertiesConfigurerService,
-            IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService) {
+    public AbstractTaskPropertiesConfigurer(IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService) {
         this.propertiesWidgetCreationService = Objects.requireNonNull(propertiesWidgetCreationService);
         this.objectService = Objects.requireNonNull(objectService);
     }
 
     @Override
     public void addPropertiesDescriptions(IPropertiesDescriptionRegistry registry) {
-
         String formDescriptionId = UUID.nameUUIDFromBytes("abstractTask".getBytes()).toString();
-
         List<AbstractControlDescription> controls = new ArrayList<>(this.getGeneralControlDescription());
 
         Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
@@ -81,14 +76,13 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
         registry.add(this.propertiesWidgetCreationService.createSimplePageDescription(formDescriptionId, groupDescription, canCreatePagePredicate));
-
     }
 
     private List<AbstractControlDescription> getGeneralControlDescription() {
         List<AbstractControlDescription> controls = new ArrayList<>();
 
         var name = this.propertiesWidgetCreationService.createTextField("abstractTask.name", "Name",
-                task -> String.valueOf(Optional.ofNullable(((AbstractTask) task).getName()).orElse("")),
+                task -> Optional.ofNullable(((AbstractTask) task).getName()).orElse(""),
                 (task, newValue) -> {
                     ((AbstractTask) task).setName(newValue);
                 },
@@ -96,7 +90,7 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
         controls.add(name);
 
         var description = this.propertiesWidgetCreationService.createExpressionField("abstractTask.description", "Description",
-                task -> String.valueOf(Optional.ofNullable(((AbstractTask) task).getDescription()).orElse("")),
+                task -> Optional.ofNullable(((AbstractTask) task).getDescription()).orElse(""),
                 (task, newValue) -> {
                     ((AbstractTask) task).setDescription(newValue);
                 },

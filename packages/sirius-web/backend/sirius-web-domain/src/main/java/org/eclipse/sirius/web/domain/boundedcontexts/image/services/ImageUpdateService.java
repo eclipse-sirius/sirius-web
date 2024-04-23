@@ -10,12 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.image.services;
 
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.image.repositories.IImageRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageUpdateService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;

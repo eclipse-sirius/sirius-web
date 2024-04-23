@@ -49,8 +49,8 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
-import org.eclipse.sirius.components.view.emf.CustomImageMetadata;
-import org.eclipse.sirius.components.view.emf.ICustomImageMetadataSearchService;
+import org.eclipse.sirius.components.view.emf.api.CustomImageMetadata;
+import org.eclipse.sirius.components.view.emf.api.ICustomImageMetadataSearchService;
 import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesConfigurerService;
 import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesWidgetCreationService;
 import org.eclipse.sirius.components.view.emf.compatibility.PropertiesConfigurerService;
@@ -308,13 +308,13 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .orElse(List.of())
                 )
                 .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
-                        .map(customImageMetadataEntity -> customImageMetadataEntity.getId().toString())
+                        .map(customImageMetadataEntity -> customImageMetadataEntity.id().toString())
                         .orElse(EMPTY))
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
-                        .map(CustomImageMetadata::getLabel)
+                        .map(CustomImageMetadata::label)
                         .orElse(EMPTY))
                 .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
-                        .map(customImageMetadataEntity -> List.of(customImageMetadataEntity.getId().toString()))
+                        .map(customImageMetadataEntity -> List.of(customImageMetadataEntity.id().toString()))
                         .orElse(List.of()))
                 .newValueHandler(this.getIconLabelValueHandler())
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE__LABEL_ICON))

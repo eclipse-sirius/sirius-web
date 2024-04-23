@@ -35,6 +35,13 @@ public interface IImageRepository extends ListPagingAndSortingRepository<Image, 
         FROM image image
         WHERE image.project_id = :projectId
         """)
+    List<Image> findAllByProjectId(UUID projectId);
+
+    @Query("""
+        SELECT *
+        FROM image image
+        WHERE image.project_id = :projectId
+        """)
     List<Image> findAllByProjectId(UUID projectId, Pageable pageable);
 
     @Query("""

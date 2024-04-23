@@ -10,26 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+package org.eclipse.sirius.components.view.emf.api;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 /**
- * Used to find images.
+ * Lightweight DTO representing a custom image metadata.
  *
- * @author sbegaudeau
+ * @author pcdavid
  */
-public interface IImageSearchService {
-
-    Optional<Image> findById(UUID id);
-
-    Page<Image> findAll(UUID projectId, Pageable pageable);
-
-    List<Image> findAll(UUID projectId);
+public record CustomImageMetadata(UUID id, String label, String contentType) {
+    public CustomImageMetadata {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(label);
+        Objects.requireNonNull(contentType);
+    }
 }

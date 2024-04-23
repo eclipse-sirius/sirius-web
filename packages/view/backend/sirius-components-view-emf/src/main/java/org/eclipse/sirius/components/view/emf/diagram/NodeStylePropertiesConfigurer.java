@@ -58,8 +58,8 @@ import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.view.emf.CustomImageMetadata;
-import org.eclipse.sirius.components.view.emf.ICustomImageMetadataSearchService;
+import org.eclipse.sirius.components.view.emf.api.CustomImageMetadata;
+import org.eclipse.sirius.components.view.emf.api.ICustomImageMetadataSearchService;
 import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesConfigurerService;
 import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesWidgetCreationService;
 import org.eclipse.sirius.components.view.emf.compatibility.PropertiesConfigurerService;
@@ -302,20 +302,20 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
                     Stream<CustomImageMetadata> parametricSVGs = this.parametricSVGImageRegistries.stream()
                             .flatMap(service -> service.getImages().stream())
-                            .map(image -> new CustomImageMetadata(image.getId(), optionalEditingContextId, image.getLabel(), "image/svg+xml"));
+                            .map(image -> new CustomImageMetadata(image.getId(), image.getLabel(), "image/svg+xml"));
 
                     List<CustomImageMetadata> customImages = optionalEditingContextId.map(this.customImageSearchService::getAvailableImages).orElse(List.of());
 
                     return Stream.concat(parametricSVGs, customImages.stream())
-                            .sorted(Comparator.comparing(CustomImageMetadata::getLabel))
+                            .sorted(Comparator.comparing(CustomImageMetadata::label))
                             .toList();
                 })
                 .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
-                        .map(CustomImageMetadata::getId)
+                        .map(CustomImageMetadata::id)
                         .map(UUID::toString)
                         .orElse(""))
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
-                        .map(CustomImageMetadata::getLabel)
+                        .map(CustomImageMetadata::label)
                         .orElse(""))
                 .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath)
                         .orElse(List.of()))

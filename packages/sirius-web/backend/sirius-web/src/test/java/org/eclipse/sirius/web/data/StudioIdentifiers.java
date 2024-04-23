@@ -33,6 +33,16 @@ public final class StudioIdentifiers {
 
     public static final UUID FORM_DESCRIPTION_OBJECT = UUID.fromString("ed20cb85-a58a-47ad-bc0d-749ec8b2ea03");
 
+    public static final UUID DIAGRAM_DESCRIPTION_OBJECT = UUID.fromString("7384dc2c-1b43-45c7-9c74-f972b28774c8");
+
+    public static final String DIAGRAM_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=fc1d7b23-2818-4874-bb30-8831ea287a44&sourceElementId=7384dc2c-1b43-45c7-9c74-f972b28774c8";
+
+    public static final UUID PLACEHOLDER_IMAGE_OBJECT = UUID.fromString("7f8ce6ef-a23f-4c62-a6f8-381d5c237742");
+
+    public static final UUID INSTANCE_PROJECT = UUID.fromString("bb66e0e9-4ab5-47ef-99f5-c6b26be995ea");
+
+    public static final UUID ROOT_OBJECT = UUID.fromString("87fa4553-6889-4ce6-b017-d013987f9fae");
+
     private StudioIdentifiers() {
         // Prevent instantiation
     }
