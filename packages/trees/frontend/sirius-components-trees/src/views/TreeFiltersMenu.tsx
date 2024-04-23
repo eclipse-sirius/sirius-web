@@ -71,6 +71,7 @@ export const TreeFiltersMenu = ({ filters, onTreeFilterMenuItemClick }: TreeFilt
         size="small"
         ref={anchorRef}
         aria-haspopup="true"
+        title="Filters"
         onClick={handleToggle}>
         <FilterListIcon color={open ? 'disabled' : 'inherit'} />
       </IconButton>
