@@ -10,33 +10,40 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image;
+package org.eclipse.sirius.web.domain.boundedcontexts.projectimage;
 
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.events.ImageCreatedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.events.ImageDeletedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.event.ProjectImageCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.event.ProjectImageDeletedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.event.ProjectImageLabelUpdatedEvent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
- * The aggregate root of the image bounded context.
+ * The aggregate root of the project image bounded context.
  *
  * @author sbegaudeau
  */
-@Table("image")
-public class Image extends AbstractValidatingAggregateRoot<Image> implements Persistable<UUID> {
+@Table("project_image")
+public class ProjectImage extends AbstractValidatingAggregateRoot<ProjectImage> implements Persistable<UUID> {
 
     @Transient
     private boolean isNew;
 
     @Id
     private UUID id;
+
+    @Column("project_id")
+    private AggregateReference<Project, UUID> project;
 
     private String label;
 
@@ -55,6 +62,15 @@ public class Image extends AbstractValidatingAggregateRoot<Image> implements Per
 
     public String getLabel() {
         return this.label;
+    }
+
+    public void updateLabel(String newLabel) {
+        if (!Objects.equals(this.label, newLabel)) {
+            this.label = newLabel;
+            this.lastModifiedOn = Instant.now();
+
+            this.registerEvent(new ProjectImageLabelUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, this));
+        }
     }
 
     public String getContentType() {
@@ -79,26 +95,33 @@ public class Image extends AbstractValidatingAggregateRoot<Image> implements Per
     }
 
     public void dispose() {
-        this.registerEvent(new ImageDeletedEvent(UUID.randomUUID(), Instant.now(), this));
+        this.registerEvent(new ProjectImageDeletedEvent(UUID.randomUUID(), Instant.now(), this));
     }
 
-    public static Builder newImage() {
+    public static Builder newProjectImage() {
         return new Builder();
     }
 
     /**
-     * Used to create new images.
+     * Used to create new project images.
      *
      * @author sbegaudeau
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
+        private AggregateReference<Project, UUID> project;
+
         private String label;
 
         private String contentType;
 
         private byte[] content;
+
+        public Builder project(AggregateReference<Project, UUID> project) {
+            this.project = Objects.requireNonNull(project);
+            return this;
+        }
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
@@ -115,21 +138,22 @@ public class Image extends AbstractValidatingAggregateRoot<Image> implements Per
             return this;
         }
 
-        public Image build() {
-            var image = new Image();
+        public ProjectImage build() {
+            var projectImage = new ProjectImage();
 
-            image.isNew = true;
-            image.id = UUID.nameUUIDFromBytes(this.content);
-            image.label = Objects.requireNonNull(this.label);
-            image.contentType = Objects.requireNonNull(this.contentType);
-            image.content = Objects.requireNonNull(this.content);
+            projectImage.isNew = true;
+            projectImage.id = UUID.randomUUID();
+            projectImage.project = Objects.requireNonNull(this.project);
+            projectImage.label = Objects.requireNonNull(this.label);
+            projectImage.contentType = Objects.requireNonNull(this.contentType);
+            projectImage.content = Objects.requireNonNull(this.content);
 
             var now = Instant.now();
-            image.createdOn = now;
-            image.lastModifiedOn = now;
+            projectImage.createdOn = now;
+            projectImage.lastModifiedOn = now;
 
-            image.registerEvent(new ImageCreatedEvent(UUID.randomUUID(), now, image));
-            return image;
+            projectImage.registerEvent(new ProjectImageCreatedEvent(UUID.randomUUID(), now, projectImage));
+            return projectImage;
         }
     }
 }

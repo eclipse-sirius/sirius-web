@@ -10,20 +10,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
- * Used to find images.
+ * Used to find project images.
  *
  * @author sbegaudeau
  */
-public interface IImageSearchService {
+public interface IProjectImageSearchService {
+    Optional<ProjectImage> findById(UUID id);
 
-    boolean existsByLabel(String label);
+    Page<ProjectImage> findAll(UUID projectId, Pageable pageable);
 
-    List<Image> findAll();
+    List<ProjectImage> findAll(UUID projectId);
 }

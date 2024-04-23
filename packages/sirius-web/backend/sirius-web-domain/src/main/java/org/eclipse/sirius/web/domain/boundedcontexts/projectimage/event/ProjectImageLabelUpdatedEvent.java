@@ -10,20 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.event;
 
-import java.util.List;
+import java.time.Instant;
+import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to find images.
+ * Event fired when the label of a project image is updated.
  *
  * @author sbegaudeau
  */
-public interface IImageSearchService {
-
-    boolean existsByLabel(String label);
-
-    List<Image> findAll();
+public record ProjectImageLabelUpdatedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull ProjectImage projectImage) implements IProjectImageEvent {
 }

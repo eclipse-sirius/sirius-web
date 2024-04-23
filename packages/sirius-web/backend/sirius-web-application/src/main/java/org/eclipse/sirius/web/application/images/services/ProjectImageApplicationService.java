@@ -24,75 +24,67 @@ import org.eclipse.sirius.web.application.images.dto.ImageMetadata;
 import org.eclipse.sirius.web.application.images.dto.RenameImageInput;
 import org.eclipse.sirius.web.application.images.dto.UploadImageInput;
 import org.eclipse.sirius.web.application.images.dto.UploadImageSuccessPayload;
-import org.eclipse.sirius.web.application.images.services.api.IImageApplicationService;
-import org.eclipse.sirius.web.application.images.services.api.IImageMapper;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageCreationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageDeletionService;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageUpdateService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.application.images.services.api.IProjectImageApplicationService;
+import org.eclipse.sirius.web.application.images.services.api.IProjectImageMapper;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageCreationService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageDeletionService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageUpdateService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.Success;
-import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Application services used to manipulate images.
+ * Application services used to manipulate project images.
  *
  * @author sbegaudeau
  */
 @Service
-public class ImageApplicationService implements IImageApplicationService {
+public class ProjectImageApplicationService implements IProjectImageApplicationService {
 
-    private final IProjectSearchService projectSearchService;
+    private final IProjectImageSearchService projectImageSearchService;
 
-    private final IImageSearchService imageSearchService;
+    private final IProjectImageCreationService projectImageCreationService;
 
-    private final IImageCreationService imageCreationService;
+    private final IProjectImageUpdateService projectImageUpdateService;
 
-    private final IImageUpdateService imageUpdateService;
+    private final IProjectImageDeletionService projectImageDeletionService;
 
-    private final IImageDeletionService imageDeletionService;
+    private final IProjectImageMapper projectImageMapper;
 
-    private final IImageMapper imageMapper;
-
-    private final IMessageService messageService;
-
-    public ImageApplicationService(IProjectSearchService projectSearchService, IImageSearchService imageSearchService, IImageCreationService imageCreationService, IImageUpdateService imageUpdateService, IImageDeletionService imageDeletionService, IImageMapper imageMapper, IMessageService messageService) {
-        this.projectSearchService = Objects.requireNonNull(projectSearchService);
-        this.imageSearchService = Objects.requireNonNull(imageSearchService);
-        this.imageCreationService = Objects.requireNonNull(imageCreationService);
-        this.imageUpdateService = Objects.requireNonNull(imageUpdateService);
-        this.imageDeletionService = Objects.requireNonNull(imageDeletionService);
-        this.imageMapper = Objects.requireNonNull(imageMapper);
-        this.messageService = Objects.requireNonNull(messageService);
+    public ProjectImageApplicationService(IProjectImageSearchService projectImageSearchService, IProjectImageCreationService projectImageCreationService, IProjectImageUpdateService projectImageUpdateService, IProjectImageDeletionService projectImageDeletionService, IProjectImageMapper projectImageMapper) {
+        this.projectImageSearchService = Objects.requireNonNull(projectImageSearchService);
+        this.projectImageCreationService = Objects.requireNonNull(projectImageCreationService);
+        this.projectImageUpdateService = Objects.requireNonNull(projectImageUpdateService);
+        this.projectImageDeletionService = Objects.requireNonNull(projectImageDeletionService);
+        this.projectImageMapper = Objects.requireNonNull(projectImageMapper);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Image> findById(UUID id) {
-        return this.imageSearchService.findById(id);
+    public Optional<ProjectImage> findById(UUID id) {
+        return this.projectImageSearchService.findById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<ImageMetadata> findAll(UUID projectId, Pageable pageable) {
-        return this.imageSearchService.findAll(projectId, pageable).map(this.imageMapper::toDTO);
+        return this.projectImageSearchService.findAll(projectId, pageable).map(this.projectImageMapper::toDTO);
     }
 
     @Override
     @Transactional
     public IPayload uploadImage(UploadImageInput input) {
-        var result = this.imageCreationService.createImage(input.projectId(), input.label(), input.file().getName(), input.file().getInputStream());
+        var result = this.projectImageCreationService.createProjectImage(input.projectId(), input.label(), input.file().getName(), input.file().getInputStream());
 
         IPayload payload = null;
-        if (result instanceof Failure<Image> failure) {
+        if (result instanceof Failure<ProjectImage> failure) {
             payload = new ErrorPayload(input.id(), failure.message());
-        } else if (result instanceof Success<Image> success) {
+        } else if (result instanceof Success<ProjectImage> success) {
             payload = new UploadImageSuccessPayload(input.id(), success.data().getId());
         }
         return payload;
@@ -101,7 +93,7 @@ public class ImageApplicationService implements IImageApplicationService {
     @Override
     @Transactional
     public IPayload renameImage(RenameImageInput input) {
-        var result = this.imageUpdateService.renameImage(input.imageId(), input.newLabel());
+        var result = this.projectImageUpdateService.renameProjectImage(input.imageId(), input.newLabel());
 
         IPayload payload = null;
         if (result instanceof Failure<Void> failure) {
@@ -115,7 +107,7 @@ public class ImageApplicationService implements IImageApplicationService {
     @Override
     @Transactional
     public IPayload deleteImage(DeleteImageInput input) {
-        var result = this.imageDeletionService.deleteImage(input.imageId());
+        var result = this.projectImageDeletionService.deleteProjectImage(input.imageId());
 
         IPayload payload = null;
         if (result instanceof Failure<Void> failure) {

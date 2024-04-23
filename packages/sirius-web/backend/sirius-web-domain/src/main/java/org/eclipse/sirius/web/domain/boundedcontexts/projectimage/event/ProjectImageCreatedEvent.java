@@ -10,22 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.events;
+package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.event;
 
 import java.time.Instant;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
 
 import jakarta.validation.constraints.NotNull;
 
 /**
- * Event fired when the label of an image is updated.
+ * Event fired when project images are updated.
  *
  * @author sbegaudeau
  */
-public record ImageLabelUpdatedEvent(
+public record ProjectImageCreatedEvent(
         @NotNull UUID id,
         @NotNull Instant createdOn,
-        @NotNull Image image) implements IImageEvent {
+        @NotNull ProjectImage projectImage) implements IProjectImageEvent {
 }

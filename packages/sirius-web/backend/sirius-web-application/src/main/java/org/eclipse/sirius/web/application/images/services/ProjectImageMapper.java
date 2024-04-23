@@ -13,19 +13,19 @@
 package org.eclipse.sirius.web.application.images.services;
 
 import org.eclipse.sirius.web.application.images.dto.ImageMetadata;
-import org.eclipse.sirius.web.application.images.services.api.IImageMapper;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
+import org.eclipse.sirius.web.application.images.services.api.IProjectImageMapper;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to convert an image to a DTO.
+ * Used to convert a project image to a DTO.
  *
  * @author sbegaudeau
  */
 @Service
-public class ImageMapper implements IImageMapper {
+public class ProjectImageMapper implements IProjectImageMapper {
     @Override
-    public ImageMetadata toDTO(Image image) {
-        return new ImageMetadata(image.getId(), image.getLabel(), image.getId().toString());
+    public ImageMetadata toDTO(ProjectImage projectImage) {
+        return new ImageMetadata(projectImage.getId(), projectImage.getLabel(), projectImage.getId().toString());
     }
 }

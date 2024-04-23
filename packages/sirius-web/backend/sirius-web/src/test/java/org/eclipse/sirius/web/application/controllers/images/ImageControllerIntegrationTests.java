@@ -32,11 +32,11 @@ import org.eclipse.sirius.web.application.images.dto.RenameImageInput;
 import org.eclipse.sirius.web.application.images.dto.UploadImageInput;
 import org.eclipse.sirius.web.application.images.dto.UploadImageSuccessPayload;
 import org.eclipse.sirius.web.data.TestIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageSearchService;
 import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.graphql.DeleteImageMutationRunner;
-import org.eclipse.sirius.web.tests.graphql.RenameImageMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectImagesQueryRunner;
+import org.eclipse.sirius.web.tests.graphql.RenameImageMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.UploadImageMutationRunner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -83,7 +83,7 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     private DeleteImageMutationRunner deleteImageMutationRunner;
 
     @Autowired
-    private IImageSearchService imageSearchService;
+    private IProjectImageSearchService projectImageSearchService;
 
     @Test
     @DisplayName("Given a project, when its images are requested, then the images are returned")
@@ -195,10 +195,10 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenAnImageWhenItIsRenamedThenItsNameIsUpdated() {
         this.givenCommittedTransaction.commit();
 
-        var optionalImage = this.imageSearchService.findById(TestIdentifiers.SYSML_IMAGE);
-        assertThat(optionalImage)
+        var optionalProjectImage = this.projectImageSearchService.findById(TestIdentifiers.SYSML_IMAGE);
+        assertThat(optionalProjectImage)
                 .isPresent()
-                .hasValueSatisfying(image -> assertThat(image.getLabel()).isEqualTo("Placeholder"));
+                .hasValueSatisfying(projectImage -> assertThat(projectImage.getLabel()).isEqualTo("Placeholder"));
 
         var input = new RenameImageInput(UUID.randomUUID(), TestIdentifiers.SYSML_IMAGE, "New label");
         var result = this.renameImageMutationRunner.run(input);
@@ -208,10 +208,10 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        optionalImage = this.imageSearchService.findById(TestIdentifiers.SYSML_IMAGE);
-        assertThat(optionalImage)
+        optionalProjectImage = this.projectImageSearchService.findById(TestIdentifiers.SYSML_IMAGE);
+        assertThat(optionalProjectImage)
                 .isPresent()
-                .hasValueSatisfying(image -> assertThat(image.getLabel()).isEqualTo(input.newLabel()));
+                .hasValueSatisfying(projectImage -> assertThat(projectImage.getLabel()).isEqualTo(input.newLabel()));
     }
 
     @Test

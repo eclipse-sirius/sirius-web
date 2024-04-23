@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services;
+package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,14 +18,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.repositories.IImageRepository;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageCreationService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.repositories.IProjectImageRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageCreationService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,20 +36,20 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class ImageCreationService implements IImageCreationService {
+public class ProjectImageCreationService implements IProjectImageCreationService {
 
-    private final IImageRepository imageRepository;
+    private final IProjectImageRepository projectImageRepository;
 
     private final IMessageService messageService;
 
-    public ImageCreationService(IImageRepository imageRepository, IMessageService messageService) {
-        this.imageRepository = Objects.requireNonNull(imageRepository);
+    public ProjectImageCreationService(IProjectImageRepository projectImageRepository, IMessageService messageService) {
+        this.projectImageRepository = Objects.requireNonNull(projectImageRepository);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
-    public IResult<Image> createImage(String label, String fileName, InputStream inputStream) {
-        IResult<Image> result = null;
+    public IResult<ProjectImage> createProjectImage(UUID projectId, String label, String fileName, InputStream inputStream) {
+        IResult<ProjectImage> result = null;
 
         var optionalContent = this.getContent(inputStream);
         var optionalContentType = this.getContentType(Path.of(fileName));
@@ -61,15 +63,16 @@ public class ImageCreationService implements IImageCreationService {
                 realLabel = fileName;
             }
 
-            var image = Image.newImage()
+            var projectImage = ProjectImage.newProjectImage()
+                    .project(AggregateReference.to(projectId))
                     .label(realLabel)
                     .contentType(contentType)
                     .content(content)
                     .build();
 
-            this.imageRepository.save(image);
+            this.projectImageRepository.save(projectImage);
 
-            result = new Success<>(image);
+            result = new Success<>(projectImage);
         } else {
             result = new Failure<>(this.messageService.unexpectedError());
         }

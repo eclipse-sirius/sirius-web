@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.emf.api.CustomImageMetadata;
 import org.eclipse.sirius.components.view.emf.api.ICustomImageMetadataSearchService;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,19 +33,29 @@ public class CustomImageMetadataSearchService implements ICustomImageMetadataSea
 
     private final IImageSearchService imageSearchService;
 
-    public CustomImageMetadataSearchService(IImageSearchService imageSearchService) {
+    private final IProjectImageSearchService projectImageSearchService;
+
+    public CustomImageMetadataSearchService(IImageSearchService imageSearchService, IProjectImageSearchService projectImageSearchService) {
         this.imageSearchService = Objects.requireNonNull(imageSearchService);
+        this.projectImageSearchService = Objects.requireNonNull(projectImageSearchService);
     }
 
     @Override
     public List<CustomImageMetadata> getAvailableImages(String editingContextId) {
+        var globalCustomImageMetadata = this.imageSearchService.findAll().stream()
+                .map(image -> new CustomImageMetadata(image.getId(), image.getLabel(), image.getContentType()))
+                .toList();
+
         var projectCustomImageMetadata = new UUIDParser().parse(editingContextId)
-                .map(this.imageSearchService::findAll)
+                .map(this.projectImageSearchService::findAll)
                 .orElse(List.of())
                 .stream()
                 .map(image -> new CustomImageMetadata(image.getId(), image.getLabel(), image.getContentType()))
                 .toList();
 
-        return new ArrayList<>(projectCustomImageMetadata);
+        List<CustomImageMetadata> imageMetadata = new ArrayList<>();
+        imageMetadata.addAll(globalCustomImageMetadata);
+        imageMetadata.addAll(projectCustomImageMetadata);
+        return imageMetadata;
     }
 }

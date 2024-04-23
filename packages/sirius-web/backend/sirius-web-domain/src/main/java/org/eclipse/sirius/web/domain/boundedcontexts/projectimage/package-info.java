@@ -10,20 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+@Module(
+    name = "ProjectImage",
+    allowedDependencies = { "Project" },
+    exposedPackages = {
+        "org.eclipse.sirius.web.domain.boundedcontexts.projectimage",
+        "org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api",
+        "org.eclipse.sirius.web.domain.boundedcontexts.projectimage.events"
+    }
+)
+package org.eclipse.sirius.web.domain.boundedcontexts.projectimage;
 
-import java.util.List;
-
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
-
-/**
- * Used to find images.
- *
- * @author sbegaudeau
- */
-public interface IImageSearchService {
-
-    boolean existsByLabel(String label);
-
-    List<Image> findAll();
-}
+import org.eclipse.sirius.web.domain.annotations.Module;

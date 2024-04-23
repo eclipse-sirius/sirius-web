@@ -10,13 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services;
+package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services;
 
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.image.repositories.IImageRepository;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageUpdateService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.repositories.IProjectImageRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageDeletionService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
@@ -24,39 +24,35 @@ import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to update images.
+ * Used to delete project images.
  *
  * @author sbegaudeau
  */
 @Service
-public class ImageUpdateService implements IImageUpdateService {
+public class ProjectImageDeletionService implements IProjectImageDeletionService {
 
-    private final IImageRepository imageRepository;
+    private final IProjectImageRepository projectImageRepository;
 
     private final IMessageService messageService;
 
-    public ImageUpdateService(IImageRepository imageRepository, IMessageService messageService) {
-        this.imageRepository = Objects.requireNonNull(imageRepository);
+    public ProjectImageDeletionService(IProjectImageRepository projectImageRepository, IMessageService messageService) {
+        this.projectImageRepository = Objects.requireNonNull(projectImageRepository);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
-    public IResult<Void> renameImage(UUID imageId, String newLabel) {
+    public IResult<Void> deleteProjectImage(UUID projectImageId) {
         IResult<Void> result = null;
 
-        var optionalImage = this.imageRepository.findById(imageId);
+        var optionalProjectImage = this.projectImageRepository.findById(projectImageId);
+        if (optionalProjectImage.isPresent()) {
+            var projectImage = optionalProjectImage.get();
+            projectImage.dispose();
 
-        var sanitizedName = newLabel.trim();
-        if (sanitizedName.isBlank()) {
-            result = new Failure<>(this.messageService.invalidName());
-        } else if (optionalImage.isEmpty()) {
-            result = new Failure<>(this.messageService.notFound());
-        } else {
-            var image = optionalImage.get();
-            image.updateLabel(newLabel);
-
-            this.imageRepository.save(image);
+            this.projectImageRepository.delete(projectImage);
             result = new Success<>(null);
+        } else {
+            result = new Failure<>(this.messageService.notFound());
         }
 
         return result;

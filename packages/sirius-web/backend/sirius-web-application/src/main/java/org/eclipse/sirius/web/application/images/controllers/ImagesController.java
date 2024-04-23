@@ -21,7 +21,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.core.api.IImagePathService;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.application.images.services.api.IImageApplicationService;
+import org.eclipse.sirius.web.application.images.services.api.IProjectImageApplicationService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -82,9 +82,9 @@ public class ImagesController {
 
     private final List<IImagePathService> pathResourcesServices;
 
-    private final IImageApplicationService imageApplicationService;
+    private final IProjectImageApplicationService imageApplicationService;
 
-    public ImagesController(List<IImagePathService> pathResourcesServices, IImageApplicationService imageApplicationService) {
+    public ImagesController(List<IImagePathService> pathResourcesServices, IProjectImageApplicationService imageApplicationService) {
         this.pathResourcesServices = pathResourcesServices;
         this.imageApplicationService = Objects.requireNonNull(imageApplicationService);
     }
