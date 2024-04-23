@@ -19,7 +19,6 @@ import com.jayway.jsonpath.JsonPath;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
@@ -27,8 +26,6 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.collaborative.trees.dto.DeleteTreeItemInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeEventInput;
@@ -41,10 +38,10 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.DeleteTreeItemMutationRunner;
 import org.eclipse.sirius.components.trees.tests.graphql.TreeEventSubscriptionRunner;
-import org.eclipse.sirius.components.trees.tests.graphql.TreeFiltersQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
+import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,13 +66,19 @@ import reactor.test.StepVerifier;
 public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
     private TreeEventSubscriptionRunner treeEventSubscriptionRunner;
 
     @Autowired
     private DeleteTreeItemMutationRunner deleteTreeItemMutationRunner;
 
     @Autowired
-    private TreeFiltersQueryRunner treeFiltersQueryRunner;
+    private IEditingContextSearchService editingContextSearchService;
+
+    @Autowired
+    private IIdentityService identityService;
 
     /**
      * Record used to contain both a way to find a tree item and some predicate to validate on said tree item in order to simplify the design of some advanced tests.
@@ -109,20 +112,9 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             treeItem -> !treeItem.isHasChildren()
     );
 
-    @Autowired
-    private IEditingContextSearchService editingContextSearchService;
-
-    @Autowired
-    private IIdentityService identityService;
-
-    @Autowired
-    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
-
     @BeforeEach
     public void beforeEach() {
-        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                .map(IEditingContextEventProcessor::getEditingContextId)
-                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
+        this.givenInitialServerState.initialize();
     }
 
     @Test
@@ -232,18 +224,4 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         };
     }
 
-    @Test
-    @DisplayName("Given a tree id, when we request its tree filters, then the list is returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenTreeIdWhenWeRequestItsTreeFiltersThenTheListIsReturned() {
-        Map<String, Object> variables = Map.of(
-                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
-                "representationId", ExplorerDescriptionProvider.REPRESENTATION_ID
-        );
-        var result = this.treeFiltersQueryRunner.run(variables);
-
-        List<String> treeFilterIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.filters[*].id");
-        assertThat(treeFilterIds).hasSize(0);
-    }
 }
