@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
 
 import java.io.InputStream;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
 import org.eclipse.sirius.web.domain.services.IResult;
@@ -24,5 +23,5 @@ import org.eclipse.sirius.web.domain.services.IResult;
  * @author sbegaudeau
  */
 public interface IImageCreationService {
-    IResult<Image> createImage(UUID projectId, String label, String fileName, InputStream inputStream);
+    IResult<Image> createImage(String label, String fileName, InputStream inputStream);
 }

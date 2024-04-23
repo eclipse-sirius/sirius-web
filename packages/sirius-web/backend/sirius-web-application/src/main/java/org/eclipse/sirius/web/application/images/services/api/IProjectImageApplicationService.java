@@ -20,18 +20,18 @@ import org.eclipse.sirius.web.application.images.dto.DeleteImageInput;
 import org.eclipse.sirius.web.application.images.dto.ImageMetadata;
 import org.eclipse.sirius.web.application.images.dto.RenameImageInput;
 import org.eclipse.sirius.web.application.images.dto.UploadImageInput;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Application services used to manipulate images.
+ * Application services used to manipulate project images.
  *
  * @author sbegaudeau
  */
-public interface IImageApplicationService {
+public interface IProjectImageApplicationService {
 
-    Optional<Image> findById(UUID id);
+    Optional<ProjectImage> findById(UUID id);
 
     Page<ImageMetadata> findAll(UUID projectId, Pageable pageable);
 

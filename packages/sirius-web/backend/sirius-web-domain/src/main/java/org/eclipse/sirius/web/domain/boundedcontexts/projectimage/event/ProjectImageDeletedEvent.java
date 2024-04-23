@@ -10,17 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.event;
 
+import java.time.Instant;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.services.IResult;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to update images.
+ * Event fired when project images are deleted.
  *
  * @author sbegaudeau
  */
-public interface IImageUpdateService {
-    IResult<Void> renameImage(UUID imageId, String newLabel);
+public record ProjectImageDeletedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull ProjectImage projectImage) implements IProjectImageEvent {
 }
+

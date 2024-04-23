@@ -14,15 +14,10 @@ package org.eclipse.sirius.web.domain.boundedcontexts.image.services;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.repositories.IImageRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageSearchService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,20 +35,12 @@ public class ImageSearchService implements IImageSearchService {
     }
 
     @Override
-    public Optional<Image> findById(UUID id) {
-        return this.imageRepository.findById(id);
+    public boolean existsByLabel(String label) {
+        return this.imageRepository.existsByLabel(label);
     }
 
     @Override
-    public Page<Image> findAll(UUID projectId, Pageable pageable) {
-        var images = this.imageRepository.findAllByProjectId(projectId, pageable);
-        var count = this.imageRepository.countByProjectId(projectId);
-
-        return new PageImpl<>(images, pageable, count);
-    }
-
-    @Override
-    public List<Image> findAll(UUID projectId) {
-        return this.imageRepository.findAllByProjectId(projectId);
+    public List<Image> findAll() {
+        return this.imageRepository.findAll();
     }
 }

@@ -12,7 +12,7 @@
  *******************************************************************************/
 @Module(
     name = "Image",
-    allowedDependencies = { "Project" },
+    allowedDependencies = {},
     exposedPackages = {
         "org.eclipse.sirius.web.domain.boundedcontexts.image",
         "org.eclipse.sirius.web.domain.boundedcontexts.image.services.api",

@@ -10,20 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+package org.eclipse.sirius.web.application.images.services.api;
 
-import java.util.List;
-
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
+import org.eclipse.sirius.web.application.images.dto.ImageMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
 
 /**
- * Used to find images.
+ * Used to convert a project image to a DTO.
  *
  * @author sbegaudeau
  */
-public interface IImageSearchService {
-
-    boolean existsByLabel(String label);
-
-    List<Image> findAll();
+public interface IProjectImageMapper {
+    ImageMetadata toDTO(ProjectImage projectImage);
 }

@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinate
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.images.dto.UploadImageInput;
-import org.eclipse.sirius.web.application.images.services.api.IImageApplicationService;
+import org.eclipse.sirius.web.application.images.services.api.IProjectImageApplicationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -47,11 +47,11 @@ public class MutationUploadImageDataFetcher implements IDataFetcherWithFieldCoor
 
     private static final String FILE = "file";
 
-    private final IImageApplicationService imageApplicationService;
+    private final IProjectImageApplicationService imageApplicationService;
 
     private final IMessageService messageService;
 
-    public MutationUploadImageDataFetcher(IImageApplicationService imageApplicationService, IMessageService messageService) {
+    public MutationUploadImageDataFetcher(IProjectImageApplicationService imageApplicationService, IMessageService messageService) {
         this.imageApplicationService = Objects.requireNonNull(imageApplicationService);
         this.messageService = Objects.requireNonNull(messageService);
     }

@@ -10,20 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api;
 
-import java.util.List;
+import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
+import org.eclipse.sirius.web.domain.services.IResult;
 
 /**
- * Used to find images.
+ * Used to update project images.
  *
  * @author sbegaudeau
  */
-public interface IImageSearchService {
-
-    boolean existsByLabel(String label);
-
-    List<Image> findAll();
+public interface IProjectImageUpdateService {
+    IResult<Void> renameProjectImage(UUID projectImageId, String newLabel);
 }

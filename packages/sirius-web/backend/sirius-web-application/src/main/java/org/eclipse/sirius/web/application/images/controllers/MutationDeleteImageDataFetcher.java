@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetc
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.images.dto.DeleteImageInput;
-import org.eclipse.sirius.web.application.images.services.api.IImageApplicationService;
+import org.eclipse.sirius.web.application.images.services.api.IProjectImageApplicationService;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -36,9 +36,9 @@ public class MutationDeleteImageDataFetcher implements IDataFetcherWithFieldCoor
 
     private final ObjectMapper objectMapper;
 
-    private final IImageApplicationService imageApplicationService;
+    private final IProjectImageApplicationService imageApplicationService;
 
-    public MutationDeleteImageDataFetcher(ObjectMapper objectMapper, IImageApplicationService imageApplicationService) {
+    public MutationDeleteImageDataFetcher(ObjectMapper objectMapper, IProjectImageApplicationService imageApplicationService) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.imageApplicationService = Objects.requireNonNull(imageApplicationService);
     }

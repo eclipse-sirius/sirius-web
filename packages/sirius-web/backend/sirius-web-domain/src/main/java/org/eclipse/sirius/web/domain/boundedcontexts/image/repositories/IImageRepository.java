@@ -12,11 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.image.repositories;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
@@ -29,25 +27,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface IImageRepository extends ListPagingAndSortingRepository<Image, UUID>, ListCrudRepository<Image, UUID> {
-
     @Query("""
-        SELECT *
+        SELECT
+          CASE WHEN count(*) > 0 THEN true ELSE false END
         FROM image image
-        WHERE image.project_id = :projectId
+        WHERE image.label = :label
         """)
-    List<Image> findAllByProjectId(UUID projectId);
-
-    @Query("""
-        SELECT *
-        FROM image image
-        WHERE image.project_id = :projectId
-        """)
-    List<Image> findAllByProjectId(UUID projectId, Pageable pageable);
-
-    @Query("""
-        SELECT count(*)
-        FROM image image
-        WHERE image.project_id = :projectId
-        """)
-    long countByProjectId(UUID projectId);
+    boolean existsByLabel(String label);
 }

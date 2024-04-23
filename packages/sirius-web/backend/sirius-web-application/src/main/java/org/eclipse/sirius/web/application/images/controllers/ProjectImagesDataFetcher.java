@@ -18,7 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.images.dto.ImageMetadata;
-import org.eclipse.sirius.web.application.images.services.api.IImageApplicationService;
+import org.eclipse.sirius.web.application.images.services.api.IProjectImageApplicationService;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.springframework.data.domain.PageRequest;
 
@@ -32,9 +32,9 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "Project", field = "images")
 public class ProjectImagesDataFetcher implements IDataFetcherWithFieldCoordinates<List<ImageMetadata>> {
 
-    private final IImageApplicationService imageApplicationService;
+    private final IProjectImageApplicationService imageApplicationService;
 
-    public ProjectImagesDataFetcher(IImageApplicationService imageApplicationService) {
+    public ProjectImagesDataFetcher(IProjectImageApplicationService imageApplicationService) {
         this.imageApplicationService = Objects.requireNonNull(imageApplicationService);
     }
 

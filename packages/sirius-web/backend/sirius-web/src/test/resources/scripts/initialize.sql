@@ -59,7 +59,7 @@ INSERT INTO semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
-INSERT INTO image (
+INSERT INTO project_image (
   id,
   project_id,
   label,
