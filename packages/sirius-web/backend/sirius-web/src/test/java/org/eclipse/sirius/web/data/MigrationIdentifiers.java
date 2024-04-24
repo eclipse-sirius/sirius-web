@@ -29,6 +29,8 @@ public final class MigrationIdentifiers {
 
     public static final String MIGRATION_NODE_STYLE_DESCRIPTION_COLOR_STUDIO_DIAGRAM = "NodeStyleDescription#color migration";
 
+    public static final UUID MIGRATION_STUDIO_DIAGRAM_HIERARCHY = UUID.fromString("35f1cd7b-e5bb-443d-95ef-bab372a92b0f");
+
     private MigrationIdentifiers() {
         // Prevent instantiation
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,17 +28,17 @@ public class HierarchyNode {
 
     private String label;
 
-    private List<HierarchyNode> children;
+    private List<HierarchyNode> childNodes;
 
     public HierarchyNode() {
         // Used by Jackson
     }
 
-    public HierarchyNode(String id, String targetObjectId, String label, List<HierarchyNode> children) {
+    public HierarchyNode(String id, String targetObjectId, String label, List<HierarchyNode> childNodes) {
         this.id = Objects.requireNonNull(id);
         this.targetObjectId = Objects.requireNonNull(targetObjectId);
         this.label = Objects.requireNonNull(label);
-        this.children = Objects.requireNonNull(children);
+        this.childNodes = Objects.requireNonNull(childNodes);
     }
 
     public String getId() {
@@ -53,8 +53,8 @@ public class HierarchyNode {
         return this.label;
     }
 
-    public List<HierarchyNode> getChildren() {
-        return this.children;
+    public List<HierarchyNode> getChildNodes() {
+        return this.childNodes;
     }
 
     @Override
