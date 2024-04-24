@@ -54,6 +54,10 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
 
     private String content;
 
+    private String lastMigrationPerformed;
+
+    private String migrationVersion;
+
     private Instant createdOn;
 
     private Instant lastModifiedOn;
@@ -91,6 +95,14 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
         return this.createdOn;
     }
 
+    public String getLastMigrationPerformed() {
+        return lastMigrationPerformed;
+    }
+
+    public String getMigrationVersion() {
+        return migrationVersion;
+    }
+
     public Instant getLastModifiedOn() {
         return this.lastModifiedOn;
     }
@@ -103,6 +115,14 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
             this.lastModifiedOn = now;
 
             this.registerEvent(new RepresentationDataContentUpdatedEvent(UUID.randomUUID(), now, this));
+        }
+    }
+
+    public void updateMigrationData(String newLastMigrationPerformed, String newMigrationVersion) {
+        if (!Objects.equals(this.migrationVersion, newMigrationVersion)) {
+            this.lastMigrationPerformed = Objects.requireNonNull(newLastMigrationPerformed);
+            this.migrationVersion = Objects.requireNonNull(newMigrationVersion);
+            this.lastModifiedOn = Instant.now();
         }
     }
 
@@ -141,6 +161,10 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
 
         private String content;
 
+        private String lastMigrationPerformed;
+
+        private String migrationVersion;
+
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -175,6 +199,16 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
             return this;
         }
 
+        public Builder lastMigrationPerformed(String lastMigrationPerformed) {
+            this.lastMigrationPerformed = Objects.requireNonNull(lastMigrationPerformed);
+            return this;
+        }
+
+        public Builder migrationVersion(String migrationVersion) {
+            this.migrationVersion = Objects.requireNonNull(migrationVersion);
+            return this;
+        }
+
         public RepresentationData build() {
             var representationData = new RepresentationData();
             representationData.isNew = true;
@@ -185,6 +219,8 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
             representationData.label = Objects.requireNonNull(this.label);
             representationData.kind = Objects.requireNonNull(this.kind);
             representationData.content = Objects.requireNonNull(this.content);
+            representationData.lastMigrationPerformed = Objects.requireNonNull(this.lastMigrationPerformed);
+            representationData.migrationVersion = Objects.requireNonNull(this.migrationVersion);
 
             var now = Instant.now();
             representationData.createdOn = now;

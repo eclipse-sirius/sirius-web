@@ -15,9 +15,14 @@ package org.eclipse.sirius.web.application.representation.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
+import org.eclipse.sirius.components.collaborative.representations.migration.RepresentationMigrationData;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
@@ -39,6 +44,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RepresentationPersistenceService implements IRepresentationPersistenceService {
 
+    private static final  String NONE = "none";
+
     private final IRepresentationDataSearchService representationDataSearchService;
 
     private final IRepresentationDataCreationService representationDataCreationService;
@@ -49,11 +56,14 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
     private final Logger logger = LoggerFactory.getLogger(RepresentationPersistenceService.class);
 
-    public RepresentationPersistenceService(IRepresentationDataSearchService representationDataSearchService, IRepresentationDataCreationService representationDataCreationService, IRepresentationDataUpdateService representationDataUpdateService, ObjectMapper objectMapper) {
+    private final List<IRepresentationMigrationParticipant> migrationParticipants;
+
+    public RepresentationPersistenceService(IRepresentationDataSearchService representationDataSearchService, IRepresentationDataCreationService representationDataCreationService, IRepresentationDataUpdateService representationDataUpdateService, ObjectMapper objectMapper, List<IRepresentationMigrationParticipant> migrationParticipants) {
         this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
         this.representationDataCreationService = Objects.requireNonNull(representationDataCreationService);
         this.representationDataUpdateService = representationDataUpdateService;
         this.objectMapper = Objects.requireNonNull(objectMapper);
+        this.migrationParticipants = migrationParticipants;
     }
 
     @Override
@@ -61,7 +71,6 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
     public void save(IEditingContext editingContext, IRepresentation representation) {
         var optionalProjectId = new UUIDParser().parse(editingContext.getId());
         var optionalRepresentationId = new UUIDParser().parse(representation.getId());
-
         if (optionalProjectId.isPresent() && optionalRepresentationId.isPresent()) {
             var projectId = optionalProjectId.get();
             var representationId = optionalRepresentationId.get();
@@ -69,9 +78,12 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
             String content = this.toString(representation);
 
             var exists = this.representationDataSearchService.existsById(representationId);
+
             if (exists) {
-                this.representationDataUpdateService.updateContent(representationId, content);
+                var migrationData = this.getLastMigrationData(representation.getKind());
+                this.representationDataUpdateService.updateContentWithMigrationData(representationId, content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
             } else {
+                var migrationData = this.getInitialMigrationData(representation.getKind());
                 var representationData = RepresentationData.newRepresentationData(representationId)
                         .project(AggregateReference.to(projectId))
                         .label(representation.getLabel())
@@ -79,6 +91,8 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
                         .descriptionId(representation.getDescriptionId())
                         .targetObjectId(representation.getTargetObjectId())
                         .content(content)
+                        .lastMigrationPerformed(migrationData.lastMigrationPerformed())
+                        .migrationVersion(migrationData.migrationVersion())
                         .build();
 
                 this.representationDataCreationService.create(representationData);
@@ -94,5 +108,23 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
             this.logger.warn(exception.getMessage(), exception);
         }
         return content;
+    }
+
+    private RepresentationMigrationData getInitialMigrationData(String kind) {
+        return migrationParticipants.stream()
+                .filter(migrationParticipant -> migrationParticipant.getKind().equals(kind))
+                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
+                .sorted(Collections.reverseOrder())
+                .map(migrationParticipant -> new RepresentationMigrationData(NONE, migrationParticipant.getVersion()))
+                .findFirst().orElse(new RepresentationMigrationData(NONE, "0"));
+    }
+
+    private RepresentationMigrationData getLastMigrationData(String kind) {
+        return migrationParticipants.stream()
+                .filter(migrationParticipant -> migrationParticipant.getKind().equals(kind))
+                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
+                .sorted(Collections.reverseOrder())
+                .map(migrationParticipant -> new RepresentationMigrationData(migrationParticipant.getClass().getSimpleName(), migrationParticipant.getVersion()))
+                .findFirst().orElse(new RepresentationMigrationData(NONE, "0"));
     }
 }

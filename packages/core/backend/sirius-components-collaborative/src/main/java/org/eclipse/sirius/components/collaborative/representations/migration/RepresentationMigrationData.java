@@ -10,19 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api;
-
-import java.util.UUID;
-
-import org.eclipse.sirius.web.domain.services.IResult;
+package org.eclipse.sirius.components.collaborative.representations.migration;
 
 /**
- * Used to update existing representation data.
+ * POJO for RepresentationMigrationData.
  *
- * @author sbegaudeau
+ * @author mcharfadi
  */
-public interface IRepresentationDataUpdateService {
-    IResult<Void> updateContent(UUID id, String content);
+public record RepresentationMigrationData(String lastMigrationPerformed, String migrationVersion) {
 
-    IResult<Void> updateContentWithMigrationData(UUID id, String content, String lastMigrationPerformed, String migrationVersion);
+    public static final String JSON_OBJECT_ROOT = "migration";
+
 }

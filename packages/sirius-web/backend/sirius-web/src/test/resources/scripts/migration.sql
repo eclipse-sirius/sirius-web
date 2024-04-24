@@ -10,19 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-
 -- Sample migration project
 INSERT INTO project (
   id,
@@ -286,4 +273,44 @@ INSERT INTO document (
    }',
   '2024-05-06 15:00:0.000',
   '2024-05-06 15:00:0.000'
+);
+
+INSERT INTO representation_data (
+  id,
+  project_id,
+  target_object_id,
+  description_id,
+  label,
+  kind,
+  content,
+  created_on,
+  last_modified_on,
+  last_migration_performed,
+  migration_version
+) VALUES (
+  '35f1cd7b-e5bb-443d-95ef-bab372a92b0f',
+  'a3b86086-23f5-41cb-97b9-5ac7234a98af',
+  '719d2b8f-ab70-438d-a999-306de10654a7',
+  'siriusComponents://representationDescription?kind=TreeMap',
+  'Hierarchy Migration',
+  'siriusComponents://representationDescription?kind=TreeMap',
+  '{
+    "id": "35f1cd7b-e5bb-443d-95ef-bab372a92b0f",
+    "descriptionId": "siriusComponents://representation?type=TreeMap",
+    "targetObjectId": "",
+    "label": "Migration Representation",
+    "kind": "siriusComponents://representation?type=TreeMap",
+    "children": [
+     {
+       "id": "7ec83ceb-19f0-33eb-8978-2e3eb4b81d30",
+       "targetObjectId": "cb4a1580-0066-49ee-8170-578a6afd22d9",
+       "label": "element1",
+       "children": []
+     }
+    ]
+  }',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000',
+  'none',
+  '0'
 );

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -68,7 +68,7 @@ public class HierarchyNodeComponent implements IComponent {
                 return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
             });
 
-            List<HierarchyNode> childPreviousNodes = optionalPreviousNode.map(HierarchyNode::getChildren).orElse(List.of());
+            List<HierarchyNode> childPreviousNodes = optionalPreviousNode.map(HierarchyNode::getChildNodes).orElse(List.of());
             HierarchyNodeComponentProps nodeComponentProps = new HierarchyNodeComponentProps(childVariableManager, hierarchyDescription, childPreviousNodes, id);
             HierarchyNodeElementProps nodeElementProps = new HierarchyNodeElementProps(id, targetObjectId, label, List.of(new Element(HierarchyNodeComponent.class, nodeComponentProps)));
             children.add(new Element(HierarchyNodeElementProps.TYPE, nodeElementProps));

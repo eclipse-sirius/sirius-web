@@ -35,19 +35,19 @@ public class Hierarchy implements IRepresentation {
 
     private String kind;
 
-    private List<HierarchyNode> children;
+    private List<HierarchyNode> childNodes;
 
     public Hierarchy() {
         // Used by Jackson
     }
 
-    public Hierarchy(String id, String descriptionId, String targetObjectId, String label, String kind, List<HierarchyNode> children) {
+    public Hierarchy(String id, String descriptionId, String targetObjectId, String label, String kind, List<HierarchyNode> childNodes) {
         this.id = Objects.requireNonNull(id);
         this.descriptionId = Objects.requireNonNull(descriptionId);
         this.targetObjectId = Objects.requireNonNull(targetObjectId);
         this.label = Objects.requireNonNull(label);
         this.kind = Objects.requireNonNull(kind);
-        this.children = Objects.requireNonNull(children);
+        this.childNodes = Objects.requireNonNull(childNodes);
     }
 
     @Override
@@ -75,8 +75,8 @@ public class Hierarchy implements IRepresentation {
         return this.kind;
     }
 
-    public List<HierarchyNode> getChildren() {
-        return this.children;
+    public List<HierarchyNode> getChildNodes() {
+        return this.childNodes;
     }
 
     @Override

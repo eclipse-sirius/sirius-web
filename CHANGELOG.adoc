@@ -123,6 +123,8 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3425[#3425] [diagram] Make the direction applied during _arrangeAll_ configurable.
 - https://github.com/eclipse-sirius/sirius-web/issues/3354[#3354] [diagram] Add support for overlapping nodes in arrangeAll and distribute elements
 - https://github.com/eclipse-sirius/sirius-web/issues/3389[#3389] [form] Add support for DateTime widget
+- https://github.com/eclipse-sirius/sirius-web/issues/3307[#3307] [representation] Add support for the migration of representation
+
 
 === Improvements
 

@@ -57,4 +57,23 @@ public class RepresentationDataUpdateService implements IRepresentationDataUpdat
 
         return result;
     }
+
+    @Override
+    public IResult<Void> updateContentWithMigrationData(UUID id, String content, String lastMigrationPerformed, String migrationVersion) {
+        IResult<Void> result = null;
+
+        var optionalRepresentationData = this.representationDataRepository.findById(id);
+        if (optionalRepresentationData.isPresent()) {
+            var representationData = optionalRepresentationData.get();
+            representationData.updateContent(content);
+            representationData.updateMigrationData(lastMigrationPerformed, migrationVersion);
+            this.representationDataRepository.save(representationData);
+
+            result = new Success<>(null);
+        } else {
+            result = new Failure<>(this.messageService.notFound());
+        }
+
+        return result;
+    }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class HierarchyComponent implements IComponent {
         String label = variableManager.get(HierarchyDescription.LABEL, String.class).orElse("");
         String kind = hierarchyDescription.getKind();
 
-        List<HierarchyNode> previousNodes = optionalPreviousHierarchy.map(Hierarchy::getChildren).orElse(List.of());
+        List<HierarchyNode> previousNodes = optionalPreviousHierarchy.map(Hierarchy::getChildNodes).orElse(List.of());
 
         HierarchyNodeComponentProps nodeComponentProps = new HierarchyNodeComponentProps(variableManager, hierarchyDescription, previousNodes, id);
         List<Element> children = List.of(new Element(HierarchyNodeComponent.class, nodeComponentProps));
