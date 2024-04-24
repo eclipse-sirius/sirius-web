@@ -41,6 +41,14 @@ public class DiagramNavigator {
         return new NodeNavigator(nodes.get(0), this.cache);
     }
 
+    public NodeNavigator nodeWithId(String id) {
+        Node node = this.cache.getIdToNode().get(id);
+        if (node == null) {
+            throw new IllegalArgumentException(MessageFormat.format("No node found with id \"{0}\"", id));
+        }
+        return new NodeNavigator(node, this.cache);
+    }
+
     public NodeNavigator nodeWithTargetObjectLabel(String targetObjectLabel) {
         List<Node> nodes = this.cache.getTargetObjectLabelToNodes().get(targetObjectLabel);
         if (nodes == null || nodes.isEmpty()) {

@@ -63,10 +63,10 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
     }
 
     @Test
-    @DisplayName("Given a semantic object, when we subscribe to its related elements events, then the form is sent")
+    @DisplayName("Given an entity, when we subscribe to its related elements events, then the form is sent")
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenSemanticObjectWhenWeSubscribeToItsRelatedElementsEventsThenTheFormIsSent() {
+    public void givenAnEntityWhenWeSubscribeToItsRelatedElementsEventsThenTheFormIsSent() {
         var input = new PropertiesEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
         var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 
@@ -87,6 +87,51 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
             var outgoingTreeWidget = groupNavigator.findWidget("Outgoing", TreeWidget.class);
             assertThat(outgoingTreeWidget)
                     .hasTreeItemWithLabel("NamedElement");
+
+            return true;
+        };
+
+        Predicate<Object> formContentMatcher = object -> Optional.of(object)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .filter(formPredicate)
+                .isPresent();
+
+        StepVerifier.create(flux)
+                .expectNextMatches(formContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a node description, when we subscribe to its related elements events, then the form is sent")
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenNodeDescriptionWhenWeSubscribeToItsRelatedElementsEventsThenTheFormIsSent() {
+        var input = new PropertiesEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString()));
+        var flux = this.relatedElementsEventSubscriptionRunner.run(input);
+
+        Predicate<Form> formPredicate = form -> {
+            var groupNavigator = new FormNavigator(form).page("Human Node").group("Related Elements");
+            assertThat(groupNavigator.getGroup()).hasDisplayMode(GroupDisplayMode.TOGGLEABLE_AREAS);
+
+            var incomingTreeWidget = groupNavigator.findWidget("Incoming", TreeWidget.class);
+            assertThat(incomingTreeWidget)
+                    .hasTreeItemWithLabel("Root Diagram")
+                    .hasTreeItemWithLabel("Node Descriptions");
+
+            var currentTreeWidget = groupNavigator.findWidget("Current", TreeWidget.class);
+            assertThat(currentTreeWidget)
+                    .hasTreeItemWithLabel("Inside Label")
+                    .hasTreeItemWithLabel("aql:self.name")
+                    .hasTreeItemWithLabel("Style");
+
+            var outgoingTreeWidget = groupNavigator.findWidget("Outgoing", TreeWidget.class);
+            assertThat(outgoingTreeWidget.getNodes()).isEmpty();
 
             return true;
         };

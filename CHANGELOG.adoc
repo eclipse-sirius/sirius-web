@@ -69,6 +69,10 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3553[#3553] [core] Add RepresentationFactory extension point
 - https://github.com/eclipse-sirius/sirius-web/issues/3587[#3587] [sirius-web] Add an extension point to contribute new project cards
 - https://github.com/eclipse-sirius/sirius-web/issues/3614[#3614] [core] Add the ability to contribute additional payloads to representation subscriptions
+- https://github.com/eclipse-sirius/sirius-web/issues/3429[#3429] [diagram] Add a diagram filter dialog in the diagram panel.
+This dialog presents diagram elements in a tree and allows to select them and update their visibility and status (e.g. hide, show, collapse).
++
+image:doc/screenshots/diagramFilterView.png[Diagram Filter View, 70%]
 
 === Improvements
 

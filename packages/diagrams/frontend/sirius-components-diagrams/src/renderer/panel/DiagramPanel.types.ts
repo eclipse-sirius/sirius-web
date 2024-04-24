@@ -26,3 +26,8 @@ export interface DiagramPanelState {
 }
 
 export type DiagramPanelDialog = 'Share';
+
+export interface DiagramPanelActionProps {
+  editingContextId: string;
+  diagramId: string;
+}

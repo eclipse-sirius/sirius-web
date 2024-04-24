@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
-import IconButton from '@material-ui/core/IconButton';
+import { ComponentExtension, ShareRepresentationModal, useComponents } from '@eclipse-sirius/sirius-components-core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
@@ -41,7 +41,8 @@ import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
 import { useArrangeAll } from '../layout/useArrangeAll';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
-import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
+import { DiagramPanelActionProps, DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
+import { diagramPanelActionExtensionPoint } from './DiagramPanelExtensionPoints';
 import { useExportToImage } from './useExportToImage';
 
 export const DiagramPanel = memo(
@@ -53,6 +54,9 @@ export const DiagramPanel = memo(
     });
 
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+    const diagramPanelActionComponents: ComponentExtension<DiagramPanelActionProps>[] = useComponents(
+      diagramPanelActionExtensionPoint
+    );
 
     const { getNodes, getEdges, zoomIn, zoomOut, fitView } = useReactFlow<NodeData, EdgeData>();
 
@@ -226,6 +230,9 @@ export const DiagramPanel = memo(
                 <UnpinIcon />
               </IconButton>
             </Tooltip>
+            {diagramPanelActionComponents.map(({ Component: DiagramPanelActionComponent }, index) => (
+              <DiagramPanelActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
+            ))}
           </Paper>
         </Panel>
         {state.dialogOpen === 'Share' ? (

@@ -18,9 +18,26 @@ package org.eclipse.sirius.web.domain.services.api;
  * @author sbegaudeau
  */
 public interface IMessageService {
+
+    String revealSelectedFadedElements();
+
+    String collapseSelectedElements();
+
+    String expandSelectedElements();
+
+    String fadeSelectedElements();
+
+    String hideSelectedElements();
+
     String invalidName();
 
     String notFound();
 
+    String pinSelectedElements();
+
+    String showSelectedElements();
+
     String unexpectedError();
+
+    String unpinSelectedElements();
 }

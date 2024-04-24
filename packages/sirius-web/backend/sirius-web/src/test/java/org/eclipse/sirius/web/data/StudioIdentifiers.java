@@ -37,6 +37,8 @@ public final class StudioIdentifiers {
 
     public static final UUID DIAGRAM_DESCRIPTION_OBJECT = UUID.fromString("7384dc2c-1b43-45c7-9c74-f972b28774c8");
 
+    public static final UUID HUMAN_NODE_DESCRIPTION_OBJECT = UUID.fromString("e91e6e23-1440-4fbf-b31c-3a21bf25d85b");
+
     public static final String DIAGRAM_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=fc1d7b23-2818-4874-bb30-8831ea287a44&sourceElementId=7384dc2c-1b43-45c7-9c74-f972b28774c8";
 
     public static final UUID PLACEHOLDER_IMAGE_OBJECT = UUID.fromString("7f8ce6ef-a23f-4c62-a6f8-381d5c237742");

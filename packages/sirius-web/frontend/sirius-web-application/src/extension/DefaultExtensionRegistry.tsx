@@ -20,7 +20,7 @@ import {
   workbenchViewContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-core';
 import { DeckRepresentation } from '@eclipse-sirius/sirius-components-deck';
-import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramRepresentation, diagramPanelActionExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import {
   DetailsView,
@@ -37,6 +37,7 @@ import Filter from '@material-ui/icons/Filter';
 import LinkIcon from '@material-ui/icons/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import WarningIcon from '@material-ui/icons/Warning';
+import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { OnboardArea } from '../onboarding/OnboardArea';
 import { createProjectAreaCardExtensionPoint } from '../views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
@@ -133,9 +134,9 @@ defaultExtensionRegistry.putData(representationFactoryExtensionPoint, {
 
 /*******************************************************************************
  *
- * Project area cards
+ * Create project area cards
  *
- * Used to register all the type of cards in the project area
+ * Used to register all the type of cards in the create project area
  *
  *******************************************************************************/
 
@@ -150,6 +151,19 @@ defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
 defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
   identifier: `siriusweb_${createProjectAreaCardExtensionPoint}_showAllProjectTemplatesCard`,
   Component: ShowAllProjectTemplatesCard,
+});
+
+/*******************************************************************************
+ *
+ * Diagram panel
+ *
+ * Used to register new components in the diagram panel
+ *
+ *******************************************************************************/
+
+defaultExtensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
+  identifier: `siriusweb_${diagramPanelActionExtensionPoint.identifier}_filter`,
+  Component: DiagramFilter,
 });
 
 export { defaultExtensionRegistry };

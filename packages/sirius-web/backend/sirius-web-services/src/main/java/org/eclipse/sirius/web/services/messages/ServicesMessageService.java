@@ -34,6 +34,31 @@ public class ServicesMessageService implements IServicesMessageService {
     }
 
     @Override
+    public String revealSelectedFadedElements() {
+        return this.messageSourceAccessor.getMessage("REVEAL_SELECTED_FADED_ELEMENTS");
+    }
+
+    @Override
+    public String collapseSelectedElements() {
+        return this.messageSourceAccessor.getMessage("COLLAPSE_SELECTED_ELEMENTS");
+    }
+
+    @Override
+    public String expandSelectedElements() {
+        return this.messageSourceAccessor.getMessage("EXPAND_SELECTED_ELEMENTS");
+    }
+
+    @Override
+    public String fadeSelectedElements() {
+        return this.messageSourceAccessor.getMessage("FADE_SELECTED_ELEMENTS");
+    }
+
+    @Override
+    public String hideSelectedElements() {
+        return this.messageSourceAccessor.getMessage("HIDE_SELECTED_ELEMENTS");
+    }
+
+    @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
         return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName });
     }
@@ -44,8 +69,18 @@ public class ServicesMessageService implements IServicesMessageService {
     }
 
     @Override
+    public String pinSelectedElements() {
+        return this.messageSourceAccessor.getMessage("PIN_SELECTED_ELEMENTS");
+    }
+
+    @Override
     public String projectNotFound() {
         return this.messageSourceAccessor.getMessage("PROJECT_NOT_FOUND");
+    }
+
+    @Override
+    public String showSelectedElements() {
+        return this.messageSourceAccessor.getMessage("SHOW_SELECTED_ELEMENTS");
     }
 
     @Override
@@ -61,5 +96,10 @@ public class ServicesMessageService implements IServicesMessageService {
     @Override
     public String stereotypeNotFound(UUID stereotypeId) {
         return this.messageSourceAccessor.getMessage("STEREOTYPE_NOT_FOUND", new Object[] { stereotypeId });
+    }
+
+    @Override
+    public String unpinSelectedElements() {
+        return this.messageSourceAccessor.getMessage("UNPIN_SELECTED_ELEMENTS");
     }
 }
