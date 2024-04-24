@@ -100,7 +100,7 @@ jobs:
         working-directory: vscode-extension
 
       - name: Store the vscode extension
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: vscode
           path: vscode-extension/sirius-web-2024.3.3.vsix
@@ -110,7 +110,7 @@ jobs:
         run: tar -cf coverage.tar packages/releng/backend/sirius-components-test-coverage/target/site/jacoco-aggregate
 
       - name: Store code coverage results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: jacoco
@@ -118,7 +118,7 @@ jobs:
           retention-days: 5
 
       - name: Store Core frontend code coverage results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: core
@@ -126,7 +126,7 @@ jobs:
           retention-days: 5
 
       - name: Store FormDescriptionEditors frontend code coverage results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: formdescriptioneditors
@@ -134,7 +134,7 @@ jobs:
           retention-days: 5
 
       - name: Store Forms frontend code coverage results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: forms
@@ -142,7 +142,7 @@ jobs:
           retention-days: 5
 
       - name: Store Trees frontend code coverage results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: trees
@@ -196,7 +196,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Store Cypress screenshots
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: cypress-screenshots
