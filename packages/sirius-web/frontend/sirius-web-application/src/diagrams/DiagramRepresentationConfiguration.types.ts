@@ -10,13 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 import {
   GraphQLNodeStyleFragment,
   INodeConverter,
   INodeLayoutHandler,
   NodeData,
   NodeTypeContributionElement,
-} from '../../../../../diagrams/frontend/sirius-components-diagrams/dist';
+} from '@eclipse-sirius/sirius-components-diagrams';
 
 export interface DiagramRepresentationConfigurationProps {
   nodeTypeRegistry: NodeTypeRegistry;

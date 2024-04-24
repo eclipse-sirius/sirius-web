@@ -25,6 +25,7 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -207,6 +208,35 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
                 .expectNextMatches(predicate)
                 .thenCancel()
                 .verify();
+    }
+
+    @Test
+    @DisplayName("Given a studio, when the upload of a new domain XMI document is performed without a name, then an error is returned")
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenStudioWhenTheUploadOfDomainXMIDocumentIsPerformedWithoutNameThenAnErrorIsReturned() {
+        this.createInvalidDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioStereotypeProvider.DOMAIN_STEREOTYPE, "");
+    }
+
+    @Test
+    @DisplayName("Given a studio, when the upload of a new domain XMI document is performed with an invalid stereotype, then an error is returned")
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenStudioWhenTheUploadOfDomainXMIDocumentIsPerformedWithInvalidStereotypeThenAnErrorIsReturned() {
+        this.createInvalidDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), "INVALID", "Domain");
+    }
+
+    private void createInvalidDocument(String editingContextId, String stereotypeId, String name) {
+        this.givenCommittedTransaction.commit();
+
+        var input = new CreateDocumentInput(UUID.randomUUID(), editingContextId, stereotypeId, name);
+        var result = this.createDocumentMutationRunner.run(input);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        String typename = JsonPath.read(result, "$.data.createDocument.__typename");
+        assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
     }
 
     private void uploadDocument(String editingContextId, String name, String content) {

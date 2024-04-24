@@ -24,6 +24,31 @@ import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 public class NoOpServicesMessageService implements IServicesMessageService {
 
     @Override
+    public String revealSelectedFadedElements() {
+        return "";
+    }
+
+    @Override
+    public String collapseSelectedElements() {
+        return "";
+    }
+
+    @Override
+    public String expandSelectedElements() {
+        return "";
+    }
+
+    @Override
+    public String fadeSelectedElements() {
+        return "";
+    }
+
+    @Override
+    public String hideSelectedElements() {
+        return "";
+    }
+
+    @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
         return "";
     }
@@ -34,7 +59,17 @@ public class NoOpServicesMessageService implements IServicesMessageService {
     }
 
     @Override
+    public String pinSelectedElements() {
+        return "";
+    }
+
+    @Override
     public String projectNotFound() {
+        return "";
+    }
+
+    @Override
+    public String showSelectedElements() {
         return "";
     }
 
@@ -50,6 +85,11 @@ public class NoOpServicesMessageService implements IServicesMessageService {
 
     @Override
     public String stereotypeNotFound(UUID stereotypeId) {
+        return "";
+    }
+
+    @Override
+    public String unpinSelectedElements() {
         return "";
     }
 

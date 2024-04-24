@@ -21,11 +21,25 @@ import java.util.UUID;
  */
 public interface IServicesMessageService {
 
+    String revealSelectedFadedElements();
+
+    String collapseSelectedElements();
+
+    String expandSelectedElements();
+
+    String fadeSelectedElements();
+
+    String hideSelectedElements();
+
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
 
     String invalidProjectName();
 
+    String pinSelectedElements();
+
     String projectNotFound();
+
+    String showSelectedElements();
 
     String unexpectedError();
 
@@ -33,4 +47,5 @@ public interface IServicesMessageService {
 
     String stereotypeNotFound(UUID stereotypeId);
 
+    String unpinSelectedElements();
 }
