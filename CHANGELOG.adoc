@@ -78,6 +78,7 @@ New default implementations are available in `DefaultToolsFactory` to ease the m
 - https://github.com/eclipse-sirius/sirius-web/issues/3383[#3383] [diagram] Fix an issue where the first resizing after node creation was not persisted.
 - https://github.com/eclipse-sirius/sirius-web/issues/3411[#3411] [diagram] Fix an issue that prevents border node to be  move if `AreChildNodesDraggableExpression` is false
 - https://github.com/eclipse-sirius/sirius-web/issues/3416[#3416] [explorer] Add a tooltip for Filter menu in Explorer view.
+- https://github.com/eclipse-sirius/sirius-web/issues/3420[#3420] [diagram] Fix an issue that prevents position reset after a rejected drag&drop.
 
 === New Features
 

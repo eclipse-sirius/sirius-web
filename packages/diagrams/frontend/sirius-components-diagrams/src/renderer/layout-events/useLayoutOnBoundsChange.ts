@@ -100,7 +100,7 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
         });
       }
     },
-    [refreshEventPayloadId]
+    [refreshEventPayloadId, synchronizeLayoutData]
   );
 
   return { layoutOnBoundsChange };
