@@ -1,0 +1,7 @@
+= Development Environment Setup
+
+include::requirements.adoc[leveloffset=+1]
+
+include::backend.adoc[leveloffset=+1]
+
+include::frontend.adoc[leveloffset=+1]

@@ -1,0 +1,9 @@
+= Form Representation Description APIs
+
+A `xref:user-manual:reference-documentation/studio-definition/index.adoc#_form_description[Form Representation Description]` defines how the `xref:user-manual:reference-documentation/studio-runtime/index.adoc#_form[Form Representations]` are created at runtime.
+
+#TODO: Add APIs used to create/edit Form Representation Descriptions.#
+
+== Extensibility
+
+#TODO: migrate https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/contribute-custom-widget.adoc#

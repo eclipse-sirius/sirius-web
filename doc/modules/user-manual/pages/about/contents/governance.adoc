@@ -1,0 +1,5 @@
+= Governance
+
+Sirius Web is an open-source project under the umbrella of the https://www.eclipse.org/org/foundation/[Eclipse Foundation].
+
+Contributions are welcome! Refer to the https://github.com/eclipse-sirius/sirius-web/blob/master/CONTRIBUTING[Contributing Documentation] for how to do so.

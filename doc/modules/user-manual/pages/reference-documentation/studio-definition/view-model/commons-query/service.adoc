@@ -1,0 +1,13 @@
+= Query by service name
+
+A query can be specified by simply referencing a service by its name:
+
+.Query by service name
+====
+*service:* myServiceName
+====
+
+Where:
+
+* *`service:`* indicates that this query uses the syntax "by service name".
+* `myServiceName` is the name of a registered service, e.g. `eContainer`.

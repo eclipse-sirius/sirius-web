@@ -1,0 +1,6 @@
+= Custom Representation Description APIs
+
+#TODO: Not sure how much Sirius Web is/will be customizable to add additional Representation Descriptions.
+If so, this section might get a bit long. This subject should also probably be mentioned in xref:developer-manual:reference-documentation/studio-runtime/index.adoc[] and be the subject of a xref:developer-manual:getting-started/tutorials/index.adoc[Studio Developer Tutorial].#
+
+#TODO: migrate https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/contribute-custom-node.adoc#

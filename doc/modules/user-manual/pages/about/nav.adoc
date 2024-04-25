@@ -1,0 +1,8 @@
+// Note: Cannot include an open block here.
+* xref:user-manual:about/index.adoc[]
+// ** xref:user-manual:about/contents/whatis.adoc[]
+// ** xref:user-manual:about/contents/overview.adoc[]
+// ** xref:user-manual:about/contents/features.adoc[]
+// ** xref:user-manual:about/contents/comparison.adoc[]
+// ** xref:user-manual:about/contents/governance.adoc[]
+** xref:user-manual:about/contents/release-notes/index.adoc[]

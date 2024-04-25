@@ -1,0 +1,24 @@
+= Requirements
+
+== System Requirements
+
+To develop a Sirius Web modeler, any modern OS should suffice.
+
+While developing, you might need to run both the backend and frontend of Sirius Web on your machine, so it is recommended to have at least xxx Gb of available RAM.
+
+== Tool Requirements
+
+* Git
+* Github account
+* Java 17
+* Apache Maven 3.6.3
+* Docker
+* Node 18.7.0
+* NPM 8.15.0
+* TurboRepo 
+
+== Know-how 
+
+* The Sirius Web backend is implemented in Java/Spring. It is necessary to know Java development. Spring-specific knowledge however, is not required.
+* (Optional) modelization with the https://projects.eclipse.org/projects/modeling.emf.emf[Eclipse Modeling Framework (EMF)].
+* Nice-to-have: knowledge of https://eclipse.dev/sirius/[Sirius Desktop].

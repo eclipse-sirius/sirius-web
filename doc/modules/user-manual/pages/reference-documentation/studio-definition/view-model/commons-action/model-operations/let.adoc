@@ -1,0 +1,45 @@
+= Let
+
+A `Let` operation defines a new variable in the context.
+
+This is useful for storing the result of a long-running, or often-used, computation. It can also be practical to make model operations clearer by assigning precise names to values.
+
+== Examples
+
+.Declaring a new variable
+====
+
+.Variables before
+------
+"self" : o
+------
+
+.Operation
+------
+Let(name: "empty", valueExpression:"aql:Sequence{}")
+------
+
+.Variables after
+------
+"self" : o
+"empty": Sequence{}
+------
+====
+
+== Properties
+
+.Properties of `Let` operation
+[cols="1,1,3"]
+|===
+|_Property_
+|_Type_
+|_Semantics_
+
+|*`Variable Name`*
+|`String`
+|The name of the variable to create in the context. If it already exists, then its value will simply be re-assigned. #TODO: check if this is really what happens ?#
+
+|*`Value Expression`*
+|`String` (expression)
+|An expression that returns the value for the variable.
+|===

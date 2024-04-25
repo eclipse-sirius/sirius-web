@@ -1,0 +1,15 @@
+= User Interface
+
+Sirius Web comes with a default User Interface (UI) for the workbench.
+
+== xref:user-manual:reference-documentation/studio-runtime/workbench/ui/projects/index.adoc[]
+
+This UI component is used to manage projects.
+
+== xref:user-manual:reference-documentation/studio-runtime/workbench/ui/editors/index.adoc[]
+
+This type of UI component is used for visualizing and editing domain-specific data in custom studios.
+
+== xref:user-manual:reference-documentation/studio-runtime/workbench/ui/views/index.adoc[]
+
+This type of UI component enriches the user experience when using editors by providing additional complementary ways to display and edit domain-specific data in custom studios.

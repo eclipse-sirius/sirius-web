@@ -1,0 +1,9 @@
+= Data Model APIs
+
+In the xref:user-manual:reference-documentation/studio-definition/data-model/index.adoc[User Manual], we explain how _Studio Makers_ can use a low-code approach to contribute or re-use a custom data model.
+
+But _Studio Developers_ can use a programmatic approach to contribute custom data model, which allows a finer-grained expressivity.
+
+include::developer-manual:reference-documentation/studio-development/api-datamodel/creation.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-datamodel/contribution.adoc[leveloffset=+1]

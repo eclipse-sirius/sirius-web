@@ -1,0 +1,8 @@
+= Known Limitations
+
+The practicality of the low-code approach offered by Sirius Web comes at the tradeoff of expressivity.
+
+Below is a list of some of the known limitations.
+If you hit one of these, chances are that switching to the *programmatic* approach can help you solve or work around it. Refer to the xref:developer-manual:index.adoc[] for more details.
+
+#TODO: List here some limitations of the View Model DSL compared to what is possible with the API.#

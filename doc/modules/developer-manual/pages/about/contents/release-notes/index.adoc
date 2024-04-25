@@ -1,0 +1,12 @@
+= Release Notes
+
+To only see the changes for _Studio Users_ and _Studio Makers_, refer to the xref:user-manual:about/contents/release-notes/index.adoc[User Manual Release Notes].
+
+include::developer-manual:about/contents/release-notes/2024/v2024.3.0.adoc[leveloffset=+1]
+include::developer-manual:about/contents/release-notes/2024/v2024.1.6.adoc[leveloffset=+1]
+include::developer-manual:about/contents/release-notes/2024/v2024.1.5.adoc[leveloffset=+1]
+include::developer-manual:about/contents/release-notes/2024/v2024.1.4.adoc[leveloffset=+1]
+include::developer-manual:about/contents/release-notes/2024/v2024.1.3.adoc[leveloffset=+1]
+include::developer-manual:about/contents/release-notes/2024/v2024.1.2.adoc[leveloffset=+1]
+include::developer-manual:about/contents/release-notes/2024/v2024.1.1.adoc[leveloffset=+1]
+include::developer-manual:about/contents/release-notes/2024/v2024.1.0.adoc[leveloffset=+1]

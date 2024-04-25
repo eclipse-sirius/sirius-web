@@ -1,0 +1,35 @@
+= Blueprint Application
+
+== Purpose
+
+The *Sirius Web Blueprint Application* is an example of a simple web application that embeds a custom studio built with Sirius Web.
+Its purpose is to serve as a starting point for working on the development of your _Studio Definition_. It is also, in a way, an example of how to integrate a custom studio built with Sirius Web into your own application.
+
+If you already have a web application embedding your custom studio, you can skip this setup and start developing.
+
+== Usage
+
+#TODO: When the blueprint application exists, explain how to use it.
+Probably it's just a fork (?) of it that we must run as the backend. And make sure our modules where we develop the custom studio get picked up.#
+
+== Manual Workaround
+
+Below a few instructions for how to start developing without having to wait for the Blueprint Application to exist.
+
+* From the sirius-web Github repository, copy folder sirius-web-sample-application
+* In `pom.xml`:
+** Add the Sirius-web Maven repository:
+[source, xml]
+----
+<repositories>
+	<repository>
+		<id>github-sirius-web</id>
+		<name>Apache Maven Packages</name>
+		<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
+	</repository>
+</repositories>
+----
+** Remove any module we may not want to have in our application (e.g. anything related to BPMN)
+* The sample application should now be runnable
+
+Now, one can start developing in a module that gets locally published upon build, and make the sample application depend on it.

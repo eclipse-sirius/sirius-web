@@ -1,0 +1,7 @@
+= Actions
+
+In Sirius Web, when specifying a xref:user-manual:reference-documentation/studio-definition/view-model/index.adoc[View Model], we may need to be able to express the _behavior_ of *actions* which occur as part of the _Studio User_ interacting with a graphical representation.
+
+== xref:user-manual:reference-documentation/studio-definition/view-model/commons-action/model-operations/index.adoc[]
+
+For now, the only action language supported by Sirius Web is the set of _Model Operations_.

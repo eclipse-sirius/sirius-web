@@ -1,0 +1,9 @@
+= Portal
+
+A `Portal Representation` conforms to a `xref:user-manual:reference-documentation/studio-definition/view-model/description-portal/index.adoc[Portal Representation Description]` of the _Studio Definition_.
+
+#TODO: migrate https://github.com/eclipse-sirius/sirius-web/blob/master/doc/user/representation-portal.adoc #
+
+== Purpose
+
+Portals are dashboard-like representations that can be used to visualize and edit multiple other representations.

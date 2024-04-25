@@ -1,0 +1,11 @@
+= Backend
+
+#TODO: Explain how to setup the recommended devenv for the backend.#
+
+* Essentially same as the devenv for contributors, i.e. STS + Maven + docker
+* Probably also add procedure on how to clear the database to start from scratch
+
+#TODO: which repository to clone?
+For now we have to clone sirius-web and then only use a subset of it (~ sample application + our modules)
+But later on we will have a blueprint we can fork.
+Probably wait for the ongoing refactoring work to be completed before writing this section.#

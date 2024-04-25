@@ -1,0 +1,53 @@
+= Create Instance
+
+A `Create Instance` operation creates a new model element contained by the contextual element.
+
+This is useful for mutating the semantic model as a result of user interaction.
+
+#TODO: Apparently in Sirius Web, contrary to Sirius Desktop, `Create Instance` does not change the context. We should check that it is the current behavior, and that it is not a bug. If so, probably add a WARNING admonition here, and fix the examples below.#
+
+== Examples
+
+.Creating a new Entity in a Domain
+====
+
+.Variables before
+------
+"self" : someDomain
+------
+
+.Operation
+------
+CreateInstance(typeName: "domain::Entity", 
+                referenceName: "types", 
+                variableName: "newEntity")
+------
+
+.Variables after
+------
+"self" : entity1
+"newEntity" : entity1
+------
+====
+
+== Properties
+
+.Properties of `Change Context` operation
+[cols="1,1,3"]
+|===
+|_Property_
+|_Type_
+|_Semantics_
+
+|*`Type Name`*
+|`String`
+|A type literal, with syntax `Package::Type`, e.g. `domain::Entity`.
+
+|*`Reference Name`*
+|`String`
+|The name of the feature, in the contextual element, that will contain the created model element.
+
+|*`Variable Name`*
+|`String`
+|The name of the created variable whose value is set to the created model element.
+|===

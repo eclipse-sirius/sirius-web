@@ -1,0 +1,17 @@
+= Representation Descriptions APIs
+
+All default representation descriptions provided by Sirius Web provide Java APIs.
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/api-description-chart/index.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/api-description-deck/index.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/api-description-diagram/index.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/api-description-form/index.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/api-description-gantt/index.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/api-description-portal/index.adoc[leveloffset=+1]
+
+include::developer-manual:reference-documentation/studio-development/api-viewmodel/api-description-tree/index.adoc[leveloffset=+1]

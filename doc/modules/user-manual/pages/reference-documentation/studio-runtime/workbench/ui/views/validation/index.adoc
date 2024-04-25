@@ -1,0 +1,7 @@
+= Validation
+
+#TODO: Add a representative snapshot of the "View" view.#
+
+The *Validation* view is one of the views in the leftmost pane of the workbench UI.
+
+It shows the results of the validation for the workbench contents.

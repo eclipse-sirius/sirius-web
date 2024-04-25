@@ -1,0 +1,6 @@
+// Note: Cannot include an open block here.
+* xref:developer-manual:support/index.adoc[]
+** xref:user-manual:support/community/index.adoc[]
+** xref:developer-manual:support/best-practices/index.adoc[]
+** xref:developer-manual:support/cookbook/index.adoc[]
+** xref:developer-manual:support/faq/index.adoc[FAQ]

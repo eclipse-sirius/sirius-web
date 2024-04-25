@@ -1,0 +1,21 @@
+= Developer Manual
+
+This manual is intended for _Studio Developers_ who wish to take a *programmatic* approach to Sirius Web. It will assume some technical knowledge, in particular with the technologies which Sirius Web uses to provide APIs.
+
+_Studio Users_ and _Studio Makers_ should refer to the xref:user-manual:index.adoc[] instead.
+
+== xref:developer-manual:about/index.adoc[]
+
+Get to know the programmatic side of Sirius Web, and the latest changes which might impact your application.
+
+== xref:developer-manual:getting-started/index.adoc[]
+
+Developing with Sirius Web for the first time? This will show you how to get started up.
+
+== xref:developer-manual:reference-documentation/index.adoc[]
+
+The ultimate source of information regarding all the APIs provided by Sirius Web. If you have a question, the answer should definitely be there.
+
+== xref:developer-manual:support/index.adoc[]
+
+Join the Sirius Web community to share your experience, or get help on an issue.

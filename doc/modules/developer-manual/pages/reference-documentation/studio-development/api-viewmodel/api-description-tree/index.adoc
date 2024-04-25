@@ -1,0 +1,5 @@
+= Tree Representation Description APIs
+
+A `xref:user-manual:reference-documentation/studio-definition/index.adoc#_tree_description[Tree Representation Description]` defines how the `xref:user-manual:reference-documentation/studio-runtime/index.adoc#_tree[Tree Representations]` are created at runtime.
+
+#TODO: Add APIs used to create/edit Tree Representation Descriptions.#

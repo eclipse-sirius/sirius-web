@@ -1,0 +1,7 @@
+= Getting Started
+
+Before getting started with Sirius Web, we recommend xref:developer-manual:getting-started/development-environment/index.adoc[setting up your development environment].
+
+If you do not already have a web application into which your custom studio will be integrated, then consider also xref:developer-manual:getting-started/blueprint-application/index.adoc[setting up your blueprint application].
+
+Once your environment is setup, and your application is ready to integrate your custom studio, you can follow one of the xref:developer-manual:getting-started/tutorials/index.adoc[available tutorials].

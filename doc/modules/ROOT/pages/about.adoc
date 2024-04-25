@@ -1,0 +1,7 @@
+= About
+
+https://eclipse.dev/sirius/sirius-web.html[Eclipse Sirius Web] is an open-source project which provides a framework for the creation and deployment of custom domain-specific cloud-based studios.
+
+Learn more about Sirius Web in the xref:user-manual:index.adoc[] or on the https://www.eclipse.org/sirius/sirius-web.html[Eclipse Sirius Web Official Website].
+
+Sirius Web is made available under the xref:legal:index.adoc[Eclipse Public License v2.0].

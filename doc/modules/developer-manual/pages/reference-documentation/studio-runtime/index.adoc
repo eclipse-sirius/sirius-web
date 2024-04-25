@@ -1,0 +1,9 @@
+= Studio Runtime for Developers
+
+The majority of the _Studio Runtime_ is already documented in the xref:user-manual:reference-documentation/studio-runtime/index.adoc[User Manual].
+
+This chapter will focus on the _Studio Developers_-specific aspects of the _Studio Runtime_.
+
+#TODO: not sure how much we have to here. Maybe mention how some conflicts get resolved? How to debug? Lifecycle stuff?#
+
+#TODO: delay for the resource set to get disposed, very useful when developing to set this lower.#

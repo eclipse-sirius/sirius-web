@@ -1,0 +1,7 @@
+= Representations
+
+#TODO: Add a representative snapshot of the "Representations" view.#
+
+The *Representations* view is one of the views in the rightmost pane of the workbench UI.
+
+It displays, for the currently-selected semantic element, all existing representations.

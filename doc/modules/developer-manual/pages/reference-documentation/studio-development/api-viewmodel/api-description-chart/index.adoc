@@ -1,0 +1,5 @@
+= Chart Representation Description APIs
+
+A `xref:user-manual:reference-documentation/studio-definition/index.adoc#_chart_description[Chart Representation Description]` defines how the `xref:user-manual:reference-documentation/studio-runtime/index.adoc#_chart[Chart Representations]` are created at runtime.
+
+#TODO: Add APIs used to create/edit Chart Representation Descriptions.#

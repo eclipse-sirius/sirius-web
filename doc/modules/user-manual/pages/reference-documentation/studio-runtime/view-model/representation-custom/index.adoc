@@ -1,0 +1,3 @@
+= Custom Representations
+
+Some _Studio Definitions_ may be programmatically contributing xref:developer-manual:reference-documentation/studio-development/index.adoc#_custom_representation_description_apis[Custom Representation Descriptions].

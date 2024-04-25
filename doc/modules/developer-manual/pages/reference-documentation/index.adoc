@@ -1,0 +1,11 @@
+= Reference Documentation
+
+== xref:developer-manual:reference-documentation/studio-development/index.adoc[]
+
+This is the reference documentation for how to programmatically create a studio with Sirius Web.
+It explains the architecture and lifecycle of the framework, and describes the various APIs that can be used to programmatically create _Studio Definitions_ or extend the _Studio Runtime_.
+
+== xref:developer-manual:reference-documentation/studio-runtime/index.adoc[]
+
+This is the reference documentation for the _Studio Runtime_, from the point of view of a _Studio Developer_.
+Some parts of the _Studio Runtime_ are already documented in the xref:user-manual:reference-documentation/studio-runtime/index.adoc[User Manual].

@@ -1,0 +1,25 @@
+= User Manual
+
+This manual is intended for both:
+
+* _Studio Users_, who *use* custom studios made with Sirius Web,
+
+* and _Studio Makers_, who *create* custom studios with Sirius Web using the *low-code* approach.
+
+This manual is made under the assumption that both _Studio Users_ and _Studio Makers_ have no programming experience.
+
+== xref:user-manual:about/index.adoc[]
+
+Learn more about the https://eclipse.dev/sirius/sirius-web.html[Eclipse Sirius Web] technology: its purpose, its philosophy, and the latest changes.
+
+== xref:user-manual:getting-started/index.adoc[]
+
+Using Sirius Web for the first time? This will show you how to get started up.
+
+== xref:user-manual:reference-documentation/index.adoc[]
+
+The ultimate source of information regarding all the capacities provided by Sirius Web. If you have a question, the answer should definitely be there.
+
+== xref:user-manual:support/index.adoc[]
+
+Join the Sirius Web community to share your experience, or get help on an issue.

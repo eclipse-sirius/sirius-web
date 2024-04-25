@@ -1,0 +1,8 @@
+= What is Sirius Web?
+
+https://eclipse.dev/sirius/sirius-web.html[Eclipse Sirius Web] is a framework for the creation and deployment of custom domain-specific cloud-based studios.
+It is the cloud-based successor to https://eclipse.dev/sirius/[Eclipse Sirius Desktop].
+
+It offers both a *low-code* and a *programmatic* approach to the definition of such studios, which makes it a very effective tool both for simple custom studios and prototypes, as well as for more complex full-fledged products.
+
+Once such a custom studio has been defined, it can ultimately be deployed either as a *standalone web application*, or easily *integrated* into another web application.

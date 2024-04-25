@@ -1,0 +1,15 @@
+= Queries
+
+In Sirius Web, when specifying a xref:user-manual:reference-documentation/studio-definition/view-model/index.adoc[View Model], we need to be able to express *queries* in order to navigate over semantic and graphical elements.
+
+There are 4 ways to express queries.
+3 are for simple straightforward navigation, which usually suffice for simple cases.
+The last one is a full-on expression language that provides the expressivity required for rich navigation over complex and/or large data models.
+
+include::user-manual:reference-documentation/studio-definition/view-model/commons-query/var.adoc[leveloffset=+1]
+
+include::user-manual:reference-documentation/studio-definition/view-model/commons-query/feature.adoc[leveloffset=+1]
+
+include::user-manual:reference-documentation/studio-definition/view-model/commons-query/service.adoc[leveloffset=+1]
+
+include::user-manual:reference-documentation/studio-definition/view-model/commons-query/aql.adoc[leveloffset=+1]

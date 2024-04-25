@@ -1,0 +1,13 @@
+= Commons
+
+== xref:user-manual:reference-documentation/studio-definition/view-model/commons-query/index.adoc[]
+
+_Queries_ are used to navigate to semantic and graphical elements as part of `Representation Description`.
+
+== xref:user-manual:reference-documentation/studio-definition/view-model/commons-action/index.adoc[]
+
+_Actions_ are used to specify behaviors that may happen as part of user interaction with the graphical views.
+
+== xref:user-manual:reference-documentation/studio-definition/view-model/commons-color/index.adoc[]
+
+Color definitions are shared among the different `Representation Description` of a `View`.

@@ -1,0 +1,7 @@
+= Projects UI
+
+#TODO: Here probably add an annotated snapshot of the UI when first opening Sirius Web.
+This is the view where we can either create a new project or open an existing one.
+Also explain how to import/export a Project.#
+
+#TODO: Explain limitations of the "Download Project" feature, in particular for de-synchronized diagrams.#

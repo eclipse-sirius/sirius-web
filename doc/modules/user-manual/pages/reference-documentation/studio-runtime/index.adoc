@@ -1,0 +1,7 @@
+= Studio Runtime
+
+The _Studio Runtime_ is what takes a _Studio Definition_ and renders it as part of a cloud-based application.
+
+include::architecture.adoc[leveloffset=+1]
+
+include::features.adoc[leveloffset=+1]

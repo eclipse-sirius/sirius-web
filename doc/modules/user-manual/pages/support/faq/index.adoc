@@ -1,0 +1,76 @@
+= Frequently-Asked Questions (FAQ)
+
+== General Questions
+
+.What is Sirius Web? Why should I use it?
+[%collapsible]
+====
+xref:user-manual:about/index.adoc[This page] presents Sirius Web and explains for which problems it is a good solution.
+====
+
+.What is the license under which Sirius Web is provided?
+[%collapsible]
+====
+Sirius Web is available under the xref:legal:index.adoc[Eclipse Public License v2.0].
+====
+
+.Can I use Sirius Web in a commercial product?
+[%collapsible]
+====
+Yes, as long as you follow the xref:legal:index.adoc[license].
+====
+
+.I would like to contribute a bug fix or a new feature to Sirius Web. How should I go about it?
+[%collapsible]
+====
+Refer to xref:user-manual:support/community/index.adoc#_Contribute[this section] of this manual for how to contribute to Sirius Web.
+====
+
+== Troubleshooting
+
+.I am stuck on an issue. How can I progress?
+[%collapsible]
+====
+Start by searching in the xref:user-manual:reference-documentation/index.adoc[].
+Otherwise, get in touch with the xref:user-manual:support/community/index.adoc[Sirius Web Community].
+====
+
+.I think I have found a bug in Sirius Web. What should I do?
+[%collapsible]
+====
+Look into the https://github.com/eclipse-sirius/sirius-web/issues[already-known issues] to check if the bug is already known. If it does not already exist, then feel free to https://github.com/eclipse-sirius/sirius-web/issues/new/choose[create a new issue] about it!
+====
+
+== Studio Runtime
+
+.In a xref:user-manual:reference-documentation/studio-runtime/view-model/representation-diagram/index.adoc[Diagram Representation], I would like to change the routing style of an edge.
+[%collapsible]
+====
+Sirius Web only supports 1 routing style for edges in diagram representations.
+====
+
+.In a xref:user-manual:reference-documentation/studio-runtime/view-model/representation-diagram/index.adoc[Diagram Representation], I would like to move the label of a node.
+[%collapsible]
+====
+Sirius Web does not support specifying the relative location of the label of a node. The label will always be right under/above the node.
+====
+
+.In a xref:user-manual:reference-documentation/studio-runtime/view-model/representation-diagram/index.adoc[Diagram Representation], I would like the label of a edge to get wrapped.
+[%collapsible]
+====
+Sirius Web does not support wrapping labels of edges.
+====
+
+.In a xref:user-manual:reference-documentation/studio-runtime/view-model/representation-diagram/index.adoc[Diagram Representation], I have a node with a quite long label, and I cannot reduce the width of the node.
+[%collapsible]
+====
+For now, this is a known issue.
+====
+
+== Studio Definition
+
+.In a xref:user-manual:reference-documentation/studio-runtime/view-model/representation-diagram/index.adoc[Diagram Representation], I would like to specify several labels for a `Node Description`
+[%collapsible]
+====
+Sirius Web only supports 1 label per `Node Description`.
+====

@@ -1,0 +1,14 @@
+= Overview
+
+Sirius Web is a framework providing both the means to create a custom domain-specific _Studio Definition_, and the _Studio Runtime_ which renders a _Studio Definition_ into a cloud-based application for visualizing and editing your domain-specific data.
+
+The specificity of Sirius Web lies in the two different means it provides to create a _Studio Definition_:
+
+* The *low-code* approach allows _Studio Makers_ to create or contribute to a _Studio Definition_, without requiring any programming skills. This is ideal for non-technical users to develop or prototype a custom studio. Even for developers, this can be the best way to quickly set up a proof-of-concept, allowing them to focus on how to best present and edit their domain-specific data.
+* The *programmatic* approach allows _Studio Developers_ to create or contribute to a _Studio Definition_ using the Sirius Web APIs. This unleashes the full power of these APIs, which allows for a finer control of customizations to the studio, at the cost of additional complexity.
+
+#TODO: include a diagram that illustrates that the low-code and programmatic approach are just 2 different means to edit the same concept (_Studio Definition_ ?) (with more possibilities and complexity on the programmatic side). _Studio Maker_ and _Studio Developer_ personas should appear. The Sirius Web runtime should also be shown to interpret the 'Studio Definition' into a cloud-based application.#
+
+Both approaches are complementary, as any _Studio Definition_ can be edited through both approaches. Of course, some of the specificities implemented programmatically cannot be represented or edited through the low-code approach.
+
+xref:user-manual:index.adoc[This manual] provides the documentation for both the *low-code* approach to the edition of _Studio Definitions_, and for the  _Studio Runtime_. For more information about the *programmatic* approach, refer to the xref:developer-manual:index.adoc[].

@@ -1,0 +1,27 @@
+= Explorer
+
+#TODO: Add a representative snapshot of the "Explorer" view.#
+
+The *Explorer* view is one of the views in the leftmost pane of the workbench UI.
+
+It represents and allows the edition of, through a tree structure, the workbench contents.
+
+== "New Model" Toolbar Button
+
+#TODO: Add icon and explanation about this button.#
+
+== "Upload Model" Toolbar Button
+
+#TODO: Add icon and explanation about this button.#
+
+== "Show/Hide" Toolbar Button
+
+#TODO: Add icon and explanation about this button.#
+
+== "Synchronization" Toolbar Button
+
+#TODO: Add icon and explanation about this button.#
+
+== Search (Ctrl+F)
+
+When an element from the *Explorer* view is selected and in focus, keyboard shortcut `CTRL+F` opens a text field that can be used to highlight elements in the tree.

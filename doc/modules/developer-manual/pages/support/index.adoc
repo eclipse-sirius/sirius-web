@@ -1,0 +1,17 @@
+= Help & Support
+
+== xref:user-manual:support/community/index.adoc[]
+
+Get in touch with the Sirius Web community to receive help from or provide help to fellow Sirius Web developers!
+
+== xref:developer-manual:support/best-practices/index.adoc[]
+
+Follow the best practices when developing a custom studio with Sirius Web to keep your technical debt minimal.
+
+== xref:developer-manual:support/cookbook/index.adoc[]
+
+Some common features may not be so easy to implement. This cookbook tries to keep track of the most common issues and their solutions.
+
+== xref:developer-manual:support/faq/index.adoc[]
+
+You have a question and you know someone else must have asked this before. It's probably in the FAQ then.

@@ -1,0 +1,11 @@
+= Best Practices
+
+The following best practices capitalize the first-hand experience of the Sirius Web developers with the use and definition of custom studios with Sirius Web.
+
+== Project Management
+
+#TODO: if applicable, add some stuff about project management here.#
+
+== Studio Definition
+
+#TODO: add best practices here. This should probably mention naming conventions, etc.#

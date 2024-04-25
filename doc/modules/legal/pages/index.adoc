@@ -1,0 +1,12 @@
+=  Legal Information
+
+https://eclipse.dev/sirius/sirius-web.html[Eclipse Sirius Web] is an open-source project hosted by the https://www.eclipse.org/org/foundation/[Eclipse Foundation].
+
+Except when explicitly mentioned otherwise (e.g. for some resources likes icons which are under Apache-2.0), the license is the Eclipse Public License - v2.0.
+
+== License
+
+[literal]
+----
+include::legal:example$eplv2-license.txt[]
+----

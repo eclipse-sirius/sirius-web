@@ -1,0 +1,38 @@
+= Data Model Creation APIs
+
+There are 2 ways to programmatically create a custom data model.
+
+#TODO: Probably we want a comparison/list/matrix of which solution is best depending on user profile, expected expressivity, etc.#
+[cols="1,2,2"]
+|===
+|
+|*Domain DSL API*
+|*Ecore Metamodel*
+
+|Pros
+|?
+|Reuse existing artefact
+
+|Cons
+|Limited expressivity
+a|* Requires knowledge of EMF.
+* Customized generated code requires special handling for Sirius Web.
+|=== 
+
+== Domain Definition DSL API
+
+The _Domain Definition DSL_ is the DSL used by _Studio Makers_ to create a new custom data model. Its usage is explained in the xref:user-manual:reference-documentation/studio-definition/data-model/index.adoc#_domain_definition_dsl[User Manual].
+
+This DSL can also be used programmatically...
+#TODO: not sure if this is really a recommended approach? At the very least, it should be possible...#
+
+== Ecore Metamodel
+
+The custom data model can be created using the https://eclipse.dev/modeling/emf/[Eclipse Modeling Framework (EMF)]. EMF provides a DSL for creating metamodels, called _Ecore_. Ecore metamodels can be created programmatically using the EMF Java APIs, but most often they are created using dedicated tools such as https://eclipse.dev/ecoretools/[Ecoretools].
+#TODO: There should probably be a link to a tutorial to show how to use Ecoretools to create a metamodel.#
+
+#TODO: List known limitations, for instance do we support feature which are derived/transient/etc ? Generics ? etc. etc.#
+
+== Custom Domain APIs
+
+#TODO: Check if Sirius Web will provide APIs to programmatically contribute custom data models? Or is maybe the Domain Definition DSL API the reference one internally?#

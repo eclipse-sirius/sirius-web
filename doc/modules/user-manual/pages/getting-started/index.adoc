@@ -1,0 +1,21 @@
+= Getting Started
+
+== Setup
+
+=== Studio Users
+
+For _Studio Users_, there is no setup to perform.
+You can go straight to the xref:user-manual:reference-documentation/studio-runtime/index.adoc[] documentation.
+
+If you don't already have a running application with Sirius Web, you can always explore the https://siriusweb.obeostudio.com[Sirius Web Demo Instance], which runs the latest stable version of Sirius Web.
+
+=== Studio Makers 
+
+_Studio Makers_ should make sure to set up their environment as described in the xref:user-manual:getting-started/studio-definition-devtools/index.adoc[].
+
+==== Tutorials 
+
+Once your environment is setup, you can follow one of the xref:user-manual:getting-started/tutorials/index.adoc[available tutorials]:
+
+* xref:user-manual:getting-started/tutorials/basic-family/index.adoc[]
+* xref:user-manual:getting-started/tutorials/mindstorms-robot/index.adoc[]

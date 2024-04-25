@@ -1,0 +1,5 @@
+= Diagram Representation Description APIs
+
+A `xref:user-manual:reference-documentation/studio-definition/index.adoc#_diagram_description[Diagram Representation Description]` defines how the `xref:user-manual:reference-documentation/studio-runtime/index.adoc#_diagram[Diagram Representations]` are created at runtime.
+
+#TODO: Add APIs used to create/edit Diagram Representation Descriptions.#

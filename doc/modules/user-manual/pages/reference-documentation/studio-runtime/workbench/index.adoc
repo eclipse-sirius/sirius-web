@@ -1,0 +1,5 @@
+= Workbench
+
+include::user-manual:reference-documentation/studio-runtime/workbench/concepts/index.adoc[leveloffset=+1]
+
+include::user-manual:reference-documentation/studio-runtime/workbench/ui/index.adoc[leveloffset=+1]

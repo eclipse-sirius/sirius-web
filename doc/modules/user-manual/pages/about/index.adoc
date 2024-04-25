@@ -1,0 +1,15 @@
+= About Sirius Web
+
+include::user-manual:about/contents/whatis.adoc[leveloffset=+1]
+
+include::user-manual:about/contents/overview.adoc[leveloffset=+1]
+
+include::user-manual:about/contents/features.adoc[leveloffset=+1]
+
+include::user-manual:about/contents/comparison.adoc[leveloffset=+1]
+
+include::user-manual:about/contents/governance.adoc[leveloffset=+1]
+
+== xref:user-manual:about/contents/release-notes/index.adoc[]
+
+The release notes document the latest changes which may impact _Studio Users_ and _Studio Makers_.

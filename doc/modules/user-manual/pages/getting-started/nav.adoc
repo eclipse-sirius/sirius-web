@@ -1,0 +1,6 @@
+// Note: Cannot include an open block here.
+* xref:user-manual:getting-started/index.adoc[]
+** xref:user-manual:getting-started/studio-definition-devtools/index.adoc[]
+** xref:user-manual:getting-started/tutorials/index.adoc[]
+*** xref:user-manual:getting-started/tutorials/basic-family/index.adoc[Basic Family]
+*** xref:user-manual:getting-started/tutorials/mindstorms-robot/index.adoc[Mindstorms Robot]
