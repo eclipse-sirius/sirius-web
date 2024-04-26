@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,21 +28,24 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getEdgeDescriptions <em>Edge
  * Descriptions</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange Layout
+ * Direction</em>}</li>
  * </ul>
  *
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
  * @model
  * @generated
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
  */
 public interface DiagramDescription extends RepresentationDescription {
+
     /**
      * Returns the value of the '<em><b>Auto Layout</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Auto Layout</em>' attribute.
-     * @see #setAutoLayout(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_AutoLayout()
      * @model required="true"
      * @generated
+     * @see #setAutoLayout(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_AutoLayout()
      */
     boolean isAutoLayout();
 
@@ -51,9 +54,9 @@ public interface DiagramDescription extends RepresentationDescription {
      * Layout</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Auto Layout</em>' attribute.
-     * @see #isAutoLayout()
+     *         the new value of the '<em>Auto Layout</em>' attribute.
      * @generated
+     * @see #isAutoLayout()
      */
     void setAutoLayout(boolean value);
 
@@ -62,10 +65,10 @@ public interface DiagramDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Palette</em>' containment reference.
-     * @see #setPalette(DiagramPalette)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Palette()
      * @model containment="true"
      * @generated
+     * @see #setPalette(DiagramPalette)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Palette()
      */
     DiagramPalette getPalette();
 
@@ -74,9 +77,9 @@ public interface DiagramDescription extends RepresentationDescription {
      * <em>Palette</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Palette</em>' containment reference.
-     * @see #getPalette()
+     *         the new value of the '<em>Palette</em>' containment reference.
      * @generated
+     * @see #getPalette()
      */
     void setPalette(DiagramPalette value);
 
@@ -86,9 +89,9 @@ public interface DiagramDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Node Descriptions</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_NodeDescriptions()
      * @model containment="true"
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_NodeDescriptions()
      */
     EList<NodeDescription> getNodeDescriptions();
 
@@ -98,10 +101,38 @@ public interface DiagramDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Edge Descriptions</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_EdgeDescriptions()
      * @model containment="true"
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_EdgeDescriptions()
      */
     EList<EdgeDescription> getEdgeDescriptions();
+
+    /**
+     * Returns the value of the '<em><b>Arrange Layout Direction</b></em>' attribute. The default value is
+     * <code>"RIGHT"</code>. The literals are from the enumeration
+     * {@link org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Arrange Layout Direction</em>' attribute.
+     * @model default="RIGHT" required="true"
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection
+     * @see #setArrangeLayoutDirection(ArrangeLayoutDirection)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_ArrangeLayoutDirection()
+     */
+    ArrangeLayoutDirection getArrangeLayoutDirection();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange
+     * Layout Direction</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Arrange Layout Direction</em>' attribute.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection
+     * @see #getArrangeLayoutDirection()
+     */
+    void setArrangeLayoutDirection(ArrangeLayoutDirection value);
 
 } // DiagramDescription

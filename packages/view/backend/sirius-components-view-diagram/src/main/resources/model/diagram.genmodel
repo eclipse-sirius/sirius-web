@@ -60,11 +60,18 @@
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelOverflowStrategy/WRAP"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelOverflowStrategy/ELLIPSIS"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//ArrangeLayoutDirection">
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrangeLayoutDirection/RIGHT"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrangeLayoutDirection/DOWN"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrangeLayoutDirection/LEFT"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrangeLayoutDirection/UP"/>
+    </genEnums>
     <genClasses ecoreClass="diagram.ecore#//DiagramDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/autoLayout"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/palette"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/nodeDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/edgeDescriptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/arrangeLayoutDirection"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//DiagramElementDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramElementDescription/name"/>

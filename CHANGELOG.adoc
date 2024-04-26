@@ -60,6 +60,7 @@ New default implementations are available in `DefaultToolsFactory` to ease the m
 Its single method, `getTargetObjectId`, has been moved up into the main `IRepresentation` interface.
 For representations which were *not* `ISemanticRepresentation` before, their target object is the `IEditingContext` itself if nothing more relevant is available.
 Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IEditingContext` instances as objects.
+- https://github.com/eclipse-sirius/sirius-web/issues/3425[#3425] [diagram] In our GraphQL schema, `DiagramDescription` must now declare an `ArrangeLayoutDirection`.
 
 === Dependency update
 
@@ -107,6 +108,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3333[#3333] [emf] Add support for the migration of semantic data
 - https://github.com/eclipse-sirius/sirius-web/issues/3382[#3382] [diagram] Add a tool section in Node and Edge palettes with tools to hide/show/reset elements and their children.
 - https://github.com/eclipse-sirius/sirius-web/issues/3135[#3135] [diagram] Add new overflow strategies for node label : _wrap_ and _ellipsis_
+- https://github.com/eclipse-sirius/sirius-web/issues/3425[#3425] [diagram] Make the direction applied during _arrangeAll_ configurable.
 
 === Improvements
 

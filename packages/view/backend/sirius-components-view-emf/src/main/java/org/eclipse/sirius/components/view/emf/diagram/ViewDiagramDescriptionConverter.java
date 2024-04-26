@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
@@ -155,6 +156,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                     }
                 })
                 .autoLayout(viewDiagramDescription.isAutoLayout())
+                .arrangeLayoutDirection(ArrangeLayoutDirection.valueOf(viewDiagramDescription.getArrangeLayoutDirection().getLiteral()))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)

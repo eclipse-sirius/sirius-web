@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.compatibility.api.ICanCreateDiagramPredicat
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.diagrams.DiagramLabelProvider;
 import org.eclipse.sirius.components.compatibility.services.diagrams.api.IDiagramDescriptionConverter;
+import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription.Builder;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -62,12 +63,11 @@ public class DiagramDescriptionConverter implements IDiagramDescriptionConverter
         Function<VariableManager, String> labelProvider = new DiagramLabelProvider(interpreter, siriusDiagramDescription);
         Predicate<VariableManager> canCreatePredicate = this.canCreateDiagramPredicateFactory.getCanCreateDiagramPredicate(siriusDiagramDescription, interpreter);
 
-        // @formatter:off
         Builder builder = DiagramDescription.newDiagramDescription(this.identifierProvider.getIdentifier(siriusDiagramDescription))
                 .canCreatePredicate(canCreatePredicate)
                 .labelProvider(labelProvider)
-                .autoLayout(this.isAutoLayoutMode(siriusDiagramDescription));
-        // @formatter:on
+                .autoLayout(this.isAutoLayoutMode(siriusDiagramDescription))
+                .arrangeLayoutDirection(ArrangeLayoutDirection.RIGHT);
 
         for (IDiagramDescriptionPopulator diagramDescriptionPopulator : this.diagramDescriptionPopulators) {
             diagramDescriptionPopulator.populate(builder, siriusDiagramDescription, interpreter);
