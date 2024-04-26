@@ -14,7 +14,6 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
 import { GQLGroup, GQLPage, GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import {
   addToolbarActionMutation,
@@ -141,6 +140,8 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
     __typename: 'ToolbarAction',
     diagnostics: [],
     buttonLabel: 'ToolbarAction1',
+    hasHelpText: false,
+    readOnly: false,
     imageURL: null,
     style: {
       backgroundColor: null,
@@ -160,6 +161,7 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction],
+    borderStyle: null,
   };
 
   const page: GQLPage = {
@@ -212,6 +214,8 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
     iconURL: [],
     __typename: 'ToolbarAction',
     diagnostics: [],
+    hasHelpText: false,
+    readOnly: false,
     buttonLabel: 'ToolbarAction1',
     imageURL: null,
     style: {
@@ -231,6 +235,8 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
     __typename: 'ToolbarAction',
     diagnostics: [],
     buttonLabel: 'ToolbarAction2',
+    hasHelpText: false,
+    readOnly: false,
     imageURL: null,
     style: {
       backgroundColor: null,
@@ -250,6 +256,12 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction1, toolbarAction2],
+    borderStyle: {
+      color: null,
+      lineStyle: null,
+      radius: null,
+      size: null,
+    },
   };
 
   const page: GQLPage = {
@@ -304,6 +316,8 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
     iconURL: [],
     __typename: 'ToolbarAction',
     diagnostics: [],
+    hasHelpText: false,
+    readOnly: false,
     buttonLabel: 'ToolbarAction1',
     imageURL: null,
     style: {
@@ -321,6 +335,8 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
     label: 'ToolbarAction2',
     iconURL: [],
     __typename: 'ToolbarAction',
+    hasHelpText: false,
+    readOnly: false,
     diagnostics: [],
     buttonLabel: 'ToolbarAction2',
     imageURL: null,
@@ -342,6 +358,12 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction1, toolbarAction2],
+    borderStyle: {
+      color: null,
+      lineStyle: null,
+      radius: null,
+      size: null,
+    },
   };
 
   const page: GQLPage = {
@@ -397,6 +419,8 @@ test('move the existing ToolbarAction from/into the drop area located at the end
     label: 'ToolbarAction1',
     iconURL: [],
     __typename: 'ToolbarAction',
+    hasHelpText: false,
+    readOnly: false,
     diagnostics: [],
     buttonLabel: 'ToolbarAction1',
     imageURL: null,
@@ -415,6 +439,8 @@ test('move the existing ToolbarAction from/into the drop area located at the end
     label: 'ToolbarAction2',
     iconURL: [],
     __typename: 'ToolbarAction',
+    hasHelpText: false,
+    readOnly: false,
     diagnostics: [],
     buttonLabel: 'ToolbarAction2',
     imageURL: null,
@@ -436,6 +462,12 @@ test('move the existing ToolbarAction from/into the drop area located at the end
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction1, toolbarAction2],
+    borderStyle: {
+      color: null,
+      lineStyle: null,
+      radius: null,
+      size: null,
+    },
   };
 
   const page: GQLPage = {
@@ -492,6 +524,8 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button for a page'
     iconURL: [],
     __typename: 'ToolbarAction',
     diagnostics: [],
+    hasHelpText: false,
+    readOnly: false,
     buttonLabel: 'ToolbarAction1',
     imageURL: null,
     style: {

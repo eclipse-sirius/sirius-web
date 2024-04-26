@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -205,6 +205,7 @@ test('render pie-chart widget', () => {
         formId="formId"
         widget={defaultPieChartWidget}
         subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -219,6 +220,7 @@ test('render pie-chart widget with style', () => {
         formId="formId"
         widget={defaultPieChartWidgetWithStyle}
         subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -233,6 +235,7 @@ test('render pie-chart widget with empty style', () => {
         formId="formId"
         widget={defaultPieChartWidgetWithEmptyStyle}
         subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -247,6 +250,7 @@ test('render the bar-chart widget', () => {
         formId="formId"
         widget={defaultBarChartWidget}
         subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -261,6 +265,7 @@ test('render the bar-chart widget with style', () => {
         formId="formId"
         widget={defaultBarChartWidgetWithStyle}
         subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -275,6 +280,7 @@ test('render the bar-chart widget with empty style', () => {
         formId="formId"
         widget={defaultBarChartWidgetWithEmptyStyle}
         subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -289,6 +295,7 @@ test('render pie-chart widget with help hint', () => {
         formId="formId"
         widget={{ ...defaultPieChartWidgetWithEmptyStyle, hasHelpText: true }}
         subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -302,6 +309,7 @@ test('render the bar-chart widget with help hint', () => {
         formId="formId"
         widget={{ ...defaultBarChartWidgetWithEmptyStyle, hasHelpText: true }}
         subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );

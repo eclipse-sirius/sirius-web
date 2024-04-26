@@ -14,7 +14,6 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { MessageOptions, ServerContext, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLButton, GQLSplitButton } from '../../form/FormEventFragments.types';
 import { pushButtonMutation, updateWidgetFocusMutation } from '../ButtonPropertySection';
@@ -78,27 +77,6 @@ const buttonWithStyle: GQLButton = {
   },
 };
 
-const readOnlyButton: GQLButton = {
-  __typename: 'Button',
-  id: 'buttonId',
-  label: 'Label',
-  iconURL: [],
-  diagnostics: [],
-  buttonLabel: 'ButtonLabel',
-  imageURL: null,
-  style: {
-    backgroundColor: null,
-    foregroundColor: null,
-    fontSize: null,
-    italic: null,
-    bold: null,
-    underline: null,
-    strikeThrough: null,
-  },
-  readOnly: true,
-  hasHelpText: false,
-};
-
 const splitButtonWithStyle: GQLSplitButton = {
   __typename: 'Button',
   id: 'buttonId',
@@ -108,17 +86,6 @@ const splitButtonWithStyle: GQLSplitButton = {
   diagnostics: [],
   readOnly: false,
   actions: [buttonWithStyle, buttonWithStyle],
-};
-
-const splitButtonWithReadOnlyAction: GQLSplitButton = {
-  __typename: 'Button',
-  id: 'buttonId',
-  label: 'Label',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  readOnly: false,
-  actions: [readOnlyButton, readOnlyButton],
 };
 
 const pushButtonVariables: GQLPushButtonMutationVariables = {

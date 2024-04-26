@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ const defaultLabel: GQLLabelWidget = {
   stringValue: 'theLabelValue',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   style: {
     color: null,
     bold: null,
@@ -43,6 +44,7 @@ const defaultLabelWithStyle: GQLLabelWidget = {
   stringValue: 'theLabelValue',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   style: {
     color: 'RebeccaPurple',
     bold: true,
@@ -63,6 +65,7 @@ test('render label widget', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={defaultLabel}
+        readOnly={false}
         subscribers={[]}
       />
     </MockedProvider>
@@ -77,6 +80,7 @@ test('render label widget with style', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={defaultLabelWithStyle}
+        readOnly={false}
         subscribers={[]}
       />
     </MockedProvider>
@@ -91,6 +95,7 @@ test('render label widget with help hint', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={{ ...defaultLabel, hasHelpText: true }}
+        readOnly={false}
         subscribers={[]}
       />
     </MockedProvider>

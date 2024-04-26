@@ -22,12 +22,10 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLTree, GQLTreeNode } from '../../form/FormEventFragments.types';
 import { TreePropertySection, updateWidgetFocusMutation } from '../TreePropertySection';
 import {
-  GQLErrorPayload,
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusSuccessPayload,
@@ -56,19 +54,6 @@ const updateWidgetFocusSuccessPayload: GQLUpdateWidgetFocusSuccessPayload = {
 };
 const updateWidgetFocusSuccessData: GQLUpdateWidgetFocusMutationData = {
   updateWidgetFocus: updateWidgetFocusSuccessPayload,
-};
-
-const updateWidgetFocusErrorPayload: GQLErrorPayload = {
-  __typename: 'ErrorPayload',
-  messages: [
-    {
-      body: 'An error has occurred, please refresh the page',
-      level: 'ERROR',
-    },
-  ],
-};
-const updateWidgetFocusErrorData: GQLUpdateWidgetFocusMutationData = {
-  updateWidgetFocus: updateWidgetFocusErrorPayload,
 };
 
 // Helper to make fixtures more readable
@@ -312,7 +297,6 @@ test('should only expand the specified nodes on initial render', () => {
 });
 
 test('should change the selection when a selectable node is clicked', () => {
-  let updateWidgetFocusCalled = false;
   const updateWidgetFocusSuccessMock: MockedResponse<
     GQLUpdateWidgetFocusMutationData,
     GQLUpdateWidgetFocusMutationVariables
@@ -322,7 +306,6 @@ test('should change the selection when a selectable node is clicked', () => {
       variables: updateWidgetFocusVariables,
     },
     result: () => {
-      updateWidgetFocusCalled = true;
       return { data: updateWidgetFocusSuccessData };
     },
   };

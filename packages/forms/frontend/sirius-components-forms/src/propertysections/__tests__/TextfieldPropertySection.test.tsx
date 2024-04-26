@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,9 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLTextfield } from '../../form/FormEventFragments.types';
 import {
+  TextfieldPropertySection,
   editTextfieldMutation,
   getCompletionProposalsQuery,
-  TextfieldPropertySection,
   updateWidgetFocusMutation,
 } from '../../propertysections/TextfieldPropertySection';
 import {
@@ -44,6 +44,7 @@ const defaultTextField: GQLTextfield = {
   label: 'Name:',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   stringValue: 'Composite Processor',
   supportsCompletion: false,
   diagnostics: [],
@@ -56,6 +57,7 @@ const textFieldWithStyle: GQLTextfield = {
   label: 'Name:',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   stringValue: 'Composite Processor',
   supportsCompletion: false,
   diagnostics: [],
@@ -76,6 +78,7 @@ const textFieldWithEmptyStyle: GQLTextfield = {
   label: 'Name:',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   stringValue: 'Composite Processor',
   supportsCompletion: false,
   diagnostics: [],
@@ -100,6 +103,7 @@ const readOnlyTextField: GQLTextfield = {
   diagnostics: [],
   style: null,
   readOnly: true,
+  hasHelpText: false,
 };
 
 const editTextfieldVariables: GQLEditTextfieldMutationVariables = {
@@ -351,6 +355,7 @@ test('should support completion if configured', async () => {
     label: 'Text:',
     iconURL: [],
     hasHelpText: false,
+    readOnly: false,
     stringValue: 'fo',
     supportsCompletion: true,
     diagnostics: [],
@@ -375,14 +380,12 @@ test('should support completion if configured', async () => {
     },
   };
 
-  let leaveWidgetFocusCalled = false;
   const leaveWidgetFocusSuccessMock: MockedResponse<Record<string, any>> = {
     request: {
       query: updateWidgetFocusMutation,
       variables: leaveWidgetFocusVariables,
     },
     result: () => {
-      leaveWidgetFocusCalled = true;
       return { data: updateWidgetFocusSuccessData };
     },
   };
@@ -502,6 +505,7 @@ test('should not trigger completion request if not configured', async () => {
     label: 'Text:',
     iconURL: [],
     hasHelpText: false,
+    readOnly: false,
     stringValue: 'fo',
     supportsCompletion: false,
     diagnostics: [],

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ const defaultLink: GQLLink = {
   url: 'the/url/value',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   style: {
     color: null,
     bold: null,
@@ -43,6 +44,7 @@ const defaultLinkWithStyle: GQLLink = {
   url: 'the/url/value',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   style: {
     color: 'RebeccaPurple',
     bold: true,
@@ -59,7 +61,13 @@ const defaultLinkWithStyle: GQLLink = {
 test('render label widget', () => {
   const { container } = render(
     <MockedProvider>
-      <LinkPropertySection editingContextId="editingContextId" formId="formId" widget={defaultLink} />
+      <LinkPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultLink}
+        readOnly={false}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -68,7 +76,13 @@ test('render label widget', () => {
 test('render label widget with style', () => {
   const { container } = render(
     <MockedProvider>
-      <LinkPropertySection editingContextId="editingContextId" formId="formId" widget={defaultLinkWithStyle} />
+      <LinkPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultLinkWithStyle}
+        readOnly={false}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -81,6 +95,8 @@ test('render label widget with help hint', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={{ ...defaultLink, hasHelpText: true }}
+        readOnly={false}
+        subscribers={[]}
       />
     </MockedProvider>
   );
