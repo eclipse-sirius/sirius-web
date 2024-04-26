@@ -20,7 +20,7 @@ import { Explorer } from '../../../workbench/Explorer';
 const projectName = 'Cypress - diagram selection';
 
 describe('Diagram selection', () => {
-  context('Given a flow project with a robot document', () => {
+  context('Given a flow project with a robot document open on a topography representation', () => {
     let projectId: string = '';
     beforeEach(() => {
       new Flow().createRobotProject(projectName).then((createdProjectData) => {
@@ -81,6 +81,40 @@ describe('Diagram selection', () => {
         details.getRadioOption('Status', 'inactive').click();
 
         diagram.getSelectedNodes('diagram', 'DSP').should('exist');
+      });
+    });
+  });
+  context('Given a flow project with a robot document open on a topography unsynchronized representation', () => {
+    let projectId: string = '';
+    beforeEach(() => {
+      new Flow().createRobotProject(projectName).then((createdProjectData) => {
+        projectId = createdProjectData.projectId;
+        new Project().visit(projectId);
+      });
+      const explorer = new Explorer();
+      explorer.expand('robot');
+      explorer.expand('Robot');
+
+      explorer.createRepresentation('Robot', 'Topography unsynchronized', 'diagram');
+    });
+
+    afterEach(() => cy.deleteProject(projectId));
+    context('When we interact with the explorer', () => {
+      it('Then diagram selection is synchronized with the explorer', () => {
+        const explorer = new Explorer();
+        const diagram = new Diagram();
+        const details = new Details();
+
+        const dataTransfer = new DataTransfer();
+        explorer.dragTreeItem('Central_Unit', dataTransfer);
+        diagram.dropOnDiagram('diagram', dataTransfer);
+        diagram.getNodes('diagram', 'Central_Unit').should('exist');
+        explorer.select('Central_Unit');
+        diagram.getSelectedNodes('diagram', 'Central_Unit').should('exist');
+        details.getTextField('Name').should('have.value', 'Central_Unit');
+
+        explorer.select('Wifi');
+        details.getTextField('Name').should('have.value', 'Wifi');
       });
     });
   });

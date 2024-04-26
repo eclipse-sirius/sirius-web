@@ -62,6 +62,10 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
 
   const onSelectionChange = useCallback(
     ({ nodes, edges }) => {
+      const diagramElementIds: string[] = [
+        ...getNodes().map((node) => node.data.targetObjectId),
+        ...getEdges().map((edge) => edge.data?.targetObjectId ?? ''),
+      ];
       const selectionEntries: SelectionEntry[] = [...nodes, ...edges]
         .filter((element) => element.selected)
         .map((node) => {
@@ -74,6 +78,7 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
         });
       const selectionDiagramEntryIds = selection.entries
         .map((selectionEntry) => selectionEntry.id)
+        .filter((id) => diagramElementIds.includes(id))
         .sort((id1: string, id2: string) => id1.localeCompare(id2));
       const selectedDiagramElementIds = selectionEntries
         .map((entry) => entry.id)
