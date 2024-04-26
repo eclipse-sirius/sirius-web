@@ -285,6 +285,7 @@ type DiagramDescription implements RepresentationDescription {
   id: ID!
   label: String!
   autoLayout: Boolean!
+  arrangeLayoutDirection: ArrangeLayoutDirection!
   nodeDescriptions: [NodeDescription!]!
   childNodeDescriptionIds: [ID!]!
   edgeDescriptions: [EdgeDescription!]!
@@ -293,6 +294,13 @@ type DiagramDescription implements RepresentationDescription {
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!
   debug: Boolean
+}
+
+enum ArrangeLayoutDirection {
+  RIGHT
+  DOWN
+  LEFT
+  UP
 }
 
 type DropNodeCompatibilityEntry {

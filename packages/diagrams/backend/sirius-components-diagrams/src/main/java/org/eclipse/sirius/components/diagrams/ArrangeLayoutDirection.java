@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.diagrams;
 
-import React from 'react';
-import { DiagramDescriptionContextValue } from './DiagramDescriptionContext.types';
-
-const defaultValue: DiagramDescriptionContextValue = {
-  diagramDescription: {
-    id: '',
-    nodeDescriptions: [],
-    dropNodeCompatibility: [],
-    debug: false,
-    arrangeLayoutDirection: 'RIGHT',
-  },
-};
-
-export const DiagramDescriptionContext = React.createContext<DiagramDescriptionContextValue>(defaultValue);
+/**
+ * The direction to adopt when using arrangeAll on the diagram.
+ *
+ * @author frouene
+ */
+public enum ArrangeLayoutDirection {
+    RIGHT,
+    DOWN,
+    LEFT,
+    UP
+}

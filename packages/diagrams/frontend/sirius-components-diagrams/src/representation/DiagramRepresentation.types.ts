@@ -64,7 +64,10 @@ export interface GQLDiagramDescription {
   nodeDescriptions: GQLNodeDescription[];
   dropNodeCompatibility: GQLDropNodeCompatibility[];
   debug: boolean;
+  arrangeLayoutDirection: GQLArrangeLayoutDirection;
 }
+
+export type GQLArrangeLayoutDirection = 'RIGHT' | 'DOWN' | 'LEFT' | 'UP';
 
 export interface GQLDropNodeCompatibility {
   droppedNodeDescriptionId: string;

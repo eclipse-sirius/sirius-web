@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -46,6 +47,8 @@ public final class DiagramDescription implements IRepresentationDescription {
     private String label;
 
     private boolean autoLayout;
+
+    private ArrangeLayoutDirection arrangeLayoutDirection;
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
@@ -87,6 +90,10 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     public boolean isAutoLayout() {
         return this.autoLayout;
+    }
+
+    public ArrangeLayoutDirection getArrangeLayoutDirection() {
+        return this.arrangeLayoutDirection;
     }
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
@@ -142,6 +149,8 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private boolean autoLayout;
 
+        private ArrangeLayoutDirection arrangeLayoutDirection = ArrangeLayoutDirection.RIGHT;
+
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Predicate<VariableManager> canCreatePredicate;
@@ -166,6 +175,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             this.id = diagramDescription.getId();
             this.label = diagramDescription.getLabel();
             this.autoLayout = diagramDescription.isAutoLayout();
+            this.arrangeLayoutDirection = diagramDescription.getArrangeLayoutDirection();
             this.targetObjectIdProvider = diagramDescription.getTargetObjectIdProvider();
             this.canCreatePredicate = diagramDescription.getCanCreatePredicate();
             this.labelProvider = diagramDescription.getLabelProvider();
@@ -183,6 +193,11 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         public Builder autoLayout(boolean autoLayout) {
             this.autoLayout = autoLayout;
+            return this;
+        }
+
+        public Builder arrangeLayoutDirection(ArrangeLayoutDirection arrangeLayoutDirection) {
+            this.arrangeLayoutDirection = Objects.requireNonNull(arrangeLayoutDirection);
             return this;
         }
 
@@ -231,6 +246,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             diagramDescription.id = Objects.requireNonNull(this.id);
             diagramDescription.label = Objects.requireNonNull(this.label);
             diagramDescription.autoLayout = this.autoLayout;
+            diagramDescription.arrangeLayoutDirection = Objects.requireNonNull(this.arrangeLayoutDirection);
             diagramDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             diagramDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             diagramDescription.labelProvider = Objects.requireNonNull(this.labelProvider);

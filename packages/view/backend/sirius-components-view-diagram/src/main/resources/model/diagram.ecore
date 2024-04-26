@@ -47,6 +47,12 @@
     <eLiterals name="WRAP" value="1"/>
     <eLiterals name="ELLIPSIS" value="2"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ArrangeLayoutDirection">
+    <eLiterals name="RIGHT"/>
+    <eLiterals name="DOWN" value="1"/>
+    <eLiterals name="LEFT" value="2"/>
+    <eLiterals name="UP" value="3"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoLayout" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -56,6 +62,8 @@
         eType="#//NodeDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeDescriptions" upperBound="-1"
         eType="#//EdgeDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="arrangeLayoutDirection"
+        lowerBound="1" eType="#//ArrangeLayoutDirection" defaultValueLiteral="RIGHT"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramElementDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"

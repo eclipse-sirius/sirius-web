@@ -21,6 +21,7 @@ import { labelVerticalPadding, labelHorizontalPadding } from './layoutParams';
 import { RawDiagram } from './layout.types';
 import { useLayout } from './useLayout';
 import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
@@ -41,13 +42,15 @@ const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData
   return subNodes;
 };
 
-const elkOptions = {
-  'elk.algorithm': 'layered',
-  'elk.layered.spacing.nodeNodeBetweenLayers': '100',
-  'layering.strategy': 'NETWORK_SIMPLEX',
-  'elk.spacing.nodeNode': '100',
-  'elk.direction': 'RIGHT',
-  'elk.layered.spacing.edgeNodeBetweenLayers': '40',
+const elkOptions = (direction: string) => {
+  return {
+    'elk.algorithm': 'layered',
+    'elk.layered.spacing.nodeNodeBetweenLayers': '100',
+    'layering.strategy': 'NETWORK_SIMPLEX',
+    'elk.spacing.nodeNode': '100',
+    'elk.direction': `${direction}`,
+    'elk.layered.spacing.edgeNodeBetweenLayers': '40',
+  };
 };
 
 const computeHeaderVerticalFootprint = (
@@ -115,6 +118,7 @@ export const useArrangeAll = (
   const viewport = useViewport();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
+  const { diagramDescription } = useDiagramDescription();
 
   const elk = new ELK();
 
@@ -187,22 +191,26 @@ export const useArrangeAll = (
           edge.source = parentNodeId;
         }
       });
-      await getELKLayout(subGroupNodes, subGroupEdges, elkOptions, parentNodeId, headerVerticalFootprint).then(
-        ({ nodes: layoutedSubNodes, layoutReturn }) => {
-          const parentNode = allNodes.find((node) => node.id === parentNodeId);
-          if (parentNode) {
-            parentNode.width = layoutReturn.width;
-            parentNode.height = layoutReturn.height + headerVerticalFootprint;
-            parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
-            parentNodeWithNewSize.push(parentNode);
-          }
-          layoutedAllNodes = [
-            ...layoutedAllNodes,
-            ...layoutedSubNodes,
-            ...nodes.filter((node) => node.data.isBorderNode),
-          ];
+      await getELKLayout(
+        subGroupNodes,
+        subGroupEdges,
+        elkOptions(diagramDescription.arrangeLayoutDirection),
+        parentNodeId,
+        headerVerticalFootprint
+      ).then(({ nodes: layoutedSubNodes, layoutReturn }) => {
+        const parentNode = allNodes.find((node) => node.id === parentNodeId);
+        if (parentNode) {
+          parentNode.width = layoutReturn.width;
+          parentNode.height = layoutReturn.height + headerVerticalFootprint;
+          parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
+          parentNodeWithNewSize.push(parentNode);
         }
-      );
+        layoutedAllNodes = [
+          ...layoutedAllNodes,
+          ...layoutedSubNodes,
+          ...nodes.filter((node) => node.data.isBorderNode),
+        ];
+      });
     }
     return layoutedAllNodes;
   };

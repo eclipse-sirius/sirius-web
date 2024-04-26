@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
@@ -457,6 +458,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      *
      * @generated
      */
+    private EEnum arrangeLayoutDirectionEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private boolean isCreated = false;
 
     /**
@@ -491,10 +499,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
-     * @generated
      */
     public static DiagramPackage init() {
         if (isInited)
@@ -571,6 +579,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EReference getDiagramDescription_EdgeDescriptions() {
         return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDiagramDescription_ArrangeLayoutDirection() {
+        return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -2149,6 +2167,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EEnum getArrangeLayoutDirection() {
+        return this.arrangeLayoutDirectionEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public DiagramFactory getDiagramFactory() {
         return (DiagramFactory) this.getEFactoryInstance();
     }
@@ -2170,6 +2198,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__PALETTE);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
+        this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION);
 
         this.diagramElementDescriptionEClass = this.createEClass(DIAGRAM_ELEMENT_DESCRIPTION);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__NAME);
@@ -2372,6 +2401,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.insideLabelPositionEEnum = this.createEEnum(INSIDE_LABEL_POSITION);
         this.outsideLabelPositionEEnum = this.createEEnum(OUTSIDE_LABEL_POSITION);
         this.labelOverflowStrategyEEnum = this.createEEnum(LABEL_OVERFLOW_STRATEGY);
+        this.arrangeLayoutDirectionEEnum = this.createEEnum(ARRANGE_LAYOUT_DIRECTION);
     }
 
     /**
@@ -2445,6 +2475,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_EdgeDescriptions(), this.getEdgeDescription(), null, "edgeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDiagramDescription_ArrangeLayoutDirection(), this.getArrangeLayoutDirection(), "arrangeLayoutDirection", "RIGHT", 1, 1, DiagramDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.diagramElementDescriptionEClass, DiagramElementDescription.class, "DiagramElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getDiagramElementDescription_Name(), theViewPackage.getIdentifier(), "name", "NewRepresentationDescription", 0, 1, DiagramElementDescription.class, !IS_TRANSIENT,
@@ -2791,6 +2823,12 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.addEEnumLiteral(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.NONE);
         this.addEEnumLiteral(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.WRAP);
         this.addEEnumLiteral(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.ELLIPSIS);
+
+        this.initEEnum(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.class, "ArrangeLayoutDirection");
+        this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.RIGHT);
+        this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.DOWN);
+        this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.LEFT);
+        this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.UP);
 
         // Create resource
         this.createResource(eNS_URI);

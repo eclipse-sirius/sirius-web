@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
@@ -99,8 +100,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @deprecated
      * @generated
+     * @deprecated
      */
     @Deprecated
     public static DiagramPackage getPackage() {
@@ -212,6 +213,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createOutsideLabelPositionFromString(eDataType, initialValue);
             case DiagramPackage.LABEL_OVERFLOW_STRATEGY:
                 return this.createLabelOverflowStrategyFromString(eDataType, initialValue);
+            case DiagramPackage.ARRANGE_LAYOUT_DIRECTION:
+                return this.createArrangeLayoutDirectionFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -241,6 +244,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.convertOutsideLabelPositionToString(eDataType, instanceValue);
             case DiagramPackage.LABEL_OVERFLOW_STRATEGY:
                 return this.convertLabelOverflowStrategyToString(eDataType, instanceValue);
+            case DiagramPackage.ARRANGE_LAYOUT_DIRECTION:
+                return this.convertArrangeLayoutDirectionToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -785,6 +790,27 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      * @generated
      */
     public String convertLabelOverflowStrategyToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public ArrangeLayoutDirection createArrangeLayoutDirectionFromString(EDataType eDataType, String initialValue) {
+        ArrangeLayoutDirection result = ArrangeLayoutDirection.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertArrangeLayoutDirectionToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 
