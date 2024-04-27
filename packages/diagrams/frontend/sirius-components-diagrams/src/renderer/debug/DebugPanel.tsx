@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 import { useContext } from 'react';
 import { Edge, Node, Panel, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';

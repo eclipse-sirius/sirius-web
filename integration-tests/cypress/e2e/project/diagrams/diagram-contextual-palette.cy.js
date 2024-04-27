@@ -125,10 +125,10 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('Tool').click();
     cy.getByTestId('Name').type('{selectAll}tool2_section2');
 
-    cy.get('[title="Back to the homepage"]').click();
+    cy.get('[aria-label="Back to the homepage"]').click();
 
     cy.url().should('eq', Cypress.config().baseUrl + '/projects');
-    cy.get('[title="Blank Studio"]').should('be.visible');
+    cy.get('[aria-label="Blank Studio"]').should('be.visible');
     cy.getByTestId('create').click();
 
     cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
@@ -138,7 +138,7 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('empty').click();
     cy.getByTestId('Others...-more').click();
     cy.getByTestId('new-object').click();
-    cy.getByTestId('domain').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('domain').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('domain').find('div').first().should('not.have.attr', 'aria-disabled');
     cy.getByTestId('domain').click();
     cy.getByTestId('domain').get('[data-value^="domain://"]').should('exist').click();
@@ -269,7 +269,6 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').should('not.exist');
     cy.getByTestId('confirmation-dialog').should('not.exist');
   });
-
 
   it('diagram palette is closed once element palette is opened', () => {
     createFlowReactFlowDiagram();

@@ -13,15 +13,18 @@
 import { useMutation } from '@apollo/client';
 import { Toast, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
+  GQLContainerBorderStyle,
+  GQLFlexDirection,
+  GQLFlexWrap,
   GQLWidget,
   PropertySectionContext,
   PropertySectionContextValue,
 } from '@eclipse-sirius/sirius-components-forms';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import Typography from '@mui/material/Typography';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { FlexboxContainerWidgetState, FlexboxContainerWidgetStyleProps } from './FlexboxContainerWidget.types';
+import { makeStyles } from 'tss-react/mui';
+import { FlexboxContainerWidgetState } from './FlexboxContainerWidget.types';
 import { addWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddWidgetInput,
@@ -42,22 +45,26 @@ import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) => ({
+const useStyles = makeStyles<{
+  flexDirection: GQLFlexDirection;
+  flexWrap: GQLFlexWrap;
+  borderStyle: GQLContainerBorderStyle;
+}>()((theme, { flexDirection, flexWrap, borderStyle }) => ({
   selected: {
     color: theme.palette.primary.main,
   },
   containerAndLabel: {
-    margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
-    padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
-    borderWidth: ({ borderStyle }) => borderStyle?.size || 1,
-    borderColor: ({ borderStyle }) => getCSSColor(borderStyle?.color, theme) || 'gray',
-    borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
-    borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
+    margin: borderStyle ? theme.spacing(0.5) : 0,
+    padding: borderStyle ? theme.spacing(0.5) : 0,
+    borderWidth: borderStyle?.size || 1,
+    borderColor: getCSSColor(borderStyle?.color, theme) || 'gray',
+    borderStyle: borderStyle?.lineStyle || 'solid',
+    borderRadius: borderStyle?.radius || 0,
   },
   container: {
     display: 'flex',
-    flexWrap: ({ flexWrap }) => flexWrap,
-    flexDirection: ({ flexDirection }) => flexDirection,
+    flexWrap: flexWrap,
+    flexDirection: flexDirection,
     '& > *': {
       marginBottom: theme.spacing(0),
     },
@@ -89,7 +96,7 @@ const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) =>
 export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetProps) => {
   const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
   const noop = () => {};
-  const classes = useStyles({
+  const { classes } = useStyles({
     flexDirection: widget.flexDirection,
     flexWrap: widget.flexWrap,
     borderStyle: widget.borderStyle,

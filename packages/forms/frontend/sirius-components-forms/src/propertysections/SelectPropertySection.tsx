@@ -12,13 +12,13 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { IconOverlay, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLSelect } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
@@ -31,19 +31,21 @@ import {
 } from './SelectPropertySection.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
-const useStyle = makeStyles<Theme, SelectStyleProps>((theme) => ({
-  style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : null),
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-  },
-  iconRoot: {
-    minWidth: theme.spacing(3),
-  },
-}));
+const useStyle = makeStyles<SelectStyleProps>()(
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough }) => ({
+    style: {
+      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+    },
+    iconRoot: {
+      minWidth: theme.spacing(3),
+    },
+  })
+);
 
 export const editSelectMutation = gql`
   mutation editSelect($input: EditSelectInput!) {
@@ -85,7 +87,7 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useStyle(props);
+  const { classes } = useStyle(props);
 
   const [editSelect, { loading, error, data }] = useMutation<GQLEditSelectMutationData>(editSelectMutation);
   const onChange = (event) => {

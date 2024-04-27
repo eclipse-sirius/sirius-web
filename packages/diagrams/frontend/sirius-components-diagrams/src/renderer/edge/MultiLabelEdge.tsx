@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
-import { Theme, useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@mui/material/styles';
 import { memo, useContext, useMemo } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, Node, Position, getSmoothStepPath, useStoreApi } from 'reactflow';
 import { NodeTypeContext } from '../../contexts/NodeContext';

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery } from '@apollo/client';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Tooltip from '@material-ui/core/Tooltip';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import CircularProgress from '@mui/material/CircularProgress';
+import Tooltip from '@mui/material/Tooltip';
 import { Fragment, useEffect, useState } from 'react';
 import {
   GQLHelpTextQueryData,

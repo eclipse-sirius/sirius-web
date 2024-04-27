@@ -17,13 +17,13 @@ import {
   SelectionEntry,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import CropDinIcon from '@material-ui/icons/CropDin';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
+import CropDinIcon from '@mui/icons-material/CropDin';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { TreeItemProps, TreeItemState } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
@@ -31,7 +31,7 @@ import { TreeItemContextMenuContextValue } from './TreeItemContextMenu.types';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { isFilterCandidate, splitText } from './filterTreeItem';
 
-const useTreeItemStyle = makeStyles((theme) => ({
+const useTreeItemStyle = makeStyles()((theme) => ({
   treeItem: {
     display: 'flex',
     flexDirection: 'row',
@@ -126,7 +126,7 @@ export const TreeItem = ({
   enableMultiSelection,
   markedItemIds,
 }: TreeItemProps) => {
-  const classes = useTreeItemStyle();
+  const { classes } = useTreeItemStyle();
 
   const treeItemMenuContributionComponents = useContext<TreeItemContextMenuContextValue>(TreeItemContextMenuContext)
     .filter((contribution) => contribution.props.canHandle(treeId, item))

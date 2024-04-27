@@ -11,21 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
-import Link from '@material-ui/core/Link';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import Link from '@mui/material/Link';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLLink } from '../form/FormEventFragments.types';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { HelpTooltip } from './HelpTooltip';
 import { LinkStyleProps } from './LinkPropertySection.types';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
-const useStyle = makeStyles<Theme, LinkStyleProps>((theme) => ({
+const useStyle = makeStyles<LinkStyleProps>()((theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
   style: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    color: color ? getCSSColor(color, theme) : null,
+    fontSize: fontSize ? fontSize : null,
+    fontStyle: italic ? 'italic' : null,
+    fontWeight: bold ? 'bold' : null,
+    textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
   },
   propertySectionLabel: {
     display: 'flex',
@@ -50,7 +50,7 @@ export const LinkPropertySection: PropertySectionComponent<GQLLink> = ({
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useStyle(props);
+  const { classes } = useStyle(props);
 
   return (
     <div className={classes.propertySectionLabel}>

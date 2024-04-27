@@ -80,14 +80,6 @@
                   }
                 },
                 {
-                  "id": "5b005db8-faa7-459b-96fa-7bef5eb1bf73",
-                  "eClass": "view:FixedColor",
-                  "data": {
-                    "name": "theme.palette.text.hint",
-                    "value": "theme.palette.text.hint"
-                  }
-                },
-                {
                   "id": "75b9a29e-9960-4f26-a86f-c09941bc2441",
                   "eClass": "view:FixedColor",
                   "data": {

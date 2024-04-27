@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Theme, useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@mui/material/styles';
 import { useRef } from 'react';
 import { DeckInput } from '../common/DeckInput';
 import {

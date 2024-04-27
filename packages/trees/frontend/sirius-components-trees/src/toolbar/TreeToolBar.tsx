@@ -11,15 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
-import { SwapHoriz as SwapHorizIcon } from '@material-ui/icons';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import IconButton from '@mui/material/IconButton';
+import { makeStyles } from 'tss-react/mui';
 import React from 'react';
 import { TreeFiltersMenu } from '../views/TreeFiltersMenu';
 import { TreeToolBarProps } from './TreeToolBar.types';
 import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
 
-const useTreeToolbarStyles = makeStyles((theme) => ({
+const useTreeToolbarStyles = makeStyles()((theme) => ({
   toolbar: {
     display: 'flex',
     flexDirection: 'row',
@@ -43,7 +43,7 @@ export const TreeToolBar = ({
   treeToolBarContributionComponents,
   readOnly,
 }: TreeToolBarProps) => {
-  const classes = useTreeToolbarStyles();
+  const { classes } = useTreeToolbarStyles();
 
   let treeFiltersMenu: JSX.Element;
   if (treeFilters.length > 0) {

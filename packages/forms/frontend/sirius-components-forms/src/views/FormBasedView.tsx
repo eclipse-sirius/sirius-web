@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useContext, useEffect } from 'react';
 import { Form } from '../form/Form';
@@ -54,7 +54,7 @@ export const getFormEventSubscription = (subscriptionName: string, contributions
 `;
 };
 
-const useFormBasedViewStyles = makeStyles((theme) => ({
+const useFormBasedViewStyles = makeStyles()((theme) => ({
   idle: {
     padding: theme.spacing(1),
   },
@@ -70,7 +70,7 @@ export const FormBasedView = ({
   converter,
   postProcessor,
 }: FormBasedViewProps) => {
-  const classes = useFormBasedViewStyles();
+  const { classes } = useFormBasedViewStyles();
   const [{ value, context }, dispatch] = useMachine<FormBasedViewContext, FormBasedViewEvent>(formBasedViewMachine);
   const { toast, formBasedView } = value as SchemaValue;
   const { id, currentSelection, form, message } = context;

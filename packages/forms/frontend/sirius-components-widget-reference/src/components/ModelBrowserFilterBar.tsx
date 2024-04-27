@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,15 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import ClearIcon from '@material-ui/icons/Clear';
-import SearchIcon from '@material-ui/icons/Search';
+import ClearIcon from '@mui/icons-material/Clear';
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { ModelBrowserFilterBarProps } from './ModelBrowserFilterBar.types';
 
-const useFilterBarStyles = makeStyles((theme: Theme) => ({
+const useFilterBarStyles = makeStyles()((theme: Theme) => ({
   filterbar: {
     display: 'flex',
     flexDirection: 'row',
@@ -34,7 +35,7 @@ const useFilterBarStyles = makeStyles((theme: Theme) => ({
   },
 }));
 export const ModelBrowserFilterBar = ({ onTextChange, onTextClear, text }: ModelBrowserFilterBarProps) => {
-  const classes = useFilterBarStyles();
+  const { classes } = useFilterBarStyles();
 
   return (
     <div className={classes.filterbar}>

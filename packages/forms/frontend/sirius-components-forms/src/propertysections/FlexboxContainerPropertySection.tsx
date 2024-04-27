@@ -11,37 +11,38 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import {
-  FlexboxContainerPropertySectionProps,
-  FlexboxContainerPropertySectionStyleProps,
-} from './FlexboxContainerPropertySection.types';
+import { makeStyles } from 'tss-react/mui';
+import { GQLContainerBorderStyle, GQLFlexDirection, GQLFlexWrap } from '../form/FormEventFragments.types';
+import { FlexboxContainerPropertySectionProps } from './FlexboxContainerPropertySection.types';
 import { PropertySection } from './PropertySection';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useFlexboxContainerPropertySectionStyles = makeStyles<Theme, FlexboxContainerPropertySectionStyleProps>(
-  (theme) => ({
-    containerAndLabel: {
-      margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
-      padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
-      borderWidth: ({ borderStyle }) => borderStyle?.size || 0,
-      borderColor: ({ borderStyle }) => getCSSColor(borderStyle?.color, theme) || 'transparent',
-      borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
-      borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
+const useFlexboxContainerPropertySectionStyles = makeStyles<{
+  flexDirection: GQLFlexDirection;
+  flexWrap: GQLFlexWrap;
+  flexGrow: number;
+  borderStyle: GQLContainerBorderStyle;
+}>()((theme, { flexDirection, flexWrap, flexGrow, borderStyle }) => ({
+  containerAndLabel: {
+    margin: borderStyle ? theme.spacing(0.5) : 0,
+    padding: borderStyle ? theme.spacing(0.5) : 0,
+    borderWidth: borderStyle?.size || 0,
+    borderColor: getCSSColor(borderStyle?.color, theme) || 'transparent',
+    borderStyle: borderStyle?.lineStyle || 'solid',
+    borderRadius: borderStyle?.radius || 0,
+  },
+  container: {
+    display: 'flex',
+    flexWrap: flexWrap,
+    flexDirection: flexDirection,
+    '& > *': {
+      marginBottom: theme.spacing(0),
     },
-    container: {
-      display: 'flex',
-      flexWrap: ({ flexWrap }) => flexWrap,
-      flexDirection: ({ flexDirection }) => flexDirection,
-      '& > *': {
-        marginBottom: theme.spacing(0),
-      },
-    },
-    children: {
-      flexGrow: ({ flexGrow }) => flexGrow,
-    },
-  })
-);
+  },
+  children: {
+    flexGrow: flexGrow,
+  },
+}));
 
 export const FlexboxContainerPropertySection = ({
   editingContextId,
@@ -49,7 +50,7 @@ export const FlexboxContainerPropertySection = ({
   widget,
   readOnly,
 }: FlexboxContainerPropertySectionProps) => {
-  const classes = useFlexboxContainerPropertySectionStyles({
+  const { classes } = useFlexboxContainerPropertySectionStyles({
     flexDirection: widget.flexDirection,
     flexWrap: widget.flexWrap,
     flexGrow: widget.flexGrow,

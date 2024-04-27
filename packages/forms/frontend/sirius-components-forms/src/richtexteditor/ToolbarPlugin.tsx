@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,19 +21,18 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { $createHeadingNode, $isHeadingNode } from '@lexical/rich-text';
 import { $wrapNodes } from '@lexical/selection';
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
-import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import CodeIcon from '@material-ui/icons/Code';
-import FormatBoldIcon from '@material-ui/icons/FormatBold';
-import FormatItalicIcon from '@material-ui/icons/FormatItalic';
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
-import SubjectIcon from '@material-ui/icons/Subject';
-import TitleIcon from '@material-ui/icons/Title';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import CodeIcon from '@mui/icons-material/Code';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
+import SubjectIcon from '@mui/icons-material/Subject';
+import TitleIcon from '@mui/icons-material/Title';
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import {
   $createParagraphNode,
   $getSelection,
@@ -43,9 +42,10 @@ import {
   SELECTION_CHANGE_COMMAND,
 } from 'lexical';
 import { useCallback, useEffect, useState } from 'react';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import { ToolbarPluginProps } from './RichTextEditor.types';
 
-const useToolbarStyles = makeStyles((theme) => ({
+const useToolbarStyles = makeStyles()((theme) => ({
   paper: {
     display: 'flex',
     flexDirection: 'row',
@@ -63,7 +63,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const StyledToggleButtonGroup = withStyles((theme) => ({
+const StyledToggleButtonGroup = withStyles(ToggleButtonGroup, (theme) => ({
   grouped: {
     margin: theme.spacing(0.5),
     border: 'none',
@@ -74,7 +74,7 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
       borderRadius: theme.shape.borderRadius,
     },
   },
-}))(ToggleButtonGroup);
+}));
 
 export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
   const [editor] = useLexicalComposerContext();
@@ -173,7 +173,7 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
     toggled.push('code');
   }
 
-  const classes = useToolbarStyles({});
+  const { classes } = useToolbarStyles();
   return (
     <Paper elevation={0} className={classes.paper}>
       <StyledToggleButtonGroup size="small" value={toggled} onChange={(_, newStyles) => updateButtons(newStyles)}>

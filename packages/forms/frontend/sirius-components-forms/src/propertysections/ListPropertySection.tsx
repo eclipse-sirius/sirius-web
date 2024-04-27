@@ -18,17 +18,18 @@ import {
   useMultiToast,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import IconButton from '@material-ui/core/IconButton';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 import { MouseEvent, useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLList, GQLListItem } from '../form/FormEventFragments.types';
 import {
@@ -84,32 +85,34 @@ export const clickListItemMutation = gql`
   }
 `;
 
-const useListPropertySectionStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
-  cell: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: theme.spacing(0.25),
-    paddingBottom: theme.spacing(0.25),
-  },
-  canBeSelectedItem: {
-    '&:hover': {
-      textDecoration: 'underline',
-      cursor: 'pointer',
+const useListPropertySectionStyles = makeStyles<ListStyleProps>()(
+  (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
+    cell: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingTop: theme.spacing(0.25),
+      paddingBottom: theme.spacing(0.25),
     },
-  },
-  style: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    flexGrow: 1,
-  },
-}));
+    canBeSelectedItem: {
+      '&:hover': {
+        textDecoration: 'underline',
+        cursor: 'pointer',
+      },
+    },
+    style: {
+      color: color ? getCSSColor(color, theme) : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      flexGrow: 1,
+    },
+  })
+);
 
 const NONE_WIDGET_ITEM_ID = 'none';
 
@@ -132,7 +135,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useListPropertySectionStyles(props);
+  const { classes } = useListPropertySectionStyles(props);
   const theme = useTheme();
   const { setSelection } = useSelection();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();

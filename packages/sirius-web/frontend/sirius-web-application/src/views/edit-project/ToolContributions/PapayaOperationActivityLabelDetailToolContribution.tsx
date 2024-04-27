@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import IconButton from '@material-ui/core/IconButton';
-import { Slideshow } from '@material-ui/icons';
+import Slideshow from '@mui/icons-material/Slideshow';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import IconButton from '@mui/material/IconButton';
 import { Fragment, useState } from 'react';
 import { useNodes } from 'reactflow';
 import {

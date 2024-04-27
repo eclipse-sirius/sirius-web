@@ -11,15 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Link from '@material-ui/core/Link';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import { makeStyles } from '@material-ui/core/styles';
+import Link from '@mui/material/Link';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import { makeStyles } from 'tss-react/mui';
 import { Link as RouterLink } from 'react-router-dom';
 import { ProjectActionButton } from './ProjectActionButton';
 import { ProjectRowProps } from './ProjectRow.types';
 
-const useProjectsRowStyles = makeStyles(() => ({
+const useProjectsRowStyles = makeStyles()(() => ({
   projectLabel: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -29,7 +29,7 @@ const useProjectsRowStyles = makeStyles(() => ({
 }));
 
 export const ProjectRow = ({ project, onChange }: ProjectRowProps) => {
-  const classes = useProjectsRowStyles();
+  const { classes } = useProjectsRowStyles();
   return (
     <TableRow key={project.id} hover>
       <TableCell>

@@ -12,10 +12,10 @@
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import TextField from '@material-ui/core/TextField';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import TextField from '@mui/material/TextField';
 import { useMachine } from '@xstate/react';
 import React, { FocusEvent, useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLTextarea, GQLTextfield, GQLWidget } from '../form/FormEventFragments.types';
 import { GQLSuccessPayload } from './ListPropertySection.types';
@@ -46,24 +46,26 @@ import {
 } from './TextfieldPropertySectionMachine';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
-const useStyle = makeStyles<Theme, TextfieldStyleProps>((theme) => ({
-  style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : null),
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-  },
-  input: {
-    paddingTop: theme.spacing(0.5),
-    paddingBottom: theme.spacing(0.5),
-  },
-  textfield: {
-    marginTop: theme.spacing(0.5),
-    marginBottom: theme.spacing(0.5),
-  },
-}));
+const useStyle = makeStyles<TextfieldStyleProps>()(
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough }) => ({
+    style: {
+      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+    },
+    input: {
+      paddingTop: theme.spacing(0.5),
+      paddingBottom: theme.spacing(0.5),
+    },
+    textfield: {
+      marginTop: theme.spacing(0.5),
+      marginBottom: theme.spacing(0.5),
+    },
+  })
+);
 
 export const getCompletionProposalsQuery = gql`
   query completionProposals(
@@ -138,7 +140,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useStyle(props);
+  const { classes } = useStyle(props);
 
   const [{ value: schemaValue, context }, dispatch] = useMachine<
     TextfieldPropertySectionContext,

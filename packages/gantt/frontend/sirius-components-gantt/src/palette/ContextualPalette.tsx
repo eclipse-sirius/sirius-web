@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
-import Delete from '@material-ui/icons/Delete';
+import IconButton from '@mui/material/IconButton';
+import { makeStyles } from 'tss-react/mui';
+import Delete from '@mui/icons-material/Delete';
 import {
   TaskContextualPaletteProps as GanttTaskContextualPaletteProps,
   TaskDependencyContextualPaletteProps as GanttTaskDependencyContextualPaletteProps,
@@ -21,7 +21,7 @@ import {
 import { TaskIcon } from '../icons/TaskIcon';
 import { TaskContextualPaletteProps, TaskDependencyContextualPaletteProps } from './ContextualPalette.types';
 
-const useContextualPaletteStyle = makeStyles((theme) => ({
+const useContextualPaletteStyle = makeStyles()((theme) => ({
   taskButtonEntries: {
     display: 'grid',
     gridTemplateColumns: `repeat(2, 28px)`,
@@ -49,7 +49,7 @@ const useContextualPaletteStyle = makeStyles((theme) => ({
 
 export const getTaskContextualPalette = ({ onCreateTask, onDeleteTask }: TaskContextualPaletteProps) => {
   const TaskContextualPalette: React.FC<GanttTaskContextualPaletteProps> = ({ selectedTask, onClosePalette }) => {
-    const classes = useContextualPaletteStyle();
+    const { classes } = useContextualPaletteStyle();
 
     const handleCreateTask = (task: Task) => {
       onClosePalette();
@@ -95,7 +95,7 @@ export const getTaskDependencyContextualPalette = ({
     onDeleteTaskDependency(taskFrom.id, taskTo.id);
   };
 
-  const classes = useContextualPaletteStyle();
+  const { classes } = useContextualPaletteStyle();
 
   const DependencyContextualPalette: React.FC<GanttTaskDependencyContextualPaletteProps> = ({
     taskFrom,

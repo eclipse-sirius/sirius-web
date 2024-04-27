@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import { FilterList } from '@material-ui/icons';
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@mui/icons-material/Close';
+import FilterList from '@mui/icons-material/FilterList';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
 import { FilterBarProps, FilterBarState } from './FilterBar.types';
 
-const useFilterBarStyles = makeStyles((theme: Theme) => ({
+const useFilterBarStyles = makeStyles()((theme: Theme) => ({
   filterbar: {
     display: 'flex',
     flexDirection: 'row',
@@ -34,7 +35,7 @@ const useFilterBarStyles = makeStyles((theme: Theme) => ({
   },
 }));
 export const FilterBar = ({ onTextChange, onFilterButtonClick, onClose }: FilterBarProps) => {
-  const classes = useFilterBarStyles();
+  const { classes } = useFilterBarStyles();
 
   const initialState: FilterBarState = {
     filterEnabled: false,

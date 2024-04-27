@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Theme, useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@mui/material/styles';
 import React, { memo } from 'react';
 import { ConnectionLineComponentProps, getSmoothStepPath } from 'reactflow';
 

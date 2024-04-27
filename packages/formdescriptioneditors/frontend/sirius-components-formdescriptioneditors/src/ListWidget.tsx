@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,42 +12,44 @@
  *******************************************************************************/
 
 import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { getTextDecorationLineValue, ListStyleProps } from '@eclipse-sirius/sirius-components-forms';
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
-import DeleteIcon from '@material-ui/icons/Delete';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
-import ImageIcon from '@material-ui/icons/Image';
+import { ListStyleProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
+import DeleteIcon from '@mui/icons-material/Delete';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import ImageIcon from '@mui/icons-material/Image';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { ListWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
-  style: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-  },
-  icon: {
-    width: '16px',
-    height: '16px',
-    marginRight: theme.spacing(2),
-  },
-  selected: {
-    color: theme.palette.primary.main,
-  },
-  propertySectionLabel: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-}));
+const useStyles = makeStyles<ListStyleProps>()(
+  (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
+    style: {
+      color: color ? getCSSColor(color, theme) : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+    },
+    icon: {
+      width: '16px',
+      height: '16px',
+      marginRight: theme.spacing(2),
+    },
+    selected: {
+      color: theme.palette.primary.main,
+    },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+  })
+);
 
 export const ListWidget = ({ widget }: ListWidgetProps) => {
   const props: ListStyleProps = {
@@ -58,7 +60,7 @@ export const ListWidget = ({ widget }: ListWidgetProps) => {
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
 
   const [selected, setSelected] = useState<Boolean>(false);
   const { selection } = useSelection();

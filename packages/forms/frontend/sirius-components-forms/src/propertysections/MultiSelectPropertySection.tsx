@@ -12,15 +12,15 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { IconOverlay, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLMultiSelect } from '../form/FormEventFragments.types';
 import {
@@ -33,21 +33,23 @@ import {
 import { PropertySectionLabel } from './PropertySectionLabel';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
-const useStyle = makeStyles<Theme, MultiSelectStyleProps>((theme) => ({
-  style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : null),
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-    paddingTop: theme.spacing(0.5),
-    paddingBottom: theme.spacing(0.5),
-  },
-  iconRoot: {
-    minWidth: theme.spacing(1),
-  },
-}));
+const useStyle = makeStyles<MultiSelectStyleProps>()(
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough }) => ({
+    style: {
+      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      paddingTop: theme.spacing(0.5),
+      paddingBottom: theme.spacing(0.5),
+    },
+    iconRoot: {
+      minWidth: theme.spacing(1),
+    },
+  })
+);
 
 export const editMultiSelectMutation = gql`
   mutation editMultiSelect($input: EditMultiSelectInput!) {
@@ -90,7 +92,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useStyle(props);
+  const { classes } = useStyle(props);
 
   const [editMultiSelect, { loading, error, data }] =
     useMutation<GQLEditMultiSelectMutationData>(editMultiSelectMutation);

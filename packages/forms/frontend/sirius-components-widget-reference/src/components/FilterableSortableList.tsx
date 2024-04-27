@@ -12,13 +12,14 @@
  *******************************************************************************/
 import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import { splitText } from '@eclipse-sirius/sirius-components-trees';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import DragHandleIcon from '@material-ui/icons/DragHandle';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import React, { useState } from 'react';
 import {
   FilterableSortableListProps,
@@ -27,7 +28,7 @@ import {
 } from './FilterableSortableList.types';
 import { ModelBrowserFilterBar } from './ModelBrowserFilterBar';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   selectable: {
     cursor: 'pointer',
     '&:hover': {
@@ -58,14 +59,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'none',
   },
 }));
-const useLabelStyles = makeStyles((theme: Theme) => ({
+const useLabelStyles = makeStyles()((theme: Theme) => ({
   highlight: {
     backgroundColor: theme.palette.navigation.leftBackground,
   },
 }));
 
 const HighlightedLabel = ({ label, textToHighlight }: HighlightedLabelProps) => {
-  const classes = useLabelStyles();
+  const { classes } = useLabelStyles();
   let itemLabel: JSX.Element;
   const splitLabelWithTextToHighlight: string[] = splitText(label, textToHighlight);
   if (
@@ -107,7 +108,7 @@ export const FilterableSortableList = ({
   selectedItems,
   moveElement,
 }: FilterableSortableListProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [state, setState] = useState<FilterableSortableListState>({
     filterBarText: '',

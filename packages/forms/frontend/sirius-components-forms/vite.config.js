@@ -21,6 +21,7 @@ export default defineConfig(() => {
         reporter: ['text', 'html'],
       },
       setupFiles: ['vitestSetup.js'],
+      snapshotSerializers: ['./vitestSerializer.ts'],
     },
   };
   return configuration;

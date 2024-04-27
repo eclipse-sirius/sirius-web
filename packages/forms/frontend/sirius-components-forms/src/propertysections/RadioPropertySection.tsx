@@ -12,14 +12,14 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
@@ -56,22 +56,24 @@ export const editRadioMutation = gql`
   }
 `;
 
-const useRadioPropertySectionStyles = makeStyles<Theme, RadioStyleProps>((theme) => ({
-  radioGroupRoot: {
-    flexDirection: 'row',
-  },
-  style: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-  },
-  radio: {
-    paddingBottom: theme.spacing(0.5),
-    paddingTop: theme.spacing(0.5),
-  },
-}));
+const useRadioPropertySectionStyles = makeStyles<RadioStyleProps>()(
+  (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
+    radioGroupRoot: {
+      flexDirection: 'row',
+    },
+    style: {
+      color: color ? getCSSColor(color, theme) : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+    },
+    radio: {
+      paddingBottom: theme.spacing(0.5),
+      paddingTop: theme.spacing(0.5),
+    },
+  })
+);
 
 const isErrorPayload = (payload: GQLEditRadioPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -92,7 +94,7 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useRadioPropertySectionStyles(props);
+  const { classes } = useRadioPropertySectionStyles(props);
 
   const [editRadio, { loading, error, data }] = useMutation<GQLEditRadioMutationData>(editRadioMutation);
 

@@ -12,17 +12,17 @@
  *******************************************************************************/
 
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
-import { TreeItem } from '@material-ui/lab';
-import TreeView from '@material-ui/lab/TreeView';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import Typography from '@mui/material/Typography';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { TreeWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles<Theme>((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   selected: {
     color: theme.palette.primary.main,
   },
@@ -34,7 +34,7 @@ const useStyles = makeStyles<Theme>((theme) => ({
 }));
 
 export const TreeWidget = ({ widget }: TreeWidgetProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [selected, setSelected] = useState<Boolean>(false);
   const { selection } = useSelection();
@@ -62,19 +62,18 @@ export const TreeWidget = ({ widget }: TreeWidgetProps) => {
         </div>
       </div>
       <div>
-        <TreeView
+        <SimpleTreeView
           aria-label="Model browser"
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpandIcon={<ChevronRightIcon />}
-          expanded={['5']}>
-          <TreeItem nodeId="1" label="Item1">
-            <TreeItem nodeId="2" label="Item1.1" />
+          slots={{ collapseIcon: ExpandMoreIcon, expandIcon: ChevronRightIcon }}
+          expandedItems={['5']}>
+          <TreeItem itemId="1" label="Item1">
+            <TreeItem itemId="2" label="Item1.1" />
           </TreeItem>
-          <TreeItem nodeId="5" label="Item2">
-            <TreeItem nodeId="10" label="Item2.1" />
-            <TreeItem nodeId="6" label="Item2.2"></TreeItem>
+          <TreeItem itemId="5" label="Item2">
+            <TreeItem itemId="10" label="Item2.1" />
+            <TreeItem itemId="6" label="Item2.2"></TreeItem>
           </TreeItem>
-        </TreeView>
+        </SimpleTreeView>
       </div>
     </>
   );

@@ -18,8 +18,8 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams';
 import { PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { Theme, ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { Theme, ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastProvider } from '../../src/toast/ToastProvider';

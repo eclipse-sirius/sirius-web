@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 import React from 'react';
 
-declare module '@material-ui/core/styles' {
+declare module '@mui/material/styles' {
   export interface Palette {
     navigation: {
       leftBackground: React.CSSProperties['color'];
@@ -26,7 +26,7 @@ declare module '@material-ui/core/styles' {
   }
 }
 
-declare module '@material-ui/core/styles/createPalette' {
+declare module '@mui/material/styles/createPalette' {
   export interface Palette {
     navigation: {
       leftBackground: React.CSSProperties['color'];

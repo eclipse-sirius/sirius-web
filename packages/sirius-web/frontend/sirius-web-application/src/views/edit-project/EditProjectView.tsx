@@ -33,9 +33,9 @@ import {
   TreeToolBarContextValue,
   TreeToolBarContribution,
 } from '@eclipse-sirius/sirius-components-trees';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
@@ -79,7 +79,7 @@ const getProjectQuery = gql`
   }
 `;
 
-const useEditProjectViewStyles = makeStyles((_) => ({
+const useEditProjectViewStyles = makeStyles()((_) => ({
   editProjectView: {
     display: 'grid',
     gridTemplateRows: 'min-content minmax(0, 1fr)',
@@ -93,7 +93,7 @@ export const EditProjectView = () => {
   const history = useHistory();
   const routeMatch = useRouteMatch();
   const { projectId, representationId } = useParams<EditProjectViewParams>();
-  const classes = useEditProjectViewStyles();
+  const { classes } = useEditProjectViewStyles();
   const [{ value, context }, dispatch] = useMachine<EditProjectViewContext, EditProjectViewEvent>(
     editProjectViewMachine
   );

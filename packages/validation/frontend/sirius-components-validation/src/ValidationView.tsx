@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo and others.
+ * Copyright (c) 2022, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,13 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { Toast, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Divider from '@material-ui/core/Divider';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
 import { GQLValidationEventSubscription, GQLValidationEventVariables } from './ValidationView.types';
@@ -52,7 +52,7 @@ const validationEventSubscription = gql`
   }
 `;
 
-const useValidationViewStyle = makeStyles((theme) => ({
+const useValidationViewStyle = makeStyles()((theme) => ({
   root: {
     padding: '8px',
   },
@@ -75,7 +75,7 @@ const useValidationViewStyle = makeStyles((theme) => ({
 }));
 
 export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps) => {
-  const classes = useValidationViewStyle();
+  const { classes } = useValidationViewStyle();
   const [{ value, context }, dispatch] = useMachine<ValidationViewContext, ValidationViewEvent>(validationViewMachine);
   const { toast, validationView } = value as SchemaValue;
   const { id, validation, message } = context;

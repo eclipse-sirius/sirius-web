@@ -25,9 +25,9 @@ import {
   GQLToolbarAction,
   getTextDecorationLineValue,
 } from '@eclipse-sirius/sirius-components-forms';
-import Button from '@material-ui/core/Button';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { deleteToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLDeleteToolbarActionInput,
@@ -42,70 +42,70 @@ import {
 import { ToolbarActionProps, ToolbarActionState } from './ToolbarActionWidget.types';
 import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
-const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
-  style: {
-    minWidth: '32px',
-    lineHeight: 1.25,
-    backgroundColor: ({ backgroundColor }) =>
-      backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-    '&:hover': {
-      backgroundColor: ({ backgroundColor }) =>
-        backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
-      color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-      fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-      fontStyle: ({ italic }) => (italic ? 'italic' : null),
-      fontWeight: ({ bold }) => (bold ? 'bold' : null),
-      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+const useStyles = makeStyles<ButtonStyleProps>()(
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, iconOnly }) => ({
+    style: {
+      minWidth: '32px',
+      lineHeight: 1.25,
+      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
+      color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      '&:hover': {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      },
     },
-  },
-  selected: {
-    minWidth: '32px',
-    lineHeight: 1.25,
-    backgroundColor: theme.palette.secondary.light,
-    color: 'white',
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.main,
+    selected: {
+      minWidth: '32px',
+      lineHeight: 1.25,
+      backgroundColor: theme.palette.secondary.light,
       color: 'white',
-      fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-      fontStyle: ({ italic }) => (italic ? 'italic' : null),
-      fontWeight: ({ bold }) => (bold ? 'bold' : null),
-      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      '&:hover': {
+        backgroundColor: theme.palette.secondary.main,
+        color: 'white',
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      },
     },
-  },
-  toolbarAction: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexGrow: 1,
-  },
-  placeholder: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'whitesmoke',
-    border: '1px solid whitesmoke',
-    borderRadius: '5px',
-    height: 'inherit',
-    width: '20px',
-  },
-  dragOver: {
-    borderWidth: '1px',
-    borderStyle: 'dashed',
-    borderColor: theme.palette.primary.main,
-  },
-  icon: {
-    marginRight: ({ iconOnly }) => (iconOnly ? theme.spacing(0) : theme.spacing(2)),
-  },
-}));
+    toolbarAction: {
+      display: 'flex',
+      flexDirection: 'row',
+      flexGrow: 1,
+    },
+    placeholder: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'whitesmoke',
+      border: '1px solid whitesmoke',
+      borderRadius: '5px',
+      height: 'inherit',
+      width: '20px',
+    },
+    dragOver: {
+      borderWidth: '1px',
+      borderStyle: 'dashed',
+      borderColor: theme.palette.primary.main,
+    },
+    icon: {
+      marginRight: iconOnly ? theme.spacing(0) : theme.spacing(2),
+    },
+  })
+);
 
 const isErrorPayload = (payload: GQLDeleteToolbarActionPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -132,7 +132,7 @@ export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction
     strikeThrough: toolbarAction.style?.strikeThrough ?? null,
     iconOnly: state.buttonLabel ? false : true,
   };
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 

@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import IconButton from '@material-ui/core/IconButton';
-import { styled } from '@material-ui/core/styles';
-import { CSSProperties } from '@material-ui/core/styles/withStyles';
+import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/material/styles';
+import { CSSProperties } from 'react';
 
 export const cardLabelFontStyle: CSSProperties = {
   fontSize: '10px',
