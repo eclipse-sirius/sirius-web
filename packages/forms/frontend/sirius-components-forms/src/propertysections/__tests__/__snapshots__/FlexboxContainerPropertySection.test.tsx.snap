@@ -3,23 +3,23 @@
 exports[`should render the flexbox container with border style 1`] = `
 <div>
   <div
-    class="makeStyles-containerAndLabel-1 makeStyles-containerAndLabel-10"
+    class="css-zl7chm-containerAndLabel"
     data-testid="flexbox-label"
   >
     <div
-      class="makeStyles-propertySectionLabel-7"
+      class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-8 MuiTypography-subtitle2"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
       >
         label
       </h6>
       <div
-        class="makeStyles-decorators-9"
+        class="css-vrp56w-decorators"
       />
     </div>
     <div
-      class="makeStyles-container-2 makeStyles-container-11"
+      class="css-4r0vbw-container"
     />
   </div>
 </div>
@@ -28,23 +28,23 @@ exports[`should render the flexbox container with border style 1`] = `
 exports[`should render the flexbox container without style 1`] = `
 <div>
   <div
-    class="makeStyles-containerAndLabel-1 makeStyles-containerAndLabel-4"
+    class="css-ftdefu-containerAndLabel"
     data-testid="flexbox-label"
   >
     <div
-      class="makeStyles-propertySectionLabel-7"
+      class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-8 MuiTypography-subtitle2"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
       >
         label
       </h6>
       <div
-        class="makeStyles-decorators-9"
+        class="css-vrp56w-decorators"
       />
     </div>
     <div
-      class="makeStyles-container-2 makeStyles-container-5"
+      class="css-4r0vbw-container"
     />
   </div>
 </div>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,24 +12,24 @@
  *******************************************************************************/
 
 import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import { BrowseModalProps } from './BrowseModal.types';
 
-const useBrowserModalStyles = makeStyles((_) => ({
+const useBrowserModalStyles = makeStyles()((_) => ({
   content: {
     height: 400,
   },
 }));
 
 export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalProps) => {
-  const styles = useBrowserModalStyles();
+  const { classes: styles } = useBrowserModalStyles();
   const [browserSelection, setBrowserSelection] = useState<Selection>({ entries: widget.referenceValues });
 
   return (

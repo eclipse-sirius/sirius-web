@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,45 +12,45 @@
  *******************************************************************************/
 import { ServerContext, ServerContextValue, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { ButtonStyleProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { ButtonWidgetState } from './ButtonWidget.types';
 import { ButtonWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
-  style: {
-    backgroundColor: ({ backgroundColor }) =>
-      backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-    '&:hover': {
-      backgroundColor: ({ backgroundColor }) =>
-        backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
-      color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-      fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-      fontStyle: ({ italic }) => (italic ? 'italic' : null),
-      fontWeight: ({ bold }) => (bold ? 'bold' : null),
-      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+const useStyles = makeStyles<ButtonStyleProps>()(
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, iconOnly }) => ({
+    style: {
+      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
+      color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      '&:hover': {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      },
     },
-  },
-  icon: {
-    marginRight: ({ iconOnly }) => (iconOnly ? theme.spacing(0) : theme.spacing(2)),
-  },
-  selected: {
-    color: theme.palette.primary.main,
-  },
-  propertySectionLabel: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-}));
+    icon: {
+      marginRight: iconOnly ? theme.spacing(0) : theme.spacing(2),
+    },
+    selected: {
+      color: theme.palette.primary.main,
+    },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+  })
+);
 
 export const ButtonWidget = ({ widget }: ButtonWidgetProps) => {
   const initialState: ButtonWidgetState = {
@@ -71,7 +71,7 @@ export const ButtonWidget = ({ widget }: ButtonWidgetProps) => {
     strikeThrough: widget.style?.strikeThrough ?? null,
     iconOnly: state.buttonLabel ? false : true,
   };
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { selection } = useSelection();

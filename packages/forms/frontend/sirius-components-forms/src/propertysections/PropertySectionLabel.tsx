@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ComponentExtension, useComponents } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { HelpTooltip } from './HelpTooltip';
 import { PropertySectionLabelDecoratorProps, PropertySectionLabelProps } from './PropertySectionLabel.types';
 import { propertySectionLabelDecoratorExtensionPoint } from './PropertySectionLabelExtensionPoints';
 
-const usePropertySectionLabelStyles = makeStyles((theme) => ({
+const usePropertySectionLabelStyles = makeStyles()((theme) => ({
   propertySectionLabel: {
     display: 'flex',
     flexDirection: 'row',
@@ -36,7 +36,7 @@ const usePropertySectionLabelStyles = makeStyles((theme) => ({
 }));
 
 export const PropertySectionLabel = ({ editingContextId, formId, widget }: PropertySectionLabelProps) => {
-  const classes = usePropertySectionLabelStyles();
+  const { classes } = usePropertySectionLabelStyles();
 
   const propertySectionPanelDecorators: ComponentExtension<PropertySectionLabelDecoratorProps>[] = useComponents(
     propertySectionLabelDecoratorExtensionPoint

@@ -12,13 +12,13 @@
  *******************************************************************************/
 
 import { useCurrentProject } from '@eclipse-sirius/sirius-web-application';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import { memo } from 'react';
 import { Panel, ReactFlowState, useStore } from 'reactflow';
+import { makeStyles } from 'tss-react/mui';
 
-const usePapayaDiagramLegendPanelStyles = makeStyles((theme) => ({
+const usePapayaDiagramLegendPanelStyles = makeStyles()((theme) => ({
   papayaDiagramLegendPanel: {
     display: 'flex',
     flexDirection: 'column',
@@ -31,7 +31,7 @@ const nodesLengthSelector = (state: ReactFlowState) => Array.from(state.nodeInte
 const edgesLengthSelector = (state: ReactFlowState) => Array.from(state.edges.values()).length || 0;
 
 export const PapayaDiagramLegendPanel = memo(() => {
-  const classes = usePapayaDiagramLegendPanelStyles();
+  const { classes } = usePapayaDiagramLegendPanelStyles();
 
   const nodesLength = useStore(nodesLengthSelector);
   const edgesLength = useStore(edgesLengthSelector);

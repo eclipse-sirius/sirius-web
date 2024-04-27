@@ -10,21 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
-import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import EventIcon from '@material-ui/icons/Event';
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
-import ImageIcon from '@material-ui/icons/Image';
-import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
-import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
-import LinkIcon from '@material-ui/icons/Link';
-import PieChartIcon from '@material-ui/icons/PieChart';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import TextFormatIcon from '@material-ui/icons/TextFormat';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import EventIcon from '@mui/icons-material/Event';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import ImageIcon from '@mui/icons-material/Image';
+import LabelOutlinedIcon from '@mui/icons-material/LabelOutlined';
+import LinearScaleOutlinedIcon from '@mui/icons-material/LinearScaleOutlined';
+import LinkIcon from '@mui/icons-material/Link';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import TextFieldsIcon from '@mui/icons-material/TextFields';
+import TextFormatIcon from '@mui/icons-material/TextFormat';
+import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import { WidgetDescriptor } from './FormDescriptionEditorRepresentation.types';
 import { Button } from './icons/Button';
 

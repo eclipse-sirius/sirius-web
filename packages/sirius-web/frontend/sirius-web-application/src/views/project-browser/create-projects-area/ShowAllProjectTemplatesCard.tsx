@@ -11,19 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { ProjectTemplatesModal } from './ProjectTemplatesModal';
 import { ShowAllProjectTemplatesCardState } from './ShowAllProjectTemplatesCard.types';
 
-const useShowAllProjectTemplatesCardStyles = makeStyles((theme) => ({
+const useShowAllProjectTemplatesCardStyles = makeStyles()((theme) => ({
   projectCard: {
     width: theme.spacing(30),
     height: theme.spacing(18),
@@ -64,7 +64,7 @@ const useShowAllProjectTemplatesCardStyles = makeStyles((theme) => ({
 }));
 
 export const ShowAllProjectTemplatesCard = () => {
-  const classes = useShowAllProjectTemplatesCardStyles();
+  const { classes } = useShowAllProjectTemplatesCardStyles();
   const [state, setState] = useState<ShowAllProjectTemplatesCardState>({
     modalDisplayed: null,
   });

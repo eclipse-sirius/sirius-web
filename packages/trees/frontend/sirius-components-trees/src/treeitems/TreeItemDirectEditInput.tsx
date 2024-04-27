@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from 'react';
 import {
   GQLErrorPayload,

@@ -33,7 +33,7 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
     cy.getByTestId('delete').click();
     cy.getByTestId('Entity1 Node-more').click();
     cy.getByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription')
       .get('[data-value="Ellipse Node Style Description"]')
@@ -41,11 +41,11 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
       .click();
     cy.getByTestId('create-object').click();
 
-    cy.get('[title="Back to the homepage"]').click();
+    cy.get('[aria-label="Back to the homepage"]').click();
 
     // Create the domain instance
     cy.url().should('eq', Cypress.config().baseUrl + '/projects');
-    cy.get('[title="Blank Studio"]').should('be.visible');
+    cy.get('[aria-label="Blank Studio"]').should('be.visible');
     cy.getByTestId('create').click();
 
     cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
@@ -56,7 +56,7 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
     cy.getByTestId('empty').click();
     cy.getByTestId('Others...-more').click();
     cy.getByTestId('new-object').click();
-    cy.getByTestId('domain').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('domain').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('domain').find('div').first().should('not.have.attr', 'aria-disabled');
     cy.getByTestId('domain').click();
     cy.getByTestId('domain').get('[data-value^="domain://"]').should('exist').click();
@@ -64,7 +64,10 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
 
     cy.getByTestId('Root-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
-    cy.getByTestId('representationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('representationDescription')
+      .children('[role="combobox"]')
+      .invoke('text')
+      .should('have.length.gt', 1);
     cy.getByTestId('representationDescription').click();
     cy.get('[data-testid$=" Diagram Description"]').should('exist').click();
     cy.getByTestId('create-representation').click();
@@ -72,7 +75,7 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
 
     cy.getByTestId('Root-more').click();
     cy.getByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription').get('[data-value="Entity1s Entity1"]').should('exist').click();
     cy.getByTestId('create-object').click();

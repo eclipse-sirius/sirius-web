@@ -13,16 +13,17 @@
 import { gql, useLazyQuery } from '@apollo/client';
 import { IconOverlay, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
-import Chip from '@material-ui/core/Chip';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useEffect, useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Autocomplete from '@mui/material/Autocomplete';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import { useTheme } from '@mui/material/styles';
+import { HTMLAttributes, useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { GQLReferenceValue, GQLReferenceWidgetStyle } from '../ReferenceWidgetFragment.types';
 import {
   GQLFormDescription,
@@ -33,27 +34,28 @@ import {
   ValuedReferenceAutocompleteState,
 } from './ValuedReferenceAutocomplete.types';
 
-const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
-  optionLabel: {
-    paddingLeft: theme.spacing(0.5),
-  },
-  referenceValueStyle: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : undefined),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : undefined),
-    fontStyle: ({ italic }) => (italic ? 'italic' : 'unset'),
-    fontWeight: ({ bold }) => (bold ? 'bold' : 'unset'),
-    textDecorationLine: ({ underline, strikeThrough }) =>
-      getTextDecorationLineValue(underline ?? null, strikeThrough ?? null),
-  },
-  endAdornmentButton: {
-    position: 'absolute',
-    display: 'flex',
-    right: theme.spacing(2.5),
-    '& > *': {
-      padding: 0,
+const useStyles = makeStyles<GQLReferenceWidgetStyle>()(
+  (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
+    optionLabel: {
+      paddingLeft: theme.spacing(0.5),
     },
-  },
-}));
+    referenceValueStyle: {
+      color: color ? getCSSColor(color, theme) : undefined,
+      fontSize: fontSize ? fontSize : undefined,
+      fontStyle: italic ? 'italic' : 'unset',
+      fontWeight: bold ? 'bold' : 'unset',
+      textDecorationLine: getTextDecorationLineValue(underline ?? null, strikeThrough ?? null),
+    },
+    endAdornmentButton: {
+      position: 'absolute',
+      display: 'flex',
+      right: theme.spacing(2.5),
+      '& > *': {
+        padding: 0,
+      },
+    },
+  })
+);
 
 const getReferenceValueOptionsQuery = gql`
   query getReferenceValueOptions($editingContextId: ID!, $representationId: ID!, $referenceWidgetId: ID!) {
@@ -104,7 +106,7 @@ export const ValuedReferenceAutocomplete = ({
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
   const theme = useTheme();
 
   const { addErrorMessage } = useMultiToast();
@@ -173,7 +175,7 @@ export const ValuedReferenceAutocomplete = ({
   };
 
   const handleAutocompleteChange = (_event, updatedValues: GQLReferenceValue[], reason: string) => {
-    if (reason === 'remove-option') {
+    if (reason === 'removeOption') {
       handleRemoveReferenceValue(updatedValues);
     } else {
       const newValueIds = getOnlyNewValueIds(updatedValues);
@@ -227,23 +229,23 @@ export const ValuedReferenceAutocomplete = ({
       }
       loading={loading}
       options={state.options || []}
+      getOptionKey={(option: GQLReferenceValue) => option.id}
       getOptionLabel={(option: GQLReferenceValue) => option.label}
       value={widget.referenceValues}
-      getOptionSelected={(option, value) => option.id === value.id}
+      isOptionEqualToValue={(option, value) => option.id === value.id}
       onChange={handleAutocompleteChange}
-      renderOption={(option: GQLReferenceValue) => (
-        <>
+      renderOption={(props: HTMLAttributes<HTMLLIElement>, option: GQLReferenceValue) => (
+        <li {...props}>
           <IconOverlay iconURL={option.iconURL} alt={option.kind} />
           <span className={classes.optionLabel} data-testid={`option-${option.label}`}>
             {option.label}
           </span>
-        </>
+        </li>
       )}
       disableClearable
       renderTags={(value, getTagProps) =>
         value.map((option, index) => (
           <Chip
-            key={index}
             classes={{ label: classes.referenceValueStyle }}
             label={option.label}
             data-testid={`reference-value-${option.label}`}

@@ -22,7 +22,9 @@ import {
   GQLButton,
   GQLChartWidget,
   GQLCheckbox,
+  GQLContainer,
   GQLDateTime,
+  GQLFlexDirection,
   GQLFlexboxContainer,
   GQLGroup,
   GQLImage,
@@ -41,9 +43,9 @@ import {
   GQLWidget,
   widgetContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-forms';
-import { GQLContainer } from '@eclipse-sirius/sirius-components-forms/src';
-import Tooltip from '@material-ui/core/Tooltip';
-import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
+import Tooltip from '@mui/material/Tooltip';
+import { Theme } from '@mui/material/styles';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
@@ -81,30 +83,32 @@ import { SplitButtonWidget } from './SplitButtonWidget';
 import { TextAreaWidget } from './TextAreaWidget';
 import { TextfieldWidget } from './TextfieldWidget';
 import { TreeWidget } from './TreeWidget';
-import { WidgetEntryProps, WidgetEntryState, WidgetEntryStyleProps } from './WidgetEntry.types';
+import { WidgetEntryProps, WidgetEntryState } from './WidgetEntry.types';
 import { isFlexboxContainer, isGroup, isKind } from './WidgetOperations';
 import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
-const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>((theme) => ({
+const useWidgetEntryStyles = makeStyles<
+  { flexDirection: GQLFlexDirection; flexGrow: number; kind: any },
+  'widgetElement'
+>()((theme, { flexDirection, flexGrow, kind: _kind }, classes) => ({
   widget: {
     display: 'flex',
-    flexDirection: ({ flexDirection }) => flexDirection,
-    flexGrow: ({ flexGrow }) => flexGrow,
+    flexDirection: flexDirection,
+    flexGrow: flexGrow,
   },
   widgetElement: {
-    flexGrow: ({ flexGrow }) => flexGrow,
+    flexGrow: flexGrow,
     border: '1px solid transparent',
     '&:hover': {
       borderColor: theme.palette.primary.main,
     },
-    '&:has($widgetElement:hover)': {
+    [`&:has(.${classes.widgetElement}:hover)`]: {
       borderStyle: 'dashed',
     },
   },
   placeholder: {
-    height: ({ flexDirection }) =>
-      flexDirection === 'column' || flexDirection === 'column-reverse' ? '10px' : 'inherit',
-    width: ({ flexDirection }) => (flexDirection === 'row' || flexDirection === 'row-reverse' ? '10px' : 'inherit'),
+    height: flexDirection === 'column' || flexDirection === 'column-reverse' ? '10px' : 'inherit',
+    width: flexDirection === 'row' || flexDirection === 'row-reverse' ? '10px' : 'inherit',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -120,13 +124,13 @@ const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>((theme) =>
   },
 }));
 
-const WidgetTooltip = withStyles((theme: Theme) => ({
+const WidgetTooltip = withStyles(Tooltip, (theme: Theme) => ({
   tooltip: {
     backgroundColor: theme.palette.primary.main,
     margin: '0px',
     borderRadius: '0px',
   },
-}))(Tooltip);
+}));
 
 const isErrorPayload = (
   payload: GQLAddWidgetPayload | GQLDeleteWidgetPayload | GQLMoveWidgetPayload
@@ -135,7 +139,7 @@ const isErrorPayload = (
 export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }: WidgetEntryProps) => {
   const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
   const noop = () => {};
-  const classes = useWidgetEntryStyles({ flexDirection, flexGrow, kind: widget.__typename });
+  const { classes } = useWidgetEntryStyles({ flexDirection, flexGrow, kind: widget.__typename });
 
   const initialState: WidgetEntryState = { message: null };
   const [state, setState] = useState<WidgetEntryState>(initialState);

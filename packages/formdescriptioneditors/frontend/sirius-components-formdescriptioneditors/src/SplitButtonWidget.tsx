@@ -19,18 +19,19 @@ import {
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import { GQLButtonStyle, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import Typography from '@mui/material/Typography';
+import { Theme, useTheme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { addWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -70,7 +71,7 @@ const imageStyle = (theme: Theme, iconOnly: boolean): React.CSSProperties => {
   };
 };
 
-const useStyles = makeStyles<Theme>((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   bottomDropArea: {
     display: 'flex',
     flexDirection: 'column',
@@ -200,7 +201,7 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
     }
   }, [selection, widget]);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const handleMenuItemClick = (_event, index) => {
     setState((prevState) => ({ ...prevState, open: false, selectedIndex: index }));

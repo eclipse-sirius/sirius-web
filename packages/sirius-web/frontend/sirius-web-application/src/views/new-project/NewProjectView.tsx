@@ -12,12 +12,12 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { Toast, useComponent } from '@eclipse-sirius/sirius-components-core';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -52,7 +52,7 @@ const createProjectMutation = gql`
   }
 `;
 
-const useNewProjectViewStyles = makeStyles((theme) => ({
+const useNewProjectViewStyles = makeStyles()((theme) => ({
   newProjectViewContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -94,7 +94,7 @@ const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPa
   payload.__typename === 'ErrorPayload';
 
 export const NewProjectView = () => {
-  const classes = useNewProjectViewStyles();
+  const { classes } = useNewProjectViewStyles();
   const [{ value, context }, dispatch] = useMachine<NewProjectViewContext, NewProjectEvent>(newProjectViewMachine);
   const { newProjectView, toast } = value as SchemaValue;
   const { name, nameMessage, nameIsInvalid, message, newProjectId } = context;

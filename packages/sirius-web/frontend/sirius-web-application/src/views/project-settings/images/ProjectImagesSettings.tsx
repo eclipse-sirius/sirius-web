@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ImageTable } from './ImageTable';
@@ -22,7 +22,7 @@ import { UploadImageModal } from './upload-image/UploadImageModal';
 import { useProjectImages } from './useProjectImages';
 import { GQLImageMetadata } from './useProjectImages.types';
 
-const useProjectImagesSettingsStyles = makeStyles((theme) => ({
+const useProjectImagesSettingsStyles = makeStyles()((theme) => ({
   imageSettingsViewContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -48,7 +48,7 @@ export const ProjectImagesSettings = () => {
     modal: null,
   });
 
-  const classes = useProjectImagesSettingsStyles();
+  const { classes } = useProjectImagesSettingsStyles();
   const { projectId } = useParams<ProjectImagesSettingsParams>();
 
   const { data, loading, refreshImages } = useProjectImages(projectId);

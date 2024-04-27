@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, expect, test } from 'vitest';
 import { theme } from '../../theme';
@@ -31,12 +31,12 @@ const MockView3 = () => {
   return <div id="mock-view-3"></div>;
 };
 
-const hasClass = (element: HTMLElement, classPrefix: string) => {
-  return Array.from(element.classList).some((className) => className.startsWith(classPrefix));
+const hasClass = (element: HTMLElement, classSuffix: string) => {
+  return Array.from(element.classList).some((className) => className.endsWith(classSuffix));
 };
 
 const isIconHighlighted = (title: string) => {
-  return hasClass(screen.getByTestId('viewselector-' + title), 'makeStyles-viewSelectorIconSelectedLeft');
+  return hasClass(screen.getByTestId('viewselector-' + title), '-viewSelectorIconSelectedLeft');
 };
 
 test('should render an empty site with no selector or view', () => {

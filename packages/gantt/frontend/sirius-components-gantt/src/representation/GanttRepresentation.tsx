@@ -13,9 +13,9 @@
 import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
 import { useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { useGanttMutations } from '../graphql/mutation/useGanttMutations';
 import {
   GQLErrorPayload,
@@ -28,7 +28,7 @@ import { ganttEventSubscription } from '../graphql/subscription/ganttSubscriptio
 import { getTaskFromGQLTask, updateTask } from '../helper/helper';
 import { Gantt } from './Gantt';
 import { GanttRepresentationState } from './GanttRepresentation.types';
-const useGanttRepresentationStyles = makeStyles((theme) => ({
+const useGanttRepresentationStyles = makeStyles()((theme) => ({
   page: {
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
@@ -62,7 +62,7 @@ const isErrorPayload = (payload: GQLGanttEventPayload): payload is GQLErrorPaylo
  * Connect the Gantt component to the GraphQL API.
  */
 export const GanttRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
-  const classes = useGanttRepresentationStyles();
+  const { classes } = useGanttRepresentationStyles();
 
   const { addErrorMessage, addMessages } = useMultiToast();
 

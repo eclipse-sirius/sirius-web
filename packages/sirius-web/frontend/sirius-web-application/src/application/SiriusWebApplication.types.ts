@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ExtensionRegistry, ExtensionRegistryMergeStrategy } from '@eclipse-sirius/sirius-components-core';
-import { Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
 import { ReactNode } from 'react';
 
 export interface SiriusWebApplicationProps {

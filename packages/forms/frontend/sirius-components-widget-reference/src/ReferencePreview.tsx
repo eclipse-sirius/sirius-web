@@ -13,43 +13,44 @@
 import { IconOverlay, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { GQLWidget, PreviewWidgetProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import { GQLReferenceWidget } from '@eclipse-sirius/sirius-components-widget-reference';
-import Chip from '@material-ui/core/Chip';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Autocomplete from '@mui/material/Autocomplete';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { GQLReferenceWidgetStyle } from './ReferenceWidgetFragment.types';
 
 const isReferenceWidget = (widget: GQLWidget): widget is GQLReferenceWidget => widget.__typename === 'ReferenceWidget';
 
-const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
-  referenceValueStyle: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : undefined),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : undefined),
-    fontStyle: ({ italic }) => (italic ? 'italic' : 'unset'),
-    fontWeight: ({ bold }) => (bold ? 'bold' : 'unset'),
-    textDecorationLine: ({ underline, strikeThrough }) =>
-      getTextDecorationLineValue(underline ?? null, strikeThrough ?? null),
-  },
-  selected: {
-    color: theme.palette.primary.main,
-  },
-  propertySectionLabel: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  propertySection: {
-    overflowX: 'hidden',
-  },
-}));
+const useStyles = makeStyles<GQLReferenceWidgetStyle>()(
+  (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
+    referenceValueStyle: {
+      color: color ? getCSSColor(color, theme) : undefined,
+      fontSize: fontSize ? fontSize : undefined,
+      fontStyle: italic ? 'italic' : 'unset',
+      fontWeight: bold ? 'bold' : 'unset',
+      textDecorationLine: getTextDecorationLineValue(underline ?? null, strikeThrough ?? null),
+    },
+    selected: {
+      color: theme.palette.primary.main,
+    },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    propertySection: {
+      overflowX: 'hidden',
+    },
+  })
+);
 
 export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
   let style: GQLReferenceWidgetStyle | null = null;
@@ -65,7 +66,7 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
     underline: style?.underline ?? null,
     strikeThrough: style?.strikeThrough ?? null,
   };
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
   const { selection } = useSelection();
@@ -106,7 +107,6 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
         renderTags={(value, getTagProps) =>
           value.map(({ label, iconURL }, index) => (
             <Chip
-              key={index}
               classes={{ label: classes.referenceValueStyle }}
               label={label}
               data-testid={`reference-value-${label}`}
@@ -132,7 +132,7 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
               endAdornment: (
                 <>
                   {params.InputProps.endAdornment}
-                  <InputAdornment position="end" className={classes.endAdornmentButton}>
+                  <InputAdornment position="end">
                     <IconButton
                       aria-label="edit"
                       size="small"

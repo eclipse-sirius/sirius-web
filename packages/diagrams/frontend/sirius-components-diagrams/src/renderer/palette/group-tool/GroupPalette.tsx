@@ -11,20 +11,20 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import { makeStyles } from '@material-ui/core/styles';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import PhotoSizeSelectSmallIcon from '@material-ui/icons/PhotoSizeSelectSmall';
-import TonalityIcon from '@material-ui/icons/Tonality';
-import VerticalAlignCenterIcon from '@material-ui/icons/VerticalAlignCenter';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
-import ViewModuleIcon from '@material-ui/icons/ViewModule';
-import ViewStreamIcon from '@material-ui/icons/ViewStream';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import { memo, useCallback, useRef, useState, Fragment } from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PhotoSizeSelectSmallIcon from '@mui/icons-material/PhotoSizeSelectSmall';
+import TonalityIcon from '@mui/icons-material/Tonality';
+import VerticalAlignCenterIcon from '@mui/icons-material/VerticalAlignCenter';
+import ViewColumnIcon from '@mui/icons-material/ViewColumn';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ViewStreamIcon from '@mui/icons-material/ViewStream';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import { Fragment, memo, useCallback, useRef, useState } from 'react';
 import { Node, OnSelectionChangeFunc, useOnSelectionChange, useReactFlow } from 'reactflow';
+import { makeStyles } from 'tss-react/mui';
 import { AlignHorizontalCenterIcon } from '../../../icons/AlignHorizontalCenterIcon';
 import { AlignHorizontalLeftIcon } from '../../../icons/AlignHorizontalLeftIcon';
 import { AlignHorizontalRightIcon } from '../../../icons/AlignHorizontalRightIcon';
@@ -44,7 +44,7 @@ import { PalettePortal } from '../PalettePortal';
 import { PaletteTool } from '../PaletteTool';
 import { GroupPaletteProps, GroupPaletteSectionTool, GroupPaletteState } from './GroupPalette.types';
 
-const usePaletteStyle = makeStyles((theme) => ({
+const usePaletteStyle = makeStyles()((theme) => ({
   palette: {
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: '2px',
@@ -150,7 +150,7 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
     onChange,
   });
 
-  const classes = usePaletteStyle();
+  const { classes } = usePaletteStyle();
   const anchorRef = useRef<SVGSVGElement | null>(null);
 
   const distributeElementTools: GroupPaletteSectionTool[][] = state.isMinimalPalette
@@ -308,7 +308,6 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
           open={state.isDistributeElementToolSectionExpand}
           anchorEl={anchorRef.current}
           placement="bottom-start"
-          transition
           disablePortal
           style={{ zIndex: 9999 }}>
           <Paper className={classes.toolList} elevation={2}>

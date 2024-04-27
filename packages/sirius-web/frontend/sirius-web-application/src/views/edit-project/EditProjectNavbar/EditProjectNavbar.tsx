@@ -12,18 +12,19 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { ServerContext, ServerContextValue, Toast, useComponent } from '@eclipse-sirius/sirius-components-core';
-import IconButton from '@material-ui/core/IconButton';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
-import { emphasize, makeStyles } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import SettingsIcon from '@material-ui/icons/Settings';
+import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import { emphasize } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect } from 'react';
 import { Redirect, Link as RouterLink } from 'react-router-dom';
@@ -62,7 +63,7 @@ const projectEventSubscription = gql`
   }
 `;
 
-const useEditProjectViewNavbarStyles = makeStyles((theme) => ({
+const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
   center: {
     display: 'flex',
     flexDirection: 'column',
@@ -89,7 +90,7 @@ const useEditProjectViewNavbarStyles = makeStyles((theme) => ({
 
 export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
   const { project } = useCurrentProject();
-  const classes = useEditProjectViewNavbarStyles();
+  const { classes } = useEditProjectViewNavbarStyles();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [{ value, context }, dispatch] = useMachine<EditProjectNavbarContext, EditProjectNavbarEvent>(

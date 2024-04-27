@@ -12,22 +12,22 @@
  *******************************************************************************/
 
 import { ComponentExtension, ShareRepresentationModal, useComponents } from '@eclipse-sirius/sirius-components-core';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
-import Tooltip from '@material-ui/core/Tooltip';
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
-import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
-import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
-import GridOffIcon from '@material-ui/icons/GridOff';
-import GridOnIcon from '@material-ui/icons/GridOn';
-import ImageIcon from '@material-ui/icons/Image';
-import ShareIcon from '@material-ui/icons/Share';
-import TonalityIcon from '@material-ui/icons/Tonality';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import ZoomInIcon from '@material-ui/icons/ZoomIn';
-import ZoomOutIcon from '@material-ui/icons/ZoomOut';
+import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import GridOffIcon from '@mui/icons-material/GridOff';
+import GridOnIcon from '@mui/icons-material/GridOn';
+import ImageIcon from '@mui/icons-material/Image';
+import ShareIcon from '@mui/icons-material/Share';
+import TonalityIcon from '@mui/icons-material/Tonality';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import { memo, useContext, useEffect, useState } from 'react';
 import { Panel, useNodesInitialized, useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -175,60 +175,68 @@ export const DiagramPanel = memo(
               </Tooltip>
             )}
             <Tooltip title="Arrange all elements">
-              <IconButton
-                size="small"
-                aria-label="arrange all elements"
-                onClick={() => {
-                  setState((prevState) => ({
-                    ...prevState,
-                    arrangeAllInProgress: true,
-                  }));
-                  arrangeAll().then(() =>
+              <span>
+                <IconButton
+                  size="small"
+                  aria-label="arrange all elements"
+                  onClick={() => {
                     setState((prevState) => ({
                       ...prevState,
-                      arrangeAllDone: true,
-                      arrangeAllInProgress: false,
-                    }))
-                  );
-                }}
-                data-testid={'arrange-all'}
-                disabled={readOnly}>
-                {state.arrangeAllInProgress ? (
-                  <CircularProgress size="24px" data-testid="arrange-all-circular-loading" />
-                ) : (
-                  <AccountTreeIcon />
-                )}
-              </IconButton>
+                      arrangeAllInProgress: true,
+                    }));
+                    arrangeAll().then(() =>
+                      setState((prevState) => ({
+                        ...prevState,
+                        arrangeAllDone: true,
+                        arrangeAllInProgress: false,
+                      }))
+                    );
+                  }}
+                  data-testid={'arrange-all'}
+                  disabled={readOnly}>
+                  {state.arrangeAllInProgress ? (
+                    <CircularProgress size="24px" data-testid="arrange-all-circular-loading" />
+                  ) : (
+                    <AccountTreeIcon />
+                  )}
+                </IconButton>
+              </span>
             </Tooltip>
             <Tooltip title="Reveal hidden elements">
-              <IconButton
-                size="small"
-                aria-label="reveal hidden elements"
-                onClick={onUnhideAll}
-                data-testid="reveal-hidden-elements"
-                disabled={readOnly}>
-                <VisibilityOffIcon />
-              </IconButton>
+              <span>
+                <IconButton
+                  size="small"
+                  aria-label="reveal hidden elements"
+                  onClick={onUnhideAll}
+                  data-testid="reveal-hidden-elements"
+                  disabled={readOnly}>
+                  <VisibilityOffIcon />
+                </IconButton>
+              </span>
             </Tooltip>
             <Tooltip title="Reveal faded elements">
-              <IconButton
-                size="small"
-                aria-label="reveal faded elements"
-                onClick={onUnfadeAll}
-                data-testid="reveal-faded-elements"
-                disabled={readOnly}>
-                <TonalityIcon />
-              </IconButton>
+              <span>
+                <IconButton
+                  size="small"
+                  aria-label="reveal faded elements"
+                  onClick={onUnfadeAll}
+                  data-testid="reveal-faded-elements"
+                  disabled={readOnly}>
+                  <TonalityIcon />
+                </IconButton>
+              </span>
             </Tooltip>
             <Tooltip title="Unpin all elements">
-              <IconButton
-                size="small"
-                aria-label="unpin all elements"
-                onClick={onUnpinAll}
-                data-testid="unpin-all-elements"
-                disabled={readOnly}>
-                <UnpinIcon />
-              </IconButton>
+              <span>
+                <IconButton
+                  size="small"
+                  aria-label="unpin all elements"
+                  onClick={onUnpinAll}
+                  data-testid="unpin-all-elements"
+                  disabled={readOnly}>
+                  <UnpinIcon />
+                </IconButton>
+              </span>
             </Tooltip>
             {diagramPanelActionComponents.map(({ Component: DiagramPanelActionComponent }, index) => (
               <DiagramPanelActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />

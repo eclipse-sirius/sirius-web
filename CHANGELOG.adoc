@@ -49,12 +49,14 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 ```
 
 * The `String` attribute `org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by the attribute `variables` of type `List<ToolVariable>`
+- https://github.com/eclipse-sirius/sirius-web/issues/3437[#3437] [core] Migrate frontend to MUI 5, if you contributed React componenent that use MUI, you should upgrade them to use MUI 5.
 
 === Dependency update
 
 - [releng] Switch to `maven-checkstyle-plugin` 3.4.0
 - [releng] Switch to Spring Boot 3.3.1
 - [releng] Add a dependency to CycloneDX to compute the software bill of materials during the build
+- https://github.com/eclipse-sirius/sirius-web/issues/3437[#3437] [core] Migrate frontend to MUI 5
 
 === Bug fixes
 

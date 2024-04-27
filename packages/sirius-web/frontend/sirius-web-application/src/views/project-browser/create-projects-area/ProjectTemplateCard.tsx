@@ -12,18 +12,18 @@
  *******************************************************************************/
 
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CircularProgress from '@mui/material/CircularProgress';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { useContext } from 'react';
 import { ProjectTemplateCardProps } from './ProjectTemplateCard.types';
 
-const useProjectTemplateStyles = makeStyles((theme) => ({
+const useProjectTemplateStyles = makeStyles()((theme) => ({
   projectTemplateCard: {
     width: theme.spacing(30),
     height: theme.spacing(18),
@@ -49,7 +49,7 @@ const useProjectTemplateStyles = makeStyles((theme) => ({
 }));
 
 export const ProjectTemplateCard = ({ template, running, disabled, onCreateProject }: ProjectTemplateCardProps) => {
-  const classes = useProjectTemplateStyles();
+  const { classes } = useProjectTemplateStyles();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   return (
     <Button disabled={disabled} onClick={onCreateProject} data-testid={`create-template-${template.label}`}>

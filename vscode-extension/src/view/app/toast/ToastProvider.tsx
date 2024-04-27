@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,9 @@
  *******************************************************************************/
 
 import { ToastContext } from '@eclipse-sirius/sirius-components-core';
-import IconButton from '@material-ui/core/IconButton';
-import { styled } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/material/styles';
 import { MaterialDesignContent, SnackbarProvider, useSnackbar } from 'notistack';
 import React from 'react';
 import { ToastCloseButtonProps, ToastContextInitializerProps, ToastProviderProps } from './ToastProvider.types';

@@ -16,13 +16,13 @@ import {
   representationFactoryExtensionPoint,
   useData,
 } from '@eclipse-sirius/sirius-components-core';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { RepresentationFrameProps } from './RepresentationFrame.types';
 
-const useFrameStyles = makeStyles((theme) => ({
+const useFrameStyles = makeStyles()((theme) => ({
   representationFrame: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -62,9 +62,9 @@ export const RepresentationFrame = ({
   const RepresentationComponent = representationFactories
     .map((representationFactory) => representationFactory(representation))
     .find((component) => component != null);
+  const { classes } = useFrameStyles();
 
   if (RepresentationComponent) {
-    const classes = useFrameStyles();
     const props: RepresentationComponentProps = {
       editingContextId,
       representationId: representation.id,

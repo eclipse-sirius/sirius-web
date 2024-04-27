@@ -57,7 +57,7 @@ export class Explorer {
     this.getTreeItemByLabel(objectTreeItemLabel).find('button').click();
     cy.getByTestId('new-object').click();
 
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription')
       .get(`[data-value="${childCreationDescriptionLabel}"]`)
@@ -112,7 +112,7 @@ export class Explorer {
     this.getTreeItemByLabel(treeItemLabel).trigger('dragstart', { dataTransfer });
   }
 
-  public createNewModel(modelName: string, modelType:string): void {
+  public createNewModel(modelName: string, modelType: string): void {
     cy.getByTestId('new-model').should('exist');
     cy.getByTestId('tree-filter-menu-icon').should('exist'); // trick to avoid error if this menu is not render yet
     cy.getByTestId('new-model').click();

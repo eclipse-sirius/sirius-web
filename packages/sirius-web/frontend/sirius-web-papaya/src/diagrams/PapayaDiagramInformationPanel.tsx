@@ -12,14 +12,14 @@
  *******************************************************************************/
 
 import { useCurrentProject } from '@eclipse-sirius/sirius-web-application';
-import Link from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import { memo } from 'react';
 import { Panel } from 'reactflow';
+import { makeStyles } from 'tss-react/mui';
 
-const usePapayaDiagramInformationPanelStyles = makeStyles((theme) => ({
+const usePapayaDiagramInformationPanelStyles = makeStyles()((theme) => ({
   papayaDiagramInformationPanel: {
     display: 'flex',
     flexDirection: 'column',
@@ -35,7 +35,7 @@ const usePapayaDiagramInformationPanelStyles = makeStyles((theme) => ({
   },
 }));
 export const PapayaDiagramInformationPanel = memo(() => {
-  const classes = usePapayaDiagramInformationPanelStyles();
+  const { classes } = usePapayaDiagramInformationPanelStyles();
 
   const { project } = useCurrentProject();
 

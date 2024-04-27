@@ -10,12 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import IconButton from '@material-ui/core/IconButton';
-import { emphasize, makeStyles } from '@material-ui/core/styles';
-import HelpIcon from '@material-ui/icons/Help';
+import IconButton from '@mui/material/IconButton';
+import { emphasize } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
+import HelpIcon from '@mui/icons-material/Help';
 import { NavigationBarMenuIconProps } from './NavigationBarMenu.types';
 
-const useHelpStyle = makeStyles((theme) => ({
+const useHelpStyle = makeStyles()((theme) => ({
   onDarkBackground: {
     '&:hover': {
       backgroundColor: emphasize(theme.palette.secondary.main, 0.08),
@@ -24,7 +25,7 @@ const useHelpStyle = makeStyles((theme) => ({
 }));
 
 export const Help = ({ onClick }: NavigationBarMenuIconProps) => {
-  const classes = useHelpStyle();
+  const { classes } = useHelpStyle();
   return (
     <IconButton className={classes.onDarkBackground} color="inherit" onClick={onClick}>
       <HelpIcon />

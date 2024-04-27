@@ -11,15 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Box from '@material-ui/core/Box';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { EdgePanelInfosProps } from './EdgePanelInfos.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   list: {
     marginTop: 0,
     marginBottom: 0,
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const EdgePanelInfos = ({ title, edge }: EdgePanelInfosProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   return (
     <Box className={classes.box}>
       <List dense={true} classes={{ root: classes.list }}>

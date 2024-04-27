@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,19 +12,19 @@
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import InputLabel from '@material-ui/core/InputLabel';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import InputLabel from '@mui/material/InputLabel';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import {
   GQLCreateChildMutationData,
   GQLCreateChildPayload,
@@ -84,7 +84,7 @@ const getChildCreationDescriptionsQuery = gql`
   }
 `;
 
-const useNewObjectModalStyles = makeStyles((theme) => ({
+const useNewObjectModalStyles = makeStyles()((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -93,8 +93,10 @@ const useNewObjectModalStyles = makeStyles((theme) => ({
     },
   },
   select: {
-    display: 'flex',
-    alignItems: 'center',
+    '&': {
+      display: 'flex',
+      alignItems: 'center',
+    },
   },
   iconRoot: {
     minWidth: theme.spacing(3),
@@ -107,7 +109,7 @@ const isSuccessPayload = (payload: GQLCreateChildPayload): payload is GQLCreateC
   payload.__typename === 'CreateChildSuccessPayload';
 
 export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewObjectModalProps) => {
-  const classes = useNewObjectModalStyles();
+  const { classes } = useNewObjectModalStyles();
   const { addErrorMessage, addMessages } = useMultiToast();
   const [{ value, context }, dispatch] = useMachine<NewObjectModalContext, NewObjectModalEvent>(newObjectModalMachine);
   const { newObjectModal } = value as SchemaValue;

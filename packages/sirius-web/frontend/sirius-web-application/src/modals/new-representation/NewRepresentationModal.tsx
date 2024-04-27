@@ -13,16 +13,16 @@
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Toast } from '@eclipse-sirius/sirius-components-core';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import {
@@ -89,7 +89,7 @@ const getRepresentationDescriptionsQuery = gql`
   }
 `;
 
-const useNewRepresentationModalStyles = makeStyles((theme) => ({
+const useNewRepresentationModalStyles = makeStyles()((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -108,7 +108,7 @@ export const NewRepresentationModal = ({
   onRepresentationCreated,
   onClose,
 }: NewRepresentationModalProps) => {
-  const classes = useNewRepresentationModalStyles();
+  const { classes } = useNewRepresentationModalStyles();
   const [{ value, context }, dispatch] = useMachine<NewRepresentationModalContext, NewRepresentationModalEvent>(
     newRepresentationModalMachine
   );

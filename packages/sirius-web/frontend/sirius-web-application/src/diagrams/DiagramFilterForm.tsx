@@ -13,11 +13,11 @@
 
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import { FormBasedView, GQLForm, Group } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 import { DiagramFilterFormProps } from './DiagramFilterForm.types';
 import { useDiagramFilterSubscription } from './useDiagramFilterSubscription';
 
-const useDiagramFilterViewStyles = makeStyles((theme) => ({
+const useDiagramFilterViewStyles = makeStyles()((theme) => ({
   idle: {
     padding: theme.spacing(1),
   },
@@ -29,7 +29,7 @@ const useDiagramFilterViewStyles = makeStyles((theme) => ({
 export const DiagramFilterForm = ({ editingContextId, diagramId, readOnly }: DiagramFilterFormProps) => {
   const { form } = useDiagramFilterSubscription(editingContextId, [diagramId]);
 
-  const classes = useDiagramFilterViewStyles();
+  const { classes } = useDiagramFilterViewStyles();
 
   const extractFirstGroup = (props: WorkbenchViewComponentProps, form: GQLForm): JSX.Element => {
     const group = form.pages[0]?.groups[0];

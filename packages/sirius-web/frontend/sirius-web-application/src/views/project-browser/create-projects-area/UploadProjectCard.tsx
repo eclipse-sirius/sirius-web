@@ -11,17 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
+import { makeStyles } from 'tss-react/mui';
 
-const useUploadProjectCardStyles = makeStyles((theme) => ({
+const useUploadProjectCardStyles = makeStyles()((theme) => ({
   projectCard: {
     width: theme.spacing(30),
     height: theme.spacing(18),
@@ -50,7 +50,7 @@ const useUploadProjectCardStyles = makeStyles((theme) => ({
 }));
 
 export const UploadProjectCard = () => {
-  const classes = useUploadProjectCardStyles();
+  const { classes } = useUploadProjectCardStyles();
   return (
     <Button to={`/upload/project`} component={RouterLink} data-testid="upload">
       <Card className={classes.projectCard}>

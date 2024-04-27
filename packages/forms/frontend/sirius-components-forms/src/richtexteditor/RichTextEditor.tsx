@@ -22,7 +22,7 @@ import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPl
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 import { $setSelection, TextNode } from 'lexical';
 import { FocusEvent, useCallback, useEffect } from 'react';
 import { ListPlugin } from './ListPlugin';
@@ -83,7 +83,7 @@ const OnBlurPlugin = ({ onBlur, children }: OnBlurPluginProps): JSX.Element => {
   );
 };
 
-const useRichTextEditorStyles = makeStyles((theme) => ({
+const useRichTextEditorStyles = makeStyles()((theme) => ({
   editorContainer: {
     marginTop: theme.spacing(2),
     color: theme.palette.text.primary,
@@ -179,7 +179,7 @@ const useRichTextEditorStyles = makeStyles((theme) => ({
 }));
 
 export const RichTextEditor = ({ value, placeholder, readOnly, onBlur }: RichTextEditorProps) => {
-  const classes = useRichTextEditorStyles();
+  const { classes } = useRichTextEditorStyles();
   const theme = {
     placeholder: classes.editorPlaceholder,
     paragraph: classes.editorParagraph,

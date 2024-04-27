@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, Toast } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useEffect, useState } from 'react';
 import { FormContext } from '../contexts/FormContext';
@@ -47,7 +47,7 @@ const formEventSubscription = gql(`
   ${formRefreshedEventPayloadFragment}
 `);
 
-const useFormRepresentationStyles = makeStyles((theme) => ({
+const useFormRepresentationStyles = makeStyles()((theme) => ({
   page: {
     display: 'flex',
     flexDirection: 'column',
@@ -80,7 +80,7 @@ const useFormRepresentationStyles = makeStyles((theme) => ({
  * Connect the Form component to the GraphQL API over Web Socket.
  */
 export const FormRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
-  const classes = useFormRepresentationStyles();
+  const { classes } = useFormRepresentationStyles();
   const [{ value, context }, dispatch] = useMachine<FormRepresentationContext, FormRepresentationEvent>(
     formRepresentationMachine,
     {

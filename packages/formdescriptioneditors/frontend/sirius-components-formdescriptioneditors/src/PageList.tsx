@@ -13,10 +13,10 @@
 import { useMutation } from '@apollo/client';
 import { Selection, Toast, useDeletionConfirmationDialog, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { GQLFlexboxContainer, GQLPage, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
 import { addPageMutation, deletePageMutation, movePageMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -55,7 +55,7 @@ const recursiveWidgetSearch = (widget: GQLWidget, entryId: string): boolean => {
   return false;
 };
 
-const usePageListStyles = makeStyles((theme) => ({
+const usePageListStyles = makeStyles()((theme) => ({
   rightDropArea: {
     display: 'flex',
     flexDirection: 'column',
@@ -109,7 +109,7 @@ const a11yProps = (id: string) => {
 export const PageList = () => {
   const { editingContextId, representationId, readOnly, formDescriptionEditor } = useFormDescriptionEditor();
   const noop = () => {};
-  const classes = usePageListStyles();
+  const { classes } = usePageListStyles();
 
   const { pages } = formDescriptionEditor;
 
@@ -378,7 +378,7 @@ export const PageList = () => {
           value={state.selectedPage.id}
           onChange={readOnly ? noop : onChangeTab}
           variant="scrollable"
-          scrollButtons="on"
+          scrollButtons
           textColor="primary"
           indicatorColor="primary">
           {state.pages.map((page) => {

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { useComponent } from '../extension/useComponent';
@@ -58,7 +58,7 @@ const editingContextEventSubscription = gql`
   }
 `;
 
-const useWorkbenchStyles = makeStyles(() => ({
+const useWorkbenchStyles = makeStyles()(() => ({
   main: {
     display: 'grid',
     gridTemplateRows: 'minmax(0, 1fr)',
@@ -78,7 +78,7 @@ export const Workbench = ({
   onRepresentationSelected,
   readOnly,
 }: WorkbenchProps) => {
-  const classes = useWorkbenchStyles();
+  const { classes } = useWorkbenchStyles();
   const [{ value, context }, dispatch] = useMachine<WorkbenchContext, WorkbenchEvent>(workbenchMachine, {
     context: {
       displayedRepresentation: initialRepresentationSelected,

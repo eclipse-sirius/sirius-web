@@ -11,16 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DiagramPaletteToolComponentProps, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
-import { Slideshow } from '@material-ui/icons';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import IconButton from '@mui/material/IconButton';
+import { makeStyles } from 'tss-react/mui';
+import Slideshow from '@mui/icons-material/Slideshow';
 import { Fragment, useState } from 'react';
 import { useNodes } from 'reactflow';
 
-const useToolStyle = makeStyles(() => ({
+const useToolStyle = makeStyles()(() => ({
   tool: {
     width: '36px',
   },
@@ -29,7 +29,7 @@ const useToolStyle = makeStyles(() => ({
 type Modal = 'dialog';
 export const PapayaComponentLabelDetailToolContribution = ({ diagramElementId }: DiagramPaletteToolComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);
-  const classes = useToolStyle();
+  const { classes } = useToolStyle();
   const nodes = useNodes<NodeData>();
   const targetedNode = nodes.find((node) => node.id === diagramElementId);
   if (

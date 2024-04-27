@@ -11,25 +11,26 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor, IconOverlay } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import { useTheme } from '@mui/material/styles';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySection } from '../propertysections/PropertySection';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import { GroupProps, GroupStyleProps } from './Group.types';
 
-const useGroupStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
+const useGroupStyles = makeStyles<GroupStyleProps>()((theme, { borderStyle }) => ({
   group: {
     display: 'flex',
     flexDirection: 'column',
-    margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
-    padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
-    borderWidth: ({ borderStyle }) => borderStyle?.size || 0,
-    borderColor: ({ borderStyle }) => getCSSColor(borderStyle?.color, theme) || 'transparent',
-    borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
-    borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
+    margin: borderStyle ? theme.spacing(0.5) : 0,
+    padding: borderStyle ? theme.spacing(0.5) : 0,
+    borderWidth: borderStyle?.size || 0,
+    borderColor: getCSSColor(borderStyle?.color, theme) || 'transparent',
+    borderStyle: borderStyle?.lineStyle || 'solid',
+    borderRadius: borderStyle?.radius || 0,
   },
   groupLabelAndToolbar: {
     display: 'flex',
@@ -76,7 +77,7 @@ export const Group = ({ editingContextId, formId, group, readOnly }: GroupProps)
     borderStyle: group.borderStyle,
   };
 
-  const classes = useGroupStyles(props);
+  const { classes } = useGroupStyles(props);
   const theme = useTheme();
   const [visibleWidgetIds, setVisibleWidgetIds] = useState<string[]>([]);
 

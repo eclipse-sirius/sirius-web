@@ -13,13 +13,13 @@
 import { BarChart, BarChartRepresentation } from '@eclipse-sirius/sirius-components-charts';
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { GQLBarChart } from '@eclipse-sirius/sirius-components-forms';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { BarChartWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles<Theme>((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   selected: {
     color: theme.palette.primary.main,
   },
@@ -34,7 +34,7 @@ const useStyles = makeStyles<Theme>((theme) => ({
 }));
 
 export const BarChartWidget = ({ widget }: BarChartWidgetProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const barChartWidget = widget.chart as GQLBarChart;
 
   const chart: BarChartRepresentation = {

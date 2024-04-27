@@ -10,11 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { ServerContext, ServerContextValue, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import Button from '@material-ui/core/Button';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import gql from 'graphql-tag';
 import { useContext, useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { GQLButton } from '../form/FormEventFragments.types';
 import { HelpTooltip } from '../propertysections/HelpTooltip';
 import { getTextDecorationLineValue } from './../propertysections/getTextDecorationLineValue';
@@ -29,31 +30,31 @@ import {
   ToolbarActionStyleProps,
 } from './ToolbarAction.types';
 
-const useStyle = makeStyles<Theme, ToolbarActionStyleProps>((theme) => ({
-  style: {
-    minWidth: '32px',
-    lineHeight: 1.25,
-    backgroundColor: ({ backgroundColor }) =>
-      backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-    '&:hover': {
-      backgroundColor: ({ backgroundColor }) =>
-        backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
-      color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-      fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-      fontStyle: ({ italic }) => (italic ? 'italic' : null),
-      fontWeight: ({ bold }) => (bold ? 'bold' : null),
-      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+const useStyle = makeStyles<ToolbarActionStyleProps>()(
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, iconOnly }) => ({
+    style: {
+      minWidth: '32px',
+      lineHeight: 1.25,
+      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
+      color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      '&:hover': {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      },
     },
-  },
-  icon: {
-    marginRight: ({ iconOnly }) => (iconOnly ? theme.spacing(0) : theme.spacing(2)),
-  },
-}));
+    icon: {
+      marginRight: iconOnly ? theme.spacing(0) : theme.spacing(2),
+    },
+  })
+);
 
 export const pushButtonMutation = gql`
   mutation pushButton($input: PushButtonInput!) {
@@ -96,7 +97,7 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
     strikeThrough: widget.style?.strikeThrough ?? null,
     iconOnly: widget.buttonLabel ? false : true,
   };
-  const classes = useStyle(props);
+  const { classes } = useStyle(props);
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 

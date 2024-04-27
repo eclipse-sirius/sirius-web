@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import { makeStyles } from '@material-ui/core/styles';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
 import { Page } from '../pages/Page';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import { FormProps, FormState } from './Form.types';
 
-const useFormStyles = makeStyles((theme) => ({
+const useFormStyles = makeStyles()((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -72,7 +72,7 @@ const a11yProps = (id: string) => {
 };
 
 export const Form = ({ editingContextId, form, readOnly }: FormProps) => {
-  const classes = useFormStyles();
+  const { classes } = useFormStyles();
   const { id, pages } = form;
 
   const [state, setState] = useState<FormState>({ selectedPage: pages[0], pages });
@@ -121,7 +121,7 @@ export const Form = ({ editingContextId, form, readOnly }: FormProps) => {
           value={state.selectedPage.id}
           onChange={onChangeTab}
           variant={variant}
-          scrollButtons="on"
+          scrollButtons
           textColor="primary"
           indicatorColor="primary">
           {state.pages.map((page) => {

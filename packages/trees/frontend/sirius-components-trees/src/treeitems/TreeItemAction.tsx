@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import IconButton from '@mui/material/IconButton';
+import { makeStyles } from 'tss-react/mui';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import { TreeItemActionProps, TreeItemActionState } from './TreeItemAction.types';
 import { TreeItemContextMenu } from './TreeItemContextMenu';
 
-const useTreeItemActionStyle = makeStyles((theme) => ({
+const useTreeItemActionStyle = makeStyles()((theme) => ({
   more: {
     hover: {
       backgroundColor: theme.palette.action.hover,
@@ -38,7 +38,7 @@ export const TreeItemAction = ({
   onExpandAll,
   onEnterEditingMode,
 }: TreeItemActionProps) => {
-  const classes = useTreeItemActionStyle();
+  const { classes } = useTreeItemActionStyle();
   const [state, setState] = useState<TreeItemActionState>({
     showContextMenu: false,
     menuAnchor: null,

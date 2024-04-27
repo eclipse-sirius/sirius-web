@@ -24,7 +24,7 @@ afterEach(() => cleanup());
 const imageWithMaxWidth: GQLImage = {
   label: 'myImage',
   url: 'https://www.eclipse.org/sirius/common_assets/images/logos/logo_sirius.png',
-  maxWidth: '42px',
+  maxWidth: '42',
   iconURL: [],
   hasHelpText: false,
   __typename: 'Image',
@@ -57,7 +57,7 @@ test('render image widget with maxWidth', () => {
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
-  const containerStyle = window.getComputedStyle(document.querySelectorAll('div')[4]);
+  const containerStyle = window.getComputedStyle(document.querySelectorAll('div[class$="container"]')[0]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('minmax(auto, 42px)');
 });
@@ -74,7 +74,7 @@ test('render image widget without maxWidth', () => {
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
-  const containerStyle = window.getComputedStyle(document.querySelectorAll('div')[4]);
+  const containerStyle = window.getComputedStyle(document.querySelectorAll('div[class$="container"]')[0]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('1fr');
 });
@@ -91,7 +91,7 @@ test('render image widget with help hint', () => {
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
-  const containerStyle = window.getComputedStyle(document.querySelectorAll('div')[4]);
+  const containerStyle = window.getComputedStyle(document.querySelectorAll('div[class$="container"]')[0]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('minmax(auto, 42px)');
 });

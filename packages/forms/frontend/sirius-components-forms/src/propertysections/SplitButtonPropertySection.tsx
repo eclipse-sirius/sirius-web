@@ -10,19 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { ServerContext, ServerContextValue, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import gql from 'graphql-tag';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { GQLButton } from '../form/FormEventFragments.types';
 import {
   ButtonStyleProps,
@@ -37,40 +38,40 @@ import { PropertySectionLabel } from './PropertySectionLabel';
 import { SplitButtonPropertySectionProps, SplitButtonState } from './SplitButtonPropertySection.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
-const useStyle = makeStyles<Theme, ButtonStyleProps>((theme) => ({
-  style: {
-    backgroundColor: ({ backgroundColor }) =>
-      backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-    paddingTop: theme.spacing(0.5),
-    paddingBottom: theme.spacing(0.5),
-    '&:hover': {
-      backgroundColor: ({ backgroundColor }) =>
-        backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
-      color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-      fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-      fontStyle: ({ italic }) => (italic ? 'italic' : null),
-      fontWeight: ({ bold }) => (bold ? 'bold' : null),
-      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+const useStyle = makeStyles<ButtonStyleProps>()(
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, iconOnly }) => ({
+    style: {
+      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
+      color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      paddingTop: theme.spacing(0.5),
+      paddingBottom: theme.spacing(0.5),
+      '&:hover': {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      },
+      '&.Mui-disabled': {
+        color: theme.palette.action.disabled,
+        backgroundColor: theme.palette.action.disabledBackground,
+        opacity: 1,
+      },
     },
-    '&.Mui-disabled': {
-      color: theme.palette.action.disabled,
-      backgroundColor: theme.palette.action.disabledBackground,
-      opacity: 1,
+    icon: {
+      marginRight: iconOnly ? theme.spacing(0) : theme.spacing(2),
+      height: theme.spacing(2),
+      width: theme.spacing(2),
     },
-  },
-  icon: {
-    marginRight: ({ iconOnly }) => (iconOnly ? theme.spacing(0) : theme.spacing(2)),
-    height: theme.spacing(2),
-    width: theme.spacing(2),
-  },
-}));
+  })
+);
 
-const useContainerStyle = makeStyles<Theme>((theme) => ({
+const useContainerStyle = makeStyles()((theme) => ({
   style: {
     display: 'flex',
     flexDirection: 'row',
@@ -143,10 +144,10 @@ export const SplitButtonPropertySection = ({
       strikeThrough: action.style?.strikeThrough ?? null,
       iconOnly: action.buttonLabel ? false : true,
     };
-    return useStyle(props);
+    return useStyle(props).classes;
   });
 
-  const containerClasses = useContainerStyle();
+  const { classes: containerClasses } = useContainerStyle();
 
   const [pushButton, { loading, data, error }] = useMutation<GQLPushButtonMutationData, GQLPushButtonMutationVariables>(
     pushButtonMutation

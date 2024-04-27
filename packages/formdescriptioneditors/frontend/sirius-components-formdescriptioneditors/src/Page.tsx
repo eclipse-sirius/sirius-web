@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useRef, useState } from 'react';
 import { addGroupMutation, moveGroupMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -34,7 +34,7 @@ import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 const isErrorPayload = (payload: GQLAddPagePayload | GQLMovePagePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-const usePageStyles = makeStyles((theme) => ({
+const usePageStyles = makeStyles()((theme) => ({
   page: {
     display: 'flex',
     flexDirection: 'column',
@@ -68,7 +68,7 @@ const usePageStyles = makeStyles((theme) => ({
 export const Page = ({ page }: PageProps) => {
   const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
   const noop = () => {};
-  const classes = usePageStyles();
+  const { classes } = usePageStyles();
 
   const initialState: PageState = { message: null, selected: false };
   const [state, setState] = useState<PageState>(initialState);

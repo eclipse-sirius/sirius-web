@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import Slider from '@material-ui/core/Slider';
+import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLSlider } from '../form/FormEventFragments.types';

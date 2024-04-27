@@ -11,28 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
 import { useContext, useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLImage } from '../form/FormEventFragments.types';
 import { ImageStyleProps } from './ImagePropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useImageStyles = makeStyles<Theme, ImageStyleProps>(() => ({
+const useImageStyles = makeStyles<ImageStyleProps>()((_theme, { maxWidth }) => ({
   container: {
     display: 'grid',
-    gridTemplateColumns: ({ maxWidth }) => {
-      if (maxWidth) {
-        let max = maxWidth;
-        if (maxWidth.match(/[0-9]$/)) {
-          max = maxWidth + 'px';
-        }
-        return `minmax(auto, ${max})`;
-      } else {
-        return '1fr';
-      }
-    },
+    gridTemplateColumns: maxWidth && maxWidth.match(/[0-9]$/) ? `minmax(auto, ${maxWidth}px)` : '1fr',
   },
 }));
 
@@ -61,9 +51,10 @@ export const ImagePropertySection: PropertySectionComponent<GQLImage> = ({
   } else {
     imageURL = httpOrigin + widget.url;
   }
-  const classes = useImageStyles({
+  const { classes } = useImageStyles({
     maxWidth: widget.maxWidth,
   });
+
   return (
     <div>
       <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />

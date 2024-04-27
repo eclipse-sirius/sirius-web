@@ -10,20 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormGroup from '@material-ui/core/FormGroup';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormGroup from '@mui/material/FormGroup';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
 import { FileUpload } from '../../core/file-upload/FileUpload';
 import { UploadDocumentModalProps, UploadDocumentModalState } from './UploadDocumentModal.types';
 import { UploadDocumentReport } from './UploadDocumentReport';
 import { useUploadDocument } from './useUploadDocument';
 
-const useFormStyles = makeStyles((theme: Theme) => ({
+const useFormStyles = makeStyles()((theme: Theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -40,7 +41,7 @@ export const UploadDocumentModal = ({ editingContextId, onClose }: UploadDocumen
   const [state, setState] = useState<UploadDocumentModalState>({
     file: null,
   });
-  const styles = useFormStyles();
+  const { classes: styles } = useFormStyles();
 
   const { uploadDocument, loading, uploadedDocument } = useUploadDocument();
 

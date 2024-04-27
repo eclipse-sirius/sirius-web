@@ -11,22 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import { WarningOutlined } from '@material-ui/icons';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import WarningOutlined from '@mui/icons-material/WarningOutlined';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Typography from '@mui/material/Typography';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { ConfirmationDialogProps } from './ConfirmationDialog.types';
 
-const useConfirmationDialogStyles = makeStyles((theme: Theme) => ({
+const useConfirmationDialogStyles = makeStyles()((theme: Theme) => ({
   title: {
     display: 'flex',
     flexDirection: 'column',
@@ -72,7 +73,7 @@ export const ConfirmationDialog = ({
   onConfirm,
   onCancel,
 }: ConfirmationDialogProps) => {
-  const classes = useConfirmationDialogStyles();
+  const { classes } = useConfirmationDialogStyles();
 
   let confirmationDisabledElement: JSX.Element | null = null;
   if (allowConfirmationDisabled) {

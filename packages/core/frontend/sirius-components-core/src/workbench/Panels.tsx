@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
+
 import React, { useRef, useState } from 'react';
 import { PanelState, PanelsProps } from './Panels.types';
 import { Site } from './Site';
@@ -19,7 +20,7 @@ const MIN_PANEL_WIDTH: number = 42;
 const MAIN_AREA_MIN_WIDTH: number = 100;
 const RESIZER_WIDTH: number = 4;
 
-const usePanelStyles = makeStyles((theme) => ({
+const usePanelStyles = makeStyles()((theme) => ({
   panel: {
     display: 'grid',
     gridTemplateRows: 'minmax(0, 1fr)',
@@ -151,7 +152,7 @@ export const Panels = ({
     gridTemplateColumns: `${leftWidth}px min-content minmax(0, 1fr) min-content ${rightWidth}px`,
   };
 
-  const styles = usePanelStyles();
+  const { classes: styles } = usePanelStyles();
   return (
     <div style={style} onMouseMove={resizePanel} onMouseUp={stopResize} onMouseLeave={stopResize} ref={ref}>
       <div className={styles.panel}>

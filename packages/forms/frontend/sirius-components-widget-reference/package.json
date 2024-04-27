@@ -37,15 +37,15 @@
     "@eclipse-sirius/sirius-components-forms": "*",
     "@eclipse-sirius/sirius-components-trees": "*",
     "@lexical/react": "0.8.1",
-    "@material-ui/core": "4.12.4",
-    "@material-ui/icons": "4.11.3",
-    "@material-ui/lab": "4.0.0-alpha.61",
+    "@mui/material": "5.15.19",
+    "@mui/icons-material": "5.15.19",
     "@xstate/react": "1.6.3",
     "d3": "7.0.0",
     "graphql": "16.8.1",
     "lexical": "0.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "tss-react": "4.9.7",
     "xstate": "4.32.1"
   },
   "devDependencies": {
@@ -55,9 +55,8 @@
     "@eclipse-sirius/sirius-components-trees": "*",
     "@eclipse-sirius/sirius-components-tsconfig": "*",
     "@lexical/react": "0.8.1",
-    "@material-ui/core": "4.12.4",
-    "@material-ui/icons": "4.11.3",
-    "@material-ui/lab": "4.0.0-alpha.61",
+    "@mui/material": "5.15.19",
+    "@mui/icons-material": "5.15.19",
     "@testing-library/react": "12.1.2",
     "@testing-library/user-event": "13.2.1",
     "@types/react": "17.0.37",
@@ -74,6 +73,7 @@
     "react-dom": "17.0.2",
     "xstate": "4.32.1",
     "typescript": "5.4.5",
+    "tss-react": "4.9.7",
     "vite": "5.2.11",
     "vitest": "1.6.0"
   }

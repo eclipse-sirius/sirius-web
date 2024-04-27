@@ -12,30 +12,30 @@
  *******************************************************************************/
 
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { withStyles } from 'tss-react/mui';
 import { useContext, useState } from 'react';
 import { ImageRowProps, ImageRowState } from './ImageRow.types';
 import { DeleteImageModal } from './delete-image/DeleteImageModal';
 import { RenameImageModal } from './rename-image/RenameImageModal';
 
-const ImagePreviewTooltip = withStyles(() => ({
+const ImagePreviewTooltip = withStyles(Tooltip, () => ({
   tooltip: {
     backgroundColor: '#f5f5f5',
     color: 'rgba(0, 0, 0)',
     maxWidth: 220,
     border: '1px solid #dadde9',
   },
-}))(Tooltip);
+}));
 
 export const ImageRow = ({ image, onImageUpdated }: ImageRowProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
@@ -71,10 +71,7 @@ export const ImageRow = ({ image, onImageUpdated }: ImageRowProps) => {
                   <FileCopyOutlinedIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
-              <ImagePreviewTooltip
-                enterDelay={250}
-                interactive
-                title={<img src={httpOrigin + image.url} width={120} />}>
+              <ImagePreviewTooltip enterDelay={250} title={<img src={httpOrigin + image.url} width={120} />}>
                 <IconButton>
                   <ImageOutlinedIcon fontSize="small" />
                 </IconButton>

@@ -12,11 +12,11 @@
  *******************************************************************************/
 
 import { ComponentExtension, useComponent, useComponents, useData } from '@eclipse-sirius/sirius-components-core';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
-import HelpIcon from '@material-ui/icons/Help';
+import HelpIcon from '@mui/icons-material/Help';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem, { MenuItemProps } from '@mui/material/MenuItem';
 import { useState } from 'react';
 import { NavigationBarMenuProps, NavigationBarMenuState } from './NavigationBarMenu.types';
 import {

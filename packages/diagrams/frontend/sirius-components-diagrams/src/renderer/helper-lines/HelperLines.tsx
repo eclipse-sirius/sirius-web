@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Theme, useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@mui/material/styles';
 import { CSSProperties, useEffect, useRef } from 'react';
 import { ReactFlowState, useStore, useViewport } from 'reactflow';
 import { HelperLinesProps } from './HelperLines.types';

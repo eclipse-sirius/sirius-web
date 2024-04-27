@@ -25,8 +25,8 @@ import {
   PropertySectionLabel,
   useClickHandler,
 } from '@eclipse-sirius/sirius-components-forms';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import {
   GQLAddReferenceValuesMutationData,
   GQLAddReferenceValuesMutationVariables,
@@ -53,7 +53,7 @@ import { BrowseModal } from './modals/BrowseModal';
 import { CreateModal } from './modals/CreateModal';
 import { TransferModal } from './modals/TransferModal';
 
-const useStyles = makeStyles<Theme>(() => ({
+const useStyles = makeStyles()(() => ({
   root: {
     overflow: 'hidden',
   },
@@ -194,7 +194,7 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
   widget,
   readOnly,
 }: PropertySectionComponentProps<GQLReferenceWidget>) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { setSelection } = useSelection();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 

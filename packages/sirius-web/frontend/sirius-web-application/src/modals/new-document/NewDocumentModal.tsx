@@ -10,23 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
 import { NewDocumentModalProps, NewDocumentModalState } from './NewDocumentModal.types';
 import { useCreateDocument } from './useCreateDocument';
 import { useStereotypes } from './useStereotypes';
 import { GQLStereotype } from './useStereotypes.types';
 
-const useNewDocumentModalStyles = makeStyles((theme) => ({
+const useNewDocumentModalStyles = makeStyles()((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -37,7 +37,7 @@ const useNewDocumentModalStyles = makeStyles((theme) => ({
 }));
 
 export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModalProps) => {
-  const classes = useNewDocumentModalStyles();
+  const { classes } = useNewDocumentModalStyles();
   const [state, setState] = useState<NewDocumentModalState>({
     name: '',
     nameIsInvalid: true,
@@ -59,7 +59,7 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
     setState((prevState) => ({ ...prevState, name: value, nameIsInvalid, pristine: false }));
   };
 
-  const onStereotypeChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+  const onStereotypeChange = (event: SelectChangeEvent<string>) => {
     const value = event.target.value;
     setState((prevState) => ({ ...prevState, stereotypeId: value.toString() }));
   };

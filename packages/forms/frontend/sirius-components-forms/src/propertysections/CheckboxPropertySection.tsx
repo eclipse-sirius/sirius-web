@@ -12,12 +12,12 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 import { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLCheckbox } from '../form/FormEventFragments.types';
 import {
@@ -31,12 +31,12 @@ import {
 } from './CheckboxPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useStyle = makeStyles<Theme, CheckboxStyleProps>((theme) => ({
+const useStyle = makeStyles<CheckboxStyleProps>()((theme, { color }) => ({
   formControl: {
     alignItems: 'flex-start',
   },
   style: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : theme.palette.primary.light),
+    color: color ? getCSSColor(color, theme) : theme.palette.primary.light,
     paddingTop: theme.spacing(0.5),
     paddingBottom: theme.spacing(0.5),
   },
@@ -77,7 +77,7 @@ export const CheckboxPropertySection: PropertySectionComponent<GQLCheckbox> = ({
   const props: CheckboxStyleProps = {
     color: widget.style?.color ?? null,
   };
-  const classes = useStyle(props);
+  const { classes } = useStyle(props);
 
   const [editCheckbox, { loading, error, data }] = useMutation<GQLEditCheckboxMutationData>(editCheckboxMutation);
   const onChange = (event) => {

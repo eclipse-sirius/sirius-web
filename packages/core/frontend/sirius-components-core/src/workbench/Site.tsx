@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
 import { SiteProps } from './Site.types';
 
-const useSiteStyles = makeStyles((theme) => ({
+const useSiteStyles = makeStyles()((theme) => ({
   leftSite: {
     display: 'flex',
     flexDirection: 'row',
@@ -98,7 +98,7 @@ const useSiteStyles = makeStyles((theme) => ({
 }));
 
 export const Site = ({ editingContextId, readOnly, side, expanded, toggleExpansion, contributions }: SiteProps) => {
-  const classes = useSiteStyles();
+  const { classes } = useSiteStyles();
   const [isExpanded, setExpanded] = useState<boolean>(expanded);
   const [selectedViewIndex, setSelectedViewIndex] = useState<number>(0);
 

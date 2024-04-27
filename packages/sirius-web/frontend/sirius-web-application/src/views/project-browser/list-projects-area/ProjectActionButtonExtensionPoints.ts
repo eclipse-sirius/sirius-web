@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { MenuItemProps } from '@material-ui/core/MenuItem';
+import { MenuItemProps } from '@mui/material/MenuItem';
 
 export const projectActionButtonMenuItemExtensionPoint: DataExtensionPoint<
   Array<MenuItemProps<'li', { button: true }>>

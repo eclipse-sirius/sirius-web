@@ -12,13 +12,13 @@
  *******************************************************************************/
 import { useSelection, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import { FormBasedView, GQLForm, Group } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { RelatedElementsViewState } from './RelatedElementsView.types';
 import { useRelatedElementsViewSubscription } from './useRelatedElementsViewSubscription';
 
-const useRelatedElementsViewStyles = makeStyles((theme) => ({
+const useRelatedElementsViewStyles = makeStyles()((theme) => ({
   idle: {
     padding: theme.spacing(1),
   },
@@ -57,7 +57,7 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
   const skip = objectIds.length === 0;
   const { form } = useRelatedElementsViewSubscription(editingContextId, objectIds, skip);
 
-  const classes = useRelatedElementsViewStyles();
+  const { classes } = useRelatedElementsViewStyles();
 
   const extractFirstGroup = (props: WorkbenchViewComponentProps, form: GQLForm): JSX.Element => {
     const group = form.pages[0]?.groups[0];

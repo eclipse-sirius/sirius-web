@@ -14,10 +14,11 @@
 import { useMutation } from '@apollo/client';
 import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Tooltip from '@material-ui/core/Tooltip';
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@mui/icons-material/Add';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
 import { addToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -31,11 +32,11 @@ import {
   GQLMoveToolbarActionMutationVariables,
   GQLMoveToolbarActionPayload,
 } from './FormDescriptionEditorEventFragment.types';
-import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
-import { ToolbarActionsProps } from './ToolbarActions.types';
 import { ToolbarActionWidget } from './ToolbarActionWidget';
+import { ToolbarActionsProps } from './ToolbarActions.types';
+import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
-const useToolbarActionsStyles = makeStyles<Theme>((theme: Theme) => ({
+const useToolbarActionsStyles = makeStyles()((theme: Theme) => ({
   toolbar: {
     display: 'flex',
     flexDirection: 'row',
@@ -72,7 +73,7 @@ const isErrorPayload = (
 export const ToolbarActions = ({ toolbarActions, containerId }: ToolbarActionsProps) => {
   const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
   const noop = () => {};
-  const classes = useToolbarActionsStyles();
+  const { classes } = useToolbarActionsStyles();
 
   const [message, setMessage] = useState<string | null>(null);
 

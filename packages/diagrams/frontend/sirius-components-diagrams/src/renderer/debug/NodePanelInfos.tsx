@@ -11,16 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Box from '@material-ui/core/Box';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import { alpha } from '@material-ui/core/styles/colorManipulator';
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import { alpha } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { NodePanelInfosProps } from './NodePanelInfos.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   list: {
     marginTop: 0,
     marginBottom: 0,
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const NodePanelInfos = ({ title, node }: NodePanelInfosProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Box className={classes.box}>

@@ -18,17 +18,19 @@
     "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\""
   },
   "peerDependencies": {
-    "@material-ui/core": "4.12.4",
-    "@material-ui/icons": "4.11.3",
-    "react": "17.0.2"
+    "@mui/material": "5.15.19",
+    "@mui/icons-material": "5.15.19",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   },
   "devDependencies": {
-    "@material-ui/core": "4.12.4",
-    "@material-ui/icons": "4.11.3",
+    "@mui/material": "5.15.19",
+    "@mui/icons-material": "5.15.19",
     "@types/react": "17.0.37",
     "@vitejs/plugin-react": "4.3.0",
     "prettier": "2.7.1",
     "react": "17.0.2",
+    "react-dom": "17.0.2",
     "typescript": "5.4.5",
     "vite": "5.2.11"
   }

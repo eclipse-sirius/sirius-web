@@ -22,7 +22,7 @@ import {
   editProjectNavbarSubtitleExtensionPoint,
   useCurrentProject,
 } from '@eclipse-sirius/sirius-web-application';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { ReactFlowProps } from 'reactflow';
 import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
 import { PapayaDiagramLegendPanel } from './diagrams/PapayaDiagramLegendPanel';
