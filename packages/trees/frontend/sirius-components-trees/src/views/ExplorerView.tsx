@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { TreeToolBar } from '../toolbar/TreeToolBar';
 import { TreeToolBarContext } from '../toolbar/TreeToolBarContext';
 import { TreeToolBarContextValue } from '../toolbar/TreeToolBarContext.types';
@@ -21,7 +22,7 @@ import { ExplorerViewState, TreeFilter } from './ExplorerView.types';
 import { TreeView } from './TreeView';
 import { useTreeFilters } from './useTreeFilters';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
     display: 'flex',
     flexDirection: 'column',
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
-  const styles = useStyles();
+  const { classes: styles } = useStyles();
 
   const initialState: ExplorerViewState = {
     synchronizedWithSelection: true,

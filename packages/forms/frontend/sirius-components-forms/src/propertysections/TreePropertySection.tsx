@@ -19,14 +19,15 @@ import {
   useMultiToast,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
-import Checkbox from '@material-ui/core/Checkbox';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { TreeItem as MuiTreeItem } from '@material-ui/lab';
-import TreeView from '@material-ui/lab/TreeView';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Checkbox from '@mui/material/Checkbox';
+import Typography from '@mui/material/Typography';
+import { Theme } from '@mui/material/styles';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { TreeItem as MuiTreeItem } from '@mui/x-tree-view/TreeItem';
 import React, { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLTree } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
@@ -40,7 +41,7 @@ import {
   TreeItemProps,
 } from './TreePropertySection.types';
 
-const useTreeItemWidgetStyles = makeStyles((theme) => ({
+const useTreeItemWidgetStyles = makeStyles()((theme) => ({
   label: {
     display: 'flex',
     flexDirection: 'row',
@@ -58,6 +59,12 @@ const useTreeItemWidgetStyles = makeStyles((theme) => ({
     fill: theme.palette.primary.light,
     width: theme.spacing(2),
     height: theme.spacing(2),
+  },
+  content: {
+    paddingLeft: 0,
+    paddingTop: 0,
+    paddingRight: 0,
+    paddingBottom: 0,
   },
   disabled: {},
 }));
@@ -95,7 +102,7 @@ export const editTreeCheckboxMutation = gql`
 `;
 
 const TreeItem = ({ node, nodes, readOnly, editingContextId, formId, widgetId }: TreeItemProps) => {
-  const classes = useTreeItemWidgetStyles();
+  const { classes } = useTreeItemWidgetStyles();
   const { setSelection } = useSelection();
 
   const [editTreeCheckbox, { loading, error, data }] =
@@ -170,7 +177,7 @@ const TreeItem = ({ node, nodes, readOnly, editingContextId, formId, widgetId }:
 
   const childNodes = nodes.filter((childNode) => childNode.parentId === node.id);
   return (
-    <MuiTreeItem nodeId={node.id} label={label}>
+    <MuiTreeItem itemId={node.id} label={label} classes={{ content: classes.content }}>
       {childNodes.map((childNode) => (
         <TreeItem
           node={childNode}
@@ -216,10 +223,9 @@ export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
   return (
     <div>
       <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
-      <TreeView
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpanded={expandedNodesIds}
-        defaultExpandIcon={<ChevronRightIcon />}>
+      <SimpleTreeView
+        slots={{ collapseIcon: ExpandMoreIcon, expandIcon: ChevronRightIcon }}
+        defaultExpandedItems={expandedNodesIds}>
         {rootNodes.map((rootNode) => (
           <TreeItem
             node={rootNode}
@@ -231,7 +237,7 @@ export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
             widgetId={widget.id}
           />
         ))}
-      </TreeView>
+      </SimpleTreeView>
     </div>
   );
 };

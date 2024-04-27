@@ -10,12 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
+
 import { useEffect, useRef } from 'react';
 import { TreeItem } from '../treeitems/TreeItem';
 import { TreeProps } from './Tree.types';
 
-const useTreeStyle = makeStyles((_) => ({
+const useTreeStyle = makeStyles()((_) => ({
   ul: {
     width: 'inherit',
     minWidth: 'fit-content',
@@ -34,7 +35,7 @@ export const Tree = ({
   markedItemIds,
   treeItemActionRender,
 }: TreeProps) => {
-  const classes = useTreeStyle();
+  const { classes } = useTreeStyle();
   const treeElement = useRef(null);
 
   useEffect(() => {

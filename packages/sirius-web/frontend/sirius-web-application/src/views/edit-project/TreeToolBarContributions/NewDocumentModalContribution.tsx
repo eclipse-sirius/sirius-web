@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { TreeToolBarContributionComponentProps } from '@eclipse-sirius/sirius-components-trees';
-import IconButton from '@material-ui/core/IconButton';
-import { Add as AddIcon } from '@material-ui/icons';
+import AddIcon from '@mui/icons-material/Add';
+import IconButton from '@mui/material/IconButton';
 import { Fragment, useState } from 'react';
 import { NewDocumentModal } from '../../../modals/new-document/NewDocumentModal';
 

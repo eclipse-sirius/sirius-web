@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { ToolProps } from './Tool.types';
 
-const useToolStyle = makeStyles((theme) => ({
+const useToolStyle = makeStyles()((theme) => ({
   toolThumbnail: {
     display: 'flex',
     alignItems: 'center',
@@ -38,7 +38,7 @@ const useToolStyle = makeStyles((theme) => ({
 
 export const Tool = ({ tool, onClick, thumbnail }: ToolProps) => {
   const { id, label, iconURL } = tool;
-  const classes = useToolStyle();
+  const { classes } = useToolStyle();
   let image: JSX.Element | null = null;
   if (iconURL.length > 0) {
     image = <IconOverlay iconURL={iconURL} alt={label} title={label} />;

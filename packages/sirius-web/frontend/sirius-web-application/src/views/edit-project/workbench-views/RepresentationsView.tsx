@@ -20,13 +20,13 @@ import {
   ListPropertySection,
   TreePropertySection,
 } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { RepresentationsViewState } from './RepresentationsView.types';
 import { useRepresentationsViewSubscription } from './useRepresentationsViewSubscription';
 
-const useRepresentationsViewStyles = makeStyles((theme) => ({
+const useRepresentationsViewStyles = makeStyles()((theme) => ({
   idle: {
     padding: theme.spacing(1),
   },
@@ -68,7 +68,7 @@ export const RepresentationsView = ({ editingContextId, readOnly }: WorkbenchVie
   const skip = objectIds.length === 0;
   const { form } = useRepresentationsViewSubscription(editingContextId, objectIds, skip);
 
-  const classes = useRepresentationsViewStyles();
+  const { classes } = useRepresentationsViewStyles();
 
   const extractPlainList = (props: WorkbenchViewComponentProps, form: GQLForm): JSX.Element => {
     const widget: GQLWidget | undefined = form.pages[0]?.groups[0]?.widgets[0];

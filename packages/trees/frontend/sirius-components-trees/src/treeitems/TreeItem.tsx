@@ -17,9 +17,9 @@ import {
   SelectionEntry,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import CropDinIcon from '@material-ui/icons/CropDin';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
+import CropDinIcon from '@mui/icons-material/CropDin';
 import React, { useEffect, useRef, useState } from 'react';
 import { TreeItemProps, TreeItemState } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
@@ -27,7 +27,7 @@ import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { isFilterCandidate, splitText } from './filterTreeItem';
 import { TreeItemAction } from './TreeItemAction';
 
-const useTreeItemStyle = makeStyles((theme) => ({
+const useTreeItemStyle = makeStyles()((theme) => ({
   treeItem: {
     display: 'flex',
     flexDirection: 'row',
@@ -111,7 +111,7 @@ export const TreeItem = ({
   markedItemIds,
   treeItemActionRender,
 }: TreeItemProps) => {
-  const classes = useTreeItemStyle();
+  const { classes } = useTreeItemStyle();
 
   const initialState: TreeItemState = {
     editingMode: false,

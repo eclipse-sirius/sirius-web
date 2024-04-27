@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,19 +12,19 @@
  *******************************************************************************/
 import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { CheckboxStyleProps } from '@eclipse-sirius/sirius-components-forms';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { CheckboxWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles<Theme, CheckboxStyleProps>((theme) => ({
+const useStyles = makeStyles<CheckboxStyleProps>()((theme, { color }) => ({
   style: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : theme.palette.primary.light),
+    color: color ? getCSSColor(color, theme) : theme.palette.primary.light,
     '&.Mui-checked': {
-      color: ({ color }) => (color ? getCSSColor(color, theme) : theme.palette.primary.light),
+      color: color ? getCSSColor(color, theme) : theme.palette.primary.light,
     },
   },
   selected: {
@@ -41,7 +41,7 @@ export const CheckboxWidget = ({ widget }: CheckboxWidgetProps) => {
   const props: CheckboxStyleProps = {
     color: widget.style?.color ?? null,
   };
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
   const { selection } = useSelection();

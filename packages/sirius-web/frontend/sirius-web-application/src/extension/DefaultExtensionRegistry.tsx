@@ -43,11 +43,11 @@ import {
   ReferencePreview,
   ReferencePropertySection,
 } from '@eclipse-sirius/sirius-components-widget-reference';
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
-import Filter from '@material-ui/icons/Filter';
-import LinkIcon from '@material-ui/icons/Link';
-import MenuIcon from '@material-ui/icons/Menu';
-import WarningIcon from '@material-ui/icons/Warning';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import Filter from '@mui/icons-material/Filter';
+import LinkIcon from '@mui/icons-material/Link';
+import MenuIcon from '@mui/icons-material/Menu';
+import WarningIcon from '@mui/icons-material/Warning';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { ApolloClientOptionsConfigurer } from '../graphql/useCreateApolloClient.types';
 import { apolloClientOptionsConfigurersExtensionPoint } from '../graphql/useCreateApolloClientExtensionPoints';

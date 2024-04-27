@@ -11,31 +11,33 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLLabelWidget } from '../form/FormEventFragments.types';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { LabelStyleProps } from './LabelWidgetPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
-const useStyle = makeStyles<Theme, LabelStyleProps>((theme) => ({
-  style: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-    verticalAlign: 'baseline',
-    alignItems: 'center',
-    display: 'flex',
-  },
-  propertySection: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: theme.spacing(2),
-  },
-}));
+const useStyle = makeStyles<LabelStyleProps>()(
+  (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
+    style: {
+      color: color ? getCSSColor(color, theme) : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      verticalAlign: 'baseline',
+      alignItems: 'center',
+      display: 'flex',
+    },
+    propertySection: {
+      display: 'flex',
+      flexDirection: 'row',
+      gap: theme.spacing(2),
+    },
+  })
+);
 
 export const LabelWidgetPropertySection: PropertySectionComponent<GQLLabelWidget> = ({
   editingContextId,
@@ -50,7 +52,7 @@ export const LabelWidgetPropertySection: PropertySectionComponent<GQLLabelWidget
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useStyle(props);
+  const { classes } = useStyle(props);
   return (
     <div className={classes.propertySection}>
       <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />

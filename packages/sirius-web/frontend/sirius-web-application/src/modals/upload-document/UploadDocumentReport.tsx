@@ -11,14 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
 import { UploadDocumentReportProps, UploadDocumentReportState } from './UploadDocumentReport.types';
 
-const useUploadDocumentReportStyles = makeStyles((theme: Theme) => ({
+const useUploadDocumentReportStyles = makeStyles()((theme: Theme) => ({
   report: {
     display: 'flex',
     flexDirection: 'row',
@@ -50,7 +51,7 @@ export const UploadDocumentReport = ({ uploadedDocument }: UploadDocumentReportP
     }
   };
 
-  const classes = useUploadDocumentReportStyles();
+  const { classes } = useUploadDocumentReportStyles();
 
   if (!uploadedDocument) {
     return null;

@@ -12,16 +12,16 @@
  *******************************************************************************/
 
 import { ServerContext, ServerContextValue, useData } from '@eclipse-sirius/sirius-components-core';
-import IconButton from '@material-ui/core/IconButton';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
 import { ComponentType, useContext, useState } from 'react';
 import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';

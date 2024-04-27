@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import { makeStyles } from '@material-ui/core/styles';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
 import { useCallback, useRef } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { Tool } from '../../Tool';
 import { GQLSingleClickOnDiagramElementTool, GQLTool } from '../Palette.types';
 import { useDiagramPalette } from '../useDiagramPalette';
 import { ToolSectionProps } from './ToolSection.types';
 
-const useToolSectionStyles = makeStyles((theme) => ({
+const useToolSectionStyles = makeStyles()((theme) => ({
   toolSection: {
     display: 'flex',
     flexDirection: 'row',
@@ -51,7 +51,7 @@ export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onE
   const tools = toolSection.tools.filter(isSingleClickOnDiagramElementTool);
   const { getLastToolInvoked, setLastToolInvoked } = useDiagramPalette();
 
-  const classes = useToolSectionStyles();
+  const { classes } = useToolSectionStyles();
 
   const onActiveTool = useCallback(
     (tool) => {
@@ -100,7 +100,6 @@ export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onE
         open={toolSectionExpandId === toolSection.id}
         anchorEl={anchorRef.current}
         placement="bottom-start"
-        transition
         disablePortal
         style={{ zIndex: 9999 }}>
         <Paper className={classes.toolList} elevation={2}>

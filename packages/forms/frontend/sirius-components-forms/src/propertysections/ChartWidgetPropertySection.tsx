@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { BarChart, PieChart } from '@eclipse-sirius/sirius-components-charts';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLBarChart, GQLChart, GQLChartWidget, GQLPieChart } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useStyles = makeStyles<Theme>(() => ({
+const useStyles = makeStyles()(() => ({
   chart: {
     overflowX: 'auto',
   },
@@ -30,7 +30,7 @@ export const ChartWidgetPropertySection: PropertySectionComponent<GQLChartWidget
   formId,
   widget,
 }: PropertySectionComponentProps<GQLChartWidget>) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { chart } = widget;
 
   let chartComponent: JSX.Element | null;

@@ -11,15 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
 import { ListProjectsAreaProps, ListProjectsAreaState, NoProjectsFoundProps } from './ListProjectsArea.types';
 import { ProjectsTable } from './ProjectsTable';
 import { useProjects } from './useProjects';
 import { GQLProject } from './useProjects.types';
 
-const useListProjectsAreaStyles = makeStyles((theme) => ({
+const useListProjectsAreaStyles = makeStyles()((theme) => ({
   listProjectsArea: {
     display: 'flex',
     flexDirection: 'column',
@@ -45,7 +45,7 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
   const projects: GQLProject[] = data?.viewer.projects.edges.map((edge) => edge.node) ?? [];
   const count: number = data?.viewer.projects.pageInfo.count ?? 0;
 
-  const classes = useListProjectsAreaStyles();
+  const { classes } = useListProjectsAreaStyles();
   return (
     <div className={classes.listProjectsArea}>
       <div className={classes.header}>
@@ -69,7 +69,7 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
   );
 };
 
-const useNoProjectsFoundStyles = makeStyles(() => ({
+const useNoProjectsFoundStyles = makeStyles()(() => ({
   noProjectsFound: {
     display: 'flex',
     justifyContent: 'center',
@@ -78,7 +78,7 @@ const useNoProjectsFoundStyles = makeStyles(() => ({
 }));
 
 const NoProjectsFound = ({}: NoProjectsFoundProps) => {
-  const classes = useNoProjectsFoundStyles();
+  const { classes } = useNoProjectsFoundStyles();
   return (
     <div className={classes.noProjectsFound}>
       <Typography variant="h4" align="center">

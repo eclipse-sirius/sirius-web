@@ -10,23 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import Menu from '@material-ui/core/Menu';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+import Menu from '@mui/material/Menu';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { LaneContextMenuProps } from './LaneContextMenu.types';
 import { useCardVisibility } from './useCardVisibility';
 
-const useStyle = makeStyles((theme) => ({
+const useStyle = makeStyles()((theme) => ({
   listItemText: {
     fontSize: theme.typography.fontSize,
     color: theme.palette.text.primary,
@@ -48,7 +48,7 @@ export const LaneContextMenu = ({ menuAnchor, onClose, onChangesApplied, cards }
     onChangesApplied(selectedCardsIds);
   };
 
-  const classes = useStyle();
+  const { classes } = useStyle();
   return (
     <>
       <Menu
@@ -59,7 +59,6 @@ export const LaneContextMenu = ({ menuAnchor, onClose, onChangesApplied, cards }
         onClose={onClose}
         data-testid="lane-contextmenu"
         disableRestoreFocus={true}
-        getContentAnchorEl={null}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',

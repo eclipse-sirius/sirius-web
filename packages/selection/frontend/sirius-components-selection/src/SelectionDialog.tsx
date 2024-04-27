@@ -13,18 +13,18 @@
 import { gql, useSubscription } from '@apollo/client';
 import { IconOverlay, Toast } from '@eclipse-sirius/sirius-components-core';
 import { DiagramDialogComponentProps } from '@eclipse-sirius/sirius-components-diagrams';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import CropDinIcon from '@material-ui/icons/CropDin';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { makeStyles } from 'tss-react/mui';
+import CropDinIcon from '@mui/icons-material/CropDin';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import {
@@ -60,16 +60,14 @@ const selectionEventSubscription = gql`
   }
 `;
 
-const useSelectionObjectModalStyles = makeStyles((_theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-      position: 'relative',
-      overflow: 'auto',
-      maxHeight: 300,
-    },
-  })
-);
+const useSelectionObjectModalStyles = makeStyles()((_theme) => ({
+  root: {
+    width: '100%',
+    position: 'relative',
+    overflow: 'auto',
+    maxHeight: 300,
+  },
+}));
 
 export const SELECTION_DIALOG_TYPE: string = 'selectionDialogDescription';
 
@@ -80,7 +78,7 @@ export const SelectionDialog = ({
   onClose,
   onFinish,
 }: DiagramDialogComponentProps) => {
-  const classes = useSelectionObjectModalStyles();
+  const { classes } = useSelectionObjectModalStyles();
 
   const [{ value, context }, dispatch] = useMachine<SelectionDialogContext, SelectionDialogEvent>(
     selectionDialogMachine

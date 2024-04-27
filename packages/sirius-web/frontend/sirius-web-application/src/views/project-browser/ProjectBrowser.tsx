@@ -11,15 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useComponent } from '@eclipse-sirius/sirius-components-core';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { CreateProjectArea } from './create-projects-area/CreateProjectArea';
 import { ListProjectsArea } from './list-projects-area/ListProjectsArea';
 
-const useProjectsViewStyles = makeStyles((theme) => ({
+const useProjectsViewStyles = makeStyles()((theme) => ({
   projectsView: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -36,7 +36,7 @@ const useProjectsViewStyles = makeStyles((theme) => ({
 }));
 
 export const ProjectBrowser = () => {
-  const classes = useProjectsViewStyles();
+  const { classes } = useProjectsViewStyles();
   const { Component: Footer } = useComponent(footerExtensionPoint);
 
   return (

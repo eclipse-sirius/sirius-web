@@ -13,8 +13,8 @@
 
 import { Project } from '../../../pages/Project';
 import { Studio } from '../../../usecases/Studio';
-import { Explorer } from '../../../workbench/Explorer';
 import { Details } from '../../../workbench/Details';
+import { Explorer } from '../../../workbench/Explorer';
 
 describe('/projects/:projectId/edit - Studio', () => {
   context('Given a studio template', () => {
@@ -137,7 +137,10 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.get('[data-testid$=" Diagram Description"]').dblclick();
       cy.getByTestId('DiagramPalette-more').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value="Node Tool"]').should('exist').click();
       cy.getByTestId('create-object').click();
@@ -159,7 +162,7 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('empty').click();
       cy.getByTestId('Others...-more').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('domain').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('domain').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('domain').find('div').first().should('not.have.attr', 'aria-disabled');
       cy.getByTestId('domain').click();
       cy.getByTestId('domain').get('[data-value^="domain://"]').should('exist').click();
@@ -168,7 +171,7 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('Root-more').click();
       cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
       cy.getByTestId('representationDescription')
-        .children('[role="button"]')
+        .children('[role="combobox"]')
         .invoke('text')
         .should('have.length.gt', 1);
       cy.getByTestId('representationDescription').click();
@@ -217,14 +220,20 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.get('[data-testid$=" Diagram Description"]').dblclick();
       cy.get('[data-testid$=" Diagram Description-more"]').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Node-toggle').click();
       cy.getByTestId('Node-more').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value="Sub-node"]').should('exist').click();
       cy.getByTestId('create-object').click();
@@ -240,14 +249,20 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.get('[data-testid$=" Diagram Description"]').dblclick();
       cy.get('[data-testid$=" Diagram Description-more"]').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Node-toggle').click();
       cy.getByTestId('Node-more').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value="Border node"]').should('exist').click();
       cy.getByTestId('create-object').click();
@@ -266,7 +281,10 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('delete').click();
       cy.getByTestId('Entity1 Node-more').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value="Style Rectangular"]').should('exist').click();
       cy.getByTestId('create-object').click();
@@ -281,7 +299,10 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.get('[data-testid$=" Diagram Description"]').dblclick();
       cy.get('[data-testid$=" Diagram Description-more"]').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value="Edge Description"]').should('exist').click();
       cy.getByTestId('create-object').click();
@@ -295,7 +316,10 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('ViewNewModel').dblclick();
       cy.getByTestId('View-more').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value="Form Description"]').should('exist').click();
       cy.getByTestId('create-object').click();
@@ -304,7 +328,10 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('GroupDescription').dblclick();
       cy.getByTestId('GroupDescription-more').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription')
         .get('[data-value="Widgets Textfield Description"]')
@@ -313,7 +340,10 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('create-object').click();
       cy.getByTestId('TextfieldDescription-more').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription')
         .get('[data-value="Style Textfield Description Style"]')
@@ -335,7 +365,10 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.get('[data-testid$=" Diagram Description"]').dblclick();
       cy.get('[data-testid$=" Diagram Description-more"]').click();
       cy.getByTestId('new-object').click();
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
       cy.getByTestId('create-object').click();

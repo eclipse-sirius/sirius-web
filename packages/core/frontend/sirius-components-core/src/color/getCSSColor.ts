@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,8 +31,8 @@ import {
   red,
   teal,
   yellow,
-} from '@material-ui/core/colors';
-import { Theme } from '@material-ui/core/styles';
+} from '@mui/material/colors';
+import { Theme } from '@mui/material/styles';
 
 const muiColors = {
   amber: amber,
@@ -76,8 +76,6 @@ export const getCSSColor = (value: string, theme: Theme): string => {
       cssColor = theme.palette.text.primary;
     } else if (value === 'theme.palette.text.disabled') {
       cssColor = theme.palette.text.disabled;
-    } else if (value === 'theme.palette.text.hint') {
-      cssColor = theme.palette.text.hint;
     } else if (value === 'theme.palette.error.main') {
       cssColor = theme.palette.error.main;
     } else if (value === 'theme.palette.error.light') {

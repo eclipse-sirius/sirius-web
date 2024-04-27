@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,32 +11,34 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { getTextDecorationLineValue, TextfieldStyleProps } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import { TextfieldStyleProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { TextfieldWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles<Theme, TextfieldStyleProps>((theme) => ({
-  style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : null),
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-  },
-  selected: {
-    color: theme.palette.primary.main,
-  },
-  propertySectionLabel: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-}));
+const useStyles = makeStyles<TextfieldStyleProps>()(
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough }) => ({
+    style: {
+      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+    },
+    selected: {
+      color: theme.palette.primary.main,
+    },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+  })
+);
 
 export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
   const props: TextfieldStyleProps = {
@@ -48,7 +50,7 @@ export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
   const { selection } = useSelection();

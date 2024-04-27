@@ -10,11 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
+
 import { Group } from '../groups/Group';
 import { PageProps } from './Page.types';
 
-const usePageStyles = makeStyles((theme) => ({
+const usePageStyles = makeStyles()((theme) => ({
   page: {
     display: 'flex',
     flexDirection: 'column',
@@ -26,7 +27,7 @@ const usePageStyles = makeStyles((theme) => ({
 }));
 
 export const Page = ({ editingContextId, formId, page, readOnly }: PageProps) => {
-  const classes = usePageStyles();
+  const { classes } = usePageStyles();
   return (
     <div className={classes.page}>
       {page.groups.map((group) => {

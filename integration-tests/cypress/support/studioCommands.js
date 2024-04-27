@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 
 Cypress.Commands.add('createInstanceFromDomainModel', (domain, withReactFlowRepresentation) => {
   cy.url().should('eq', Cypress.config().baseUrl + '/projects');
-  cy.get('[title="Blank Studio"]').should('be.visible');
+  cy.get('[aria-label="Blank Studio"]').should('be.visible');
   cy.getByTestId('create').click();
 
   cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
@@ -23,7 +23,7 @@ Cypress.Commands.add('createInstanceFromDomainModel', (domain, withReactFlowRepr
   cy.getByTestId('empty').click();
   cy.getByTestId('Others...-more').click();
   cy.getByTestId('new-object').click();
-  cy.getByTestId('domain').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+  cy.getByTestId('domain').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
   cy.getByTestId('domain').find('div').first().should('not.have.attr', 'aria-disabled');
   cy.getByTestId('domain').click();
   cy.getByTestId('domain').get(`[data-value="domain://${domain}"]`).should('exist').click();
@@ -31,7 +31,10 @@ Cypress.Commands.add('createInstanceFromDomainModel', (domain, withReactFlowRepr
   if (withReactFlowRepresentation) {
     cy.getByTestId('Root-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
-    cy.getByTestId('representationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('representationDescription')
+      .children('[role="combobox"]')
+      .invoke('text')
+      .should('have.length.gt', 1);
     cy.getByTestId('representationDescription').click();
     cy.get(`[data-testid="${domain} Diagram Description"]`).should('exist').click();
     cy.getByTestId('name').clear().type('diagram__REACT_FLOW');

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ComponentExtensionPoint, DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { MenuItemProps } from '@material-ui/core/MenuItem';
+import { MenuItemProps } from '@mui/material/MenuItem';
 import { Help } from './Help';
 import { NavigationBarMenuIconProps } from './NavigationBarMenu.types';
 

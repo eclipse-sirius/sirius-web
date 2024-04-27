@@ -17,13 +17,13 @@ import {
   useComponents,
   ComponentExtension,
 } from '@eclipse-sirius/sirius-components-core';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import UnfoldMore from '@material-ui/icons/UnfoldMore';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import UnfoldMore from '@mui/icons-material/UnfoldMore';
 import { useEffect, useState } from 'react';
 import {
   GQLDeleteTreeItemData,
@@ -120,7 +120,6 @@ export const TreeItemContextMenu = ({
         onClose={onClose}
         data-testid="treeitem-contextmenu"
         disableRestoreFocus={true}
-        getContentAnchorEl={null}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',

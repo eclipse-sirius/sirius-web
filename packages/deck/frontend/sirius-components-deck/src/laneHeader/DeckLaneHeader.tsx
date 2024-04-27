@@ -11,18 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Theme, useTheme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useEffect, useRef } from 'react';
 import { DeckInput } from '../common/DeckInput';
 import { LaneHeader } from '../styled/DeckLaneStyledComponents';
 import { DeckTitle, RightContent, titleFontStyle } from '../styled/DeckStyledComponents';
 import { DeckLaneHeaderProps } from './DeckLaneHeader.types';
 
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import { useLaneContextMenu } from './useLaneContextMenu';
 
-const useLaneHeaderStyle = makeStyles((theme) => ({
+const useLaneHeaderStyle = makeStyles()((theme) => ({
   more: {
     hover: {
       backgroundColor: theme.palette.action.hover,
@@ -65,7 +66,7 @@ export const DeckLaneHeader = ({
     }
   };
 
-  const classes = useLaneHeaderStyle();
+  const { classes } = useLaneHeaderStyle();
   return (
     <>
       <LaneHeader onKeyDown={handleKeyDown} tabIndex={0} ref={headerRef}>

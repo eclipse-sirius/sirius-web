@@ -12,29 +12,32 @@
  *******************************************************************************/
 import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { DateTimeStyleProps } from '@eclipse-sirius/sirius-components-forms';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { DataTimeWidgetState } from './DateTimeWidget.types';
 import { DateTimeWidgetProps } from './WidgetEntry.types';
 
-const useDataTimeWidgetStyles = makeStyles<Theme, DateTimeStyleProps>((theme) => ({
-  style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : null),
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-  },
-  textfield: {
-    marginTop: theme.spacing(0.5),
-    marginBottom: theme.spacing(0.5),
-  },
-  selected: {
-    color: theme.palette.primary.main,
-  },
-}));
+const useDataTimeWidgetStyles = makeStyles<DateTimeStyleProps>()(
+  (theme, { backgroundColor, foregroundColor, italic, bold }) => ({
+    style: {
+      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+    },
+    textfield: {
+      marginTop: theme.spacing(0.5),
+      marginBottom: theme.spacing(0.5),
+    },
+    selected: {
+      color: theme.palette.primary.main,
+    },
+    input: {},
+  })
+);
 
 export const DateTimeWidget = ({ widget }: DateTimeWidgetProps) => {
   const props: DateTimeStyleProps = {
@@ -43,7 +46,7 @@ export const DateTimeWidget = ({ widget }: DateTimeWidgetProps) => {
     italic: widget.style?.italic ?? null,
     bold: widget.style?.bold ?? null,
   };
-  const classes = useDataTimeWidgetStyles(props);
+  const { classes } = useDataTimeWidgetStyles(props);
 
   const [state, setState] = useState<DataTimeWidgetState>({
     selected: false,

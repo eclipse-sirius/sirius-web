@@ -60,7 +60,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.wait(500); // Wait for representation to refresh
     cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').should('have.lengthOf', 2);
     cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').eq(1).click();
-    cy.get('[title="Group"]').should('exist');
+    cy.get('[aria-label="Group"]').should('exist');
   });
 
   it('try to rename a page', () => {
@@ -116,7 +116,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     const dataTransfer = new DataTransfer();
     cy.getByTestId('FormDescriptionEditor-Slider').trigger('dragstart', { dataTransfer });
     cy.get('[data-testid^="Group-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
-    cy.get('[title="Slider"]').should('be.visible');
+    cy.get('[aria-label="Slider"]').should('be.visible');
   });
 
   it('can create a slider widget in a Flexbox Container', () => {
@@ -126,12 +126,12 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     var dataTransfer = new DataTransfer();
     cy.getByTestId('FormDescriptionEditor-FlexboxContainer').trigger('dragstart', { dataTransfer });
     cy.get('[data-testid^="Group-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
-    cy.get('[title="FlexboxContainer"]').should('be.visible');
+    cy.get('[aria-label="FlexboxContainer"]').should('be.visible');
     // Create a slider inside the Flexbox
     dataTransfer = new DataTransfer();
     cy.getByTestId('FormDescriptionEditor-Slider').trigger('dragstart', { dataTransfer });
     cy.get('[data-testid^="FlexboxContainer-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
-    cy.get('[title="Slider"]').should('be.visible');
+    cy.get('[aria-label="Slider"]').should('be.visible');
   });
 
   it('display the page of the element selected', () => {
@@ -139,7 +139,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('New Form Description').click();
     cy.getByTestId('New Form Description-more').should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click().get('[data-value="Page Description"]').should('exist').click();
     cy.getByTestId('create-object').click();
     // Adds a widget to the first page
@@ -147,7 +147,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('GroupDescription').eq(0).click();
     cy.getByTestId('GroupDescription-more').eq(0).should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
       .click()
       .get('[data-value="Widgets Pie Chart Description"]')
@@ -159,7 +159,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('GroupDescription').eq(1).click();
     cy.getByTestId('GroupDescription-more').eq(1).should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
       .click()
       .get('[data-value="Widgets Bar Chart Description"]')
@@ -200,12 +200,12 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     const dataTransfer = new DataTransfer();
     cy.getByTestId('FormDescriptionEditor-ReferenceWidget').trigger('dragstart', { dataTransfer });
     cy.get('[data-testid^="Group-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
-    cy.get('[title="ReferenceWidget"]').should('be.visible');
+    cy.get('[aria-label="ReferenceWidget"]').should('be.visible');
     cy.getByTestId('PageDescription').dblclick();
     cy.getByTestId('GroupDescription').dblclick();
     cy.getByTestId('ReferenceWidgetDescription-more').should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
       .click()
       .get('[data-value="Conditional Styles Conditional Reference Widget Description Style"]')
@@ -227,18 +227,18 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     var dataTransfer = new DataTransfer();
     cy.getByTestId('FormDescriptionEditor-FlexboxContainer').trigger('dragstart', { dataTransfer });
     cy.get('[data-testid^="Group-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
-    cy.get('[title="FlexboxContainer"]').should('be.visible');
+    cy.get('[aria-label="FlexboxContainer"]').should('be.visible');
     // Create a Reference inside the Flexbox
     dataTransfer = new DataTransfer();
     cy.getByTestId('FormDescriptionEditor-ReferenceWidget').trigger('dragstart', { dataTransfer });
     cy.get('[data-testid^="FlexboxContainer-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
-    cy.get('[title="ReferenceWidget"]').should('be.visible');
+    cy.get('[aria-label="ReferenceWidget"]').should('be.visible');
   });
 
   function checkWidgetIsEnabledExpression(widgetName, should) {
     cy.getByTestId('GroupDescription-more').should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
       .click()
       .get('[data-value="' + widgetName + ' Description"]')
@@ -264,7 +264,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
 
   function createBorderStyleAndCheckProperties(styleName) {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
       .click()
       .get('[data-value="' + styleName + '"]')
@@ -296,7 +296,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     var dataTransfer = new DataTransfer();
     cy.getByTestId('FormDescriptionEditor-FlexboxContainer').trigger('dragstart', { dataTransfer });
     cy.get('[data-testid^="Group-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
-    cy.get('[title="FlexboxContainer"]').should('be.visible');
+    cy.get('[aria-label="FlexboxContainer"]').should('be.visible');
 
     cy.getByTestId('GroupDescription').dblclick();
     cy.getByTestId('FlexboxContainerDescription-more').click();
@@ -316,42 +316,42 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
 
     // Create top-level If, For and Flexbox inside the Group
     createControl('FormElementIf', 'Group-Widgets-DropArea', 0);
-    cy.get('[title="FormDescriptionEditorIf"]').eq(0).should('be.visible');
+    cy.get('[aria-label="FormDescriptionEditorIf"]').eq(0).should('be.visible');
     createControl('FormElementFor', 'Group-Widgets-DropArea', 0);
-    cy.get('[title="FormDescriptionEditorFor"]').eq(0).should('be.visible');
+    cy.get('[aria-label="FormDescriptionEditorFor"]').eq(0).should('be.visible');
     createControl('FlexboxContainer', 'Group-Widgets-DropArea', 0);
-    cy.get('[title="FlexboxContainer"]').eq(0).should('be.visible');
+    cy.get('[aria-label="FlexboxContainer"]').eq(0).should('be.visible');
 
     // NOTE: the indexes for the target drop-area depend on the order in which the
     // widgets of the same kind were created and appear before on the page.
 
     // If, For, Flexbox and Label widget inside an If
     createControl('FormElementIf', 'FormDescriptionEditorIf-Widgets-DropArea', 0);
-    cy.get('[title="FormDescriptionEditorIf"]').should('have.lengthOf', 2);
+    cy.get('[aria-label="FormDescriptionEditorIf"]').should('have.lengthOf', 2);
     createControl('FormElementFor', 'FormDescriptionEditorIf-Widgets-DropArea', 1);
-    cy.get('[title="FormDescriptionEditorFor"]').should('have.lengthOf', 2);
+    cy.get('[aria-label="FormDescriptionEditorFor"]').should('have.lengthOf', 2);
     createControl('FlexboxContainer', 'FormDescriptionEditorIf-Widgets-DropArea', 1);
-    cy.get('[title="FlexboxContainer"]').should('have.lengthOf', 2);
+    cy.get('[aria-label="FlexboxContainer"]').should('have.lengthOf', 2);
     createControl('Label', 'FormDescriptionEditorIf-Widgets-DropArea', 1);
-    cy.get('[title="LabelWidget"]').should('have.lengthOf', 1);
+    cy.get('[aria-label="LabelWidget"]').should('have.lengthOf', 1);
 
     // The same, but inside the For
     createControl('FormElementIf', 'FormDescriptionEditorFor-Widgets-DropArea', 1);
-    cy.get('[title="FormDescriptionEditorIf"]').should('have.lengthOf', 3);
+    cy.get('[aria-label="FormDescriptionEditorIf"]').should('have.lengthOf', 3);
     createControl('FormElementFor', 'FormDescriptionEditorFor-Widgets-DropArea', 1);
-    cy.get('[title="FormDescriptionEditorFor"]').should('have.lengthOf', 3);
+    cy.get('[aria-label="FormDescriptionEditorFor"]').should('have.lengthOf', 3);
     createControl('FlexboxContainer', 'FormDescriptionEditorFor-Widgets-DropArea', 2);
-    cy.get('[title="FlexboxContainer"]').should('have.lengthOf', 3);
+    cy.get('[aria-label="FlexboxContainer"]').should('have.lengthOf', 3);
     createControl('Label', 'FormDescriptionEditorFor-Widgets-DropArea', 2);
-    cy.get('[title="LabelWidget"]').should('have.lengthOf', 2);
+    cy.get('[aria-label="LabelWidget"]').should('have.lengthOf', 2);
     // The same, but inside the flexbox container
     createControl('FormElementIf', 'FlexboxContainer-Widgets-DropArea', 2);
-    cy.get('[title="FormDescriptionEditorIf"]').should('have.lengthOf', 4);
+    cy.get('[aria-label="FormDescriptionEditorIf"]').should('have.lengthOf', 4);
     createControl('FormElementFor', 'FlexboxContainer-Widgets-DropArea', 2);
-    cy.get('[title="FormDescriptionEditorFor"]').should('have.lengthOf', 4);
+    cy.get('[aria-label="FormDescriptionEditorFor"]').should('have.lengthOf', 4);
     createControl('FlexboxContainer', 'FlexboxContainer-Widgets-DropArea', 2);
-    cy.get('[title="FlexboxContainer"]').should('have.lengthOf', 4);
+    cy.get('[aria-label="FlexboxContainer"]').should('have.lengthOf', 4);
     createControl('Label', 'FlexboxContainer-Widgets-DropArea', 3);
-    cy.get('[title="LabelWidget"]').should('have.lengthOf', 2);
+    cy.get('[aria-label="LabelWidget"]').should('have.lengthOf', 2);
   });
 });

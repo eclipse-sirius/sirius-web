@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
-import Tooltip from '@material-ui/core/Tooltip';
-import EditIcon from '@material-ui/icons/Edit';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
-import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
-import PanToolIcon from '@material-ui/icons/PanTool';
-import ShareIcon from '@material-ui/icons/Share';
+import EditIcon from '@mui/icons-material/Edit';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import PanToolIcon from '@mui/icons-material/PanTool';
+import ShareIcon from '@mui/icons-material/Share';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import { useFullscreen } from '../hooks/useFullScreen';
 import { PortalToolbarProps, PortalToolbarState } from './PortalToolbar.types';
@@ -69,24 +69,28 @@ export const PortalToolbar = ({
           </IconButton>
         </Tooltip>
         <Tooltip title="Edit portal configuration">
-          <IconButton
-            size="small"
-            aria-label="edit portal configuration"
-            disabled={portalMode === 'edit' || portalMode === 'read-only'}
-            onClick={() => setPortalMode('edit')}
-            data-testid="portal-edit-portal-mode">
-            <EditIcon />
-          </IconButton>
+          <span>
+            <IconButton
+              size="small"
+              aria-label="edit portal configuration"
+              disabled={portalMode === 'edit' || portalMode === 'read-only'}
+              onClick={() => setPortalMode('edit')}
+              data-testid="portal-edit-portal-mode">
+              <EditIcon />
+            </IconButton>
+          </span>
         </Tooltip>
         <Tooltip title="Edit representations">
-          <IconButton
-            size="small"
-            aria-label="edit representations"
-            disabled={portalMode === 'direct' || portalMode === 'read-only'}
-            onClick={() => setPortalMode('direct')}
-            data-testid="portal-edit-representations-mode">
-            <PanToolIcon />
-          </IconButton>
+          <span>
+            <IconButton
+              size="small"
+              aria-label="edit representations"
+              disabled={portalMode === 'direct' || portalMode === 'read-only'}
+              onClick={() => setPortalMode('direct')}
+              data-testid="portal-edit-representations-mode">
+              <PanToolIcon />
+            </IconButton>
+          </span>
         </Tooltip>
       </Paper>
       {modalElement}

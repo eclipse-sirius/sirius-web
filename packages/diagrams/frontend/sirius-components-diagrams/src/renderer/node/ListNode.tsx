@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
-import { Theme, useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@mui/material/styles';
 import { memo, useMemo } from 'react';
 import { NodeProps } from 'reactflow';
 import { Label } from '../Label';

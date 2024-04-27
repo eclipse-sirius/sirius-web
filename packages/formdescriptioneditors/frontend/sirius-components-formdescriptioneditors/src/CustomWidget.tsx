@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,15 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import ExtensionIcon from '@material-ui/icons/Extension';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import ExtensionIcon from '@mui/icons-material/Extension';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { CustomWidgetProps } from './CustomWidget.types';
 
 type CustomWidgetStyleProps = {};
-const useStyles = makeStyles<Theme, CustomWidgetStyleProps>((theme) => ({
+const useStyles = makeStyles<CustomWidgetStyleProps>()((theme) => ({
   style: {
     color: theme.palette.secondary.main,
   },
@@ -40,7 +40,7 @@ const useStyles = makeStyles<Theme, CustomWidgetStyleProps>((theme) => ({
  */
 export const CustomWidget = ({ widget }: CustomWidgetProps) => {
   const props: CustomWidgetStyleProps = {};
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
   const { selection } = useSelection();

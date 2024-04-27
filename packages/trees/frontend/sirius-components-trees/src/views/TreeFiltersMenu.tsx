@@ -11,21 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Checkbox from '@material-ui/core/Checkbox';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Fade from '@material-ui/core/Fade';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import { makeStyles } from '@material-ui/core/styles';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import Checkbox from '@mui/material/Checkbox';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Fade from '@mui/material/Fade';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import { makeStyles } from 'tss-react/mui';
 import { useEffect, useRef, useState } from 'react';
 import { TreeFilter } from './ExplorerView.types';
 import { TreeFilterMenuProps } from './TreeFiltersMenu.types';
 
-const useTreeFiltersMenuStyles = makeStyles((_) => ({
+const useTreeFiltersMenuStyles = makeStyles()((_) => ({
   root: {
     display: 'flex',
   },
@@ -35,7 +35,7 @@ const useTreeFiltersMenuStyles = makeStyles((_) => ({
 }));
 
 export const TreeFiltersMenu = ({ filters, onTreeFilterMenuItemClick }: TreeFilterMenuProps) => {
-  const classes = useTreeFiltersMenuStyles();
+  const { classes } = useTreeFiltersMenuStyles();
   const [open, setOpen] = useState<boolean>(false);
   const anchorRef = useRef<HTMLButtonElement | null>(null);
 
@@ -43,7 +43,7 @@ export const TreeFiltersMenu = ({ filters, onTreeFilterMenuItemClick }: TreeFilt
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleClose = (event: React.MouseEvent<EventTarget>) => {
+  const handleClose = (event: MouseEvent | TouchEvent) => {
     if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
       return;
     }
@@ -80,8 +80,7 @@ export const TreeFiltersMenu = ({ filters, onTreeFilterMenuItemClick }: TreeFilt
         open={open}
         anchorEl={anchorRef.current}
         role={undefined}
-        placement={'bottom-start'}
-        transition>
+        placement={'bottom-start'}>
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
             <Paper>

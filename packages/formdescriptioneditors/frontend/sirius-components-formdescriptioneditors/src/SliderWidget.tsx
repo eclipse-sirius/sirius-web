@@ -11,15 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
-import Slider from '@material-ui/core/Slider';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import ExtensionIcon from '@material-ui/icons/Extension';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import ExtensionIcon from '@mui/icons-material/Extension';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import Slider from '@mui/material/Slider';
+import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { SliderWidgetProps } from './WidgetEntry.types';
 
-const useSliderWidgetStyles = makeStyles<Theme>((theme) => ({
+const useSliderWidgetStyles = makeStyles()((theme) => ({
   style: {
     color: theme.palette.secondary.main,
   },
@@ -34,7 +34,7 @@ const useSliderWidgetStyles = makeStyles<Theme>((theme) => ({
 }));
 
 export const SliderWidget = ({ widget }: SliderWidgetProps) => {
-  const classes = useSliderWidgetStyles();
+  const { classes } = useSliderWidgetStyles();
 
   const [selected, setSelected] = useState<boolean>(false);
 

@@ -11,12 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useComponent, useComponents } from '@eclipse-sirius/sirius-components-core';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import { emphasize, makeStyles } from '@material-ui/core/styles';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import { emphasize } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Link as RouterLink } from 'react-router-dom';
 import { NavigationBarProps } from './NavigationBar.types';
 import {
@@ -26,7 +27,7 @@ import {
 } from './NavigationBarExtensionPoints';
 import { NavigationBarMenu } from './NavigationBarMenu';
 
-const useNavigationBarStyles = makeStyles((theme) => ({
+const useNavigationBarStyles = makeStyles()((theme) => ({
   navbar: {
     display: 'flex',
     flexDirection: 'column',
@@ -66,7 +67,7 @@ const useNavigationBarStyles = makeStyles((theme) => ({
 }));
 
 export const NavigationBar = ({ children }: NavigationBarProps) => {
-  const classes = useNavigationBarStyles();
+  const { classes } = useNavigationBarStyles();
 
   const { Component: Icon } = useComponent(navigationBarIconExtensionPoint);
 

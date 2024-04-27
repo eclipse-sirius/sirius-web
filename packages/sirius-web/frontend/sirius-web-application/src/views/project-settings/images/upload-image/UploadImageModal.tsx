@@ -12,14 +12,14 @@
  *******************************************************************************/
 import { gql } from '@apollo/client';
 import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormGroup from '@material-ui/core/FormGroup';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormGroup from '@mui/material/FormGroup';
+import TextField from '@mui/material/TextField';
+import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { FileUpload } from '../../../..//core/file-upload/FileUpload';
@@ -56,7 +56,7 @@ const uploadImageMutationFile = gql`
   }
 `.loc.source.body;
 
-const useUploadImageModalStyle = makeStyles((theme) => ({
+const useUploadImageModalStyle = makeStyles()((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -73,7 +73,7 @@ const isErrorPayload = (payload: GQLUploadImagePayload): payload is GQLErrorPayl
   payload.__typename === 'ErrorPayload';
 
 export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: UploadImageModalProps) => {
-  const classes = useUploadImageModalStyle();
+  const { classes } = useUploadImageModalStyle();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [{ value, context }, dispatch] = useMachine<UploadImageModalContext, UploadImageModalEvent>(
     uploadImageModalMachine

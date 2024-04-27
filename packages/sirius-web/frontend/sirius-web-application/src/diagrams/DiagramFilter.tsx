@@ -11,18 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import Tooltip from '@material-ui/core/Tooltip';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import Tooltip from '@mui/material/Tooltip';
 
 import {
   DiagramContext,
   DiagramContextValue,
   DiagramPanelActionProps,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { useContext, useRef, useState } from 'react';
 import { DiagramFilterForm } from './DiagramFilterForm';
 
@@ -37,20 +37,21 @@ export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActio
   return (
     <>
       <Tooltip title="Filter elements" ref={anchorRef}>
-        <IconButton
-          size="small"
-          aria-label="Filter elements"
-          onClick={handlePanel}
-          data-testid="Filter elements"
-          disabled={readOnly}>
-          <FilterListIcon />
-        </IconButton>
+        <span>
+          <IconButton
+            size="small"
+            aria-label="Filter elements"
+            onClick={handlePanel}
+            data-testid="Filter elements"
+            disabled={readOnly}>
+            <FilterListIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <Popper
         open={isOpen}
         anchorEl={anchorRef.current}
         placement="bottom-start"
-        transition
         disablePortal
         style={{ zIndex: '9999' }}>
         <Paper style={{ maxHeight: '50vh', overflow: 'auto' }}>

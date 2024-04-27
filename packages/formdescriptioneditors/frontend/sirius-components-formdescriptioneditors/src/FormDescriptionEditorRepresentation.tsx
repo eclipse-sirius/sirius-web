@@ -12,10 +12,10 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, Toast, useData } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
-import WebIcon from '@material-ui/icons/Web';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
+import WebIcon from '@mui/icons-material/Web';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
 import { formDescriptionEditorEventSubscription } from './FormDescriptionEditorEventFragment';
@@ -42,7 +42,7 @@ import { ForIcon } from './icons/ForIcon';
 import { IfIcon } from './icons/IfIcon';
 import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 
-const useFormDescriptionEditorStyles = makeStyles((theme) => ({
+const useFormDescriptionEditorStyles = makeStyles()((theme) => ({
   formDescriptionEditor: {
     display: 'flex',
     flexDirection: 'column',
@@ -136,7 +136,7 @@ export const FormDescriptionEditorRepresentation = ({
   representationId,
   readOnly,
 }: RepresentationComponentProps) => {
-  const classes = useFormDescriptionEditorStyles();
+  const { classes } = useFormDescriptionEditorStyles();
   const noop = () => {};
 
   const [{ value, context }, dispatch] = useMachine<

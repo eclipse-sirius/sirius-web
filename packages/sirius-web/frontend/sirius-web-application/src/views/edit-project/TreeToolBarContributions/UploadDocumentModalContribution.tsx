@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import { TreeToolBarContributionComponentProps } from '@eclipse-sirius/sirius-components-trees';
-import IconButton from '@material-ui/core/IconButton';
-import { Publish as PublishIcon } from '@material-ui/icons';
+import PublishIcon from '@mui/icons-material/Publish';
+import IconButton from '@mui/material/IconButton';
 
 import { Fragment, useState } from 'react';
 import { UploadDocumentModal } from '../../../modals/upload-document/UploadDocumentModal';

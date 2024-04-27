@@ -12,11 +12,11 @@
  *******************************************************************************/
 import { gql } from '@apollo/client';
 import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -46,7 +46,7 @@ const uploadProjectMutation = gql`
   }
 `.loc.source.body;
 
-const useUploadProjectViewStyles = makeStyles((theme) => ({
+const useUploadProjectViewStyles = makeStyles()((theme) => ({
   uploadProjectViewContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -85,7 +85,7 @@ const useUploadProjectViewStyles = makeStyles((theme) => ({
 }));
 
 export const UploadProjectView = () => {
-  const classes = useUploadProjectViewStyles();
+  const { classes } = useUploadProjectViewStyles();
   const [{ value, context }, dispatch] = useMachine<UploadProjectViewContext, UploadProjectEvent>(uploadProjectMachine);
   const { uploadProjectView, toast } = value as SchemaValue;
   const { file, newProjectId, message } = context;

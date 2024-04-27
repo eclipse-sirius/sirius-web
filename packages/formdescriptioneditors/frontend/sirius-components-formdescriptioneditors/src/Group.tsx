@@ -15,18 +15,19 @@ import {
   Selection,
   Toast,
   getCSSColor,
+  useData,
   useDeletionConfirmationDialog,
   useSelection,
-  useData,
 } from '@eclipse-sirius/sirius-components-core';
 import { GQLWidget, widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import { GroupStyleProps } from '@eclipse-sirius/sirius-components-forms/src/groups/Group.types';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { Theme } from '@mui/material/styles';
 import React, { useEffect, useRef, useState } from 'react';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import {
   addGroupMutation,
   addWidgetMutation,
@@ -62,86 +63,88 @@ import { WidgetEntry } from './WidgetEntry';
 import { isKind } from './WidgetOperations';
 import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
-const useGroupEntryStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
-  group: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    borderWidth: ({ borderStyle }) => (borderStyle ? borderStyle.size : 1),
-    borderColor: ({ borderStyle }) => (borderStyle ? getCSSColor(borderStyle?.color, theme) || 'transparent' : 'gray'),
-    borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
-    borderRadius: ({ borderStyle }) => (borderStyle ? borderStyle.radius : 10),
-    paddingTop: '1px',
-    '&:hover': {
+const useGroupEntryStyles = makeStyles<GroupStyleProps, 'verticalSections' | 'adaptableSections'>()(
+  (theme, { borderStyle }, classes) => ({
+    group: {
+      display: 'flex',
+      flexDirection: 'column',
+      flexGrow: 1,
+      borderWidth: borderStyle ? borderStyle.size : 1,
+      borderColor: borderStyle ? getCSSColor(borderStyle?.color, theme) || 'transparent' : 'gray',
+      borderStyle: borderStyle?.lineStyle || 'solid',
+      borderRadius: borderStyle ? borderStyle.radius : 10,
+      paddingTop: '1px',
+      '&:hover': {
+        borderColor: theme.palette.primary.main,
+      },
+      [`&:has(.${classes.verticalSections}:hover)`]: {
+        borderStyle: 'dashed',
+      },
+      [`&:has(.${classes.adaptableSections}:hover)`]: {
+        borderStyle: 'dashed',
+      },
+    },
+    labelAndToolbar: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingLeft: theme.spacing(1),
+      overflowX: 'auto',
+    },
+    verticalSections: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'stretch',
+      paddingLeft: theme.spacing(1),
+      overflowX: 'auto',
+    },
+    adaptableSections: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+      gap: theme.spacing(2),
+      '& > *': {
+        marginBottom: theme.spacing(2),
+      },
+    },
+    placeholder: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'whitesmoke',
+      border: '1px solid whitesmoke',
+      borderRadius: '5px',
+      height: '20px',
+      width: 'inherit',
+    },
+    dragOver: {
+      borderWidth: '1px',
+      borderStyle: 'dashed',
       borderColor: theme.palette.primary.main,
     },
-    '&:has($verticalSections:hover)': {
-      borderStyle: 'dashed',
+    bottomDropArea: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'whitesmoke',
+      borderRadius: '10px',
+      color: 'gray',
+      height: '60px',
     },
-    '&:has($adaptableSections:hover)': {
-      borderStyle: 'dashed',
+    selected: {
+      color: theme.palette.primary.main,
     },
-  },
-  labelAndToolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: theme.spacing(1),
-    overflowX: 'auto',
-  },
-  verticalSections: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    paddingLeft: theme.spacing(1),
-    overflowX: 'auto',
-  },
-  adaptableSections: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: theme.spacing(2),
-    '& > *': {
-      marginBottom: theme.spacing(2),
-    },
-  },
-  placeholder: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'whitesmoke',
-    border: '1px solid whitesmoke',
-    borderRadius: '5px',
-    height: '20px',
-    width: 'inherit',
-  },
-  dragOver: {
-    borderWidth: '1px',
-    borderStyle: 'dashed',
-    borderColor: theme.palette.primary.main,
-  },
-  bottomDropArea: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'whitesmoke',
-    borderRadius: '10px',
-    color: 'gray',
-    height: '60px',
-  },
-  selected: {
-    color: theme.palette.primary.main,
-  },
-}));
+  })
+);
 
-const GroupTooltip = withStyles((theme: Theme) => ({
+const GroupTooltip = withStyles(Tooltip, (theme: Theme) => ({
   tooltip: {
     backgroundColor: theme.palette.primary.main,
     margin: '0px',
     borderRadius: '0px',
   },
-}))(Tooltip);
+}));
 
 const isErrorPayload = (
   payload: GQLAddWidgetPayload | GQLDeleteGroupPayload | GQLMoveGroupPayload | GQLMoveWidgetPayload
@@ -150,7 +153,7 @@ const isErrorPayload = (
 export const Group = ({ page, group }: GroupProps) => {
   const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
   const noop = () => {};
-  const classes = useGroupEntryStyles({
+  const { classes } = useGroupEntryStyles({
     borderStyle: group.borderStyle,
   });
 

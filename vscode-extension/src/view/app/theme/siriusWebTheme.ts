@@ -12,12 +12,12 @@
  *******************************************************************************/
 
 import { theme } from '@eclipse-sirius/sirius-components-core';
-import { Theme, createTheme } from '@material-ui/core/styles';
+import { Theme, createTheme } from '@mui/material/styles';
 
 export const baseTheme: Theme = createTheme({
   ...theme,
   palette: {
-    type: 'light',
+    mode: 'light',
     primary: {
       main: '#BE1A78',
       dark: '#851254',
@@ -31,7 +31,6 @@ export const baseTheme: Theme = createTheme({
     text: {
       primary: '#261E58',
       disabled: '#B3BFC5',
-      hint: '#B3BFC5',
     },
     error: {
       main: '#DE1000',
@@ -72,15 +71,29 @@ export const baseTheme: Theme = createTheme({
 
 export const siriusWebTheme = createTheme(
   {
-    overrides: {
+    components: {
       MuiAvatar: {
-        colorDefault: {
-          backgroundColor: baseTheme.palette.primary.main,
+        styleOverrides: {
+          colorDefault: {
+            backgroundColor: baseTheme.palette.primary.main,
+          },
         },
       },
       MuiTooltip: {
-        tooltip: {
-          backgroundColor: baseTheme.palette.common.black,
+        styleOverrides: {
+          tooltip: {
+            backgroundColor: baseTheme.palette.common.black,
+          },
+        },
+      },
+      MuiTextField: {
+        defaultProps: {
+          variant: 'standard',
+        },
+      },
+      MuiSelect: {
+        defaultProps: {
+          variant: 'standard',
         },
       },
     },
