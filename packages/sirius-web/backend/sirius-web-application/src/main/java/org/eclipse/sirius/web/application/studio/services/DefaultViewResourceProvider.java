@@ -13,10 +13,14 @@
 package org.eclipse.sirius.web.application.studio.services;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.migration.MigrationService;
+import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.ColorPalette;
@@ -50,6 +54,12 @@ import org.springframework.stereotype.Service;
 public class DefaultViewResourceProvider implements IDefaultViewResourceProvider {
 
     private static final String VIEW_DOCUMENT_NAME = "ViewNewModel";
+
+    private final List<IMigrationParticipant> migrationParticipants;
+
+    public DefaultViewResourceProvider(List<IMigrationParticipant> migrationParticipants) {
+        this.migrationParticipants = Objects.requireNonNull(migrationParticipants);
+    }
 
     @Override
     @SuppressWarnings("checkstyle:MultipleStringLiterals")
@@ -118,8 +128,12 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         linkedToEdge.setStyle(edgeStyle);
 
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
-        resource.eAdapters().add(new ResourceMetadataAdapter(VIEW_DOCUMENT_NAME));
+        var resourceMetadataAdapter = new ResourceMetadataAdapter(VIEW_DOCUMENT_NAME);
+        var migrationService = new MigrationService(this.migrationParticipants);
+
+        resourceMetadataAdapter.setMigrationData(migrationService.getMostRecentParticipantMigrationData());
         resource.getContents().add(view);
+        resource.eAdapters().add(resourceMetadataAdapter);
 
         return resource;
     }

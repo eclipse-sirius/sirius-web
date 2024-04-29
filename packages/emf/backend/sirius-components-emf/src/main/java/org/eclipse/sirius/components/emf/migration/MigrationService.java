@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.migration;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -23,9 +24,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.migration.api.MigrationData;
-import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 
 import com.google.gson.Gson;
@@ -48,6 +49,17 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
 
     private boolean isCandidateVersion(IMigrationParticipant migrationParticipant) {
         return migrationParticipant.getVersion().compareTo(this.documentMigrationData.migrationVersion()) > 0;
+    }
+
+    public MigrationData getMostRecentParticipantMigrationData() {
+        var migrationParticipantsCandidate = migrationParticipants.stream()
+                .filter(this::isCandidateVersion)
+                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
+                .sorted(Collections.reverseOrder())
+                .map(migrationParticipant -> new MigrationData("none", migrationParticipant.getVersion()))
+                .findFirst();
+
+        return migrationParticipantsCandidate.orElse(this.documentMigrationData);
     }
 
     @Override

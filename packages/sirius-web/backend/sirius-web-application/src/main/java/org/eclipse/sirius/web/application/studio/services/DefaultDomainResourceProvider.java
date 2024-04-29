@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -22,6 +24,8 @@ import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.domain.Relation;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.migration.MigrationService;
+import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.studio.services.api.IDefaultDomainResourceProvider;
@@ -36,6 +40,12 @@ import org.springframework.stereotype.Service;
 public class DefaultDomainResourceProvider implements IDefaultDomainResourceProvider {
 
     private static final String DOMAIN_DOCUMENT_NAME = "DomainNewModel";
+
+    private final List<IMigrationParticipant> migrationParticipants;
+
+    public DefaultDomainResourceProvider(List<IMigrationParticipant> migrationParticipants) {
+        this.migrationParticipants = Objects.requireNonNull(migrationParticipants);
+    }
 
     @Override
     public Resource getResource(String domainName) {
@@ -84,7 +94,11 @@ public class DefaultDomainResourceProvider implements IDefaultDomainResourceProv
         this.addAttribute(entity2, "name", DataType.STRING);
 
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
-        resource.eAdapters().add(new ResourceMetadataAdapter(DOMAIN_DOCUMENT_NAME));
+        var resourceMetadataAdapter = new ResourceMetadataAdapter(DOMAIN_DOCUMENT_NAME);
+        var migrationService = new MigrationService(this.migrationParticipants);
+
+        resourceMetadataAdapter.setMigrationData(migrationService.getMostRecentParticipantMigrationData());
+        resource.eAdapters().add(resourceMetadataAdapter);
         resource.getContents().add(domain);
 
         return resource;

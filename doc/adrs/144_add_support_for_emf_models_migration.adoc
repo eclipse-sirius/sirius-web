@@ -18,6 +18,10 @@ One important thing to consider is that BasicExtendedMetaData methods assume tha
 
 The version of the last migration used on a model will be stored at the root of the JSON document on EMFJson side.
 
+The version of a migration participant will represent when it was added to the project and will respect this structure : `ITERATION-YYYYMMDDHHMM`
+
+For example `2024.5.0-202404221400` for a participant added on 2024-04-22 at 14h00 for the iteration 2024.5.0.
+
 [source,java]
 ----
 public class MigrationExtendedMetaData extends BasicExtendedMetaData {
@@ -65,7 +69,7 @@ public interface IMigrationParticipant {
 ----
 
 
-This is an example of implementation where this NameFeatureChangelMigrationParticipant will be used if the model version is superior to `202404221458`.
+This is an example of implementation where this NameFeatureChangelMigrationParticipant will be used if the model version is superior to `2024.5.0-202404221400`.
 If the feature name was changed from "name2" to something else, we provide the new correct value.
 
 [source,java]
@@ -73,7 +77,7 @@ If the feature name was changed from "name2" to something else, we provide the n
 @Service
 public class NameFeatureChangelMigrationParticipant implements IMigrationParticipant {
 
-    private static final String PARTICIPANT_VERSION = "202404221458";
+    private static final String PARTICIPANT_VERSION = "2024.5.0-202404221400";
 
     @Override
     public String getVersion() {
