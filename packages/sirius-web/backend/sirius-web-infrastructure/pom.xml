@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-infrastructure</artifactId>
-	<version>2024.3.3</version>
+	<version>2024.3.4</version>
 	<name>sirius-web-infrastructure</name>
 	<description>Sirius Web Infrastructure</description>
 
@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-application</artifactId>
-			<version>2024.3.3</version>
+			<version>2024.3.4</version>
 		</dependency>
 	</dependencies>
 
