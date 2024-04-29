@@ -1,0 +1,92 @@
+= Create a representation using the content of another representation as input
+
+== Context
+
+Representation event processors are isolated on purpose, but now we want to be able to synchronize the state of a representation event processor with another one.
+
+== Key Result
+
+We want:
+
+- To compute a representation in a representation event processor with the state of another representation as input (e.g. a form using a diagram as input)
+- To have both states synchronized, we don't want to have only the initial state, we want both representations to be refreshed in case something occurs on one of them. 
+For example, interacting with the form should refresh the diagram and the other way around.
+- To be able to execute every existing event handler on both representations.
+- To be able to reuse frontend support for both representations easily
+- To be able to reuse the GraphQL API to interact with both representations easily
+
+== Solution
+
+Given the fact that we want to reuse the frontend, the GraphQL API and the event handlers of both representations, we want to reuse their representation event processors.
+
+The question now becomes, how to retrieve the state of a representation event processor in another one and how to synchronize this state.
+
+=== Synchronize the state
+
+Synchronizing the state is easier than retrieving it because we already have the `ChangeDescription` support which is made for that. 
+
+In our example, both `FormEventProcessor` and `DiagramEventProcessor` could be refreshed simultaneously by having some specific parameter in `ChangeDescription`.
+
+The refresh policy can also be configured by an `IRepresentationRefreshPolicyProvider`, which would allow a specific representation to be refreshed on events that don't trigger a refresh on it usually (e.g. a new form representation could be refreshed by diagram events in addition to the regular semantic changes).
+
+=== Retrieve the current state of a representation
+
+The `FormDescription#getVariableManagerInitializer` API allows to initialize variables for a given form representation.
+We can leverage this form-only (for now) mechanism to initialize a variable with the  representation we want access:
+
+```java
+Function<VariableManager, VariableManager> variableManagerInitializer =
+  vm -> {
+      String editingContextId = vm.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse("");
+
+      IEditingContextEventProcessor editingContextEventProcessor = this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
+              .filter(processor -> processor.getEditingContextId().equals(editingContextId))
+              .findFirst()
+              .orElse(null);
+      IRepresentationEventProcessor representationEventProcessor = Optional.ofNullable(editingContextEventProcessor)
+              .flatMap(processor -> processor.getRepresentationEventProcessors().stream()
+                      .filter(IRepresentationEventProcessor.class::isInstance)
+                      .map(IRepresentationEventProcessor.class::cast)
+                      .filter(p -> p.getRepresentation().getId().equals(SOME_REPRESENTATION_ID_RETRIEVED_FROM_THE_FORM_SUBSCRIPTION_PARAMETERS))
+                      .findFirst()
+              )
+              .orElse(null);
+      vm.put("editingContextEventProcessor", editingContextEventProcessor);
+      vm.put("representationEventProcessor", representationEventProcessor);
+      vm.put("representation", representationEventProcessor.getRepresentation());
+  }
+```
+
+The `representation` variable could then be used in the form to initialize its content (e.g. populate a tree widget).
+
+=== Propagate changes on an existing representation
+
+The section above allows to create new representations that use the content of existing representations to intialize their content, but it may be necessary to apply mutations on the existing representation from actions in the new one (e.g. a form initialized with a diagram may have a button to change the visibility of elements on the diagram).
+In this case we want to make sure both representation stay synchronized.
+
+This can be done by leveraging the `IRepresentationEventProcessor#handle` method to perform an operation on another representation, but doing so requires to create a new ChangeDescription flux, which won't be known by the `EditingContextEventProcessor`.
+
+This means that the synchronization won't be complete: the operation will be executed, but the representation calling the operation won't be automatically updated. 
+
+Synchronization can be achieved by manually calling `IRepresentationEventProcessor#refresh` with the local ChangeDescription flux on all the `IRepresentationEventProcessor` of the current `IEditingContextProcessor`:
+
+```java
+Many<ChangeDescription> localChangeDescriptions = ...
+localChangeDescriptions.asFlux().subscribe(changeDescription -> {
+            editingContextEventProcessor.getRepresentationEventProcessors().forEach(ep -> ep.refresh(changeDescription));
+        }, errorConsumer);
+representationEventProcessor.handle(payloadSink, localChangeDescriptions, input);
+```
+
+== Cutting backs
+
+This shape doesn't discuss representation-specific issues that may need to be addressed to synchronize two concrete representations.
+For example: creating a form description from the state of a diagram may require some modifications to ensure a form can manipulate non-EMF objects (nodes, edges, etc).
+
+== Rabbit holes
+
+Services coupled to a specific representation (e.g. `DiagramServices`) will be difficult to use from other representations, because they are usually initialized with representation-specific objects (e.g. `DiagramContext`) which aren't accessible from outside.
+
+== No-gos
+
+N.A.

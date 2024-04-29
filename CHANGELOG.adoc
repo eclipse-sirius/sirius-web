@@ -10,6 +10,7 @@
 - Add Assertions and Navigators to improve Diagram testability
 - Improve document upload
 - Configurable visibility
+- Create a representation using the content of another representation as input
 
 === Architectural decision records
 
