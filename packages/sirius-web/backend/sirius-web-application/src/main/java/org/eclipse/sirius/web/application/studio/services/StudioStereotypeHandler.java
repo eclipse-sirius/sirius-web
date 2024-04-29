@@ -21,6 +21,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.migration.MigrationService;
+import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.view.View;
@@ -43,8 +45,11 @@ public class StudioStereotypeHandler implements IStereotypeHandler {
 
     private final IDomainNameProvider domainNameProvider;
 
-    public StudioStereotypeHandler(IDomainNameProvider domainNameProvider) {
+    private final List<IMigrationParticipant> migrationParticipants;
+
+    public StudioStereotypeHandler(IDomainNameProvider domainNameProvider, List<IMigrationParticipant> migrationParticipants) {
         this.domainNameProvider = Objects.requireNonNull(domainNameProvider);
+        this.migrationParticipants = Objects.requireNonNull(migrationParticipants);
     }
 
     @Override
@@ -70,8 +75,13 @@ public class StudioStereotypeHandler implements IStereotypeHandler {
     private Optional<DocumentDTO> createDomainDocument(IEMFEditingContext editingContext, String name) {
         var documentId = UUID.randomUUID();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
-        resource.eAdapters().add(new ResourceMetadataAdapter(name));
 
+        var resourceMetadataAdapter = new ResourceMetadataAdapter(name);
+        var migrationService = new MigrationService(this.migrationParticipants);
+
+        resourceMetadataAdapter.setMigrationData(migrationService.getMostRecentParticipantMigrationData());
+
+        resource.eAdapters().add(resourceMetadataAdapter);
         editingContext.getDomain().getResourceSet().getResources().add(resource);
 
         Domain domain = DomainFactory.eINSTANCE.createDomain();
@@ -85,8 +95,12 @@ public class StudioStereotypeHandler implements IStereotypeHandler {
     private Optional<DocumentDTO> createViewDocument(IEMFEditingContext editingContext, String name) {
         var documentId = UUID.randomUUID();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
-        resource.eAdapters().add(new ResourceMetadataAdapter(name));
+        var resourceMetadataAdapter = new ResourceMetadataAdapter(name);
+        var migrationService = new MigrationService(this.migrationParticipants);
 
+        resourceMetadataAdapter.setMigrationData(migrationService.getMostRecentParticipantMigrationData());
+
+        resource.eAdapters().add(resourceMetadataAdapter);
         editingContext.getDomain().getResourceSet().getResources().add(resource);
 
         View view = ViewFactory.eINSTANCE.createView();

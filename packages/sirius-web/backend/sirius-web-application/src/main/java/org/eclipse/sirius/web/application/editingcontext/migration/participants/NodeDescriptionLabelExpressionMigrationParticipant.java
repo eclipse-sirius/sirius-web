@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class NodeDescriptionLabelExpressionMigrationParticipant  implements IMigrationParticipant {
 
-    private static final String PARTICIPANT_VERSION = "2024.4.0";
+    private static final String PARTICIPANT_VERSION = "2024.5.0-202404221400";
 
     @Override
     public String getVersion() {

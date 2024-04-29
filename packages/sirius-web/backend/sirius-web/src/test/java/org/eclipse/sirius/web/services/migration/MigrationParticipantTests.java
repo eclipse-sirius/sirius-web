@@ -14,6 +14,9 @@ package org.eclipse.sirius.web.services.migration;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
@@ -22,6 +25,9 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.migration.MigrationService;
+import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
+import org.eclipse.sirius.components.emf.migration.api.MigrationData;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
@@ -70,6 +76,9 @@ public class MigrationParticipantTests extends AbstractIntegrationTests {
 
     @Autowired
     private UploadDocumentMutationRunner uploadDocumentMutationRunner;
+
+    @Autowired
+    private List<IMigrationParticipant> migrationParticipants;
 
     @Test
     @DisplayName("Given a project with an old model, NodeDescriptionLabelExpressionMigrationParticipant migrates the model correctly")
@@ -171,6 +180,16 @@ public class MigrationParticipantTests extends AbstractIntegrationTests {
                 .map(Boolean.class::cast)
                 .orElse(false);
 
+        var migrationService = new MigrationService(this.migrationParticipants);
+        var optionalLastMigrationData = this.migrationParticipants.stream()
+                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
+                .sorted(Collections.reverseOrder())
+                .map(migrationParticipant -> new MigrationData(migrationParticipant.getClass().getSimpleName(), migrationParticipant.getVersion()))
+                .findFirst();
+
+        assertThat(optionalLastMigrationData).isPresent();
+        var lastMigrationData = optionalLastMigrationData.get();
+
         Function<IEditingContext, Object> function = editingContext -> Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
@@ -179,8 +198,8 @@ public class MigrationParticipantTests extends AbstractIntegrationTests {
                                 .filter(adapter -> adapter instanceof ResourceMetadataAdapter)
                                 .map(ResourceMetadataAdapter.class::cast)
                                 .filter(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData() != null)
-                                .anyMatch(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData().migrationVersion().equals("2024.4.0")
-                                        && resourceMetadataAdapter.getMigrationData().lastMigrationPerformed().equals("NodeDescriptionLabelExpressionMigrationParticipant"))
+                                .anyMatch(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData().migrationVersion().equals(lastMigrationData.migrationVersion())
+                                        && resourceMetadataAdapter.getMigrationData().lastMigrationPerformed().equals(lastMigrationData.lastMigrationPerformed()))
                         ))
                 .orElse(false);
 
