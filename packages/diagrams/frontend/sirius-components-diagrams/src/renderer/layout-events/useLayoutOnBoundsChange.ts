@@ -56,7 +56,13 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
     const isValidDropOnNode: boolean = isDropOnNode && !!targetNode?.data.isDropNodeCandidate;
     const isValidDropOnDiagram: boolean = !isDropOnNode && droppableOnDiagram;
 
-    return isValidDropOnDiagram || isValidDropOnNode || isDropOnSameParent || isDropFromDiagramToDiagram;
+    return (
+      isValidDropOnDiagram ||
+      isValidDropOnNode ||
+      isDropOnSameParent ||
+      isDropFromDiagramToDiagram ||
+      !!draggedNode?.data.isBorderNode
+    );
   };
 
   const updateNodeResizeByUserState = (
