@@ -18,7 +18,7 @@ import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDropNodeStyleValue } from './useDropNodeStyle.types';
 
-const draggedNodeSelector = (state: ReactFlowState) =>
+const draggedNodeIdSelector = (state: ReactFlowState) =>
   Array.from(state.nodeInternals.values()).find((n) => n.dragging)?.id || '';
 
 export const useDropNodeStyle = (
@@ -27,12 +27,12 @@ export const useDropNodeStyle = (
   isDragging: boolean
 ): useDropNodeStyleValue => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const draggedNode = useStore(draggedNodeSelector);
+  const draggedNodeId = useStore(draggedNodeIdSelector);
 
   const theme = useTheme();
   const style: React.CSSProperties = {};
 
-  if (draggedNode && !readOnly) {
+  if (draggedNodeId && !readOnly) {
     if (!isDragging && !isDropNodeCandidate) {
       style.opacity = '0.4';
     }

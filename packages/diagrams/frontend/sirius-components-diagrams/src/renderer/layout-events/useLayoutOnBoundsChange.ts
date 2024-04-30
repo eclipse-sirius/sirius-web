@@ -11,12 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from 'reactflow';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
-import { DropNodeContext } from '../dropNode/DropNodeContext';
-import { DropNodeContextValue } from '../dropNode/DropNodeContext.types';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
@@ -27,7 +25,6 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { getEdges, getNodes } = useStore();
-  const { droppableOnDiagram } = useContext<DropNodeContextValue>(DropNodeContext);
 
   const isMoveFinished = (change: NodeChange, nodes: Node<NodeData>[]): change is NodePositionChange => {
     return (
@@ -50,19 +47,14 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
     const isDropOnNode: boolean = !!targetNode;
 
     const isDropOnSameParent: boolean =
-      isDropOnNode && !!draggedNode?.parentNode && draggedNode.parentNode === targetNode?.id;
+      isDropOnNode &&
+      !!draggedNode?.parentNode &&
+      draggedNode.parentNode === targetNode?.id &&
+      draggedNode?.type !== 'iconLabelNode';
+
     const isDropFromDiagramToDiagram: boolean = !isDropOnNode && !draggedNode?.parentNode;
 
-    const isValidDropOnNode: boolean = isDropOnNode && !!targetNode?.data.isDropNodeCandidate;
-    const isValidDropOnDiagram: boolean = !isDropOnNode && droppableOnDiagram;
-
-    return (
-      isValidDropOnDiagram ||
-      isValidDropOnNode ||
-      isDropOnSameParent ||
-      isDropFromDiagramToDiagram ||
-      !!draggedNode?.data.isBorderNode
-    );
+    return isDropOnSameParent || isDropFromDiagramToDiagram || !!draggedNode?.data.isBorderNode;
   };
 
   const updateNodeResizeByUserState = (

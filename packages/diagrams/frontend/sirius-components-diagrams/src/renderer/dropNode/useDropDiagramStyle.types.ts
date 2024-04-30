@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { XYPosition } from 'reactflow';
-
-export type DropNodeContextValue = DropNodeContextState & {
-  initializeDrop: (newDropData: DropNodeContextState) => void;
-  resetDrop: () => void;
-};
-
-export interface DropNodeContextState {
-  initialPosition: XYPosition | null;
-  initialPositionAbsolute: XYPosition | null;
-  droppableOnDiagram: boolean;
-}
-
-export interface DropNodeContextProviderProps {
-  children: React.ReactNode;
+export interface useDropDiagramStyleValue {
+  backgroundColor: string;
+  smallGridColor: string;
+  largeGridColor: string;
 }

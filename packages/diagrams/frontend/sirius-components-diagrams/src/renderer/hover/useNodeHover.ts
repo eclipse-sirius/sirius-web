@@ -12,45 +12,54 @@
  *******************************************************************************/
 
 import { useCallback } from 'react';
-import { Node, NodeMouseHandler, useReactFlow } from 'reactflow';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { Node, NodeMouseHandler, ReactFlowState, useStore as useReactFlowStore } from 'reactflow';
+import { useStore } from '../../representation/useStore';
+import { NodeData } from '../DiagramRenderer.types';
 import { UseNodeHoverValue } from './useNodeHover.types';
 
+const draggedNodeIdSelector = (state: ReactFlowState) =>
+  Array.from(state.nodeInternals.values()).find((n) => n.dragging)?.id || '';
+
 export const useNodeHover = (): UseNodeHoverValue => {
-  const { setNodes } = useReactFlow<NodeData, EdgeData>();
+  const { setNodes } = useStore();
+  const draggedNodeId = useReactFlowStore(draggedNodeIdSelector);
 
   const onNodeMouseEnter: NodeMouseHandler = useCallback(
     (_: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData>) => {
+      if (!draggedNodeId) {
+        setNodes((nds) =>
+          nds.map((n) => {
+            if (n.id === node.id) {
+              if (!n.data.isHovered) {
+                n.data = {
+                  ...n.data,
+                  isHovered: true,
+                };
+              }
+            }
+            return n;
+          })
+        );
+      }
+    },
+    [setNodes, draggedNodeId]
+  );
+
+  const onNodeMouseLeave: NodeMouseHandler = useCallback(() => {
+    if (!draggedNodeId) {
       setNodes((nds) =>
         nds.map((n) => {
-          if (n.id === node.id) {
-            if (!n.data.isHovered) {
-              n.data = {
-                ...n.data,
-                isHovered: true,
-              };
-            }
+          if (n.data.isHovered) {
+            n.data = {
+              ...n.data,
+              isHovered: false,
+            };
           }
           return n;
         })
       );
-    },
-    [setNodes]
-  );
-
-  const onNodeMouseLeave: NodeMouseHandler = useCallback(() => {
-    setNodes((nds) =>
-      nds.map((n) => {
-        if (n.data.isHovered) {
-          n.data = {
-            ...n.data,
-            isHovered: false,
-          };
-        }
-        return n;
-      })
-    );
-  }, [setNodes]);
+    }
+  }, [setNodes, draggedNodeId]);
 
   return {
     onNodeMouseEnter,
