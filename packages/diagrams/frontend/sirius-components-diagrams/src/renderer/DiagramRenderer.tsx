@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import React, { MouseEvent as ReactMouseEvent, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -43,6 +43,7 @@ import { DebugPanel } from './debug/DebugPanel';
 import { useDiagramDelete } from './delete/useDiagramDelete';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
+import { useDropDiagramStyle } from './dropNode/useDropDiagramStyle';
 import { useDropNode } from './dropNode/useDropNode';
 import { ConnectionLine } from './edge/ConnectionLine';
 import { edgeTypes } from './edge/EdgeTypes';
@@ -75,7 +76,7 @@ import 'reactflow/dist/style.css';
 
 const GRID_STEP: number = 10;
 
-export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
+export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
   const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
@@ -111,7 +112,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
-  const { onNodeDragStart, onNodeDrag, onNodeDragStop, diagramBackgroundStyle } = useDropNode();
+  const { onNodeDragStart, onNodeDrag, onNodeDragStop } = useDropNode();
+  const { backgroundColor, largeGridColor, smallGridColor } = useDropDiagramStyle();
   const { nodeTypes } = useNodeType();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
@@ -174,10 +176,12 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const handleNodesChange: OnNodesChange = useCallback(
     (changes: NodeChange[]) => {
       const noReadOnlyChanges = filterReadOnlyChanges(changes);
+      const isResetChange = changes.find((change) => change.type === 'reset');
       if (
-        noReadOnlyChanges.length === 1 &&
-        noReadOnlyChanges[0]?.type === 'dimensions' &&
-        typeof noReadOnlyChanges[0].resizing !== 'boolean'
+        isResetChange ||
+        (noReadOnlyChanges.length === 1 &&
+          noReadOnlyChanges[0]?.type === 'dimensions' &&
+          typeof noReadOnlyChanges[0].resizing !== 'boolean')
       ) {
         setNodes((oldNodes) => applyNodeChanges(noReadOnlyChanges, oldNodes));
       } else {
@@ -237,8 +241,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   }, []);
 
   const { snapToGrid, onSnapToGrid } = useSnapToGrid();
-
-  const { backgroundColor, smallGridColor, largeGridColor } = diagramBackgroundStyle;
 
   const closeAllPalettes = useCallback(() => {
     hideDiagramPalette();
@@ -359,4 +361,4 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
     </ReactFlow>
   );
-};
+});

@@ -11,25 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodeDragHandler } from 'reactflow';
-import { NodeData } from '../DiagramRenderer.types';
+import { NodeDragHandler } from 'reactflow';
 import { GQLMessage } from '../Tool.types';
 
 export interface UseDropNodeValue {
   onNodeDragStart: NodeDragHandler;
   onNodeDrag: NodeDragHandler;
   onNodeDragStop: NodeDragHandler;
-  hasDroppedNodeParentChanged: () => boolean;
-  draggedNode: Node<NodeData> | null;
-  targetNodeId: string | null;
-  compatibleNodeIds: string[];
-  diagramBackgroundStyle: DiagramBackgroundStyle;
-}
-
-export interface DiagramBackgroundStyle {
-  backgroundColor: string;
-  smallGridColor: string;
-  largeGridColor: string;
 }
 
 export interface GQLDropNodePayload {

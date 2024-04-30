@@ -15,56 +15,38 @@ import React, { useState } from 'react';
 import { DropNodeContextProviderProps, DropNodeContextState, DropNodeContextValue } from './DropNodeContext.types';
 
 const defaultValue: DropNodeContextValue = {
-  initialParentId: null,
-  draggedNode: null,
-  targetNodeId: null,
-  compatibleNodeIds: [],
+  initialPosition: null,
+  initialPositionAbsolute: null,
   droppableOnDiagram: false,
   initializeDrop: () => {},
-  setTargetNodeId: () => {},
   resetDrop: () => {},
 };
 
 export const DropNodeContext = React.createContext<DropNodeContextValue>(defaultValue);
 
 export const DropNodeContextProvider = ({ children }: DropNodeContextProviderProps) => {
-  const [state, setState] = useState<DropNodeContextState>({
-    initialParentId: null,
-    draggedNode: null,
-    targetNodeId: null,
-    compatibleNodeIds: [],
-    droppableOnDiagram: false,
-  });
+  const [state, setState] = useState<DropNodeContextState>(defaultValue);
 
   const initializeDrop = (dropData: DropNodeContextState) => {
     setState((prevState) => ({ ...prevState, ...dropData }));
   };
 
-  const setTargetNodeId = (targetNodeId: string | null) => {
-    setState((prevState) => ({ ...prevState, targetNodeId }));
-  };
-
   const resetDrop = () => {
     setState((prevState) => ({
       ...prevState,
-      initialParentId: null,
-      draggedNode: null,
-      targetNodeId: null,
+      initialPosition: null,
+      initialPositionAbsolute: null,
       droppableOnDiagram: false,
-      compatibleNodeIds: [],
     }));
   };
 
   return (
     <DropNodeContext.Provider
       value={{
-        initialParentId: state.initialParentId,
-        draggedNode: state.draggedNode,
-        targetNodeId: state.targetNodeId,
-        compatibleNodeIds: state.compatibleNodeIds,
+        initialPosition: state.initialPosition,
+        initialPositionAbsolute: state.initialPositionAbsolute,
         droppableOnDiagram: state.droppableOnDiagram,
         initializeDrop,
-        setTargetNodeId,
         resetDrop,
       }}>
       {children}
