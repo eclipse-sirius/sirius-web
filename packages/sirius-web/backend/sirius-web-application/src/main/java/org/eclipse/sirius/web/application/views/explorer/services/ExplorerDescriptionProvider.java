@@ -130,7 +130,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
 
-        return "explorer://?expandedIds=[" + String.join(",", expandedObjectIds) + "]?&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
+        return "explorer://?expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
     }
 
     private String getTreeItemId(VariableManager variableManager) {
