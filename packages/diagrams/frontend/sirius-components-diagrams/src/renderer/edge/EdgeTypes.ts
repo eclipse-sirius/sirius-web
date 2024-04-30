@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import { DiagramEdgeTypes } from './EdgeTypes.types';
-import { EdgeWrapper } from './EdgeWrapper';
+import { MultiLabelEdge } from './MultiLabelEdge';
 
 export const edgeTypes: DiagramEdgeTypes = {
-  multiLabelEdge: EdgeWrapper,
+  multiLabelEdge: MultiLabelEdge,
 };

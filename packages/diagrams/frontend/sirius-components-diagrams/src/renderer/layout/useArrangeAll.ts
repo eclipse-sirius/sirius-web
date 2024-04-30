@@ -49,12 +49,11 @@ const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData
 const elkOptions = (direction: string) => {
   return {
     'elk.algorithm': 'layered',
-    'elk.layered.spacing.nodeNodeBetweenLayers': '80',
+    'elk.layered.spacing.nodeNodeBetweenLayers': '100',
     'layering.strategy': 'NETWORK_SIMPLEX',
-    'elk.spacing.componentComponent': '60',
-    'elk.spacing.nodeNode': '80',
+    'elk.spacing.nodeNode': '100',
     'elk.direction': `${direction}`,
-    'elk.layered.spacing.edgeNodeBetweenLayers': '80',
+    'elk.layered.spacing.edgeNodeBetweenLayers': '40',
   };
 };
 
