@@ -85,12 +85,11 @@ export const useBorderChange = (): UseBorderChangeValue => {
               change.position = movedNode.position;
               change.positionAbsolute = movedNode.positionAbsolute;
             }
-          } else {
-            const oldMovedNode = oldNodes.find((n) => n.id === movedNode.id);
-            const newPosition = findBorderNodePosition(change.position, movedNode, parentNode);
-            if (oldMovedNode && oldMovedNode.data.borderNodePosition !== newPosition) {
-              oldMovedNode.data.borderNodePosition = newPosition;
-            }
+          }
+          const oldMovedNode = oldNodes.find((n) => n.id === movedNode.id);
+          const newPosition = findBorderNodePosition(change.position, movedNode, parentNode);
+          if (oldMovedNode && oldMovedNode.data.borderNodePosition !== newPosition) {
+            oldMovedNode.data.borderNodePosition = newPosition;
           }
         }
       }

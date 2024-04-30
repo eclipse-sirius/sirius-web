@@ -28,6 +28,7 @@ import {
   gap,
   rectangularNodePadding,
 } from './layoutParams';
+import { computePreviousPosition } from './bounds';
 
 /**
  * It requires that nodes are already positioned
@@ -244,15 +245,16 @@ const getRightMostSibling = (
 };
 
 export const setBorderNodesPosition = (
-  borderNodes: Node<NodeData>[],
+  borderNodes: Node<NodeData, string>[],
   nodeToLayout: Node<NodeData>,
   previousDiagram: RawDiagram | null
 ): void => {
   const borderNodesEast = borderNodes.filter(isEastBorderNode);
   borderNodesEast.forEach((child) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
-    if (previousBorderNode) {
-      let newY = previousBorderNode.position.y;
+    const previousPosition = computePreviousPosition(previousBorderNode, child);
+    if (previousPosition) {
+      let newY = previousPosition.y;
       if (nodeToLayout.height && newY > nodeToLayout.height) {
         newY = nodeToLayout.height - borderNodeOffset;
       }
@@ -274,8 +276,9 @@ export const setBorderNodesPosition = (
   const borderNodesWest = borderNodes.filter(isWestBorderNode);
   borderNodesWest.forEach((child) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
-    if (previousBorderNode) {
-      let newY = previousBorderNode.position.y;
+    const previousPosition = computePreviousPosition(previousBorderNode, child);
+    if (previousPosition) {
+      let newY = previousPosition.y;
       if (nodeToLayout.height && newY > nodeToLayout.height) {
         newY = nodeToLayout.height - borderNodeOffset;
       }
@@ -296,8 +299,9 @@ export const setBorderNodesPosition = (
   const borderNodesSouth = borderNodes.filter(isSouthBorderNode);
   borderNodesSouth.forEach((child) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
-    if (previousBorderNode) {
-      let newX = previousBorderNode.position.x;
+    const previousPosition = computePreviousPosition(previousBorderNode, child);
+    if (previousPosition) {
+      let newX = previousPosition.x;
       if (nodeToLayout.width && newX > nodeToLayout.width) {
         newX = nodeToLayout.width - borderNodeOffset;
       }
@@ -319,8 +323,9 @@ export const setBorderNodesPosition = (
   const borderNodesNorth = borderNodes.filter(isNorthBorderNode);
   borderNodesNorth.forEach((child) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
-    if (previousBorderNode) {
-      let newX = previousBorderNode.position.x;
+    const previousPosition = computePreviousPosition(previousBorderNode, child);
+    if (previousPosition) {
+      let newX = previousPosition.x;
       if (nodeToLayout.width && newX > nodeToLayout.width) {
         newX = nodeToLayout.width - borderNodeOffset;
       }

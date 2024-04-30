@@ -90,6 +90,7 @@ Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IE
 - https://github.com/eclipse-sirius/sirius-web/issues/3407[#3407] [diagram] Fix performance issue during node drag.
 - https://github.com/eclipse-sirius/sirius-web/issues/3424[#3424] [emf] Fix wrong document migration data when creating a document.
 - https://github.com/eclipse-sirius/sirius-web/issues/3443[#3443] [diagram] Prevent outside label to be truncated.
+- https://github.com/eclipse-sirius/sirius-web/issues/3440[#3440] [diagram] Prevent a border node losing its position after being moved to another border
 
 === New Features
 
