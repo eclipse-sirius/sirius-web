@@ -11,9 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodePositionChange, Position, XYPosition } from 'reactflow';
+import { HandleElement, Node, NodePositionChange, Position, XYPosition } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
+
 export interface EdgeParameters {
   sourcePosition: Position;
   targetPosition: Position;
@@ -72,7 +73,10 @@ export interface NodeCenter {
 export type GetHandleCoordinatesByPosition = (
   node: Node<NodeData>,
   handlePosition: Position,
-  handleId: string
+  handleId: string,
+  calculateCustomNodeEdgeHandlePosition:
+    | ((node: Node<NodeData>, handlePosition: Position, handle: HandleElement) => XYPosition)
+    | undefined
 ) => XYPosition;
 
 export type GetHandleCoordinatesByPosition2 = (

@@ -23,6 +23,10 @@ export class Diagram {
     cy.wait(4000);
   }
 
+  public arrangeAll() {
+    cy.getByTestId('arrange-all').click();
+  }
+
   public getNodes(diagramLabel: string, nodeLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getDiagram(diagramLabel).contains('.react-flow__node', nodeLabel);
   }

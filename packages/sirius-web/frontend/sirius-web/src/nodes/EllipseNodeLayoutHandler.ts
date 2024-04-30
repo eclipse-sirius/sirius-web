@@ -34,7 +34,7 @@ import {
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Node } from 'reactflow';
+import { HandleElement, Node, Position, XYPosition } from 'reactflow';
 
 export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   canHandle(node: Node<NodeData, DiagramNodeType>) {
@@ -151,5 +151,44 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
     setBorderNodesPosition(borderNodes, node, previousDiagram);
+  }
+
+  calculateCustomNodeEdgeHandlePosition(
+    node: Node<NodeData>,
+    handlePosition: Position,
+    handle: HandleElement
+  ): XYPosition {
+    let offsetX = handle.width / 2;
+    let offsetY = handle.height / 2;
+    const nodeWidth: number = node.width ?? 0;
+    const nodeHeight: number = node.height ?? 0;
+    const a: number = nodeWidth / 2;
+    const b: number = nodeHeight / 2;
+
+    let realY: number = handle.y;
+    let realX: number = handle.x;
+    switch (handlePosition) {
+      case Position.Left:
+        realX = Math.sqrt((1 - Math.pow(handle.y + offsetY - b, 2) / Math.pow(b, 2)) * Math.pow(a, 2)) + a;
+        realX = nodeWidth - realX;
+        break;
+      case Position.Right:
+        realX = Math.sqrt((1 - Math.pow(handle.y + offsetY - b, 2) / Math.pow(b, 2)) * Math.pow(a, 2)) + a;
+        offsetX = -offsetX;
+        break;
+      case Position.Top:
+        realY = Math.sqrt((1 - Math.pow(handle.x + offsetX - a, 2) / Math.pow(a, 2)) * Math.pow(b, 2)) + b;
+        realY = nodeHeight - realY;
+        break;
+      case Position.Bottom:
+        realY = Math.sqrt((1 - Math.pow(handle.x + offsetX - a, 2) / Math.pow(a, 2)) * Math.pow(b, 2)) + b;
+        offsetY = -offsetY;
+        break;
+    }
+
+    return {
+      x: realX + offsetX,
+      y: realY + offsetY,
+    };
   }
 }
