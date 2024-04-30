@@ -32,7 +32,6 @@
     "@material-ui/lab": "4.0.0-alpha.61",
     "@ObeoNetwork/gantt-task-react": "0.4.9",
     "@ObeoNetwork/react-trello": "2.4.11",
-    "@tisoap/react-flow-smart-edge": "3.0.0",
     "@types/react": "17.0.37",
     "@types/react-router-dom": "5.3.3",
     "@xstate/react": "1.6.3",

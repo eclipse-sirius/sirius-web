@@ -34,7 +34,6 @@
     "@eclipse-sirius/sirius-components-core": "*",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
-    "@tisoap/react-flow-smart-edge": "3.0.0",
     "elkjs": "0.8.2",
     "graphql": "16.8.0",
     "html-to-image": "1.11.11",

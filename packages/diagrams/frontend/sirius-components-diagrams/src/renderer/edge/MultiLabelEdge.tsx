@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo } from 'react';
-import { BaseEdge, EdgeLabelRenderer, Position } from 'reactflow';
-import { MultiLabelEdgeProps } from './MultiLabelEdge.types';
+import { memo, useCallback } from 'react';
+import {
+  BaseEdge,
+  EdgeLabelRenderer,
+  EdgeProps,
+  Node,
+  Position,
+  ReactFlowState,
+  getSmoothStepPath,
+  useStore,
+} from 'reactflow';
+import { NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
+import { getHandleCoordinatesByPosition } from './EdgeLayout';
+import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 
 const multiLabelEdgeStyle = (
   theme: Theme,
@@ -37,9 +47,12 @@ const multiLabelEdgeStyle = (
 
   return multiLabelEdgeStyle;
 };
+
 export const MultiLabelEdge = memo(
   ({
     id,
+    source,
+    target,
     data,
     style,
     markerEnd,
@@ -47,16 +60,70 @@ export const MultiLabelEdge = memo(
     selected,
     sourcePosition,
     targetPosition,
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-    edgeCenterX,
-    edgeCenterY,
-    svgPathString,
-  }: MultiLabelEdgeProps) => {
+    sourceHandleId,
+    targetHandleId,
+  }: EdgeProps<MultiLabelEdgeData>) => {
+    const theme = useTheme();
+
+    const sourceNode = useStore<Node<NodeData> | undefined>(
+      useCallback((store: ReactFlowState) => store.nodeInternals.get(source), [source])
+    );
+    const targetNode = useStore<Node<NodeData> | undefined>(
+      useCallback((store: ReactFlowState) => store.nodeInternals.get(target), [target])
+    );
+
+    if (!sourceNode || !targetNode) {
+      return null;
+    }
+
+    let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(sourceNode, sourcePosition, sourceHandleId ?? '');
+    let { x: targetX, y: targetY } = getHandleCoordinatesByPosition(targetNode, targetPosition, targetHandleId ?? '');
+
+    // trick to have the source of the edge positioned at the very border of a node
+    // if the edge has a marker, then only the marker need to touch the node
+    const handleSourceRadius = markerStart == undefined || markerStart.includes('None') ? 2 : 3;
+    switch (sourcePosition) {
+      case Position.Right:
+        sourceX = sourceX + handleSourceRadius;
+        break;
+      case Position.Left:
+        sourceX = sourceX - handleSourceRadius;
+        break;
+      case Position.Top:
+        sourceY = sourceY - handleSourceRadius;
+        break;
+      case Position.Bottom:
+        sourceY = sourceY + handleSourceRadius;
+        break;
+    }
+    // trick to have the target of the edge positioned at the very border of a node
+    // if the edge has a marker, then only the marker need to touch the node
+    const handleTargetRadius = markerEnd == undefined || markerEnd.includes('None') ? 2 : 3;
+    switch (targetPosition) {
+      case Position.Right:
+        targetX = targetX + handleTargetRadius;
+        break;
+      case Position.Left:
+        targetX = targetX - handleTargetRadius;
+        break;
+      case Position.Top:
+        targetY = targetY - handleTargetRadius;
+        break;
+      case Position.Bottom:
+        targetY = targetY + handleTargetRadius;
+        break;
+    }
+
+    const [edgePath, labelX, labelY] = getSmoothStepPath({
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+    });
+
     const { beginLabel, endLabel, label, faded } = data || {};
-    const theme: Theme = useTheme();
 
     const getTranslateFromHandlePositon = (position: Position) => {
       switch (position) {
@@ -75,7 +142,7 @@ export const MultiLabelEdge = memo(
       <>
         <BaseEdge
           id={id}
-          path={svgPathString}
+          path={edgePath}
           style={multiLabelEdgeStyle(theme, style, selected, faded)}
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 1)}--selected)` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 1)}--selected)` : markerStart}
@@ -91,12 +158,7 @@ export const MultiLabelEdge = memo(
             />
           )}
           {label && (
-            <Label
-              diagramElementId={id}
-              transform={`translate(${edgeCenterX}px,${edgeCenterY}px)`}
-              label={label}
-              faded={false}
-            />
+            <Label diagramElementId={id} transform={`translate(${labelX}px,${labelY}px)`} label={label} faded={false} />
           )}
           {endLabel && (
             <Label
