@@ -32,6 +32,13 @@ export class Details {
     return this.getDetailsView().findByTestId(label);
   }
 
+  public getReferenceWidgetSelectedValue(
+    referenceWidget: string,
+    value: string
+  ): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getReferenceWidget(referenceWidget).findByTestId(`reference-value-${value}`);
+  }
+
   public openReferenceWidgetOptions(label: string): void {
     this.getReferenceWidget(label).find('button[title="Open"]').click();
   }

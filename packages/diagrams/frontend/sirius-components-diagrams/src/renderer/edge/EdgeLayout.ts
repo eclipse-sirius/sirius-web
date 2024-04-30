@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { HandleElement, Position, internalsSymbol } from 'reactflow';
+import { HandleElement, Position, XYPosition, internalsSymbol } from 'reactflow';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import {
   GetEdgeParameters,
@@ -147,7 +147,12 @@ export const getNodeCenter: GetNodeCenter = (node, visiblesNodes) => {
   }
 };
 
-export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (node, handlePosition, handleId) => {
+export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (
+  node,
+  handlePosition,
+  handleId,
+  calculateCustomNodeEdgeHandlePosition
+) => {
   let handle: HandleElement | undefined = (node[internalsSymbol]?.handleBounds?.source ?? []).find(
     (handle) => handle.id === handleId
   );
@@ -155,33 +160,37 @@ export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (n
     handle = (node[internalsSymbol]?.handleBounds?.target ?? []).find((handle) => handle.id === handleId);
   }
 
+  let handleXYPosition: XYPosition = { x: 0, y: 0 };
   if (handle && handlePosition) {
-    let offsetX = handle.width / 2;
-    let offsetY = handle.height / 2;
+    if (calculateCustomNodeEdgeHandlePosition) {
+      handleXYPosition = calculateCustomNodeEdgeHandlePosition(node, handlePosition, handle);
+    } else {
+      let offsetX = handle.width / 2;
+      let offsetY = handle.height / 2;
 
-    switch (handlePosition) {
-      case Position.Left:
-        offsetX = handle.width;
-        break;
-      case Position.Right:
-        offsetX = 0;
-        break;
-      case Position.Top:
-        offsetY = handle.height;
-        break;
-      case Position.Bottom:
-        offsetY = 0;
-        break;
+      switch (handlePosition) {
+        case Position.Left:
+          offsetX = handle.width;
+          break;
+        case Position.Right:
+          offsetX = 0;
+          break;
+        case Position.Top:
+          offsetY = handle.height;
+          break;
+        case Position.Bottom:
+          offsetY = 0;
+          break;
+      }
+      handleXYPosition = {
+        x: handle.x + offsetX,
+        y: handle.y + offsetY,
+      };
     }
-
-    const x = (node.positionAbsolute?.x ?? 0) + handle.x + offsetX;
-    const y = (node.positionAbsolute?.y ?? 0) + handle.y + offsetY;
-
-    return {
-      x,
-      y,
-    };
   }
 
-  return { x: 0, y: 0 };
+  return {
+    x: (node.positionAbsolute?.x ?? 0) + handleXYPosition.x,
+    y: (node.positionAbsolute?.y ?? 0) + handleXYPosition.y,
+  };
 };

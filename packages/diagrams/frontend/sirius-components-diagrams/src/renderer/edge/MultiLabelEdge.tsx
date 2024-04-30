@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useContext } from 'react';
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -28,6 +28,9 @@ import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
+import { NodeTypeContext } from '../../contexts/NodeContext';
+import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 
 const multiLabelEdgeStyle = (
   theme: Theme,
@@ -64,6 +67,7 @@ export const MultiLabelEdge = memo(
     targetHandleId,
   }: EdgeProps<MultiLabelEdgeData>) => {
     const theme = useTheme();
+    const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
     const sourceNode = useStore<Node<NodeData> | undefined>(
       useCallback((store: ReactFlowState) => store.nodeInternals.get(source), [source])
@@ -76,8 +80,25 @@ export const MultiLabelEdge = memo(
       return null;
     }
 
-    let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(sourceNode, sourcePosition, sourceHandleId ?? '');
-    let { x: targetX, y: targetY } = getHandleCoordinatesByPosition(targetNode, targetPosition, targetHandleId ?? '');
+    const sourceLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
+      nodeLayoutHandler.canHandle(sourceNode as Node<NodeData, DiagramNodeType>)
+    );
+    const targetLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
+      nodeLayoutHandler.canHandle(targetNode as Node<NodeData, DiagramNodeType>)
+    );
+
+    let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(
+      sourceNode,
+      sourcePosition,
+      sourceHandleId ?? '',
+      sourceLayoutHandler?.calculateCustomNodeEdgeHandlePosition
+    );
+    let { x: targetX, y: targetY } = getHandleCoordinatesByPosition(
+      targetNode,
+      targetPosition,
+      targetHandleId ?? '',
+      targetLayoutHandler?.calculateCustomNodeEdgeHandlePosition
+    );
 
     // trick to have the source of the edge positioned at the very border of a node
     // if the edge has a marker, then only the marker need to touch the node
