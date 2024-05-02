@@ -42,6 +42,7 @@ export class Diagram {
   public getGroupPalette(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('GroupPalette');
   }
+
   public getDiagramScale(diagramLabel: string): Cypress.Chainable<number> {
     return this.getDiagram(diagramLabel)
       .find('.react-flow__viewport')
@@ -134,7 +135,7 @@ export class Diagram {
 
     for (let i = 0; i < pathValues.length; i++) {
       const pathValue = pathValues[i];
-      if(pathValue) {
+      if (pathValue) {
         if (pathValue.match(/[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?/g)) {
           roundedPathValues.push(parseFloat(pathValue).toFixed(2));
         } else {
@@ -148,5 +149,9 @@ export class Diagram {
       roundedPathData += roundedPathValues[i];
     }
     return roundedPathData;
+  }
+
+  public getLabel(labelId: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId(`Label - ${labelId}`);
   }
 }

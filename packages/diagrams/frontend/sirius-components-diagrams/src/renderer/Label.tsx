@@ -19,10 +19,14 @@ import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { DiagramDirectEditInput } from './direct-edit/DiagramDirectEditInput';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { LabelProps } from './Label.types';
-import { EdgeLabel, InsideLabel, OutsideLabel } from './DiagramRenderer.types';
+import { EdgeLabel, InsideLabel, LabelOverflowStrategy, OutsideLabel } from './DiagramRenderer.types';
 
-const isInsideLabel = (label: EdgeLabel | InsideLabel | OutsideLabel): label is InsideLabel =>
-  (label as InsideLabel).overflowStrategy !== undefined;
+const getOverflowStrategy = (label: EdgeLabel | InsideLabel | OutsideLabel): LabelOverflowStrategy | undefined => {
+  if ('overflowStrategy' in label) {
+    return label.overflowStrategy;
+  }
+  return undefined;
+};
 
 const labelStyle = (
   theme: Theme,
@@ -49,29 +53,35 @@ const labelContentStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): React
     display: 'flex',
     alignItems: 'center',
   };
-  if (isInsideLabel(label)) {
-    labelContentStyle.overflow = 'hidden';
+  switch (getOverflowStrategy(label)) {
+    case 'WRAP':
+    case 'ELLIPSIS':
+      labelContentStyle.overflow = 'hidden';
+      break;
+    case 'NONE':
+      labelContentStyle.whiteSpace = 'pre';
+      break;
+    default:
+      break;
   }
   return labelContentStyle;
 };
 
 const labelOverflowStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): React.CSSProperties => {
   const style: React.CSSProperties = {};
-  if (isInsideLabel(label)) {
-    switch (label.overflowStrategy) {
-      case 'WRAP':
-        style.overflow = 'hidden';
-        style.overflowWrap = 'break-word';
-        break;
-      case 'ELLIPSIS':
-        style.whiteSpace = 'nowrap';
-        style.overflow = 'hidden';
-        style.textOverflow = 'ellipsis';
-        break;
-      case 'NONE':
-      default:
-        break;
-    }
+  switch (getOverflowStrategy(label)) {
+    case 'WRAP':
+      style.overflow = 'hidden';
+      style.overflowWrap = 'break-word';
+      break;
+    case 'ELLIPSIS':
+      style.whiteSpace = 'nowrap';
+      style.overflow = 'hidden';
+      style.textOverflow = 'ellipsis';
+      break;
+    case 'NONE':
+    default:
+      break;
   }
   return style;
 };
