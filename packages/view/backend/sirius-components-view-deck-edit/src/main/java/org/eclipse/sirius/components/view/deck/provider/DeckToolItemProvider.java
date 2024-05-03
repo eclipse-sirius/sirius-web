@@ -172,6 +172,8 @@ public class DeckToolItemProvider extends ItemProviderAdapter implements IEditin
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.DECK_TOOL__BODY, ViewFactory.eINSTANCE.createLet()));
 
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.DECK_TOOL__BODY, ViewFactory.eINSTANCE.createIf()));
+
+        newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.DECK_TOOL__BODY, ViewFactory.eINSTANCE.createFor()));
     }
 
     /**

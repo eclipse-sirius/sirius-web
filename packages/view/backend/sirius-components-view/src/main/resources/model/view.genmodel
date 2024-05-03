@@ -74,5 +74,9 @@
     <genClasses ecoreClass="view.ecore#//Conditional">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Conditional/condition"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//For">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//For/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//For/iteratorName"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

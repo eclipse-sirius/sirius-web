@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -155,6 +155,8 @@ public class OperationItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createLet()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createIf()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createFor()));
     }
 
     /**

@@ -190,6 +190,8 @@ public class RichTextDescriptionItemProvider extends WidgetDescriptionItemProvid
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.RICH_TEXT_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createLet()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.RICH_TEXT_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createIf()));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.RICH_TEXT_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createFor()));
     }
 
 }
