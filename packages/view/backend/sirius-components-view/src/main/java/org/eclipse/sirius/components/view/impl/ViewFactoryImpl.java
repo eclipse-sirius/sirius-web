@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.FixedColor;
+import org.eclipse.sirius.components.view.For;
 import org.eclipse.sirius.components.view.If;
 import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.SetValue;
@@ -91,6 +92,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.createLet();
             case ViewPackage.IF:
                 return this.createIf();
+            case ViewPackage.FOR:
+                return this.createFor();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -250,6 +253,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public If createIf() {
         IfImpl if_ = new IfImpl();
         return if_;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public For createFor() {
+        ForImpl for_ = new ForImpl();
+        return for_;
     }
 
     /**

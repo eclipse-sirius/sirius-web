@@ -172,6 +172,8 @@ public class TaskToolItemProvider extends ItemProviderAdapter implements IEditin
         newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.TASK_TOOL__BODY, ViewFactory.eINSTANCE.createLet()));
 
         newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.TASK_TOOL__BODY, ViewFactory.eINSTANCE.createIf()));
+
+        newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.TASK_TOOL__BODY, ViewFactory.eINSTANCE.createFor()));
     }
 
     /**

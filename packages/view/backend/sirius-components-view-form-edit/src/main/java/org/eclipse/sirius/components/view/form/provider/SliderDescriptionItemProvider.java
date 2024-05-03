@@ -221,6 +221,8 @@ public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.SLIDER_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createLet()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.SLIDER_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createIf()));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.SLIDER_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createFor()));
     }
 
 }

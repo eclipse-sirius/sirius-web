@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.FixedColor;
+import org.eclipse.sirius.components.view.For;
 import org.eclipse.sirius.components.view.If;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.Let;
@@ -200,6 +201,15 @@ public class ViewSwitch<T> extends Switch<T> {
             case ViewPackage.CONDITIONAL: {
                 Conditional conditional = (Conditional) theEObject;
                 T result = this.caseConditional(conditional);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.FOR: {
+                For for_ = (For) theEObject;
+                T result = this.caseFor(for_);
+                if (result == null)
+                    result = this.caseOperation(for_);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -420,6 +430,20 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseConditional(Conditional object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>For</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>For</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFor(For object) {
         return null;
     }
 

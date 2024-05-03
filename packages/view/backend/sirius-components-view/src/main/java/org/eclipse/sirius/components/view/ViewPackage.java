@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -771,13 +771,64 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ForImpl <em>For</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ForImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFor()
+     * @generated
+     */
+    int FOR = 15;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOR__CHILDREN = OPERATION__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOR__EXPRESSION = OPERATION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Iterator Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOR__ITERATOR_NAME = OPERATION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>For</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOR_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>For</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOR_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see java.lang.String
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIdentifier()
      * @generated
      */
-    int IDENTIFIER = 15;
+    int IDENTIFIER = 16;
 
     /**
      * The meta object id for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -787,7 +838,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
      * @generated
      */
-    int INTERPRETED_EXPRESSION = 16;
+    int INTERPRETED_EXPRESSION = 17;
 
     /**
      * The meta object id for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -796,7 +847,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
      * @generated
      */
-    int DOMAIN_TYPE = 17;
+    int DOMAIN_TYPE = 18;
 
     /**
      * The meta object id for the '<em>Color</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -805,7 +856,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColor()
      * @generated
      */
-    int COLOR = 18;
+    int COLOR = 19;
 
     /**
      * The meta object id for the '<em>Length</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -813,7 +864,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLength()
      * @generated
      */
-    int LENGTH = 19;
+    int LENGTH = 20;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -1285,6 +1336,38 @@ public interface ViewPackage extends EPackage {
     EAttribute getConditional_Condition();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.For <em>For</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>For</em>'.
+     * @see org.eclipse.sirius.components.view.For
+     * @generated
+     */
+    EClass getFor();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.For#getExpression
+     * <em>Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Expression</em>'.
+     * @see org.eclipse.sirius.components.view.For#getExpression()
+     * @see #getFor()
+     * @generated
+     */
+    EAttribute getFor_Expression();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.For#getIteratorName
+     * <em>Iterator Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Iterator Name</em>'.
+     * @see org.eclipse.sirius.components.view.For#getIteratorName()
+     * @see #getFor()
+     * @generated
+     */
+    EAttribute getFor_IteratorName();
+
+    /**
      * Returns the meta object for data type '{@link java.lang.String <em>Identifier</em>}'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -1732,6 +1815,32 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute CONDITIONAL__CONDITION = eINSTANCE.getConditional_Condition();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ForImpl <em>For</em>}' class.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.ForImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFor()
+         * @generated
+         */
+        EClass FOR = eINSTANCE.getFor();
+
+        /**
+         * The meta object literal for the '<em><b>Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FOR__EXPRESSION = eINSTANCE.getFor_Expression();
+
+        /**
+         * The meta object literal for the '<em><b>Iterator Name</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FOR__ITERATOR_NAME = eINSTANCE.getFor_IteratorName();
 
         /**
          * The meta object literal for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc

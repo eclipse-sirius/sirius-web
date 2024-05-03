@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DeleteElement;
+import org.eclipse.sirius.components.view.For;
 import org.eclipse.sirius.components.view.If;
 import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.Operation;
@@ -96,6 +97,21 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
         Optional<Boolean> testResult = this.interpreter.evaluateExpression(this.variableManager.getVariables(), ifOperation.getConditionExpression()).asBoolean();
         if (testResult.isPresent() && Boolean.TRUE.equals(testResult.get())) {
             return this.operationInterpreter.executeOperations(ifOperation.getChildren(), this.variableManager);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<VariableManager> caseFor(For forOperation) {
+        Optional<List<Object>> optionalList = this.interpreter.evaluateExpression(this.variableManager.getVariables(), forOperation.getExpression()).asObjects();
+        if (optionalList.isPresent()) {
+            for (Object object : optionalList.get()) {
+                VariableManager childVariableManager = this.variableManager.createChild();
+                childVariableManager.put(forOperation.getIteratorName(), object);
+                this.operationInterpreter.executeOperations(forOperation.getChildren(), childVariableManager);
+            }
+            return Optional.of(this.variableManager);
         } else {
             return Optional.empty();
         }

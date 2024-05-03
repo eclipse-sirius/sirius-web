@@ -84,7 +84,7 @@ public class FormIdProviderTests {
      *
      * @author Arthur Daussy
      */
-    private class MockedObjectService extends IObjectService.NoOp {
+    private static final class MockedObjectService extends IObjectService.NoOp {
 
         @Override
         public String getId(Object object) {

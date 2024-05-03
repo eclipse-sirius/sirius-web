@@ -33,17 +33,17 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-annotations", 0.0),
   new ModuleCoverage("sirius-components-annotations-spring", 0.0),
   new ModuleCoverage("sirius-components-representations", 76.0),
-  new ModuleCoverage("sirius-components-core", 71.0),
-  new ModuleCoverage("sirius-components-collaborative", 86.0),
+  new ModuleCoverage("sirius-components-core", 73.0),
+  new ModuleCoverage("sirius-components-collaborative", 87.0),
   new ModuleCoverage("sirius-components-graphql-api", 53.0),
   new ModuleCoverage("sirius-components-charts", 56.0),
   new ModuleCoverage("sirius-components-collaborative-charts", 24.0),
-  new ModuleCoverage("sirius-components-diagrams", 78.0),
+  new ModuleCoverage("sirius-components-diagrams", 79.0),
   new ModuleCoverage("sirius-components-collaborative-diagrams", 72.0),
   new ModuleCoverage("sirius-components-diagrams-graphql", 33.0),
-  new ModuleCoverage("sirius-components-gantt", 87.0),
-  new ModuleCoverage("sirius-components-collaborative-gantt", 63.0),
-  new ModuleCoverage("sirius-components-gantt-graphql", 74.0),
+  new ModuleCoverage("sirius-components-gantt", 88.0),
+  new ModuleCoverage("sirius-components-collaborative-gantt", 65.0),
+  new ModuleCoverage("sirius-components-gantt-graphql", 77.0),
   new ModuleCoverage("sirius-components-deck", 90.0),
   new ModuleCoverage("sirius-components-collaborative-deck", 33.0),
   new ModuleCoverage("sirius-components-deck-graphql", 49.0),
@@ -80,7 +80,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-domain-design", 29.0),
   new ModuleCoverage("sirius-components-domain-emf", 98.0),
   new ModuleCoverage("sirius-components-view", 61.0),
-  new ModuleCoverage("sirius-components-view-edit", 16.0),
+  new ModuleCoverage("sirius-components-view-edit", 15.0),
   new ModuleCoverage("sirius-components-view-diagram", 55.0),
   new ModuleCoverage("sirius-components-view-diagram-edit", 5.0),
   new ModuleCoverage("sirius-components-view-form", 43.0),
@@ -88,7 +88,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-widget-reference-view", 34.0),
   new ModuleCoverage("sirius-components-widget-reference-view-edit", 4.0),
   new ModuleCoverage("sirius-components-view-gantt", 50.0),
-  new ModuleCoverage("sirius-components-view-gantt-edit", 6.0),
+  new ModuleCoverage("sirius-components-view-gantt-edit", 7.0),
   new ModuleCoverage("sirius-components-view-deck", 44.0),
   new ModuleCoverage("sirius-components-view-deck-edit", 4.0),
   new ModuleCoverage("sirius-components-view-emf", 70.0),
@@ -133,7 +133,7 @@ System.out.println();
 
 // Check global code coverage
 double global = checkCoverage("");
-double expectedGlobalCoverage = 57.0;
+double expectedGlobalCoverage = 58.0;
 boolean isValidCoverage = global >= expectedGlobalCoverage;
 display("total", global, expectedGlobalCoverage);
 

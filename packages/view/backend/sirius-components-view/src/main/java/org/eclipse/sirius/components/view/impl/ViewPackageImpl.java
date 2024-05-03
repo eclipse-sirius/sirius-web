@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.FixedColor;
+import org.eclipse.sirius.components.view.For;
 import org.eclipse.sirius.components.view.If;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.Let;
@@ -146,6 +147,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass conditionalEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass forEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -679,6 +687,36 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getFor() {
+        return this.forEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFor_Expression() {
+        return (EAttribute) this.forEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFor_IteratorName() {
+        return (EAttribute) this.forEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EDataType getIdentifier() {
         return this.identifierEDataType;
     }
@@ -810,6 +848,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.conditionalEClass = this.createEClass(CONDITIONAL);
         this.createEAttribute(this.conditionalEClass, CONDITIONAL__CONDITION);
 
+        this.forEClass = this.createEClass(FOR);
+        this.createEAttribute(this.forEClass, FOR__EXPRESSION);
+        this.createEAttribute(this.forEClass, FOR__ITERATOR_NAME);
+
         // Create data types
         this.identifierEDataType = this.createEDataType(IDENTIFIER);
         this.interpretedExpressionEDataType = this.createEDataType(INTERPRETED_EXPRESSION);
@@ -854,6 +896,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.deleteElementEClass.getESuperTypes().add(this.getOperation());
         this.letEClass.getESuperTypes().add(this.getOperation());
         this.ifEClass.getESuperTypes().add(this.getOperation());
+        this.forEClass.getESuperTypes().add(this.getOperation());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -941,6 +984,12 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEClass(this.conditionalEClass, Conditional.class, "Conditional", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getConditional_Condition(), this.getInterpretedExpression(), "condition", "aql:false", 1, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.forEClass, For.class, "For", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getFor_Expression(), this.getInterpretedExpression(), "expression", null, 1, 1, For.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getFor_IteratorName(), this.ecorePackage.getEString(), "iteratorName", null, 1, 1, For.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize data types
         this.initEDataType(this.identifierEDataType, String.class, "Identifier", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
