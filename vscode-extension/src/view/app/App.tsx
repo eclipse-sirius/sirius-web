@@ -18,8 +18,10 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { DetailsView, FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
+import { Theme, ThemeProvider } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import './reset.css';
+import { siriusWebTheme as defaultTheme } from './theme/siriusWebTheme';
 import './variables.css';
 
 interface AppState {
@@ -38,6 +40,7 @@ interface AppProps {
   representationId: string;
   representationLabel: string;
   representationKind: string;
+  theme?: Theme;
 }
 
 export const App = ({
@@ -48,6 +51,7 @@ export const App = ({
   representationId,
   representationLabel,
   representationKind,
+  theme,
 }: AppProps) => {
   const [state, setState] = useState<AppState>({
     editingContextId,
@@ -55,6 +59,8 @@ export const App = ({
     representationLabel,
     authenticate: false,
   });
+
+  const siriusWebTheme: Theme = theme ? theme : defaultTheme;
 
   useEffect(() => {
     setState((prevState) => {
@@ -131,13 +137,15 @@ export const App = ({
     component = <DetailsView editingContextId={state.editingContextId} readOnly={false} />;
   }
   return (
-    <SelectionContextProvider initialSelection={selection}>
-      <ConfirmationDialogContextProvider>
-        <div style={appStyle}>
-          <div style={headerStyle}></div>
-          {state.editingContextId && state.authenticate ? <div style={componentStyle}>{component}</div> : null}
-        </div>
-      </ConfirmationDialogContextProvider>
-    </SelectionContextProvider>
+    <ThemeProvider theme={siriusWebTheme}>
+      <SelectionContextProvider initialSelection={selection}>
+        <ConfirmationDialogContextProvider>
+          <div style={appStyle}>
+            <div style={headerStyle}></div>
+            {state.editingContextId && state.authenticate ? <div style={componentStyle}>{component}</div> : null}
+          </div>
+        </ConfirmationDialogContextProvider>
+      </SelectionContextProvider>
+    </ThemeProvider>
   );
 };
