@@ -89,7 +89,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.unsynchronizedDiagramDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaIdentifiers.ROOT_OBJECT.toString(),
+                PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "UnsynchronizedDiagram"
         );
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input);

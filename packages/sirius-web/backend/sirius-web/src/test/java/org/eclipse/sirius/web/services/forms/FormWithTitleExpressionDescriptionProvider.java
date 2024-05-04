@@ -85,7 +85,7 @@ public class FormWithTitleExpressionDescriptionProvider implements IEditingConte
         var pageDescription = new PageDescriptionBuilder()
                 .name("Page")
                 .labelExpression("Page")
-                .domainType("papaya_logical_architecture:Component")
+                .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self")
                 .groups()
                 .build();
@@ -93,7 +93,7 @@ public class FormWithTitleExpressionDescriptionProvider implements IEditingConte
         this.formDescription = new FormDescriptionBuilder()
                 .name("Form")
                 .titleExpression("aql:self.name")
-                .domainType("papaya_logical_architecture:Component")
+                .domainType("papaya:Component")
                 .pages(pageDescription)
                 .build();
 

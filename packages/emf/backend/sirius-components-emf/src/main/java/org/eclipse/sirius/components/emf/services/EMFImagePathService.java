@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EMFImagePathService implements IImagePathService {
 
-    private static final List<String> IMAGES_PATHS = List.of("/icons/full/obj16");
+    private static final List<String> IMAGES_PATHS = List.of("/icons/full/obj16", "/icons/full/ovr16");
 
     @Override
     public List<String> getPaths() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.controllers;
+package org.eclipse.sirius.web.application.controllers.projects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateSuccessPayload;
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
+import org.eclipse.sirius.web.papaya.services.PapayaProjectTemplateProvider;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectFromTemplateMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,7 +74,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSetOfProjectTemplatesWhenQueryIsPerformedThenTheProjectTemplatesAreReturned() {
-        Map<String, Object> variables = Map.of("page", 0, "limit", 2);
+        Map<String, Object> variables = Map.of("page", 0, "limit", 10);
         var result = this.projectTemplatesQueryRunner.run(variables);
 
         boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
@@ -123,5 +124,32 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
 
         var emfEditingContext = (IEMFEditingContext) editingContext;
         assertThat(emfEditingContext.getDomain().getResourceSet().getResources()).hasSize(3);
+    }
+
+    @Test
+    @DisplayName("Given the papaya project template, when the mutation is performed, then the project is created")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenPapayaProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), PapayaProjectTemplateProvider.SIRIUS_WEB_PROJECT_TEMPLATE_ID);
+        var result = this.createProjectFromTemplateMutationRunner.run(input);
+
+        String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
+        assertThat(typename).isEqualTo(CreateProjectFromTemplateSuccessPayload.class.getSimpleName());
+
+        String projectId = JsonPath.read(result, "$.data.createProjectFromTemplate.project.id");
+        assertThat(projectId).isNotBlank();
+
+        var optionalEditingContext = this.editingContextSearchService.findById(projectId);
+        assertThat(optionalEditingContext).isPresent();
+
+        var editingContext = optionalEditingContext.get();
+        assertThat(editingContext).isInstanceOf(IEMFEditingContext.class);
+
+        var emfEditingContext = (IEMFEditingContext) editingContext;
+        assertThat(emfEditingContext.getDomain().getResourceSet().getResources()).hasSizeGreaterThan(10);
     }
 }

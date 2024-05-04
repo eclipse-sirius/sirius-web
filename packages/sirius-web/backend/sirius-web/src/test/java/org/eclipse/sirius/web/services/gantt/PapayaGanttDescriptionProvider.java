@@ -81,9 +81,9 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
 
-        String resourcePath = UUID.nameUUIDFromBytes("FormWithRichTextDescription".getBytes()).toString();
+        String resourcePath = UUID.nameUUIDFromBytes("GanttDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
-        resource.eAdapters().add(new ResourceMetadataAdapter("FormWithRichTextDescription"));
+        resource.eAdapters().add(new ResourceMetadataAdapter("GanttDescription"));
         resource.getContents().add(ganttView);
 
         return ganttView;
@@ -96,7 +96,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
         this.ganttDescription = new GanttDescriptionBuilder()
                 .name("Gantt")
                 .titleExpression("aql:'Gantt'")
-                .domainType("papaya_planning:Project")
+                .domainType("papaya:Project")
                 .taskElementDescriptions(this.createTaskDescriptionInProject())
                 .createTool(createTaskTool)
                 .deleteTool(deleteTaskTool)
@@ -110,7 +110,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
 
         return new GanttBuilders().newTaskDescription()
                 .name("Iterations In Project")
-                .domainType("papaya_planning::Iteration")
+                .domainType("papaya::Iteration")
                 .semanticCandidatesExpression("aql:self.iterations")
                 .nameExpression("aql:self.name")
                 .startTimeExpression("aql:self.startTime")
@@ -122,7 +122,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
     private TaskDescription createTaskDescriptionInTask() {
         TaskDescription taskDescription = new GanttBuilders().newTaskDescription()
                 .name("Sub Tasks")
-                .domainType("papaya_planning::Task")
+                .domainType("papaya::Task")
                 .semanticCandidatesExpression("aql:self.tasks")
                 .nameExpression("aql:self.name")
                 .descriptionExpression("aql:self.description")
@@ -160,7 +160,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
         return new GanttBuilders().newCreateTaskTool()
                 .name("Create Task")
                 .body(new CreateInstanceBuilder()
-                        .typeName("papaya_planning::Task")
+                        .typeName("papaya::Task")
                         .referenceName("tasks")
                         .children(newInstanceChangeContext)
                         .build())

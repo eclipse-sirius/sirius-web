@@ -121,7 +121,7 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
 
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
-                .domainType("papaya_logical_architecture:Component")
+                .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(insideLabel)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
@@ -129,7 +129,7 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 .build();
 
         var createNewComponent = new CreateInstanceBuilder()
-                .typeName("papaya_logical_architecture:Component")
+                .typeName("papaya:Component")
                 .referenceName("components")
                 .variableName("newInstance")
                 .children(
@@ -183,7 +183,7 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
         this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
                 .titleExpression("aql:'UnsynchronizedDiagram'")
-                .domainType("papaya_core:Root")
+                .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
                 .palette(diagramPalette)

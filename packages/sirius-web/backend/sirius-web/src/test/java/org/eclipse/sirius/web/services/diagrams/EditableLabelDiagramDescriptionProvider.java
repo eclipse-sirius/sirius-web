@@ -118,7 +118,7 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
 
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
-                .domainType("papaya_logical_architecture:Component")
+                .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(insideLabel)
                 .style(nodeStyle)
@@ -128,7 +128,7 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
         this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
                 .titleExpression("aql:'EditableLabelDiagram'")
-                .domainType("papaya_core:Root")
+                .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
                 .autoLayout(false)

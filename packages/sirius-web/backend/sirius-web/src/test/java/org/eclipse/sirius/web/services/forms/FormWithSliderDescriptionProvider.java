@@ -89,15 +89,15 @@ public class FormWithSliderDescriptionProvider implements IEditingContextProcess
     private FormDescription createFormDescription() {
         var prioritySliderDescription = new SliderDescriptionBuilder()
                 .name("Slider")
-                .labelExpression("aql:'Priority'")
-                .helpExpression("The priority of the task")
-                .currentValueExpression("aql:self.priority")
+                .labelExpression("aql:'Cost'")
+                .helpExpression("The cost of the task")
+                .currentValueExpression("aql:self.cost")
                 .body(
                         new ChangeContextBuilder()
                                 .expression("aql:self")
                                 .children(
                                         new SetValueBuilder()
-                                                .featureName("priority")
+                                                .featureName("cost")
                                                 .valueExpression("aql:newValue")
                                                 .build()
                                 )
@@ -115,15 +115,15 @@ public class FormWithSliderDescriptionProvider implements IEditingContextProcess
         var pageDescription = new PageDescriptionBuilder()
                 .name("Page")
                 .labelExpression("Page")
-                .domainType("papaya_planning:Task")
+                .domainType("papaya:Task")
                 .semanticCandidatesExpression("aql:self")
                 .groups(groupDescription)
                 .build();
 
         this.formDescription = new FormDescriptionBuilder()
                 .name("Form")
-                .titleExpression("aql:'FormWithTextfield'")
-                .domainType("papaya_planning:Task")
+                .titleExpression("aql:'FormWithSlider'")
+                .domainType("papaya:Task")
                 .pages(pageDescription)
                 .build();
 
