@@ -86,7 +86,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.visibilityDiagramDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaIdentifiers.ROOT_OBJECT.toString(),
+                PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "VisibilityDiagram"
         );
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input);

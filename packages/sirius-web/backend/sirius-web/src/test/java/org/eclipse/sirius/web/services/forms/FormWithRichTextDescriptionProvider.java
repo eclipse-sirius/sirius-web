@@ -115,7 +115,7 @@ public class FormWithRichTextDescriptionProvider implements IEditingContextProce
         var pageDescription = new PageDescriptionBuilder()
                 .name("Page")
                 .labelExpression("Page")
-                .domainType("papaya_planning:Task")
+                .domainType("papaya:Task")
                 .semanticCandidatesExpression("aql:self")
                 .groups(groupDescription)
                 .build();
@@ -123,7 +123,7 @@ public class FormWithRichTextDescriptionProvider implements IEditingContextProce
         this.formDescription = new FormDescriptionBuilder()
                 .name("Form")
                 .titleExpression("aql:'FormWithRichText'")
-                .domainType("papaya_planning:Task")
+                .domainType("papaya:Task")
                 .pages(pageDescription)
                 .build();
 

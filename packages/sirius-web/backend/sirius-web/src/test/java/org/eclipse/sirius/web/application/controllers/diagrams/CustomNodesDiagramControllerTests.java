@@ -68,7 +68,7 @@ public class CustomNodesDiagramControllerTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramWithNodesUsingCustomNodeStyleWhenItIsOpenedThenTheNodesHaveTheExpectedStyle() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), this.customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), PapayaIdentifiers.ROOT_OBJECT.toString(), "ExpandCollapseDiagram");
+        var input = new CreateRepresentationInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), this.customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), "ExpandCollapseDiagram");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
         Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)

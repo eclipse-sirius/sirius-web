@@ -75,9 +75,9 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
 
-        String resourcePath = UUID.nameUUIDFromBytes("FormWithRichTextDescription".getBytes()).toString();
+        String resourcePath = UUID.nameUUIDFromBytes("DeckDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
-        resource.eAdapters().add(new ResourceMetadataAdapter("FormWithRichTextDescription"));
+        resource.eAdapters().add(new ResourceMetadataAdapter("DeckDescription"));
         resource.getContents().add(deckView);
 
         return deckView;
@@ -113,7 +113,7 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
         this.deckDescription = new DeckDescriptionBuilder()
                 .name("Deck")
                 .titleExpression("aql:'Deck'")
-                .domainType("papaya_planning:Project")
+                .domainType("papaya:Project")
                 .laneDescriptions(toDoLaneDescription, doneLaneDescription)
                 .build();
 

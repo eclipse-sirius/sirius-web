@@ -29,6 +29,34 @@ import org.eclipse.sirius.components.domain.Relation;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class PapayaDomainFactory {
 
+    public static final String PAPAYA_CORE = "papaya_core";
+
+    public static final String PAPAYA_OPERATIONAL_ANALYSIS = "papaya_operational_analysis";
+
+    public static final String PAPAYA_LOGICAL_ARCHITECTURE = "papaya_logical_architecture";
+
+    public static final String COMPONENT = "Component";
+
+    public static final String PACKAGE = "Package";
+
+    public static final String TYPE_PARAMETER = "TypeParameter";
+
+    public static final String TYPE = "Type";
+
+    public static final String ANNOTATION = "Annotation";
+
+    public static final String DATA_TYPE = "DataType";
+
+    public static final String INTERFACE = "Interface";
+
+    public static final String RECORD = "Record";
+
+    public static final String CLASS = "Class";
+
+    public static final String ENUM = "Enum";
+
+    public static final String PAPAYA_PLANNING = "papaya_planning";
+
     private Domain coreDomain;
 
     private Domain operationalAnalysisDomain;
@@ -67,6 +95,12 @@ public class PapayaDomainFactory {
 
     private Entity typedElementEntity;
 
+    private Entity classifierEntity;
+
+    private Entity typeParameterEntity;
+
+    private Entity genericTypeEntity;
+
     private Entity interfaceEntity;
 
     private Entity classEntity;
@@ -85,6 +119,12 @@ public class PapayaDomainFactory {
 
     private Entity parameterEntity;
 
+    private Entity recordEntity;
+
+    private Entity annotationEntity;
+
+    private Entity annotableEntity;
+
     private Entity componentPortEntity;
 
     private Entity componentExchangeEntity;
@@ -99,16 +139,16 @@ public class PapayaDomainFactory {
 
     public List<Domain> getDomains() {
         this.coreDomain = DomainFactory.eINSTANCE.createDomain();
-        this.coreDomain.setName("papaya_core");
+        this.coreDomain.setName(PAPAYA_CORE);
 
         this.operationalAnalysisDomain = DomainFactory.eINSTANCE.createDomain();
-        this.operationalAnalysisDomain.setName("papaya_operational_analysis");
+        this.operationalAnalysisDomain.setName(PAPAYA_OPERATIONAL_ANALYSIS);
 
         this.logicalArchitectureDomain = DomainFactory.eINSTANCE.createDomain();
-        this.logicalArchitectureDomain.setName("papaya_logical_architecture");
+        this.logicalArchitectureDomain.setName(PAPAYA_LOGICAL_ARCHITECTURE);
 
         this.planningDomain = DomainFactory.eINSTANCE.createDomain();
-        this.planningDomain.setName("papaya_planning");
+        this.planningDomain.setName(PAPAYA_PLANNING);
 
         this.createEObjects();
         this.linkEObjects();
@@ -146,18 +186,29 @@ public class PapayaDomainFactory {
         this.componentPortEntity = this.createEntity(this.logicalArchitectureDomain, "ComponentPort", false, List.of(this.namedElementEntity));
         this.componentExchangeEntity = this.createEntity(this.logicalArchitectureDomain, "ComponentExchange", false, List.of(this.namedElementEntity));
 
-        this.packageEntity = this.createEntity(this.logicalArchitectureDomain, "Package", false, List.of(this.namedElementEntity));
-        this.typeEntity = this.createEntity(this.logicalArchitectureDomain, "Type", true, List.of(this.namedElementEntity));
+        this.annotableEntity = this.createEntity(this.logicalArchitectureDomain, "Annotable", true, List.of());
+        this.packageEntity = this.createEntity(this.logicalArchitectureDomain, "Package", false, List.of(this.namedElementEntity, this.annotableEntity));
+        this.typeEntity = this.createEntity(this.logicalArchitectureDomain, "Type", true, List.of(this.namedElementEntity, this.annotableEntity));
+        this.annotationEntity = this.createEntity(this.logicalArchitectureDomain, "Annotation", false, List.of(this.typeEntity));
+
         this.typedElementEntity = this.createEntity(this.logicalArchitectureDomain, "TypedElement", true, List.of(this.namedElementEntity));
-        this.interfaceEntity = this.createEntity(this.logicalArchitectureDomain, "Interface", false, List.of(this.typeEntity));
-        this.classEntity = this.createEntity(this.logicalArchitectureDomain, "Class", false, List.of(this.typeEntity));
+
+        this.classifierEntity = this.createEntity(this.logicalArchitectureDomain, "Classifier", true, List.of(this.typeEntity));
+        this.typeParameterEntity = this.createEntity(this.logicalArchitectureDomain, "TypeParameter", false, List.of(this.namedElementEntity));
+        this.genericTypeEntity = this.createEntity(this.logicalArchitectureDomain, "GenericType", false, List.of(this.modelElementEntity));
+
+        this.interfaceEntity = this.createEntity(this.logicalArchitectureDomain, "Interface", false, List.of(this.classifierEntity));
+        this.classEntity = this.createEntity(this.logicalArchitectureDomain, "Class", false, List.of(this.classifierEntity));
+        this.recordEntity = this.createEntity(this.logicalArchitectureDomain, "Record", false, List.of(this.classifierEntity, this.annotableEntity));
+
         this.dataTypeEntity = this.createEntity(this.logicalArchitectureDomain, "DataType", false, List.of(this.typeEntity));
         this.enumEntity = this.createEntity(this.logicalArchitectureDomain, "Enum", false, List.of(this.dataTypeEntity));
-        this.enumLiteralEntity = this.createEntity(this.logicalArchitectureDomain, "EnumLiteral", false, List.of(this.namedElementEntity));
-        this.attributeEntity = this.createEntity(this.logicalArchitectureDomain, "Attribute", false, List.of(this.namedElementEntity));
-        this.referenceEntity = this.createEntity(this.logicalArchitectureDomain, "Reference", false, List.of(this.typedElementEntity));
-        this.operationEntity = this.createEntity(this.logicalArchitectureDomain, "Operation", false, List.of(this.typedElementEntity));
-        this.parameterEntity = this.createEntity(this.logicalArchitectureDomain, "Parameter", false, List.of(this.typedElementEntity));
+        this.enumLiteralEntity = this.createEntity(this.logicalArchitectureDomain, "EnumLiteral", false, List.of(this.namedElementEntity, this.annotableEntity));
+
+        this.attributeEntity = this.createEntity(this.logicalArchitectureDomain, "Attribute", false, List.of(this.namedElementEntity, this.annotableEntity));
+        this.referenceEntity = this.createEntity(this.logicalArchitectureDomain, "Reference", false, List.of(this.typedElementEntity, this.annotableEntity));
+        this.operationEntity = this.createEntity(this.logicalArchitectureDomain, "Operation", false, List.of(this.typedElementEntity, this.annotableEntity));
+        this.parameterEntity = this.createEntity(this.logicalArchitectureDomain, "Parameter", false, List.of(this.typedElementEntity, this.annotableEntity));
     }
 
     private void createPlanningObjects() {
@@ -175,7 +226,7 @@ public class PapayaDomainFactory {
     }
 
     private void linkCoreObjects() {
-        this.rootEntity.getRelations().add(this.createRelation("tags", true, true, false, this.tagEntity));
+        this.rootEntity.getRelations().add(this.createRelation("tags", true, true, true, this.tagEntity));
         this.rootEntity.getRelations().add(this.createRelation("operationalEntities", true, true, false, this.operationalEntityEntity));
         this.rootEntity.getRelations().add(this.createRelation("operationalActors", true, true, false, this.operationalActorEntity));
         this.rootEntity.getRelations().add(this.createRelation("components", true, true, false, this.componentEntity));
@@ -185,7 +236,7 @@ public class PapayaDomainFactory {
         this.tagEntity.getAttributes().add(this.createAttribute("key", false, false, DataType.STRING));
         this.tagEntity.getAttributes().add(this.createAttribute("value", false, false, DataType.STRING));
 
-        this.modelElementEntity.getRelations().add(this.createRelation("tags", false, true, false, this.tagEntity));
+        this.modelElementEntity.getRelations().add(this.createRelation("tags", false, true, true, this.tagEntity));
         this.namedElementEntity.getAttributes().add(this.createAttribute("name", false, false, DataType.STRING));
     }
 
@@ -201,6 +252,7 @@ public class PapayaDomainFactory {
     }
 
     private void linkLogicalArchitectureObjects() {
+        this.componentEntity.getRelations().add(this.createRelation("dependencies", false, true, true, this.componentEntity));
         this.componentEntity.getRelations().add(this.createRelation("packages", true, true, false, this.packageEntity));
         this.componentEntity.getRelations().add(this.createRelation("providedServices", true, true, false, this.providedServiceEntity));
         this.componentEntity.getRelations().add(this.createRelation("requiredServices", true, true, false, this.requiredServiceEntity));
@@ -213,21 +265,38 @@ public class PapayaDomainFactory {
         this.providedServiceEntity.getRelations().add(this.createRelation("contract", false, false, false, this.interfaceEntity));
         this.requiredServiceEntity.getRelations().add(this.createRelation("contract", false, false, false, this.interfaceEntity));
 
+        this.annotableEntity.getRelations().add(this.createRelation("annotations", false, true, true, this.annotationEntity));
+
+        this.packageEntity.getAttributes().add(this.createAttribute("exported", false, false, DataType.BOOLEAN));
         this.packageEntity.getRelations().add(this.createRelation("types", true, true, false, this.typeEntity));
         this.packageEntity.getRelations().add(this.createRelation("packages", true, true, false, this.packageEntity));
-        this.typedElementEntity.getAttributes().add(this.createAttribute("many", false, false, DataType.BOOLEAN));
-        this.typedElementEntity.getRelations().add(this.createRelation("type", false, false, false, this.typeEntity));
-        this.interfaceEntity.getRelations().add(this.createRelation("operations", true, true, false, this.operationEntity));
-        this.interfaceEntity.getRelations().add(this.createRelation("extends", false, true, false, this.interfaceEntity));
+
+        this.typeEntity.getRelations().add(this.createRelation("types", true, true, false, this.typeEntity));
+
+        this.typedElementEntity.getRelations().add(this.createRelation("type", true, false, false, this.genericTypeEntity));
+
+        this.classifierEntity.getRelations().add(this.createRelation("typeParameters", true, true, false, this.typeParameterEntity));
+        this.typeParameterEntity.getRelations().add(this.createRelation("bounds", true, true, false, this.genericTypeEntity));
+        this.genericTypeEntity.getRelations().add(this.createRelation("classifier", false, false, true, this.classifierEntity));
+        this.genericTypeEntity.getRelations().add(this.createRelation("typeArguments", true, true, false, this.genericTypeEntity));
+
+        this.interfaceEntity.getRelations().add(this.createRelation("operations", true, true, true, this.operationEntity));
+        this.interfaceEntity.getRelations().add(this.createRelation("extends", false, true, true, this.interfaceEntity));
+
         this.classEntity.getAttributes().add(this.createAttribute("abstract", false, false, DataType.BOOLEAN));
-        this.classEntity.getRelations().add(this.createRelation("implements", false, true, false, this.interfaceEntity));
-        this.classEntity.getRelations().add(this.createRelation("extends", false, false, false, this.classEntity));
-        this.classEntity.getRelations().add(this.createRelation("attributes", true, true, false, this.attributeEntity));
-        this.classEntity.getRelations().add(this.createRelation("references", true, true, false, this.referenceEntity));
-        this.classEntity.getRelations().add(this.createRelation("operations", true, true, false, this.operationEntity));
+        this.classEntity.getRelations().add(this.createRelation("implements", false, true, true, this.interfaceEntity));
+        this.classEntity.getRelations().add(this.createRelation("extends", false, false, true, this.classEntity));
+        this.classEntity.getRelations().add(this.createRelation("attributes", true, true, true, this.attributeEntity));
+        this.classEntity.getRelations().add(this.createRelation("references", true, true, true, this.referenceEntity));
+        this.classEntity.getRelations().add(this.createRelation("operations", true, true, true, this.operationEntity));
+
+        this.recordEntity.getRelations().add(this.createRelation("implements", false, true, true, this.interfaceEntity));
+
         this.attributeEntity.getRelations().add(this.createRelation("type", false, false, false, this.dataTypeEntity));
         this.attributeEntity.getAttributes().add(this.createAttribute("many", false, false, DataType.BOOLEAN));
+
         this.operationEntity.getRelations().add(this.createRelation("parameters", true, true, false, this.parameterEntity));
+
         this.enumEntity.getRelations().add(this.createRelation("enumLiterals", true, true, false, this.enumLiteralEntity));
     }
 

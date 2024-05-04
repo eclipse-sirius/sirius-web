@@ -96,12 +96,12 @@ public class SliderControllerTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var slider = groupNavigator.findWidget("Priority", Slider.class);
+                    var slider = groupNavigator.findWidget("Cost", Slider.class);
 
                     assertThat(slider)
-                            .hasLabel("Priority")
+                            .hasLabel("Cost")
                             .hasValue(1)
-                            .hasHelp("The priority of the task")
+                            .hasHelp("The cost of the task")
                             .isNotReadOnly();
                 }, () -> fail("Missing form"));
 
@@ -126,7 +126,7 @@ public class SliderControllerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(form -> {
                     formId.set(form.getId());
 
-                    var slider = new FormNavigator(form).page("Page").group("Group").findWidget("Priority", Slider.class);
+                    var slider = new FormNavigator(form).page("Page").group("Group").findWidget("Cost", Slider.class);
                     sliderId.set(slider.getId());
 
                     assertThat(slider).hasValue(1);
@@ -143,7 +143,7 @@ public class SliderControllerTests extends AbstractIntegrationTests {
         Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
-                    var slider = new FormNavigator(form).page("Page").group("Group").findWidget("Priority", Slider.class);
+                    var slider = new FormNavigator(form).page("Page").group("Group").findWidget("Cost", Slider.class);
                     assertThat(slider).hasValue(5);
                 }, () -> fail("Missing form"));
 

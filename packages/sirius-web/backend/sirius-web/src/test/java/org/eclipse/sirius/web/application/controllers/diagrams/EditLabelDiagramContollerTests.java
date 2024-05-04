@@ -77,7 +77,7 @@ public class EditLabelDiagramContollerTests extends AbstractIntegrationTests {
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.editableLabelDiagramDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaIdentifiers.ROOT_OBJECT.toString(),
+                PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EditableLabelDiagram"
         );
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input);

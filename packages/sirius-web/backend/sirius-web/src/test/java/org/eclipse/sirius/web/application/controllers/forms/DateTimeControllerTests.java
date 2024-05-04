@@ -101,7 +101,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
 
                     assertThat(dateTime)
                             .hasLabel("Start Date")
-                            .hasValue("2023-12-11T09:00:00.00Z")
+                            .hasValue("2023-12-11T09:00:00Z")
                             .hasHelp("The start Date of the Iteration")
                             .isNotReadOnly();
                 }, () -> fail("Missing form"));
@@ -130,7 +130,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
                     var dateTime = new FormNavigator(form).page("Page").group("Group").findWidget("Start Date", DateTime.class);
                     dateTimeId.set(dateTime.getId());
 
-                    assertThat(dateTime).hasValue("2023-12-11T09:00:00.00Z");
+                    assertThat(dateTime).hasValue("2023-12-11T09:00:00Z");
                 }, () -> fail("Missing form"));
 
         Runnable editDateTime = () -> {
@@ -145,7 +145,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     var dateTime = new FormNavigator(form).page("Page").group("Group").findWidget("Start Date", DateTime.class);
-                    assertThat(dateTime).hasValue("2024-02-02T18:00:00.00Z");
+                    assertThat(dateTime).hasValue("2024-02-02T18:00:00Z");
                 }, () -> fail("Missing form"));
 
         StepVerifier.create(flux)

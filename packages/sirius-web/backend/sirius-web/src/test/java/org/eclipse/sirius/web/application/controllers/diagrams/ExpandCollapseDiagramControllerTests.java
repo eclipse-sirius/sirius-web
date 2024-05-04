@@ -82,7 +82,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.expandCollapseDiagramDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaIdentifiers.ROOT_OBJECT.toString(),
+                PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "ExpandCollapseDiagram"
         );
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input);

@@ -67,7 +67,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.papayaDeckDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaIdentifiers.PROJECT_OBJECT.toString(),
+                PapayaIdentifiers.SIRIUS_WEB_PLANNING_PROJECT_OBJECT.toString(),
                 "Deck"
         );
         return this.givenCreatedDeckSubscription.createAndSubscribe(input);

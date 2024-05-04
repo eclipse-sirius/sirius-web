@@ -115,7 +115,7 @@ public class FormWithDateTimeDescriptionProvider implements IEditingContextProce
         var pageDescription = new PageDescriptionBuilder()
                 .name("Page")
                 .labelExpression("Page")
-                .domainType("papaya_planning:Iteration")
+                .domainType("papaya:Iteration")
                 .semanticCandidatesExpression("aql:self")
                 .groups(groupDescription)
                 .build();
@@ -123,7 +123,7 @@ public class FormWithDateTimeDescriptionProvider implements IEditingContextProce
         this.formDescription = new FormDescriptionBuilder()
                 .name("Form")
                 .titleExpression("aql:'FormWithDateTime'")
-                .domainType("papaya_planning:Iteration")
+                .domainType("papaya:Iteration")
                 .pages(pageDescription)
                 .build();
 

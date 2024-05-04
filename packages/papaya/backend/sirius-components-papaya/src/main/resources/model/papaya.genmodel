@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (c) 2024 Obeo.&#xA;This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;    Obeo - initial API and implementation"
+    modelDirectory="/sirius-components-papaya/src/main/java" creationIcons="false"
+    editDirectory="/sirius-components-papaya-edit/src/main/java" modelPluginID="sirius-components-papaya"
+    modelName="Papaya" editPluginClass="org.eclipse.sirius.components.papaya.provider.PapayaEditPlugin"
+    updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" commentFormatting="true" importerID="org.eclipse.emf.importer.ecore"
+    bundleManifest="false" complianceLevel="17.0" copyrightFields="false" editPluginID="sirius-components-papaya-edit"
+    operationReflection="true" importOrganizing="true" cleanup="true">
+  <foreignModel>papaya.ecore</foreignModel>
+  <genPackages prefix="Papaya" basePackage="org.eclipse.sirius.components" disposableProviderFactory="true"
+      extensibleProviderFactory="true" childCreationExtenders="true" ecorePackage="papaya.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="papaya.ecore#//Priority">
+      <genEnumLiterals ecoreEnumLiteral="papaya.ecore#//Priority/P1"/>
+      <genEnumLiterals ecoreEnumLiteral="papaya.ecore#//Priority/P2"/>
+      <genEnumLiterals ecoreEnumLiteral="papaya.ecore#//Priority/P3"/>
+      <genEnumLiterals ecoreEnumLiteral="papaya.ecore#//Priority/P4"/>
+      <genEnumLiterals ecoreEnumLiteral="papaya.ecore#//Priority/P5"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="papaya.ecore#//Visibility">
+      <genEnumLiterals ecoreEnumLiteral="papaya.ecore#//Visibility/PUBLIC"/>
+      <genEnumLiterals ecoreEnumLiteral="papaya.ecore#//Visibility/PROTECTED"/>
+      <genEnumLiterals ecoreEnumLiteral="papaya.ecore#//Visibility/PACKAGE"/>
+      <genEnumLiterals ecoreEnumLiteral="papaya.ecore#//Visibility/PRIVATE"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="papaya.ecore#//Instant"/>
+    <genClasses image="false" ecoreClass="papaya.ecore#//ModelElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//ModelElement/tags"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Tag">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Tag/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Tag/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="papaya.ecore#//NamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//NamedElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//NamedElement/description"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Project">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/projects"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/components"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/componentExchanges"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/iterations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/tasks"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/contributions"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Iteration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Iteration/startDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Iteration/endDate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Iteration/tasks"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Iteration/contributions"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Task">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/priority"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/cost"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Task/targets"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Task/tasks"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/startDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/endDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/done"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Contribution">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Contribution/relatedTasks"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Contribution/targets"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Contribution/done"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Component">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/dependencies"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/usedBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/components"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/packages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/ports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/providedServices"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/requiredServices"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//ComponentPort">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//ComponentPort/protocol"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//ComponentExchange">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//ComponentExchange/ports"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//ProvidedService">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//ProvidedService/contracts"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//RequiredService">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//RequiredService/contracts"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="papaya.ecore#//AnnotableElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//AnnotableElement/annotations"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Package">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Package/qualifiedName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Package/types"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Package/packages"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="papaya.ecore#//Type">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Type/qualifiedName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Type/visibility"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Type/types"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="papaya.ecore#//TypedElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//TypedElement/type"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//GenericType">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//GenericType/rawType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//GenericType/typeArguments"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Annotation"/>
+    <genClasses image="false" ecoreClass="papaya.ecore#//Classifier">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Classifier/typeParameters"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//TypeParameter"/>
+    <genClasses ecoreClass="papaya.ecore#//Interface">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Interface/extends"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Interface/operations"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Class">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Class/abstract"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Class/implements"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Class/extends"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Class/attributes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Class/operations"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Attribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Attribute/visibility"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Attribute/final"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Attribute/static"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Operation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Operation/visibility"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Operation/parameters"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Parameter"/>
+    <genClasses ecoreClass="papaya.ecore#//Record">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Record/components"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Record/implements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Record/operations"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//RecordComponent"/>
+    <genClasses ecoreClass="papaya.ecore#//DataType"/>
+    <genClasses ecoreClass="papaya.ecore#//Enum">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Enum/literals"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//EnumLiteral"/>
+  </genPackages>
+</genmodel:GenModel>

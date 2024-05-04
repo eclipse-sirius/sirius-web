@@ -181,7 +181,7 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
 
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
-                .domainType("papaya_logical_architecture:Component")
+                .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(insideLabel)
                 .style(nodeStyle)
@@ -193,7 +193,7 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
         this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
                 .titleExpression("aql:'VisibilityDiagram'")
-                .domainType("papaya_core:Root")
+                .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
                 .autoLayout(false)

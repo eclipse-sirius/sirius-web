@@ -91,7 +91,7 @@ public class CustomNodesDiagramDescriptionProvider implements IEditingContextPro
 
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
-                .domainType("papaya_logical_architecture:Component")
+                .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .style(nodeStyle)
                 .build();
@@ -99,7 +99,7 @@ public class CustomNodesDiagramDescriptionProvider implements IEditingContextPro
         this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
                 .titleExpression("aql:'CustomNodesDiagram'")
-                .domainType("papaya_core:Root")
+                .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
                 .autoLayout(false)

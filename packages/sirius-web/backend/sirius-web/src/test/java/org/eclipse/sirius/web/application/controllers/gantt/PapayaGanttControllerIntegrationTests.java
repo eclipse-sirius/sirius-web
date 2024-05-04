@@ -91,7 +91,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.papayaGanttDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaIdentifiers.PROJECT_OBJECT.toString(),
+                PapayaIdentifiers.SIRIUS_WEB_PLANNING_PROJECT_OBJECT.toString(),
                 "Gantt"
         );
         return this.givenCreatedGanttSubscription.createAndSubscribe(input);

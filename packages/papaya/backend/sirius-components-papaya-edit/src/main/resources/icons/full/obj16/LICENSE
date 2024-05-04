@@ -1,0 +1,38 @@
+- https://github.com/yamatsum/nonicons (MIT LICENSE)
+  - Class.svg
+  - Interface.svg
+  - GenericType.svg
+- https://github.com/radix-ui/icons (MIT LICENSE)
+  - Component.svg
+- https://github.com/primer/octicons (MIT LICENSE)
+  - Package.svg
+  - Project.svg
+- https://github.com/Remix-Design/RemixIcon (Apache 2.0)
+  - Operation.svg
+- https://github.com/carbon-design-system/carbon (Apache 2.0)
+  - Annotation.svg
+  - Class.svg
+  - ComponentExchange.svg
+  - Enum.svg
+  - Parameter.svg
+  - ProvidedService.svg
+  - RequiredService.svg
+  - Task.svg
+  - TypeParameter.svg
+- https://github.com/microsoft/fluentui-system-icons (MIT LICENSE)
+  - ComponentPort.svg
+- https://github.com/tabler/tabler-icons (MIT LICENSE)
+  - Contribution.svg
+- https://github.com/phosphor-icons/core (MIT LICENSE)
+  - Attribute.svg
+  - DataType.svg
+  - EnumLiteral.svg
+  - Iteration.svg
+  - Record.svg
+  - RecordComponent.svg
+  - Tag.svg
+- https://github.com/iconoir-icons/iconoir (MIT LICENSE)
+  - Visibility_PUBLIC.svg
+  - Visibility_PRIVATE.svg
+  - Visibility_PROTECTED.svg
+  - Visibility_PACKAGE.svg
