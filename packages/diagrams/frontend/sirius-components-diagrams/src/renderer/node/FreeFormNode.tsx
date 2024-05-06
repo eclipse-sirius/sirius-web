@@ -117,7 +117,7 @@ export const FreeFormNode = memo(({ data, id, selected, dragging }: NodeProps<Fr
         {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />}
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={getLabelId(data)} /> : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
+        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
       </div>
       {data.outsideLabels.BOTTOM_MIDDLE && (

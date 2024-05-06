@@ -16,4 +16,5 @@ import { GQLNodeDescription } from '../connector/useConnector.types';
 export interface ConnectionTargetHandleProps {
   nodeId: string;
   nodeDescription: GQLNodeDescription | undefined;
+  isHovered: boolean;
 }
