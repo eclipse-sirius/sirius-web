@@ -13,7 +13,7 @@
 
 import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { memo, useContext } from 'react';
+import React, { memo, useContext, useMemo } from 'react';
 import { NodeProps } from 'reactflow';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
@@ -77,14 +77,22 @@ export const FreeFormNode = memo(({ data, id, selected, dragging }: NodeProps<Fr
 
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
-  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
 
-  const rotation = computeBorderRotation(data);
+  const rotation = useMemo(
+    () => computeBorderRotation(data),
+    [data.isBorderNode, data.positionDependentRotation, data.borderNodePosition]
+  );
   let imageURL: string | undefined = undefined;
   if (data.imageURL) {
     imageURL = httpOrigin + data.imageURL;
   }
+
+  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
+  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+  const nodeStyle = useMemo(
+    () => freeFormNodeStyle(theme, data.style, selected, data.isHovered, data.faded, rotation, imageURL),
+    [data.style, selected, data.isHovered, data.faded, rotation, imageURL]
+  );
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -107,7 +115,7 @@ export const FreeFormNode = memo(({ data, id, selected, dragging }: NodeProps<Fr
       <Resizer data={data} selected={selected} />
       <div
         style={{
-          ...freeFormNodeStyle(theme, data.style, selected, data.isHovered, data.faded, rotation, imageURL),
+          ...nodeStyle,
           ...connectionFeedbackStyle,
           ...dropFeedbackStyle,
         }}

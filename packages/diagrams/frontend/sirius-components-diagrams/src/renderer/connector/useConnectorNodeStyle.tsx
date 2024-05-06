@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { useTheme } from '@material-ui/core/styles';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { NodeContext } from '../node/NodeContext';
 import { NodeContextValue } from '../node/NodeContext.types';
 import { ConnectorContext } from './ConnectorContext';
@@ -43,5 +43,11 @@ export const useConnectorNodeStyle = (nodeId: string, descriptionId: string): Us
       style.opacity = '0.4';
     }
   }
-  return { style };
+
+  const memoizedStyle = useMemo(
+    () => style,
+    [candidates.map((candidate) => candidate.id).join('-'), isNewConnection, hoveredNode?.id]
+  );
+
+  return { style: memoizedStyle };
 };

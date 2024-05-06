@@ -154,6 +154,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3456[#3456] [diagram] Fix an issue that were causing a large delay when opening a diagram, creating an edge or reconnecting an edge
 - https://github.com/eclipse-sirius/sirius-web/issues/3391[#3391] [diagram] Accept gradient for node background
 - https://github.com/eclipse-sirius/sirius-web/issues/3435[#3435] [diagram] Extract diagram style from useDropNode
+- https://github.com/eclipse-sirius/sirius-web/issues/3453[#3453] [diagram] Memoizing edges and nodes style
 
 == v2024.3.0
 

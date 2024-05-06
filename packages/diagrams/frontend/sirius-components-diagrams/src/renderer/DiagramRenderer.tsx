@@ -202,7 +202,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         });
       }
     },
-    [setNodes, layoutOnBoundsChange, getNodes]
+    [setNodes, layoutOnBoundsChange, getNodes, getEdges]
   );
 
   const handleEdgesChange: OnEdgesChange = useCallback(

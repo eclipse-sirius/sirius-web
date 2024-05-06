@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { NodeProps } from 'reactflow';
 import { Label } from '../Label';
 import { useDrop } from '../drop/useDrop';
@@ -43,6 +43,10 @@ export const IconLabelNode = memo(({ data, id, selected, dragging }: NodeProps<I
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+  const nodeStyle = useMemo(
+    () => iconlabelStyle(data.style, theme, selected, data.isHovered, data.faded),
+    [data.style, selected, data.isHovered, data.faded]
+  );
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -52,7 +56,7 @@ export const IconLabelNode = memo(({ data, id, selected, dragging }: NodeProps<I
     <div style={{ paddingLeft: '8px', paddingRight: '8px' }}>
       <div
         style={{
-          ...iconlabelStyle(data.style, theme, selected, data.isHovered, data.faded),
+          ...nodeStyle,
           ...dropFeedbackStyle,
         }}
         onDragOver={onDragOver}

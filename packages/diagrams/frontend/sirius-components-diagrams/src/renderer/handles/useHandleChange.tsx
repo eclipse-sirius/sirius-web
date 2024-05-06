@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useCallback } from 'react';
 import { Node, NodeChange, NodePositionChange, getConnectedEdges } from 'reactflow';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
@@ -24,63 +25,63 @@ const isNodePositionChange = (change: NodeChange): change is NodePositionChange 
 export const useHandleChange = (): UseHandleChangeValue => {
   const { getEdges } = useStore();
 
-  const applyHandleChange = (
-    changes: NodeChange[],
-    nodes: Node<NodeData, DiagramNodeType>[]
-  ): Node<NodeData, DiagramNodeType>[] => {
-    const nodeId2ConnectionHandles = new Map<string, ConnectionHandle[]>();
-    changes.filter(isNodePositionChange).forEach((nodeDraggingChange) => {
-      const movingNode = nodes.find((node) => nodeDraggingChange.id === node.id);
-      if (movingNode) {
-        const connectedEdges = getConnectedEdges([movingNode], getEdges());
-        connectedEdges.forEach((edge) => {
-          const { sourceHandle, targetHandle } = edge;
-          const sourceNode = nodes.find((node) => node.id === edge.sourceNode?.id);
-          const targetNode = nodes.find((node) => node.id === edge.targetNode?.id);
+  const applyHandleChange = useCallback(
+    (changes: NodeChange[], nodes: Node<NodeData, DiagramNodeType>[]): Node<NodeData, DiagramNodeType>[] => {
+      const nodeId2ConnectionHandles = new Map<string, ConnectionHandle[]>();
+      changes.filter(isNodePositionChange).forEach((nodeDraggingChange) => {
+        const movingNode = nodes.find((node) => nodeDraggingChange.id === node.id);
+        if (movingNode) {
+          const connectedEdges = getConnectedEdges([movingNode], getEdges());
+          connectedEdges.forEach((edge) => {
+            const { sourceHandle, targetHandle } = edge;
+            const sourceNode = nodes.find((node) => node.id === edge.sourceNode?.id);
+            const targetNode = nodes.find((node) => node.id === edge.targetNode?.id);
 
-          if (sourceNode && targetNode && sourceHandle && targetHandle) {
-            const { sourcePosition, targetPosition } = getEdgeParametersWhileMoving(
-              nodeDraggingChange,
-              sourceNode,
-              targetNode,
-              nodes
-            );
-            const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(
-              (connectionHandle: ConnectionHandle) => connectionHandle.id === sourceHandle
-            );
-            const nodeTargetConnectionHandle: ConnectionHandle | undefined = targetNode.data.connectionHandles.find(
-              (connectionHandle: ConnectionHandle) => connectionHandle.id === targetHandle
-            );
-
-            if (
-              nodeSourceConnectionHandle?.position !== sourcePosition &&
-              nodeTargetConnectionHandle?.position !== targetPosition
-            ) {
-              const { sourceConnectionHandles, targetConnectionHandles } = getUpdatedConnectionHandles(
+            if (sourceNode && targetNode && sourceHandle && targetHandle) {
+              const { sourcePosition, targetPosition } = getEdgeParametersWhileMoving(
+                nodeDraggingChange,
                 sourceNode,
                 targetNode,
-                sourcePosition,
-                targetPosition,
-                sourceHandle,
-                targetHandle
+                nodes
+              );
+              const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(
+                (connectionHandle: ConnectionHandle) => connectionHandle.id === sourceHandle
+              );
+              const nodeTargetConnectionHandle: ConnectionHandle | undefined = targetNode.data.connectionHandles.find(
+                (connectionHandle: ConnectionHandle) => connectionHandle.id === targetHandle
               );
 
-              nodeId2ConnectionHandles.set(sourceNode.id, sourceConnectionHandles);
-              nodeId2ConnectionHandles.set(targetNode.id, targetConnectionHandles);
-            }
-          }
-        });
-      }
-    });
+              if (
+                nodeSourceConnectionHandle?.position !== sourcePosition &&
+                nodeTargetConnectionHandle?.position !== targetPosition
+              ) {
+                const { sourceConnectionHandles, targetConnectionHandles } = getUpdatedConnectionHandles(
+                  sourceNode,
+                  targetNode,
+                  sourcePosition,
+                  targetPosition,
+                  sourceHandle,
+                  targetHandle
+                );
 
-    return nodes.map((node) => {
-      const connectionHandles = nodeId2ConnectionHandles.get(node.id);
-      if (connectionHandles) {
-        node.data = { ...node.data, connectionHandles: connectionHandles };
-      }
-      return node;
-    });
-  };
+                nodeId2ConnectionHandles.set(sourceNode.id, sourceConnectionHandles);
+                nodeId2ConnectionHandles.set(targetNode.id, targetConnectionHandles);
+              }
+            }
+          });
+        }
+      });
+
+      return nodes.map((node) => {
+        const connectionHandles = nodeId2ConnectionHandles.get(node.id);
+        if (connectionHandles) {
+          node.data = { ...node.data, connectionHandles: connectionHandles };
+        }
+        return node;
+      });
+    },
+    [getEdges]
+  );
 
   return { applyHandleChange };
 };
