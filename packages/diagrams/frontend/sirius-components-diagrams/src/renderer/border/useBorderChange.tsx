@@ -10,12 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import { Node, NodeChange, useReactFlow, XYPosition } from 'reactflow';
 import { EdgeData, NodeData, BorderNodePosition } from '../DiagramRenderer.types';
 import { findBorderNodePosition } from '../layout/layoutBorderNodes';
 import { borderNodeOffset } from '../layout/layoutParams';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseBorderChangeValue } from './useBorderChange.types';
+import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
+import { NodeTypeContext } from '../../contexts/NodeContext';
 
 const isNewPositionInsideIsParent = (newNodePosition: XYPosition, movedNode: Node, parentNode: Node): boolean => {
   if (movedNode.width && movedNode.height && parentNode?.positionAbsolute && parentNode.width && parentNode.height) {
@@ -55,6 +58,7 @@ const findNearestBorderPosition = (
 
 export const useBorderChange = (): UseBorderChangeValue => {
   const { getNodes } = useReactFlow<NodeData, EdgeData>();
+  const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
   const transformBorderNodeChanges = useCallback((changes: NodeChange[], oldNodes: Node<NodeData>[]): NodeChange[] => {
     return changes.map((change) => {
@@ -62,10 +66,14 @@ export const useBorderChange = (): UseBorderChangeValue => {
         const movedNode = getNodes().find((node) => change.id === node.id);
         if (movedNode && movedNode.data.isBorderNode) {
           const parentNode = getNodes().find((node) => movedNode.parentNode === node.id);
+          const parentLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
+            nodeLayoutHandler.canHandle(parentNode as Node<NodeData, DiagramNodeType>)
+          );
           if (
             parentNode &&
             parentNode.positionAbsolute &&
-            isNewPositionInsideIsParent(change.positionAbsolute, movedNode, parentNode)
+            isNewPositionInsideIsParent(change.positionAbsolute, movedNode, parentNode) &&
+            !parentLayoutHandler?.calculateCustomNodeBorderNodePosition
           ) {
             const nearestBorder = findNearestBorderPosition(change.positionAbsolute, parentNode);
             if (nearestBorder === BorderNodePosition.NORTH) {
@@ -90,6 +98,18 @@ export const useBorderChange = (): UseBorderChangeValue => {
           const newPosition = findBorderNodePosition(change.position, movedNode, parentNode);
           if (oldMovedNode && oldMovedNode.data.borderNodePosition !== newPosition) {
             oldMovedNode.data.borderNodePosition = newPosition;
+          }
+          if (parentLayoutHandler?.calculateCustomNodeBorderNodePosition && parentNode) {
+            change.position = parentLayoutHandler.calculateCustomNodeBorderNodePosition(
+              parentNode,
+              {
+                x: change.position.x,
+                y: change.position.y,
+                width: movedNode.width ?? 0,
+                height: movedNode.height ?? 0,
+              },
+              true
+            );
           }
         }
       }

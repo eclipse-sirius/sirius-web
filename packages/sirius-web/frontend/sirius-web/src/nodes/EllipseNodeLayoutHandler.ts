@@ -22,7 +22,6 @@ import {
   computePreviousPosition,
   computePreviousSize,
   findNodeIndex,
-  getBorderNodeExtent,
   getChildNodePosition,
   getEastBorderNodeFootprintHeight,
   getHeaderHeightFootprint,
@@ -33,8 +32,22 @@ import {
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
+  getBorderNodeExtent,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { HandleElement, Node, Position, XYPosition } from 'reactflow';
+import { Dimensions, HandleElement, Node, Position, XYPosition } from 'reactflow';
+
+const borderNodeOffset = 5;
+
+const findBorderNodePosition = (borderNodePosition: XYPosition | undefined, parentNode: Node | undefined): number => {
+  if (borderNodePosition && parentNode?.width && parentNode.height) {
+    if (borderNodePosition.y < parentNode.height / 2) {
+      return borderNodePosition.x < parentNode.width / 2 ? 0 : 1;
+    } else {
+      return borderNodePosition.x < parentNode.width / 2 ? 2 : 3;
+    }
+  }
+  return null;
+};
 
 export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   canHandle(node: Node<NodeData, DiagramNodeType>) {
@@ -150,7 +163,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     borderNodes.forEach((borderNode) => {
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
-    setBorderNodesPosition(borderNodes, node, previousDiagram);
+    setBorderNodesPosition(borderNodes, node, previousDiagram, this.calculateCustomNodeBorderNodePosition);
   }
 
   calculateCustomNodeEdgeHandlePosition(
@@ -184,6 +197,75 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
         realY = Math.sqrt((1 - Math.pow(handle.x + offsetX - a, 2) / Math.pow(a, 2)) * Math.pow(b, 2)) + b;
         offsetY = -offsetY;
         break;
+    }
+
+    return {
+      x: realX + offsetX,
+      y: realY + offsetY,
+    };
+  }
+
+  calculateCustomNodeBorderNodePosition(
+    parentNode: Node<NodeData>,
+    borderNode: XYPosition & Dimensions,
+    isDragging: boolean
+  ): XYPosition {
+    let offsetX: number = 0;
+    let offsetY: number = 0;
+    const parentNodeWidth: number = parentNode.width ?? 0;
+    const parentNodeHeight: number = parentNode.height ?? 0;
+    const a: number = parentNodeWidth / 2;
+    const b: number = parentNodeHeight / 2;
+    const pos: number = findBorderNodePosition(borderNode, parentNode);
+    let realY: number = borderNode.y;
+    let realX: number;
+    if (borderNode.x < 0) {
+      return {
+        x: -borderNode.width + borderNodeOffset,
+        y: b - borderNode.height / 2,
+      };
+    } else if (borderNode.x >= parentNodeWidth - borderNodeOffset) {
+      return {
+        x: parentNodeWidth - borderNodeOffset,
+        y: b - borderNode.height / 2,
+      };
+    } else {
+      realX = borderNode.x;
+    }
+    if (!isDragging) {
+      switch (pos) {
+        case 0:
+        case 2:
+          realX += borderNode.width;
+          break;
+        default:
+          break;
+      }
+    }
+    switch (pos) {
+      case 0:
+        realY = Math.sqrt((1 - Math.pow(realX - a, 2) / Math.pow(a, 2)) * Math.pow(b, 2)) + b;
+        realY = parentNodeHeight - realY;
+        offsetY = -borderNode.height + borderNodeOffset;
+        offsetX = -borderNode.width;
+        break;
+      case 1:
+        realY = Math.sqrt((1 - Math.pow(realX - a, 2) / Math.pow(a, 2)) * Math.pow(b, 2)) + b;
+        realY = parentNodeHeight - realY;
+        offsetY = -borderNode.height + borderNodeOffset;
+        break;
+      case 2:
+        realY = Math.sqrt((1 - Math.pow(realX - a, 2) / Math.pow(a, 2)) * Math.pow(b, 2)) + b;
+        offsetY = -borderNodeOffset;
+        offsetX = -borderNode.width;
+        break;
+      case 3:
+        realY = Math.sqrt((1 - Math.pow(realX - a, 2) / Math.pow(a, 2)) * Math.pow(b, 2)) + b;
+        offsetY = -borderNodeOffset;
+        break;
+    }
+    if (isNaN(realY)) {
+      realY = b;
     }
 
     return {
