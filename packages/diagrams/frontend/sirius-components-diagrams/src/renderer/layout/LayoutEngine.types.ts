@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { HandleElement, Node, Position, XYPosition } from 'reactflow';
+import { Dimensions, HandleElement, Node, Position, XYPosition } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RawDiagram, ForcedDimensions } from './layout.types';
@@ -45,5 +45,11 @@ export interface INodeLayoutHandler<T extends NodeData> {
     node: Node<NodeData>,
     handlePosition: Position,
     handle: HandleElement
+  ): XYPosition;
+
+  calculateCustomNodeBorderNodePosition?(
+    node: Node<NodeData>,
+    borderNode: XYPosition & Dimensions,
+    isDragging: boolean
   ): XYPosition;
 }

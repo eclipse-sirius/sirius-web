@@ -155,6 +155,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3391[#3391] [diagram] Accept gradient for node background
 - https://github.com/eclipse-sirius/sirius-web/issues/3435[#3435] [diagram] Extract diagram style from useDropNode
 - https://github.com/eclipse-sirius/sirius-web/issues/3453[#3453] [diagram] Memoizing edges and nodes style
+- https://github.com/eclipse-sirius/sirius-web/issues/3450[#3450] [diagram] Add `calculateCustomNodeBorderNodePosition` method to position border nodes according to the real layout of the custom node
 
 == v2024.3.0
 
