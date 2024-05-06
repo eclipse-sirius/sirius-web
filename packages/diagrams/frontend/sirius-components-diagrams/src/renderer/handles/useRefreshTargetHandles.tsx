@@ -16,6 +16,8 @@ import { useUpdateNodeInternals } from 'reactflow';
 export const useRefreshTargetHandles = (id: string, shouldRefresh: boolean) => {
   const updateNodeInternals = useUpdateNodeInternals();
   useEffect(() => {
-    updateNodeInternals(id);
+    if (shouldRefresh) {
+      updateNodeInternals(id);
+    }
   }, [shouldRefresh]);
 };

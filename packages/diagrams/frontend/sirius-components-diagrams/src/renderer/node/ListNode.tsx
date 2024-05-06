@@ -82,7 +82,7 @@ export const ListNode = memo(({ data, id, selected, dragging }: NodeProps<ListNo
           <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
         ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
+        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
       </div>
     </>

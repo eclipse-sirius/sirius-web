@@ -34,13 +34,14 @@ const targetTempHandleStyle: React.CSSProperties = {
   opacity: 0,
 };
 
-export const ConnectionTargetHandle = memo(({ nodeId, nodeDescription }: ConnectionTargetHandleProps) => {
+export const ConnectionTargetHandle = memo(({ nodeId, nodeDescription, isHovered }: ConnectionTargetHandleProps) => {
   const { isConnectionInProgress, candidates, isReconnectionInProgress } = useConnector();
   const shouldRender =
-    (isConnectionInProgress &&
+    ((isConnectionInProgress &&
       !!nodeDescription?.id &&
       candidates.map((candidate) => candidate.id).includes(nodeDescription.id)) ||
-    isReconnectionInProgress;
+      isReconnectionInProgress) &&
+    isHovered;
 
   useRefreshTargetHandles(nodeId, shouldRender);
 
