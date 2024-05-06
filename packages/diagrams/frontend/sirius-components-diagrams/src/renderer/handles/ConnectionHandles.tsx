@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { useContext } from 'react';
+import React, { memo, useCallback, useContext } from 'react';
 import { Handle, Position, ReactFlowState, useStore } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -93,14 +93,17 @@ const handleSelectedSelector = (state: ReactFlowState) =>
     .flatMap((edge) => [edge.sourceHandle, edge.targetHandle])
     .join('#');
 
-export const ConnectionHandles = ({ connectionHandles }: ConnectionHandlesProps) => {
+export const ConnectionHandles = memo(({ connectionHandles }: ConnectionHandlesProps) => {
   const theme = useTheme();
   const handleSourceSelected = useStore(handleSelectedSelector);
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
-  const isHandleSelected = (connectionHandle: ConnectionHandle): boolean => {
-    return !!connectionHandle.id && handleSourceSelected.includes(connectionHandle.id);
-  };
+  const isHandleSelected = useCallback(
+    (connectionHandle: ConnectionHandle): boolean => {
+      return !!connectionHandle.id && handleSourceSelected.includes(connectionHandle.id);
+    },
+    [handleSourceSelected]
+  );
 
   return (
     <>
@@ -133,4 +136,4 @@ export const ConnectionHandles = ({ connectionHandles }: ConnectionHandlesProps)
       })}
     </>
   );
-};
+});

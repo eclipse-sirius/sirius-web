@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { useTheme } from '@material-ui/core/styles';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { ReactFlowState, useStore } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -41,5 +41,7 @@ export const useDropNodeStyle = (
     }
   }
 
-  return { style };
+  const memoizedStyle = useMemo(() => style, [isDropNodeTarget, isDropNodeCandidate, isDragging, draggedNodeId]);
+
+  return { style: memoizedStyle };
 };

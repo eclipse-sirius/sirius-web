@@ -12,25 +12,16 @@
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo, useCallback, useContext } from 'react';
-import {
-  BaseEdge,
-  EdgeLabelRenderer,
-  EdgeProps,
-  Node,
-  Position,
-  ReactFlowState,
-  getSmoothStepPath,
-  useStore,
-} from 'reactflow';
+import { memo, useContext, useMemo } from 'react';
+import { BaseEdge, EdgeLabelRenderer, EdgeProps, Node, Position, getSmoothStepPath, useStoreApi } from 'reactflow';
+import { NodeTypeContext } from '../../contexts/NodeContext';
+import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
-import { NodeTypeContext } from '../../contexts/NodeContext';
-import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 
 const multiLabelEdgeStyle = (
   theme: Theme,
@@ -51,6 +42,19 @@ const multiLabelEdgeStyle = (
   return multiLabelEdgeStyle;
 };
 
+const getTranslateFromHandlePositon = (position: Position) => {
+  switch (position) {
+    case Position.Right:
+      return 'translate(2%, -100%)';
+    case Position.Left:
+      return 'translate(-102%, -100%)';
+    case Position.Top:
+      return 'translate(2%, -100%)';
+    case Position.Bottom:
+      return 'translate(2%, 0%)';
+  }
+};
+
 export const MultiLabelEdge = memo(
   ({
     id,
@@ -66,15 +70,18 @@ export const MultiLabelEdge = memo(
     sourceHandleId,
     targetHandleId,
   }: EdgeProps<MultiLabelEdgeData>) => {
+    const { beginLabel, endLabel, label, faded } = data || {};
     const theme = useTheme();
     const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
-    const sourceNode = useStore<Node<NodeData> | undefined>(
-      useCallback((store: ReactFlowState) => store.nodeInternals.get(source), [source])
-    );
-    const targetNode = useStore<Node<NodeData> | undefined>(
-      useCallback((store: ReactFlowState) => store.nodeInternals.get(target), [target])
-    );
+    const { nodeInternals } = useStoreApi().getState();
+
+    const sourceNode = nodeInternals.get(source);
+    const targetNode = nodeInternals.get(target);
+
+    const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
+    const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
+    const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
 
     if (!sourceNode || !targetNode) {
       return null;
@@ -144,27 +151,12 @@ export const MultiLabelEdge = memo(
       targetPosition,
     });
 
-    const { beginLabel, endLabel, label, faded } = data || {};
-
-    const getTranslateFromHandlePositon = (position: Position) => {
-      switch (position) {
-        case Position.Right:
-          return 'translate(2%, -100%)';
-        case Position.Left:
-          return 'translate(-102%, -100%)';
-        case Position.Top:
-          return 'translate(2%, -100%)';
-        case Position.Bottom:
-          return 'translate(2%, 0%)';
-      }
-    };
-
     return (
       <>
         <BaseEdge
           id={id}
           path={edgePath}
-          style={multiLabelEdgeStyle(theme, style, selected, faded)}
+          style={edgeStyle}
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 1)}--selected)` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 1)}--selected)` : markerStart}
         />
@@ -173,7 +165,7 @@ export const MultiLabelEdge = memo(
           {beginLabel && (
             <Label
               diagramElementId={id}
-              transform={`${getTranslateFromHandlePositon(sourcePosition)} translate(${sourceX}px,${sourceY}px)`}
+              transform={`${sourceLabelTranslation} translate(${sourceX}px,${sourceY}px)`}
               label={beginLabel}
               faded={faded || false}
             />
@@ -184,7 +176,7 @@ export const MultiLabelEdge = memo(
           {endLabel && (
             <Label
               diagramElementId={id}
-              transform={`${getTranslateFromHandlePositon(targetPosition)} translate(${targetX}px,${targetY}px)`}
+              transform={`${targetLabelTranslation} translate(${targetX}px,${targetY}px)`}
               label={endLabel}
               faded={faded || false}
             />

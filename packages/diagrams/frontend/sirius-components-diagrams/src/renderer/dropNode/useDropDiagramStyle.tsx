@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { useTheme } from '@material-ui/core/styles';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { useStore } from '../../representation/useStore';
 import { DropNodeContext } from './DropNodeContext';
 import { DropNodeContextValue } from './DropNodeContext.types';
@@ -31,9 +31,13 @@ export const useDropDiagramStyle = (): useDropDiagramStyleValue => {
   const diagramForbidden: boolean = diagramTargeted && !!draggedNode?.id !== null && !droppableOnDiagram;
   const backgroundColor = diagramForbidden ? theme.palette.action.disabledBackground : theme.palette.background.default;
 
-  return {
-    backgroundColor,
-    smallGridColor: diagramForbidden ? backgroundColor : '#f1f1f1',
-    largeGridColor: diagramForbidden ? backgroundColor : '#cccccc',
-  };
+  const memoizedStyle = useMemo(() => {
+    return {
+      backgroundColor,
+      smallGridColor: diagramForbidden ? backgroundColor : '#f1f1f1',
+      largeGridColor: diagramForbidden ? backgroundColor : '#cccccc',
+    };
+  }, [diagramForbidden]);
+
+  return memoizedStyle;
 };

@@ -13,7 +13,7 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { NodeProps } from 'reactflow';
 import { Label } from '../Label';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
@@ -57,6 +57,10 @@ export const ListNode = memo(({ data, id, selected, dragging }: NodeProps<ListNo
   const { onDrop, onDragOver } = useDrop();
   const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
   const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+  const nodeStyle = useMemo(
+    () => listNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
+    [data.style, selected, data.isHovered, data.faded]
+  );
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -68,7 +72,7 @@ export const ListNode = memo(({ data, id, selected, dragging }: NodeProps<ListNo
       <Resizer data={data} selected={selected} />
       <div
         style={{
-          ...listNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
+          ...nodeStyle,
           ...connectionFeedbackStyle,
           ...dropFeedbackStyle,
         }}
