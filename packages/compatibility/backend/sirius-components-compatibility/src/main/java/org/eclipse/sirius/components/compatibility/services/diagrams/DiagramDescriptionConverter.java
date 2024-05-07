@@ -67,7 +67,7 @@ public class DiagramDescriptionConverter implements IDiagramDescriptionConverter
                 .canCreatePredicate(canCreatePredicate)
                 .labelProvider(labelProvider)
                 .autoLayout(this.isAutoLayoutMode(siriusDiagramDescription))
-                .arrangeLayoutDirection(ArrangeLayoutDirection.RIGHT);
+                .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED);
 
         for (IDiagramDescriptionPopulator diagramDescriptionPopulator : this.diagramDescriptionPopulators) {
             diagramDescriptionPopulator.populate(builder, siriusDiagramDescription, interpreter);

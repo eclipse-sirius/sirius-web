@@ -61,6 +61,7 @@
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelOverflowStrategy/ELLIPSIS"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//ArrangeLayoutDirection">
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrangeLayoutDirection/UNDEFINED"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrangeLayoutDirection/RIGHT"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrangeLayoutDirection/DOWN"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrangeLayoutDirection/LEFT"/>

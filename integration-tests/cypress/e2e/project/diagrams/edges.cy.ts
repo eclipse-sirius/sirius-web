@@ -159,7 +159,7 @@ describe('Diagram - edges', () => {
           .invoke('attr', 'd')
           .then((dValue) => {
             expect(diagram.roundSvgPathData(dValue ?? '')).to.equal(
-              'M300.13L320.13L355.06Q355.56L355.56Q355.56L391.00L411.00'
+              'M300.13L320.13L354.89Q355.56L355.56Q355.56L391.00L411.00'
             );
           });
       });

@@ -30,6 +30,7 @@ import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
 import { UseConnectorValue } from './useConnector.types';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 
 const tempConnectionLineStyle = (theme: Theme): React.CSSProperties => {
   return {
@@ -56,6 +57,7 @@ export const useConnector = (): UseConnectorValue => {
   const theme = useTheme();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
   const updateNodeInternals = useUpdateNodeInternals();
+  const { diagramDescription } = useDiagramDescription();
 
   const connectionNodeId = reactFlowStore((state) => state.connectionNodeId);
   const isConnectionInProgress = (!!connectionNodeId && isNewConnection) || !!connection;
@@ -98,7 +100,12 @@ export const useConnector = (): UseConnectorValue => {
     const sourceNode = getNode(connection?.source ?? '');
     const targetNode = getNode(connection?.target ?? '');
     if (sourceNode && targetNode && !!connection) {
-      const { targetPosition, sourcePosition } = getEdgeParameters(sourceNode, targetNode, getNodes());
+      const { targetPosition, sourcePosition } = getEdgeParameters(
+        sourceNode,
+        targetNode,
+        getNodes(),
+        diagramDescription.arrangeLayoutDirection
+      );
 
       const edge: Edge<EdgeData> = {
         id: 'temp',

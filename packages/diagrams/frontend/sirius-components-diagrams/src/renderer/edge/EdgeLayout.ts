@@ -60,10 +60,11 @@ export const getEdgeParametersWhileMoving: GetEdgeParametersWhileMoving = (
   movingNode,
   source,
   target,
-  visiblesNodes
+  visiblesNodes,
+  layoutDirection
 ) => {
-  const { position: sourcePosition } = getParameters(movingNode, source, target, visiblesNodes);
-  const { position: targetPosition } = getParameters(movingNode, target, source, visiblesNodes);
+  const { position: sourcePosition } = getParameters(movingNode, source, target, visiblesNodes, layoutDirection);
+  const { position: targetPosition } = getParameters(movingNode, target, source, visiblesNodes, layoutDirection);
 
   return {
     sourcePosition,
@@ -71,9 +72,9 @@ export const getEdgeParametersWhileMoving: GetEdgeParametersWhileMoving = (
   };
 };
 
-export const getEdgeParameters: GetEdgeParameters = (source, target, visiblesNodes) => {
-  const { position: sourcePosition } = getParameters(null, source, target, visiblesNodes);
-  const { position: targetPosition } = getParameters(null, target, source, visiblesNodes);
+export const getEdgeParameters: GetEdgeParameters = (source, target, visiblesNodes, layoutDirection) => {
+  const { position: sourcePosition } = getParameters(null, source, target, visiblesNodes, layoutDirection);
+  const { position: targetPosition } = getParameters(null, target, source, visiblesNodes, layoutDirection);
 
   return {
     sourcePosition,
@@ -81,7 +82,12 @@ export const getEdgeParameters: GetEdgeParameters = (source, target, visiblesNod
   };
 };
 
-const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes) => {
+const isVerticalLayoutDirection = (layoutDirection: string): boolean =>
+  layoutDirection === 'DOWN' || layoutDirection === 'UP';
+const isHorizontalLayoutDirection = (layoutDirection: string): boolean =>
+  layoutDirection === 'RIGHT' || layoutDirection === 'LEFT';
+
+const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes, layoutDirection) => {
   let centerA: NodeCenter;
   if (movingNode && movingNode.id === nodeA.id) {
     centerA = {
@@ -105,17 +111,31 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes) =
   const verticalDifference = Math.abs(centerA.y - centerB.y);
   const isDescendant = isDescendantOf(nodeB, nodeA, (nodeId) => visiblesNodes.find((node) => node.id === nodeId));
   let position: Position;
-  if (horizontalDifference > verticalDifference) {
+  if (isVerticalLayoutDirection(layoutDirection)) {
+    if (isDescendant) {
+      position = centerA.y <= centerB.y ? Position.Top : Position.Bottom;
+    } else {
+      position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
+    }
+  } else if (isHorizontalLayoutDirection(layoutDirection)) {
     if (isDescendant) {
       position = centerA.x <= centerB.x ? Position.Left : Position.Right;
     } else {
       position = centerA.x > centerB.x ? Position.Left : Position.Right;
     }
   } else {
-    if (isDescendant) {
-      position = centerA.y <= centerB.y ? Position.Top : Position.Bottom;
+    if (horizontalDifference > verticalDifference) {
+      if (isDescendant) {
+        position = centerA.x <= centerB.x ? Position.Left : Position.Right;
+      } else {
+        position = centerA.x > centerB.x ? Position.Left : Position.Right;
+      }
     } else {
-      position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
+      if (isDescendant) {
+        position = centerA.y <= centerB.y ? Position.Top : Position.Bottom;
+      } else {
+        position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
+      }
     }
   }
   return {

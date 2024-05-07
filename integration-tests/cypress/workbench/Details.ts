@@ -25,7 +25,7 @@ export class Details {
   }
 
   public getRadioOption(label: string, option: string): Cypress.Chainable<JQuery<HTMLInputElement>> {
-    return this.getDetailsView().contains('div', label).siblings().find(`[data-testid="${option}"]`);
+    return this.getDetailsView().contains('div', label).siblings().find(`[data-testid="${option}"]`).find('input');
   }
 
   public getReferenceWidget(label: string): Cypress.Chainable<JQuery<HTMLElement>> {

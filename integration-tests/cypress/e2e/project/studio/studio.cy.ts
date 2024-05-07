@@ -344,5 +344,18 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('Default Height Expression').should('exist');
       cy.getByTestId('Keep Aspect Ratio').should('exist');
     });
+
+    it('Check node description has arrange layout direction properties with undefined as default value', () => {
+      const explorer = new Explorer();
+      const details = new Details();
+      explorer.expand('ViewNewModel');
+      explorer.expand('View');
+      explorer.select(`${domainName} Diagram Description`);
+      details.getRadioOption('Arrange Layout Direction', 'UNDEFINED').should('be.checked');
+      details.getRadioOption('Arrange Layout Direction', 'RIGHT').should('not.be.checked');
+      details.getRadioOption('Arrange Layout Direction', 'DOWN').should('not.be.checked');
+      details.getRadioOption('Arrange Layout Direction', 'LEFT').should('not.be.checked');
+      details.getRadioOption('Arrange Layout Direction', 'UP').should('not.be.checked');
+    });
   });
 });

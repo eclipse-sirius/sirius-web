@@ -18,6 +18,7 @@ package org.eclipse.sirius.components.diagrams;
  * @author frouene
  */
 public enum ArrangeLayoutDirection {
+    UNDEFINED,
     RIGHT,
     DOWN,
     LEFT,

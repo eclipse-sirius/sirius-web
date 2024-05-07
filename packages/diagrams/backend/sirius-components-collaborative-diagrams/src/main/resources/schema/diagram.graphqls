@@ -297,6 +297,7 @@ type DiagramDescription implements RepresentationDescription {
 }
 
 enum ArrangeLayoutDirection {
+  UNDEFINED
   RIGHT
   DOWN
   LEFT

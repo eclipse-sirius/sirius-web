@@ -68,7 +68,7 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @ordered
      * @see #getArrangeLayoutDirection()
      */
-    protected static final ArrangeLayoutDirection ARRANGE_LAYOUT_DIRECTION_EDEFAULT = ArrangeLayoutDirection.RIGHT;
+    protected static final ArrangeLayoutDirection ARRANGE_LAYOUT_DIRECTION_EDEFAULT = ArrangeLayoutDirection.UNDEFINED;
     /**
      * The cached value of the '{@link #isAutoLayout() <em>Auto Layout</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->

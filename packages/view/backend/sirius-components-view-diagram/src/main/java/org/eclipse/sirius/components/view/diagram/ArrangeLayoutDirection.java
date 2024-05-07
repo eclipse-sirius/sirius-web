@@ -28,13 +28,21 @@ import org.eclipse.emf.common.util.Enumerator;
  */
 public enum ArrangeLayoutDirection implements Enumerator {
     /**
+     * The '<em><b>UNDEFINED</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #UNDEFINED_VALUE
+     */
+    UNDEFINED(0, "UNDEFINED", "UNDEFINED"),
+    /**
      * The '<em><b>RIGHT</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #RIGHT_VALUE
      */
-    RIGHT(0, "RIGHT", "RIGHT"),
+    RIGHT(1, "RIGHT", "RIGHT"),
 
     /**
      * The '<em><b>DOWN</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -43,7 +51,7 @@ public enum ArrangeLayoutDirection implements Enumerator {
      * @ordered
      * @see #DOWN_VALUE
      */
-    DOWN(1, "DOWN", "DOWN"),
+    DOWN(2, "DOWN", "DOWN"),
 
     /**
      * The '<em><b>LEFT</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -52,7 +60,7 @@ public enum ArrangeLayoutDirection implements Enumerator {
      * @ordered
      * @see #LEFT_VALUE
      */
-    LEFT(2, "LEFT", "LEFT"),
+    LEFT(3, "LEFT", "LEFT"),
 
     /**
      * The '<em><b>UP</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -61,7 +69,17 @@ public enum ArrangeLayoutDirection implements Enumerator {
      * @ordered
      * @see #UP_VALUE
      */
-    UP(3, "UP", "UP");
+    UP(4, "UP", "UP");
+
+    /**
+     * The '<em><b>UNDEFINED</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model
+     * @generated
+     * @ordered
+     * @see #UNDEFINED
+     */
+    public static final int UNDEFINED_VALUE = 0;
 
     /**
      * The '<em><b>RIGHT</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -71,7 +89,7 @@ public enum ArrangeLayoutDirection implements Enumerator {
      * @ordered
      * @see #RIGHT
      */
-    public static final int RIGHT_VALUE = 0;
+    public static final int RIGHT_VALUE = 1;
 
     /**
      * The '<em><b>DOWN</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -81,7 +99,7 @@ public enum ArrangeLayoutDirection implements Enumerator {
      * @ordered
      * @see #DOWN
      */
-    public static final int DOWN_VALUE = 1;
+    public static final int DOWN_VALUE = 2;
 
     /**
      * The '<em><b>LEFT</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -91,7 +109,7 @@ public enum ArrangeLayoutDirection implements Enumerator {
      * @ordered
      * @see #LEFT
      */
-    public static final int LEFT_VALUE = 2;
+    public static final int LEFT_VALUE = 3;
 
     /**
      * The '<em><b>UP</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -101,7 +119,7 @@ public enum ArrangeLayoutDirection implements Enumerator {
      * @ordered
      * @see #UP
      */
-    public static final int UP_VALUE = 3;
+    public static final int UP_VALUE = 4;
 
     /**
      * An array of all the '<em><b>Arrange Layout Direction</b></em>' enumerators. <!-- begin-user-doc --> <!--
@@ -109,7 +127,7 @@ public enum ArrangeLayoutDirection implements Enumerator {
      *
      * @generated
      */
-    private static final ArrangeLayoutDirection[] VALUES_ARRAY = new ArrangeLayoutDirection[] { RIGHT, DOWN, LEFT, UP, };
+    private static final ArrangeLayoutDirection[] VALUES_ARRAY = new ArrangeLayoutDirection[] { UNDEFINED, RIGHT, DOWN, LEFT, UP, };
 
     /**
      * A public read-only list of all the '<em><b>Arrange Layout Direction</b></em>' enumerators. <!-- begin-user-doc
@@ -118,18 +136,21 @@ public enum ArrangeLayoutDirection implements Enumerator {
      * @generated
      */
     public static final List<ArrangeLayoutDirection> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final int value;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final String name;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -197,6 +218,8 @@ public enum ArrangeLayoutDirection implements Enumerator {
      */
     public static ArrangeLayoutDirection get(int value) {
         switch (value) {
+            case UNDEFINED_VALUE:
+                return UNDEFINED;
             case RIGHT_VALUE:
                 return RIGHT;
             case DOWN_VALUE:
