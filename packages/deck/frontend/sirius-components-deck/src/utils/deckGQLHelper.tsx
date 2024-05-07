@@ -16,9 +16,7 @@ import { Card, DeckData, Lane } from '../Deck.types';
 import { GQLCard, GQLDeck, GQLDeckElementStyle, GQLLane } from '../representation/deckSubscription.types';
 
 export const convertToTrelloDeckData = (deck: GQLDeck, selectedElementIds: string[], theme: Theme): DeckData => {
-  const backgroundColor: string | undefined = deck.style?.backgroundColor
-    ? getCSSColor(deck.style.backgroundColor, theme)
-    : undefined;
+  const backgroundColor: string | undefined = getCSSColor(deck.style?.backgroundColor, theme);
   const data: DeckData = {
     lanes: [],
     style: { backgroundColor },

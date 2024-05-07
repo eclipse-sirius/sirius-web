@@ -39,11 +39,11 @@ const listNodeStyle = (
     height: '100%',
     opacity: faded ? '0.4' : '',
     ...style,
-    background: getCSSColor(String(style.background), theme),
-    borderTopColor: getCSSColor(String(style.borderTopColor), theme),
-    borderBottomColor: getCSSColor(String(style.borderBottomColor), theme),
-    borderLeftColor: getCSSColor(String(style.borderLeftColor), theme),
-    borderRightColor: getCSSColor(String(style.borderRightColor), theme),
+    background: getCSSColor(style.backgroundColor, theme),
+    borderTopColor: getCSSColor(style.borderTopColor, theme),
+    borderBottomColor: getCSSColor(style.borderBottomColor, theme),
+    borderLeftColor: getCSSColor(style.borderLeftColor, theme),
+    borderRightColor: getCSSColor(style.borderRightColor, theme),
   };
   if (selected || hovered) {
     listNodeStyle.outline = `${theme.palette.selected} solid 1px`;

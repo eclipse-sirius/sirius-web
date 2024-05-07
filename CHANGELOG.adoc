@@ -68,6 +68,7 @@ Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IE
 - https://github.com/eclipse-sirius/sirius-web/issues/3391[#3391] [diagram] Some changes have been made in the View DSL for diagram:
 * super types `style` has been removed from `NodeStyleDescription`
 * attribute `background` has been added to `RectangularNodeStyleDescription` and `IconLabelNodeStyleDescription`
+- https://github.com/eclipse-sirius/sirius-web/issues/3455[#3455] [core] `getCSSColor` now accept the value `undefined` as color value and can return an `undefined` value.
 
 === Dependency update
 
@@ -97,6 +98,7 @@ Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IE
 - https://github.com/eclipse-sirius/sirius-web/issues/3443[#3443] [diagram] Prevent outside label to be truncated.
 - https://github.com/eclipse-sirius/sirius-web/issues/3440[#3440] [diagram] Prevent a border node losing its position after being moved to another border
 - https://github.com/eclipse-sirius/sirius-web/issues/3214[#3214] [vscode] Apply theme colors in the VS Code extension.
+- https://github.com/eclipse-sirius/sirius-web/issues/3455[#3455] [diagram] Fix a bug where the background color was not updated switching from a rectangle node to an image node.
 
 === New Features
 
