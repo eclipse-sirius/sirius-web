@@ -149,7 +149,7 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private boolean autoLayout;
 
-        private ArrangeLayoutDirection arrangeLayoutDirection = ArrangeLayoutDirection.RIGHT;
+        private ArrangeLayoutDirection arrangeLayoutDirection = ArrangeLayoutDirection.UNDEFINED;
 
         private Function<VariableManager, String> targetObjectIdProvider;
 

@@ -2496,7 +2496,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_EdgeDescriptions(), this.getEdgeDescription(), null, "edgeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getDiagramDescription_ArrangeLayoutDirection(), this.getArrangeLayoutDirection(), "arrangeLayoutDirection", "RIGHT", 1, 1, DiagramDescription.class, !IS_TRANSIENT,
+        this.initEAttribute(this.getDiagramDescription_ArrangeLayoutDirection(), this.getArrangeLayoutDirection(), "arrangeLayoutDirection", "UNDEFINED", 1, 1, DiagramDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.diagramElementDescriptionEClass, DiagramElementDescription.class, "DiagramElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2850,6 +2850,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.addEEnumLiteral(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.ELLIPSIS);
 
         this.initEEnum(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.class, "ArrangeLayoutDirection");
+        this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.UNDEFINED);
         this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.RIGHT);
         this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.DOWN);
         this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.LEFT);

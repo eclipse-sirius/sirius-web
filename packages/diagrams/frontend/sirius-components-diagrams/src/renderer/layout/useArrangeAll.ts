@@ -54,6 +54,7 @@ const elkOptions = (direction: string) => {
     'elk.spacing.nodeNode': '100',
     'elk.direction': `${direction}`,
     'elk.layered.spacing.edgeNodeBetweenLayers': '40',
+    'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
   };
 };
 

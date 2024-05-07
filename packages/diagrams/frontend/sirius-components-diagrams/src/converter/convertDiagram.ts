@@ -209,7 +209,7 @@ export const convertDiagram = (
     nodes,
     edges,
   };
-  layoutHandles(rawDiagram);
+  layoutHandles(rawDiagram, diagramDescription);
   computeBorderNodeExtents(rawDiagram.nodes);
   computeBorderNodePositions(rawDiagram.nodes);
 

@@ -109,12 +109,12 @@ public interface DiagramDescription extends RepresentationDescription {
 
     /**
      * Returns the value of the '<em><b>Arrange Layout Direction</b></em>' attribute. The default value is
-     * <code>"RIGHT"</code>. The literals are from the enumeration
+     * <code>"UNDEFINED"</code>. The literals are from the enumeration
      * {@link org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @return the value of the '<em>Arrange Layout Direction</em>' attribute.
-     * @model default="RIGHT" required="true"
+     * @model default="UNDEFINED" required="true"
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection
      * @see #setArrangeLayoutDirection(ArrangeLayoutDirection)

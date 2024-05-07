@@ -38,13 +38,15 @@ export type GetEdgeParametersWhileMoving = (
   movingNode: NodePositionChange,
   source: Node<NodeData>,
   target: Node<NodeData>,
-  visiblesNodes: Node<NodeData>[]
+  visiblesNodes: Node<NodeData>[],
+  layoutDirection: string
 ) => EdgeParameters;
 
 export type GetEdgeParameters = (
   source: Node<NodeData>,
   target: Node<NodeData>,
-  visiblesNodes: Node<NodeData>[]
+  visiblesNodes: Node<NodeData>[],
+  layoutDirection: string
 ) => EdgeParameters;
 
 export interface EdgeParameters {
@@ -56,7 +58,8 @@ export type GetParameters = (
   movingNode: NodePositionChange | null,
   nodeA: Node<NodeData>,
   nodeB: Node<NodeData>,
-  visiblesNodes: Node<NodeData>[]
+  visiblesNodes: Node<NodeData>[],
+  layoutDirection: string
 ) => Parameters;
 
 export interface Parameters {

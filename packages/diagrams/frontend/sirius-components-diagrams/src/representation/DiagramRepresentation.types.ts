@@ -67,7 +67,7 @@ export interface GQLDiagramDescription {
   arrangeLayoutDirection: GQLArrangeLayoutDirection;
 }
 
-export type GQLArrangeLayoutDirection = 'RIGHT' | 'DOWN' | 'LEFT' | 'UP';
+export type GQLArrangeLayoutDirection = 'UNDEFINED' | 'RIGHT' | 'DOWN' | 'LEFT' | 'UP';
 
 export interface GQLDropNodeCompatibility {
   droppedNodeDescriptionId: string;

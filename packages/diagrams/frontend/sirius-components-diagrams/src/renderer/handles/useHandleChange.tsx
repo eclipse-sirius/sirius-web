@@ -18,12 +18,14 @@ import { getEdgeParametersWhileMoving, getUpdatedConnectionHandles } from '../ed
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
 import { UseHandleChangeValue } from './useHandleChange.types';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 
 const isNodePositionChange = (change: NodeChange): change is NodePositionChange =>
   change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
 
 export const useHandleChange = (): UseHandleChangeValue => {
   const { getEdges } = useStore();
+  const { diagramDescription } = useDiagramDescription();
 
   const applyHandleChange = useCallback(
     (changes: NodeChange[], nodes: Node<NodeData, DiagramNodeType>[]): Node<NodeData, DiagramNodeType>[] => {
@@ -42,7 +44,8 @@ export const useHandleChange = (): UseHandleChangeValue => {
                 nodeDraggingChange,
                 sourceNode,
                 targetNode,
-                nodes
+                nodes,
+                diagramDescription.arrangeLayoutDirection
               );
               const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(
                 (connectionHandle: ConnectionHandle) => connectionHandle.id === sourceHandle

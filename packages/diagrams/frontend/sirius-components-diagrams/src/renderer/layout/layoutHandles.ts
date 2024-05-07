@@ -19,6 +19,7 @@ import {
   PopulateHandleIdToOtherHandNode,
 } from '../handles/useHandleChange.types';
 import { RawDiagram } from './layout.types';
+import { GQLDiagramDescription } from '../../representation/DiagramRepresentation.types';
 
 const getHandlesIdsFromNode = (node: Node<NodeData>): string[] => {
   return node.data.connectionHandles.map((handle) => handle.id).filter((handleId): handleId is string => !!handleId);
@@ -129,13 +130,18 @@ const layoutHandleIndex = (diagram: RawDiagram) => {
   });
 };
 
-const layoutHandlePosition = (diagram: RawDiagram) => {
+const layoutHandlePosition = (diagram: RawDiagram, diagramDescription: GQLDiagramDescription) => {
   diagram.edges.forEach((edge) => {
     const { sourceNode: sourceEdgeNode, targetNode: targetEdgeNode, sourceHandle, targetHandle } = edge;
     const sourceNode = diagram.nodes.find((node) => node.id === sourceEdgeNode?.id);
     const targetNode = diagram.nodes.find((node) => node.id === targetEdgeNode?.id);
     if (sourceNode && targetNode && sourceHandle && targetHandle) {
-      const { sourcePosition, targetPosition } = getEdgeParameters(sourceNode, targetNode, diagram.nodes);
+      const { sourcePosition, targetPosition } = getEdgeParameters(
+        sourceNode,
+        targetNode,
+        diagram.nodes,
+        diagramDescription.arrangeLayoutDirection
+      );
 
       const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(
         (connectionHandle: ConnectionHandle) => connectionHandle.id === sourceHandle
@@ -173,7 +179,7 @@ const layoutHandlePosition = (diagram: RawDiagram) => {
   });
 };
 
-export const layoutHandles = (diagram: RawDiagram) => {
-  layoutHandlePosition(diagram);
+export const layoutHandles = (diagram: RawDiagram, diagramDescription: GQLDiagramDescription) => {
+  layoutHandlePosition(diagram, diagramDescription);
   layoutHandleIndex(diagram);
 };
