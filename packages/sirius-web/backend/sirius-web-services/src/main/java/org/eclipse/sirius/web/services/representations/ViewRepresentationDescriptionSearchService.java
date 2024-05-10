@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.services.representations;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -81,6 +82,7 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
                 .map(EditingContext::getViews)
+                .map(Map::values)
                 .orElse(List.of());
 
         return views.stream()

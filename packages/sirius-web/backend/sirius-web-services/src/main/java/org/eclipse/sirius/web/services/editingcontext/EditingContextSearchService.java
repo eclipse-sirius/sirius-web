@@ -14,9 +14,10 @@ package org.eclipse.sirius.web.services.editingcontext;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -68,6 +69,8 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final List<IEditingContextProcessor> editingContextProcessors;
 
+    private final Map<String, WeakReference<EditingContext>> idToEditingContextMap;
+
     private final Timer timer;
 
     public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, IEditingDomainFactoryService editingDomainFactoryService,
@@ -77,6 +80,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
         this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
         this.representationDescriptionProviders = Objects.requireNonNull(representationDescriptionProviders);
         this.editingContextProcessors = Objects.requireNonNull(editingContextProcessors);
+        this.idToEditingContextMap = new HashMap<>();
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
 
@@ -86,7 +90,19 @@ public class EditingContextSearchService implements IEditingContextSearchService
     }
 
     @Override
-    public Optional<IEditingContext> findById(String editingContextId) {
+    public synchronized Optional<IEditingContext> findById(String editingContextId) {
+        if (this.idToEditingContextMap.containsKey(editingContextId)) {
+            var editingContextReference = this.idToEditingContextMap.get(editingContextId);
+            var editingContext = editingContextReference.get();
+            if (editingContext != null) {
+                if (!editingContext.isDisposed()) {
+                    return Optional.of(editingContext);
+                }
+                editingContextReference.clear();
+            }
+            this.idToEditingContextMap.remove(editingContextId);
+        }
+
         long start = System.currentTimeMillis();
 
         this.logger.debug("Loading the editing context {}", editingContextId);
@@ -96,7 +112,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
         resourceSet.getLoadOptions().put(JsonResource.OPTION_EXTENDED_META_DATA, new BasicExtendedMetaData(resourceSet.getPackageRegistry()));
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
 
-        EditingContext editingContext = new EditingContext(editingContextId, editingDomain, new HashMap<>(), new ArrayList<>());
+        EditingContext editingContext = new EditingContext(editingContextId, editingDomain, new HashMap<>(), new HashMap<>());
         this.editingContextProcessors.forEach(processor -> processor.preProcess(editingContext));
 
         List<DocumentEntity> documentEntities = new IDParser().parse(editingContextId)
@@ -131,6 +147,8 @@ public class EditingContextSearchService implements IEditingContextSearchService
         });
 
         this.editingContextProcessors.forEach(processor -> processor.postProcess(editingContext));
+
+        this.idToEditingContextMap.put(editingContextId, new WeakReference<>(editingContext));
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);

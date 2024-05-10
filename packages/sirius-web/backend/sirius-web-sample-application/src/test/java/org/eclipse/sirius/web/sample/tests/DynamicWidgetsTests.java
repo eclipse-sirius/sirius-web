@@ -110,7 +110,7 @@ public class DynamicWidgetsTests {
 
         editingDomain.setAdapterFactory(this.composedAdapterFactory);
         editingDomain.getResourceSet().getPackageRegistry().put(FlowPackage.eNS_URI, FlowPackage.eINSTANCE);
-        this.editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
+        this.editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), Map.of());
 
         this.system = FlowFactory.eINSTANCE.createSystem();
         this.system.setName("Robot");

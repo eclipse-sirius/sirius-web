@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.editingcontext;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,6 +20,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.view.emf.IViewConverter;
 import org.eclipse.sirius.web.services.editingcontext.api.IViewLoader;
 import org.springframework.stereotype.Service;
@@ -35,15 +37,20 @@ public class ViewEditingContextProcessor implements IEditingContextProcessor {
 
     private final IViewConverter viewConverter;
 
-    public ViewEditingContextProcessor(IViewLoader viewLoader, IViewConverter viewConverter) {
+    private final IObjectService objectService;
+
+    public ViewEditingContextProcessor(IViewLoader viewLoader, IViewConverter viewConverter, IObjectService objectService) {
         this.viewLoader = viewLoader;
         this.viewConverter = viewConverter;
+        this.objectService = objectService;
 
     }
     @Override
     public void preProcess(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            siriusWebEditingContext.getViews().addAll(this.viewLoader.load());
+            for (var view : this.viewLoader.load()) {
+                siriusWebEditingContext.getViews().put(this.objectService.getId(view), view);
+            }
         }
     }
 
@@ -51,7 +58,7 @@ public class ViewEditingContextProcessor implements IEditingContextProcessor {
     public void postProcess(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             List<EPackage> accessibleEPackages = this.getAccessibleEPackages(siriusWebEditingContext.getDomain());
-            this.viewConverter.convert(siriusWebEditingContext.getViews(), accessibleEPackages).stream()
+            this.viewConverter.convert(new ArrayList<>(siriusWebEditingContext.getViews().values()), accessibleEPackages).stream()
             .filter(Objects::nonNull)
             .forEach(representationDescription -> siriusWebEditingContext.getRepresentationDescriptions().put(representationDescription.getId(), representationDescription));
         }

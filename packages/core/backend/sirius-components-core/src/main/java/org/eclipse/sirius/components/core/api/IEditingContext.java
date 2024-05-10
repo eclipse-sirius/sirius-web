@@ -26,6 +26,10 @@ public interface IEditingContext {
 
     String getId();
 
+    default boolean isDisposed() {
+        return false;
+    }
+
     default void dispose() {
         // Do nothing
     }

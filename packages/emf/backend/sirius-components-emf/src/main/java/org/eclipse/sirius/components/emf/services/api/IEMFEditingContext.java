@@ -31,6 +31,11 @@ public interface IEMFEditingContext extends IEditingContext {
     AdapterFactoryEditingDomain getDomain();
 
     @Override
+    default boolean isDisposed() {
+        return this.getDomain().getResourceSet().getResources().stream().anyMatch(resource -> !resource.isLoaded());
+    }
+
+    @Override
     default void dispose() {
         this.getDomain().getResourceSet().getResources().forEach(Resource::unload);
     }

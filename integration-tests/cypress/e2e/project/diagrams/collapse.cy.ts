@@ -75,6 +75,10 @@ describe('Diagram - collapsible node', () => {
       afterEach(() => cy.deleteProject(instanceProjectId));
 
       it('Then a collapsed node does not display its header line', () => {
+        cy.on('uncaught:exception', (err) =>
+          err.message.includes('ResizeObserver loop limit exceeded') ? false : undefined
+        );
+
         const explorer = new Explorer();
         const diagram = new Diagram();
         const details = new Details();

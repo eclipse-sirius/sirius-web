@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.editingcontext;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,9 +33,9 @@ public class EditingContext implements IEMFEditingContext {
 
     private final Map<String, IRepresentationDescription> representationDescriptions;
 
-    private final List<View> views;
+    private final Map<String, View> views;
 
-    public EditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions, List<View> views) {
+    public EditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions, Map<String, View> views) {
         this.id = Objects.requireNonNull(id);
         this.editingDomain = Objects.requireNonNull(editingDomain);
         this.representationDescriptions = Objects.requireNonNull(representationDescriptions);
@@ -57,7 +56,7 @@ public class EditingContext implements IEMFEditingContext {
         return this.representationDescriptions;
     }
 
-    public List<View> getViews() {
+    public Map<String, View> getViews() {
         return this.views;
     }
 

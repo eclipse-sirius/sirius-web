@@ -24,15 +24,15 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.services.api.document.Stereotype;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
+import org.eclipse.sirius.web.services.api.document.Stereotype;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeService;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
 import org.junit.jupiter.api.Test;
@@ -103,7 +103,7 @@ public class CreateDocumentEventHandlerTests {
         var input = new CreateDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), DOCUMENT_NAME, STEREOTYPE_ID);
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), Map.of());
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
@@ -139,7 +139,7 @@ public class CreateDocumentEventHandlerTests {
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), Map.of());
 
         CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeService, messageService, new SimpleMeterRegistry());
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
