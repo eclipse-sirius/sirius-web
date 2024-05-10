@@ -112,7 +112,7 @@ public class ViewDetailsRenderingIntegrationTests {
 
         this.editingDomain.setAdapterFactory(composedAdapterFactory);
         this.editingDomain.getResourceSet().getPackageRegistry().put(FlowPackage.eNS_URI, FlowPackage.eINSTANCE);
-        this.editingContext = new EditingContext(UUID.randomUUID().toString(), this.editingDomain, Map.of(), List.of());
+        this.editingContext = new EditingContext(UUID.randomUUID().toString(), this.editingDomain, Map.of(), Map.of());
 
         this.view = this.loadFixture("ViewCompletionFixture.xmi");
 

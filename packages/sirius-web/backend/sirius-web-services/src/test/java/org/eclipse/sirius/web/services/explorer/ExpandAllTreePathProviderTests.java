@@ -116,7 +116,7 @@ class ExpandAllTreePathProviderTests {
         Resource resource = this.createResourceWith4Elements();
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
         editingDomain.getResourceSet().getResources().add(resource);
-        return new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
+        return new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), Map.of());
     }
 
     private Resource createResourceWith4Elements() {
