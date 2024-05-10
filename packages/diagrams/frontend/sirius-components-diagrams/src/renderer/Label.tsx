@@ -16,10 +16,10 @@ import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
+import { EdgeLabel, InsideLabel, LabelOverflowStrategy, OutsideLabel } from './DiagramRenderer.types';
 import { DiagramDirectEditInput } from './direct-edit/DiagramDirectEditInput';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { LabelProps } from './Label.types';
-import { EdgeLabel, InsideLabel, LabelOverflowStrategy, OutsideLabel } from './DiagramRenderer.types';
 
 const getOverflowStrategy = (label: EdgeLabel | InsideLabel | OutsideLabel): LabelOverflowStrategy | undefined => {
   if ('overflowStrategy' in label) {
@@ -44,7 +44,7 @@ const labelStyle = (
     justifyContent: 'flex-start',
     whiteSpace: 'pre-line',
     ...style,
-    color: style.color ? getCSSColor(String(style.color), theme) : undefined,
+    color: getCSSColor(style.color, theme),
   };
 };
 

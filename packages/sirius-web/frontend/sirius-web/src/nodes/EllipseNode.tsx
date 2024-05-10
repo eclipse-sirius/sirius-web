@@ -46,7 +46,7 @@ const ellipseNodeStyle = (
     border: 'black solid 1px',
     opacity: faded ? '0.4' : '',
     ...style,
-    background: getCSSColor(String(style.background), theme),
+    background: getCSSColor(style.backgroundColor, theme),
   };
 
   if (selected || hovered) {

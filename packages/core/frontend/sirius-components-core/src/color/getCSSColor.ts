@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,8 +57,8 @@ const muiColors = {
   yellow: yellow,
 };
 
-export const getCSSColor = (value: string, theme: Theme): string => {
-  let cssColor: string = value;
+export const getCSSColor = (value: string | undefined, theme: Theme): string | undefined => {
+  let cssColor: string | undefined = value;
   if (value) {
     if (value === 'theme.palette.primary.main') {
       cssColor = theme.palette.primary.main;

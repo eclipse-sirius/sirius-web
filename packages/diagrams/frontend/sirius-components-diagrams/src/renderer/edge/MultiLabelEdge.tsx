@@ -23,14 +23,14 @@ import {
   getSmoothStepPath,
   useStore,
 } from 'reactflow';
+import { NodeTypeContext } from '../../contexts/NodeContext';
+import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
-import { NodeTypeContext } from '../../contexts/NodeContext';
-import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 
 const multiLabelEdgeStyle = (
   theme: Theme,
@@ -41,7 +41,7 @@ const multiLabelEdgeStyle = (
   const multiLabelEdgeStyle: React.CSSProperties = {
     opacity: faded ? '0.4' : '',
     ...style,
-    stroke: style?.stroke ? getCSSColor(String(style.stroke), theme) : undefined,
+    stroke: getCSSColor(style?.stroke, theme),
   };
 
   if (selected) {
