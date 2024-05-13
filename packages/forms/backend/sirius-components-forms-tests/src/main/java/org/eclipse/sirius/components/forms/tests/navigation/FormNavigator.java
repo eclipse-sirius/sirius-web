@@ -29,6 +29,10 @@ public class FormNavigator {
         this.form = Objects.requireNonNull(form);
     }
 
+    public PageNavigator page(int index) {
+        return new PageNavigator(this.form.getPages().get(index));
+    }
+
     public PageNavigator page(String label) {
         return this.form.getPages().stream()
                 .filter(page -> page.getLabel().equals(label))

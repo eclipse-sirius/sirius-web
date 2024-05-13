@@ -50,6 +50,7 @@ import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.provider.DiagramEditPlugin;
 import org.eclipse.sirius.components.view.emf.api.CustomImageMetadata;
 import org.eclipse.sirius.components.view.emf.api.ICustomImageMetadataSearchService;
 import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesConfigurerService;
@@ -67,6 +68,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private static final String EMPTY = "";
     private static final String INT_PATTERN = "\\d+";
+    private static final String LITERAL = "_literal";
     private final ICustomImageMetadataSearchService customImageSearchService;
     private final IPropertiesConfigurerService propertiesConfigurerService;
     private final IPropertiesWidgetCreationService propertiesWidgetCreationService;
@@ -98,7 +100,8 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     private List<AbstractControlDescription> getGeneralControlDescription() {
         List<AbstractControlDescription> controls = new ArrayList<>();
 
-        var fontSize = this.propertiesWidgetCreationService.createTextField("nodestyle.fontSize", "Font Size",
+        var fontSize = this.propertiesWidgetCreationService.createTextField("nodestyle.fontSize",
+                DiagramEditPlugin.INSTANCE.getString("_UI_LabelStyle_fontSize_feature"),
                 style -> String.valueOf(((LabelStyle) style).getFontSize()),
                 (style, newColor) -> {
                     try {
@@ -110,31 +113,36 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 ViewPackage.Literals.LABEL_STYLE__FONT_SIZE);
         controls.add(fontSize);
 
-        var italic = this.propertiesWidgetCreationService.createCheckbox("nodestyle.italic", "Italic",
+        var italic = this.propertiesWidgetCreationService.createCheckbox("nodestyle.italic",
+                DiagramEditPlugin.INSTANCE.getString("_UI_LabelStyle_italic_feature"),
                 style -> ((LabelStyle) style).isItalic(),
                 (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
                 ViewPackage.Literals.LABEL_STYLE__ITALIC, Optional.empty());
         controls.add(italic);
 
-        var bold = this.propertiesWidgetCreationService.createCheckbox("nodestyle.bold", "Bold",
+        var bold = this.propertiesWidgetCreationService.createCheckbox("nodestyle.bold",
+                DiagramEditPlugin.INSTANCE.getString("_UI_LabelStyle_bold_feature"),
                 style -> ((LabelStyle) style).isBold(),
                 (style, newBold) -> ((LabelStyle) style).setBold(newBold),
                 ViewPackage.Literals.LABEL_STYLE__BOLD, Optional.empty());
         controls.add(bold);
 
-        var underline = this.propertiesWidgetCreationService.createCheckbox("nodestyle.underline", "Underline",
+        var underline = this.propertiesWidgetCreationService.createCheckbox("nodestyle.underline",
+                DiagramEditPlugin.INSTANCE.getString("_UI_LabelStyle_underline_feature"),
                 style -> ((LabelStyle) style).isUnderline(),
                 (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
                 ViewPackage.Literals.LABEL_STYLE__UNDERLINE, Optional.empty());
         controls.add(underline);
 
-        var strikeThrough = this.propertiesWidgetCreationService.createCheckbox("nodestyle.strikeThrough", "Strike Through",
+        var strikeThrough = this.propertiesWidgetCreationService.createCheckbox("nodestyle.strikeThrough",
+                DiagramEditPlugin.INSTANCE.getString("_UI_LabelStyle_strikeThrough_feature"),
                 style -> ((LabelStyle) style).isStrikeThrough(),
                 (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
                 ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, Optional.empty());
         controls.add(strikeThrough);
 
-        var showIcon = this.propertiesWidgetCreationService.createCheckbox("nodestyle.showIcon", "Show Icon",
+        var showIcon = this.propertiesWidgetCreationService.createCheckbox("nodestyle.showIcon",
+                DiagramEditPlugin.INSTANCE.getString("_UI_EdgeStyle_showIcon_feature"),
                 style -> ((EdgeStyle) style).isShowIcon(),
                 (style, newValue) -> ((EdgeStyle) style).setShowIcon(newValue),
                 DiagramPackage.Literals.EDGE_STYLE__SHOW_ICON,
@@ -148,7 +156,10 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         controls.add(this.createTargetArrowStyleSelectionField());
 
         Function<VariableManager, List<?>> colorOptionsProvider = variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList();
-        var userColor = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.Color", "Color", DiagramPackage.Literals.STYLE__COLOR, colorOptionsProvider);
+        var userColor = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.Color",
+                DiagramEditPlugin.INSTANCE.getString("_UI_Style_color_feature"),
+                DiagramPackage.Literals.STYLE__COLOR,
+                colorOptionsProvider);
         controls.add(userColor);
 
         var background = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.Background", "Background", DiagramPackage.Literals.EDGE_STYLE__BACKGROUND, colorOptionsProvider);
@@ -208,7 +219,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         return SelectDescription.newSelectDescription("edgestyle.sourceArrowStyleSelector")
                 .idProvider(variableManager -> "edgestyle.sourceArrowStyleSelector")
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
-                .labelProvider(variableManager -> "Source Arrow Syle")
+                .labelProvider(variableManager -> DiagramEditPlugin.INSTANCE.getString("_UI_EdgeStyle_sourceArrowStyle_feature"))
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getSourceArrowStyle)
                         .map(ArrowStyle::getValue)
@@ -220,7 +231,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .map(String::valueOf)
                         .orElse(EMPTY))
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, ArrowStyle.class)
-                        .map(Enumerator::getName)
+                        .map(literal -> DiagramEditPlugin.INSTANCE.getString("_UI_ArrowStyle_" + literal.getName() + LITERAL))
                         .orElse(EMPTY))
                 .optionIconURLProvider(variableManager -> List.of())
                 .newValueHandler(this.getSourceArrowValueHandler())
@@ -249,7 +260,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         return SelectDescription.newSelectDescription("edgestyle.targetArrowStyleSelector")
                 .idProvider(variableManager -> "edgestyle.targetArrowStyleSelector")
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
-                .labelProvider(variableManager -> "Target Arrow Syle")
+                .labelProvider(variableManager -> DiagramEditPlugin.INSTANCE.getString("_UI_EdgeStyle_targetArrowStyle_feature"))
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getTargetArrowStyle)
                         .map(ArrowStyle::getValue)
@@ -261,7 +272,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .map(String::valueOf)
                         .orElse(EMPTY))
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, ArrowStyle.class)
-                        .map(Enumerator::getName)
+                        .map(literal -> DiagramEditPlugin.INSTANCE.getString("_UI_ArrowStyle_" + literal.getName() + LITERAL))
                         .orElse(EMPTY))
                 .optionIconURLProvider(variableManager -> List.of())
                 .newValueHandler(this.getTargetArrowValueHandler())
@@ -290,7 +301,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         return SelectDescription.newSelectDescription("edgestyle.lineStyleSelector")
                 .idProvider(variableManager -> "edgestyle.lineStyleSelector")
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
-                .labelProvider(variableManager -> "Line Syle")
+                .labelProvider(variableManager -> DiagramEditPlugin.INSTANCE.getString("_UI_EdgeStyle_lineStyle_feature"))
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getLineStyle)
                         .map(LineStyle::getValue)
@@ -302,7 +313,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .map(String::valueOf)
                         .orElse(EMPTY))
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class)
-                        .map(Enumerator::getName)
+                        .map(literal -> DiagramEditPlugin.INSTANCE.getString("_UI_LineStyle_" + literal.getName() + LITERAL))
                         .orElse(EMPTY))
                 .optionIconURLProvider(variableManager -> List.of())
                 .newValueHandler(this.getLineStyleValueHandler())
@@ -331,7 +342,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         return SelectDescription.newSelectDescription("edgestyle.iconLabelSelector")
                 .idProvider(variableManager -> "edgestyle.iconLabelSelector")
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
-                .labelProvider(variableManager -> "Custom Icon")
+                .labelProvider(variableManager -> DiagramEditPlugin.INSTANCE.getString("_UI_EdgeStyle_labelIcon_feature"))
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getLabelIcon).orElse(EMPTY))
                 .optionsProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)

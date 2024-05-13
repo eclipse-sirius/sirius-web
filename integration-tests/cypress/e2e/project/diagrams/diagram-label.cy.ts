@@ -45,18 +45,18 @@ describe('Diagram - inside outside labels', () => {
             explorer.expand('Entity1 Node');
             explorer.select('aql:self.name');
             details.getTextField('Label Expression').type('{selectAll}InsideLabelNode1{enter}');
-            explorer.createObject('Entity1 Node', 'Outside Label Description');
+            explorer.createObject('Entity1 Node', 'outsideLabels-OutsideLabelDescription');
             explorer.select('aql:self.name');
             details.getTextField('Label Expression').type('{selectAll}OutsideLabelNode1{enter}');
             explorer.collapse('Entity1 Node');
             explorer.expand('Entity2 Node');
             explorer.select('aql:self.name');
             details.getTextField('Label Expression').type('{selectAll}InsideLabelNode2{enter}');
-            explorer.createObject('Entity2 Node', 'Outside Label Description');
+            explorer.createObject('Entity2 Node', 'outsideLabels-OutsideLabelDescription');
             explorer.select('aql:self.name');
             details.getTextField('Label Expression').type('{selectAll}OutsideLabelNode2{enter}');
-            explorer.delete('RectangularNodeStyleDescription');
-            explorer.createObject('Entity2 Node', 'Style Image');
+            explorer.delete('Rectangular Node Style Description 3');
+            explorer.createObject('Entity2 Node', 'style-ImageNodeStyleDescription');
             details.selectValue('Shape', 'camera');
           });
         }
@@ -81,8 +81,8 @@ describe('Diagram - inside outside labels', () => {
       it('Then inside and outside label are display for both nodes', () => {
         const explorer = new Explorer();
         const diagram = new Diagram();
-        explorer.createObject('Root', 'Entity1s Entity1');
-        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.createObject('Root', 'entity1s-Entity1');
+        explorer.createObject('Root', 'entity2s-Entity2');
 
         diagram.getNodes('diagram', 'InsideLabelNode1').findByTestId('Label - InsideLabelNode1').should('exist');
         diagram.getNodes('diagram', 'InsideLabelNode1').findByTestId('Label - OutsideLabelNode1').should('exist');
@@ -140,7 +140,7 @@ describe('Diagram - inside outside labels', () => {
         const explorer = new Explorer();
         const diagram = new Diagram();
         const details = new Details();
-        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('small{enter}');
         diagram.fitToScreen();
         let initialWidth: number;
@@ -218,7 +218,7 @@ describe('Diagram - inside outside labels', () => {
         const explorer = new Explorer();
         const diagram = new Diagram();
         const details = new Details();
-        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('small{enter}');
         diagram.fitToScreen();
         let initialWidth: number;
@@ -298,7 +298,7 @@ describe('Diagram - inside outside labels', () => {
         const explorer = new Explorer();
         const diagram = new Diagram();
         const details = new Details();
-        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('small{enter}');
         diagram.fitToScreen();
         let initialWidth: number;
@@ -348,7 +348,7 @@ describe('Diagram - inside outside labels', () => {
             explorer.expand(`${domainName} Diagram Description`);
             explorer.expand('Entity1 Node');
             explorer.delete('aql:self.name');
-            explorer.createObject('Entity1 Node', 'Outside Label Description');
+            explorer.createObject('Entity1 Node', 'outsideLabels-OutsideLabelDescription');
           });
         }
       });
@@ -373,7 +373,7 @@ describe('Diagram - inside outside labels', () => {
         const explorer = new Explorer();
         const diagram = new Diagram();
         const details = new Details();
-        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('small{enter}');
         diagram.fitToScreen();
         let initialWidth: number;

@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.forms.components.TreeComponent;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 
 /**
  * Provides the definition of the tree widget for the "Current" panel in the "Related Elements" view. It displays two
@@ -55,12 +56,6 @@ public class CurrentTreeProvider {
 
     private static final String WIDGET_ID = "related/current";
 
-    private static final String CATEGORY_PARENT = "Parent";
-
-    private static final String CATEGORY_CHILDREN = "Children";
-
-    private static final String TITLE = "Current";
-
     private static final String WIDGET_ICON_URL = "/images/arrow_downward_black_24dp.svg";
 
     private static final String FOLDER_ICON_URL = "/images/folder_black_24dp.svg";
@@ -73,12 +68,15 @@ public class CurrentTreeProvider {
 
     private final IObjectService objectService;
 
+    private final IServicesMessageService messageService;
+
     private final AdapterFactory adapterFactory;
 
     private final IPropertiesValidationProvider propertiesValidationProvider = new IPropertiesValidationProvider.NoOp();
 
-    public CurrentTreeProvider(IObjectService objectService, AdapterFactory adapterFactory) {
+    public CurrentTreeProvider(IObjectService objectService, IServicesMessageService messageService, AdapterFactory adapterFactory) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.messageService = Objects.requireNonNull(messageService);
         this.adapterFactory = Objects.requireNonNull(adapterFactory);
     }
 
@@ -90,7 +88,7 @@ public class CurrentTreeProvider {
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
-                .labelProvider(variableManager -> TITLE)
+                .labelProvider(variableManager -> this.messageService.current())
                 .iconURLProvider(variableManager -> List.of(WIDGET_ICON_URL))
                 .nodeIdProvider(this::getNodeId)
                 .nodeLabelProvider(this::getNodeLabel)
@@ -121,10 +119,10 @@ public class CurrentTreeProvider {
     private List<?> getCurrentChildren(Object self, EObject root, List<?> ancestors) {
         List<?> result = List.of();
         if (ancestors.isEmpty()) {
-            result = List.of(CATEGORY_PARENT, CATEGORY_CHILDREN);
-        } else if (self.equals(CATEGORY_PARENT) && root.eContainer() != null) {
+            result = List.of(this.messageService.parent(), this.messageService.children());
+        } else if (self.equals(this.messageService.parent()) && root.eContainer() != null) {
             result = List.of(root.eContainer());
-        } else if (self.equals(CATEGORY_CHILDREN)) {
+        } else if (self.equals(this.messageService.children())) {
             result = this.getNonEmptyContainmentReferences(root);
         } else if (self instanceof EReference) {
             result = this.readReference(root, (EReference) self);

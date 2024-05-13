@@ -81,10 +81,10 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
     cy.getByTestId('create-object').should('be.enabled');
 
     cy.getByTestId('childCreationDescription').click();
-    cy.get('[data-value="Power Input"]').click();
+    cy.get('[data-value="powerInputs-PowerInput"]').click();
     cy.getByTestId('create-object').click();
 
-    cy.getByTestId('explorer://').contains('PowerInput');
+    cy.getByTestId('explorer://').contains('Power Input');
   });
 
   it('can select the created child object', () => {
@@ -96,11 +96,11 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
     cy.getByTestId('create-object').should('be.enabled');
 
     cy.getByTestId('childCreationDescription').click();
-    cy.get('[data-value="Power Input"]').click();
+    cy.get('[data-value="powerInputs-PowerInput"]').click();
     cy.getByTestId('create-object').click();
 
-    cy.getByTestId('explorer://').contains('PowerInput');
-    cy.getByTestId('selected').contains('PowerInput');
+    cy.getByTestId('explorer://').contains('Power Input');
+    cy.getByTestId('selected').contains('Power Input');
   });
 
   it('can open the new representation modal', () => {

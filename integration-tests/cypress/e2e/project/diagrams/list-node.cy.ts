@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Studio } from '../../../usecases/Studio';
 import { Project } from '../../../pages/Project';
-import { Explorer } from '../../../workbench/Explorer';
+import { Studio } from '../../../usecases/Studio';
 import { Details } from '../../../workbench/Details';
+import { Explorer } from '../../../workbench/Explorer';
 
 describe('List-node', () => {
   context('Given a studio template with a list node strategy', () => {
@@ -35,7 +35,7 @@ describe('List-node', () => {
           explorer.expand(`${domainName} Diagram Description`);
         });
         explorer.expand('Entity1 Node');
-        explorer.createObject('Entity1 Node', 'Layout List');
+        explorer.createObject('Entity1 Node', 'childrenLayoutStrategy-ListLayoutStrategyDescription');
       })
     );
 

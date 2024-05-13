@@ -137,7 +137,7 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
         List<String> creationDescriptionIds = JsonPath.read(result, "$.data.viewer.editingContext.childCreationDescriptions[*].id");
         assertThat(creationDescriptionIds)
                 .isNotEmpty()
-                .contains("Humans Human");
+                .contains("humans-Human");
 
         List<List<String>> creationDescriptionIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.childCreationDescriptions[*].iconURL");
         assertThat(creationDescriptionIconURLs).hasSize(1);
@@ -184,7 +184,7 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
-                "Entity"
+                "types-Entity"
         );
         var result = this.createChildMutationRunner.run(input);
 

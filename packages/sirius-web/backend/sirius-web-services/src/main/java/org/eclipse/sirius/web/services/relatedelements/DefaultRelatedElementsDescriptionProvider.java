@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -51,10 +52,13 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
 
     private final IObjectService objectService;
 
+    private final IServicesMessageService messageService;
+
     private final AdapterFactory adapterFactory;
 
-    public DefaultRelatedElementsDescriptionProvider(IObjectService objectService, ComposedAdapterFactory adapterFactory) {
+    public DefaultRelatedElementsDescriptionProvider(IObjectService objectService, IServicesMessageService messageService, ComposedAdapterFactory adapterFactory) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.messageService = Objects.requireNonNull(messageService);
         this.adapterFactory = Objects.requireNonNull(adapterFactory);
     }
 
@@ -89,9 +93,9 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
 
     private GroupDescription getGroupDescription() {
         List<AbstractControlDescription> controlDescriptions = new ArrayList<>();
-        controlDescriptions.add(new IncomingTreeProvider(this.objectService, this.adapterFactory).getTreeDescription());
-        controlDescriptions.add(new CurrentTreeProvider(this.objectService, this.adapterFactory).getTreeDescription());
-        controlDescriptions.add(new OutgoingTreeProvider(this.objectService, this.adapterFactory).getTreeDescription());
+        controlDescriptions.add(new IncomingTreeProvider(this.objectService, this.messageService, this.adapterFactory).getTreeDescription());
+        controlDescriptions.add(new CurrentTreeProvider(this.objectService, this.messageService, this.adapterFactory).getTreeDescription());
+        controlDescriptions.add(new OutgoingTreeProvider(this.objectService, this.messageService, this.adapterFactory).getTreeDescription());
 
         // @formatter:off
         return GroupDescription.newGroupDescription(GROUP_DESCRIPTION_ID)
