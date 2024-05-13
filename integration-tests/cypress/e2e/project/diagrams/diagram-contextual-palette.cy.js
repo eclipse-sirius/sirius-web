@@ -106,22 +106,22 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
     cy.getByTestId('name-edit').type('Diagram Description{enter}');
 
-    cy.createChildObject('DiagramPalette', 'Diagram Tool Section');
+    cy.createChildObject('Palette', 'toolSections-DiagramToolSection');
     cy.getByTestId('Tool Section').click();
     cy.getByTestId('Name').type('{selectAll}section1');
-    cy.createChildObject('DiagramPalette', 'Diagram Tool Section');
+    cy.createChildObject('Palette', 'toolSections-DiagramToolSection');
     cy.getByTestId('Tool Section').click();
     cy.getByTestId('Name').type('{selectAll}section2');
-    cy.createChildObject('section1', 'Node Tool');
+    cy.createChildObject('section1', 'nodeTools-NodeTool');
     cy.getByTestId('Tool').click();
     cy.getByTestId('Name').type('{selectAll}tool1_section1');
-    cy.createChildObject('section1', 'Node Tool');
+    cy.createChildObject('section1', 'nodeTools-NodeTool');
     cy.getByTestId('Tool').click();
     cy.getByTestId('Name').type('{selectAll}tool2_section1');
-    cy.createChildObject('section2', 'Node Tool');
+    cy.createChildObject('section2', 'nodeTools-NodeTool');
     cy.getByTestId('Tool').click();
     cy.getByTestId('Name').type('{selectAll}tool1_section2');
-    cy.createChildObject('section2', 'Node Tool');
+    cy.createChildObject('section2', 'nodeTools-NodeTool');
     cy.getByTestId('Tool').click();
     cy.getByTestId('Name').type('{selectAll}tool2_section2');
 
@@ -269,7 +269,6 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').should('not.exist');
     cy.getByTestId('confirmation-dialog').should('not.exist');
   });
-
 
   it('diagram palette is closed once element palette is opened', () => {
     createFlowReactFlowDiagram();

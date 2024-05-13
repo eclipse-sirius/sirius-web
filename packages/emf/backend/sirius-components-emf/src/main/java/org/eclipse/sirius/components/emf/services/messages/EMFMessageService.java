@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,26 @@ public class EMFMessageService implements IEMFMessageService {
     @Override
     public String upperBoundaryReached(String newInstanceClass, String feature) {
         return this.messageSourceAccessor.getMessage("UPPER_BOUNDARY_REACHED", new Object[] { newInstanceClass, feature });
+    }
+
+    @Override
+    public String properties() {
+        return this.messageSourceAccessor.getMessage("PROPERTIES");
+    }
+
+    @Override
+    public String coreProperties() {
+        return this.messageSourceAccessor.getMessage("CORE_PROPERTIES");
+    }
+
+    @Override
+    public String general() {
+        return this.messageSourceAccessor.getMessage("GENERAL");
+    }
+
+    @Override
+    public String shapePreview() {
+        return this.messageSourceAccessor.getMessage("SHAPE_PREVIEW");
     }
 
 }

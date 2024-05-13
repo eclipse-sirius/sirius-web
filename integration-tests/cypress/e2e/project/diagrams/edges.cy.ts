@@ -12,9 +12,9 @@
  *******************************************************************************/
 import { Project } from '../../../pages/Project';
 import { Studio } from '../../../usecases/Studio';
-import { Explorer } from '../../../workbench/Explorer';
 import { Details } from '../../../workbench/Details';
 import { Diagram } from '../../../workbench/Diagram';
+import { Explorer } from '../../../workbench/Explorer';
 
 describe('Diagram - edges', () => {
   context('Given a studio template', () => {
@@ -30,7 +30,7 @@ describe('Diagram - edges', () => {
         cy.get('[title="domain::Domain"]').then(($div) => {
           domainName = $div.data().testid;
           explorer.expand(`${domainName}`);
-          explorer.createObject('Entity1', 'Relation');
+          explorer.createObject('Entity1', 'relations-Relation');
           const details = new Details();
           details.getCheckBox('Containment').check();
           details.openReferenceWidgetOptions('Target Type');
@@ -67,9 +67,9 @@ describe('Diagram - edges', () => {
         const details = new Details();
         const diagram = new Diagram();
 
-        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('Entity1{Enter}');
-        explorer.createObject('Entity1', 'Relation Entity2');
+        explorer.createObject('Entity1', 'relation-Entity2');
 
         details.getTextField('Name').should('have.value', '');
         details.getTextField('Name').type('Entity2{Enter}');
@@ -110,8 +110,8 @@ describe('Diagram - edges', () => {
           explorer.expand('Entity1 Node');
           details.getTextField('Default Width Expression').type('300{enter}');
           details.getTextField('Default Height Expression').type('50{enter}');
-          explorer.delete('RectangularNodeStyleDescription');
-          explorer.createObject('Entity1 Node', 'Ellipse Node Style Description');
+          explorer.delete('Rectangular Node Style Description 3');
+          explorer.createObject('Entity1 Node', 'style-EllipseNodeStyleDescription');
         });
       })
     );
@@ -135,12 +135,12 @@ describe('Diagram - edges', () => {
         const details = new Details();
         const diagram = new Diagram();
 
-        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('Entity1{Enter}');
-        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.createObject('Root', 'entity2s-Entity2');
         details.getTextField('Name').should('have.value', '');
         details.getTextField('Name').type('Entity2{Enter}');
-        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.createObject('Root', 'entity2s-Entity2');
         details.getTextField('Name').should('have.value', '');
         details.getTextField('Name').type('Entity2.bis{Enter}');
         explorer.select('Entity1');

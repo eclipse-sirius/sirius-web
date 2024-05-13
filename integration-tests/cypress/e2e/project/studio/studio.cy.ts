@@ -13,8 +13,8 @@
 
 import { Project } from '../../../pages/Project';
 import { Studio } from '../../../usecases/Studio';
-import { Explorer } from '../../../workbench/Explorer';
 import { Details } from '../../../workbench/Details';
+import { Explorer } from '../../../workbench/Explorer';
 
 describe('/projects/:projectId/edit - Studio', () => {
   context('Given a studio template', () => {
@@ -72,20 +72,20 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('ViewNewModel').dblclick();
       cy.getByTestId('View').dblclick();
       cy.get('[data-testid$=" Diagram Description"]').dblclick();
-      cy.getByTestId('DiagramPalette').should('exist');
-      cy.getByTestId('DiagramPalette-more').click();
+      cy.getByTestId('Palette').should('exist');
+      cy.getByTestId('Palette-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Diagram Tool Section"]').should('exist').click();
+      cy.get('[data-value="toolSections-DiagramToolSection"]').should('exist').click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Tool Section').should('exist');
       cy.getByTestId('Tool Section-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Node Tool"]').should('exist');
-      cy.get('[data-value="Edge Tool"]').should('not.exist');
+      cy.get('[data-value="nodeTools-NodeTool"]').should('exist');
+      cy.get('[data-value="edgeTools-EdgeTool"]').should('not.exist');
     });
 
     it('Check the NodePalette toolSection creation', () => {
@@ -93,20 +93,20 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('View').dblclick();
       cy.get('[data-testid$=" Diagram Description"]').dblclick();
       cy.getByTestId('Entity1 Node').dblclick();
-      cy.getByTestId('NodePalette-more').click();
+      cy.getByTestId('Node Palette-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Node Tool Section"]').should('exist').click();
+      cy.get('[data-value="toolSections-NodeToolSection"]').should('exist').click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Tool Section').should('exist');
       cy.getByTestId('Tool Section-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Node Tool"]').should('exist');
-      cy.get('[data-value="Edge Tool"]').should('exist');
-      cy.get('[data-value="Source Edge End Reconnection Tool"]').should('not.exist');
+      cy.get('[data-value="nodeTools-NodeTool"]').should('exist');
+      cy.get('[data-value="edgeTools-EdgeTool"]').should('exist');
+      cy.get('[data-value="edgeReconnectionTools-SourceEdgeEndReconnectionTool"]').should('not.exist');
     });
 
     it('Check the EdgePalette toolSection creation', () => {
@@ -114,21 +114,21 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('View').dblclick();
       cy.get('[data-testid$=" Diagram Description"]').dblclick();
       cy.getByTestId('LinkedTo Edge').dblclick();
-      cy.getByTestId('EdgePalette-more').click();
+      cy.getByTestId('Edge Palette-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Edge Tool Section"]').should('exist').click();
+      cy.get('[data-value="toolSections-EdgeToolSection"]').should('exist').click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Tool Section').should('exist');
       cy.getByTestId('Tool Section-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Node Tool"]').should('exist');
-      cy.get('[data-value="Edge Tool"]').should('not.exist');
-      cy.get('[data-value="Source Edge End Reconnection Tool"]').should('not.exist');
-      cy.get('[data-value="Target Edge End Reconnection Tool"]').should('not.exist');
+      cy.get('[data-value="nodeTools-NodeTool"]').should('exist');
+      cy.get('[data-value="edgeTools-EdgeTool"]').should('not.exist');
+      cy.get('[data-value="edgeReconnectionTools-SourceEdgeEndReconnectionTool"]').should('not.exist');
+      cy.get('[data-value="edgeReconnectionTools-TargetEdgeEndReconnectionTool"]').should('not.exist');
     });
 
     it.skip('Check the precondition on tools', () => {
@@ -139,7 +139,7 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Node Tool"]').should('exist').click();
+      cy.getByTestId('childCreationDescription').get('[data-value="nodeTools-NodeTool"]').should('exist').click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Precondition Expression').should('exist');
       cy.getByTestId('Precondition Expression').type('aql:self.eAllContents()->size()>0');
@@ -200,13 +200,13 @@ describe('/projects/:projectId/edit - Studio', () => {
       explorer.expand('ViewNewModel');
       explorer.expand('View');
       explorer.expand(`${domainName} Diagram Description`);
-      explorer.createObject(`${domainName} Diagram Description`, 'Node Description');
+      explorer.createObject(`${domainName} Diagram Description`, 'nodeDescriptions-NodeDescription');
       explorer.expand('Node');
-      explorer.select('RectangularNodeStyleDescription');
+      explorer.select('Rectangular Node Style Description 3');
       details.getReferenceWidgetSelectedValue('Background', 'white').should('exist');
       details.getReferenceWidgetSelectedValue('Border Color', 'black').should('exist');
-      explorer.delete('RectangularNodeStyleDescription');
-      explorer.createObject('Node', 'Style Icon-Label');
+      explorer.delete('Rectangular Node Style Description 3');
+      explorer.createObject('Node', 'style-IconLabelNodeStyleDescription');
       details.getReferenceWidgetSelectedValue('Background', 'white').should('exist');
       details.getReferenceWidgetSelectedValue('Border Color', 'black').should('exist');
     });
@@ -219,17 +219,23 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="nodeDescriptions-NodeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Node-toggle').click();
       cy.getByTestId('Node-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Sub-node"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="childrenDescriptions-NodeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Sub-node-toggle').click();
-      cy.getByTestId('RectangularNodeStyleDescription').eq(1).click();
+      cy.getByTestId('Rectangular Node Style Description 3').eq(1).click();
       cy.getByTestId('Background').findByTestId('reference-value-white').should('exist');
       cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
     });
@@ -242,17 +248,23 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="nodeDescriptions-NodeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Node-toggle').click();
       cy.getByTestId('Node-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Border node"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="borderNodesDescriptions-NodeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Border node-toggle').click();
-      cy.getByTestId('RectangularNodeStyleDescription').eq(1).click();
+      cy.getByTestId('Rectangular Node Style Description 3').eq(1).click();
       cy.getByTestId('Background').findByTestId('reference-value-white').should('exist');
       cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
     });
@@ -262,15 +274,18 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('View-toggle').click();
       cy.get('[data-testid$=" Diagram Description"]').dblclick();
       cy.getByTestId('Entity1 Node-toggle').click();
-      cy.getByTestId('RectangularNodeStyleDescription-more').click();
+      cy.getByTestId('Rectangular Node Style Description 3-more').click();
       cy.getByTestId('delete').click();
       cy.getByTestId('Entity1 Node-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Style Rectangular"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="style-RectangularNodeStyleDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
-      cy.getByTestId('RectangularNodeStyleDescription').click();
+      cy.getByTestId('Rectangular Node Style Description 3').click();
       cy.getByTestId('Background').findByTestId('reference-value-white').should('exist');
       cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
     });
@@ -283,10 +298,13 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Edge Description"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="edgeDescriptions-EdgeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Edge').dblclick();
-      cy.getByTestId('EdgeStyle').click();
+      cy.getByTestId('Edge Style 14').click();
 
       cy.getByTestId('Color').findByTestId('reference-value-black').should('exist');
     });
@@ -297,30 +315,33 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Form Description"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="descriptions-FormDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('New Form Description').dblclick();
-      cy.getByTestId('PageDescription').dblclick();
-      cy.getByTestId('GroupDescription').dblclick();
-      cy.getByTestId('GroupDescription-more').click();
+      cy.getByTestId('Page Description').dblclick();
+      cy.getByTestId('Group Description').dblclick();
+      cy.getByTestId('Group Description-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription')
-        .get('[data-value="Widgets Textfield Description"]')
+        .get('[data-value="children-TextfieldDescription"]')
         .should('exist')
         .click();
       cy.getByTestId('create-object').click();
-      cy.getByTestId('TextfieldDescription-more').click();
+      cy.getByTestId('Textfield Description-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription')
-        .get('[data-value="Style Textfield Description Style"]')
+        .get('[data-value="style-TextfieldDescriptionStyle"]')
         .should('exist')
         .click();
       cy.getByTestId('create-object').click();
-      cy.getByTestId('TextfieldDescriptionStyle').click();
+      cy.getByTestId('Textfield Description Style 14').click();
 
       cy.getByTestId('Background Color').findByTestId('reference-value-transparent').should('exist');
       cy.getByTestId('Foreground Color').findByTestId('reference-value-theme.palette.text.primary').should('exist');
@@ -337,7 +358,10 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="nodeDescriptions-NodeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Node').click();
       cy.getByTestId('Default Width Expression').should('exist');

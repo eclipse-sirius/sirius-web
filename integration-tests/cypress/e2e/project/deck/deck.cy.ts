@@ -115,7 +115,7 @@ describe('Verify the Deck Representation', () => {
     });
     it('We create a new daily tag to verify that the deck is properly refreshed', () => {
       const explorer = new Explorer();
-      explorer.createObject('Daily Project Dev', 'Tag');
+      explorer.createObject('Daily Project Dev', 'ownedTags-TaskTag');
       explorer.select('::');
       const details = new Details();
       details.getTextField('Prefix').type('daily{enter}');

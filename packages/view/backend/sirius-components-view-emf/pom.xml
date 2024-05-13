@@ -97,6 +97,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-diagram-edit</artifactId>
+			<version>2024.5.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
 			<version>2024.5.4</version>
 		</dependency>

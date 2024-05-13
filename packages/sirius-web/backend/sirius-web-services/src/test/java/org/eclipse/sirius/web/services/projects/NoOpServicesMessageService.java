@@ -93,4 +93,34 @@ public class NoOpServicesMessageService implements IServicesMessageService {
         return "";
     }
 
+    @Override
+    public String representations() {
+        return "";
+    }
+
+    @Override
+    public String incoming() {
+        return "";
+    }
+
+    @Override
+    public String current() {
+        return "";
+    }
+
+    @Override
+    public String outgoing() {
+        return "";
+    }
+
+    @Override
+    public String parent() {
+        return "";
+    }
+
+    @Override
+    public String children() {
+        return "";
+    }
+
 }

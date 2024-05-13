@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
+import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
@@ -61,13 +62,15 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     private final IObjectService objectService;
     private final IEMFKindService emfKindService;
     private final IFeedbackMessageService feedbackMessageService;
+    private final IEMFMessageService emfMessageService;
     private final AQLTextfieldCustomizer aqlTextfieldCustomizer;
 
-    public PropertiesWidgetCreationService(IPropertiesConfigurerService propertiesConfigurerService, IObjectService objectService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
+    public PropertiesWidgetCreationService(IPropertiesConfigurerService propertiesConfigurerService, IObjectService objectService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, IEMFMessageService emfMessageService, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.objectService = Objects.requireNonNull(objectService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.emfMessageService = Objects.requireNonNull(emfMessageService);
         this.aqlTextfieldCustomizer = Objects.requireNonNull(aqlTextfieldCustomizer);
     }
 
@@ -75,7 +78,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     public PageDescription createSimplePageDescription(String id, GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
         return PageDescription.newPageDescription(id)
                 .idProvider(variableManager -> "page")
-                .labelProvider(variableManager -> "Properties")
+                .labelProvider(variableManager -> this.emfMessageService.properties())
                 .semanticElementsProvider(this.propertiesConfigurerService.getSemanticElementsProvider())
                 .canCreatePredicate(canCreatePredicate)
                 .groupDescriptions(List.of(groupDescription))
@@ -86,7 +89,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     public GroupDescription createSimpleGroupDescription(List<AbstractControlDescription> controls) {
         return GroupDescription.newGroupDescription("group")
                 .idProvider(variableManager -> "group")
-                .labelProvider(variableManager -> "General")
+                .labelProvider(variableManager -> this.emfMessageService.general())
                 .semanticElementsProvider(this.propertiesConfigurerService.getSemanticElementsProvider())
                 .controlDescriptions(controls)
                 .build();

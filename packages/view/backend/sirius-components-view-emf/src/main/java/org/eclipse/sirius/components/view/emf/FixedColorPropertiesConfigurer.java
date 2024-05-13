@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertie
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IValidationService;
+import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
@@ -41,6 +42,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.provider.ViewEditPlugin;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.springframework.stereotype.Component;
 
@@ -59,10 +61,13 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
 
     private final List<IValidationService> validationServices;
 
-    public FixedColorPropertiesConfigurer(IIdentityService identityService, ILabelService labelService, List<IValidationService> validationServices) {
+    private final IEMFMessageService emfMessageService;
+
+    public FixedColorPropertiesConfigurer(IIdentityService identityService, ILabelService labelService, List<IValidationService> validationServices, IEMFMessageService emfMessageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.validationServices = Objects.requireNonNull(validationServices);
+        this.emfMessageService = Objects.requireNonNull(emfMessageService);
     }
 
     @Override
@@ -86,13 +91,15 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
     private List<AbstractControlDescription> getGeneralControlDescription() {
         List<AbstractControlDescription> controls = new ArrayList<>();
 
-        var name = this.createTextField("fixedcolor.name", "Name",
+        var name = this.createTextField("fixedcolor.name",
+                             ViewEditPlugin.INSTANCE.getString("_UI_UserColor_name_feature"),
                              color -> ((UserColor) color).getName(),
                              (color, newName) -> ((UserColor) color).setName(newName),
                              ViewPackage.Literals.USER_COLOR__NAME);
         controls.add(name);
 
-        var value = this.createTextField("fixedcolor.value", "Value",
+        var value = this.createTextField("fixedcolor.value",
+                             ViewEditPlugin.INSTANCE.getString("_UI_FixedColor_value_feature"),
                              color -> ((FixedColor) color).getValue(),
                              (color, newValue) -> ((FixedColor) color).setValue(newValue),
                              ViewPackage.Literals.FIXED_COLOR__VALUE);
@@ -122,7 +129,7 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
 
         return GroupDescription.newGroupDescription("group")
                 .idProvider(variableManager -> "group")
-                .labelProvider(variableManager -> "Core Properties")
+                .labelProvider(variableManager -> this.emfMessageService.coreProperties())
                 .semanticElementsProvider(semanticElementsProvider)
                 .controlDescriptions(controls)
                 .build();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.domain.Attribute;
 import org.eclipse.sirius.components.domain.DataType;
+import org.eclipse.sirius.components.domain.provider.DomainEditPlugin;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.form.FormDescription;
@@ -38,11 +39,15 @@ public final class DomainAttributeServices {
     }
 
     public List<String> getAvailableDataTypes(EObject self) {
-        return DataType.VALUES.stream().map(DataType::getName).toList();
+        return DataType.VALUES.stream().map(this::getDataTypeLabel).toList();
     }
 
     public String getDataType(Attribute attr) {
-        return Optional.ofNullable(attr.getType()).map(DataType::getName).orElse(null);
+        return Optional.ofNullable(attr.getType()).map(this::getDataTypeLabel).orElse(null);
+    }
+
+    private String getDataTypeLabel(DataType dataType) {
+        return DomainEditPlugin.INSTANCE.getString("_UI_DataType_" + dataType.getName() + "_literal");
     }
 
     public EObject setDataType(Attribute attr, String typeName) {

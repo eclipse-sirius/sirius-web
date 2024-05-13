@@ -235,7 +235,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
 
         return GroupDescription.newGroupDescription("groupId")
                 .idProvider(variableManager -> "Core Properties")
-                .labelProvider(variableManager -> "Core Properties")
+                .labelProvider(variableManager -> this.emfMessageService.coreProperties())
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .controlDescriptions(controlDescriptions)
                 .build();

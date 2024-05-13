@@ -123,6 +123,7 @@ image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3651[#3651] [diagram] Improve performances when interacting with the diagram, especially when dragging a node
 - https://github.com/eclipse-sirius/sirius-web/issues/3641[#3641] [core] Do not fetch representation content when we only need the metadata
 - https://github.com/eclipse-sirius/sirius-web/issues/3589[#3589] [diagram] Add the ability to limit the direction of resize for a node
+- https://github.com/eclipse-sirius/sirius-web/issues/3464[#3464] [view] Improve i18n support for domain and view forms
 
 == v2024.5.0
 

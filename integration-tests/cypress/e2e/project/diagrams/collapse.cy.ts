@@ -40,7 +40,7 @@ describe('Diagram - collapsible node', () => {
           cy.get('[title="domain::Domain"]').then(($div) => {
             domainName = $div.data().testid;
             explorer.expand(domainName);
-            explorer.createObject('Entity1', 'Relation');
+            explorer.createObject('Entity1', 'relations-Relation');
             details.getCheckBox('Containment').check();
             details.openReferenceWidgetOptions('Target Type');
             details.selectReferenceWidgetOption('Entity2');
@@ -53,7 +53,7 @@ describe('Diagram - collapsible node', () => {
             details.selectReferenceWidgetOption('Entity2 Node');
             explorer.expand('Entity1 Node');
             explorer.expand('aql:self.name');
-            explorer.select('InsideLabelStyle');
+            explorer.select('Inside Label Style 14');
             details.getCheckBox('With Header').check();
             details.getCheckBox('Display Header Separator').check();
           });
@@ -75,11 +75,15 @@ describe('Diagram - collapsible node', () => {
       afterEach(() => cy.deleteProject(instanceProjectId));
 
       it('Then a collapsed node does not display its header line', () => {
+        cy.on('uncaught:exception', (err) =>
+          err.message.includes('ResizeObserver loop limit exceeded') ? false : undefined
+        );
+
         const explorer = new Explorer();
         const diagram = new Diagram();
         const details = new Details();
-        explorer.createObject('Root', 'Entity1s Entity1');
-        explorer.createObject('Entity1', 'Relation Entity2');
+        explorer.createObject('Root', 'entity1s-Entity1');
+        explorer.createObject('Entity1', 'relation-Entity2');
         explorer.select('Entity1');
         details.getTextField('Name').type('Entity1{enter}');
         explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');

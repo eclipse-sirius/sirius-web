@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
@@ -58,6 +59,7 @@ import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.provider.DiagramEditPlugin;
 import org.eclipse.sirius.components.view.emf.api.CustomImageMetadata;
 import org.eclipse.sirius.components.view.emf.api.ICustomImageMetadataSearchService;
 import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesConfigurerService;
@@ -78,14 +80,16 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     private final IPropertiesConfigurerService propertiesConfigurerService;
     private final IPropertiesWidgetCreationService propertiesWidgetCreationService;
     private final IObjectService objectService;
+    private final IEMFMessageService emfMessageService;
 
     public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService,
-            List<IParametricSVGImageRegistry> parametricSVGImageRegistries, PropertiesConfigurerService propertiesConfigurerService, IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService) {
+            List<IParametricSVGImageRegistry> parametricSVGImageRegistries, PropertiesConfigurerService propertiesConfigurerService, IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService, IEMFMessageService emfMessageService) {
         this.customImageSearchService = Objects.requireNonNull(customImageSearchService);
         this.parametricSVGImageRegistries = parametricSVGImageRegistries;
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.propertiesWidgetCreationService = Objects.requireNonNull(propertiesWidgetCreationService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.emfMessageService = Objects.requireNonNull(emfMessageService);
     }
 
     @Override
@@ -101,26 +105,26 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         List<AbstractControlDescription> controls = new ArrayList<>();
         var areChildNodesDraggableExpression = this.propertiesWidgetCreationService.createExpressionField("listLayoutStrategy.areChildNodesDraggableExpression",
-                "Are Child Nodes Draggable Expression",
+                DiagramEditPlugin.INSTANCE.getString("_UI_ListLayoutStrategyDescription_areChildNodesDraggableExpression_feature"),
                 desc -> String.valueOf(((ListLayoutStrategyDescription) desc).getAreChildNodesDraggableExpression()),
                 (desc, newValue) -> ((ListLayoutStrategyDescription) desc).setAreChildNodesDraggableExpression(newValue),
                 DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION);
         controls.add(areChildNodesDraggableExpression);
         var topGapExpression = this.propertiesWidgetCreationService.createExpressionField("listLayoutStrategy.topGapExpression",
-                "Top Gap Expression",
+                DiagramEditPlugin.INSTANCE.getString("_UI_ListLayoutStrategyDescription_topGapExpression_feature"),
                 desc -> String.valueOf(((ListLayoutStrategyDescription) desc).getTopGapExpression()),
                 (desc, newValue) -> ((ListLayoutStrategyDescription) desc).setTopGapExpression(newValue),
                 DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__TOP_GAP_EXPRESSION);
         controls.add(topGapExpression);
         var bottomGapExpression = this.propertiesWidgetCreationService.createExpressionField("listLayoutStrategy.bottomGapExpression",
-                "Bottom Gap Expression",
+                DiagramEditPlugin.INSTANCE.getString("_UI_ListLayoutStrategyDescription_bottomGapExpression_feature"),
                 desc -> String.valueOf(((ListLayoutStrategyDescription) desc).getBottomGapExpression()),
                 (desc, newValue) -> ((ListLayoutStrategyDescription) desc).setBottomGapExpression(newValue),
                 DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION);
         controls.add(bottomGapExpression);
 
         var growableNodes = this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.growableNodes",
-                "Growable Nodes",
+                DiagramEditPlugin.INSTANCE.getString("_UI_ListLayoutStrategyDescription_growableNodes_feature"),
                 DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES,
                 this::getSubNodes);
         controls.add(growableNodes);
@@ -150,7 +154,8 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         controls.add(this.createShapeSelectionField());
         controls.add(this.createShapePreviewField());
         controls.addAll(this.getGeneralControlDescription(NodeType.NODE_IMAGE));
-        var isPositionDependentRotation = this.propertiesWidgetCreationService.createCheckbox("nodestyle.positionDependentRotation", "Position-Dependent Rotation",
+        var isPositionDependentRotation = this.propertiesWidgetCreationService.createCheckbox("nodestyle.positionDependentRotation",
+                DiagramEditPlugin.INSTANCE.getString("_UI_ImageNodeStyleDescription_positionDependentRotation_feature"),
                 style -> ((ImageNodeStyleDescription) style).isPositionDependentRotation(),
                 (style, newValue) -> ((ImageNodeStyleDescription) style).setPositionDependentRotation(newValue),
                 DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION,
@@ -202,18 +207,27 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         Function<VariableManager, List<?>> colorOptionsProvider = variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList();
 
         if (Objects.equals(nodeType, NodeType.NODE_RECTANGLE)) {
-            var color = this.propertiesWidgetCreationService.createReferenceWidget("rectangular.nodestyle.background", "Background", DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND, colorOptionsProvider);
-            controls.add(color);
-        }
-        if (Objects.equals(nodeType, NodeType.NODE_ICON_LABEL)) {
-            var color = this.propertiesWidgetCreationService.createReferenceWidget("icon.nodestyle.background", "Background", DiagramPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND,
+            var color = this.propertiesWidgetCreationService.createReferenceWidget("rectangular.nodestyle.background",
+                    DiagramEditPlugin.INSTANCE.getString("_UI_RectangularNodeStyleDescription_background_feature"),
+                    DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND,
                     colorOptionsProvider);
             controls.add(color);
         }
-        var borderColor = this.propertiesWidgetCreationService.createReferenceWidget("nodestyle.borderColor", "Border Color", DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, colorOptionsProvider);
+        if (Objects.equals(nodeType, NodeType.NODE_ICON_LABEL)) {
+            var color = this.propertiesWidgetCreationService.createReferenceWidget("icon.nodestyle.background",
+                    DiagramEditPlugin.INSTANCE.getString("_UI_IconLabelNodeStyleDescription_background_feature"),
+                    DiagramPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND,
+                    colorOptionsProvider);
+            controls.add(color);
+        }
+        var borderColor = this.propertiesWidgetCreationService.createReferenceWidget("nodestyle.borderColor",
+                DiagramEditPlugin.INSTANCE.getString("_UI_BorderStyle_borderColor_feature"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR,
+                colorOptionsProvider);
         controls.add(borderColor);
 
-        var borderRadius = this.propertiesWidgetCreationService.createTextField("nodestyle.borderRadius", "Border Radius",
+        var borderRadius = this.propertiesWidgetCreationService.createTextField("nodestyle.borderRadius",
+                DiagramEditPlugin.INSTANCE.getString("_UI_BorderStyle_borderRadius_feature"),
                 style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
                 (style, newBorderRadius) -> {
                     try {
@@ -225,7 +239,8 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS);
         controls.add(borderRadius);
 
-        var borderSize = this.propertiesWidgetCreationService.createTextField("nodestyle.borderSize", "Border Size",
+        var borderSize = this.propertiesWidgetCreationService.createTextField("nodestyle.borderSize",
+                DiagramEditPlugin.INSTANCE.getString("_UI_BorderStyle_borderSize_feature"),
                 style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
                 (style, newBorderSize) -> {
                     try {
@@ -247,14 +262,16 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         return SelectDescription.newSelectDescription("nodestyle.borderstyle")
                 .idProvider(variableManager -> "nodestyle.borderstyle")
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
-                .labelProvider(variableManager -> "Border Line Style")
+                .labelProvider(variableManager -> DiagramEditPlugin.INSTANCE.getString("_UI_BorderStyle_borderLineStyle_feature"))
                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, BorderStyle.class)
                         .map(BorderStyle::getBorderLineStyle)
                         .map(LineStyle::toString)
                         .orElse(""))
                 .optionsProvider(variableManager -> LineStyle.VALUES.stream().toList())
                 .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getLiteral).orElse(""))
-                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getName).orElse(""))
+                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class)
+                        .map(literal -> DiagramEditPlugin.INSTANCE.getString("_UI_LineStyle_" + literal.getName() + "_literal"))
+                        .orElse(""))
                 .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath)
                         .orElse(List.of()))
                 .newValueHandler((variableManager, newValue) -> {
@@ -300,7 +317,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         return SelectDescription.newSelectDescription("nodestyle.shapeSelector")
                 .idProvider(variableManager -> "nodestyle.shapeSelector")
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
-                .labelProvider(variableManager -> "Shape")
+                .labelProvider(variableManager -> DiagramEditPlugin.INSTANCE.getString("_UI_ImageNodeStyleDescription_shape_feature"))
                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(""))
                 .optionsProvider(variableManager -> {
                     Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
@@ -335,7 +352,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         return ImageDescription.newImageDescription("nodestyle.shapePreview")
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .idProvider(variableManager -> "nodestyle.shapePreview")
-                .labelProvider(variableManager -> "Shape Preview")
+                .labelProvider(variableManager -> this.emfMessageService.shapePreview())
                 .urlProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(""))
                 .maxWidthProvider(variableManager -> "300px")
                 .diagnosticsProvider(variableManager -> List.of())

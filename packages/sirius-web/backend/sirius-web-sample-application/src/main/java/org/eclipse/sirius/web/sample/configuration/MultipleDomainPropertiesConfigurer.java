@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
 import org.eclipse.sirius.components.view.form.SelectDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
+import org.eclipse.sirius.web.sample.messages.DomainPropertiesMessageService;
 import org.eclipse.sirius.web.sample.services.DomainAttributeServices;
 import org.springframework.context.annotation.Configuration;
 
@@ -50,8 +51,11 @@ public class MultipleDomainPropertiesConfigurer implements IPropertiesDescriptio
 
     private final ViewFormDescriptionConverter converter;
 
-    public MultipleDomainPropertiesConfigurer(ViewFormDescriptionConverter converter) {
+    private final DomainPropertiesMessageService messageService;
+
+    public MultipleDomainPropertiesConfigurer(ViewFormDescriptionConverter converter, DomainPropertiesMessageService messageService) {
         this.converter = Objects.requireNonNull(converter);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -78,13 +82,13 @@ public class MultipleDomainPropertiesConfigurer implements IPropertiesDescriptio
         FormDescription form = FormFactory.eINSTANCE.createFormDescription();
         form.setName("Attribute Details");
         form.setDomainType("domain::Attribute");
-        form.setTitleExpression("Attribute Details");
+        form.setTitleExpression(this.messageService.getMessage("ATTRIBUTE_DETAILS"));
 
         PageDescription page = FormFactory.eINSTANCE.createPageDescription();
         page.setSemanticCandidatesExpression("aql:self");
         page.setDomainType("domain::Attribute");
         page.setPreconditionExpression("aql:selection->filter(domain::Attribute)->size()>1");
-        page.setLabelExpression("MultiSelection");
+        page.setLabelExpression(this.messageService.getMessage("MULTI_SELECTION"));
         form.getPages().add(page);
         page.getGroups().add(this.createGroup());
         return form;
@@ -94,19 +98,19 @@ public class MultipleDomainPropertiesConfigurer implements IPropertiesDescriptio
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName("Core Properties");
-        group.setLabelExpression("Core Properties");
+        group.setLabelExpression(this.messageService.getMessage("CORE_PROPERTIES"));
         group.setSemanticCandidatesExpression("aql:self");
         group.getChildren().add(this.createTypeSelectorWidget());
-        group.getChildren().add(this.createBooleanAttributeEditWidget("Optional", DomainPackage.Literals.FEATURE__OPTIONAL.getName()));
-        group.getChildren().add(this.createBooleanAttributeEditWidget("Many", DomainPackage.Literals.FEATURE__MANY.getName()));
+        group.getChildren().add(this.createBooleanAttributeEditWidget("Optional", "OPTIONAL", DomainPackage.Literals.FEATURE__OPTIONAL.getName()));
+        group.getChildren().add(this.createBooleanAttributeEditWidget("Many", "MANY", DomainPackage.Literals.FEATURE__MANY.getName()));
         return group;
     }
 
 
-    private WidgetDescription createBooleanAttributeEditWidget(String title, String attributeName) {
+    private WidgetDescription createBooleanAttributeEditWidget(String name, String label, String attributeName) {
         CheckboxDescription checkbox = FormFactory.eINSTANCE.createCheckboxDescription();
-        checkbox.setName(title);
-        checkbox.setLabelExpression(title);
+        checkbox.setName(name);
+        checkbox.setLabelExpression(this.messageService.getMessage(label));
         checkbox.setValueExpression("aql:self.%s".formatted(attributeName));
         ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression("aql:selection->filter(domain::Attribute).setValue('%s',newValue)".formatted(attributeName));
@@ -117,7 +121,7 @@ public class MultipleDomainPropertiesConfigurer implements IPropertiesDescriptio
     private WidgetDescription createTypeSelectorWidget() {
         SelectDescription selectWidget = FormFactory.eINSTANCE.createSelectDescription();
         selectWidget.setName("Type");
-        selectWidget.setLabelExpression("Type");
+        selectWidget.setLabelExpression(this.messageService.getMessage("TYPE"));
         selectWidget.setCandidatesExpression("aql:self.getAvailableDataTypes()");
         selectWidget.setValueExpression("aql:self.getDataType()");
         selectWidget.setCandidateLabelExpression("aql:candidate.capitalize()");

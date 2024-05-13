@@ -53,6 +53,7 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
+import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -62,8 +63,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RepresentationsDescriptionProvider implements IRepresentationsDescriptionProvider {
-
-    public static final String TITLE = "Representations";
 
     public static final String PREFIX = "representations://";
 
@@ -75,15 +74,18 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
 
     private final IRepresentationSearchService representationSearchService;
 
+    private final IServicesMessageService servicesMessageService;
+
     private final List<IRepresentationImageProvider> representationImageProviders;
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
     public RepresentationsDescriptionProvider(IObjectService objectService, IRepresentationService representationService, IRepresentationSearchService representationSearchService,
-            List<IRepresentationImageProvider> representationImageProviders) {
+            IServicesMessageService servicesMessageService, List<IRepresentationImageProvider> representationImageProviders) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationService = Objects.requireNonNull(representationService);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
+        this.servicesMessageService = Objects.requireNonNull(servicesMessageService);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
     }
@@ -101,7 +103,7 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.objectService::getFullLabel)
-                .orElse(TITLE);
+                .orElse(this.servicesMessageService.representations());
 
         return FormDescription.newFormDescription(UUID.nameUUIDFromBytes(REPRESENTATIONS_DEFAULT_FORM_DESCRIPTION_ID.getBytes()).toString())
                 .label("Representations default form description")
@@ -137,7 +139,7 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
 
         ListDescription listDescription = ListDescription.newListDescription("RepresentationsList")
             .idProvider(new WidgetIdProvider())
-            .labelProvider(variableManager -> TITLE)
+            .labelProvider(variableManager -> this.servicesMessageService.representations())
             .itemsProvider(this.getItemsProvider())
             .itemIdProvider(this.getItemIdProvider())
             .itemLabelProvider(this.getItemLabelProvider())

@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Project } from '../../../pages/Project';
-import { Explorer } from '../../../workbench/Explorer';
-import { Diagram } from '../../../workbench/Diagram';
 import { Flow } from '../../../usecases/Flow';
 import { Papaya } from '../../../usecases/Papaya';
 import { Details } from '../../../workbench/Details';
+import { Diagram } from '../../../workbench/Diagram';
+import { Explorer } from '../../../workbench/Explorer';
 
 const projectName = 'Cypress - group palette';
 describe('Diagram - group palette', () => {
@@ -143,22 +143,22 @@ describe('Diagram - group palette', () => {
         const explorer = new Explorer();
         const details = new Details();
         const diagram = new Diagram();
-        explorer.createObject('Root', 'Components Component');
+        explorer.createObject('Root', 'components-Component');
         details.getTextField('Name').invoke('text').should('eq', '');
         details.getTextField('Name').type('component{enter}');
-        explorer.createObject('component', 'Packages Package');
+        explorer.createObject('component', 'packages-Package');
         details.getTextField('Name').invoke('text').should('eq', '');
         details.getTextField('Name').type('package{enter}');
-        explorer.createObject('component', 'Packages Package');
+        explorer.createObject('component', 'packages-Package');
         details.getTextField('Name').invoke('text').should('eq', '');
         details.getTextField('Name').type('package_bis{enter}');
-        explorer.createObject('package', 'Types Class');
+        explorer.createObject('package', 'types-Class');
         details.getTextField('Name').invoke('text').should('eq', '');
         details.getTextField('Name').type('class{enter}');
-        explorer.createObject('class', 'Attributes Attribute');
+        explorer.createObject('class', 'attributes-Attribute');
         details.getTextField('Name').invoke('text').should('eq', '');
         details.getTextField('Name').type('attribute{enter}');
-        explorer.createObject('class', 'Operations Operation');
+        explorer.createObject('class', 'operations-Operation');
         details.getTextField('Name').invoke('text').should('eq', '');
         details.getTextField('Name').type('operation{enter}');
         explorer.createRepresentation('Root', 'Diagram', 'diagram');
