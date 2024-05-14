@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-starter</artifactId>
-	<version>2024.3.4</version>
+	<version>2024.3.5</version>
 	<name>sirius-web-starter</name>
 	<description>Sirius Web Starter</description>
 
@@ -47,147 +47,147 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-infrastructure</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-deck-graphql</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-graphql</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms-graphql</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-graphql</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-formdescriptioneditors-widget-reference</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-formdescriptioneditors-graphql</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-gantt-graphql</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-portals-graphql</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-selection-graphql</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-trees-graphql</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-validation-graphql</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-web</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf-widget-reference</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-edit</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-builder</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-deck</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-deck-edit</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram-edit</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form-edit</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt-edit</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-view</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-view-edit</artifactId>
-			<version>2024.3.4</version>
+			<version>2024.3.5</version>
 		</dependency>
 	</dependencies>
 
