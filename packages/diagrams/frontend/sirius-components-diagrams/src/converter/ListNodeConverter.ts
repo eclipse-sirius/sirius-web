@@ -144,11 +144,13 @@ const toListNode = (
 };
 
 const adaptChildrenBorderNodes = (nodes: Node[], gqlChildrenNodes: GQLNode<GQLNodeStyle>[]): void => {
-  const childrenNodes = nodes.filter(
-    (child) =>
-      gqlChildrenNodes.map((gqlChild) => gqlChild.id).find((gqlChildId) => gqlChildId === child.id) !== undefined
-  );
-  childrenNodes.forEach((child, index) => {
+  const visibleChildrenNodes = nodes
+    .filter(
+      (child) =>
+        gqlChildrenNodes.map((gqlChild) => gqlChild.id).find((gqlChildId) => gqlChildId === child.id) !== undefined
+    )
+    .filter((child) => !child.hidden);
+  visibleChildrenNodes.forEach((child, index) => {
     // Hide children node borders to prevent a 'bold' aspect.
     child.data.style = {
       ...child.data.style,
@@ -157,7 +159,7 @@ const adaptChildrenBorderNodes = (nodes: Node[], gqlChildrenNodes: GQLNode<GQLNo
       borderRightColor: 'transparent',
     };
 
-    if (index === childrenNodes.length - 1) {
+    if (index === visibleChildrenNodes.length - 1) {
       child.data.style = {
         ...child.data.style,
         borderBottomColor: 'transparent',
