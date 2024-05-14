@@ -130,7 +130,7 @@ describe('Diagram - edges', () => {
 
       afterEach(() => cy.deleteProject(instanceProjectId));
 
-      it('Then check edge do not cross child node', () => {
+      it('Then check edges start on the ellipse layout', () => {
         const explorer = new Explorer();
         const details = new Details();
         const diagram = new Diagram();
@@ -150,6 +150,7 @@ describe('Diagram - edges', () => {
         details.openReferenceWidgetOptions('Linked To');
         details.selectReferenceWidgetOption('Entity2.bis');
         details.getReferenceWidgetSelectedValue('Linked To', 'Entity2.bis').should('exist');
+        diagram.getEdgePaths('diagram').should('have.length', 2);
         diagram.arrangeAll();
         diagram.fitToScreen();
         diagram.getEdgePaths('diagram').should('have.length', 2);
