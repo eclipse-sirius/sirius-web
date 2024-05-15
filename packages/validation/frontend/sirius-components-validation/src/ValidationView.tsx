@@ -20,6 +20,7 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { GQLValidationEventSubscription, GQLValidationEventVariables } from './ValidationView.types';
@@ -84,6 +85,7 @@ export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps
     );
   const { toast, validationView } = value as SchemaValue;
   const { id, validation, message } = context;
+  const { t } = useTranslation('siriusComponentsValidation');
 
   const { error } = useSubscription<GQLValidationEventSubscription, GQLValidationEventVariables>(
     validationEventSubscription,
@@ -135,7 +137,9 @@ export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps
         <Accordion key={category.kind}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>{category.kind}</Typography>
-            <Typography className={classes.secondaryHeading}>{category.diagnostics.length} diagnostics</Typography>
+            <Typography className={classes.secondaryHeading}>
+              {t('diagnosticCount', { count: category.diagnostics.length })}
+            </Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.accordionDetailsRoot}>{details}</AccordionDetails>
         </Accordion>
@@ -147,7 +151,7 @@ export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps
     } else {
       content = (
         <div className={classes.idle}>
-          <Typography variant="subtitle2">No diagnostic available</Typography>
+          <Typography variant="subtitle2">{t('noDiagnostic')}</Typography>
         </div>
       );
     }

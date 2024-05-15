@@ -13,6 +13,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Node, NodeDragHandler, XYPosition, useReactFlow, useStoreApi } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -73,6 +74,7 @@ const getNodeDepth = (node: Node<NodeData>, intersections: Node<NodeData>[]): nu
 };
 
 const useDropNodeMutation = () => {
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage, addMessages } = useMultiToast();
   const [dropMutation, { data: dropNodeData, error: dropNodeError }] = useMutation<
@@ -82,7 +84,7 @@ const useDropNodeMutation = () => {
 
   useEffect(() => {
     if (dropNodeError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
     if (dropNodeData) {
       const { dropNode } = dropNodeData;
@@ -93,7 +95,7 @@ const useDropNodeMutation = () => {
         addMessages(dropNode.messages);
       }
     }
-  }, [dropNodeData, dropNodeError]);
+  }, [coreT, dropNodeData, dropNodeError]);
 
   const invokeMutation = useCallback(
     (

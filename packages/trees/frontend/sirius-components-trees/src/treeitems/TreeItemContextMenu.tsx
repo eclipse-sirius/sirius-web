@@ -25,6 +25,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import UnfoldMore from '@mui/icons-material/UnfoldMore';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLDeleteTreeItemData,
   GQLDeleteTreeItemInput,
@@ -63,6 +64,8 @@ export const TreeItemContextMenu = ({
   enterEditingMode,
   onClose,
 }: TreeItemContextMenuProps) => {
+  const { t } = useTranslation('siriusComponentsTrees');
+
   const [state, setState] = useState<TreeItemContextMenuState>({ message: null });
 
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
@@ -148,7 +151,7 @@ export const TreeItemContextMenu = ({
             <ListItemIcon>
               <UnfoldMore fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary="Expand all" />
+            <ListItemText primary={t('expandAll')} />
           </MenuItem>
         ) : null}
         {item.editable ? (
@@ -161,7 +164,7 @@ export const TreeItemContextMenu = ({
             <ListItemIcon>
               <EditIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary="Rename" />
+            <ListItemText primary={t('rename')} />
           </MenuItem>
         ) : null}
         {item.deletable ? (
@@ -169,7 +172,7 @@ export const TreeItemContextMenu = ({
             <ListItemIcon>
               <DeleteIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary="Delete" />
+            <ListItemText primary={t('delete')} />
           </MenuItem>
         ) : null}
       </Menu>
