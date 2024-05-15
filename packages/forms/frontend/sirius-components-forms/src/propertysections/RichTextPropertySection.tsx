@@ -14,6 +14,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLRichText } from '../form/FormEventFragments.types';
 import { RichTextEditor } from '../richtexteditor/RichTextEditor';
@@ -62,6 +63,7 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
   widget,
   readOnly,
 }: PropertySectionComponentProps<GQLRichText>) => {
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const [editRichText, { loading: updateRichTextLoading, data: updateRichTextData, error: updateRichTextError }] =
     useMutation<GQLEditRichTextMutationData, GQLEditRichTextMutationVariables>(editRichTextMutation);
   const sendEditedValue = (newValue) => {
@@ -81,7 +83,7 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
   useEffect(() => {
     if (!updateRichTextLoading) {
       if (updateRichTextError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (updateRichTextData) {
         const { editRichText } = updateRichTextData;
@@ -90,7 +92,7 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
         }
       }
     }
-  }, [updateRichTextLoading, updateRichTextData, updateRichTextError]);
+  }, [coreT, updateRichTextLoading, updateRichTextData, updateRichTextError]);
 
   const onBlur = (currentText: string) => {
     if (currentText !== widget.stringValue) {

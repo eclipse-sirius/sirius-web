@@ -23,6 +23,7 @@ import { makeStyles } from 'tss-react/mui';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { useTranslation } from 'react-i18next';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLRadio } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
@@ -95,6 +96,7 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const { classes } = useRadioPropertySectionStyles(props);
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const [editRadio, { loading, error, data }] = useMutation<GQLEditRadioMutationData>(editRadioMutation);
 
@@ -116,7 +118,7 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
   useEffect(() => {
     if (!loading) {
       if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (data) {
         const { editRadio } = data;

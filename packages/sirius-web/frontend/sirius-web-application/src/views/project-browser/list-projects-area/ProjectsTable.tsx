@@ -20,11 +20,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { useTranslation } from 'react-i18next';
 import { ProjectsTableProps } from './ProjectsTable.types';
 import { projectsTableRowExtensionPoint } from './ProjectsTableExtensionPoints';
 
 export const ProjectsTable = ({ projects, page, limit, count, onChange, onPageChange }: ProjectsTableProps) => {
   const { Component: ProjectRow } = useComponent(projectsTableRowExtensionPoint);
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
 
   return (
     <Paper>
@@ -36,7 +38,7 @@ export const ProjectsTable = ({ projects, page, limit, count, onChange, onPageCh
           </colgroup>
           <TableHead>
             <TableRow>
-              <TableCell variant="head">Name</TableCell>
+              <TableCell variant="head">{t('name')}</TableCell>
               <TableCell variant="head"></TableCell>
             </TableRow>
           </TableHead>
