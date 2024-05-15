@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { TreeFilterMenuProps, TreeFilter } from './TreeFiltersMenu.types';
 
@@ -35,6 +36,7 @@ const useTreeFiltersMenuStyles = makeStyles()((_) => ({
 
 export const TreeFiltersMenu = ({ filters, onTreeFilterMenuItemClick }: TreeFilterMenuProps) => {
   const { classes } = useTreeFiltersMenuStyles();
+  const { t } = useTranslation('siriusComponentsTrees');
   const [open, setOpen] = useState<boolean>(false);
   const anchorRef = useRef<HTMLButtonElement | null>(null);
 
@@ -70,7 +72,7 @@ export const TreeFiltersMenu = ({ filters, onTreeFilterMenuItemClick }: TreeFilt
         size="small"
         ref={anchorRef}
         aria-haspopup="true"
-        title="Filters"
+        title={t('filters')}
         onClick={handleToggle}>
         <FilterListIcon color={open ? 'disabled' : 'inherit'} />
       </IconButton>
