@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLErrorPayload,
   GQLInvokeEditingContextActionData,
@@ -56,6 +57,8 @@ const isErrorPayload = (payload): payload is GQLErrorPayload => payload.__typena
 
 export const NewDocumentArea = ({ editingContextId, editingContextActions, readOnly }: NewDocumentAreaProps) => {
   const { classes } = useNewDocumentAreaStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const [state, setState] = useState<NewDocumentAreaState>({
     message: null,
   });
@@ -83,7 +86,7 @@ export const NewDocumentArea = ({ editingContextId, editingContextActions, readO
   useEffect(() => {
     if (!loadingEditingContextAction) {
       if (errorEditingContextAction) {
-        setState({ message: 'An unexpected error has occurred, please refresh the page' });
+        setState({ message: coreT('errors.unexpected') });
       }
       if (dataEditingContextAction) {
         const { invokeEditingContextAction } = dataEditingContextAction;
@@ -92,15 +95,15 @@ export const NewDocumentArea = ({ editingContextId, editingContextActions, readO
         }
       }
     }
-  }, [loadingEditingContextAction, errorEditingContextAction, dataEditingContextAction]);
+  }, [loadingEditingContextAction, errorEditingContextAction, dataEditingContextAction, coreT]);
 
   return (
     <>
       <Card data-testid="actions">
         <CardContent className={classes.cardContent}>
-          <Typography variant="h6">{'Create a new Model'}</Typography>
+          <Typography variant="h6">{t('createModel')}</Typography>
           <Typography color="textSecondary">
-            {readOnly ? 'You need edit access to create models' : 'Select the model to create'}
+            {readOnly ? t('noAccessToCreateModel') : t('selectModelToCreate')}
           </Typography>
           <List dense={true}>
             {readOnly
