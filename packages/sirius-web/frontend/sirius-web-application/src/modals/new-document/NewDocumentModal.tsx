@@ -21,6 +21,7 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NewDocumentModalProps, NewDocumentModalState } from './NewDocumentModal.types';
 import { useCreateDocument } from './useCreateDocument';
 import { useStereotypes } from './useStereotypes';
@@ -38,6 +39,7 @@ const useNewDocumentModalStyles = makeStyles((theme) => ({
 
 export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModalProps) => {
   const classes = useNewDocumentModalStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'model.create' });
   const [state, setState] = useState<NewDocumentModalState>({
     name: '',
     nameIsInvalid: true,
@@ -84,23 +86,23 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
       maxWidth="xs"
       fullWidth
       data-testid="create-new-model">
-      <DialogTitle id="dialog-title">Create a new model</DialogTitle>
+      <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
         <div className={classes.form}>
           <TextField
             error={!state.pristine && state.nameIsInvalid}
-            helperText="The name cannot be empty"
-            label="Name"
+            helperText={t('name.helperText')}
+            label={t('name.label')}
             name="name"
             value={state.name}
-            placeholder="Enter the name of the model"
+            placeholder={t('name.placeholder')}
             data-testid="name"
             inputProps={{ 'data-testid': 'name-input' }}
             autoFocus={true}
             onChange={onNameChange}
             disabled={loadingStereotypes || documentCreationLoading}
           />
-          <InputLabel id="newDocumentModalStereotypeLabel">Model type</InputLabel>
+          <InputLabel id="newDocumentModalStereotypeLabel">{t('modelType.label')}</InputLabel>
           <Select
             value={state.stereotypeId}
             onChange={onStereotypeChange}
@@ -124,7 +126,7 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
           data-testid="create-document"
           color="primary"
           onClick={onCreateDocument}>
-          Create
+          {t('submit')}
         </Button>
       </DialogActions>
     </Dialog>

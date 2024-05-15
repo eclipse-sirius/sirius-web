@@ -27,6 +27,8 @@ export {
   httpOptionsConfigurersExtensionPoint,
   webSocketOptionsConfigurersExtensionPoint,
 } from './graphql/useCreateApolloClientExtensionPoints';
+export { default as siriusWebApplicationEn } from './locales/en.json';
+export { default as siriusWebApplicationRu } from './locales/ru.json';
 export {
   type NavigationBarIconProps,
   type NavigationBarLeftContributionProps,

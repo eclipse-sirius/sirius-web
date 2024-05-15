@@ -21,6 +21,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLMultiSelect } from '../form/FormEventFragments.types';
 import {
@@ -91,6 +92,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyle(props);
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const [editMultiSelect, { loading, error, data }] =
     useMutation<GQLEditMultiSelectMutationData>(editMultiSelectMutation);
@@ -113,7 +115,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
   useEffect(() => {
     if (!loading) {
       if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (data) {
         const { editMultiSelect } = data;
@@ -122,7 +124,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
         }
       }
     }
-  }, [loading, error, data]);
+  }, [loading, error, data, coreT]);
 
   return (
     <FormControl error={widget.diagnostics.length > 0}>

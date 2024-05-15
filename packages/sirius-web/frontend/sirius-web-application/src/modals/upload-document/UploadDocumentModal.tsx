@@ -18,6 +18,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import FormGroup from '@material-ui/core/FormGroup';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FileUpload } from '../../core/file-upload/FileUpload';
 import { UploadDocumentModalProps, UploadDocumentModalState } from './UploadDocumentModal.types';
 import { UploadDocumentReport } from './UploadDocumentReport';
@@ -41,6 +42,7 @@ export const UploadDocumentModal = ({ editingContextId, onClose }: UploadDocumen
     file: null,
   });
   const styles = useFormStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'model.upload' });
 
   const { uploadDocument, loading, uploadedDocument } = useUploadDocument();
 
@@ -53,7 +55,7 @@ export const UploadDocumentModal = ({ editingContextId, onClose }: UploadDocumen
 
   return (
     <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" fullWidth>
-      <DialogTitle id="dialog-title">Upload new model</DialogTitle>
+      <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
         <form
           id="upload-form-id"
@@ -74,7 +76,7 @@ export const UploadDocumentModal = ({ editingContextId, onClose }: UploadDocumen
           type="submit"
           form="upload-form-id"
           data-testid="upload-document-submit">
-          Upload
+          {t('submit')}
         </Button>
         <Button
           variant={uploadedDocument === null ? 'outlined' : 'contained'}
@@ -83,7 +85,7 @@ export const UploadDocumentModal = ({ editingContextId, onClose }: UploadDocumen
           form="upload-form-id"
           data-testid="upload-document-close"
           onClick={() => onClose()}>
-          Close
+          {t('cancel')}
         </Button>
       </DialogActions>
     </Dialog>

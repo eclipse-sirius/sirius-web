@@ -17,10 +17,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RenameProjectModalProps, RenameProjectModalState } from './RenameProjectModal.types';
 import { useRenameProject } from './useRenameProject';
 
 export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProjectModalProps) => {
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.rename' });
+
   const [state, setState] = useState<RenameProjectModalState>({
     newName: project.name,
     pristine: true,
@@ -49,15 +52,15 @@ export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProje
 
   return (
     <Dialog open onClose={onCancel} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-      <DialogTitle id="dialog-title">Rename the project</DialogTitle>
+      <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
         <TextField
           value={state.newName}
           onChange={onNewName}
           error={nameIsInvalid}
-          helperText="The name is required and must contain less than 1024 characters"
-          label="Name"
-          placeholder="Enter a new project name"
+          helperText={t('name.helperText')}
+          label={t('name.label')}
+          placeholder={t('name.placeholder')}
           data-testid="rename-textfield"
           autoFocus
           fullWidth
@@ -70,7 +73,7 @@ export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProje
           onClick={onRenameProject}
           color="primary"
           data-testid="rename-project">
-          Rename
+          {t('submit')}
         </Button>
       </DialogActions>
     </Dialog>

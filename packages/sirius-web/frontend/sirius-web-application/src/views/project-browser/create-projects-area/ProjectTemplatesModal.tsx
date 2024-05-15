@@ -19,6 +19,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 import gql from 'graphql-tag';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 import { NewProjectCard } from './NewProjectCard';
 import { ProjectTemplateCard } from './ProjectTemplateCard';
@@ -66,6 +67,8 @@ const useProjectTemplatesModalStyles = makeStyles((theme) => ({
 
 export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) => {
   const styles = useProjectTemplatesModalStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const [state, setState] = useState<ProjectTemplatesModalState>({
     page: 0,
@@ -133,7 +136,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
 
   let content: JSX.Element;
   if (loading) {
-    content = <Typography>Loading...</Typography>;
+    content = <Typography>{coreT('messages.loading')}</Typography>;
   } else {
     content = (
       <>
@@ -165,7 +168,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
       data-testid="project-templates-modal"
       maxWidth="md"
       fullWidth>
-      <DialogTitle id="dialog-title">Select a project template</DialogTitle>
+      <DialogTitle id="dialog-title">{t('selectProjectTemplate')}</DialogTitle>
       <DialogContent className={styles.content}>{content}</DialogContent>
     </Dialog>
   );

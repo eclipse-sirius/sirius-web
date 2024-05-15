@@ -1,0 +1,40 @@
+{
+  "siriusComponentsWidgetReference": {
+    "filter": {
+      "typeToFilter": "Фильтр"
+    },
+    "view": {
+      "clear": "Очистить",
+      "close": "Закрыть",
+      "createObject": "Создать объект",
+      "edit": "Изменить",
+      "open": "Открыть",
+      "value": "Значение",
+      "values": "Значения"
+    },
+    "select": {
+      "title": "Выберите объект",
+      "choices": "Доступные значения",
+      "submit": "Выбрать"
+    },
+    "create": {
+      "title": "Создать объект",
+      "container": {
+        "label": "Выберите контейнер"
+      },
+      "domain": {
+        "label": "Выберите предметную область"
+      },
+      "type": {
+        "label": "Выберите тип объекта"
+      },
+      "submit": "Создать"
+    },
+    "edit": {
+      "title": "Изменить ссылку",
+      "choices": "Доступные значения",
+      "selected": "Выбранные значения",
+      "close": "Закрыть"
+    }
+  }
+}

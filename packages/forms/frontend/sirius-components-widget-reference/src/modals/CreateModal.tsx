@@ -24,6 +24,7 @@ import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import {
   CreateModalProps,
@@ -164,6 +165,8 @@ const isSuccessPayload = (
 
 export const CreateModal = ({ editingContextId, widget, onClose, formId }: CreateModalProps) => {
   const classes = useStyle();
+  const { t } = useTranslation('siriusComponentsWidgetReference', { keyPrefix: 'create' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { addErrorMessage, addMessages } = useMultiToast();
   const [{ value, context }, dispatch] = useMachine<CreateModalContext, CreateModalEvent>(createModalMachine);
   const { createModal } = value as SchemaValue;
@@ -199,7 +202,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   useEffect(() => {
     if (!domainsLoading) {
       if (domainsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (domainsData) {
         const fetchDomainsEvent: FetchedDomainsEvent = {
@@ -209,7 +212,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         dispatch(fetchDomainsEvent);
       }
     }
-  }, [domainsLoading, domainsData, domainsError]);
+  }, [coreT, domainsLoading, domainsData, domainsError]);
 
   const [
     getRootObjectCreationDescriptions,
@@ -221,7 +224,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   useEffect(() => {
     if (!descriptionsLoading) {
       if (descriptionError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (descriptionsData) {
         const fetchDescriptionsEvent: FetchedRootObjectCreationDescriptionsEvent = {
@@ -231,7 +234,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         dispatch(fetchDescriptionsEvent);
       }
     }
-  }, [descriptionsLoading, descriptionsData, descriptionError]);
+  }, [coreT, descriptionsLoading, descriptionsData, descriptionError]);
 
   const [
     getChildCreationDescription,
@@ -247,7 +250,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   useEffect(() => {
     if (!childCreationDescriptionsLoading) {
       if (childCreationDescriptionsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (childCreationDescriptionsData) {
         const fetchChildCreationDescriptionsEvent: FetchedChildCreationDescriptionsEvent = {
@@ -257,7 +260,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         dispatch(fetchChildCreationDescriptionsEvent);
       }
     }
-  }, [childCreationDescriptionsLoading, childCreationDescriptionsData, childCreationDescriptionsError]);
+  }, [childCreationDescriptionsLoading, childCreationDescriptionsData, childCreationDescriptionsError, coreT]);
 
   const [
     createElementInReference,
@@ -269,7 +272,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   useEffect(() => {
     if (!createElementLoading) {
       if (createElementError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (createElementData) {
         const handleResponseEvent: HandleCreateElementResponseEvent = {
@@ -285,7 +288,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         }
       }
     }
-  }, [createElementLoading, createElementData, createElementError]);
+  }, [coreT, createElementLoading, createElementData, createElementError]);
 
   const onCreateObject = () => {
     let input: GQLCreateElementInReferenceInput | null = null;
@@ -385,7 +388,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         aria-labelledby="dialog-title"
         fullWidth
         data-testid="create-modal">
-        <DialogTitle id="dialog-title">Create an object</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           {widget.reference.containment ? null : (
             <ModelBrowserTreeView
@@ -393,14 +396,14 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
               widget={widget}
               markedItemIds={[]}
               enableMultiSelection={false}
-              title={'Select the container'}
+              title={t('container.label')}
               leafType={'container'}
               ownerKind={widget.reference.referenceKind}
             />
           )}
           {containerKind === 'siriusWeb://document' && (
             <>
-              <span className={classes.title}>Select the domain</span>
+              <span className={classes.title}>{t('domain.label')}</span>
               <Select
                 value={selectedDomainId}
                 onChange={onDomainChange}
@@ -416,7 +419,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
               </Select>
             </>
           )}
-          <span className={classes.title}>Select the object type</span>
+          <span className={classes.title}>{t('type.label')}</span>
           <Select
             classes={{ select: classes.select }}
             value={selectedChildCreationDescriptionId}
@@ -445,7 +448,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
             data-testid="create-object"
             onClick={onCreateObject}
             disabled={createModal !== 'validForChild' && createModal !== 'validForRoot'}>
-            Create
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

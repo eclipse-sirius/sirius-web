@@ -20,6 +20,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   DeleteImageModalProps,
   GQLDeleteImageMutationData,
@@ -53,6 +54,8 @@ const isErrorPayload = (payload: GQLDeleteImagePayload): payload is GQLErrorPayl
   payload.__typename === 'ErrorPayload';
 
 export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteImageModalProps) => {
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'image.delete' });
+
   const [{ value, context }, dispatch] = useMachine<DeleteImageModalContext, DeleteImageModalEvent>(
     deleteImageModalMachine
   );
@@ -106,11 +109,9 @@ export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteIma
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-        <DialogTitle id="dialog-title">Delete the image</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            This action will delete the image and might break projects which use it. It cannot be reversed.
-          </DialogContentText>
+          <DialogContentText>{t('content')}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
@@ -119,7 +120,7 @@ export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteIma
             onClick={onDeleteImage}
             color="primary"
             data-testid="delete-image">
-            Delete
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

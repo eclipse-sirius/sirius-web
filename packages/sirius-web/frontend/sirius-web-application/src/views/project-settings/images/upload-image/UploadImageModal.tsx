@@ -22,6 +22,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FileUpload } from '../../../..//core/file-upload/FileUpload';
 import { sendFile } from '../../../../core/sendFile';
 import {
@@ -74,6 +75,7 @@ const isErrorPayload = (payload: GQLUploadImagePayload): payload is GQLErrorPayl
 
 export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: UploadImageModalProps) => {
   const classes = useUploadImageModalStyle();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'image.upload' });
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [{ value, context }, dispatch] = useMachine<UploadImageModalContext, UploadImageModalEvent>(
     uploadImageModalMachine
@@ -140,14 +142,14 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" fullWidth>
-        <DialogTitle id="dialog-title">Upload new image</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <form id="upload-form-id" onSubmit={uploadImage} encType="multipart/form-data" className={classes.form}>
             <TextField
-              label="Label"
+              label={t('label.label')}
               name="label"
               value={label}
-              placeholder="Label for the image"
+              placeholder={t('label.placeholder')}
               data-testid="label"
               inputProps={{ 'data-testid': 'label-input' }}
               autoFocus={true}
@@ -167,7 +169,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
             type="submit"
             form="upload-form-id"
             data-testid="upload-image">
-            Upload
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import AddIcon from '@material-ui/icons/Add';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { Fragment, forwardRef, useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NewRootObjectModal } from '../../modals/new-root-object/NewRootObjectModal';
 
 type Modal = 'CreateNewRootObject';
@@ -27,6 +28,7 @@ export const DocumentTreeItemContextMenuContribution = forwardRef(
     { editingContextId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
+    const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
     const [modal, setModal] = useState<Modal | null>(null);
     const { setSelection } = useSelection();
@@ -61,7 +63,7 @@ export const DocumentTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="New object" />
+          <ListItemText primary={t('newObject')} />
         </MenuItem>
         <MenuItem
           key="download"
@@ -75,7 +77,7 @@ export const DocumentTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <GetAppIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Download" aria-disabled />
+          <ListItemText primary={t('download')} aria-disabled />
         </MenuItem>
         {modalElement}
       </Fragment>

@@ -14,6 +14,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import TextField from '@material-ui/core/TextField';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLErrorPayload,
   GQLInitialDirectEditElementLabelData,
@@ -64,6 +65,8 @@ export const TreeItemDirectEditInput = ({
   onClose,
 }: TreeItemDirectEditInputProps) => {
   const initialLabel = editingKey === null || editingKey === '' ? '' : editingKey;
+  const { t } = useTranslation('siriusComponentsTrees');
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const [state, setState] = useState<TreeItemDirectEditInputState>({
     newLabel: initialLabel,
   });
@@ -87,7 +90,7 @@ export const TreeItemDirectEditInput = ({
   useEffect(() => {
     let cleanup = undefined;
     if (initialLabelTreeItemItemError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
     if (initialLabelTreeItemItemData?.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel) {
       const initialLabel =
@@ -103,14 +106,14 @@ export const TreeItemDirectEditInput = ({
       }
     }
     return cleanup;
-  }, [initialLabelTreeItemItemError, initialLabelTreeItemItemData]);
+  }, [coreT, initialLabelTreeItemItemError, initialLabelTreeItemItemData]);
 
   const [renameTreeItem, { data: renameTreeItemData, error: renameTreeItemError }] =
     useMutation(renameTreeItemMutation);
 
   useEffect(() => {
     if (renameTreeItemError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
     if (renameTreeItemData) {
       const { renameTreeItem } = renameTreeItemData;
@@ -122,7 +125,7 @@ export const TreeItemDirectEditInput = ({
         }
       }
     }
-  }, [renameTreeItemData, renameTreeItemError]);
+  }, [coreT, renameTreeItemData, renameTreeItemError]);
 
   const doRename = () => {
     renameTreeItem({
@@ -171,7 +174,7 @@ export const TreeItemDirectEditInput = ({
         name="name"
         size="small"
         inputRef={textInput}
-        placeholder={'Enter the new value'}
+        placeholder={t('enterNewValue')}
         value={state.newLabel}
         onChange={handleChange}
         onFocus={onFocusIn}

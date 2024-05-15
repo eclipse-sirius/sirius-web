@@ -1,0 +1,170 @@
+{
+  "siriusWebApplication": {
+    "workbench": {
+      "details": "Details",
+      "explorer": "Explorer",
+      "relatedElements": "Related Elements",
+      "representations": "Representations",
+      "validation": "Validation"
+    },
+    "core": {
+      "clickToSelectFile": "Click here to select a file"
+    },
+    "navigationBar": {
+      "backToHomepage": "Back to the homepage"
+    },
+    "project": {
+      "list": {
+        "blankProject": "Blank project",
+        "createNewProject": "Create a new project",
+        "delete": "Delete",
+        "download": "Download",
+        "empty": "No projects found, start by creating one",
+        "existingProjects": "Existing Projects",
+        "more": "More",
+        "name": "Name",
+        "rename": "Rename",
+        "selectProjectTemplate": "Select a project template",
+        "showAllTemplates": "Show all templates",
+        "uploadProject": "Upload project"
+      },
+      "create": {
+        "title": "Create a new project",
+        "description": "Get started by creating a new project",
+        "name": {
+          "label": "Name",
+          "placeholder": "Enter the project name",
+          "helperText": "The name must contain between 3 and 1024 characters"
+        },
+        "submit": "Create"
+      },
+      "upload": {
+        "title": "Upload a project",
+        "description": "Start with an existing project",
+        "clickToSelectFile": "Click here to select a file",
+        "submit": "Upload"
+      },
+      "rename": {
+        "title": "Rename the project",
+        "name": {
+          "label": "Name",
+          "placeholder": "Enter a new project name",
+          "helperText": "The name is required and must contain less than 1024 characters"
+        },
+        "submit": "Rename"
+      },
+      "delete": {
+        "title": "Delete the project \"{{name}}\"",
+        "content": "This action will delete everything in the project. All data and all representations will be lost. It cannot be reversed.",
+        "submit": "Delete"
+      },
+      "edit": {
+        "createModel": "Create a new Model",
+        "createRepresentation": "Create a new Representation",
+        "delete": "Delete",
+        "download": "Download",
+        "newModel": "New model",
+        "noAccessToCreateModel": "You need edit access to create models",
+        "noAccessToCreateRepresentation": "You need edit access to create representations",
+        "noRepresentations": "There are no representations available for the current selection",
+        "openRepresentation": "Open an existing Representation",
+        "rename": "Rename",
+        "selectModelToCreate": "Select the model to create",
+        "selectRepresentationToCreate": "Select the representation to create on {{name}}",
+        "selectRepresentationToOpen": "Select the representation to open",
+        "settings": "Settings",
+        "newObject": "New object",
+        "newRepresentation": "New representation",
+        "uploadModel": "Upload model"
+      }
+    },
+    "model": {
+      "create": {
+        "title": "Create a new model",
+        "name": {
+          "label": "Name",
+          "placeholder": "Enter the name of the model",
+          "helperText": "The name cannot be empty"
+        },
+        "modelType": {
+          "label": "Model type"
+        },
+        "submit": "Create"
+      },
+      "upload": {
+        "title": "Upload new model",
+        "submit": "Upload",
+        "cancel": "Close"
+      }
+    },
+    "object": {
+      "newRoot": {
+        "title": "Create a new root object",
+        "domain": {
+          "label": "Domain"
+        },
+        "type": {
+          "label": "Object type"
+        },
+        "suggestedType": {
+          "label": "Show only suggested root type"
+        },
+        "submit": "Create"
+      },
+      "create": {
+        "title": "Create a new object",
+        "type": {
+          "label": "Object type"
+        },
+        "submit": "Create"
+      }
+    },
+    "representation": {
+      "create": {
+        "title": "Create a new representation",
+        "name": {
+          "label": "Name",
+          "placeholder": "Enter the name of the representation",
+          "helperText": "The name cannot be empty"
+        },
+        "type": {
+          "label": "Representation type"
+        },
+        "submit": "Create"
+      }
+    },
+    "image": {
+      "list": {
+        "copyId": "Copy ID to clipboard",
+        "delete": "Delete",
+        "empty": "No project images available, start by uploading one",
+        "id": "ID",
+        "label": "Label",
+        "title": "Project Images",
+        "upload": "Upload"
+      },
+      "upload": {
+        "title": "Upload new image",
+        "label": {
+          "label": "Label",
+          "placeholder": "Label for the image"
+        },
+        "submit": "Upload"
+      },
+      "rename": {
+        "title": "Rename the image",
+        "name": {
+          "label": "Name",
+          "placeholder": "Enter the new image name",
+          "helperText": "The name must contain at least 3 characters"
+        },
+        "submit": "Rename"
+      },
+      "delete": {
+        "title": "Delete the image",
+        "content": "This action will delete the image and might break projects which use it. It cannot be reversed.",
+        "submit": "Delete"
+      }
+    }
+  }
+}

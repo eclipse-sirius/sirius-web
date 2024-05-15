@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { Publish as PublishIcon } from '@material-ui/icons';
 
 import { Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { UploadDocumentModal } from '../../../modals/upload-document/UploadDocumentModal';
 
 type Modal = 'UploadDocument';
@@ -24,6 +25,8 @@ export const UploadDocumentModalContribution = ({
   disabled,
   editingContextId,
 }: TreeToolBarContributionComponentProps) => {
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
+
   const [modal, setModal] = useState<Modal | null>(null);
 
   const onFinished = () => {
@@ -41,8 +44,8 @@ export const UploadDocumentModalContribution = ({
         disabled={disabled}
         size="small"
         color="inherit"
-        aria-label="Upload model"
-        title="Upload model"
+        aria-label={t('uploadModel')}
+        title={t('uploadModel')}
         onClick={() => setModal('UploadDocument')}
         data-testid="upload-document-icon">
         <PublishIcon />

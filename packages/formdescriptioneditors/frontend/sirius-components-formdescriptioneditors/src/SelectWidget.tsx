@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,13 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { getTextDecorationLineValue, SelectStyleProps } from '@eclipse-sirius/sirius-components-forms';
+import { SelectStyleProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SelectWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<Theme, SelectStyleProps>((theme) => ({
@@ -50,6 +51,7 @@ export const SelectWidget = ({ widget }: SelectWidgetProps) => {
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyles(props);
+  const { t } = useTranslation('siriusComponentsFormDescriptionEditors');
 
   const [selected, setSelected] = useState<boolean>(false);
   const { selection } = useSelection();
@@ -106,7 +108,7 @@ export const SelectWidget = ({ widget }: SelectWidgetProps) => {
                 }
               : {}
           }>
-          <em>None</em>
+          <em>{t('none')}</em>
         </MenuItem>
         <MenuItem
           value="value1"

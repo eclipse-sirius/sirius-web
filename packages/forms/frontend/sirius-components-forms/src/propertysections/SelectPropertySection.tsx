@@ -19,6 +19,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLSelect } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
@@ -86,6 +87,8 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyle(props);
+  const { t } = useTranslation('siriusComponentsForms');
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const [editSelect, { loading, error, data }] = useMutation<GQLEditSelectMutationData>(editSelectMutation);
   const onChange = (event) => {
@@ -107,7 +110,7 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
   useEffect(() => {
     if (!loading) {
       if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (data) {
         const { editSelect } = data;
@@ -116,7 +119,7 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
         }
       }
     }
-  }, [loading, error, data]);
+  }, [loading, error, data, coreT]);
 
   return (
     <FormControl error={widget.diagnostics.length > 0}>
@@ -144,7 +147,7 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
                 }
               : {}
           }>
-          <em>None</em>
+          <em>{t('none')}</em>
         </MenuItem>
         {widget.options.map((option) => (
           <MenuItem

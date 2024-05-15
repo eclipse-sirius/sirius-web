@@ -1,0 +1,47 @@
+{
+  "siriusComponentsDiagrams": {
+    "edit": {
+      "enterNewValue": "Укажите новое значение"
+    },
+    "panel": {
+      "exitFullScreen": "Выйти из полноэкранного режима",
+      "toggleFullScreen": "Включить полноэкранный режим",
+      "fitToScreen": "Вписать в экран",
+      "zoomIn": "Увеличить масштаб",
+      "zoomOut": "Уменьшить масштаб",
+      "shareDiagram": "Поделиться диаграммой",
+      "exportToSvg": "Экспортировать в SVG",
+      "exitSnapToGrid": "Выйти из режима привязки к сетке",
+      "toggleSnapToGrid": "Включить режим привязки к сетке",
+      "hideHelperLines": "Скрыть вспомогательные линии",
+      "showHelperLines": "Показать вспомогательные линии",
+      "arrangeAll": "Разместить все элементы",
+      "revealHidden": "Показать скрытые элементы",
+      "revealFaded": "Показать затенённые элементы",
+      "unpinAll": "Открепить все элементы"
+    },
+    "palette": {
+      "unpin": "Открепить элемент",
+      "pin": "Закрепить элемент",
+      "adjustSize": "Подобрать размер",
+      "fade": "Затенить элемент",
+      "alignLeft": "Выровнять по левому краю",
+      "alignCenter": "Выровнять по центру",
+      "alignRight": "Выровнять по правому краю",
+      "alignTop": "Выровнять по верхнему краю",
+      "alignMiddle": "Выровнять по середине",
+      "alignBottom": "Выровнять по нижнему краю",
+      "arrangeInRow": "Разместить в строке",
+      "arrangeInColumn": "Разместить в столбце",
+      "arrangeInGrid": "Разместить в сетке",
+      "distributeHorizontal": "Распределить промежутки горизонтально",
+      "distributeVertical": "Распределить промежутки вертикально",
+      "justifyHorizontally": "Выровнять горизонтально",
+      "justifyVertically": "Выровнять вертикально",
+      "makeSameSize": "Установить одинаковый размер",
+      "hideElements": "Скрыть элементы",
+      "fadeElements": "Затенить элементы",
+      "pinElements": "Закрепить элементы"
+    }
+  }
+}

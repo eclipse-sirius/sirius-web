@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 import { Footer } from '../../footer/Footer';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
@@ -95,9 +96,11 @@ const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPa
 
 export const NewProjectView = () => {
   const classes = useNewProjectViewStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.create' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const [{ value, context }, dispatch] = useMachine<NewProjectViewContext, NewProjectEvent>(newProjectViewMachine);
   const { newProjectView, toast } = value as SchemaValue;
-  const { name, nameMessage, nameIsInvalid, message, newProjectId } = context;
+  const { name, nameIsInvalid, message, newProjectId } = context;
   const [createProject, { loading, data, error }] = useMutation<GQLCreateProjectMutationData>(createProjectMutation);
 
   const onNameChange = (event) => {
@@ -125,7 +128,7 @@ export const NewProjectView = () => {
       if (error) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
+          message: coreT('errors.unexpected'),
         };
         dispatch(showToastEvent);
       }
@@ -141,7 +144,7 @@ export const NewProjectView = () => {
         }
       }
     }
-  }, [loading, data, error, dispatch]);
+  }, [loading, data, error, dispatch, coreT]);
 
   if (newProjectView === 'success') {
     return <Redirect to={`/projects/${newProjectId}/edit`} push />;
@@ -156,21 +159,21 @@ export const NewProjectView = () => {
             <div className={classes.newProjectViewContainer}>
               <div className={classes.titleContainer}>
                 <Typography variant="h2" align="center" gutterBottom>
-                  Create a new project
+                  {t('title')}
                 </Typography>
                 <Typography variant="h4" align="center" gutterBottom>
-                  Get started by creating a new project
+                  {t('description')}
                 </Typography>
               </div>
               <Paper>
                 <form onSubmit={onCreateNewProject} className={classes.form}>
                   <TextField
                     error={nameIsInvalid}
-                    helperText={nameMessage}
-                    label="Name"
+                    helperText={t('name.helperText')}
+                    label={t('name.label')}
                     name="name"
                     value={name}
-                    placeholder="Enter the project name"
+                    placeholder={t('name.placeholder')}
                     inputProps={{ 'data-testid': 'name' }}
                     autoFocus={true}
                     onChange={onNameChange}
@@ -182,7 +185,7 @@ export const NewProjectView = () => {
                       disabled={newProjectView !== 'valid'}
                       data-testid="create-project"
                       color="primary">
-                      Create
+                      {t('submit')}
                     </Button>
                   </div>
                 </form>

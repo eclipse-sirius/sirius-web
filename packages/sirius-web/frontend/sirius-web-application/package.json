@@ -50,6 +50,7 @@
     "notistack": "3.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-i18next": "14.1.1",
     "react-router-dom": "5.2.0",
     "reactflow": "11.10.1",
     "xstate": "4.32.1"
@@ -75,6 +76,7 @@
     "prettier": "2.7.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-i18next": "14.1.1",
     "react-router-dom": "5.2.0",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "xstate": "4.32.1",

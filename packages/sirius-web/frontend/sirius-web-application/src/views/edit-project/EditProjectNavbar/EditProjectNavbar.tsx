@@ -31,6 +31,7 @@ import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProject
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
 import { EditProjectNavbarProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
+import { useTranslation } from 'react-i18next';
 
 import { editProjectNavbarSubtitleExtensionPoint } from './EditProjectNavbarExtensionPoints';
 import {
@@ -88,6 +89,7 @@ const useEditProjectViewNavbarStyles = makeStyles((theme) => ({
 
 export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
   const classes = useEditProjectViewNavbarStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [{ value, context }, dispatch] = useMachine<EditProjectNavbarContext, EditProjectNavbarEvent>(
@@ -213,7 +215,7 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
           <ListItemIcon>
             <EditIcon />
           </ListItemIcon>
-          <ListItemText primary="Rename" />
+          <ListItemText primary={t('rename')} />
         </MenuItem>
         <MenuItem
           component="a"
@@ -224,7 +226,7 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
           <ListItemIcon>
             <GetAppIcon />
           </ListItemIcon>
-          <ListItemText primary="Download" />
+          <ListItemText primary={t('download')} />
         </MenuItem>
         <MenuItem
           divider
@@ -235,7 +237,7 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
           <ListItemIcon>
             <SettingsIcon />
           </ListItemIcon>
-          <ListItemText primary="Settings" />
+          <ListItemText primary={t('settings')} />
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -249,7 +251,7 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
           <ListItemIcon>
             <DeleteIcon />
           </ListItemIcon>
-          <ListItemText primary="Delete" />
+          <ListItemText primary={t('delete')} />
         </MenuItem>
       </Menu>
       <Toast

@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Form } from '../form/Form';
 import { WidgetContribution } from '../form/Form.types';
 import { PropertySectionContext } from '../form/FormContext';
@@ -75,6 +76,7 @@ export const FormBasedView = ({
   const { toast, formBasedView } = value as SchemaValue;
   const { id, currentSelection, form, message } = context;
   const { selection } = useSelection();
+  const { t } = useTranslation('siriusComponentsForms');
 
   /**
    * Displays another form if the selection indicates that we should display another properties view.
@@ -148,7 +150,7 @@ export const FormBasedView = ({
   if (formBasedView === 'empty' || formBasedView === 'unsupportedSelection' || formBasedView === 'complete') {
     content = (
       <div className={classes.idle}>
-        <Typography variant="subtitle2">No object selected</Typography>
+        <Typography variant="subtitle2">{t('noObjectSelected')}</Typography>
       </div>
     );
   }

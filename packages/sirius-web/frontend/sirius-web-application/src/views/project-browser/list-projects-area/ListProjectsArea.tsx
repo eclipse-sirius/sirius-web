@@ -14,6 +14,7 @@
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ListProjectsAreaProps, ListProjectsAreaState, NoProjectsFoundProps } from './ListProjectsArea.types';
 import { ProjectsTable } from './ProjectsTable';
 import { useProjects } from './useProjects';
@@ -46,10 +47,11 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
   const count: number = data?.viewer.projects.pageInfo.count ?? 0;
 
   const classes = useListProjectsAreaStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
   return (
     <div className={classes.listProjectsArea}>
       <div className={classes.header}>
-        <Typography variant="h4">Existing Projects</Typography>
+        <Typography variant="h4">{t('existingProjects')}</Typography>
       </div>
       <div>
         {projects.length === 0 ? (
@@ -79,10 +81,11 @@ const useNoProjectsFoundStyles = makeStyles(() => ({
 
 const NoProjectsFound = ({}: NoProjectsFoundProps) => {
   const classes = useNoProjectsFoundStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
   return (
     <div className={classes.noProjectsFound}>
       <Typography variant="h4" align="center">
-        No projects found, start by creating one
+        {t('empty')}
       </Typography>
     </div>
   );

@@ -20,6 +20,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Collections } from '@material-ui/icons';
+import { useTranslation } from 'react-i18next';
 import { RepresentationAreaProps } from './RepresentationsArea.types';
 
 const useRepresentationAreaStyles = makeStyles((theme) => ({
@@ -36,12 +37,13 @@ export const RepresentationsArea = ({ representations }: RepresentationAreaProps
   const { setSelection } = useSelection();
 
   const classes = useRepresentationAreaStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
 
   return (
     <Card>
       <CardContent className={classes.cardContent}>
-        <Typography variant="h6">Open an existing Representation</Typography>
-        <Typography color="textSecondary">Select the representation to open</Typography>
+        <Typography variant="h6">{t('openRepresentation')}</Typography>
+        <Typography color="textSecondary">{t('selectRepresentationToOpen')}</Typography>
         <List dense={true}>
           {representations
             .sort((a, b) => a.label.localeCompare(b.label))
