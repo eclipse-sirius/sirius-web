@@ -243,7 +243,7 @@ export const useDropNode = (): UseDropNodeValue => {
       const isValidDropOnNode: boolean = isDropOnNode && !!targetNode?.data.isDropNodeCandidate;
       const isValidDropOnDiagram: boolean = !isDropOnNode && droppableOnDiagram;
 
-      if (isValidDropOnDiagram || (isValidDropOnNode && !isDropOnSameParent)) {
+      if ((isValidDropOnDiagram && !isDropFromDiagramToDiagram) || (isValidDropOnNode && !isDropOnSameParent)) {
         const target = targetNode?.id || null;
         onDropNode(draggedNode, target, dropPosition, cancelDrop);
       }
