@@ -20,6 +20,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { FileUpload } from '../../../..//core/file-upload/FileUpload';
 import { sendFile } from '../../../../core/sendFile';
@@ -65,6 +66,7 @@ const isNameInvalid = (name: string) => name && name.trim().length < 3;
 
 export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: UploadImageModalProps) => {
   const { classes } = useUploadImageModalStyle();
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'image.upload' });
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { addErrorMessage } = useMultiToast();
 
@@ -125,17 +127,17 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" fullWidth>
-        <DialogTitle id="dialog-title">Upload new image</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <form id="upload-form-id" onSubmit={uploadImage} encType="multipart/form-data" className={classes.form}>
             <TextField
               variant="standard"
-              label="Label"
+              label={t('label.label')}
               name="label"
               value={state.label}
               error={isError}
               helperText="The name must contain at least 3 characters"
-              placeholder="Label for the image"
+              placeholder={t('label.placeholder')}
               data-testid="label"
               inputProps={{ 'data-testid': 'label-input' }}
               autoFocus={true}
@@ -154,7 +156,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
             type="submit"
             form="upload-form-id"
             data-testid="upload-image">
-            Upload
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -1,0 +1,4 @@
+extend type Viewer {
+  language: String!
+  namespaces: [String!]!
+}

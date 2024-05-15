@@ -1,0 +1,43 @@
+{
+  "edit": {
+    "enterNewValue": "Enter the new value"
+  },
+  "errors": {
+    "unexpected": "An unexpected error has occurred, please refresh the page"
+  },
+  "palette": {
+    "alignBottom": "Align bottom",
+    "alignCenter": "Align center",
+    "alignLeft": "Align left",
+    "alignMiddle": "Align middle",
+    "alignRight": "Align right",
+    "alignTop": "Align top",
+    "arrangeInColumn": "Arrange in column",
+    "arrangeInGrid": "Arrange in grid",
+    "arrangeInRow": "Arrange in row",
+    "distributeHorizontal": "Distribute horizontal spacing",
+    "distributeVertical": "Distribute vertical spacing",
+    "fadeElements": "Fade elements",
+    "hideElements": "Hide elements",
+    "justifyHorizontally": "Justify horizontally",
+    "justifyVertically": "Justify vertically",
+    "makeSameSize": "Make same size",
+    "pinElements": "Pin elements"
+  },
+  "panel": {
+    "exitFullScreen": "Exit full screen mode",
+    "exitSnapToGrid": "Exit snap to grid mode",
+    "exportDiagram": "Export the diagram as an image",
+    "fitToScreen": "Fit to screen",
+    "hideHelperLines": "Hide helper lines",
+    "revealFaded": "Reveal faded elements",
+    "revealHidden": "Reveal hidden elements",
+    "shareDiagram": "Share diagram",
+    "showHelperLines": "Show helper lines",
+    "toggleFullScreen": "Toggle full screen mode",
+    "toggleSnapToGrid": "Toggle snap to grid mode",
+    "unpinAll": "Unpin all elements",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out"
+  }
+}

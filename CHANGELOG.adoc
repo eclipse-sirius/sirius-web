@@ -142,6 +142,12 @@ A new module `sirius-components-datatree` has been created to:
 * Define data trees in the backend
 * Display data trees in the frontend (component `DataTree`)
 - https://github.com/eclipse-sirius/sirius-web/issues/5731[#5731] [sirius-web] Add the omnibox on the projects browser
+- https://github.com/eclipse-sirius/sirius-web/issues/1028[#1028] [core] Add i18n support for frontend
+The application language can be changed using the the `spring.mvc.locale` environment variable.
+Sirius Web will maintain `en_EN` and `fr_FR` for the following namespaces: siriusComponentsCore, siriusComponentsDiagrams, siriusComponentsFormDescriptionEditors, siriusComponentsForms, siriusComponentsTrees, siriusComponentsValidation, siriusComponentsWidgetReference, and siriusWebApplication.
+Downstream projects can provide new languages and new namespaces in `src/main/resources/i18n/{language}/{namespace}.json`.
+Some part of each namespace may not be supported yet.
+Do not hesitate to read the ADR-214 for further understanding.
 
 
 === Improvements

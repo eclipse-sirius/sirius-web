@@ -14,6 +14,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLErrorPayload,
   GQLInitialDirectEditElementLabelData,
@@ -64,6 +65,7 @@ export const TreeItemDirectEditInput = ({
   onClose,
 }: TreeItemDirectEditInputProps) => {
   const initialLabel = editingKey === null || editingKey === '' ? '' : editingKey;
+  const { t } = useTranslation('sirius-components-trees');
   const [state, setState] = useState<TreeItemDirectEditInputState>({
     newLabel: initialLabel,
   });
@@ -86,7 +88,7 @@ export const TreeItemDirectEditInput = ({
 
   useEffect(() => {
     if (initialLabelTreeItemItemError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(t('errors.unexpected'));
     }
     const initialLabel =
       initialLabelTreeItemItemData?.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel;
@@ -112,7 +114,7 @@ export const TreeItemDirectEditInput = ({
 
   useEffect(() => {
     if (renameTreeItemError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(t('errors.unexpected'));
     }
     if (renameTreeItemData) {
       const { renameTreeItem } = renameTreeItemData;
@@ -174,7 +176,7 @@ export const TreeItemDirectEditInput = ({
         name="name"
         size="small"
         inputRef={textInput}
-        placeholder={'Enter the new value'}
+        placeholder={t('enterNewValue')}
         value={state.newLabel}
         onChange={handleChange}
         onFocus={onFocusIn}

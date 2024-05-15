@@ -1,0 +1,9 @@
+{
+  "delete": "Delete",
+  "enterNewValue": "Enter the new value",
+  "errors": {
+    "unexpected": "An unexpected error has occurred, please refresh the page"
+  },
+  "filters": "Filters",
+  "rename": "Rename"
+}

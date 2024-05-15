@@ -1,0 +1,9 @@
+{
+  "filter": {
+    "typeToFilter": "Tapez pour filtrer"
+  },
+  "share": {
+    "copied": "(copié dans le presse-papier)",
+    "link": "Lien partageable"
+  }
+}

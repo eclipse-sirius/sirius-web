@@ -1,0 +1,152 @@
+{
+  "core": {
+    "clickToSelectFile": "Click here to select a file"
+  },
+  "diagrams": {
+    "panel": {
+      "filter": "Filter elements"
+    }
+  },
+  "errors": {
+    "unexpected": "An unexpected error has occurred, please refresh the page"
+  },
+  "image": {
+    "delete": {
+      "content": "This action will delete the image and might break projects which use it. It cannot be reversed.",
+      "submit": "Delete",
+      "title": "Delete the image"
+    },
+    "list": {
+      "copyId": "Copy ID to clipboard",
+      "delete": "Delete",
+      "empty": "No project images available, start by uploading one",
+      "id": "ID",
+      "label": "Label",
+      "title": "Project Images",
+      "upload": "Upload"
+    },
+    "rename": {
+      "name": {
+        "helperText": "The name must contain at least 3 characters",
+        "label": "Name",
+        "placeholder": "Enter the new image name"
+      },
+      "submit": "Rename",
+      "title": "Rename the image"
+    },
+    "upload": {
+      "label": {
+        "label": "Label",
+        "placeholder": "Label for the image"
+      },
+      "submit": "Upload",
+      "title": "Upload new image"
+    }
+  },
+  "messages": {
+    "loading": "Loading..."
+  },
+  "model": {
+    "create": {
+      "modelType": {
+        "label": "Model type"
+      },
+      "name": {
+        "helperText": "The name cannot be empty",
+        "label": "Name",
+        "placeholder": "Enter the name of the model"
+      },
+      "submit": "Create",
+      "title": "Create a new model"
+    },
+    "upload": {
+      "cancel": "Close",
+      "title": "Upload new model"
+    }
+  },
+  "object": {
+    "create": {
+      "submit": "Create",
+      "title": "Create a new object",
+      "type": {
+        "label": "Object type"
+      }
+    },
+    "newRoot": {
+      "domain": {
+        "label": "Domain"
+      },
+      "submit": "Create",
+      "suggestedType": {
+        "label": "Show only suggested root type"
+      },
+      "title": "Create a new root object",
+      "type": {
+        "label": "Object type"
+      }
+    }
+  },
+  "project": {
+    "create": {
+      "description": "Get started by creating a new project",
+      "submit": "Create",
+      "title": "Create a new project"
+    },
+    "delete": {
+      "content": "This action will delete everything in the project. All data and all representations will be lost. It cannot be reversed.",
+      "submit": "Delete",
+      "title": "Delete the project \"{{name}}\""
+    },
+    "edit": {
+      "createModel": "Create a new Model",
+      "createRepresentation": "Create a new Representation",
+      "download": "Download",
+      "duplicate": "Duplicate object",
+      "newModel": "New model",
+      "newObject": "New object",
+      "newRepresentation": "New representation",
+      "noAccessToCreateModel": "You need edit access to create models",
+      "noAccessToCreateRepresentation": "You need edit access to create representations",
+      "noRepresentations": "There are no representations available for the current selection",
+      "openRepresentation": "Open an existing Representation",
+      "selectModelToCreate": "Select the model to create",
+      "selectRepresentationToCreate": "Select the representation to create",
+      "selectRepresentationToOpen": "Select the representation to open",
+      "uploadModel": "Upload model"
+    },
+    "list": {
+      "createNewProject": "Create a new project",
+      "existingProjects": "Existing Projects",
+      "more": "More",
+      "selectProjectTemplate": "Select a project template"
+    },
+    "rename": {
+      "name": {
+        "helperText": "The name is required and must contain less than 1024 characters",
+        "label": "Name",
+        "placeholder": "Enter a new project name"
+      },
+      "submit": "Rename",
+      "title": "Rename the project"
+    },
+    "upload": {
+      "description": "Start with an existing project",
+      "submit": "Upload",
+      "title": "Upload a project"
+    }
+  },
+  "representation": {
+    "create": {
+      "name": {
+        "helperText": "The name cannot be empty",
+        "label": "Name",
+        "placeholder": "Enter the name of the representation"
+      },
+      "submit": "Create",
+      "title": "Create a new representation",
+      "type": {
+        "label": "Representation type"
+      }
+    }
+  }
+}

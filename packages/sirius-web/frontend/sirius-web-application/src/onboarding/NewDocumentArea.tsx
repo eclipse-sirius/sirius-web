@@ -21,6 +21,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import {
   GQLErrorPayload,
@@ -56,6 +57,7 @@ const isErrorPayload = (payload): payload is GQLErrorPayload => payload.__typena
 
 export const NewDocumentArea = ({ editingContextId, editingContextActions, readOnly }: NewDocumentAreaProps) => {
   const { classes } = useNewDocumentAreaStyles();
+  const { t } = useTranslation('sirius-web-application');
   const [state, setState] = useState<NewDocumentAreaState>({
     message: null,
   });
@@ -83,7 +85,7 @@ export const NewDocumentArea = ({ editingContextId, editingContextActions, readO
   useEffect(() => {
     if (!loadingEditingContextAction) {
       if (errorEditingContextAction) {
-        setState({ message: 'An unexpected error has occurred, please refresh the page' });
+        setState({ message: t('errors.unexpected') });
       }
       if (dataEditingContextAction) {
         const { invokeEditingContextAction } = dataEditingContextAction;
@@ -98,9 +100,9 @@ export const NewDocumentArea = ({ editingContextId, editingContextActions, readO
     <>
       <Card data-testid="actions">
         <CardContent className={classes.cardContent}>
-          <Typography variant="h6">{'Create a new Model'}</Typography>
+          <Typography variant="h6">{t('project.edit.createModel')}</Typography>
           <Typography color="textSecondary">
-            {readOnly ? 'You need edit access to create models' : 'Select the model to create'}
+            {readOnly ? t('project.edit.noAccessToCreateModel') : t('project.edit.selectModelToCreate')}
           </Typography>
           <List dense={true}>
             {readOnly

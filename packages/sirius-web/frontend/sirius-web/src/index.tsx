@@ -22,11 +22,11 @@ import { papayaExtensionRegistry } from '@eclipse-sirius/sirius-web-papaya';
 import { forkRegistry } from '@eclipse-sirius/sirius-web-view-fork';
 import { createRoot } from 'react-dom/client';
 import { httpOrigin, wsOrigin } from './core/URL';
+import { SiriusWebExtensionRegistryMergeStrategy } from './extension/SiriusWebExtensionRegistryMergerStrategy';
 import { EllipseNode } from './nodes/EllipseNode';
 import { EllipseNodeConverter } from './nodes/EllipseNodeConverter';
 import { EllipseNodeLayoutHandler } from './nodes/EllipseNodeLayoutHandler';
 
-import { SiriusWebExtensionRegistryMergeStrategy } from './extension/SiriusWebExtensionRegistryMergerStrategy';
 import './fonts.css';
 import './portals.css';
 import './ReactFlow.css';

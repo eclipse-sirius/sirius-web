@@ -23,6 +23,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import {
   GQLCreateChildMutationData,
@@ -100,6 +101,7 @@ const isCreateChildSuccessPayload = (payload: GQLCreateChildPayload): payload is
 
 export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewObjectModalProps) => {
   const { classes } = useNewObjectModalStyles();
+  const { t } = useTranslation('sirius-web-application');
   const { addErrorMessage, addMessages } = useMultiToast();
   const [state, setState] = useState<NewObjectModalStates>({
     childCreationDescriptions: [],
@@ -118,7 +120,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
   useEffect(() => {
     if (!childCreationDescriptionsLoading) {
       if (childCreationDescriptionsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(t('errors.unexpected'));
       }
       if (childCreationDescriptionsData) {
         const childCreationDescriptions = childCreationDescriptionsData.viewer.editingContext.childCreationDescriptions;
@@ -153,7 +155,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
   useEffect(() => {
     if (!createChildLoading) {
       if (createChildError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(t('errors.unexpected'));
       }
       if (createChildData) {
         const { createChild } = createChildData;
@@ -177,10 +179,10 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
         maxWidth="xs"
         fullWidth
         data-testid={'new-object-modal'}>
-        <DialogTitle id="dialog-title">Create a new object</DialogTitle>
+        <DialogTitle id="dialog-title">{t('object.create.title')}</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
-            <InputLabel id="newObjectModalChildCreationDescriptionLabel">Object type</InputLabel>
+            <InputLabel id="newObjectModalChildCreationDescriptionLabel">{t('object.create.type.label')}</InputLabel>
             <Select
               variant="standard"
               classes={{ select: classes.select }}
@@ -210,7 +212,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
             color="primary"
             onClick={onCreateObject}
             disabled={!state.selectedChildCreationDescriptionId}>
-            Create
+            {t('object.create.submit')}
           </Button>
         </DialogActions>
       </Dialog>

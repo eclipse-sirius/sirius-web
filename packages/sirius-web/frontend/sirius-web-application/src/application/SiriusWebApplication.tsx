@@ -29,6 +29,7 @@ import { DiagramRepresentationConfigurationProps } from '../diagrams/DiagramRepr
 import { defaultExtensionRegistry } from '../extension/DefaultExtensionRegistry';
 import { DefaultExtensionRegistryMergeStrategy } from '../extension/DefaultExtensionRegistryMergeStrategy';
 import { ApolloGraphQLProvider } from '../graphql/ApolloGraphQLProvider';
+import { I18nContextProvider } from '../i18n/I18nContext';
 import { Router } from '../router/Router';
 import { siriusWebTheme as defaultTheme } from '../theme/siriusWebTheme';
 import { SiriusWebApplicationProps } from './SiriusWebApplication.types';
@@ -70,22 +71,24 @@ export const SiriusWebApplication = ({
   return (
     <ExtensionProvider registry={defaultExtensionRegistry}>
       <ApolloGraphQLProvider httpOrigin={httpOrigin} wsOrigin={wsOrigin}>
-        <BrowserRouter>
-          <ThemeProvider theme={siriusWebTheme}>
-            <CssBaseline />
-            <ServerContext.Provider value={{ httpOrigin }}>
-              <ToastProvider>
-                <ConfirmationDialogContextProvider>
-                  <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-                    <div style={style}>
-                      <Router />
-                    </div>
-                  </NodeTypeContext.Provider>
-                </ConfirmationDialogContextProvider>
-              </ToastProvider>
-            </ServerContext.Provider>
-          </ThemeProvider>
-        </BrowserRouter>
+        <I18nContextProvider httpOrigin={httpOrigin}>
+          <BrowserRouter>
+            <ThemeProvider theme={siriusWebTheme}>
+              <CssBaseline />
+              <ServerContext.Provider value={{ httpOrigin }}>
+                <ToastProvider>
+                  <ConfirmationDialogContextProvider>
+                    <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
+                      <div style={style}>
+                        <Router />
+                      </div>
+                    </NodeTypeContext.Provider>
+                  </ConfirmationDialogContextProvider>
+                </ToastProvider>
+              </ServerContext.Provider>
+            </ThemeProvider>
+          </BrowserRouter>
+        </I18nContextProvider>
       </ApolloGraphQLProvider>
     </ExtensionProvider>
   );

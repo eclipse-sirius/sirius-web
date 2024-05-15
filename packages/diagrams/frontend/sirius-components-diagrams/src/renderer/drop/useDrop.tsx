@@ -14,6 +14,7 @@ import { gql, useMutation } from '@apollo/client';
 import { DRAG_SOURCES_TYPE, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -56,6 +57,7 @@ const isSuccessPayload = (payload: GQLDropOnDiagramPayload): payload is GQLDropO
   payload.__typename === 'DropOnDiagramSuccessPayload';
 
 export const useDrop = (): UseDropValue => {
+  const { t } = useTranslation('sirius-components-diagrams');
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const [dropMutation, { data: droponDiagramElementData, error: droponDiagramError }] = useMutation<
@@ -65,7 +67,7 @@ export const useDrop = (): UseDropValue => {
 
   useEffect(() => {
     if (droponDiagramError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(t('errors.unexpected'));
     }
     if (droponDiagramElementData) {
       const { dropOnDiagram } = droponDiagramElementData;
