@@ -18,6 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { Fragment, forwardRef, useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NewRootObjectModal } from '../../../../../modals/new-root-object/NewRootObjectModal';
 
 type Modal = 'CreateNewRootObject';
@@ -27,6 +28,7 @@ export const DocumentTreeItemContextMenuContribution = forwardRef(
     { editingContextId, treeId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
+    const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
     const [modal, setModal] = useState<Modal | null>(null);
     const { setSelection } = useSelection();
@@ -65,7 +67,7 @@ export const DocumentTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="New object" />
+          <ListItemText primary={t('newObject')} />
         </MenuItem>
         <MenuItem
           key="download"
@@ -79,7 +81,7 @@ export const DocumentTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <GetAppIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Download" aria-disabled />
+          <ListItemText primary={t('download')} aria-disabled />
         </MenuItem>
         {modalElement}
       </Fragment>

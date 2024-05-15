@@ -34,6 +34,7 @@ export {
 } from './graphql/useCreateApolloClientExtensionPoints';
 export { PublishLibraryDialog } from './libraries/PublishLibraryDialog';
 export { type PublishLibraryDialogProps } from './libraries/PublishLibraryDialog.types';
+export { default as siriusWebApplicationEn } from './locales/en.json';
 export { DuplicateObjectModal } from './modals/duplicate-object/DuplicateObjectModal';
 export { type DuplicateObjectModalProps } from './modals/duplicate-object/DuplicateObjectModal.types';
 export { NewObjectModal } from './modals/new-object/NewObjectModal';
