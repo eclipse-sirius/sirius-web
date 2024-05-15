@@ -33,6 +33,7 @@
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/1028[#1028] [core] Add i18n support for frontend
 
 
 === Improvements
