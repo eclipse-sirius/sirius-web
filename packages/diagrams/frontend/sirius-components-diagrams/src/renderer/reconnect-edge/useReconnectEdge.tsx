@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { Connection, Edge } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
@@ -53,6 +54,7 @@ const isSuccessPayload = (payload: GQLReconnectEdgePayload): payload is GQLSucce
   payload.__typename === 'SuccessPayload';
 
 export const useReconnectEdge = (): UseReconnectEdge => {
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const [updateEdgeEnd, { data: reconnectEdgeData, error: reconnectEdgeError }] = useMutation<
@@ -79,7 +81,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
 
   useEffect(() => {
     if (reconnectEdgeError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
     if (reconnectEdgeData) {
       const { reconnectEdge } = reconnectEdgeData;
@@ -87,7 +89,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
         addMessages(reconnectEdge.messages);
       }
     }
-  }, [reconnectEdgeData, reconnectEdgeError]);
+  }, [coreT, reconnectEdgeData, reconnectEdgeError]);
 
   const reconnectEdge = useCallback(
     (oldEdge: Edge, newConnection: Connection) => {
