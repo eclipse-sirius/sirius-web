@@ -26,6 +26,7 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { Theme } from '@mui/material/styles';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { FileUpload } from '../../core/file-upload/FileUpload';
 import {
@@ -56,6 +57,7 @@ export const UploadDocumentModal = ({ editingContextId, onClose }: UploadDocumen
     readOnly: false,
   });
   const { classes: styles } = useFormStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'model.upload' });
 
   const { uploadDocument, loading, uploadedDocument } = useUploadDocument();
 
@@ -70,7 +72,7 @@ export const UploadDocumentModal = ({ editingContextId, onClose }: UploadDocumen
 
   return (
     <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" fullWidth>
-      <DialogTitle id="dialog-title">Upload new model</DialogTitle>
+      <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
         <form
           id="upload-form-id"
@@ -97,7 +99,7 @@ export const UploadDocumentModal = ({ editingContextId, onClose }: UploadDocumen
           form="upload-form-id"
           data-testid="upload-document-close"
           onClick={() => onClose()}>
-          Close
+          {t('cancel')}
         </Button>
       </DialogActions>
     </Dialog>
