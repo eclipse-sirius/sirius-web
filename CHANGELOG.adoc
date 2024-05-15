@@ -37,6 +37,7 @@ This may have some consequences for downstream applications which are embedding 
 + Added by default to all sirius-web diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Add support for a query view.
 Specifiers can contribute dedicated AQL services for this feature using implementations of `IInterpreterJavaServiceProvider`.
+- https://github.com/eclipse-sirius/sirius-web/issues/1028[#1028] [core] Add i18n support for frontend
 
 
 === Improvements

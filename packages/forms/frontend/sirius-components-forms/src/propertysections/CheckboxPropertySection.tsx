@@ -16,6 +16,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLCheckbox } from '../form/FormEventFragments.types';
@@ -99,6 +100,7 @@ export const CheckboxPropertySection: PropertySectionComponent<GQLCheckbox> = ({
     gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyle(props);
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const [editCheckbox, { loading, error, data }] = useMutation<GQLEditCheckboxMutationData>(editCheckboxMutation);
   const onChange = (event) => {
@@ -121,7 +123,7 @@ export const CheckboxPropertySection: PropertySectionComponent<GQLCheckbox> = ({
   useEffect(() => {
     if (!loading) {
       if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (data) {
         const { editCheckbox } = data;

@@ -14,6 +14,7 @@ import { gql, useMutation } from '@apollo/client';
 import { useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -54,6 +55,7 @@ const isSuccessPayload = (payload: GQLDeleteFromDiagramPayload): payload is GQLD
   payload.__typename === 'DeleteFromDiagramSuccessPayload';
 
 export const useDiagramDelete = (): UseDiagramDeleteValue => {
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { addErrorMessage, addMessages } = useMultiToast();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -66,7 +68,7 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
 
   useEffect(() => {
     if (deleteElementsError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
     if (deleteElementsData) {
       const { deleteFromDiagram } = deleteElementsData;
@@ -74,7 +76,7 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
         addMessages(deleteFromDiagram.messages);
       }
     }
-  }, [deleteElementsData, deleteElementsError]);
+  }, [coreT, deleteElementsData, deleteElementsError]);
 
   const onDelete = useCallback((event: React.KeyboardEvent<Element>) => {
     const { key } = event;
