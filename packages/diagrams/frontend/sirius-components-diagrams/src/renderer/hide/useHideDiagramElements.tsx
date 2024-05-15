@@ -13,6 +13,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
@@ -52,6 +53,7 @@ const isSuccessPayload = (payload: GQLHideDiagramElementPayload): payload is GQL
   payload.__typename === 'SuccessPayload';
 
 export const useHideDiagramElements = (): UseHideDiagramElements => {
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
@@ -62,9 +64,9 @@ export const useHideDiagramElements = (): UseHideDiagramElements => {
 
   useEffect(() => {
     if (hideDiagramElementError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
-  }, [hideDiagramElementError]);
+  }, [coreT, hideDiagramElementError]);
 
   const hideDiagramElements = useCallback(
     async (nodeId: string[], hide: boolean) => {
