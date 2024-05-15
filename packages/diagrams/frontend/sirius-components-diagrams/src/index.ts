@@ -33,6 +33,7 @@ export type { GQLDiagram, GQLNodeLayoutData } from './graphql/subscription/diagr
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle } from './graphql/subscription/nodeFragment.types';
+export { default as siriusComponentsDiagramsEn } from './locales/en.json';
 export { useConnectorNodeStyle } from './renderer/connector/useConnectorNodeStyle';
 export { BorderNodePosition as BorderNodePosition } from './renderer/DiagramRenderer.types';
 export type { Diagram, EdgeData, NodeData, ReactFlowPropsCustomizer } from './renderer/DiagramRenderer.types';

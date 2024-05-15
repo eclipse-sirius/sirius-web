@@ -29,6 +29,7 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FilterableSortableList } from '../components/FilterableSortableList';
 import { FilterableSortableListItem } from '../components/FilterableSortableList.types';
 import {
@@ -91,6 +92,8 @@ export const TransferModal = ({
   moveElement,
 }: TransferModalProps) => {
   const { classes } = useStyles();
+  const { t } = useTranslation('siriusComponentsWidgetReference', { keyPrefix: 'edit' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { addErrorMessage } = useMultiToast();
   const [state, setState] = useState<TransferModalState>({
     right: widget.referenceValues,
@@ -118,7 +121,7 @@ export const TransferModal = ({
   useEffect(() => {
     if (!childReferenceValueOptionsLoading) {
       if (childReferenceValueOptionsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (childReferenceValueOptionsData) {
         const representationDescription: GQLRepresentationDescription =
@@ -133,7 +136,7 @@ export const TransferModal = ({
         }
       }
     }
-  }, [childReferenceValueOptionsLoading, childReferenceValueOptionsData, childReferenceValueOptionsError]);
+  }, [childReferenceValueOptionsLoading, childReferenceValueOptionsData, childReferenceValueOptionsError, coreT]);
 
   useEffect(() => {
     setState((prevState) => {
@@ -246,7 +249,7 @@ export const TransferModal = ({
         aria-labelledby="dialog-title"
         maxWidth={false}
         data-testid="transfer-modal">
-        <DialogTitle id="dialog-title">Edit reference</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent className={classes.dialogContent}>
           <Grid container spacing={2} justifyContent="center" alignItems="center" className={classes.root}>
             <Grid item>
@@ -259,7 +262,7 @@ export const TransferModal = ({
                   isContainment={widget.reference.containment}
                   markedItemIds={state.right.map((entry) => entry.id)}
                   enableMultiSelection={widget.reference.manyValued}
-                  title={'Choices'}
+                  title={t('choices')}
                   leafType={'reference'}
                   ownerKind={widget.reference.ownerKind}
                 />
@@ -320,7 +323,7 @@ export const TransferModal = ({
             type="button"
             data-testid="close-transfer-modal"
             onClick={() => onClose()}>
-            close
+            {t('close')}
           </Button>
         </DialogActions>
       </Dialog>
