@@ -15,6 +15,7 @@ import { ServerContext, ServerContextValue, getCSSColor, useMultiToast } from '@
 import Button from '@mui/material/Button';
 import gql from 'graphql-tag';
 import { useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLButton } from '../form/FormEventFragments.types';
@@ -108,6 +109,7 @@ export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
     iconOnly: widget.buttonLabel ? false : true,
   };
   const { classes } = useStyle(props);
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
@@ -120,7 +122,7 @@ export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
   useEffect(() => {
     if (!loading) {
       if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (data) {
         const { pushButton } = data;

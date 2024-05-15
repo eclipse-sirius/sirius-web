@@ -14,6 +14,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLDeleteProjectMutationData,
   GQLDeleteProjectMutationVariables,
@@ -43,9 +44,10 @@ export const useDeleteProject = (): UseDeleteProjectValue => {
   >(deleteProjectMutation);
 
   const { addErrorMessage } = useMultiToast();
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   useEffect(() => {
     if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
     if (data) {
       const { deleteProject } = data;
@@ -53,7 +55,7 @@ export const useDeleteProject = (): UseDeleteProjectValue => {
         addErrorMessage(deleteProject.message);
       }
     }
-  }, [data, error]);
+  }, [coreT, data, error]);
 
   const deleteProject = (projectId: string) => {
     const variables: GQLDeleteProjectMutationVariables = {
