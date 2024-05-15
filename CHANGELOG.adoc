@@ -12,6 +12,8 @@
 
 === Dependency update
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2837[#2837] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.13 to benefit for enhancements
+
 === Bug fixes
 - https://github.com/eclipse-sirius/sirius-web/issues/3515[#3515] [form] Form pages appear in the addition order
 
@@ -20,6 +22,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3511[#3511] [diagram] Improve edge handle position for border nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/2837[#2837] [gantt] Enhance gantt scroll bar management
 
 == v2024.5.0
 
@@ -94,7 +97,6 @@ Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IE
 
 - Move to docker compose v2 for our GitHub Actions workflow.
 - [test] Switch to ArchUnit 1.3.0 to restore architectural tests which were failing recently
-- https://github.com/eclipse-sirius/sirius-web/issues/3277[#3277] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.9 to benefit for enhancements
 
 === Bug fixes
 
