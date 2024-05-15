@@ -10,6 +10,8 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagrams] Add dependency to @tisoap/react-flow-smart-edge 3.0.0
+
 === Dependency update
 
 === Bug fixes
@@ -18,6 +20,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagram] Prevent edge from passing through another node
 
 == v2024.5.0
 
@@ -93,7 +96,6 @@ Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IE
 - Move to docker compose v2 for our GitHub Actions workflow.
 - [test] Switch to ArchUnit 1.3.0 to restore architectural tests which were failing recently
 - https://github.com/eclipse-sirius/sirius-web/issues/3277[#3277] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.9 to benefit for enhancements
-- https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagrams] Add dependency to @tisoap/react-flow-smart-edge 3.0.0
 
 === Bug fixes
 
@@ -185,7 +187,6 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3450[#3450] [diagram] Add `calculateCustomNodeBorderNodePosition` method to position border nodes according to the real layout of the custom node
 - https://github.com/eclipse-sirius/sirius-web/issues/3460[#3460] [diagram] Use _arrange layout direction_ properties during edge handle position computing
 - https://github.com/eclipse-sirius/sirius-web/issues/3366[#3366] [gantt] Trigger the zoom on Ctrl+MouseWheel
-- https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagram] Prevent edge from passing through another node
 
 == v2024.3.0
 

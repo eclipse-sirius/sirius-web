@@ -11,9 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { EdgeProps } from 'reactflow';
+import { EdgeData, EdgeLabel } from '../DiagramRenderer.types';
 
 export type MultiLabelEdgeProps<T = any> = {
   edgeCenterX: number;
   edgeCenterY: number;
   svgPathString: string;
 } & EdgeProps<T>;
+
+export interface MultiLabelEdgeData extends EdgeData {
+  beginLabel?: EdgeLabel;
+  endLabel?: EdgeLabel;
+}

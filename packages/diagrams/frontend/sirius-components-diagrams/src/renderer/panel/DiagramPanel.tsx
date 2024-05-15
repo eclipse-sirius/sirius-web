@@ -42,9 +42,19 @@ import { useArrangeAll } from '../layout/useArrangeAll';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
+import { SmartEdgeIcon } from '../../icons/SmartEdgeIcon';
+import { SmoothStepEdgeIcon } from '../../icons/SmoothStepEdgeIcon';
 
 export const DiagramPanel = memo(
-  ({ snapToGrid, onSnapToGrid, helperLines, onHelperLines, reactFlowWrapper }: DiagramPanelProps) => {
+  ({
+    snapToGrid,
+    onSnapToGrid,
+    helperLines,
+    onHelperLines,
+    reactFlowWrapper,
+    edgeType,
+    onEdgeType,
+  }: DiagramPanelProps) => {
     const [state, setState] = useState<DiagramPanelState>({
       dialogOpen: null,
     });
@@ -170,6 +180,27 @@ export const DiagramPanel = memo(
                 <AccountTreeIcon />
               </IconButton>
             </Tooltip>
+            {edgeType === 'smoothStepEdge' ? (
+              <Tooltip title="Smart Step Edge">
+                <IconButton
+                  size="small"
+                  aria-label="smart step edge"
+                  onClick={() => onEdgeType('smartStepEdge')}
+                  data-testid="smart-step-edge">
+                  <SmoothStepEdgeIcon />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Smooth Step Edge">
+                <IconButton
+                  size="small"
+                  aria-label="smooth step edge"
+                  onClick={() => onEdgeType('smoothStepEdge')}
+                  data-testid="smooth-step-edge">
+                  <SmartEdgeIcon />
+                </IconButton>
+              </Tooltip>
+            )}
             <Tooltip title="Reveal hidden elements">
               <IconButton
                 size="small"

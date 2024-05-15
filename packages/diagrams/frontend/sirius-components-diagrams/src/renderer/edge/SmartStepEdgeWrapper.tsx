@@ -16,10 +16,10 @@ import { EdgeProps, Node, Position, getSmoothStepPath, useReactFlow, useStoreApi
 import { NodeData, EdgeData } from '../DiagramRenderer.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdge } from './MultiLabelEdge';
-import { MultiLabelEdgeData } from './MultiLabelEdgeWrapper.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
+import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 
 const roundToNearestTen = (num: number): number => Math.round(num / 10) * 10;
 
@@ -71,7 +71,7 @@ function findLowestCommonAncestor(nodes, sourceNode, targetNode) {
   return getLowestCommunAncestor(targetNode, nodes, sourceAncestorIds);
 }
 
-export const MultiLabelEdgeWrapper = memo((props: EdgeProps<MultiLabelEdgeData>) => {
+export const SmartStepEdgeWrapper = memo((props: EdgeProps<MultiLabelEdgeData>) => {
   const { source, target, markerEnd, markerStart, sourcePosition, targetPosition, sourceHandleId, targetHandleId } =
     props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);

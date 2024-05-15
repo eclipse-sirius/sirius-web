@@ -83,9 +83,7 @@ describe('Diagram - edges', () => {
           .eq(0)
           .invoke('attr', 'd')
           .then((dValue) => {
-            expect(diagram.roundSvgPathData(dValue ?? '')).to.equal(
-              'M140.00L140.00L140.00L120.00L100.00L80.00L80.00L80.00'
-          );
+            expect(diagram.roundSvgPathData(dValue ?? '')).to.equal('M145.00L145.00Q145.00L88.00Q83.00L83.00L83.00');
           });
       });
     });
@@ -162,7 +160,7 @@ describe('Diagram - edges', () => {
           .invoke('attr', 'd')
           .then((dValue) => {
             expect(diagram.roundSvgPathData(dValue ?? '')).to.equal(
-              'M300.13L320.13L354.89Q355.56L355.56Q355.56L391.00L411.00'
+              'M300.13L320.13L384.89Q385.56L385.56Q385.56L451.00L471.00'
             );
           });
       });
