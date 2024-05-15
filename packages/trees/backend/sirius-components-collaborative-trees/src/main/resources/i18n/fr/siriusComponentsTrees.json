@@ -1,0 +1,9 @@
+{
+  "delete": "Supprimer",
+  "enterNewValue": "Entrez la nouvelle valeur",
+  "errors": {
+    "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+  },
+  "filters": "Filtres",
+  "rename": "Renommer"
+}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { withStyles } from 'tss-react/mui';
 import { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ImageRowProps, ImageRowState } from './ImageRow.types';
 import { DeleteImageModal } from './delete-image/DeleteImageModal';
 import { RenameImageModal } from './rename-image/RenameImageModal';
@@ -39,6 +40,7 @@ const ImagePreviewTooltip = withStyles(Tooltip, () => ({
 
 export const ImageRow = ({ image, onImageUpdated }: ImageRowProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'image.list' });
   const [state, setState] = useState<ImageRowState>({
     modal: null,
     showEditIcon: false,
@@ -66,7 +68,7 @@ export const ImageRow = ({ image, onImageUpdated }: ImageRowProps) => {
           <Typography component="div">
             <Box fontFamily="Monospace" fontSize="small">
               {image.id}{' '}
-              <Tooltip title="Copy ID to clipboard">
+              <Tooltip title={t('copyId')}>
                 <IconButton onClick={() => navigator.clipboard.writeText(image.id)}>
                   <FileCopyOutlinedIcon fontSize="small" />
                 </IconButton>

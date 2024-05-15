@@ -14,6 +14,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLRichText } from '../form/FormEventFragments.types';
@@ -74,6 +75,7 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
   readOnly,
 }: PropertySectionComponentProps<GQLRichText>) => {
   const { classes } = useRichTextSectionStyles();
+  const { t } = useTranslation('siriusComponentsForms');
 
   const [editRichText, { loading: updateRichTextLoading, data: updateRichTextData, error: updateRichTextError }] =
     useMutation<GQLEditRichTextMutationData, GQLEditRichTextMutationVariables>(editRichTextMutation);
@@ -94,7 +96,7 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
 
   useEffect(() => {
     if (updateRichTextError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(t('errors.unexpected'));
     }
     if (updateRichTextData) {
       const { editRichText } = updateRichTextData;

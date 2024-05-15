@@ -15,6 +15,7 @@ import { ServerContext, ServerContextValue, getCSSColor, useMultiToast } from '@
 import Button from '@mui/material/Button';
 import gql from 'graphql-tag';
 import { useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { GQLButton } from '../form/FormEventFragments.types';
 import { HelpTooltip } from '../propertysections/HelpTooltip';
@@ -98,6 +99,7 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
     iconOnly: widget.buttonLabel ? false : true,
   };
   const { classes } = useStyle(props);
+  const { t } = useTranslation('siriusComponentsForms');
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
@@ -110,7 +112,7 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
   useEffect(() => {
     if (!loading) {
       if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(t('errors.unexpected'));
       }
       if (data) {
         const { pushButton } = data;

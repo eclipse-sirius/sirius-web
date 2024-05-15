@@ -17,6 +17,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   DeleteMenuItemProps,
   GQLDeleteTreeItemData,
@@ -45,6 +46,8 @@ export const DeleteMenuItem = ({ editingContextId, treeId, item, readOnly, onCli
     deleteTreeItemMutation
   );
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+
+  const { t } = useTranslation('siriusComponentsTrees');
 
   const handleDelete = () => {
     const input: GQLDeleteTreeItemInput = {
@@ -80,7 +83,7 @@ export const DeleteMenuItem = ({ editingContextId, treeId, item, readOnly, onCli
       <ListItemIcon>
         <DeleteIcon fontSize="small" />
       </ListItemIcon>
-      <ListItemText primary="Delete" />
+      <ListItemText primary={t('delete')} />
     </MenuItem>
   );
 };

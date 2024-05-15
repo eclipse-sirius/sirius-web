@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * The entry point of the HTTP API to get images.
  * <p>
- * This endpoint will be available on the API base path prefix with image segment anf followed by the image path used as
+ * This endpoint will be available on the API base path prefix with image segment and followed by the image path used as
  * a suffix. As such, users will be able to send image request to the following URL:
  * </p>
  *
@@ -155,7 +155,7 @@ public class ImagesController {
         MediaType mediaType = null;
         int extensionSeparatorIndex = imagePath.lastIndexOf(EXTENSION_SEPARATOR);
         if (extensionSeparatorIndex != -1) {
-            String extension = imagePath.substring(extensionSeparatorIndex + 1, imagePath.length());
+            String extension = imagePath.substring(extensionSeparatorIndex + 1);
             if (IMAGE_GIF_EXTENSION.equalsIgnoreCase(extension)) {
                 mediaType = MediaType.IMAGE_GIF;
             } else if (IMAGE_PNG_EXTENSION.equalsIgnoreCase(extension)) {

@@ -1,0 +1,38 @@
+{
+  "create": {
+    "container": {
+      "label": "Select the container"
+    },
+    "domain": {
+      "label": "Select the domain"
+    },
+    "submit": "Create",
+    "title": "Create an object",
+    "type": {
+      "label": "Select the object type"
+    }
+  },
+  "edit": {
+    "choices": "Choices",
+    "close": "Close",
+    "selected": "Selected",
+    "title": "Edit reference"
+  },
+  "errors": {
+    "unexpected": "An unexpected error has occurred, please refresh the page"
+  },
+  "select": {
+    "choices": "Choices",
+    "submit": "Select",
+    "title": "Select an object"
+  },
+  "view": {
+    "clear": "Clear",
+    "close": "Close",
+    "createObject": "Create an object",
+    "edit": "Edit",
+    "open": "Open",
+    "value": "Value",
+    "values": "Values"
+  }
+}

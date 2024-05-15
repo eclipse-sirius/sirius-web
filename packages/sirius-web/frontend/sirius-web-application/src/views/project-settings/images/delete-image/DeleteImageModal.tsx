@@ -19,6 +19,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   DeleteImageModalProps,
   GQLDeleteImageMutationData,
@@ -43,6 +44,7 @@ const isErrorPayload = (payload: GQLDeleteImagePayload): payload is GQLErrorPayl
 
 export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteImageModalProps) => {
   const { addErrorMessage } = useMultiToast();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'image.delete' });
 
   const [deleteImage, { loading, data, error }] = useMutation<GQLDeleteImageMutationData>(deleteImageMutation);
   useEffect(() => {
@@ -77,15 +79,13 @@ export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteIma
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-        <DialogTitle id="dialog-title">Delete the image</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            This action will delete the image and might break projects which use it. It cannot be reversed.
-          </DialogContentText>
+          <DialogContentText>{t('content')}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={onDeleteImage} color="primary" data-testid="delete-image">
-            Delete
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

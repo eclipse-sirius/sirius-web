@@ -23,6 +23,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
@@ -75,6 +76,7 @@ const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().le
 export const NewProjectView = () => {
   const { classes } = useNewProjectViewStyles();
   const navigate = useNavigate();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.create' });
 
   const [state, setState] = useState<NewProjectViewState>({
     name: '',
@@ -142,10 +144,10 @@ export const NewProjectView = () => {
             <div className={classes.newProjectViewContainer}>
               <div className={classes.titleContainer}>
                 <Typography variant="h2" align="center" gutterBottom>
-                  Create a new project
+                  {t('title')}
                 </Typography>
                 <Typography variant="h4" align="center" gutterBottom>
-                  Get started by creating a new project
+                  {t('description')}
                 </Typography>
               </div>
               <Paper>
@@ -209,7 +211,7 @@ export const NewProjectView = () => {
                       disabled={isError}
                       data-testid="create-project"
                       color="primary">
-                      Create
+                      {t('submit')}
                     </Button>
                   </div>
                 </form>

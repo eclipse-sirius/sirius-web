@@ -1,0 +1,9 @@
+{
+  "filter": {
+    "typeToFilter": "Type to filter"
+  },
+  "share": {
+    "copied": "(copied into the clipboard)",
+    "link": "Shareable link"
+  }
+}

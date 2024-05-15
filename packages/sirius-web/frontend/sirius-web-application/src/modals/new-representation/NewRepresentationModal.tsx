@@ -23,6 +23,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import {
   GQLCreateRepesentationSuccessPayload,
@@ -104,6 +105,7 @@ export const NewRepresentationModal = ({
   onClose,
 }: NewRepresentationModalProps) => {
   const { classes } = useNewRepresentationModalStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'representation.create' });
   const { addErrorMessage } = useMultiToast();
   const [state, setState] = useState<NewRepresentationState>({
     representationDescriptions: [],
@@ -216,23 +218,23 @@ export const NewRepresentationModal = ({
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-        <DialogTitle id="dialog-title">Create a new representation</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
             <TextField
               variant="standard"
               error={nameIsInvalid}
-              helperText="The name cannot be empty"
-              label="Name"
+              helperText={t('name.helperText')}
+              label={t('name.label')}
               name="name"
               value={state.name}
-              placeholder="Enter the name of the representation"
+              placeholder={t('name.placeholder')}
               inputProps={{ 'data-testid': 'name' }}
               autoFocus={true}
               onChange={onNameChange}
               disabled={!state.selectedRepresentationDescriptionId}
             />
-            <InputLabel id="newRepresentationModalRepresentationDescriptionLabel">Representation type</InputLabel>
+            <InputLabel id="newRepresentationModalRepresentationDescriptionLabel">{t('type.label')}</InputLabel>
             <Select
               variant="standard"
               value={state.selectedRepresentationDescriptionId}
@@ -259,7 +261,7 @@ export const NewRepresentationModal = ({
             data-testid="create-representation"
             color="primary"
             onClick={onCreateRepresentation}>
-            Create
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

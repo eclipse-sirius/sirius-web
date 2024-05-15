@@ -26,6 +26,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import {
   CreateModalProps,
@@ -150,6 +151,7 @@ const isCreateElementSuccessPayload = (
 
 export const CreateModal = ({ editingContextId, widget, onClose, formId }: CreateModalProps) => {
   const { classes } = useStyle();
+  const { t } = useTranslation('siriusComponentsWidgetReference', { keyPrefix: 'create' });
   const { addErrorMessage, addMessages } = useMultiToast();
 
   const [state, setState] = useState<CreateModalState>({
@@ -354,7 +356,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
       aria-labelledby="dialog-title"
       fullWidth
       data-testid="create-modal">
-      <DialogTitle id="dialog-title">Create an object</DialogTitle>
+      <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
         <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1) })}>
           {widget.reference.containment ? null : (
@@ -365,7 +367,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
               descriptionId={widget.descriptionId}
               isContainment={widget.reference.containment}
               markedItemIds={[]}
-              title={'Select the container'}
+              title={t('container.label')}
               leafType={'container'}
               ownerKind={widget.reference.referenceKind}
               onTreeItemClick={onTreeItemClick}
@@ -375,7 +377,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           {state.containerKind === 'siriusWeb://document' && (
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography gutterBottom variant="subtitle1">
-                Select the domain
+                {t('domain.label')}
               </Typography>
               <Select
                 variant="standard"
@@ -395,7 +397,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           )}
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography gutterBottom variant="subtitle1">
-              Select the object type
+              {t('type.label')}
             </Typography>
             <Select
               variant="standard"
@@ -428,7 +430,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           data-testid="create-object"
           onClick={onCreateObject}
           disabled={!state.selectedChildCreationDescriptionId}>
-          Create
+          {t('submit')}
         </Button>
       </DialogActions>
     </Dialog>

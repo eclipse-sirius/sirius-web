@@ -21,6 +21,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import {
   GQLCreateRepresentationData,
@@ -74,6 +75,7 @@ export const NewRepresentationArea = ({
     message: null,
   });
   const { classes } = useNewRepresentationAreaStyles();
+  const { t } = useTranslation('siriusWebApplication');
   const { selection, setSelection } = useSelection();
 
   const selectedItem = selection.entries.length > 0 ? selection.entries[0] : null;
@@ -87,7 +89,7 @@ export const NewRepresentationArea = ({
   useEffect(() => {
     if (!loading) {
       if (error) {
-        setState({ message: 'An unexpected error has occurred, please refresh the page' });
+        setState({ message: t('errors.unexpected') });
       }
       if (data) {
         const { createRepresentation } = data;
@@ -117,16 +119,16 @@ export const NewRepresentationArea = ({
 
   const subtitle =
     selectedItem && representationDescriptions.length > 0
-      ? 'Select the representation to create'
-      : 'There are no representations available for the current selection';
+      ? t('project.edit.selectRepresentationToCreate')
+      : t('project.edit.noRepresentations');
 
   return (
     <>
       <Card>
         <CardContent className={classes.cardContent}>
-          <Typography variant="h6">{'Create a new Representation'}</Typography>
+          <Typography variant="h6">{t('project.edit.createRepresentation')}</Typography>
           <Typography className={classes.subtitles} color="textSecondary">
-            {readOnly ? 'You need edit access to create representations' : subtitle}
+            {readOnly ? t('project.edit.noAccessToCreateRepresentation') : subtitle}
           </Typography>
           <List dense={true}>
             {readOnly

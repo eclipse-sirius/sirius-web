@@ -15,6 +15,7 @@ import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { Node, Position } from '@xyflow/react';
 import { useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeLabel, NodeData } from '../DiagramRenderer.types';
@@ -25,6 +26,7 @@ import {
   GQLEdgeLayoutData,
   GQLErrorPayload,
   GQLHandleLayoutData,
+  GQLLabelLayoutData,
   GQLLayoutDiagramData,
   GQLLayoutDiagramInput,
   GQLLayoutDiagramPayload,
@@ -32,7 +34,6 @@ import {
   GQLNodeLayoutData,
   GQLSuccessPayload,
   UseSynchronizeLayoutDataValue,
-  GQLLabelLayoutData,
 } from './useSynchronizeLayoutData.types';
 
 const layoutDiagramMutation = gql`
@@ -61,6 +62,7 @@ const isSuccessPayload = (payload: GQLLayoutDiagramPayload): payload is GQLSucce
   payload.__typename === 'SuccessPayload';
 
 export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
+  const { t } = useTranslation('siriusComponentsDiagrams');
   const { diagramId: representationId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
   const { addErrorMessage, addMessages } = useMultiToast();
@@ -69,7 +71,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
   );
   useEffect(() => {
     if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(t('errors.unexpected'));
     }
     if (data) {
       const { layoutDiagram } = data;

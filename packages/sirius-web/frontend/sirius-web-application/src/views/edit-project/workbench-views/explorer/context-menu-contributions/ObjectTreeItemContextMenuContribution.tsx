@@ -18,6 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { Fragment, forwardRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DuplicateObjectModal } from '../../../../../modals/duplicate-object/DuplicateObjectModal';
 import { NewObjectModal } from '../../../../../modals/new-object/NewObjectModal';
 import { NewRepresentationModal } from '../../../../../modals/new-representation/NewRepresentationModal';
@@ -37,6 +38,7 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
     }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
+    const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
     const [modal, setModal] = useState<Modal>(null);
     const { setSelection } = useSelection();
 
@@ -94,7 +96,7 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="New object" />
+          <ListItemText primary={t('newObject')} />
         </MenuItem>
         <MenuItem
           key="new-representation"
@@ -105,7 +107,7 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="New representation" />
+          <ListItemText primary={t('newRepresentation')} />
         </MenuItem>
         <MenuItem
           key="duplicate-object"
@@ -116,7 +118,7 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <AddToPhotosIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Duplicate object" />
+          <ListItemText primary={t('duplicate')} />
         </MenuItem>
         {modalElement}
       </Fragment>

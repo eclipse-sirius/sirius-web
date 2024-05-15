@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 import Typography from '@mui/material/Typography';
 import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FileUploadProps, FileUploadState } from './FileUpload.types';
 
 const useFileUploadViewStyles = makeStyles()((theme) => ({
@@ -41,29 +42,27 @@ const useFileUploadViewStyles = makeStyles()((theme) => ({
   },
 }));
 
-const DEFAULT_MESSAGE = 'Click here to select a file';
-
-const initialState: FileUploadState = {
-  file: null,
-  message: DEFAULT_MESSAGE,
-};
 export const FileUpload = ({ onFileSelected, 'data-testid': dataTestId }: FileUploadProps) => {
   const { classes: styles } = useFileUploadViewStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'core' });
   const fileInput = React.createRef<HTMLInputElement>();
 
-  const [state, setState] = useState<FileUploadState>(initialState);
+  const [state, setState] = useState<FileUploadState>({
+    file: null,
+    message: t('clickToSelectFile'),
+  });
   const { file, message } = state;
 
   // Update the message
   useEffect(() => {
-    let message = DEFAULT_MESSAGE;
+    let message = t('clickToSelectFile');
     if (file) {
       message = file.name;
     }
     setState((prevState) => {
       return { ...prevState, message };
     });
-  }, [file]);
+  }, [file, t]);
 
   // Update the file selection.
   const onFileInputChange = () => {

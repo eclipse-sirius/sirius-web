@@ -1,4 +1,6 @@
 extend type Viewer {
+  language: String!
+  namespaces: [String!]!
   project(projectId: ID!): Project
   projects(after: String, before: String, first: Int, last: Int, filter: ProjectFilter): ViewerProjectsConnection!
   projectTemplates(page: Int!, limit: Int!, context: ProjectTemplateContext!): ViewerProjectTemplatesConnection!

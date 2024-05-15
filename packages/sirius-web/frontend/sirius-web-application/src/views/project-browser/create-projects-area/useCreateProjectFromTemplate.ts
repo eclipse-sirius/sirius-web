@@ -14,6 +14,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLCreateProjectFromTemplateMutationData,
   GQLCreateProjectFromTemplateMutationVariables,
@@ -57,9 +58,11 @@ export const useCreateProjectFromTemplate = (): UseCreateProjectFromTemplateValu
   >(createProjectFromTemplateMutation);
 
   const { addErrorMessage, addMessages } = useMultiToast();
+  const { t } = useTranslation('siriusWebApplication');
+
   useEffect(() => {
     if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(t('errors.unexpected'));
     }
     if (data) {
       const { createProjectFromTemplate } = data;
