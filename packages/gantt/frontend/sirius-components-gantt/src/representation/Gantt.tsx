@@ -84,23 +84,25 @@ export const Gantt = ({
   const theme: Theme = useTheme();
 
   const onwheel = (wheelEvent: WheelEvent) => {
-    const deltaY = wheelEvent.deltaY;
-
-    if (deltaY < 0 && zoomLevel !== ViewMode.Hour) {
-      const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
-      const newZoomLevel = Object.values(ViewMode).at(currentIndex - 1);
-      if (newZoomLevel) {
-        setState((prevState) => {
-          return { ...prevState, zoomLevel: newZoomLevel };
-        });
-      }
-    } else if (deltaY > 0 && zoomLevel !== ViewMode.Year) {
-      const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
-      const newZoomLevel = Object.values(ViewMode).at(currentIndex + 1);
-      if (newZoomLevel) {
-        setState((prevState) => {
-          return { ...prevState, zoomLevel: newZoomLevel };
-        });
+    if (wheelEvent.ctrlKey) {
+      wheelEvent.preventDefault();
+      const deltaY = wheelEvent.deltaY;
+      if (deltaY < 0 && zoomLevel !== ViewMode.Hour) {
+        const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
+        const newZoomLevel = Object.values(ViewMode).at(currentIndex - 1);
+        if (newZoomLevel) {
+          setState((prevState) => {
+            return { ...prevState, zoomLevel: newZoomLevel };
+          });
+        }
+      } else if (deltaY > 0 && zoomLevel !== ViewMode.Year) {
+        const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
+        const newZoomLevel = Object.values(ViewMode).at(currentIndex + 1);
+        if (newZoomLevel) {
+          setState((prevState) => {
+            return { ...prevState, zoomLevel: newZoomLevel };
+          });
+        }
       }
     }
   };

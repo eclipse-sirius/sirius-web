@@ -164,6 +164,7 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3453[#3453] [diagram] Memoizing edges and nodes style
 - https://github.com/eclipse-sirius/sirius-web/issues/3450[#3450] [diagram] Add `calculateCustomNodeBorderNodePosition` method to position border nodes according to the real layout of the custom node
 - https://github.com/eclipse-sirius/sirius-web/issues/3460[#3460] [diagram] Use _arrange layout direction_ properties during edge handle position computing
+- https://github.com/eclipse-sirius/sirius-web/issues/3366[#3366] [gantt] Trigger the zoom on Ctrl+MouseWheel
 
 == v2024.3.0
 
