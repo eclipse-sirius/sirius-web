@@ -14,11 +14,14 @@ import { TreeToolBarContributionComponentProps } from '@eclipse-sirius/sirius-co
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import { Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NewDocumentModal } from '../../../modals/new-document/NewDocumentModal';
 
 type Modal = 'NewDocument';
 
 export const NewDocumentModalContribution = ({ disabled, editingContextId }: TreeToolBarContributionComponentProps) => {
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
+
   const [modal, setModal] = useState<Modal | null>(null);
 
   let modalElement: JSX.Element | null = null;
@@ -32,8 +35,8 @@ export const NewDocumentModalContribution = ({ disabled, editingContextId }: Tre
         disabled={disabled}
         size="small"
         color="inherit"
-        aria-label="New model"
-        title="New model"
+        aria-label={t('newModel')}
+        title={t('newModel')}
         onClick={() => setModal('NewDocument')}
         data-testid="new-model">
         <AddIcon />

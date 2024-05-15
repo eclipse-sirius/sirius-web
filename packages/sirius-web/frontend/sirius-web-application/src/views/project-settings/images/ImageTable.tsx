@@ -18,10 +18,12 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { useTranslation } from 'react-i18next';
 import { ImageRow } from './ImageRow';
 import { ImageTableProps } from './ImageTable.types';
 
 export const ImageTable = ({ images, onImageUpdated }: ImageTableProps) => {
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'image.list' });
   return (
     <Paper>
       <TableContainer>
@@ -33,10 +35,10 @@ export const ImageTable = ({ images, onImageUpdated }: ImageTableProps) => {
           </colgroup>
           <TableHead>
             <TableRow>
-              <TableCell variant="head">Label</TableCell>
-              <TableCell variant="head">ID</TableCell>
+              <TableCell variant="head">{t('label')}</TableCell>
+              <TableCell variant="head">{t('id')}</TableCell>
               <TableCell variant="head" align="center">
-                Delete
+                {t('delete')}
               </TableCell>
             </TableRow>
           </TableHead>
