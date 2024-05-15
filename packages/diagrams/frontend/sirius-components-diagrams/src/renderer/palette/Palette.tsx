@@ -25,6 +25,7 @@ import { makeStyles } from 'tss-react/mui';
 import AdjustIcon from '@mui/icons-material/Adjust';
 import TonalityIcon from '@mui/icons-material/Tonality';
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useReactFlow, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -219,6 +220,9 @@ export const Palette = ({
   onDirectEditClick,
   hideableDiagramElement,
 }: PaletteProps) => {
+  const { t } = useTranslation('siriusComponentsDiagrams', { keyPrefix: 'palette' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
+
   const [state, setState] = useState<PaletteState>({ expandedToolSectionId: null });
 
   const { fadeDiagramElements } = useFadeDiagramElements();
@@ -266,22 +270,22 @@ export const Palette = ({
   let adjustSizeTool: JSX.Element | undefined;
   if (node) {
     pinUnpinTool = node.data.pinned ? (
-      <Tooltip title="Unpin element">
+      <Tooltip title={t('unpin')}>
         <IconButton
           className={classes.toolIcon}
           size="small"
-          aria-label="Unpin element"
+          aria-label={t('unpin')}
           onClick={() => pinDiagramElements([diagramElementId], !node.data.pinned)}
           data-testid="Unpin-element">
           <UnpinIcon fontSize="small" />
         </IconButton>
       </Tooltip>
     ) : (
-      <Tooltip title="Pin element">
+      <Tooltip title={t('pin')}>
         <IconButton
           className={classes.toolIcon}
           size="small"
-          aria-label="Pin element"
+          aria-label={t('pin')}
           onClick={() => pinDiagramElements([diagramElementId], true)}
           data-testid="Pin-element">
           <PinIcon fontSize="small" />
@@ -289,11 +293,11 @@ export const Palette = ({
       </Tooltip>
     );
     adjustSizeTool = (
-      <Tooltip title="Adjust size">
+      <Tooltip title={t('adjustSize')}>
         <IconButton
           className={classes.toolIcon}
           size="small"
-          aria-label="Adjust element"
+          aria-label={t('adjustSize')}
           onClick={() => adjustSize(diagramElementId)}
           data-testid="adjust-element">
           <AdjustIcon fontSize="small" />
@@ -312,9 +316,9 @@ export const Palette = ({
 
   useEffect(() => {
     if (paletteError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
-  }, [paletteError]);
+  }, [coreT, paletteError]);
 
   const handleToolSectionExpand = (expandedToolSectionId: string | null) =>
     setState((prevState) => ({ ...prevState, expandedToolSectionId }));
@@ -486,11 +490,11 @@ export const Palette = ({
       ))}
       {hideableDiagramElement ? (
         <>
-          <Tooltip title="Fade element">
+          <Tooltip title={t('fade')}>
             <IconButton
               className={classes.toolIcon}
               size="small"
-              aria-label="Fade element"
+              aria-label={t('fade')}
               onClick={invokeFadeDiagramElementTool}
               data-testid="Fade-element">
               <TonalityIcon fontSize="small" />

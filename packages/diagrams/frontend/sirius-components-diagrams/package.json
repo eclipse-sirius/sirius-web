@@ -39,6 +39,7 @@
     "html-to-image": "1.11.11",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-i18next": "14.1.1",
     "reactflow": "11.10.1",
     "tss-react": "4.9.7"
   },
@@ -60,6 +61,7 @@
     "prettier": "2.7.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-i18next": "14.1.1",
     "reactflow": "11.10.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "tss-react": "4.9.7",

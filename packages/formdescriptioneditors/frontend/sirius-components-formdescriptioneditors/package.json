@@ -43,6 +43,7 @@
     "graphql": "16.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-i18next": "14.1.1",
     "tss-react": "4.9.7",
     "xstate": "4.32.1"
   },
@@ -65,6 +66,7 @@
     "prettier": "2.7.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "react": "17.0.2",
+    "react-i18next": "14.1.1",
     "react-dom": "17.0.2",
     "xstate": "4.32.1",
     "typescript": "5.4.5",
