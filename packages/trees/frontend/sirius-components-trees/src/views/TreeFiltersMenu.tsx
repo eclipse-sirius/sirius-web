@@ -18,6 +18,7 @@ import FormGroup from '@mui/material/FormGroup';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { TreeFilter, TreeFilterMenuProps } from './TreeFiltersMenu.types';
 
@@ -32,6 +33,7 @@ const useTreeFiltersMenuStyles = makeStyles()((_) => ({
 
 export const TreeFiltersMenu = ({ filters, onTreeFilterMenuItemClick }: TreeFilterMenuProps) => {
   const { classes } = useTreeFiltersMenuStyles();
+  const { t } = useTranslation('sirius-components-trees');
   const [open, setOpen] = useState<boolean>(false);
   const anchorRef = useRef<HTMLButtonElement | null>(null);
 
@@ -67,7 +69,7 @@ export const TreeFiltersMenu = ({ filters, onTreeFilterMenuItemClick }: TreeFilt
         size="small"
         ref={anchorRef}
         aria-haspopup="true"
-        title="Filters"
+        title={t('filters')}
         onClick={handleToggle}>
         <FilterListIcon color={open ? 'disabled' : 'inherit'} />
       </IconButton>

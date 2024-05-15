@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,8 @@ public final class URLConstants {
     public static final String GRAPHQL_SUBSCRIPTION_PATH = "/subscriptions";
 
     public static final String IMAGE_BASE_PATH = API_BASE_PATH + "/images";
+
+    public static final String LOCALE_BASE_PATH = API_BASE_PATH + "/locales";
 
     private URLConstants() {
         // Prevent instantiation

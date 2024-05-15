@@ -14,9 +14,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
+import { useTranslation } from 'react-i18next';
 import { RenameMenuItemProps } from './RenameMenuItem.types';
 
 export const RenameMenuItem = ({ item, readOnly, onClick }: RenameMenuItemProps) => {
+  const { t } = useTranslation('sirius-components-trees');
   if (!item.editable) {
     return null;
   }
@@ -25,7 +27,7 @@ export const RenameMenuItem = ({ item, readOnly, onClick }: RenameMenuItemProps)
       <ListItemIcon>
         <EditIcon fontSize="small" />
       </ListItemIcon>
-      <ListItemText primary="Rename" />
+      <ListItemText primary={t('rename')} />
     </MenuItem>
   );
 };

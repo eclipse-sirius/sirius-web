@@ -19,6 +19,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLRadio } from '../form/FormEventFragments.types';
@@ -100,6 +101,7 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const { classes } = useRadioPropertySectionStyles(props);
+  const { t } = useTranslation('sirius-components-forms');
 
   const [editRadio, { loading, error, data }] = useMutation<GQLEditRadioMutationData>(editRadioMutation);
 
@@ -120,7 +122,7 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
 
   useEffect(() => {
     if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(t('errors.unexpected'));
     }
     if (data) {
       const { editRadio } = data;

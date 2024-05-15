@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { ProjectSettingTabProps } from '../ProjectSettingsView.types';
@@ -50,6 +51,7 @@ export const ProjectImagesSettings = ({}: ProjectSettingTabProps) => {
   });
 
   const { classes } = useProjectImagesSettingsStyles();
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'image.list' });
   const { projectId } = useParams<ProjectImagesSettingsParams>();
 
   const { data, loading, refreshImages } = useProjectImages(projectId);
@@ -72,7 +74,7 @@ export const ProjectImagesSettings = ({}: ProjectSettingTabProps) => {
         <Grid container justifyContent="center">
           <Grid size={{ xs: 8 }}>
             <Typography variant="h6" align="center" gutterBottom>
-              No project images available, start by uploading one
+              {t('empty')}
             </Typography>
           </Grid>
         </Grid>
@@ -84,11 +86,11 @@ export const ProjectImagesSettings = ({}: ProjectSettingTabProps) => {
     <>
       <div className={classes.imageSettingsViewContainer}>
         <div className={classes.header}>
-          <Typography variant="h5">Project Images</Typography>
+          <Typography variant="h5">{t('title')}</Typography>
 
           <div className={classes.actions}>
             <Button data-testid="upload-image" color="primary" variant="outlined" onClick={onTriggerUpload}>
-              Upload
+              {t('upload')}
             </Button>
           </div>
         </div>

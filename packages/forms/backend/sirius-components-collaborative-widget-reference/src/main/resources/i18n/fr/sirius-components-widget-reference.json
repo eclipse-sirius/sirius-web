@@ -1,0 +1,38 @@
+{
+  "create": {
+    "container": {
+      "label": "Sélectionner le conteneur"
+    },
+    "domain": {
+      "label": "Sélectionner le domaine"
+    },
+    "submit": "Créer",
+    "title": "Créer un objet",
+    "type": {
+      "label": "Sélectionner le type d’objet"
+    }
+  },
+  "edit": {
+    "choices": "Choix",
+    "close": "Fermer",
+    "selected": "Sélectionné",
+    "title": "Modifier la référence"
+  },
+  "errors": {
+    "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+  },
+  "select": {
+    "choices": "Choix",
+    "submit": "Sélectionner",
+    "title": "Sélectionner un objet"
+  },
+  "view": {
+    "clear": "Effacer",
+    "close": "Fermer",
+    "createObject": "Créer un objet",
+    "edit": "Modifier",
+    "open": "Ouvrir",
+    "value": "Valeur",
+    "values": "Valeurs"
+  }
+}

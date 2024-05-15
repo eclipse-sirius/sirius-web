@@ -24,6 +24,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FilterableSortableList } from '../components/FilterableSortableList';
 import { FilterableSortableListItem } from '../components/FilterableSortableList.types';
 import {
@@ -77,6 +78,7 @@ export const TransferModal = ({
     options: [],
     selectedTreeItemIds: [],
   });
+  const { t } = useTranslation('sirius-components-widget-reference');
 
   const {
     loading: childReferenceValueOptionsLoading,
@@ -96,7 +98,7 @@ export const TransferModal = ({
   useEffect(() => {
     if (!childReferenceValueOptionsLoading) {
       if (childReferenceValueOptionsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(t('errors.unexpected'));
       }
       if (childReferenceValueOptionsData) {
         const representationDescription: GQLRepresentationDescription =
@@ -232,7 +234,7 @@ export const TransferModal = ({
       maxWidth="lg"
       fullWidth
       data-testid="transfer-modal">
-      <DialogTitle id="dialog-title">Edit reference</DialogTitle>
+      <DialogTitle id="dialog-title">{t('edit.title')}</DialogTitle>
       <DialogContent>
         <Box
           sx={(theme) => ({
@@ -249,7 +251,7 @@ export const TransferModal = ({
               descriptionId={widget.descriptionId}
               isContainment={widget.reference.containment}
               markedItemIds={state.right.map((entry) => entry.id)}
-              title={'Choices'}
+              title={t('edit.choices')}
               leafType={'reference'}
               ownerKind={widget.reference.ownerKind}
               onTreeItemClick={onTreeItemClick}
@@ -311,7 +313,7 @@ export const TransferModal = ({
           type="button"
           data-testid="close-transfer-modal"
           onClick={() => onClose()}>
-          close
+          {t('edit.close')}
         </Button>
       </DialogActions>
     </Dialog>

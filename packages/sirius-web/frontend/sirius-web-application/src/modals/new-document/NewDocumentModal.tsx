@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { NewDocumentModalProps, NewDocumentModalState } from './NewDocumentModal.types';
 import { useCreateDocument } from './useCreateDocument';
@@ -38,6 +39,7 @@ const useNewDocumentModalStyles = makeStyles()((theme) => ({
 
 export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModalProps) => {
   const { classes } = useNewDocumentModalStyles();
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'model.create' });
   const [state, setState] = useState<NewDocumentModalState>({
     name: '',
     nameIsInvalid: true,
@@ -84,24 +86,24 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
       maxWidth="xs"
       fullWidth
       data-testid="create-new-model">
-      <DialogTitle id="dialog-title">Create a new model</DialogTitle>
+      <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
         <div className={classes.form}>
           <TextField
             variant="standard"
             error={!state.pristine && state.nameIsInvalid}
-            helperText="The name cannot be empty"
-            label="Name"
+            helperText={t('name.helperText')}
+            label={t('name.label')}
             name="name"
             value={state.name}
-            placeholder="Enter the name of the model"
+            placeholder={t('name.placeholder')}
             data-testid="name"
             inputProps={{ 'data-testid': 'name-input' }}
             autoFocus={true}
             onChange={onNameChange}
             disabled={loadingStereotypes || documentCreationLoading}
           />
-          <InputLabel id="newDocumentModalStereotypeLabel">Model type</InputLabel>
+          <InputLabel id="newDocumentModalStereotypeLabel">{t('modelType.label')}</InputLabel>
           <Select
             variant="standard"
             value={state.stereotypeId}
@@ -126,7 +128,7 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
           data-testid="create-document"
           color="primary"
           onClick={onCreateDocument}>
-          Create
+          {t('submit')}
         </Button>
       </DialogActions>
     </Dialog>

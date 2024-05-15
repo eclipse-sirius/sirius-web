@@ -22,6 +22,7 @@ import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
 import gql from 'graphql-tag';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { GQLButton } from '../form/FormEventFragments.types';
 import {
@@ -148,6 +149,7 @@ export const SplitButtonPropertySection = ({
   });
 
   const { classes: containerClasses } = useContainerStyle();
+  const { t } = useTranslation('sirius-components-forms');
 
   const [pushButton, { loading, data, error }] = useMutation<GQLPushButtonMutationData, GQLPushButtonMutationVariables>(
     pushButtonMutation
@@ -155,7 +157,7 @@ export const SplitButtonPropertySection = ({
 
   useEffect(() => {
     if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(t('errors.unexpected'));
     }
     if (data) {
       const { pushButton } = data;

@@ -17,6 +17,7 @@ import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { FileUpload } from '../../core/file-upload/FileUpload';
@@ -89,6 +90,7 @@ const isUploadProjectSuccessPayload = (payload: GQLUploadProjectPayload): payloa
 export const UploadProjectView = () => {
   const { classes } = useUploadProjectViewStyles();
   const { addErrorMessage } = useMultiToast();
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.upload' });
   const [state, setState] = useState<UploadProjectViewState>({
     file: null,
     loading: false,
@@ -172,10 +174,10 @@ export const UploadProjectView = () => {
           <div className={classes.uploadProjectViewContainer}>
             <div className={classes.titleContainer}>
               <Typography variant="h2" align="center" gutterBottom>
-                Upload a project
+                {t('title')}
               </Typography>
               <Typography variant="h4" align="center" gutterBottom>
-                Start with an existing project
+                {t('description')}
               </Typography>
             </div>
             <Paper>
@@ -189,7 +191,7 @@ export const UploadProjectView = () => {
                     disabled={!state.file}
                     loading={state.loading}
                     data-testid="upload-project">
-                    Upload
+                    {t('submit')}
                   </Button>
                 </div>
               </form>

@@ -25,6 +25,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import {
   GQLCreateRootObjectMutationData,
@@ -120,6 +121,8 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
     selectedRootObjectCreationDescriptionId: '',
     isSuggestedRootObjectChecked: true,
   });
+
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'object.newRoot' });
 
   // Fetch the corresponding object creation description whenever the user selects a new domain or toggles the checkbox
   const [
@@ -243,10 +246,10 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-        <DialogTitle id="dialog-title">Create a new root object</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
-            <InputLabel id="domainsLabel">Domain</InputLabel>
+            <InputLabel id="domainsLabel">{t('domain.label')}</InputLabel>
             <Select
               variant="standard"
               value={state.selectedDomainId}
@@ -261,7 +264,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
                 </MenuItem>
               ))}
             </Select>
-            <InputLabel id="rootObjectCreationDescriptionsLabel">Object type</InputLabel>
+            <InputLabel id="rootObjectCreationDescriptionsLabel">{t('type.label')}</InputLabel>
             <Select
               variant="standard"
               classes={{ select: classes.select }}
@@ -295,7 +298,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
                   data-testid="suggested"
                 />
               }
-              label="Show only suggested root type"
+              label={t('suggestedType.label')}
             />
           </div>
         </DialogContent>
@@ -306,7 +309,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
             data-testid="create-object"
             color="primary"
             onClick={onCreateRootObject}>
-            Create
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

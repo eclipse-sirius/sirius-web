@@ -19,6 +19,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLErrorPayload,
   GQLRenameImageMutationData,
@@ -46,6 +47,7 @@ const isErrorPayload = (payload: GQLRenameImagePayload): payload is GQLErrorPayl
 
 export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, onClose }: RenameImageModalProps) => {
   const { addErrorMessage } = useMultiToast();
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'image.rename' });
   const [state, setState] = useState<RenameImageModalState>({
     name: initialImageName,
   });
@@ -94,16 +96,16 @@ export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, on
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-        <DialogTitle id="dialog-title">Rename the image</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <TextField
             variant="standard"
             value={state.name}
             error={isError}
-            helperText="The name must contain at least 3 characters"
+            helperText={t('name.helperText')}
             onChange={onNewName}
-            label="Name"
-            placeholder="Enter the new image name"
+            label={t('name.label')}
+            placeholder={t('name.placeholder')}
             data-testid="name"
             autoFocus
             fullWidth
@@ -116,7 +118,7 @@ export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, on
             color="primary"
             data-testid="rename-image"
             disabled={isInvalid}>
-            Rename
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
@@ -52,6 +53,7 @@ const isSuccessPayload = (payload: GQLFadeDiagramElementPayload): payload is GQL
   payload.__typename === 'SuccessPayload';
 
 export const useFadeDiagramElements = (): UseFadeDiagramElements => {
+  const { t } = useTranslation('sirius-components-diagrams');
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
@@ -62,7 +64,7 @@ export const useFadeDiagramElements = (): UseFadeDiagramElements => {
 
   useEffect(() => {
     if (fadeDiagramElementError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(t('errors.unexpected'));
     }
   }, [fadeDiagramElementError]);
 

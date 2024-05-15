@@ -17,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DeleteProjectMenuItem } from '../../edit-project/navbar/context-menu/DeleteProjectMenuItem';
 import { DownloadProjectMenuItem } from '../../edit-project/navbar/context-menu/DownloadProjectMenuItem';
 import { DuplicateProjectMenuItem } from '../../edit-project/navbar/context-menu/DuplicateProjectMenuItem';
@@ -37,6 +38,8 @@ export const ProjectActionButton = ({ project, onChange }: ProjectActionButtonPr
     contextMenuAnchorElement: null,
   });
 
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.list' });
+
   const onClick: React.MouseEventHandler<HTMLButtonElement> = (event) =>
     setState((prevState) => ({ ...prevState, contextMenuAnchorElement: event.currentTarget }));
 
@@ -49,7 +52,7 @@ export const ProjectActionButton = ({ project, onChange }: ProjectActionButtonPr
 
   return (
     <>
-      <Tooltip title="More">
+      <Tooltip title={t('more')}>
         <IconButton aria-label="more" onClick={onClick} size="small" data-testid="more">
           <MoreHorizIcon fontSize="small" />
         </IconButton>
