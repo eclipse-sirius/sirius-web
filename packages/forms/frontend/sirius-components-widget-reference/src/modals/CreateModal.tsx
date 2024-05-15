@@ -27,6 +27,7 @@ import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import {
@@ -167,6 +168,8 @@ const isSuccessPayload = (
 
 export const CreateModal = ({ editingContextId, widget, onClose, formId }: CreateModalProps) => {
   const { classes } = useStyle();
+  const { t } = useTranslation('siriusComponentsWidgetReference', { keyPrefix: 'create' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { addErrorMessage, addMessages } = useMultiToast();
   const [{ value, context }, dispatch] =
     useMachine<StateMachine<CreateModalContext, CreateModalStateSchema, CreateModalEvent>>(createModalMachine);
@@ -203,7 +206,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   useEffect(() => {
     if (!domainsLoading) {
       if (domainsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (domainsData) {
         const fetchDomainsEvent: FetchedDomainsEvent = {
@@ -213,7 +216,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         dispatch(fetchDomainsEvent);
       }
     }
-  }, [domainsLoading, domainsData, domainsError]);
+  }, [coreT, domainsLoading, domainsData, domainsError]);
 
   const [
     getRootObjectCreationDescriptions,
@@ -225,7 +228,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   useEffect(() => {
     if (!descriptionsLoading) {
       if (descriptionError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (descriptionsData) {
         const fetchDescriptionsEvent: FetchedRootObjectCreationDescriptionsEvent = {
@@ -235,7 +238,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         dispatch(fetchDescriptionsEvent);
       }
     }
-  }, [descriptionsLoading, descriptionsData, descriptionError]);
+  }, [coreT, descriptionsLoading, descriptionsData, descriptionError]);
 
   const [
     getChildCreationDescription,
@@ -251,7 +254,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   useEffect(() => {
     if (!childCreationDescriptionsLoading) {
       if (childCreationDescriptionsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (childCreationDescriptionsData) {
         const fetchChildCreationDescriptionsEvent: FetchedChildCreationDescriptionsEvent = {
@@ -261,7 +264,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         dispatch(fetchChildCreationDescriptionsEvent);
       }
     }
-  }, [childCreationDescriptionsLoading, childCreationDescriptionsData, childCreationDescriptionsError]);
+  }, [childCreationDescriptionsLoading, childCreationDescriptionsData, childCreationDescriptionsError, coreT]);
 
   const [
     createElementInReference,
@@ -273,7 +276,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   useEffect(() => {
     if (!createElementLoading) {
       if (createElementError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (createElementData) {
         const handleResponseEvent: HandleCreateElementResponseEvent = {
@@ -289,7 +292,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         }
       }
     }
-  }, [createElementLoading, createElementData, createElementError]);
+  }, [coreT, createElementLoading, createElementData, createElementError]);
 
   const onCreateObject = () => {
     let input: GQLCreateElementInReferenceInput | null = null;
@@ -384,7 +387,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
       aria-labelledby="dialog-title"
       fullWidth
       data-testid="create-modal">
-      <DialogTitle id="dialog-title">Create an object</DialogTitle>
+      <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
         <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1) })}>
           {widget.reference.containment ? null : (
@@ -395,7 +398,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
               descriptionId={widget.descriptionId}
               isContainment={widget.reference.containment}
               markedItemIds={[]}
-              title={'Select the container'}
+              title={t('container.label')}
               leafType={'container'}
               ownerKind={widget.reference.referenceKind}
               onTreeItemClick={onTreeItemClick}
@@ -405,7 +408,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           {containerKind === 'siriusWeb://document' && (
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography gutterBottom variant="subtitle1">
-                Select the domain
+                {t('domain.label')}
               </Typography>
               <Select
                 variant="standard"
@@ -425,7 +428,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           )}
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography gutterBottom variant="subtitle1">
-              Select the object type
+              {t('type.label')}
             </Typography>
             <Select
               variant="standard"
@@ -458,7 +461,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           data-testid="create-object"
           onClick={onCreateObject}
           disabled={createModal !== 'validForChild' && createModal !== 'validForRoot'}>
-          Create
+          {t('submit')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,0 +1,11 @@
+{
+  "siriusComponentsTrees": {
+    "delete": "Delete",
+    "disableSynchronization": "Disable synchronization with representation",
+    "enableSynchronization": "Enable synchronization with representation",
+    "enterNewValue": "Enter the new value",
+    "expandAll": "Expand all",
+    "filters": "Filters",
+    "rename": "Rename"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "siriusComponentsValidation": {
+    "diagnosticCount": "{{count}} diagnostics",
+    "diagnosticCount_one": "{{count}} diagnostic",
+    "noDiagnostic": "No diagnostic available"
+  }
+}
