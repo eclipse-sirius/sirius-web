@@ -43,8 +43,9 @@ const useFrameStyles = makeStyles((theme) => ({
     zIndex: 1,
   },
   title: {
-    marginLeft: theme.spacing(1),
-    flexGrow: 1,
+    paddingLeft: theme.spacing(1),
+    position: 'sticky',
+    left: 0,
   },
   removeIcon: {
     position: 'sticky',

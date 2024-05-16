@@ -293,6 +293,7 @@ The implemented fix does not allow to evaluate an AQL expression, but only to re
 - https://github.com/eclipse-sirius/sirius-web/issues/3257[#3257] [diagram] Fix an issue that caused an infinite loop when selecting elements with shift.
 - https://github.com/eclipse-sirius/sirius-web/issues/3239[#3239] [form] Add missing reference widget view builder
 - https://github.com/eclipse-sirius/sirius-web/issues/3265[#3265] [diagram] Fix an error on console when moving a node with an opened palette
+- https://github.com/eclipse-sirius/sirius-web/issues/3499[#3499] [portal] Fix label positioning in portal representation
 
 === New Features
 
