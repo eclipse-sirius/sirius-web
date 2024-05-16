@@ -15,7 +15,9 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/2837[#2837] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.13 to benefit for enhancements
 
 === Bug fixes
+
 - https://github.com/eclipse-sirius/sirius-web/issues/3515[#3515] [form] Form pages appear in the addition order
+- https://github.com/eclipse-sirius/sirius-web/issues/2981[#2981] [diagram] Fix a warning when an edge was hidden
 
 === New Features
 

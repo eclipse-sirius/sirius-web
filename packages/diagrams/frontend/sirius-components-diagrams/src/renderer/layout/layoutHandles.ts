@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Node, Position, XYPosition } from 'reactflow';
+import { GQLDiagramDescription } from '../../representation/DiagramRepresentation.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters, getNodeCenter, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
@@ -19,7 +20,6 @@ import {
   PopulateHandleIdToOtherHandNode,
 } from '../handles/useHandleChange.types';
 import { RawDiagram } from './layout.types';
-import { GQLDiagramDescription } from '../../representation/DiagramRepresentation.types';
 
 const getHandlesIdsFromNode = (node: Node<NodeData>): string[] => {
   return node.data.connectionHandles.map((handle) => handle.id).filter((handleId): handleId is string => !!handleId);
@@ -103,21 +103,19 @@ const layoutHandleIndex = (diagram: RawDiagram) => {
   const nodeIdToConnectionHandle: Map<string, ConnectionHandle[]> = new Map<string, ConnectionHandle[]>();
   handleIdToOtherEndNode.forEach((node) => {
     //For each handle by side
-    const connectionHandles = node.data.connectionHandles
-      .filter((nodeConnectionHandle) => !nodeConnectionHandle.hidden)
-      .map((nodeConnectionHandle: ConnectionHandle) => {
-        Object.values(Position).map((position) => {
-          //Update index of handles on the same side
-          nodeConnectionHandle = getUpdatedConnectionHandlesIndexByPosition(
-            node,
-            nodeConnectionHandle,
-            position,
-            handleIdToOtherEndNode,
-            nodeIdToNodeCenter
-          );
-        });
-        return nodeConnectionHandle;
+    const connectionHandles = node.data.connectionHandles.map((nodeConnectionHandle: ConnectionHandle) => {
+      Object.values(Position).map((position) => {
+        //Update index of handles on the same side
+        nodeConnectionHandle = getUpdatedConnectionHandlesIndexByPosition(
+          node,
+          nodeConnectionHandle,
+          position,
+          handleIdToOtherEndNode,
+          nodeIdToNodeCenter
+        );
       });
+      return nodeConnectionHandle;
+    });
     nodeIdToConnectionHandle.set(node.id, connectionHandles);
   });
 
