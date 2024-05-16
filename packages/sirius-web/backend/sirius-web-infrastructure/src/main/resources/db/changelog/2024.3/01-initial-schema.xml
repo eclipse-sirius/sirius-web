@@ -81,12 +81,6 @@
             <column name="last_modified_on" type="TIMESTAMPTZ">
                 <constraints nullable="false" />
             </column>
-            <column name="last_migration_performed" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="migration_version" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="representation_data" baseColumnNames="project_id" constraintName="fk_representation_data_project_id" referencedTableName="project" referencedColumnNames="id" onDelete="CASCADE"/>
         
