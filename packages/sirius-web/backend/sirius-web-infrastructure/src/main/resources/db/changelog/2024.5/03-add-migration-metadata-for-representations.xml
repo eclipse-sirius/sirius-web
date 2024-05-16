@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2024 Obeo.
+  ~ Copyright (c) 2024, 2024 Obeo.
   ~ This program and the accompanying materials
   ~ are made available under the terms of the Eclipse Public License v2.0
   ~ which accompanies this distribution, and is available at
@@ -15,7 +15,15 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
-    <include file="db/changelog/2024.5/01-add-image-support.xml" />
-    <include file="db/changelog/2024.5/02-add-project-image-support.xml" />
-    <include file="db/changelog/2024.5/03-add-migration-metadata-for-representations.xml" />
+
+    <changeSet id="03-add-migration-metadata-for-representations" author="sbegaudeau">
+        <addColumn tableName="representation_data">
+            <column name="last_migration_performed" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="migration_version" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
