@@ -173,8 +173,8 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
     const edges: Edge<EdgeData>[] = getEdges();
     for (const [parentNodeId, nodes] of subNodes) {
       const parentNode = allNodes.find((node) => node.id === parentNodeId);
-      if (parentNode && isListData(parentNode)) {
-        // No elk layout for child of container list
+      if ((parentNode && isListData(parentNode)) || nodes.every((node) => node.data.isBorderNode)) {
+        // No elk layout for child of container list or for border node
         layoutedAllNodes = [...layoutedAllNodes, ...nodes.reverse()];
         continue;
       }

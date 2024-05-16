@@ -100,6 +100,7 @@ Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IE
 - https://github.com/eclipse-sirius/sirius-web/issues/3472[#3472] [diagram] Prevent arrange-all action to mark nodes as `resizedByUser`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3474[#3474] [diagram] Prevent the border of the last compartment of a list node from being visible when the node is hidden
 - https://github.com/eclipse-sirius/sirius-web/issues/3477[#3477] [diagram] Prevent dropNode mutation to be send when dropping from the diagram to the diagram
+- https://github.com/eclipse-sirius/sirius-web/issues/3493[#3493] [diagram] Prevent child node to be outside its parent after an arrange all
 
 === New Features
 
