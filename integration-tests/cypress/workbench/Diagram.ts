@@ -25,6 +25,8 @@ export class Diagram {
 
   public arrangeAll() {
     cy.getByTestId('arrange-all').click();
+    /* eslint-disable-next-line cypress/no-unnecessary-waiting */
+    cy.wait(4000);
   }
 
   public getNodes(diagramLabel: string, nodeLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {

@@ -226,10 +226,10 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
     return layoutedAllNodes;
   };
 
-  const arrangeAll = (): void => {
+  const arrangeAll = async (): Promise<void> => {
     const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
     const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrdreMap(getSubNodes(nodes));
-    applyElkOnSubNodes(subNodes, nodes).then((nodes: Node<NodeData, string>[]) => {
+    await applyElkOnSubNodes(subNodes, nodes).then(async (nodes: Node<NodeData, string>[]) => {
       const laidOutNodesWithElk: Node<NodeData, string>[] = nodes.reverse();
       laidOutNodesWithElk.filter((laidOutNode) => {
         const parentNode = nodes.find((node) => node.id === laidOutNode.parentNode);
@@ -240,37 +240,40 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
         nodes: laidOutNodesWithElk,
         edges: getEdges(),
       };
-
-      layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
-        laidOutNodesWithElk.map((node) => {
-          const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
-            laidOutDiagram.nodes,
-            'horizontal'
-          ) as Node<NodeData, DiagramNodeType>[];
-          const existingNode = overlapFreeLaidOutNodes.find((laidOutNode) => laidOutNode.id === node.id);
-          if (existingNode) {
-            return {
-              ...node,
-              position: existingNode.position,
-              width: existingNode.width,
-              height: existingNode.height,
-              style: {
-                ...node.style,
-                width: `${existingNode.width}px`,
-                height: `${existingNode.height}px`,
-              },
-            };
-          }
-          return node;
+      const layoutPromise = new Promise<void>((resolve) => {
+        layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
+          laidOutNodesWithElk.map((node) => {
+            const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
+              laidOutDiagram.nodes,
+              'horizontal'
+            ) as Node<NodeData, DiagramNodeType>[];
+            const existingNode = overlapFreeLaidOutNodes.find((laidOutNode) => laidOutNode.id === node.id);
+            if (existingNode) {
+              return {
+                ...node,
+                position: existingNode.position,
+                width: existingNode.width,
+                height: existingNode.height,
+                style: {
+                  ...node.style,
+                  width: `${existingNode.width}px`,
+                  height: `${existingNode.height}px`,
+                },
+              };
+            }
+            return node;
+          });
+          setNodes(laidOutNodesWithElk);
+          setEdges(laidOutDiagram.edges);
+          const finalDiagram: RawDiagram = {
+            nodes: laidOutNodesWithElk,
+            edges: laidOutDiagram.edges,
+          };
+          synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+          resolve();
         });
-        setNodes(laidOutNodesWithElk);
-        setEdges(laidOutDiagram.edges);
-        const finalDiagram: RawDiagram = {
-          nodes: laidOutNodesWithElk,
-          edges: laidOutDiagram.edges,
-        };
-        synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
       });
+      await layoutPromise;
     });
   };
 

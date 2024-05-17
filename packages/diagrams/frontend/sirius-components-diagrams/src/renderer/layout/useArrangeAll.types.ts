@@ -12,5 +12,5 @@
  *******************************************************************************/
 
 export interface UseArrangeAllValue {
-  arrangeAll: () => void;
+  arrangeAll: () => Promise<void>;
 }
