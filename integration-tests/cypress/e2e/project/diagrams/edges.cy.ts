@@ -152,7 +152,6 @@ describe('Diagram - edges', () => {
         details.getReferenceWidgetSelectedValue('Linked To', 'Entity2.bis').should('exist');
         diagram.getEdgePaths('diagram').should('have.length', 2);
         diagram.arrangeAll();
-        diagram.fitToScreen();
         diagram.getEdgePaths('diagram').should('have.length', 2);
         diagram
           .getEdgePaths('diagram')
@@ -252,7 +251,6 @@ describe('Diagram - edges', () => {
         details.selectReferenceWidgetOption('Entity2');
         explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
         diagram.arrangeAll();
-        diagram.fitToScreen();
         diagram.getEdgePaths('diagram').should('have.length', 1);
         diagram
           .getEdgePaths('diagram')
@@ -272,8 +270,6 @@ describe('Diagram - edges', () => {
         details.openReferenceWidgetOptions('Entity2');
         details.selectReferenceWidgetOption('Child');
         explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
-        diagram.arrangeAll();
-        diagram.fitToScreen();
         diagram.getEdgePaths('diagram').should('have.length', 1);
         diagram
           .getEdgePaths('diagram')

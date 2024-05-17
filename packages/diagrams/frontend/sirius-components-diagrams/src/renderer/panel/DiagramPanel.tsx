@@ -27,8 +27,8 @@ import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
-import { memo, useContext, useState } from 'react';
-import { Panel, useReactFlow } from 'reactflow';
+import { memo, useContext, useEffect, useState } from 'react';
+import { Panel, useNodesInitialized, useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
@@ -47,6 +47,7 @@ export const DiagramPanel = memo(
   ({ snapToGrid, onSnapToGrid, helperLines, onHelperLines, reactFlowWrapper }: DiagramPanelProps) => {
     const [state, setState] = useState<DiagramPanelState>({
       dialogOpen: null,
+      arrangeAllDone: false,
     });
 
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -58,6 +59,13 @@ export const DiagramPanel = memo(
 
     const { fullscreen, onFullscreen } = useFullscreen();
     const { arrangeAll } = useArrangeAll(reactFlowWrapper);
+    const nodesInitialized = useNodesInitialized();
+    useEffect(() => {
+      if (nodesInitialized && state.arrangeAllDone) {
+        fitView({ duration: 400 });
+        setState((prevState) => ({ ...prevState, arrangeAllDone: false }));
+      }
+    }, [nodesInitialized, state.arrangeAllDone]);
 
     const handleFitToScreen = () => fitView({ duration: 200, nodes: getSelectedNodes() });
     const handleZoomIn = () => zoomIn({ duration: 200 });
@@ -164,7 +172,14 @@ export const DiagramPanel = memo(
               <IconButton
                 size="small"
                 aria-label="arrange all elements"
-                onClick={() => arrangeAll()}
+                onClick={() =>
+                  arrangeAll().then(() =>
+                    setState((prevState) => ({
+                      ...prevState,
+                      arrangeAllDone: true,
+                    }))
+                  )
+                }
                 data-testid={'arrange-all'}
                 disabled={readOnly}>
                 <AccountTreeIcon />
