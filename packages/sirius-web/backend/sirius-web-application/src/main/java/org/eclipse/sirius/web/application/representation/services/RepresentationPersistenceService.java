@@ -44,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RepresentationPersistenceService implements IRepresentationPersistenceService {
 
-    private static final  String NONE = "none";
+    private static final String NONE = "none";
 
     private final IRepresentationDataSearchService representationDataSearchService;
 
@@ -111,7 +111,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
     }
 
     private RepresentationMigrationData getInitialMigrationData(String kind) {
-        return migrationParticipants.stream()
+        return this.migrationParticipants.stream()
                 .filter(migrationParticipant -> migrationParticipant.getKind().equals(kind))
                 .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
                 .sorted(Collections.reverseOrder())
@@ -120,7 +120,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
     }
 
     private RepresentationMigrationData getLastMigrationData(String kind) {
-        return migrationParticipants.stream()
+        return this.migrationParticipants.stream()
                 .filter(migrationParticipant -> migrationParticipant.getKind().equals(kind))
                 .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
                 .sorted(Collections.reverseOrder())
