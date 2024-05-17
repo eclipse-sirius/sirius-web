@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.collaborative.trees.dto.DeleteTreeItemInput;
+import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeEventInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.DeleteTreeItemMutationRunner;
+import org.eclipse.sirius.components.trees.tests.graphql.RenameTreeItemMutationRunner;
 import org.eclipse.sirius.components.trees.tests.graphql.TreeEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
@@ -65,21 +67,6 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
-    @Autowired
-    private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private TreeEventSubscriptionRunner treeEventSubscriptionRunner;
-
-    @Autowired
-    private DeleteTreeItemMutationRunner deleteTreeItemMutationRunner;
-
-    @Autowired
-    private IEditingContextSearchService editingContextSearchService;
-
-    @Autowired
-    private IIdentityService identityService;
-
     /**
      * Record used to contain both a way to find a tree item and some predicate to validate on said tree item in order to simplify the design of some advanced tests.
      *
@@ -92,9 +79,19 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             treeItem -> treeItem.getLabel().equals("Ecore")
     );
 
+    private final TreeItemMatcher rootDocumentIsNamedEcoreRenamed = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0),
+            treeItem -> treeItem.getLabel().equals("EcoreRenamed")
+    );
+
     private final TreeItemMatcher ePackageIsNamedSample = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0),
             treeItem -> treeItem.getLabel().equals("Sample")
+    );
+
+    private final TreeItemMatcher ePackageIsNamedSampleRenamed = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(0),
+            treeItem -> treeItem.getLabel().equals("SampleRenamed")
     );
 
     private final TreeItemMatcher representationIsAPortal = new TreeItemMatcher(
@@ -112,6 +109,24 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             treeItem -> !treeItem.isHasChildren()
     );
 
+    @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
+    private TreeEventSubscriptionRunner treeEventSubscriptionRunner;
+
+    @Autowired
+    private DeleteTreeItemMutationRunner deleteTreeItemMutationRunner;
+
+    @Autowired
+    private RenameTreeItemMutationRunner renameTreeItemMutationRunner;
+
+    @Autowired
+    private IEditingContextSearchService editingContextSearchService;
+
+    @Autowired
+    private IIdentityService identityService;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -119,8 +134,8 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a project, when we subscribe to the tree events of its explorer, then the tree of the explorer is sent")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenWeSubscribeToTreeEventsOfItsExplorerThenTheTreeOfTheExplorerIsSent() {
         var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, List.of(), List.of());
         var flux = this.treeEventSubscriptionRunner.run(input);
@@ -140,8 +155,8 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given the explorer of a project, when we delete tree items, then the tree is refreshed")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenExplorerOfProjectWhenWeDeleteTreeItemsThenTheTreeIsRefreshed() {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
         var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, expandedIds, List.of());
@@ -171,6 +186,31 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
                 .expectNextMatches(hasNoMoreObject)
                 .then(this.deleteTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeId, TestIdentifiers.ECORE_SAMPLE_DOCUMENT))
                 .expectNextMatches(hasNoMoreDocument)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given the explorer of a project, when we rename a tree item, then the tree is refreshed")
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenExplorerOfProjectWhenWeRenameTreeItemThenTheTreeIsRefreshed() {
+        var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
+        var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, expandedIds, List.of());
+        var flux = this.treeEventSubscriptionRunner.run(input);
+
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.representationIsAPortal));
+        var hasObjectNewLabel = this.getTreeRefreshedEventPayloadMatcher(List.of(this.ePackageIsNamedSampleRenamed));
+        var hasDocumentNewLabel = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcoreRenamed));
+
+        var treeId = new TreeConfiguration(input.editingContextId(), input.treeId(), input.expanded(), input.activeFilterIds()).getId();
+
+        StepVerifier.create(flux)
+                .expectNextMatches(hasProjectContent)
+                .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeId, TestIdentifiers.EPACKAGE_OBJECT, "SampleRenamed"))
+                .expectNextMatches(hasObjectNewLabel)
+                .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeId, TestIdentifiers.ECORE_SAMPLE_DOCUMENT, "EcoreRenamed"))
+                .expectNextMatches(hasDocumentNewLabel)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -216,6 +256,20 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             var result = this.deleteTreeItemMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.deleteTreeItem.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+
+            TestTransaction.flagForCommit();
+            TestTransaction.end();
+            TestTransaction.start();
+        };
+    }
+
+    private Runnable renameTreeItem(String editingContextId, String treeId, UUID treeItemId, String newLabel) {
+        return () -> {
+            var input = new RenameTreeItemInput(UUID.randomUUID(), editingContextId, treeId, treeItemId, newLabel);
+            var result = this.renameTreeItemMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.renameTreeItem.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();

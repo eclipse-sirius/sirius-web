@@ -35,6 +35,7 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Table("representation_data")
 public class RepresentationData extends AbstractValidatingAggregateRoot<RepresentationData> implements Persistable<UUID> {
+
     @Transient
     private boolean isNew;
 
@@ -96,11 +97,11 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
     }
 
     public String getLastMigrationPerformed() {
-        return lastMigrationPerformed;
+        return this.lastMigrationPerformed;
     }
 
     public String getMigrationVersion() {
-        return migrationVersion;
+        return this.migrationVersion;
     }
 
     public Instant getLastModifiedOn() {
@@ -147,7 +148,7 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private UUID id;
+        private final UUID id;
 
         private AggregateReference<Project, UUID> project;
 

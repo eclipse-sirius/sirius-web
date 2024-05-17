@@ -93,8 +93,8 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
 
     @Test
     @DisplayName("Given a representation to create, when the mutation is performed, then the representation has been created")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRepresentationToCreateWhenMutationIsPerformedThenTheRepresentationHasBeenCreated() {
         this.givenCommittedTransaction.commit();
 
@@ -125,8 +125,8 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
 
     @Test
     @DisplayName("Given a representation to rename, when the mutation is performed, then the representation has been rename")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRepresentationToRenameWhenMutationIsPerformedThenTheRepresentationHasBeenRenamed() {
         this.givenCommittedTransaction.commit();
 
@@ -143,8 +143,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
             assertThat(typename).isEqualTo(RenameRepresentationSuccessPayload.class.getSimpleName());
 
             assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
-            var event = this.domainEventCollector.getDomainEvents().get(0);
-            assertThat(event).isInstanceOf(RepresentationDataContentUpdatedEvent.class);
+            assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(RepresentationDataContentUpdatedEvent.class::isInstance);
         };
 
         StepVerifier.create(flux)
@@ -155,8 +154,8 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
 
     @Test
     @DisplayName("Given a representation to delete, when the mutation is performed, then the representation has been deleted")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRepresentationToDeleteWhenMutationIsPerformedThenTheRepresentationHasBeenDeleted() {
         this.givenCommittedTransaction.commit();
 

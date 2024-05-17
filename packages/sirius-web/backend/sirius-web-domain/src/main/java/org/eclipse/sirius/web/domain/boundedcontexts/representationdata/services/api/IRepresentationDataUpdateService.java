@@ -22,6 +22,7 @@ import org.eclipse.sirius.web.domain.services.IResult;
  * @author sbegaudeau
  */
 public interface IRepresentationDataUpdateService {
+
     IResult<Void> updateContent(UUID id, String content);
 
     IResult<Void> updateContentWithMigrationData(UUID id, String content, String lastMigrationPerformed, String migrationVersion);

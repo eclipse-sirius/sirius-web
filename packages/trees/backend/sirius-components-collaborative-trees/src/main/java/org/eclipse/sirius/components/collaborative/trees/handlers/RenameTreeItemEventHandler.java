@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
-import org.eclipse.sirius.components.collaborative.trees.dto.DeleteTreeItemInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput;
 import org.eclipse.sirius.components.collaborative.trees.services.api.ICollaborativeTreeMessageService;
 import org.eclipse.sirius.components.collaborative.trees.services.api.ITreeQueryService;
@@ -75,12 +74,11 @@ public class RenameTreeItemEventHandler implements ITreeEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, TreeDescription treeDescription, Tree tree, ITreeInput treeInput) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(treeInput.getClass().getSimpleName(), DeleteTreeItemInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(treeInput.getClass().getSimpleName(), RenameTreeItemInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(treeInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, treeInput.representationId(), treeInput);
 
-        if (treeInput instanceof RenameTreeItemInput) {
-            RenameTreeItemInput input = (RenameTreeItemInput) treeInput;
+        if (treeInput instanceof RenameTreeItemInput input) {
 
             var optionalTreeItem = this.treeQueryService.findTreeItem(tree, input.treeItemId());
 
