@@ -40,6 +40,7 @@ const freeFormNodeStyle = (
     height: '100%',
     opacity: faded ? '0.4' : '',
     ...style,
+    borderColor: getCSSColor(String(style.borderColor), theme),
   };
   if (selected || hovered) {
     freeFormNodeStyle.outline = `${theme.palette.selected} solid 1px`;
@@ -47,7 +48,7 @@ const freeFormNodeStyle = (
   return freeFormNodeStyle;
 };
 
-const imageNodeStyle = (
+const backgroundNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   rotation: string | undefined,
@@ -105,7 +106,7 @@ export const FreeFormNode = memo(({ data, id, selected, dragging }: NodeProps<Fr
     [data.style, selected, data.isHovered, data.faded]
   );
   const backgroundStyle = useMemo(
-    () => imageNodeStyle(theme, data.style, rotation, imageURL),
+    () => backgroundNodeStyle(theme, data.style, rotation, imageURL),
     [data.style, rotation, imageURL]
   );
 
