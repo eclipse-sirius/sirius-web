@@ -162,8 +162,8 @@ export const Toolbar = ({
 
   const allColumns = [
     { type: TaskListColumnEnum.NAME, name: 'Name' },
-    { type: TaskListColumnEnum.FROM, name: 'From' },
-    { type: TaskListColumnEnum.TO, name: 'To' },
+    { type: TaskListColumnEnum.START_DATE, name: 'Start Date' },
+    { type: TaskListColumnEnum.END_DATE, name: 'End Date' },
     { type: TaskListColumnEnum.PROGRESS, name: 'Progress' },
   ];
 

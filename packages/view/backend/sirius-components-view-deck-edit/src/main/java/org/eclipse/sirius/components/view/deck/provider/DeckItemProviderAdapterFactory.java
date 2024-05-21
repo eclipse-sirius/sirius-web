@@ -38,6 +38,7 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckFactory;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
 import org.eclipse.sirius.components.view.deck.util.DeckAdapterFactory;
@@ -598,11 +599,14 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
             /**
              * <!-- begin-user-doc --> <!-- end-user-doc -->
              *
-             * @generated
+             * @generated NOT
              */
             @Override
             public Object caseView(View object) {
-                this.newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, DeckFactory.eINSTANCE.createDeckDescription()));
+                DeckDescription deckDescription = DeckFactory.eINSTANCE.createDeckDescription();
+                deckDescription.setName("New Deck Description");
+                deckDescription.setTitleExpression("aql:'New Deck Representation'");
+                this.newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, deckDescription));
 
                 return null;
             }

@@ -16,6 +16,9 @@ import { useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import { GQLTaskDetail } from '../subscription/GanttSubscription.types';
 import {
+  GQLChangeColumnData,
+  GQLChangeColumnInput,
+  GQLChangeColumnVariables,
   GQLChangeTaskCollapseStateData,
   GQLChangeTaskCollapseStateInput,
   GQLChangeTaskCollapseStateVariables,
@@ -37,6 +40,7 @@ import {
   UseGanttMutations,
 } from './GanttMutation.types';
 import {
+  changeColumnMutation,
   changeTaskCollapseStateMutation,
   createTaskDependencyMutation,
   createTaskMutation,
@@ -166,6 +170,24 @@ export const useGanttMutations = (editingContextId: string, representationId: st
     mutationChangeTaskCollapseState({ variables: { input } });
   };
 
+  const [mutationChangeColumn, mutationChangeColumnResult] = useMutation<GQLChangeColumnData, GQLChangeColumnVariables>(
+    changeColumnMutation
+  );
+  useReporting(mutationChangeColumnResult, (data: GQLChangeColumnData) => data.changeGanttColumn);
+
+  const changeColumn = (columnId: string, displayed: boolean, width: number) => {
+    const input: GQLChangeColumnInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      columnId,
+      displayed,
+      width,
+    };
+
+    mutationChangeColumn({ variables: { input } });
+  };
+
   return {
     deleteTask,
     createTask,
@@ -173,5 +195,6 @@ export const useGanttMutations = (editingContextId: string, representationId: st
     dropTask,
     createTaskDependency,
     changeTaskCollapseState,
+    changeColumn,
   };
 };

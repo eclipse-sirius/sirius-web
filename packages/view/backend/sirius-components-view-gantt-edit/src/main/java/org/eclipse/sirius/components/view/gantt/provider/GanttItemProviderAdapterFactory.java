@@ -38,6 +38,7 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttFactory;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.components.view.gantt.util.GanttAdapterFactory;
@@ -471,11 +472,14 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
             /**
              * <!-- begin-user-doc --> <!-- end-user-doc -->
              *
-             * @generated
+             * @generated NOT
              */
             @Override
             public Object caseView(View object) {
-                this.newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, GanttFactory.eINSTANCE.createGanttDescription()));
+                GanttDescription ganttDescription = GanttFactory.eINSTANCE.createGanttDescription();
+                ganttDescription.setName("New Gantt Description");
+                ganttDescription.setTitleExpression("aql:'New Gantt Representation'");
+                this.newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, ganttDescription));
 
                 return null;
             }

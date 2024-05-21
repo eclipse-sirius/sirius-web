@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.gantt.renderer.component;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +21,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.gantt.Gantt;
+import org.eclipse.sirius.components.gantt.GanttColumn;
 import org.eclipse.sirius.components.gantt.Task;
 import org.eclipse.sirius.components.gantt.description.GanttDescription;
 import org.eclipse.sirius.components.gantt.description.TaskDescription;
 import org.eclipse.sirius.components.gantt.renderer.elements.GanttElementProps;
+import org.eclipse.sirius.components.gantt.renderer.events.ChangeGanttColumnEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -50,6 +53,7 @@ public class GanttComponent implements IComponent {
         String ganttId = optionalPreviousGantt.map(Gantt::getId).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = ganttDescription.targetObjectIdProvider().apply(variableManager);
         String label = optionalPreviousGantt.map(Gantt::getLabel).orElseGet(() -> ganttDescription.labelProvider().apply(variableManager));
+        List<GanttColumn> columns = computeColumn(optionalPreviousGantt);
 
         List<Task> previousTasks = optionalPreviousGantt.map(Gantt::tasks).orElse(List.of());
 
@@ -62,8 +66,34 @@ public class GanttComponent implements IComponent {
                     return new Element(TaskDescriptionComponent.class, taskComponentProps);
                 }).toList();
 
-        GanttElementProps ganttElementProps = new GanttElementProps(ganttId, ganttDescription.getId(), targetObjectId, label, children);
+        GanttElementProps ganttElementProps = new GanttElementProps(ganttId, ganttDescription.getId(), targetObjectId, label, children, columns);
         return new Element(GanttElementProps.TYPE, ganttElementProps);
+    }
+
+    private List<GanttColumn> computeColumn(Optional<Gantt> optionalPreviousGantt) {
+        return optionalPreviousGantt.map(previousGantt -> {
+            List<GanttColumn> columns = previousGantt.columns();
+            return this.props.ganttEventOptional()
+                    .filter(ChangeGanttColumnEvent.class::isInstance)
+                    .map(ChangeGanttColumnEvent.class::cast)
+                    .map(event -> {
+                        List<GanttColumn> newGanttColumns = new ArrayList<>(columns);
+                        newGanttColumns.removeIf(col-> col.id().equals(event.columnId()));
+                        newGanttColumns.add(new GanttColumn(event.columnId(), event.displayed(), event.width()));
+                        return newGanttColumns;
+                    })
+                    .orElse(columns);
+        })
+        .orElse(getDefaultColumns());
+    }
+
+    private List<GanttColumn> getDefaultColumns() {
+        List<GanttColumn> columns = new ArrayList<>();
+        columns.add(new GanttColumn("NAME", true, 210));
+        columns.add(new GanttColumn("START_DATE", true, 130));
+        columns.add(new GanttColumn("END_DATE", true, 130));
+        columns.add(new GanttColumn("PROGRESS", true, 40));
+        return columns;
     }
 
     private void computeId2TaskDescriptions(List<TaskDescription> taskDescriptions, Map<String, TaskDescription> id2TaskDescription) {

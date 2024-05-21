@@ -23,6 +23,13 @@ type Gantt implements Representation {
   metadata: RepresentationMetadata!
   targetObjectId: ID!
   tasks: [Task!]!
+  columns: [GanttColumn!]!
+}
+
+type GanttColumn {
+  id: ID!
+  displayed : Boolean!
+  width: Int!
 }
 
 type Task {
@@ -68,6 +75,7 @@ extend type Mutation {
   dropGanttTask(input: DropGanttTaskInput!): DropGanttTaskPayload
   createGanttTaskDependency(input: CreateGanttTaskDependencyInput!): CreateGanttTaskDependencyPayload
   changeGanttTaskCollapseState(input: ChangeGanttTaskCollapseStateInput!): ChangeGanttTaskCollapseStatePayload
+  changeGanttColumn(input: ChangeGanttColumnInput!): ChangeGanttColumnPayload
 }
 
 input CreateGanttTaskInput {
@@ -132,3 +140,13 @@ input ChangeGanttTaskCollapseStateInput {
   collapsed: Boolean!
 }
 union ChangeGanttTaskCollapseStatePayload = SuccessPayload | ErrorPayload
+
+input ChangeGanttColumnInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  columnId: ID!
+  displayed: Boolean!
+  width: Int!
+}
+union ChangeGanttColumnPayload = SuccessPayload | ErrorPayload

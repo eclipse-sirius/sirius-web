@@ -44,6 +44,11 @@ export const ganttEventSubscription = gql`
               }
             }
           }
+          columns {
+            id
+            displayed
+            width
+          }
         }
       }
     }

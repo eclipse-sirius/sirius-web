@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  *
  * @author lfasani
  */
-public record Gantt(String id, String descriptionId, String targetObjectId, String label, List<Task> tasks) implements IRepresentation {
+public record Gantt(String id, String descriptionId, String targetObjectId, String label, List<Task> tasks, List<GanttColumn> columns) implements IRepresentation {
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Gantt";
 
@@ -30,6 +30,10 @@ public record Gantt(String id, String descriptionId, String targetObjectId, Stri
         Objects.requireNonNull(id);
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(descriptionId);
+    }
+
+    public static Builder newGantt(Gantt gantt) {
+        return new Builder(gantt);
     }
 
     @Override
@@ -57,10 +61,6 @@ public record Gantt(String id, String descriptionId, String targetObjectId, Stri
         return KIND;
     }
 
-    public static Builder newGantt(Gantt gantt) {
-        return new Builder(gantt);
-    }
-
     /**
      * The builder used to create a gantt.
      *
@@ -77,6 +77,8 @@ public record Gantt(String id, String descriptionId, String targetObjectId, Stri
         private String label;
 
         private List<Task> tasks;
+
+        private List<GanttColumn> columns;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -109,8 +111,13 @@ public record Gantt(String id, String descriptionId, String targetObjectId, Stri
             return this;
         }
 
+        public Builder columns(List<GanttColumn> columns) {
+            this.columns = Objects.requireNonNull(columns);
+            return this;
+        }
+
         public Gantt build() {
-            Gantt gantt = new Gantt(this.id, this.descriptionId, this.targetObjectId, this.label, this.tasks);
+            Gantt gantt = new Gantt(this.id, this.descriptionId, this.targetObjectId, this.label, this.tasks, this.columns);
             return gantt;
         }
     }

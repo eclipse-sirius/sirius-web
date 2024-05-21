@@ -21,6 +21,7 @@ export interface UseGanttMutations {
   dropTask: (droppedTask: TaskOrEmpty, targetTask: TaskOrEmpty | undefined, dropIndex: number) => void;
   createTaskDependency: (sourceTaskId: string, targetTaskId: string) => void;
   changeTaskCollapseState: (taskId: string, collapsed: boolean) => void;
+  changeColumn: (columnId: string, displayed: boolean, width: number) => void;
 }
 
 export interface GQLDeleteTaskVariables {
@@ -125,3 +126,20 @@ export interface GQLChangeTaskCollapseStateData {
 }
 
 export type GQLChangeGanttTaskCollapseStatePayload = GQLErrorPayload | GQLSuccessPayload;
+
+export interface GQLChangeColumnVariables {
+  input: GQLChangeColumnInput;
+}
+export interface GQLChangeColumnInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  columnId: string;
+  displayed: boolean;
+  width: number;
+}
+export interface GQLChangeColumnData {
+  changeGanttColumn: GQLChangeGanttColumnPayload;
+}
+
+export type GQLChangeGanttColumnPayload = GQLErrorPayload | GQLSuccessPayload;
