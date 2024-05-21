@@ -107,7 +107,7 @@ describe('Verify the Gantt Representation', () => {
     });
     it('can display the table columns', () => {
       const ganttHelper = new GanttTestHelper();
-      const columnTitles = ['Name', 'Date of start', 'Date of start', 'Progress'];
+      const columnTitles = ['Name', 'Start Date', 'Start Date', 'Progress'];
       columnTitles.forEach((title) => {
         ganttHelper.getColumnHeader(title).should('exist');
       });
@@ -122,10 +122,10 @@ describe('Verify the Gantt Representation', () => {
 
       //hide one column
       ganttHelper.getGanttRepresentation().findByTestId('columns-select').click();
-      cy.getByTestId('columnType-From').click();
-      ganttHelper.getColumnHeader('Date of start').should('not.exist');
-      cy.getByTestId('columnType-From').click();
-      ganttHelper.getColumnHeader('Date of start').should('exist');
+      cy.getByTestId('columnType-START_DATE').click();
+      ganttHelper.getColumnHeader('Start Date').should('not.exist');
+      cy.getByTestId('columnType-START_DATE').click();
+      ganttHelper.getColumnHeader('Start Date').should('exist');
       cy.get('body').click(0, 0);
 
       // hide all columns
@@ -138,10 +138,10 @@ describe('Verify the Gantt Representation', () => {
         ganttHelper.getColumnHeader(title).should('exist');
       });
       ganttHelper.getGanttRepresentation().findByTestId('columns-select').click();
-      cy.getByTestId('columnType-From').click();
+      cy.getByTestId('columnType-START_DATE').click();
       cy.get('body').click(0, 0);
       ganttHelper.getGanttRepresentation().findByTestId('display-task-list-columns').click();
-      ganttHelper.getColumnHeader('Date of start').should('not.exist');
+      ganttHelper.getColumnHeader('Start Date').should('not.exist');
     });
 
     it('can change the columns width', () => {
@@ -160,8 +160,8 @@ describe('Verify the Gantt Representation', () => {
       ganttHelper.getColumnHeader('Name').then((header) => {
         expect(header.width()).to.approximately(40, 2);
       });
-      ganttHelper.getColumnHeader('Date of start').then((header) => {
-        expect(header.width()).to.approximately(140, 2);
+      ganttHelper.getColumnHeader('End Date').then((header) => {
+        expect(header.width()).to.approximately(120, 2);
       });
     });
   });

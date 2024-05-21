@@ -10,17 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Column, ColumnProps, Dependency, TaskOrEmpty, TaskType, TitleColumn } from '@ObeoNetwork/gantt-task-react';
 import {
-  Column,
-  ColumnProps,
-  DateEndColumn,
-  DateStartColumn,
-  Dependency,
-  TaskOrEmpty,
-  TaskType,
-  TitleColumn,
-} from '@ObeoNetwork/gantt-task-react';
-import {
+  GQLColumn,
   GQLGantt,
   GQLTask,
   GQLTaskDetail,
@@ -118,45 +110,73 @@ const ProgressColumn = ({ data: { task } }: ColumnProps) => {
   return null;
 };
 
-export const getAllColumns = () => {
+const StartDateColumn: React.FC<ColumnProps> = ({ data: { task } }) => {
+  if (task.type !== 'empty') {
+    return <div>{getFormattedDate(task.start)}</div>;
+  }
+
+  return null;
+};
+
+const EndDateColumn: React.FC<ColumnProps> = ({ data: { task } }) => {
+  if (task.type !== 'empty') {
+    return <div>{getFormattedDate(task.end)}</div>;
+  }
+
+  return null;
+};
+
+const getFormattedDate = (date: Date): string => {
+  const locale = navigator.languages[0];
+  return date.toLocaleDateString(locale, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+};
+
+export const getDisplayedColumns = (gqlColumns: GQLColumn[]): Column[] => {
   const columnEnums = [
     TaskListColumnEnum.NAME,
-    TaskListColumnEnum.FROM,
-    TaskListColumnEnum.TO,
+    TaskListColumnEnum.START_DATE,
+    TaskListColumnEnum.END_DATE,
     TaskListColumnEnum.PROGRESS,
   ];
   const columns: Column[] = [];
   columnEnums.forEach((columnType) => {
-    if (columnType === TaskListColumnEnum.NAME) {
-      columns.push({
-        component: TitleColumn,
-        width: 210,
-        title: 'Name',
-        id: TaskListColumnEnum.NAME,
-      });
-    } else if (columnType === TaskListColumnEnum.FROM) {
-      columns.push({
-        component: DateStartColumn,
-        width: 150,
-        title: 'Date of start',
-        id: TaskListColumnEnum.FROM,
-      });
-    } else if (columnType === TaskListColumnEnum.TO) {
-      columns.push({
-        component: DateEndColumn,
-        width: 150,
-        title: 'Date of end',
-        id: TaskListColumnEnum.TO,
-      });
-    } else if (columnType === TaskListColumnEnum.PROGRESS) {
-      columns.push({
-        component: ProgressColumn,
-        width: 40,
-        title: 'Progress',
-        id: TaskListColumnEnum.PROGRESS,
-      });
+    const gqlColumn = gqlColumns.find((col) => col.id == columnType);
+    if (gqlColumn && gqlColumn.displayed) {
+      if (columnType === TaskListColumnEnum.NAME) {
+        columns.push({
+          Cell: TitleColumn,
+          width: gqlColumn.width,
+          title: 'Name',
+          id: TaskListColumnEnum.NAME,
+        });
+      } else if (columnType === TaskListColumnEnum.START_DATE) {
+        columns.push({
+          Cell: StartDateColumn,
+          width: gqlColumn.width,
+          title: 'Start Date',
+          id: TaskListColumnEnum.START_DATE,
+        });
+      } else if (columnType === TaskListColumnEnum.END_DATE) {
+        columns.push({
+          Cell: EndDateColumn,
+          width: gqlColumn.width,
+          title: 'End Date',
+          id: TaskListColumnEnum.END_DATE,
+        });
+      } else if (columnType === TaskListColumnEnum.PROGRESS) {
+        columns.push({
+          Cell: ProgressColumn,
+          width: gqlColumn.width,
+          title: 'Progress',
+          id: TaskListColumnEnum.PROGRESS,
+        });
+      }
     }
   });
 
   return columns;
+};
+
+export const getSelectedColumns = (gqlColumns: GQLColumn[]) => {
+  return gqlColumns.filter((col) => col.displayed === true).map((col) => TaskListColumnEnum[col.id]);
 };

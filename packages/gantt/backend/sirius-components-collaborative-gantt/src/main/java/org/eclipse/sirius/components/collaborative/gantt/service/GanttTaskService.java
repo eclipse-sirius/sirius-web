@@ -21,6 +21,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttContext;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttTaskService;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeGanttColumnInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeTaskCollapseStateInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.Task;
 import org.eclipse.sirius.components.gantt.description.GanttDescription;
+import org.eclipse.sirius.components.gantt.renderer.events.ChangeGanttColumnEvent;
 import org.eclipse.sirius.components.gantt.renderer.events.ChangeGanttTaskCollapseStateEvent;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
@@ -240,5 +242,11 @@ public class GanttTaskService implements IGanttTaskService {
     public IPayload changeTaskCollapseState(ChangeTaskCollapseStateInput changeTaskCollapseStateInput, IEditingContext editingContext, IGanttContext ganttContext) {
         ganttContext.setGanttEvent(new ChangeGanttTaskCollapseStateEvent(changeTaskCollapseStateInput.taskId(), changeTaskCollapseStateInput.collapsed()));
         return this.getPayload(changeTaskCollapseStateInput.id());
+    }
+
+    @Override
+    public IPayload changeGanttColumn(ChangeGanttColumnInput changeGanttColumnInput, IEditingContext editingContext, IGanttContext ganttContext) {
+        ganttContext.setGanttEvent(new ChangeGanttColumnEvent(changeGanttColumnInput.columnId(), changeGanttColumnInput.displayed(), changeGanttColumnInput.width()));
+        return this.getPayload(changeGanttColumnInput.id());
     }
 }

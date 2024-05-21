@@ -110,7 +110,7 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
 
   //---------------------------------
   // Mutations
-  const { deleteTask, editTask, createTask, dropTask, createTaskDependency, changeTaskCollapseState } =
+  const { deleteTask, editTask, createTask, dropTask, createTaskDependency, changeTaskCollapseState, changeColumn } =
     useGanttMutations(editingContextId, representationId);
 
   const handleEditTask = (task: TaskOrEmpty) => {
@@ -147,6 +147,7 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
         editingContextId={editingContextId}
         representationId={representationId}
         tasks={tasks}
+        gqlColumns={gantt.columns}
         setSelection={setSelection}
         onCreateTask={createTask}
         onEditTask={handleEditTask}
@@ -155,6 +156,7 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
         onDropTask={dropTask}
         onCreateTaskDependency={createTaskDependency}
         onChangeTaskCollapseState={changeTaskCollapseState}
+        onChangeColumn={changeColumn}
       />
     );
   }

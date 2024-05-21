@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.gantt.api;
 
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeGanttColumnInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeTaskCollapseStateInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
@@ -59,6 +60,10 @@ public interface IGanttTaskService {
      */
     IPayload changeTaskCollapseState(ChangeTaskCollapseStateInput changeTaskCollapseStateInput, IEditingContext editingContext, IGanttContext ganttContext);
 
+    /**
+     * Change a table column.
+     */
+    IPayload changeGanttColumn(ChangeGanttColumnInput input, IEditingContext editingContext, IGanttContext ganttContext);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -94,6 +99,11 @@ public interface IGanttTaskService {
 
         @Override
         public IPayload changeTaskCollapseState(ChangeTaskCollapseStateInput changeTaskCollapseStateInput, IEditingContext editingContext, IGanttContext ganttContext) {
+            return null;
+        }
+
+        @Override
+        public IPayload changeGanttColumn(ChangeGanttColumnInput input, IEditingContext editingContext, IGanttContext ganttContext) {
             return null;
         }
     }

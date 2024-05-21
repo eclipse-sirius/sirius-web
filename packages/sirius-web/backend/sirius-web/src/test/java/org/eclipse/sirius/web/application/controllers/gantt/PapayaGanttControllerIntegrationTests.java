@@ -25,11 +25,13 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.GanttRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeGanttColumnInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeTaskCollapseStateInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.gantt.Gantt;
+import org.eclipse.sirius.components.gantt.tests.graphql.ChangeColumnMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.ChangeTaskCollapseStateMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.CreateTaskMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskMutationRunner;
@@ -79,6 +81,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private ChangeTaskCollapseStateMutationRunner changeTaskCollapseStateMutationRunner;
+
+    @Autowired
+    private ChangeColumnMutationRunner changeColumnMutationRunner;
 
 
     @BeforeEach
@@ -183,10 +188,10 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
-    @DisplayName("Given a gantt representation, expand Task mutation succeeds")
+    @DisplayName("Given a gantt representation, when the expand Task mutation is performed then it succeeds")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenGanttRepresentationThenExpandTaskMutationSucceeds() {
+    public void givenGanttRepresentationWhenTheExpandTaskMutationIsPerformedThenItSucceeds() {
 
         var flux = this.givenSubscriptionToGantt();
 
@@ -215,8 +220,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         Consumer<GanttRefreshedEventPayload> collapseGanttTaskConsumer = payload -> Optional.of(payload)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
-                    ganttRef.set(gantt);
-                    assertThat(new GanttNavigator(ganttRef.get()).findTaskByName("2024.3.0").detail().collapsed()).isTrue();
+                    assertThat(new GanttNavigator(gantt).findTaskByName("2024.3.0").detail().collapsed()).isTrue();
                 }, () -> fail(MISSING_GANTT));
 
 
@@ -224,6 +228,56 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .consumeNextWith(initialGanttContentConsumer)
                 .then(expandTask)
                 .consumeNextWith(collapseGanttTaskConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+    @Test
+    @DisplayName("Given a gantt representation, when the change column mutation is performed, then it succeeds")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenGanttRepresentationWhenChangeColumnMutationIsPerformedThenItSucceeds() {
+
+        var flux = this.givenSubscriptionToGantt();
+
+        var ganttRef = new AtomicReference<Gantt>();
+        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    ganttRef.set(gantt);
+                    assertThat(gantt).isNotNull();
+                    assertThat(gantt.columns()).hasSize(4);
+                }, () -> fail(MISSING_GANTT));
+
+
+        Runnable changeColumn = () -> {
+            var columnToChange = ganttRef.get().columns().stream()
+                    .filter(col -> col.id().equals("START_DATE"))
+                    .findFirst().get();
+            var changeColumnInput = new ChangeGanttColumnInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    ganttRef.get().getId(), columnToChange.id(), false, 50);
+            var result = this.changeColumnMutationRunner.run(changeColumnInput);
+
+            String typename = JsonPath.read(result, "$.data.changeGanttColumn.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<GanttRefreshedEventPayload> changeColumnConsumer = payload -> Optional.of(payload)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    var changedColumn = gantt.columns().stream()
+                            .filter(col -> col.id().equals("START_DATE"))
+                            .findFirst().get();
+                    assertThat(changedColumn.isDisplayed()).isFalse();
+                    assertThat(changedColumn.width()).isEqualTo(50);
+                }, () -> fail(MISSING_GANTT));
+
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialGanttContentConsumer)
+                .then(changeColumn)
+                .consumeNextWith(changeColumnConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

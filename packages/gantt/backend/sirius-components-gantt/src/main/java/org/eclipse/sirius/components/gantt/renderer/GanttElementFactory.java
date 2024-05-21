@@ -48,7 +48,7 @@ public class GanttElementFactory implements IElementFactory {
                 .map(Task.class::cast)
                 .toList();
 
-        return new Gantt(props.id(), props.descriptionId(), props.targetObjectId(), props.label(), tasks);
+        return new Gantt(props.id(), props.descriptionId(), props.targetObjectId(), props.label(), tasks, props.columns());
     }
 
     private Task instantiateTask(TaskElementProps props, List<Object> children) {

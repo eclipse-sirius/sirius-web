@@ -56,6 +56,7 @@ export interface GQLGantt {
   displayedDays: GQLDay[];
   backgroundColor: string;
   tasks: GQLTask[];
+  columns: GQLColumn[];
 }
 
 export interface GQLTask {
@@ -68,6 +69,11 @@ export interface GQLTask {
   style: GQLTaskStyle;
   subTasks: GQLTask[];
   taskDependencyIds: string[];
+}
+export interface GQLColumn {
+  id: string;
+  displayed: boolean;
+  width: number;
 }
 
 export interface SelectableTask extends Task {

@@ -31,9 +31,9 @@ import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SelectableTask } from '../graphql/subscription/GanttSubscription.types';
-import { getAllColumns } from '../helper/helper';
+import { getDisplayedColumns, getSelectedColumns } from '../helper/helper';
 import { getContextalPalette } from '../palette/ContextualPalette';
 import { Toolbar } from '../toolbar/Toolbar';
 import { GanttProps, GanttState, TaskListColumnEnum } from './Gantt.types';
@@ -58,24 +58,21 @@ export const Gantt = ({
   editingContextId,
   representationId,
   tasks,
+  gqlColumns,
   setSelection,
   onCreateTask,
   onEditTask,
-  onExpandCollapse,
   onDeleteTask,
   onDropTask,
   onCreateTaskDependency,
   onChangeTaskCollapseState,
+  onChangeColumn,
 }: GanttProps) => {
-  const [{ zoomLevel, selectedColumns, columns, displayColumns }, setState] = useState<GanttState>({
+  // all Columns state is used to avoid the blink effect when resizing the column
+  const [{ zoomLevel, selectedColumns, displayedColumns, displayColumns }, setState] = useState<GanttState>({
     zoomLevel: ViewMode.Day,
-    selectedColumns: [
-      TaskListColumnEnum.NAME,
-      TaskListColumnEnum.FROM,
-      TaskListColumnEnum.TO,
-      TaskListColumnEnum.PROGRESS,
-    ],
-    columns: getAllColumns(),
+    selectedColumns: getSelectedColumns(gqlColumns),
+    displayedColumns: getDisplayedColumns(gqlColumns),
     displayColumns: true,
   });
   const ganttContainerRef = useRef<HTMLDivElement | null>(null);
@@ -127,16 +124,6 @@ export const Gantt = ({
       return { ...prevState, zoomLevel: zoomLevel };
     });
   };
-  const onChangeDisplayColumns = () => {
-    setState((prevState) => {
-      return { ...prevState, displayColumns: !displayColumns };
-    });
-  };
-  const onChangeColumns = (columnTypes: TaskListColumnEnum[]) => {
-    setState((prevState) => {
-      return { ...prevState, selectedColumns: columnTypes };
-    });
-  };
 
   const handleDeleteTaskOnContextualPalette = (task: Task) => {
     onDeleteTask([task]);
@@ -169,14 +156,63 @@ export const Gantt = ({
     }
   };
 
+  // Columns display
+  useEffect(() => {
+    // This useEffect is use if the column resize is done externally
+    if (gqlColumns) {
+      setState((prevState) => {
+        return {
+          ...prevState,
+          selectedColumns: getSelectedColumns(gqlColumns),
+          displayedColumns: getDisplayedColumns(gqlColumns),
+        };
+      });
+    }
+  }, [gqlColumns]);
+
+  const onChangeDisplayColumns = () => {
+    setState((prevState) => {
+      return { ...prevState, displayColumns: !displayColumns };
+    });
+  };
+  const onChangeColumns = (columnTypes: TaskListColumnEnum[]) => {
+    setState((prevState) => {
+      const allColumns = gqlColumns.map((gqlColumn) => {
+        return { ...gqlColumn, displayed: columnTypes.find((colType) => colType === gqlColumn.id) !== undefined };
+      });
+      return {
+        ...prevState,
+        selectedColumns: getSelectedColumns(allColumns),
+        displayedColumns: getDisplayedColumns(allColumns),
+      };
+    });
+
+    const changedColumn = gqlColumns.find((gqlColumn) => {
+      const colThatIsDisplayed = columnTypes.find((colType) => colType === gqlColumn.id);
+      return (
+        (colThatIsDisplayed === undefined && gqlColumn.displayed) ||
+        (colThatIsDisplayed !== undefined && !gqlColumn.displayed)
+      );
+    });
+    if (changedColumn) {
+      onChangeColumn(changedColumn.id, !changedColumn.displayed, changedColumn.width);
+    }
+  };
+  const handleResizeColumn = (nextColumns: readonly Column[], columnIndex: number) => {
+    const changedColumn = nextColumns.at(columnIndex);
+    if (changedColumn) {
+      onChangeColumn(changedColumn.id, true, changedColumn.width);
+
+      // avoid the blink effect
+      setState((prevState) => {
+        return { ...prevState, displayedColumns: Array.from(nextColumns) };
+      });
+    }
+  };
+
   let tableColumns: Column[] = [];
   if (displayColumns) {
-    tableColumns = columns.filter((col) => {
-      if (col.id != undefined) {
-        return selectedColumns.map((colEnum) => colEnum as string).includes(col.id);
-      }
-      return false;
-    });
+    tableColumns = displayedColumns;
   }
 
   const colors: Partial<ColorStyles> = {
@@ -221,7 +257,7 @@ export const Gantt = ({
         onDateChange={onEditTask}
         onProgressChange={onEditTask}
         onDelete={onDeleteTask}
-        onDoubleClick={onExpandCollapse}
+        onDoubleClick={(task) => onChangeTaskCollapseState(task.id, !task.hideChildren)}
         onClick={handleSelection}
         roundEndDate={(date: Date) => date}
         roundStartDate={(date: Date) => date}
@@ -239,6 +275,7 @@ export const Gantt = ({
         authorizedRelations={authorizedRelations}
         onChangeExpandState={(changedTask) => onChangeTaskCollapseState(changedTask.id, !!changedTask.hideChildren)}
         icons={icons}
+        onResizeColumn={handleResizeColumn}
       />
     </div>
   );

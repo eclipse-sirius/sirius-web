@@ -131,3 +131,23 @@ export const changeTaskCollapseStateMutation = gql`
     }
   }
 `;
+
+export const changeColumnMutation = gql`
+  mutation changeGanttColumn($input: ChangeGanttColumnInput!) {
+    changeGanttColumn(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
