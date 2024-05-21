@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -77,7 +78,7 @@ public class DiagramDescriptionValidator implements EValidator {
             isValid = this.hasProperDomainType(diagramElementDescription, diagnostics) && isValid;
         }
         if (eObject instanceof NodeStyleDescription nodeStyle) {
-            isValid = this.hasProperColor(nodeStyle, diagnostics) && isValid;
+            isValid = this.hasProperBackground(nodeStyle, diagnostics) && isValid;
             isValid = this.hasProperBorderColor(nodeStyle, diagnostics) && isValid;
 
         }
@@ -139,23 +140,25 @@ public class DiagramDescriptionValidator implements EValidator {
         return isValid;
     }
 
-    private boolean hasProperColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
+    private boolean hasProperBackground(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
         boolean isValid = true;
+        EReference reference = null;
         if (nodeStyle instanceof RectangularNodeStyleDescription rectangularNodeStyleDescription) {
-            isValid =  Objects.nonNull(rectangularNodeStyleDescription.getBackground());
-        }
-        if (nodeStyle instanceof IconLabelNodeStyleDescription iconLabelNodeStyleDescription) {
-            isValid =  Objects.nonNull(iconLabelNodeStyleDescription.getBackground());
+            isValid = Objects.nonNull(rectangularNodeStyleDescription.getBackground());
+            reference = DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND;
+        } else if (nodeStyle instanceof IconLabelNodeStyleDescription iconLabelNodeStyleDescription) {
+            isValid = Objects.nonNull(iconLabelNodeStyleDescription.getBackground());
+            reference = DiagramPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND;
         }
 
-        if (!isValid && diagnostics != null) {
+        if (!isValid && diagnostics != null && reference != null) {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
-                    "The color should not be empty",
-                    new Object [] {
+                    "The background should not be empty",
+                    new Object[] {
                         nodeStyle,
-                        DiagramPackage.Literals.STYLE__COLOR,
+                        reference,
                     });
 
             diagnostics.add(basicDiagnostic);

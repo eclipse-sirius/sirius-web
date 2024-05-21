@@ -32,7 +32,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/2981[#2981] [diagram] Fix a warning when an edge was hidden
 - https://github.com/eclipse-sirius/sirius-web/issues/3517[#3517] [diagram] Prevent edge path for rotatable border node to be inconsistent
 - https://github.com/eclipse-sirius/sirius-web/issues/2908[#2908] [diagram] Homogenize delete icon
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3485[#3485] [diagram] Add a validation error message when background value is missing
 
 === New Features
 

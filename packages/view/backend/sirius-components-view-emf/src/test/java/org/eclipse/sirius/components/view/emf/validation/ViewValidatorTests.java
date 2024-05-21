@@ -120,10 +120,10 @@ public class ViewValidatorTests {
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
                 0,
-                "The color should not be empty",
+                "The background should not be empty",
                 new Object [] {
                     conditionalNodeStyle,
-                    DiagramPackage.Literals.STYLE__COLOR,
+                    DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND,
                 }));
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
