@@ -12,7 +12,7 @@
  *******************************************************************************/
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import Delete from '@material-ui/icons/Delete';
 import { TaskIcon } from '../icons/TaskIcon';
 
 import { TaskContextualPaletteProps } from '@ObeoNetwork/gantt-task-react';
@@ -58,7 +58,7 @@ export const getContextalPalette = ({ onCreateTask, onDeleteTask }: ContextualPa
           title="Delete task"
           onClick={() => onDeleteTask(selectedTask)}
           data-testid="delete-task">
-          <DeleteForeverIcon fontSize="small" />
+          <Delete fontSize="small" />
         </IconButton>
       </div>
     );
