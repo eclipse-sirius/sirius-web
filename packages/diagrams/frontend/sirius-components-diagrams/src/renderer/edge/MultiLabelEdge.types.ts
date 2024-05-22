@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
+import { EdgeProps } from 'reactflow';
 import { EdgeData, EdgeLabel } from '../DiagramRenderer.types';
+
+export type MultiLabelEdgeProps<T = any> = {
+  edgeCenterX: number;
+  edgeCenterY: number;
+  svgPathString: string;
+} & EdgeProps<T>;
 
 export interface MultiLabelEdgeData extends EdgeData {
   beginLabel?: EdgeLabel;

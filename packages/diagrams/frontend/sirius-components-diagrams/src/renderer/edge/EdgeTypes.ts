@@ -12,8 +12,10 @@
  *******************************************************************************/
 
 import { DiagramEdgeTypes } from './EdgeTypes.types';
-import { MultiLabelEdge } from './MultiLabelEdge';
+import { SmoothStepEdgeWrapper } from './SmoothStepEdgeWrapper';
+import { SmartStepEdgeWrapper } from './SmartStepEdgeWrapper';
 
 export const edgeTypes: DiagramEdgeTypes = {
-  multiLabelEdge: MultiLabelEdge,
+  smartStepEdge: SmartStepEdgeWrapper,
+  smoothStepEdge: SmoothStepEdgeWrapper,
 };

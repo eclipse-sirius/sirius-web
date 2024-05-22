@@ -10,6 +10,8 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagrams] Add dependency to @tisoap/react-flow-smart-edge 3.0.0
+
 === Dependency update
 
 === Bug fixes
@@ -19,6 +21,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagram] Prevent edge from passing through another node
 
 == v2024.5.0
 

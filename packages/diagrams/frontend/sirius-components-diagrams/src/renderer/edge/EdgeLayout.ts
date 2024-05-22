@@ -22,7 +22,7 @@ import {
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
 } from './EdgeLayout.types';
-import { isDescendantOf } from '../layout/layoutNode';
+import { isDescendantOf, isDescendantOfId } from '../layout/layoutNode';
 
 export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters = (
   sourceNode,
@@ -109,7 +109,9 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes, l
   }
   const horizontalDifference = Math.abs(centerA.x - centerB.x);
   const verticalDifference = Math.abs(centerA.y - centerB.y);
-  const isDescendant = isDescendantOf(nodeB, nodeA, (nodeId) => visiblesNodes.find((node) => node.id === nodeId));
+  const isDescendant = nodeA.data.isBorderNode
+    ? isDescendantOfId(nodeA.parentNode ?? '', nodeB, (nodeId) => visiblesNodes.find((node) => node.id === nodeId))
+    : isDescendantOf(nodeB, nodeA, (nodeId) => visiblesNodes.find((node) => node.id === nodeId));
   let position: Position;
   if (isVerticalLayoutDirection(layoutDirection)) {
     if (isDescendant) {
