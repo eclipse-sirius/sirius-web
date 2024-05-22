@@ -12,7 +12,9 @@
  *******************************************************************************/
 
 import { HandleElement, Position, XYPosition, internalsSymbol } from 'reactflow';
+import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
+import { isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
 import {
   GetEdgeParameters,
   GetEdgeParametersWhileMoving,
@@ -22,7 +24,7 @@ import {
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
 } from './EdgeLayout.types';
-import { isDescendantOf } from '../layout/layoutNode';
+import { FreeFormNodeData } from '../node/FreeFormNode.types';
 
 export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters = (
   sourceNode,
@@ -86,8 +88,40 @@ const isVerticalLayoutDirection = (layoutDirection: string): boolean =>
   layoutDirection === 'DOWN' || layoutDirection === 'UP';
 const isHorizontalLayoutDirection = (layoutDirection: string): boolean =>
   layoutDirection === 'RIGHT' || layoutDirection === 'LEFT';
+const isPositionDependentRotation = (nodeData: NodeData): boolean => {
+  if ('positionDependentRotation' in nodeData) {
+    return (nodeData as FreeFormNodeData).positionDependentRotation;
+  }
+  return false;
+};
+const computeBorderNodeHandlePosition = (borderNodeData: NodeData, isInside: boolean): Position => {
+  let borderNodePosition: BorderNodePosition | null = borderNodeData.borderNodePosition;
+  if (isPositionDependentRotation(borderNodeData)) {
+    borderNodePosition = BorderNodePosition.WEST;
+  }
+  switch (borderNodePosition) {
+    case BorderNodePosition.EAST:
+      return isInside ? Position.Left : Position.Right;
+    case BorderNodePosition.SOUTH:
+      return isInside ? Position.Top : Position.Bottom;
+    case BorderNodePosition.WEST:
+      return isInside ? Position.Right : Position.Left;
+    case BorderNodePosition.NORTH:
+      return isInside ? Position.Bottom : Position.Top;
+    default:
+      return isInside ? Position.Left : Position.Right;
+  }
+};
 
 const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes, layoutDirection) => {
+  if (nodeA.data.isBorderNode) {
+    const isInside = isSiblingOrDescendantOf(nodeA, nodeB, (nodeId) =>
+      visiblesNodes.find((node) => node.id === nodeId)
+    );
+    return {
+      position: computeBorderNodeHandlePosition(nodeA.data, isInside),
+    };
+  }
   let centerA: NodeCenter;
   if (movingNode && movingNode.id === nodeA.id) {
     centerA = {

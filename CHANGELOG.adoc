@@ -19,6 +19,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3511[#3511] [diagram] Improve edge handle position for border nodes
 
 == v2024.5.0
 

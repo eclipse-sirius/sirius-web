@@ -209,9 +209,9 @@ export const convertDiagram = (
     nodes,
     edges,
   };
-  layoutHandles(rawDiagram, diagramDescription);
   computeBorderNodeExtents(rawDiagram.nodes);
   computeBorderNodePositions(rawDiagram.nodes);
+  layoutHandles(rawDiagram, diagramDescription);
 
   return {
     metadata: {
