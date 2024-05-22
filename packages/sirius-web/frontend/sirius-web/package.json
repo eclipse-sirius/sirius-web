@@ -56,14 +56,14 @@
     "@testing-library/user-event": "13.2.1",
     "@types/d3": "7.0.0",
     "@types/jest": "27.0.0",
-    "@types/node": "16.6.0",
+    "@types/node": "20.12.12",
     "@types/react-dom": "17.0.9",
-    "@vitejs/plugin-react": "4.0.4",
+    "@vitejs/plugin-react": "4.3.0",
     "jest-junit-reporter": "1.1.0",
     "prettier": "2.7.1",
     "typescript": "5.1.6",
-    "vite": "4.4.9",
-    "vitest": "0.34.2"
+    "vite": "5.2.11",
+    "vitest": "1.6.0"
   },
   "overrides": {
     "@types/react-router-dom": {

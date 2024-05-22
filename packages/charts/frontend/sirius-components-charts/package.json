@@ -36,12 +36,12 @@
   "devDependencies": {
     "@eclipse-sirius/sirius-components-tsconfig": "*",
     "@types/react": "17.0.37",
-    "@vitejs/plugin-react": "4.0.4",
+    "@vitejs/plugin-react": "4.3.0",
     "d3": "7.0.0",
     "prettier": "2.7.1",
     "react": "17.0.2",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "typescript": "5.1.6",
-    "vite": "4.4.9"
+    "vite": "5.2.11"
   }
 }
