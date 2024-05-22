@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.infrastructure.graphql;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,18 +33,15 @@ public class GraphQLDataFetcherExceptionHandler implements DataFetcherExceptionH
     private final Logger logger = LoggerFactory.getLogger(GraphQLDataFetcherExceptionHandler.class);
 
     @Override
-    public DataFetcherExceptionHandlerResult onException(DataFetcherExceptionHandlerParameters handlerParameters) {
+    public CompletableFuture<DataFetcherExceptionHandlerResult> handleException(DataFetcherExceptionHandlerParameters handlerParameters) {
         this.logger.warn(handlerParameters.getException().getMessage(), handlerParameters.getException());
 
-        GraphQLError error = this.getGraphQLError(handlerParameters);
+        GraphQLError error = new ExceptionWhileDataFetching(handlerParameters.getPath(), handlerParameters.getException(), handlerParameters.getSourceLocation());
 
-        return DataFetcherExceptionHandlerResult.newResult()
+        var result = DataFetcherExceptionHandlerResult.newResult()
                 .error(error)
                 .build();
-    }
-
-    private GraphQLError getGraphQLError(DataFetcherExceptionHandlerParameters handlerParameters) {
-        return new ExceptionWhileDataFetching(handlerParameters.getPath(), handlerParameters.getException(), handlerParameters.getSourceLocation());
+        return CompletableFuture.completedFuture(result);
     }
 
 }

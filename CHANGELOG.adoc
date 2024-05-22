@@ -13,6 +13,7 @@
 === Dependency update
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2837[#2837] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.13 to benefit for enhancements
+- https://github.com/eclipse-sirius/sirius-web/issues/3510[#3510] [releng] Switch to Spring Boot 3.2.5
 
 === Bug fixes
 
