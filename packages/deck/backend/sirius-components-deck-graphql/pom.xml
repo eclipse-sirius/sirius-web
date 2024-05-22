@@ -18,7 +18,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.2</version>
+		<version>3.2.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
@@ -41,32 +41,28 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.graphql-java</groupId>
-			<artifactId>graphql-java</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-api</artifactId>
-            <version>2024.5.0</version>
+			<version>2024.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-annotations-spring</artifactId>
-            <version>2024.5.0</version>
+			<version>2024.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-deck</artifactId>
-            <version>2024.5.0</version>
+			<version>2024.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-            <version>2024.5.0</version>
+			<version>2024.5.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
