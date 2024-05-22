@@ -166,4 +166,125 @@ describe('Diagram - edges', () => {
       });
     });
   });
+  context('Given a studio template with border node', () => {
+    let studioProjectId: string = '';
+    let domainName: string = '';
+
+    before(() =>
+      new Studio().createStudioProject().then((createdProjectData) => {
+        studioProjectId = createdProjectData.projectId;
+        const project = new Project();
+        project.visit(createdProjectData.projectId);
+        project.disableDeletionConfirmationDialog();
+        const explorer = new Explorer();
+        const details = new Details();
+        explorer.expand('DomainNewModel');
+        cy.get('[title="domain::Domain"]').then(($div) => {
+          domainName = $div.data().testid;
+          explorer.createObject(domainName, 'Entity');
+          details.getTextField('Name').should('have.value', 'NewEntity');
+          details.getTextField('Name').type('{selectAll}Border{enter}');
+          explorer.createObject('Entity1', 'Relation');
+          details.getCheckBox('Containment').check();
+          details.getTextField('Name').type('{selectAll}borders{enter}');
+          details.openReferenceWidgetOptions('Target Type');
+          details.selectReferenceWidgetOption('Border');
+          explorer.createObject('Entity1', 'Relation');
+          details.getCheckBox('Containment').check();
+          details.getTextField('Name').type('{selectAll}entity2s{enter}');
+          details.openReferenceWidgetOptions('Target Type');
+          details.selectReferenceWidgetOption('Entity2');
+          explorer.createObject('Border', 'Relation');
+          details.openReferenceWidgetOptions('Target Type');
+          details.selectReferenceWidgetOption('Entity2');
+          details.getTextField('Name').type('{selectAll}entity2{enter}');
+
+          explorer.expand('ViewNewModel');
+          explorer.expand('View');
+          explorer.expand(`${domainName} Diagram Description`);
+          explorer.expand('Entity1 Node');
+          details.openReferenceWidgetOptions('Reused Child Node Descriptions');
+          details.selectReferenceWidgetOption('Entity2 Node');
+          details.getTextField('Default Width Expression').type('300{enter}');
+          details.getTextField('Default Height Expression').type('300{enter}');
+          explorer.createObject('Entity1 Node', 'Border node');
+          details.getTextField('Domain Type').should('have.value', '');
+          details.getTextField('Domain Type').type(`{selectAll}${domainName}::Border{enter}`);
+          details.getTextField('Default Width Expression').type('25{enter}');
+          details.getTextField('Default Height Expression').type('25{enter}');
+          explorer.createObject(`${domainName} Diagram Description`, 'Edge Description');
+          details.openReferenceWidgetOptions('Source Node Descriptions');
+          details.selectReferenceWidgetOption('Border node');
+          details.openReferenceWidgetOptions('Target Node Descriptions');
+          details.selectReferenceWidgetOption('Entity2 Node');
+          details.getTextField('Source Nodes Expression').type('aql:self');
+          details.getTextField('Target Nodes Expression').type('{selectAll}aql:self.entity2');
+        });
+      })
+    );
+
+    after(() => cy.deleteProject(studioProjectId));
+    context('When we create a new instance project', () => {
+      let instanceProjectId: string = '';
+
+      beforeEach(() => {
+        const studio = new Studio();
+        studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
+          instanceProjectId = res.projectId;
+        });
+      });
+
+      afterEach(() => cy.deleteProject(instanceProjectId));
+
+      it('Then check edge handles for border node are correctly positioned', () => {
+        const explorer = new Explorer();
+        const details = new Details();
+        const diagram = new Diagram();
+
+        explorer.createObject('Root', 'Entity2s Entity2');
+        details.getTextField('Name').type('Entity2{Enter}');
+        explorer.createObject('Root', 'Entity1s Entity1');
+        details.getTextField('Name').should('have.value', '');
+        details.getTextField('Name').type('Entity1{Enter}');
+        explorer.createObject('Entity1', 'Borders Border');
+        explorer.select('Border');
+        details.openReferenceWidgetOptions('Entity2');
+        details.selectReferenceWidgetOption('Entity2');
+        explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
+        diagram.arrangeAll();
+        diagram.fitToScreen();
+        diagram.getEdgePaths('diagram').should('have.length', 1);
+        diagram
+          .getEdgePaths('diagram')
+          .eq(0)
+          .invoke('attr', 'd')
+          .then((dValue) => {
+            expect(diagram.roundSvgPathData(dValue ?? '')).to.equal(
+              'M490.00L505.00Q510.00L510.00Q510.00L171.00L151.00'
+            );
+          });
+        explorer.delete('diagram');
+        explorer.createObject('Entity1', 'Entity2s Entity2');
+        details.getTextField('Name').should('have.value', '');
+        details.getTextField('Name').type('Child{Enter}');
+        explorer.select('Border');
+        details.deleteReferenceWidgetOption('Entity2', 'Entity2');
+        details.openReferenceWidgetOptions('Entity2');
+        details.selectReferenceWidgetOption('Child');
+        explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
+        diagram.arrangeAll();
+        diagram.fitToScreen();
+        diagram.getEdgePaths('diagram').should('have.length', 1);
+        diagram
+          .getEdgePaths('diagram')
+          .eq(0)
+          .invoke('attr', 'd')
+          .then((dValue) => {
+            expect(diagram.roundSvgPathData(dValue ?? '')).to.equal(
+              'M465.00L445.00L402.00Q397.00L397.00Q397.00L349.00L329.00'
+            );
+          });
+      });
+    });
+  });
 });
