@@ -35,7 +35,7 @@
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
     "@xstate/react": "1.6.3",
-    "graphql": "16.8.0",
+    "graphql": "16.8.1",
     "react": "17.0.2",
     "xstate": "4.32.1"
   },
@@ -48,7 +48,7 @@
     "@types/react": "17.0.37",
     "@vitejs/plugin-react": "4.0.4",
     "@xstate/react": "1.6.3",
-    "graphql": "16.8.0",
+    "graphql": "16.8.1",
     "prettier": "2.7.1",
     "react": "17.0.2",
     "rollup-plugin-peer-deps-external": "2.2.4",

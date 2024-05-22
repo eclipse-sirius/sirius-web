@@ -129,7 +129,7 @@
     "@eclipse-sirius/sirius-components-selection": "*",
     "@eclipse-sirius/sirius-components-diagrams": "*",
     "axios": "0.21.4",
-    "graphql": "16.8.0",
+    "graphql": "16.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "notistack": "3.0.1",
