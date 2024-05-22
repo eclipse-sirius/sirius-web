@@ -13,6 +13,7 @@
 === Dependency update
 
 === Bug fixes
+- https://github.com/eclipse-sirius/sirius-web/issues/3515[#3515] [form] Form pages appear in the addition order
 
 === New Features
 
