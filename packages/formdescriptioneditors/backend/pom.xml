@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-formdescriptioneditors-parent</artifactId>
-	<version>2024.3.6</version>
+	<version>2024.5.0</version>
 
 	<name>sirius-components-formdescriptioneditors-parent</name>
 	<description>Sirius Components FormDescription Editors Parent</description>

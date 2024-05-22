@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-diagrams-graphql</artifactId>
-	<version>2024.3.6</version>
+	<version>2024.5.0</version>
 	<name>sirius-components-diagrams-graphql</name>
 	<description>Sirius Components Diagrams GraphQL</description>
 
@@ -51,22 +51,22 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-api</artifactId>
-			<version>2024.3.6</version>
+			<version>2024.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-annotations-spring</artifactId>
-			<version>2024.3.6</version>
+			<version>2024.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-diagrams</artifactId>
-			<version>2024.3.6</version>
+			<version>2024.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.3.6</version>
+			<version>2024.5.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

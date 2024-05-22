@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative-validation</artifactId>
-	<version>2024.3.6</version>
+	<version>2024.5.0</version>
 	<name>sirius-components-collaborative-validation</name>
 	<description>Sirius Components Collaborative Validation</description>
 
@@ -47,12 +47,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>2024.3.6</version>
+			<version>2024.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-validation</artifactId>
-			<version>2024.3.6</version>
+			<version>2024.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,13 +62,13 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.3.6</version>
+			<version>2024.5.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2024.3.6</version>
+			<version>2024.5.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

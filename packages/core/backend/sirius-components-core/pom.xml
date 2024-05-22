@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-core</artifactId>
-	<version>2024.3.6</version>
+	<version>2024.5.0</version>
 	<name>sirius-components-core</name>
 	<description>Sirius Components Core</description>
 
@@ -52,17 +52,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-annotations</artifactId>
-			<version>2024.3.6</version>
+			<version>2024.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2024.3.6</version>
+			<version>2024.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.3.6</version>
+			<version>2024.5.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
