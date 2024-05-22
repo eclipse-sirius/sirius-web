@@ -78,7 +78,7 @@
     "react-router-dom": "5.2.0",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "xstate": "4.32.1",
-    "typescript": "5.1.6",
+    "typescript": "5.4.5",
     "vite": "5.2.11"
   }
 }
