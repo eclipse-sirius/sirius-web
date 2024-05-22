@@ -66,9 +66,9 @@
     "@eclipse-sirius/sirius-components-portals": "*",
     "@eclipse-sirius/sirius-components-trees": "*",
     "@eclipse-sirius/sirius-components-tsconfig": "*",
-    "@types/node": "16.6.0",
+    "@types/node": "20.12.12",
     "@types/react": "17.0.37",
-    "@vitejs/plugin-react": "4.0.4",
+    "@vitejs/plugin-react": "4.3.0",
     "@xstate/react": "1.6.3",
     "jest-junit-reporter": "1.1.0",
     "graphql": "16.8.1",
@@ -79,6 +79,6 @@
     "rollup-plugin-peer-deps-external": "2.2.4",
     "xstate": "4.32.1",
     "typescript": "5.1.6",
-    "vite": "4.4.9"
+    "vite": "5.2.11"
   }
 }

@@ -26,10 +26,10 @@
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
     "@types/react": "17.0.37",
-    "@vitejs/plugin-react": "4.0.4",
+    "@vitejs/plugin-react": "4.3.0",
     "prettier": "2.7.1",
     "react": "17.0.2",
     "typescript": "5.1.6",
-    "vite": "4.4.9"
+    "vite": "5.2.11"
   }
 }
