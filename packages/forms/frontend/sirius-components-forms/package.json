@@ -32,7 +32,7 @@
     "publish:local": "yalc push"
   },
   "peerDependencies": {
-    "@apollo/client": "3.8.1",
+    "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-core": "*",
     "@eclipse-sirius/sirius-components-charts": "*",
     "@lexical/react": "0.8.1",
@@ -48,7 +48,7 @@
     "xstate": "4.32.1"
   },
   "devDependencies": {
-    "@apollo/client": "3.8.1",
+    "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-core": "*",
     "@eclipse-sirius/sirius-components-charts": "*",
     "@eclipse-sirius/sirius-components-tsconfig": "*",

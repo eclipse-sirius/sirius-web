@@ -122,7 +122,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
-    "@apollo/client": "3.8.1",
+    "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-charts": "*",
     "@eclipse-sirius/sirius-components-core": "*",
     "@eclipse-sirius/sirius-components-forms": "*",
