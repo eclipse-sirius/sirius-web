@@ -91,7 +91,7 @@ export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onE
   return (
     <>
       {defaultTool && (
-        <div className={classes.toolSection}>
+        <div className={classes.toolSection} data-testid={toolSection.label}>
           <Tool tool={defaultTool} onClick={() => onToolClick(defaultTool)} thumbnail />
           {caretContent}
         </div>
