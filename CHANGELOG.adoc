@@ -20,6 +20,7 @@
 - [releng] Switch to `@types/node` 20.12.12
 - [releng] Switch to `typescript` 5.4.5
 - [releng] Switch to `turbo` 1.13.3
+- [releng] Switch to `jacoco` 0.8.12
 
 
 === Bug fixes
