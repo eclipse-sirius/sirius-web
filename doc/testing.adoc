@@ -1,0 +1,115 @@
+# Testing
+
+This document will describe how we should try to write and maintain tests in Sirius Web.
+
+IMPORTANT: TLDR: Use backend integration tests if you don’t have large and complex pieces of frontend code to test that involve the user interface (diagram interactions, diagram layout, form description editor drag and drop, etc).
+They can easily be configured to test very complex use cases involving domains, views, custom services, etc.
+They are very fast to execute and are very stable.
+
+
+## What kind of tests do we have?
+
+We have quite a large scope of tests in Sirius Web with:
+
+- Backend unit tests
+- Backend integration tests
+- Frontend unit tests
+- End to end tests
+- Manual tests
+
+## What kind of tests should be written?
+
+The kind of tests that should be written depends on the work that has been done and which should be tested and the goal of the tests.
+
+### Backend unit tests
+
+This kind of tests should be used if you have some very complex algorithm in one specific method.
+Given the kind of application that we are developing, this kind of tests should be quite rare.
+While we had the backend layout algorithm in the past which represented quite a complex set of algorithms with some geometric computation, this is not really the case anymore.
+Since most of the complexity we have to deal with is the integration between components, they are not that useful for us today.
+
+### Frontend unit tests
+
+Just like their backend counterparts, such tests should be written for complex pieces of algorithm on the frontend.
+Some of our React component can easily have a complex lifecycle using complex DOM interactions and synchronisation steps with the remote server for example.
+They could be tested using this approach but most of the time the experience has shown that this may require setting up some complex mocks of both the DOM and the backend.
+
+Most of the complexity in our frontend code comes from the synchronisation of state between user interactions and the lifecycle of the backend.
+As a result, most of the code that needs to be tested in the frontend could just as well be tested by end to end tests.
+
+IMPORTANT: The more mocks are necessary to run unit tests, the further the tests are from the reality.
+If you need to mock some parts of the database (with mocks of IRepository for backend tests), network interactions like HTTP requests / WebSocket messages (with mocks of useQuery() or useMutation()) or the DOM (jdom), you probably need integration tests instead.
+
+
+### Backend integration tests
+
+Those tests are to be considered if most of the logic to be tested is located on the backend and if the frontend part of the tested feature is not significant.
+
+They allow you to test complex state of backend business logic.
+It is possible to initialize complex state easily with snapshots of the database or custom services to initialize the editing context with domains or view based representation descriptions.
+You can write tests to validate the complex steps of the lifecycle of the representations (create a representation, validate some initial state, trigger some tool, validate the impact of said tool).
+We can even contribute test-specific services to mock customization provided by specifiers.
+
+If you don’t have complex pieces of frontend code to test, they are the most efficient way to test Sirius Web applications.
+
+
+### End to end tests with Cypress
+
+End to end tests are a great way to manipulate the application like the end user.
+They give you the ability to test features involving complex user interactions and frontend / backend exchanges.
+For example, there is nothing like end to end tests to validate some frontend interactions in diagrams.
+
+While they may seem perfect at first, they also have some sizable drawbacks.
+End to end tests are very costly to setup.
+Since we are limited to what the user interface and the HTTP API can do, it’s very complex to perform tests with complex initial state.
+Testing new features of the view DSL for example, require the creation of a studio project and then an instance project and that’s both cumbersome, long and subject to errors.
+ 
+It is also very difficult to test invalid use cases since both the user interface and the HTTP API prevent end users from creating issues.
+
+End to end tests are also the most complex tests to write and maintain.
+Since we have to interact with the user interface like end users, we have to write every single step taken by the end user even if they are not relevant for the feature to be tested.
+
+These tests can easily be flaky since we have to carefully detect user interface states.
+Countless tests have been invalid in the past because of a failure to detect that a server response had not been received before trying to perform an action.
+For example, to create a representation, you need to wait for the response of the server in the new representation dialog otherwise the list of available representation is empty.
+
+
+### Manual tests
+
+This is THE perfect test environment since you will end up testing things using real human beings.
+But since we are testing with humans, there are a couple things to consider.
+Manual tests should be used for two main use cases.
+
+Either to ensure the non regression of use cases that are so complex that we did not succeed in writing automated tests.
+For example concurrent tests with multiple users.
+Or to leverage the ingenuity of real human beings to find bugs instead of preventing regressions.
+
+#### Using human beings to prevent regressions
+
+Most of the time, preventing regressions involve starting from a specific state, executing a specific set of instructions and validating a specific end result.
+This can and should be automated instead since:
+
+- They can be complex to maintain since we won't easily know which tests should be updated after a release (other kinds of tests tends to break quickly after an incompatible change)
+- They are boring to execute as an end user
+- It’s a shame not to perform such specific test in the continuous integration process
+- Human being are very good at missing small and boring details
+
+As such using human for non regression is not really efficient. Let’s be more careful with the contribution of non regression tests when pull results are submitted.
+
+#### Using humans to discover new bugs
+
+Instead it is better to use human beings to use the application to find new bugs.
+By giving them some freedom in the way each test should be executed, we can easily end up with different testers using different paths.
+In order to discover bugs, the difference in the execution path can sometime be as subtle as clicking on menu items in a different order.
+Those manual tests shouldn't be too complex or too long to not frustrate testers. 
+
+## Decision
+
+Here are a couple of directions in which we will move with regards to tests:
+
+- If the vast majority of the behavior being tested is performed by the backend and if the frontend is not very complicated, we will default to backend integration tests
+- If a sizable part of the behavior being tested is performed in the frontend, we will default to end to end tests or unit tests
+- If a manual test can be automated, we will remove them and use an automated test instead
+- End to end tests are very time consuming, we will try to restrain ourselves from writing this kind of test if backend integration tests can do the same job
+- Flakky end to end tests are eroding our trust in the build by making everyone fine with red builds.
+They will be removed and issues will be created to either restore them if the feature tested had to be tested using an end to end test or to convert them to backend integration tests.
