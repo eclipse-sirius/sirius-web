@@ -67,7 +67,7 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                 this.formWithTitleExpressionDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaIdentifiers.SIRIUS_COMPONENTS_REPRESENTATIONS_OBJECT.toString(),
+                PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "FormWithTitleExpression"
         );
         return this.givenCreatedFormSubscription.createAndSubscribe(input);
