@@ -33,21 +33,32 @@ const freeFormNodeStyle = (
   style: React.CSSProperties,
   selected: boolean,
   hovered: boolean,
-  faded: boolean,
+  faded: boolean
+): React.CSSProperties => {
+  const freeFormNodeStyle: React.CSSProperties = {
+    width: '100%',
+    height: '100%',
+    opacity: faded ? '0.4' : '',
+    ...style,
+  };
+  if (selected || hovered) {
+    freeFormNodeStyle.outline = `${theme.palette.selected} solid 1px`;
+  }
+  return freeFormNodeStyle;
+};
+
+const imageNodeStyle = (
+  theme: Theme,
+  style: React.CSSProperties,
   rotation: string | undefined,
   imageURL: string | undefined
 ): React.CSSProperties => {
   const freeFormNodeStyle: React.CSSProperties = {
     width: '100%',
     height: '100%',
-    opacity: faded ? '0.4' : '',
     transform: rotation,
-    ...style,
     background: getCSSColor(String(style.background), theme),
   };
-  if (selected || hovered) {
-    freeFormNodeStyle.outline = `${theme.palette.selected} solid 1px`;
-  }
   if (imageURL) {
     freeFormNodeStyle.backgroundImage = `url(${imageURL})`;
     freeFormNodeStyle.backgroundRepeat = 'no-repeat';
@@ -90,8 +101,12 @@ export const FreeFormNode = memo(({ data, id, selected, dragging }: NodeProps<Fr
   const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
   const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
   const nodeStyle = useMemo(
-    () => freeFormNodeStyle(theme, data.style, selected, data.isHovered, data.faded, rotation, imageURL),
-    [data.style, selected, data.isHovered, data.faded, rotation, imageURL]
+    () => freeFormNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
+    [data.style, selected, data.isHovered, data.faded]
+  );
+  const backgroundStyle = useMemo(
+    () => imageNodeStyle(theme, data.style, rotation, imageURL),
+    [data.style, rotation, imageURL]
   );
 
   const handleOnDrop = (event: React.DragEvent) => {
@@ -122,7 +137,9 @@ export const FreeFormNode = memo(({ data, id, selected, dragging }: NodeProps<Fr
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
         data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
-        {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />}
+        <div style={{ ...backgroundStyle }}>
+          {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />}
+        </div>
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={getLabelId(data)} /> : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />

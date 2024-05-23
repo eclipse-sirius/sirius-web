@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { HandleElement, Position, XYPosition, internalsSymbol } from 'reactflow';
-import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
+import { BorderNodePosition } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
 import {
@@ -24,7 +24,6 @@ import {
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
 } from './EdgeLayout.types';
-import { FreeFormNodeData } from '../node/FreeFormNode.types';
 
 export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters = (
   sourceNode,
@@ -88,17 +87,11 @@ const isVerticalLayoutDirection = (layoutDirection: string): boolean =>
   layoutDirection === 'DOWN' || layoutDirection === 'UP';
 const isHorizontalLayoutDirection = (layoutDirection: string): boolean =>
   layoutDirection === 'RIGHT' || layoutDirection === 'LEFT';
-const isPositionDependentRotation = (nodeData: NodeData): boolean => {
-  if ('positionDependentRotation' in nodeData) {
-    return (nodeData as FreeFormNodeData).positionDependentRotation;
-  }
-  return false;
-};
-const computeBorderNodeHandlePosition = (borderNodeData: NodeData, isInside: boolean): Position => {
-  let borderNodePosition: BorderNodePosition | null = borderNodeData.borderNodePosition;
-  if (isPositionDependentRotation(borderNodeData)) {
-    borderNodePosition = BorderNodePosition.WEST;
-  }
+
+const computeBorderNodeHandlePosition = (
+  borderNodePosition: BorderNodePosition | null,
+  isInside: boolean
+): Position => {
   switch (borderNodePosition) {
     case BorderNodePosition.EAST:
       return isInside ? Position.Left : Position.Right;
@@ -119,7 +112,7 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes, l
       visiblesNodes.find((node) => node.id === nodeId)
     );
     return {
-      position: computeBorderNodeHandlePosition(nodeA.data, isInside),
+      position: computeBorderNodeHandlePosition(nodeA.data.borderNodePosition, isInside),
     };
   }
   let centerA: NodeCenter;
