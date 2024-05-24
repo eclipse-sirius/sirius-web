@@ -51,6 +51,14 @@
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//InsideLabelPosition">
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//InsideLabelPosition/TOP_CENTER"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//InsideLabelPosition/TOP_LEFT"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//InsideLabelPosition/TOP_RIGHT"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//InsideLabelPosition/MIDDLE_LEFT"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//InsideLabelPosition/MIDDLE_CENTER"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//InsideLabelPosition/MIDDLE_RIGHT"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//InsideLabelPosition/BOTTOM_LEFT"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//InsideLabelPosition/BOTTOM_CENTER"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//InsideLabelPosition/BOTTOM_RIGHT"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//OutsideLabelPosition">
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//OutsideLabelPosition/BOTTOM_CENTER"/>

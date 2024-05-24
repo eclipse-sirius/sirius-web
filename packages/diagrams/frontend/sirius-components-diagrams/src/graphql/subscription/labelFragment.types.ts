@@ -28,7 +28,16 @@ export interface GQLInsideLabel {
   textAlign: GQLLabelTextAlign;
 }
 
-export type GQLInsideLabelLocation = 'TOP_CENTER';
+export type GQLInsideLabelLocation =
+  | 'TOP_CENTER'
+  | 'TOP_LEFT'
+  | 'TOP_RIGHT'
+  | 'BOTTOM_CENTER'
+  | 'BOTTOM_LEFT'
+  | 'BOTTOM_RIGHT'
+  | 'MIDDLE_CENTER'
+  | 'MIDDLE_LEFT'
+  | 'MIDDLE_RIGHT';
 
 export type GQLLabelOverflowStrategy = 'NONE' | 'WRAP' | 'ELLIPSIS';
 

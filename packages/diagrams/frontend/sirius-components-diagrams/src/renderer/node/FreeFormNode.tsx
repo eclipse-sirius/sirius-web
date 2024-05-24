@@ -59,6 +59,11 @@ const backgroundNodeStyle = (
     height: '100%',
     transform: rotation,
     background: getCSSColor(String(style.background), theme),
+    borderRadius: style.borderRadius,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: -1,
   };
   if (imageURL) {
     freeFormNodeStyle.backgroundImage = `url(${imageURL})`;
@@ -138,9 +143,8 @@ export const FreeFormNode = memo(({ data, id, selected, dragging }: NodeProps<Fr
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
         data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
-        <div style={{ ...backgroundStyle }}>
-          {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />}
-        </div>
+        <div style={{ ...backgroundStyle }} />
+        {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />}
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={getLabelId(data)} /> : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />

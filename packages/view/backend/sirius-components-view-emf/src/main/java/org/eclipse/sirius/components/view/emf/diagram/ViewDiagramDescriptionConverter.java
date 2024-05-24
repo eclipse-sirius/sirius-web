@@ -414,7 +414,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .styleDescriptionProvider(styleDescriptionProvider)
                 .isHeaderProvider(isHeaderProvider)
                 .displayHeaderSeparatorProvider(displayHeaderSeparatorProvider)
-                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
+                .insideLabelLocation(InsideLabelLocation.valueOf(viewInsideLabelDescription.getPosition().getLiteral()))
                 .overflowStrategy(LabelOverflowStrategy.valueOf(viewInsideLabelDescription.getOverflowStrategy().getLiteral()))
                 .textAlign(LabelTextAlign.valueOf(viewInsideLabelDescription.getTextAlign().getLiteral()))
                 .build();
