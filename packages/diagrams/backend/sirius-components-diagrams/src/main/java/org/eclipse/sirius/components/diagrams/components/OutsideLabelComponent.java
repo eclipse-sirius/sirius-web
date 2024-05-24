@@ -70,6 +70,7 @@ public class OutsideLabelComponent implements IComponent {
                 .outsideLabelLocation(outsideLabelDescription.getOutsideLabelLocation())
                 .style(labelStyle)
                 .overflowStrategy(outsideLabelDescription.getOverflowStrategy())
+                .textAlign(outsideLabelDescription.getTextAlign())
                 .build();
         return new Element(OutsideLabelElementProps.TYPE, outsideLabelElementProps);
     }

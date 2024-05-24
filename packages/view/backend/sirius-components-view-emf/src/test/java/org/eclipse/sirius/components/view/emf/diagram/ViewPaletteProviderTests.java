@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
+import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
@@ -251,6 +252,7 @@ public class ViewPaletteProviderTests {
                 .displayHeaderSeparatorProvider(vm -> false)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
 
         return NodeDescription.newNodeDescription("nodeId")

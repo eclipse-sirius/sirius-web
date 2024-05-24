@@ -10,7 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLLabelStyle, GQLOutsideLabel, GQLInsideLabel } from '../graphql/subscription/labelFragment.types';
+import {
+  GQLLabelStyle,
+  GQLOutsideLabel,
+  GQLInsideLabel,
+  GQLLabelTextAlign,
+} from '../graphql/subscription/labelFragment.types';
 import { OutsideLabels, InsideLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { AlignmentMap } from './convertDiagram.types';
 
@@ -35,7 +40,7 @@ export const convertInsideLabel = (
       alignItems: 'center',
       justifyContent: 'center',
       padding: '8px 16px',
-      textAlign: 'center',
+      textAlign: convertLabelTextAlign(gqlInsideLabel.textAlign),
       ...convertLabelStyle(labelStyle),
     },
     iconURL: labelStyle.iconURL,
@@ -74,6 +79,7 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
       iconURL,
       style: {
         justifyContent: 'center',
+        textAlign: convertLabelTextAlign(gqlOutsideLabel.textAlign),
         ...convertLabelStyle(labelStyle),
       },
       overflowStrategy,
@@ -114,4 +120,18 @@ export const convertLabelStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProper
   }
 
   return style;
+};
+
+const convertLabelTextAlign = (textAlign: GQLLabelTextAlign): 'left' | 'right' | 'center' | 'justify' => {
+  switch (textAlign) {
+    case 'JUSTIFY':
+      return 'justify';
+    case 'LEFT':
+      return 'left';
+    case 'RIGHT':
+      return 'right';
+    case 'CENTER':
+    default:
+      return 'center';
+  }
 };

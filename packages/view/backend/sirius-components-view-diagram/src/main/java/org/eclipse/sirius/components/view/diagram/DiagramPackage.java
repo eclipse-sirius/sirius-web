@@ -783,13 +783,21 @@ public interface DiagramPackage extends EPackage {
     int LABEL_DESCRIPTION__OVERFLOW_STRATEGY = 1;
 
     /**
+     * The feature id for the '<em><b>Text Align</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LABEL_DESCRIPTION__TEXT_ALIGN = 2;
+
+    /**
      * The number of structural features of the '<em>Label Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LABEL_DESCRIPTION_FEATURE_COUNT = 2;
+    int LABEL_DESCRIPTION_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>Label Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -826,6 +834,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int INSIDE_LABEL_DESCRIPTION__OVERFLOW_STRATEGY = LABEL_DESCRIPTION__OVERFLOW_STRATEGY;
+
+    /**
+     * The feature id for the '<em><b>Text Align</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INSIDE_LABEL_DESCRIPTION__TEXT_ALIGN = LABEL_DESCRIPTION__TEXT_ALIGN;
 
     /**
      * The feature id for the '<em><b>Position</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -898,6 +914,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int OUTSIDE_LABEL_DESCRIPTION__OVERFLOW_STRATEGY = LABEL_DESCRIPTION__OVERFLOW_STRATEGY;
+
+    /**
+     * The feature id for the '<em><b>Text Align</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OUTSIDE_LABEL_DESCRIPTION__TEXT_ALIGN = LABEL_DESCRIPTION__TEXT_ALIGN;
 
     /**
      * The feature id for the '<em><b>Position</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3177,6 +3201,15 @@ public interface DiagramPackage extends EPackage {
      */
     int ARRANGE_LAYOUT_DIRECTION = 52;
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelTextAlign <em>Label Text
+     * Align</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelTextAlign
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelTextAlign()
+     */
+    int LABEL_TEXT_ALIGN = 53;
+    /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -3804,6 +3837,18 @@ public interface DiagramPackage extends EPackage {
      * @see #getLabelDescription()
      */
     EAttribute getLabelDescription_OverflowStrategy();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.LabelDescription#getTextAlign <em>Text Align</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Text Align</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelDescription#getTextAlign()
+     * @see #getLabelDescription()
+     */
+    EAttribute getLabelDescription_TextAlign();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.InsideLabelDescription
@@ -5072,6 +5117,16 @@ public interface DiagramPackage extends EPackage {
     EEnum getArrangeLayoutDirection();
 
     /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.LabelTextAlign <em>Label Text
+     * Align</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Label Text Align</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelTextAlign
+     */
+    EEnum getLabelTextAlign();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -5537,6 +5592,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute LABEL_DESCRIPTION__OVERFLOW_STRATEGY = eINSTANCE.getLabelDescription_OverflowStrategy();
+
+        /**
+         * The meta object literal for the '<em><b>Text Align</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LABEL_DESCRIPTION__TEXT_ALIGN = eINSTANCE.getLabelDescription_TextAlign();
 
         /**
          * The meta object literal for the
@@ -6545,6 +6608,16 @@ public interface DiagramPackage extends EPackage {
          * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrangeLayoutDirection()
          */
         EEnum ARRANGE_LAYOUT_DIRECTION = eINSTANCE.getArrangeLayoutDirection();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.LabelTextAlign <em>Label
+         * Text Align</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @see org.eclipse.sirius.components.view.diagram.LabelTextAlign
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelTextAlign()
+         */
+        EEnum LABEL_TEXT_ALIGN = eINSTANCE.getLabelTextAlign();
 
     }
 

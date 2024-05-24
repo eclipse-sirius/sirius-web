@@ -66,6 +66,16 @@ public class OutsideLabelDescriptionBuilder {
     }
 
     /**
+     * Setter for TextAlign.
+     *
+     * @generated
+     */
+    public OutsideLabelDescriptionBuilder textAlign(org.eclipse.sirius.components.view.diagram.LabelTextAlign value) {
+        this.getOutsideLabelDescription().setTextAlign(value);
+        return this;
+    }
+
+    /**
      * Setter for Position.
      *
      * @generated

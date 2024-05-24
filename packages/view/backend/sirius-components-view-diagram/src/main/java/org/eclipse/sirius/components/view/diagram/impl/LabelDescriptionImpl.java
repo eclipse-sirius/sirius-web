@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.LabelDescription;
 import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Label Description</b></em>'. <!-- end-user-doc
@@ -57,6 +58,15 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
      */
     protected static final LabelOverflowStrategy OVERFLOW_STRATEGY_EDEFAULT = LabelOverflowStrategy.NONE;
     /**
+     * The default value of the '{@link #getTextAlign() <em>Text Align</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getTextAlign()
+     */
+    protected static final LabelTextAlign TEXT_ALIGN_EDEFAULT = LabelTextAlign.LEFT;
+    /**
      * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -74,6 +84,15 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
      * @see #getOverflowStrategy()
      */
     protected LabelOverflowStrategy overflowStrategy = OVERFLOW_STRATEGY_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getTextAlign() <em>Text Align</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getTextAlign()
+     */
+    protected LabelTextAlign textAlign = TEXT_ALIGN_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -146,12 +165,37 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
      * @generated
      */
     @Override
+    public LabelTextAlign getTextAlign() {
+        return this.textAlign;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setTextAlign(LabelTextAlign newTextAlign) {
+        LabelTextAlign oldTextAlign = this.textAlign;
+        this.textAlign = newTextAlign == null ? TEXT_ALIGN_EDEFAULT : newTextAlign;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN, oldTextAlign, this.textAlign));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
                 return this.getLabelExpression();
             case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
                 return this.getOverflowStrategy();
+            case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
+                return this.getTextAlign();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -171,6 +215,9 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
             case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
                 this.setOverflowStrategy((LabelOverflowStrategy) newValue);
                 return;
+            case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
+                this.setTextAlign((LabelTextAlign) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -189,6 +236,9 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
             case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
                 this.setOverflowStrategy(OVERFLOW_STRATEGY_EDEFAULT);
                 return;
+            case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
+                this.setTextAlign(TEXT_ALIGN_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -205,6 +255,8 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
                 return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
             case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
                 return this.overflowStrategy != OVERFLOW_STRATEGY_EDEFAULT;
+            case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
+                return this.textAlign != TEXT_ALIGN_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -223,6 +275,8 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
                 this.labelExpression +
                 ", overflowStrategy: " +
                 this.overflowStrategy +
+                ", textAlign: " +
+                this.textAlign +
                 ')';
         return result;
     }

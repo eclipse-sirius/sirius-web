@@ -54,6 +54,12 @@
     <eLiterals name="LEFT" value="3"/>
     <eLiterals name="UP" value="4"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="LabelTextAlign">
+    <eLiterals name="LEFT"/>
+    <eLiterals name="RIGHT" value="1"/>
+    <eLiterals name="CENTER" value="2"/>
+    <eLiterals name="JUSTIFY" value="3"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoLayout" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -158,6 +164,8 @@
         defaultValueLiteral="aql:self.name"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="overflowStrategy" lowerBound="1"
         eType="#//LabelOverflowStrategy"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="textAlign" lowerBound="1"
+        eType="#//LabelTextAlign"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InsideLabelDescription" eSuperTypes="#//LabelDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="position" lowerBound="1"

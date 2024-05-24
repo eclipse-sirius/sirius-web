@@ -84,4 +84,29 @@ public interface LabelDescription extends EObject {
      */
     void setOverflowStrategy(LabelOverflowStrategy value);
 
+    /**
+     * Returns the value of the '<em><b>Text Align</b></em>' attribute. The literals are from the enumeration
+     * {@link org.eclipse.sirius.components.view.diagram.LabelTextAlign}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Text Align</em>' attribute.
+     * @model required="true"
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelTextAlign
+     * @see #setTextAlign(LabelTextAlign)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_TextAlign()
+     */
+    LabelTextAlign getTextAlign();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.LabelDescription#getTextAlign <em>Text
+     * Align</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Text Align</em>' attribute.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelTextAlign
+     * @see #getTextAlign()
+     */
+    void setTextAlign(LabelTextAlign value);
+
 } // LabelDescription

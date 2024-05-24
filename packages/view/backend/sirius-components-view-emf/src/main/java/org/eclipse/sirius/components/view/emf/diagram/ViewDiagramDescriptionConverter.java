@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
+import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
@@ -415,6 +416,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .displayHeaderSeparatorProvider(displayHeaderSeparatorProvider)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .overflowStrategy(LabelOverflowStrategy.valueOf(viewInsideLabelDescription.getOverflowStrategy().getLiteral()))
+                .textAlign(LabelTextAlign.valueOf(viewInsideLabelDescription.getTextAlign().getLiteral()))
                 .build();
     }
 
@@ -437,6 +439,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                     .styleDescriptionProvider(styleDescriptionProvider)
                     .outsideLabelLocation(OutsideLabelLocation.BOTTOM_MIDDLE)
                     .overflowStrategy(LabelOverflowStrategy.valueOf(outsideLabelDescription.getOverflowStrategy().getLiteral()))
+                    .textAlign(LabelTextAlign.valueOf(outsideLabelDescription.getTextAlign().getLiteral()))
                     .build();
         }).toList();
     }

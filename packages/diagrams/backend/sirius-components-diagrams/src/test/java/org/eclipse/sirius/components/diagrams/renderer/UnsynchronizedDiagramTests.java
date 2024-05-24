@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
+import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -287,6 +288,7 @@ public class UnsynchronizedDiagramTests {
                 .displayHeaderSeparatorProvider(vm -> false)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
 
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> RectangularNodeStyle.newRectangularNodeStyle()

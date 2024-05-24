@@ -39,6 +39,8 @@ public final class InsideLabel {
 
     private LabelOverflowStrategy overflowStrategy;
 
+    private LabelTextAlign textAlign;
+
     private InsideLabel() {
         // Prevent instantiation
     }
@@ -79,6 +81,10 @@ public final class InsideLabel {
         return this.overflowStrategy;
     }
 
+    public LabelTextAlign getTextAlign() {
+        return this.textAlign;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, text: {2}'}'";
@@ -106,6 +112,8 @@ public final class InsideLabel {
         private boolean displayHeaderSeparator;
 
         private LabelOverflowStrategy overflowStrategy;
+
+        private LabelTextAlign textAlign;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -151,6 +159,11 @@ public final class InsideLabel {
             return this;
         }
 
+        public Builder textAlign(LabelTextAlign textAlign) {
+            this.textAlign = Objects.requireNonNull(textAlign);
+            return this;
+        }
+
         public InsideLabel build() {
             InsideLabel label = new InsideLabel();
             label.id = Objects.requireNonNull(this.id);
@@ -160,6 +173,7 @@ public final class InsideLabel {
             label.isHeader = this.isHeader;
             label.displayHeaderSeparator = this.displayHeaderSeparator;
             label.overflowStrategy = Objects.requireNonNull(this.overflowStrategy);
+            label.textAlign = Objects.requireNonNull(this.textAlign);
             return label;
         }
     }

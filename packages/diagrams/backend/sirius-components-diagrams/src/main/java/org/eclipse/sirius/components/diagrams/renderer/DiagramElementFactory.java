@@ -211,6 +211,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .isHeader(insideLabelElementProps.isIsHeader())
                     .displayHeaderSeparator(insideLabelElementProps.isDisplayHeaderSeparator())
                     .overflowStrategy(insideLabelElementProps.getOverflowStrategy())
+                    .textAlign(insideLabelElementProps.getTextAlign())
                     .build();
         }
         return null;
@@ -219,7 +220,7 @@ public class DiagramElementFactory implements IElementFactory {
     private OutsideLabel instantiateOutsideLabel(IProps props) {
         if (props instanceof OutsideLabelElementProps outsideLabelElementProps) {
             return new OutsideLabel(outsideLabelElementProps.getId(), outsideLabelElementProps.getText(), outsideLabelElementProps.getOutsideLabelLocation(), outsideLabelElementProps.getStyle(),
-                    outsideLabelElementProps.getOverflowStrategy());
+                    outsideLabelElementProps.getOverflowStrategy(), outsideLabelElementProps.getTextAlign());
         }
         return null;
     }

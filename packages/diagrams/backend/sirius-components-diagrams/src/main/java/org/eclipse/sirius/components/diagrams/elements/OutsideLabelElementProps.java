@@ -18,6 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -40,6 +41,8 @@ public final class OutsideLabelElementProps implements IProps {
     private LabelStyle style;
 
     private LabelOverflowStrategy overflowStrategy;
+
+    private LabelTextAlign textAlign;
 
     private OutsideLabelElementProps() {
         // Prevent instantiation
@@ -69,6 +72,10 @@ public final class OutsideLabelElementProps implements IProps {
         return this.overflowStrategy;
     }
 
+    public LabelTextAlign getTextAlign() {
+        return this.textAlign;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, text: {2}'}'";
@@ -92,6 +99,8 @@ public final class OutsideLabelElementProps implements IProps {
         private LabelStyle style;
 
         private LabelOverflowStrategy overflowStrategy;
+
+        private LabelTextAlign textAlign;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -117,6 +126,11 @@ public final class OutsideLabelElementProps implements IProps {
             return this;
         }
 
+        public Builder textAlign(LabelTextAlign textAlign) {
+            this.textAlign = Objects.requireNonNull(textAlign);
+            return this;
+        }
+
         public OutsideLabelElementProps build() {
             OutsideLabelElementProps outsideLabelElementProps = new OutsideLabelElementProps();
             outsideLabelElementProps.id = Objects.requireNonNull(this.id);
@@ -124,6 +138,7 @@ public final class OutsideLabelElementProps implements IProps {
             outsideLabelElementProps.outsideLabelLocation = Objects.requireNonNull(this.outsideLabelLocation);
             outsideLabelElementProps.style = Objects.requireNonNull(this.style);
             outsideLabelElementProps.overflowStrategy = Objects.requireNonNull(this.overflowStrategy);
+            outsideLabelElementProps.textAlign = Objects.requireNonNull(this.textAlign);
             return outsideLabelElementProps;
         }
     }

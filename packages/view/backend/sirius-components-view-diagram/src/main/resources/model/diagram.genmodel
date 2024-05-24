@@ -67,6 +67,12 @@
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrangeLayoutDirection/LEFT"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrangeLayoutDirection/UP"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//LabelTextAlign">
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelTextAlign/LEFT"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelTextAlign/RIGHT"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelTextAlign/CENTER"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelTextAlign/JUSTIFY"/>
+    </genEnums>
     <genClasses ecoreClass="diagram.ecore#//DiagramDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/autoLayout"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/palette"/>
@@ -125,6 +131,7 @@
     <genClasses ecoreClass="diagram.ecore#//LabelDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//LabelDescription/labelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//LabelDescription/overflowStrategy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//LabelDescription/textAlign"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//InsideLabelDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//InsideLabelDescription/position"/>

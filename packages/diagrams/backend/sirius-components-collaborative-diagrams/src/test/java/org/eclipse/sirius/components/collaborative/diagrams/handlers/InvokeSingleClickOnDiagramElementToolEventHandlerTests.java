@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
@@ -388,6 +389,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .isHeader(false)
                 .displayHeaderSeparator(false)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
 
         return Node.newNode(nodeId)
@@ -428,6 +430,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .displayHeaderSeparatorProvider(vm -> false)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
 
         return NodeDescription.newNodeDescription(nodeDescriptionId)

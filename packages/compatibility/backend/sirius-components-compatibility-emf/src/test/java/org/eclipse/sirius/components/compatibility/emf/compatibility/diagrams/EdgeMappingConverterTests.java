@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchServi
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
+import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
@@ -110,6 +111,7 @@ public class EdgeMappingConverterTests {
                 .displayHeaderSeparatorProvider(vm -> false)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
 
         return NodeDescription.newNodeDescription(id)

@@ -4,6 +4,8 @@
 
 === Shapes
 
+- Add support for text alignment on labels
+
 === Architectural decision records
 
 [ADR-151] Improve Diagram Subscription Lifecycle
@@ -43,6 +45,7 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3466[#3466] [gantt] Persist the gantt table columns
 - https://github.com/eclipse-sirius/sirius-web/issues/3447[#3447] [view] Add support for For construct in the operations DSL
+- https://github.com/eclipse-sirius/sirius-web/issues/3526[#3526] [diagram] Add support for text alignment on node labels
 
 === Improvements
 
