@@ -1,0 +1,125 @@
+= [ADR-151] Improve Diagram Subscription Lifecycle
+
+== Context
+
+The component DiagramRepresentation is used to manage diagram representation by : 
+
+* Rendering the context used by ReactFlow :
+
+[source,typescript]
+----
+<ReactFlowProvider>
+  <DiagramContext.Provider
+    value={{
+      editingContextId,
+      diagramId: representationId,
+      refreshEventPayloadId: state.diagramRefreshedEventPayload.id,
+      readOnly,
+    }}>
+    <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
+      <AllOthersContext>
+        <DiagramRenderer
+          key={state.diagramRefreshedEventPayload.diagram.id}
+          diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+        />
+      </AllOthersContext>
+    </DiagramDescriptionContext.Provider>
+  </DiagramContext.Provider>
+</ReactFlowProvider>
+----
+
+* Executing the GraphQL request getDiagramDescription when first opening a diagram :
+
+[source,typescript]
+----
+useQuery<GQLDiagramDescriptionData, GQLDiagramDescriptionVariables>(getDiagramDescription, {
+    variables: {
+      editingContextId,
+      representationId,
+    },
+    skip: state.diagramRefreshedEventPayload === null,
+  });
+
+export const getDiagramDescription = gql`
+  query getDiagramDescription($editingContextId: ID!, $representationId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $representationId) {
+          description {
+            ... on DiagramDescription {
+              id
+              nodeDescriptions {
+                id
+                userResizable
+                keepAspectRatio
+                childNodeDescriptionIds
+                borderNodeDescriptionIds
+              }
+              childNodeDescriptionIds
+              dropNodeCompatibility {
+                droppedNodeDescriptionId
+                droppableOnDiagram
+                droppableOnNodeTypes
+              }
+              debug
+              arrangeLayoutDirection
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+----
+
+* Handling the subscription to ```DiagramRefreshedEventPayload``` :
+
+[source,typescript]
+----
+useSubscription<GQLDiagramEventData>(subscription(graphQLNodeStyleFragments), {
+    variables,
+    fetchPolicy: 'no-cache',
+    onData,
+    onComplete,
+  });
+----
+
+The issue is that every new data received by the subscription will cause a rerender of ```DiagramRepresentation``` and all the contexts.
+
+This impacts performances as rerendering all the contexts is slow and it's even more problematic in the case of the ```ReactFlowProvider``` context as such rerender will have for impact to reset the ```internal store``` of ```ReactFlow``` and rerender all the elements of a diagram.
+
+This is even more impactful if several users are working on the same diagram and the first one triggers a refresh because the others would notice that all the components of their diagram are also rerendered.
+
+
+== Decision
+
+We need to create a new component solely responsible for handling the subscription and that component needs to be deeper in the hierarchy of the contexts.
+
+The new context tree would look like something like that :
+
+[source,typescript]
+----
+<DiagramRepresentation>
+    <DiagramContexts>
+      <DiagramSubscription>
+        <DiagramRenderer />
+      <DiagramSubscription>
+    </DiagramContexts>
+</DiagramRepresentation>
+----
+
+With the a new component ```DiagramSubscription``` dedicated to the handling of the subscription.
+
+== Status
+
+Work in progress
+
+== Consequences
+
+At the time of writing, to get the fields ```nodeDescriptions``` & ```dropNodeCompatibility``` used in the ```getDiagramDescription``` request, we actually need to have a subscription active beforehand. 
+
+This is because the back-end needs a ```DiagramEventProcessor``` to get these fields and this event processor is instanciated only with a new subscription.
+
+Since we want to have the subscription and the request in 2 different composants, we need to be able to get these fields before the subscription is made.
+
+As a consequence, we need to instantiate a ```DiagramEventProcessor``` if the input received needs it.

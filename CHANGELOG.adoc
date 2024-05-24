@@ -6,6 +6,8 @@
 
 === Architectural decision records
 
+[ADR-151] Improve Diagram Subscription Lifecycle
+
 === Deprecation warning
 
 === Breaking changes
