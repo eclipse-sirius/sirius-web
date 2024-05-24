@@ -25,3 +25,5 @@ export const labelHorizontalPadding = 16;
 export const borderNodeReferencePositionRatio = 0.2;
 export const verticalHelperLinesSnapGap = 10;
 export const horizontalHelperLinesSnapGap = 10;
+export const verticalLayoutDirectionGap = 50;
+export const horizontalLayoutDirectionGap = 50;

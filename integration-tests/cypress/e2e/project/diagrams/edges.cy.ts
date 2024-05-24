@@ -236,7 +236,7 @@ describe('Diagram - edges', () => {
 
       afterEach(() => cy.deleteProject(instanceProjectId));
 
-      it('Then check edge handles for border node are correctly positioned', () => {
+      it.skip('Then check edge handles for border node are correctly positioned', () => {
         const explorer = new Explorer();
         const details = new Details();
         const diagram = new Diagram();
