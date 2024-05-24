@@ -24,6 +24,7 @@ import {
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
 } from './EdgeLayout.types';
+import { verticalLayoutDirectionGap, horizontalLayoutDirectionGap } from '../layout/layoutParams';
 
 export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters = (
   sourceNode,
@@ -139,13 +140,17 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes, l
   const isDescendant = isDescendantOf(nodeB, nodeA, (nodeId) => visiblesNodes.find((node) => node.id === nodeId));
   let position: Position;
   if (isVerticalLayoutDirection(layoutDirection)) {
-    if (isDescendant) {
+    if (Math.abs(centerA.y - centerB.y) < verticalLayoutDirectionGap) {
+      position = centerA.x <= centerB.x ? Position.Right : Position.Left;
+    } else if (isDescendant) {
       position = centerA.y <= centerB.y ? Position.Top : Position.Bottom;
     } else {
       position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
     }
   } else if (isHorizontalLayoutDirection(layoutDirection)) {
-    if (isDescendant) {
+    if (Math.abs(centerA.x - centerB.x) < horizontalLayoutDirectionGap) {
+      position = centerA.y <= centerB.y ? Position.Bottom : Position.Top;
+    } else if (isDescendant) {
       position = centerA.x <= centerB.x ? Position.Left : Position.Right;
     } else {
       position = centerA.x > centerB.x ? Position.Left : Position.Right;
