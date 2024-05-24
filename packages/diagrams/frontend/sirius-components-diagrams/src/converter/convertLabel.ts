@@ -48,16 +48,30 @@ export const convertInsideLabel = (
   };
 
   const alignement = AlignmentMap[gqlInsideLabel.insideLabelLocation];
-  if (alignement.isPrimaryVerticalAlignment) {
+  if (alignement && alignement.isPrimaryVerticalAlignment) {
     if (alignement.primaryAlignment === 'TOP') {
       if (insideLabel.displayHeaderSeparator && hasVisibleChild) {
         insideLabel.style.borderBottom = borderStyle;
       }
       data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
     }
+    if (alignement.primaryAlignment === 'BOTTOM') {
+      if (insideLabel.displayHeaderSeparator && hasVisibleChild) {
+        insideLabel.style.borderTop = borderStyle;
+      }
+      data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' };
+    }
+    if (alignement.primaryAlignment === 'MIDDLE') {
+      data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'center' };
+    }
     if (alignement.secondaryAlignment === 'CENTER') {
-      data.style = { ...data.style, alignItems: 'stretch' };
-      insideLabel.style = { ...insideLabel.style, justifyContent: 'center' };
+      data.style = { ...data.style, alignItems: 'center' };
+    }
+    if (alignement.secondaryAlignment === 'LEFT') {
+      data.style = { ...data.style, alignItems: 'flex-start' };
+    }
+    if (alignement.secondaryAlignment === 'RIGHT') {
+      data.style = { ...data.style, alignItems: 'flex-end' };
     }
   }
   return insideLabel;

@@ -2872,6 +2872,14 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.initEEnum(this.insideLabelPositionEEnum, InsideLabelPosition.class, "InsideLabelPosition");
         this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.TOP_CENTER);
+        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.TOP_LEFT);
+        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.TOP_RIGHT);
+        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.MIDDLE_LEFT);
+        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.MIDDLE_CENTER);
+        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.MIDDLE_RIGHT);
+        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.BOTTOM_LEFT);
+        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.BOTTOM_CENTER);
+        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.BOTTOM_RIGHT);
 
         this.initEEnum(this.outsideLabelPositionEEnum, OutsideLabelPosition.class, "OutsideLabelPosition");
         this.addEEnumLiteral(this.outsideLabelPositionEEnum, OutsideLabelPosition.BOTTOM_CENTER);

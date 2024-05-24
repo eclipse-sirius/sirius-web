@@ -38,6 +38,14 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="InsideLabelPosition">
     <eLiterals name="TOP_CENTER"/>
+    <eLiterals name="TOP_LEFT" value="1" literal="TOP_LEFT"/>
+    <eLiterals name="TOP_RIGHT" value="2"/>
+    <eLiterals name="MIDDLE_LEFT" value="3"/>
+    <eLiterals name="MIDDLE_CENTER" value="4"/>
+    <eLiterals name="MIDDLE_RIGHT" value="5"/>
+    <eLiterals name="BOTTOM_LEFT" value="6"/>
+    <eLiterals name="BOTTOM_CENTER" value="7"/>
+    <eLiterals name="BOTTOM_RIGHT" value="8"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="OutsideLabelPosition">
     <eLiterals name="BOTTOM_CENTER"/>
