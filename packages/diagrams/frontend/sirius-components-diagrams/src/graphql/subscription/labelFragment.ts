@@ -35,6 +35,7 @@ fragment insideLabelFragment on InsideLabel {
   isHeader
   displayHeaderSeparator
   overflowStrategy
+  textAlign
   style {
     color
     fontSize
@@ -52,6 +53,7 @@ fragment outsideLabelFragment on OutsideLabel {
   id
   text
   outsideLabelLocation
+  textAlign
   style {
     color
     fontSize

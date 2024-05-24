@@ -62,6 +62,7 @@ public class LabelDescriptionItemProvider extends ItemProviderAdapter
 
             this.addLabelExpressionPropertyDescriptor(object);
             this.addOverflowStrategyPropertyDescriptor(object);
+            this.addTextAlignPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -88,6 +89,17 @@ public class LabelDescriptionItemProvider extends ItemProviderAdapter
                 this.getString("_UI_LabelDescription_overflowStrategy_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_LabelDescription_overflowStrategy_feature", "_UI_LabelDescription_type"),
                 DiagramPackage.Literals.LABEL_DESCRIPTION__OVERFLOW_STRATEGY, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Text Align feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addTextAlignPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelDescription_textAlign_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelDescription_textAlign_feature", "_UI_LabelDescription_type"),
+                DiagramPackage.Literals.LABEL_DESCRIPTION__TEXT_ALIGN, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -135,6 +147,7 @@ public class LabelDescriptionItemProvider extends ItemProviderAdapter
         switch (notification.getFeatureID(LabelDescription.class)) {
             case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
             case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
+            case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

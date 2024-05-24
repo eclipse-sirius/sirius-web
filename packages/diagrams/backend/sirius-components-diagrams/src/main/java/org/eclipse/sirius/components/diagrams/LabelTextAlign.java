@@ -12,22 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams;
 
-import java.util.Objects;
-
 /**
- * The outside label.
+ * The property that defines the horizontal alignment of a label.
  *
- * @author gcoutable
+ * @author frouene
  */
-public record OutsideLabel(String id, String text, OutsideLabelLocation outsideLabelLocation, LabelStyle style, LabelOverflowStrategy overflowStrategy, LabelTextAlign textAlign) {
-
-    public OutsideLabel {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(text);
-        Objects.requireNonNull(outsideLabelLocation);
-        Objects.requireNonNull(style);
-        Objects.requireNonNull(overflowStrategy);
-        Objects.requireNonNull(textAlign);
-    }
-
+public enum LabelTextAlign {
+    LEFT, RIGHT, CENTER, JUSTIFY
 }

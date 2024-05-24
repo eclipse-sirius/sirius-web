@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
@@ -119,6 +120,7 @@ public class TestDiagramBuilder {
                     .isHeader(false)
                     .displayHeaderSeparator(false)
                     .overflowStrategy(LabelOverflowStrategy.NONE)
+                    .textAlign(LabelTextAlign.CENTER)
                     .build();
             nodeBuilder.insideLabel(insideLabel);
         }

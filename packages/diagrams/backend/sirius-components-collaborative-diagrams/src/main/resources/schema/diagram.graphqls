@@ -113,6 +113,7 @@ type InsideLabel {
   isHeader: Boolean!
   displayHeaderSeparator: Boolean!
   overflowStrategy: LabelOverflowStrategy!
+  textAlign: LabelTextAlign!
 }
 
 enum InsideLabelLocation {
@@ -125,12 +126,20 @@ enum LabelOverflowStrategy {
   ELLIPSIS
 }
 
+enum LabelTextAlign {
+  LEFT
+  RIGHT
+  CENTER
+  JUSTIFY
+}
+
 type OutsideLabel {
   id: ID!
   text: String!
   outsideLabelLocation: OutsideLabelLocation!
   style: LabelStyle!
   overflowStrategy: LabelOverflowStrategy!
+  textAlign: LabelTextAlign!
 }
 
 enum OutsideLabelLocation {

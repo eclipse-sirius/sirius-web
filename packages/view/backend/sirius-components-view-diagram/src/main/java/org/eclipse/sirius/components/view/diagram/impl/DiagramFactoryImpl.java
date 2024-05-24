@@ -47,6 +47,7 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LayoutDirection;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
@@ -215,6 +216,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createLabelOverflowStrategyFromString(eDataType, initialValue);
             case DiagramPackage.ARRANGE_LAYOUT_DIRECTION:
                 return this.createArrangeLayoutDirectionFromString(eDataType, initialValue);
+            case DiagramPackage.LABEL_TEXT_ALIGN:
+                return this.createLabelTextAlignFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -246,6 +249,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.convertLabelOverflowStrategyToString(eDataType, instanceValue);
             case DiagramPackage.ARRANGE_LAYOUT_DIRECTION:
                 return this.convertArrangeLayoutDirectionToString(eDataType, instanceValue);
+            case DiagramPackage.LABEL_TEXT_ALIGN:
+                return this.convertLabelTextAlignToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -811,6 +816,27 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      * @generated
      */
     public String convertArrangeLayoutDirectionToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public LabelTextAlign createLabelTextAlignFromString(EDataType eDataType, String initialValue) {
+        LabelTextAlign result = LabelTextAlign.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertLabelTextAlignToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 
