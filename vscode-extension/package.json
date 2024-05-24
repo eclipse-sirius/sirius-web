@@ -140,7 +140,7 @@
     "@material-ui/icons": "4.11.3",
     "@material-ui/lab": "4.0.0-alpha.61",
     "@xstate/react": "1.6.3",
-    "lexical": "0.8.1",
+    "lexical": "0.15.0",
     "d3": "7.0.0",
     "html-to-image": "1.11.11",
     "reactflow": "11.10.1",
