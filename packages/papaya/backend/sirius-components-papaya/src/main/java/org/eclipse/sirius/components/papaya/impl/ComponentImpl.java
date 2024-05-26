@@ -34,7 +34,8 @@ import org.eclipse.sirius.components.papaya.RequiredService;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getDependencies <em>Dependencies</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getUsedBy <em>Used By</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getUsedAsDependencyBy <em>Used As Dependency
+ * By</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getComponents <em>Components</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getPackages <em>Packages</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getPorts <em>Ports</em>}</li>
@@ -58,14 +59,14 @@ public class ComponentImpl extends NamedElementImpl implements Component {
     protected EList<Component> dependencies;
 
     /**
-     * The cached value of the '{@link #getUsedBy() <em>Used By</em>}' reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The cached value of the '{@link #getUsedAsDependencyBy() <em>Used As Dependency By</em>}' reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getUsedBy()
+     * @see #getUsedAsDependencyBy()
      * @generated
      * @ordered
      */
-    protected EList<Component> usedBy;
+    protected EList<Component> usedAsDependencyBy;
 
     /**
      * The cached value of the '{@link #getComponents() <em>Components</em>}' containment reference list. <!--
@@ -144,7 +145,7 @@ public class ComponentImpl extends NamedElementImpl implements Component {
     @Override
     public EList<Component> getDependencies() {
         if (this.dependencies == null) {
-            this.dependencies = new EObjectWithInverseResolvingEList.ManyInverse<>(Component.class, this, PapayaPackage.COMPONENT__DEPENDENCIES, PapayaPackage.COMPONENT__USED_BY);
+            this.dependencies = new EObjectWithInverseResolvingEList.ManyInverse<>(Component.class, this, PapayaPackage.COMPONENT__DEPENDENCIES, PapayaPackage.COMPONENT__USED_AS_DEPENDENCY_BY);
         }
         return this.dependencies;
     }
@@ -155,11 +156,11 @@ public class ComponentImpl extends NamedElementImpl implements Component {
      * @generated
      */
     @Override
-    public EList<Component> getUsedBy() {
-        if (this.usedBy == null) {
-            this.usedBy = new EObjectWithInverseResolvingEList.ManyInverse<>(Component.class, this, PapayaPackage.COMPONENT__USED_BY, PapayaPackage.COMPONENT__DEPENDENCIES);
+    public EList<Component> getUsedAsDependencyBy() {
+        if (this.usedAsDependencyBy == null) {
+            this.usedAsDependencyBy = new EObjectWithInverseResolvingEList.ManyInverse<>(Component.class, this, PapayaPackage.COMPONENT__USED_AS_DEPENDENCY_BY, PapayaPackage.COMPONENT__DEPENDENCIES);
         }
-        return this.usedBy;
+        return this.usedAsDependencyBy;
     }
 
     /**
@@ -238,8 +239,8 @@ public class ComponentImpl extends NamedElementImpl implements Component {
         switch (featureID) {
             case PapayaPackage.COMPONENT__DEPENDENCIES:
                 return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getDependencies()).basicAdd(otherEnd, msgs);
-            case PapayaPackage.COMPONENT__USED_BY:
-                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getUsedBy()).basicAdd(otherEnd, msgs);
+            case PapayaPackage.COMPONENT__USED_AS_DEPENDENCY_BY:
+                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getUsedAsDependencyBy()).basicAdd(otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
@@ -254,8 +255,8 @@ public class ComponentImpl extends NamedElementImpl implements Component {
         switch (featureID) {
             case PapayaPackage.COMPONENT__DEPENDENCIES:
                 return ((InternalEList<?>) this.getDependencies()).basicRemove(otherEnd, msgs);
-            case PapayaPackage.COMPONENT__USED_BY:
-                return ((InternalEList<?>) this.getUsedBy()).basicRemove(otherEnd, msgs);
+            case PapayaPackage.COMPONENT__USED_AS_DEPENDENCY_BY:
+                return ((InternalEList<?>) this.getUsedAsDependencyBy()).basicRemove(otherEnd, msgs);
             case PapayaPackage.COMPONENT__COMPONENTS:
                 return ((InternalEList<?>) this.getComponents()).basicRemove(otherEnd, msgs);
             case PapayaPackage.COMPONENT__PACKAGES:
@@ -280,8 +281,8 @@ public class ComponentImpl extends NamedElementImpl implements Component {
         switch (featureID) {
             case PapayaPackage.COMPONENT__DEPENDENCIES:
                 return this.getDependencies();
-            case PapayaPackage.COMPONENT__USED_BY:
-                return this.getUsedBy();
+            case PapayaPackage.COMPONENT__USED_AS_DEPENDENCY_BY:
+                return this.getUsedAsDependencyBy();
             case PapayaPackage.COMPONENT__COMPONENTS:
                 return this.getComponents();
             case PapayaPackage.COMPONENT__PACKAGES:
@@ -309,9 +310,9 @@ public class ComponentImpl extends NamedElementImpl implements Component {
                 this.getDependencies().clear();
                 this.getDependencies().addAll((Collection<? extends Component>) newValue);
                 return;
-            case PapayaPackage.COMPONENT__USED_BY:
-                this.getUsedBy().clear();
-                this.getUsedBy().addAll((Collection<? extends Component>) newValue);
+            case PapayaPackage.COMPONENT__USED_AS_DEPENDENCY_BY:
+                this.getUsedAsDependencyBy().clear();
+                this.getUsedAsDependencyBy().addAll((Collection<? extends Component>) newValue);
                 return;
             case PapayaPackage.COMPONENT__COMPONENTS:
                 this.getComponents().clear();
@@ -348,8 +349,8 @@ public class ComponentImpl extends NamedElementImpl implements Component {
             case PapayaPackage.COMPONENT__DEPENDENCIES:
                 this.getDependencies().clear();
                 return;
-            case PapayaPackage.COMPONENT__USED_BY:
-                this.getUsedBy().clear();
+            case PapayaPackage.COMPONENT__USED_AS_DEPENDENCY_BY:
+                this.getUsedAsDependencyBy().clear();
                 return;
             case PapayaPackage.COMPONENT__COMPONENTS:
                 this.getComponents().clear();
@@ -380,8 +381,8 @@ public class ComponentImpl extends NamedElementImpl implements Component {
         switch (featureID) {
             case PapayaPackage.COMPONENT__DEPENDENCIES:
                 return this.dependencies != null && !this.dependencies.isEmpty();
-            case PapayaPackage.COMPONENT__USED_BY:
-                return this.usedBy != null && !this.usedBy.isEmpty();
+            case PapayaPackage.COMPONENT__USED_AS_DEPENDENCY_BY:
+                return this.usedAsDependencyBy != null && !this.usedAsDependencyBy.isEmpty();
             case PapayaPackage.COMPONENT__COMPONENTS:
                 return this.components != null && !this.components.isEmpty();
             case PapayaPackage.COMPONENT__PACKAGES:

@@ -62,8 +62,9 @@ public class RecordItemProvider extends ClassifierItemProvider {
      */
     protected void addImplementsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_Record_implements_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Record_implements_feature", "_UI_Record_type"),
-                PapayaPackage.Literals.RECORD__IMPLEMENTS, true, false, true, null, null, null));
+                this.getString("_UI_InterfaceImplementation_implements_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_InterfaceImplementation_implements_feature", "_UI_InterfaceImplementation_type"),
+                PapayaPackage.Literals.INTERFACE_IMPLEMENTATION__IMPLEMENTS, true, false, true, null, null, null));
     }
 
     /**
@@ -161,25 +162,6 @@ public class RecordItemProvider extends ClassifierItemProvider {
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.RECORD__COMPONENTS, PapayaFactory.eINSTANCE.createRecordComponent()));
 
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.RECORD__OPERATIONS, PapayaFactory.eINSTANCE.createOperation()));
-    }
-
-    /**
-     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
-
-        boolean qualify = childFeature == PapayaPackage.Literals.MODEL_ELEMENT__TAGS || childFeature == PapayaPackage.Literals.TYPE__TYPES;
-
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
-        }
-        return super.getCreateChildText(owner, feature, child, selection);
     }
 
 }

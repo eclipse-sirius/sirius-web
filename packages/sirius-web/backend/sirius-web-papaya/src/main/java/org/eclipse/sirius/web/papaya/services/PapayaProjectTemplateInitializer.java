@@ -19,13 +19,14 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
-import org.eclipse.sirius.web.papaya.factories.EObjectIndexer;
+import org.eclipse.sirius.web.papaya.factories.EMFProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.JavaProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.ReactiveStreamsProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.ReactorProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.SiriusWebProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.SpringProjectFactory;
-import org.eclipse.sirius.web.papaya.factories.api.IEObjectIndexer;
+import org.eclipse.sirius.web.papaya.factories.services.EObjectIndexer;
+import org.eclipse.sirius.web.papaya.factories.services.EObjectInitializer;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,22 +45,25 @@ public class PapayaProjectTemplateInitializer implements IProjectTemplateInitial
     @Override
     public Optional<RepresentationMetadata> handle(String projectTemplateId, IEditingContext editingContext) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
-            IEObjectIndexer eObjectIndexer = new EObjectIndexer();
+            new JavaProjectFactory().create(emfEditingContext);
+            new ReactiveStreamsProjectFactory().create(emfEditingContext);
+            new ReactorProjectFactory().create(emfEditingContext);
+            new SpringProjectFactory().create(emfEditingContext);
+            new EMFProjectFactory().create(emfEditingContext);
+            new SiriusWebProjectFactory().create(emfEditingContext);
 
-            new JavaProjectFactory().create(eObjectIndexer, emfEditingContext);
-            new JavaProjectFactory().link(eObjectIndexer, emfEditingContext);
+            var eObjectIndexer = new EObjectIndexer();
+            eObjectIndexer.index(emfEditingContext.getDomain().getResourceSet());
 
-            new ReactiveStreamsProjectFactory().create(eObjectIndexer, emfEditingContext);
-            new ReactiveStreamsProjectFactory().link(eObjectIndexer, emfEditingContext);
+            new JavaProjectFactory().link(eObjectIndexer);
+            new ReactiveStreamsProjectFactory().link(eObjectIndexer);
+            new ReactorProjectFactory().link(eObjectIndexer);
+            new SpringProjectFactory().link(eObjectIndexer);
+            new EMFProjectFactory().link(eObjectIndexer);
+            new SiriusWebProjectFactory().link(eObjectIndexer);
 
-            new ReactorProjectFactory().create(eObjectIndexer, emfEditingContext);
-            new ReactorProjectFactory().link(eObjectIndexer, emfEditingContext);
-
-            new SpringProjectFactory().create(eObjectIndexer, emfEditingContext);
-            new SpringProjectFactory().link(eObjectIndexer, emfEditingContext);
-
-            new SiriusWebProjectFactory().create(eObjectIndexer, emfEditingContext);
-            new SiriusWebProjectFactory().link(eObjectIndexer, emfEditingContext);
+            var eObjectInitializer = new EObjectInitializer(eObjectIndexer);
+            eObjectInitializer.initialize(emfEditingContext.getDomain().getResourceSet());
         }
         return Optional.empty();
     }

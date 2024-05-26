@@ -42,4 +42,12 @@ public class AnnotationItemProviderSpec extends AnnotationItemProvider {
         }
         return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Annotation.svg"));
     }
+
+    @Override
+    public String getText(Object object) {
+        if (object instanceof Annotation annotation && annotation.getName() != null && !annotation.getName().isBlank()) {
+            return annotation.getName();
+        }
+        return super.getText(object);
+    }
 }

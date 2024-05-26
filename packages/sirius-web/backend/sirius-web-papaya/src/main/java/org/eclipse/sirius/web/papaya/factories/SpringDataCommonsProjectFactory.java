@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.Type;
-import org.eclipse.sirius.web.papaya.factories.api.IEObjectIndexer;
+import org.eclipse.sirius.web.papaya.factories.services.api.IEObjectIndexer;
 
 /**
  * Used to create the spring data commons project.
@@ -32,12 +32,10 @@ import org.eclipse.sirius.web.papaya.factories.api.IEObjectIndexer;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class SpringDataCommonsProjectFactory {
 
-    public Project create(IEObjectIndexer eObjectIndexer) {
+    public Project create() {
         var springDataCommons = PapayaFactory.eINSTANCE.createProject();
         springDataCommons.setName("Spring Data Commons");
         springDataCommons.getComponents().add(this.springDataCommons());
-
-        eObjectIndexer.index(springDataCommons);
 
         return springDataCommons;
     }

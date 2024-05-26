@@ -53,6 +53,9 @@ public class OperationItemProvider extends TypedElementItemProvider {
             super.getPropertyDescriptors(object);
 
             this.addVisibilityPropertyDescriptor(object);
+            this.addAbstractPropertyDescriptor(object);
+            this.addFinalPropertyDescriptor(object);
+            this.addStaticPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -66,6 +69,39 @@ public class OperationItemProvider extends TypedElementItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Operation_visibility_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Operation_visibility_feature", "_UI_Operation_type"),
                 PapayaPackage.Literals.OPERATION__VISIBILITY, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Abstract feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addAbstractPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Operation_abstract_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Operation_abstract_feature", "_UI_Operation_type"),
+                PapayaPackage.Literals.OPERATION__ABSTRACT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Final feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addFinalPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Operation_final_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Operation_final_feature", "_UI_Operation_type"),
+                PapayaPackage.Literals.OPERATION__FINAL, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Static feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addStaticPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Operation_static_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Operation_static_feature", "_UI_Operation_type"),
+                PapayaPackage.Literals.OPERATION__STATIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -142,6 +178,9 @@ public class OperationItemProvider extends TypedElementItemProvider {
 
         switch (notification.getFeatureID(Operation.class)) {
             case PapayaPackage.OPERATION__VISIBILITY:
+            case PapayaPackage.OPERATION__ABSTRACT:
+            case PapayaPackage.OPERATION__FINAL:
+            case PapayaPackage.OPERATION__STATIC:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case PapayaPackage.OPERATION__PARAMETERS:

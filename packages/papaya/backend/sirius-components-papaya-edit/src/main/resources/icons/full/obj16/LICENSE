@@ -1,7 +1,6 @@
 - https://github.com/yamatsum/nonicons (MIT LICENSE)
   - Class.svg
   - Interface.svg
-  - GenericType.svg
 - https://github.com/radix-ui/icons (MIT LICENSE)
   - Component.svg
 - https://github.com/primer/octicons (MIT LICENSE)
@@ -14,6 +13,7 @@
   - Class.svg
   - ComponentExchange.svg
   - Enum.svg
+  - GenericType.svg
   - Parameter.svg
   - ProvidedService.svg
   - RequiredService.svg
@@ -36,3 +36,5 @@
   - Visibility_PRIVATE.svg
   - Visibility_PROTECTED.svg
   - Visibility_PACKAGE.svg
+- https://github.com/material-icons/material-icons (Apache License)
+  - Constructor.svg

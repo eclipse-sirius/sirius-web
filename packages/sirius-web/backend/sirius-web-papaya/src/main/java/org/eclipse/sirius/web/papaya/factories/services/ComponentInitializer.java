@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,21 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.factories.siriusweb;
+package org.eclipse.sirius.web.papaya.factories.services;
 
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
-import org.eclipse.sirius.web.papaya.factories.ReflectiveObjectFactory;
-import org.eclipse.sirius.web.papaya.factories.siriusweb.api.ISiriusWebComponentInitializer;
+import org.eclipse.sirius.web.papaya.factories.services.api.IComponentInitializer;
 
 /**
- * Used to initialize quickly a Sirius Web component.
+ * Used to initialize quickly a component.
  *
  * @author sbegaudeau
  */
-public class SiriusWebComponentInitializer implements ISiriusWebComponentInitializer {
+public class ComponentInitializer implements IComponentInitializer {
     @Override
     public Component initialize(String name, String rootPackageName, Predicate<String> packageNameFilter) {
         var rootPackage = PapayaFactory.eINSTANCE.createPackage();

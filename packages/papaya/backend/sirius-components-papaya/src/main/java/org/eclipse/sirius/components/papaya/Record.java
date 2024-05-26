@@ -22,7 +22,6 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.Record#getComponents <em>Components</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Record#getImplements <em>Implements</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Record#getOperations <em>Operations</em>}</li>
  * </ul>
  *
@@ -30,7 +29,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Record extends Classifier {
+public interface Record extends Classifier, InterfaceImplementation {
     /**
      * Returns the value of the '<em><b>Components</b></em>' containment reference list. The list contents are of type
      * {@link org.eclipse.sirius.components.papaya.RecordComponent}. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -41,17 +40,6 @@ public interface Record extends Classifier {
      * @generated
      */
     EList<RecordComponent> getComponents();
-
-    /**
-     * Returns the value of the '<em><b>Implements</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Interface}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Implements</em>' reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getRecord_Implements()
-     * @model
-     * @generated
-     */
-    EList<Interface> getImplements();
 
     /**
      * Returns the value of the '<em><b>Operations</b></em>' containment reference list. The list contents are of type

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,22 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.factories;
+package org.eclipse.sirius.web.papaya.factories.services;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.papaya.Class;
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.Enum;
 import org.eclipse.sirius.components.papaya.Interface;
-import org.eclipse.sirius.components.papaya.Package;
-import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.Record;
 import org.eclipse.sirius.components.papaya.Type;
-import org.eclipse.sirius.web.papaya.factories.api.IEObjectIndexer;
+import org.eclipse.sirius.web.papaya.factories.services.api.IEObjectIndexer;
 
 /**
  * Used to index EObjects.
@@ -38,32 +38,25 @@ public class EObjectIndexer implements IEObjectIndexer {
 
     private final Map<String, Type> qualifiedNameToType = new LinkedHashMap<>();
 
-    @Override
-    public void index(EObject eObject) {
-        if (eObject instanceof Project project) {
-            this.index(project);
-        }
+    public void index(ResourceSet resourceSet) {
+        resourceSet.getResources().forEach(this::index);
     }
 
-    private void index(Project project) {
-        project.getComponents().forEach(this::index);
-        project.getProjects().forEach(this::index);
+    private void index(Resource resource) {
+        resource.getContents().forEach(this::index);
     }
 
-    private void index(Component component) {
-        this.nameToComponent.put(component.getName(), component);
-        component.getPackages().forEach(this::index);
-        component.getComponents().forEach(this::index);
+    private void index(EObject eObject) {
+        new PapayaSwitchIndexer(this).doSwitch(eObject);
     }
 
-    private void index(Package aPackage) {
-        aPackage.getTypes().forEach(this::index);
-        aPackage.getPackages().forEach(this::index);
+
+    public Map<String, Component> getNameToComponent() {
+        return this.nameToComponent;
     }
 
-    private void index(Type type) {
-        type.getTypes().forEach(this::index);
-        this.qualifiedNameToType.put(type.getQualifiedName(), type);
+    public Map<String, Type> getQualifiedNameToType() {
+        return this.qualifiedNameToType;
     }
 
     @Override

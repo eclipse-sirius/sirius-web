@@ -66,7 +66,7 @@
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//Component">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/dependencies"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/usedBy"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/usedAsDependencyBy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/components"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/packages"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Component/ports"/>
@@ -105,21 +105,36 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//GenericType/rawType"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//GenericType/typeArguments"/>
     </genClasses>
-    <genClasses ecoreClass="papaya.ecore#//Annotation"/>
+    <genClasses ecoreClass="papaya.ecore#//Annotation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Annotation/fields"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//AnnotationField"/>
     <genClasses image="false" ecoreClass="papaya.ecore#//Classifier">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Classifier/typeParameters"/>
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//TypeParameter"/>
     <genClasses ecoreClass="papaya.ecore#//Interface">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Interface/extends"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Interface/extendedBy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Interface/operations"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Interface/implementedBy"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="papaya.ecore#//InterfaceImplementation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//InterfaceImplementation/implements"/>
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//Class">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Class/abstract"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Class/implements"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Class/final"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Class/static"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Class/extends"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Class/extendedBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Class/constructors"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Class/attributes"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Class/operations"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Constructor">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Constructor/parameters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Constructor/visibility"/>
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//Attribute">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Attribute/visibility"/>
@@ -128,12 +143,14 @@
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//Operation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Operation/visibility"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Operation/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Operation/final"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Operation/static"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Operation/parameters"/>
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//Parameter"/>
     <genClasses ecoreClass="papaya.ecore#//Record">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Record/components"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Record/implements"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Record/operations"/>
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//RecordComponent"/>

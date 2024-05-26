@@ -10,17 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.factories.api;
+package org.eclipse.sirius.web.papaya.factories.services.api;
 
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
- * Used to create a papaya project.
+ * Used to initialize objects.
  *
  * @author sbegaudeau
  */
-public interface IObjectFactory {
-    void create(IEObjectIndexer eObjectIndexer, IEMFEditingContext editingContext);
-
-    void link(IEObjectIndexer eObjectIndexer, IEMFEditingContext editingContext);
+public interface IEObjectInitializer {
+    void initialize(ResourceSet resourceSet);
 }

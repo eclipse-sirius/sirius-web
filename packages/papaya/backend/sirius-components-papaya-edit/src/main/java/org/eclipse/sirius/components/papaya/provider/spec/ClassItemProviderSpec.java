@@ -47,19 +47,16 @@ public class ClassItemProviderSpec extends ClassItemProvider {
 
     @Override
     public String getText(Object object) {
-        var text = this.getString("_UI_Class_type");
-        if (object instanceof Class aClass) {
-            if (aClass.getName() != null && !aClass.getName().isBlank()) {
-                var typeParameters = "";
-                if (!aClass.getTypeParameters().isEmpty()) {
-                    typeParameters = aClass.getTypeParameters()
-                            .stream()
-                            .map(TypeParameter::getName)
-                            .collect(Collectors.joining(", ", "<", ">"));
-                }
-                text = aClass.getName() + typeParameters;
+        if (object instanceof Class aClass && aClass.getName() != null && !aClass.getName().isBlank()) {
+            var typeParameters = "";
+            if (!aClass.getTypeParameters().isEmpty()) {
+                typeParameters = aClass.getTypeParameters()
+                        .stream()
+                        .map(TypeParameter::getName)
+                        .collect(Collectors.joining(", ", "<", ">"));
             }
+            return aClass.getName() + typeParameters;
         }
-        return text;
+        return super.getText(object);
     }
 }

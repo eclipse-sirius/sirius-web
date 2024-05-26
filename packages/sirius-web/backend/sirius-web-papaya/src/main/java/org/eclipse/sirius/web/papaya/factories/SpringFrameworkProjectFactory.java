@@ -18,7 +18,7 @@ import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.Project;
-import org.eclipse.sirius.web.papaya.factories.api.IEObjectIndexer;
+import org.eclipse.sirius.web.papaya.factories.services.api.IEObjectIndexer;
 
 /**
  * Used to create the spring framework project.
@@ -28,14 +28,12 @@ import org.eclipse.sirius.web.papaya.factories.api.IEObjectIndexer;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class SpringFrameworkProjectFactory {
 
-    public Project create(IEObjectIndexer eObjectIndexer) {
+    public Project create() {
         var springFramework = PapayaFactory.eINSTANCE.createProject();
         springFramework.setName("Spring Framework");
 
         var springFrameworkComponents = List.of(this.springBeans(), this.springContext(), this.springCore(), this.springTx(), this.springWeb(), this.springWebsocket());
         springFramework.getComponents().addAll(springFrameworkComponents);
-
-        eObjectIndexer.index(springFramework);
 
         return springFramework;
     }

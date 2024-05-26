@@ -16,8 +16,10 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.papaya.Attribute;
 import org.eclipse.sirius.components.papaya.provider.AttributeItemProvider;
+import org.eclipse.sirius.components.papaya.provider.PapayaItemProviderAdapterFactory;
 import org.eclipse.sirius.components.papaya.provider.spec.images.VisibilityOverlayImageProvider;
 
 /**
@@ -41,5 +43,22 @@ public class AttributeItemProviderSpec extends AttributeItemProvider {
             ));
         }
         return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Attribute.svg"));
+    }
+
+    @Override
+    public String getText(Object object) {
+        if (object instanceof Attribute attribute && attribute.getName() != null && !attribute.getName().isBlank()) {
+            var text = attribute.getName();
+
+            if (attribute.getType() != null) {
+                var adapter = new PapayaItemProviderAdapterFactory().adapt(attribute.getType(), IItemLabelProvider.class);
+                if (adapter instanceof IItemLabelProvider itemLabelProvider) {
+                    text = text + ": " + itemLabelProvider.getText(attribute.getType());
+                }
+            }
+
+            return text;
+        }
+        return super.getText(object);
     }
 }

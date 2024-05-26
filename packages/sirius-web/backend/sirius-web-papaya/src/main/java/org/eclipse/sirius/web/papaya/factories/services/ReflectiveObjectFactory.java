@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.factories;
+package org.eclipse.sirius.web.papaya.factories.services;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -22,7 +23,7 @@ import java.util.stream.Stream;
 import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.Type;
-import org.eclipse.sirius.web.papaya.factories.api.IReflectiveObjectFactory;
+import org.eclipse.sirius.web.papaya.factories.services.api.IReflectiveObjectFactory;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 import org.reflections.util.ClasspathHelper;
@@ -40,19 +41,25 @@ public class ReflectiveObjectFactory implements IReflectiveObjectFactory {
                 .setUrls(ClasspathHelper.forPackage(papayaPackage.getQualifiedName()))
                 .setScanners(Scanners.TypesAnnotated, Scanners.SubTypes.filterResultsBy(name -> true));
         var reflections = new Reflections(configuration);
-        var javaClasses = reflections.getSubTypesOf(Object.class).stream()
+        var javaClasses = Stream.concat(
+                    reflections.getSubTypesOf(Object.class).stream(),
+                    reflections.getSubTypesOf(Record.class).stream()
+                )
                 .filter(javaClass -> javaClass.getPackageName().startsWith(papayaPackage.getQualifiedName()))
                 .filter(javaClass -> packageFilter.test(javaClass.getPackageName()))
                 .filter(javaClass -> javaClass.getEnclosingClass() == null)
+                .sorted(Comparator.comparing(Class::getName))
                 .toList();
 
         for (var javaClass: javaClasses) {
             var papayaContainingPackage = this.getOrCreateContainingPackage(papayaPackage, javaClass.getPackageName());
-            var optionalExistingPapayaType = papayaContainingPackage.getTypes().stream()
-                    .filter(type -> type.getQualifiedName().equals(javaClass.getName()))
-                    .findFirst();
-            if (optionalExistingPapayaType.isEmpty()) {
-                this.create(javaClass).ifPresent(papayaContainingPackage.getTypes()::add);
+            if (papayaContainingPackage != null) {
+                var optionalExistingPapayaType = papayaContainingPackage.getTypes().stream()
+                        .filter(type -> type.getQualifiedName().equals(javaClass.getName()))
+                        .findFirst();
+                if (optionalExistingPapayaType.isEmpty()) {
+                    this.create(javaClass).ifPresent(papayaContainingPackage.getTypes()::add);
+                }
             }
         }
 
@@ -111,6 +118,7 @@ public class ReflectiveObjectFactory implements IReflectiveObjectFactory {
 
         optionalType.ifPresent(type -> {
             type.setName(javaClass.getSimpleName());
+
             Arrays.stream(javaClass.getDeclaredClasses())
                     .flatMap(nestedJavaClass -> this.create(nestedJavaClass).stream())
                     .forEach(type.getTypes()::add);

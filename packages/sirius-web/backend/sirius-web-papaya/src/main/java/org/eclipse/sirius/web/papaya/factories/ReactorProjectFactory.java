@@ -22,8 +22,8 @@ import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.Project;
-import org.eclipse.sirius.web.papaya.factories.api.IEObjectIndexer;
-import org.eclipse.sirius.web.papaya.factories.api.IObjectFactory;
+import org.eclipse.sirius.web.papaya.factories.services.api.IEObjectIndexer;
+import org.eclipse.sirius.web.papaya.factories.services.api.IObjectFactory;
 
 /**
  * Used to create the Reactor project.
@@ -33,7 +33,7 @@ import org.eclipse.sirius.web.papaya.factories.api.IObjectFactory;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ReactorProjectFactory implements IObjectFactory {
     @Override
-    public void create(IEObjectIndexer eObjectIndexer, IEMFEditingContext editingContext) {
+    public void create(IEMFEditingContext editingContext) {
         var documentId = UUID.randomUUID();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
         var resourceMetadataAdapter = new ResourceMetadataAdapter("Reactor");
@@ -42,7 +42,6 @@ public class ReactorProjectFactory implements IObjectFactory {
 
         var projectReactor = this.projectReactor();
         resource.getContents().add(projectReactor);
-        eObjectIndexer.index(projectReactor);
     }
 
     private Project projectReactor() {
@@ -139,7 +138,7 @@ public class ReactorProjectFactory implements IObjectFactory {
     }
 
     @Override
-    public void link(IEObjectIndexer eObjectIndexer, IEMFEditingContext editingContext) {
+    public void link(IEObjectIndexer eObjectIndexer) {
         var publisherInterface = eObjectIndexer.getInterface("org.reactivestreams.Publisher");
         var subscriberInterface = eObjectIndexer.getInterface("org.reactivestreams.Subscriber");
         var corePublisherInterface = eObjectIndexer.getInterface("reactor.core.CorePublisher");

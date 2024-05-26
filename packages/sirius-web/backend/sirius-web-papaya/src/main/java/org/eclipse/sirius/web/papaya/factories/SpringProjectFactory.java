@@ -18,8 +18,8 @@ import java.util.UUID;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.web.papaya.factories.api.IEObjectIndexer;
-import org.eclipse.sirius.web.papaya.factories.api.IObjectFactory;
+import org.eclipse.sirius.web.papaya.factories.services.api.IEObjectIndexer;
+import org.eclipse.sirius.web.papaya.factories.services.api.IObjectFactory;
 
 /**
  * Used to create the Spring project.
@@ -28,22 +28,22 @@ import org.eclipse.sirius.web.papaya.factories.api.IObjectFactory;
  */
 public class SpringProjectFactory implements IObjectFactory {
     @Override
-    public void create(IEObjectIndexer eObjectIndexer, IEMFEditingContext editingContext) {
+    public void create(IEMFEditingContext editingContext) {
         var documentId = UUID.randomUUID();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
         var resourceMetadataAdapter = new ResourceMetadataAdapter("Spring Projects");
         resource.eAdapters().add(resourceMetadataAdapter);
         editingContext.getDomain().getResourceSet().getResources().add(resource);
 
-        var springFramework = new SpringFrameworkProjectFactory().create(eObjectIndexer);
-        var springDataCommons = new SpringDataCommonsProjectFactory().create(eObjectIndexer);
+        var springFramework = new SpringFrameworkProjectFactory().create();
+        var springDataCommons = new SpringDataCommonsProjectFactory().create();
 
         var springProjects = List.of(springFramework, springDataCommons);
         resource.getContents().addAll(springProjects);
     }
 
     @Override
-    public void link(IEObjectIndexer eObjectIndexer, IEMFEditingContext editingContext) {
+    public void link(IEObjectIndexer eObjectIndexer) {
         new SpringFrameworkProjectFactory().link(eObjectIndexer);
         new SpringDataCommonsProjectFactory().link(eObjectIndexer);
     }

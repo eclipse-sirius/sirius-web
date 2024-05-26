@@ -613,12 +613,13 @@ public interface PapayaPackage extends EPackage {
     int COMPONENT__DEPENDENCIES = NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Used By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Used As Dependency By</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int COMPONENT__USED_BY = NAMED_ELEMENT_FEATURE_COUNT + 1;
+    int COMPONENT__USED_AS_DEPENDENCY_BY = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Components</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1332,13 +1333,22 @@ public interface PapayaPackage extends EPackage {
     int ANNOTATION__TYPES = TYPE__TYPES;
 
     /**
+     * The feature id for the '<em><b>Fields</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ANNOTATION__FIELDS = TYPE_FEATURE_COUNT + 0;
+
+    /**
      * The number of structural features of the '<em>Annotation</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int ANNOTATION_FEATURE_COUNT = TYPE_FEATURE_COUNT + 0;
+    int ANNOTATION_FEATURE_COUNT = TYPE_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Annotation</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1349,6 +1359,76 @@ public interface PapayaPackage extends EPackage {
     int ANNOTATION_OPERATION_COUNT = TYPE_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.AnnotationFieldImpl <em>Annotation
+     * Field</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.AnnotationFieldImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getAnnotationField()
+     * @generated
+     */
+    int ANNOTATION_FIELD = 18;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ANNOTATION_FIELD__TAGS = TYPED_ELEMENT__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ANNOTATION_FIELD__NAME = TYPED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ANNOTATION_FIELD__DESCRIPTION = TYPED_ELEMENT__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Annotations</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ANNOTATION_FIELD__ANNOTATIONS = TYPED_ELEMENT__ANNOTATIONS;
+
+    /**
+     * The feature id for the '<em><b>Type</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ANNOTATION_FIELD__TYPE = TYPED_ELEMENT__TYPE;
+
+    /**
+     * The number of structural features of the '<em>Annotation Field</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ANNOTATION_FIELD_FEATURE_COUNT = TYPED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Annotation Field</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ANNOTATION_FIELD_OPERATION_COUNT = TYPED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.ClassifierImpl <em>Classifier</em>}'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1356,7 +1436,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getClassifier()
      * @generated
      */
-    int CLASSIFIER = 18;
+    int CLASSIFIER = 19;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1451,7 +1531,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getTypeParameter()
      * @generated
      */
-    int TYPE_PARAMETER = 19;
+    int TYPE_PARAMETER = 20;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1503,7 +1583,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getInterface()
      * @generated
      */
-    int INTERFACE = 20;
+    int INTERFACE = 21;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1582,13 +1662,31 @@ public interface PapayaPackage extends EPackage {
     int INTERFACE__EXTENDS = CLASSIFIER_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Extended By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INTERFACE__EXTENDED_BY = CLASSIFIER_FEATURE_COUNT + 1;
+
+    /**
      * The feature id for the '<em><b>Operations</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int INTERFACE__OPERATIONS = CLASSIFIER_FEATURE_COUNT + 1;
+    int INTERFACE__OPERATIONS = CLASSIFIER_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Implemented By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INTERFACE__IMPLEMENTED_BY = CLASSIFIER_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>Interface</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1597,7 +1695,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INTERFACE_FEATURE_COUNT = CLASSIFIER_FEATURE_COUNT + 2;
+    int INTERFACE_FEATURE_COUNT = CLASSIFIER_FEATURE_COUNT + 4;
 
     /**
      * The number of operations of the '<em>Interface</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1608,6 +1706,42 @@ public interface PapayaPackage extends EPackage {
     int INTERFACE_OPERATION_COUNT = CLASSIFIER_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.InterfaceImplementation <em>Interface
+     * Implementation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.InterfaceImplementation
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getInterfaceImplementation()
+     * @generated
+     */
+    int INTERFACE_IMPLEMENTATION = 22;
+
+    /**
+     * The feature id for the '<em><b>Implements</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INTERFACE_IMPLEMENTATION__IMPLEMENTS = 0;
+
+    /**
+     * The number of structural features of the '<em>Interface Implementation</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INTERFACE_IMPLEMENTATION_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Interface Implementation</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INTERFACE_IMPLEMENTATION_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.ClassImpl <em>Class</em>}' class.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1615,7 +1749,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getClass_()
      * @generated
      */
-    int CLASS = 21;
+    int CLASS = 23;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1686,20 +1820,36 @@ public interface PapayaPackage extends EPackage {
     int CLASS__TYPE_PARAMETERS = CLASSIFIER__TYPE_PARAMETERS;
 
     /**
-     * The feature id for the '<em><b>Abstract</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CLASS__ABSTRACT = CLASSIFIER_FEATURE_COUNT + 0;
-
-    /**
      * The feature id for the '<em><b>Implements</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CLASS__IMPLEMENTS = CLASSIFIER_FEATURE_COUNT + 1;
+    int CLASS__IMPLEMENTS = CLASSIFIER_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Abstract</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CLASS__ABSTRACT = CLASSIFIER_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Final</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CLASS__FINAL = CLASSIFIER_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Static</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CLASS__STATIC = CLASSIFIER_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Extends</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1707,7 +1857,25 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CLASS__EXTENDS = CLASSIFIER_FEATURE_COUNT + 2;
+    int CLASS__EXTENDS = CLASSIFIER_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Extended By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CLASS__EXTENDED_BY = CLASSIFIER_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Constructors</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CLASS__CONSTRUCTORS = CLASSIFIER_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Attributes</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1716,7 +1884,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CLASS__ATTRIBUTES = CLASSIFIER_FEATURE_COUNT + 3;
+    int CLASS__ATTRIBUTES = CLASSIFIER_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Operations</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1725,7 +1893,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CLASS__OPERATIONS = CLASSIFIER_FEATURE_COUNT + 4;
+    int CLASS__OPERATIONS = CLASSIFIER_FEATURE_COUNT + 8;
 
     /**
      * The number of structural features of the '<em>Class</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1733,7 +1901,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CLASS_FEATURE_COUNT = CLASSIFIER_FEATURE_COUNT + 5;
+    int CLASS_FEATURE_COUNT = CLASSIFIER_FEATURE_COUNT + 9;
 
     /**
      * The number of operations of the '<em>Class</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1744,6 +1912,59 @@ public interface PapayaPackage extends EPackage {
     int CLASS_OPERATION_COUNT = CLASSIFIER_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.ConstructorImpl
+     * <em>Constructor</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.ConstructorImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getConstructor()
+     * @generated
+     */
+    int CONSTRUCTOR = 24;
+
+    /**
+     * The feature id for the '<em><b>Annotations</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONSTRUCTOR__ANNOTATIONS = ANNOTABLE_ELEMENT__ANNOTATIONS;
+
+    /**
+     * The feature id for the '<em><b>Parameters</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONSTRUCTOR__PARAMETERS = ANNOTABLE_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Visibility</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONSTRUCTOR__VISIBILITY = ANNOTABLE_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Constructor</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONSTRUCTOR_FEATURE_COUNT = ANNOTABLE_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Constructor</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONSTRUCTOR_OPERATION_COUNT = ANNOTABLE_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.AttributeImpl <em>Attribute</em>}'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1751,7 +1972,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getAttribute()
      * @generated
      */
-    int ATTRIBUTE = 22;
+    int ATTRIBUTE = 25;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1845,7 +2066,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getOperation()
      * @generated
      */
-    int OPERATION = 23;
+    int OPERATION = 26;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1899,13 +2120,37 @@ public interface PapayaPackage extends EPackage {
     int OPERATION__VISIBILITY = TYPED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Abstract</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OPERATION__ABSTRACT = TYPED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Final</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OPERATION__FINAL = TYPED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Static</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OPERATION__STATIC = TYPED_ELEMENT_FEATURE_COUNT + 3;
+
+    /**
      * The feature id for the '<em><b>Parameters</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int OPERATION__PARAMETERS = TYPED_ELEMENT_FEATURE_COUNT + 1;
+    int OPERATION__PARAMETERS = TYPED_ELEMENT_FEATURE_COUNT + 4;
 
     /**
      * The number of structural features of the '<em>Operation</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1914,7 +2159,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int OPERATION_FEATURE_COUNT = TYPED_ELEMENT_FEATURE_COUNT + 2;
+    int OPERATION_FEATURE_COUNT = TYPED_ELEMENT_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Operation</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1932,7 +2177,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getParameter()
      * @generated
      */
-    int PARAMETER = 24;
+    int PARAMETER = 27;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2002,7 +2247,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getRecord()
      * @generated
      */
-    int RECORD = 25;
+    int RECORD = 28;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2073,21 +2318,21 @@ public interface PapayaPackage extends EPackage {
     int RECORD__TYPE_PARAMETERS = CLASSIFIER__TYPE_PARAMETERS;
 
     /**
+     * The feature id for the '<em><b>Implements</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECORD__IMPLEMENTS = CLASSIFIER_FEATURE_COUNT + 0;
+
+    /**
      * The feature id for the '<em><b>Components</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int RECORD__COMPONENTS = CLASSIFIER_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Implements</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int RECORD__IMPLEMENTS = CLASSIFIER_FEATURE_COUNT + 1;
+    int RECORD__COMPONENTS = CLASSIFIER_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Operations</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2122,7 +2367,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getRecordComponent()
      * @generated
      */
-    int RECORD_COMPONENT = 26;
+    int RECORD_COMPONENT = 29;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2192,7 +2437,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getDataType()
      * @generated
      */
-    int DATA_TYPE = 27;
+    int DATA_TYPE = 30;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2278,7 +2523,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getEnum()
      * @generated
      */
-    int ENUM = 28;
+    int ENUM = 31;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2340,29 +2585,13 @@ public interface PapayaPackage extends EPackage {
     int ENUM__TYPES = TYPE__TYPES;
 
     /**
-     * The feature id for the '<em><b>Key</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ENUM__KEY = TYPE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ENUM__VALUE = TYPE_FEATURE_COUNT + 1;
-
-    /**
      * The feature id for the '<em><b>Literals</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ENUM__LITERALS = TYPE_FEATURE_COUNT + 2;
+    int ENUM__LITERALS = TYPE_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Enum</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2370,7 +2599,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENUM_FEATURE_COUNT = TYPE_FEATURE_COUNT + 3;
+    int ENUM_FEATURE_COUNT = TYPE_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Enum</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2388,7 +2617,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getEnumLiteral()
      * @generated
      */
-    int ENUM_LITERAL = 29;
+    int ENUM_LITERAL = 32;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2449,7 +2678,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getPriority()
      * @generated
      */
-    int PRIORITY = 30;
+    int PRIORITY = 33;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.Visibility <em>Visibility</em>}' enum.
@@ -2459,7 +2688,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getVisibility()
      * @generated
      */
-    int VISIBILITY = 31;
+    int VISIBILITY = 34;
 
     /**
      * The meta object id for the '<em>Instant</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2468,7 +2697,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getInstant()
      * @generated
      */
-    int INSTANT = 32;
+    int INSTANT = 35;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.ModelElement <em>Model
@@ -2850,15 +3079,16 @@ public interface PapayaPackage extends EPackage {
     EReference getComponent_Dependencies();
 
     /**
-     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Component#getUsedBy
-     * <em>Used By</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.Component#getUsedAsDependencyBy <em>Used As Dependency By</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the reference list '<em>Used By</em>'.
-     * @see org.eclipse.sirius.components.papaya.Component#getUsedBy()
+     * @return the meta object for the reference list '<em>Used As Dependency By</em>'.
+     * @see org.eclipse.sirius.components.papaya.Component#getUsedAsDependencyBy()
      * @see #getComponent()
      * @generated
      */
-    EReference getComponent_UsedBy();
+    EReference getComponent_UsedAsDependencyBy();
 
     /**
      * Returns the meta object for the containment reference list
@@ -3184,6 +3414,28 @@ public interface PapayaPackage extends EPackage {
     EClass getAnnotation();
 
     /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Annotation#getFields <em>Fields</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Fields</em>'.
+     * @see org.eclipse.sirius.components.papaya.Annotation#getFields()
+     * @see #getAnnotation()
+     * @generated
+     */
+    EReference getAnnotation_Fields();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.AnnotationField <em>Annotation
+     * Field</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Annotation Field</em>'.
+     * @see org.eclipse.sirius.components.papaya.AnnotationField
+     * @generated
+     */
+    EClass getAnnotationField();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Classifier <em>Classifier</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3237,6 +3489,18 @@ public interface PapayaPackage extends EPackage {
     EReference getInterface_Extends();
 
     /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.Interface#getExtendedBy <em>Extended By</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Extended By</em>'.
+     * @see org.eclipse.sirius.components.papaya.Interface#getExtendedBy()
+     * @see #getInterface()
+     * @generated
+     */
+    EReference getInterface_ExtendedBy();
+
+    /**
      * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.papaya.Interface#getOperations <em>Operations</em>}'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -3247,6 +3511,40 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EReference getInterface_Operations();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.Interface#getImplementedBy <em>Implemented By</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Implemented By</em>'.
+     * @see org.eclipse.sirius.components.papaya.Interface#getImplementedBy()
+     * @see #getInterface()
+     * @generated
+     */
+    EReference getInterface_ImplementedBy();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.InterfaceImplementation
+     * <em>Interface Implementation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Interface Implementation</em>'.
+     * @see org.eclipse.sirius.components.papaya.InterfaceImplementation
+     * @generated
+     */
+    EClass getInterfaceImplementation();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.InterfaceImplementation#getImplements <em>Implements</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Implements</em>'.
+     * @see org.eclipse.sirius.components.papaya.InterfaceImplementation#getImplements()
+     * @see #getInterfaceImplementation()
+     * @generated
+     */
+    EReference getInterfaceImplementation_Implements();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Class <em>Class</em>}'. <!--
@@ -3270,15 +3568,26 @@ public interface PapayaPackage extends EPackage {
     EAttribute getClass_Abstract();
 
     /**
-     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Class#getImplements
-     * <em>Implements</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Class#isFinal
+     * <em>Final</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the reference list '<em>Implements</em>'.
-     * @see org.eclipse.sirius.components.papaya.Class#getImplements()
+     * @return the meta object for the attribute '<em>Final</em>'.
+     * @see org.eclipse.sirius.components.papaya.Class#isFinal()
      * @see #getClass_()
      * @generated
      */
-    EReference getClass_Implements();
+    EAttribute getClass_Final();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Class#isStatic
+     * <em>Static</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Static</em>'.
+     * @see org.eclipse.sirius.components.papaya.Class#isStatic()
+     * @see #getClass_()
+     * @generated
+     */
+    EAttribute getClass_Static();
 
     /**
      * Returns the meta object for the reference '{@link org.eclipse.sirius.components.papaya.Class#getExtends
@@ -3290,6 +3599,29 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EReference getClass_Extends();
+
+    /**
+     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Class#getExtendedBy
+     * <em>Extended By</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Extended By</em>'.
+     * @see org.eclipse.sirius.components.papaya.Class#getExtendedBy()
+     * @see #getClass_()
+     * @generated
+     */
+    EReference getClass_ExtendedBy();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Class#getConstructors <em>Constructors</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Constructors</em>'.
+     * @see org.eclipse.sirius.components.papaya.Class#getConstructors()
+     * @see #getClass_()
+     * @generated
+     */
+    EReference getClass_Constructors();
 
     /**
      * Returns the meta object for the containment reference list
@@ -3314,6 +3646,39 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EReference getClass_Operations();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Constructor
+     * <em>Constructor</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Constructor</em>'.
+     * @see org.eclipse.sirius.components.papaya.Constructor
+     * @generated
+     */
+    EClass getConstructor();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Constructor#getParameters <em>Parameters</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Parameters</em>'.
+     * @see org.eclipse.sirius.components.papaya.Constructor#getParameters()
+     * @see #getConstructor()
+     * @generated
+     */
+    EReference getConstructor_Parameters();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Constructor#getVisibility
+     * <em>Visibility</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Visibility</em>'.
+     * @see org.eclipse.sirius.components.papaya.Constructor#getVisibility()
+     * @see #getConstructor()
+     * @generated
+     */
+    EAttribute getConstructor_Visibility();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Attribute <em>Attribute</em>}'.
@@ -3380,6 +3745,39 @@ public interface PapayaPackage extends EPackage {
     EAttribute getOperation_Visibility();
 
     /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Operation#isAbstract
+     * <em>Abstract</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Abstract</em>'.
+     * @see org.eclipse.sirius.components.papaya.Operation#isAbstract()
+     * @see #getOperation()
+     * @generated
+     */
+    EAttribute getOperation_Abstract();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Operation#isFinal
+     * <em>Final</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Final</em>'.
+     * @see org.eclipse.sirius.components.papaya.Operation#isFinal()
+     * @see #getOperation()
+     * @generated
+     */
+    EAttribute getOperation_Final();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Operation#isStatic
+     * <em>Static</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Static</em>'.
+     * @see org.eclipse.sirius.components.papaya.Operation#isStatic()
+     * @see #getOperation()
+     * @generated
+     */
+    EAttribute getOperation_Static();
+
+    /**
      * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.papaya.Operation#getParameters <em>Parameters</em>}'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -3422,17 +3820,6 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EReference getRecord_Components();
-
-    /**
-     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Record#getImplements
-     * <em>Implements</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the reference list '<em>Implements</em>'.
-     * @see org.eclipse.sirius.components.papaya.Record#getImplements()
-     * @see #getRecord()
-     * @generated
-     */
-    EReference getRecord_Implements();
 
     /**
      * Returns the meta object for the containment reference list
@@ -3840,12 +4227,12 @@ public interface PapayaPackage extends EPackage {
         EReference COMPONENT__DEPENDENCIES = eINSTANCE.getComponent_Dependencies();
 
         /**
-         * The meta object literal for the '<em><b>Used By</b></em>' reference list feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Used As Dependency By</b></em>' reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EReference COMPONENT__USED_BY = eINSTANCE.getComponent_UsedBy();
+        EReference COMPONENT__USED_AS_DEPENDENCY_BY = eINSTANCE.getComponent_UsedAsDependencyBy();
 
         /**
          * The meta object literal for the '<em><b>Components</b></em>' containment reference list feature. <!--
@@ -4100,6 +4487,24 @@ public interface PapayaPackage extends EPackage {
         EClass ANNOTATION = eINSTANCE.getAnnotation();
 
         /**
+         * The meta object literal for the '<em><b>Fields</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference ANNOTATION__FIELDS = eINSTANCE.getAnnotation_Fields();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.AnnotationFieldImpl
+         * <em>Annotation Field</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.AnnotationFieldImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getAnnotationField()
+         * @generated
+         */
+        EClass ANNOTATION_FIELD = eINSTANCE.getAnnotationField();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.ClassifierImpl
          * <em>Classifier</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -4146,12 +4551,46 @@ public interface PapayaPackage extends EPackage {
         EReference INTERFACE__EXTENDS = eINSTANCE.getInterface_Extends();
 
         /**
+         * The meta object literal for the '<em><b>Extended By</b></em>' reference list feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference INTERFACE__EXTENDED_BY = eINSTANCE.getInterface_ExtendedBy();
+
+        /**
          * The meta object literal for the '<em><b>Operations</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EReference INTERFACE__OPERATIONS = eINSTANCE.getInterface_Operations();
+
+        /**
+         * The meta object literal for the '<em><b>Implemented By</b></em>' reference list feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference INTERFACE__IMPLEMENTED_BY = eINSTANCE.getInterface_ImplementedBy();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.InterfaceImplementation
+         * <em>Interface Implementation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.InterfaceImplementation
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getInterfaceImplementation()
+         * @generated
+         */
+        EClass INTERFACE_IMPLEMENTATION = eINSTANCE.getInterfaceImplementation();
+
+        /**
+         * The meta object literal for the '<em><b>Implements</b></em>' reference list feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference INTERFACE_IMPLEMENTATION__IMPLEMENTS = eINSTANCE.getInterfaceImplementation_Implements();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.ClassImpl <em>Class</em>}'
@@ -4172,12 +4611,20 @@ public interface PapayaPackage extends EPackage {
         EAttribute CLASS__ABSTRACT = eINSTANCE.getClass_Abstract();
 
         /**
-         * The meta object literal for the '<em><b>Implements</b></em>' reference list feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Final</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
          *
          * @generated
          */
-        EReference CLASS__IMPLEMENTS = eINSTANCE.getClass_Implements();
+        EAttribute CLASS__FINAL = eINSTANCE.getClass_Final();
+
+        /**
+         * The meta object literal for the '<em><b>Static</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CLASS__STATIC = eINSTANCE.getClass_Static();
 
         /**
          * The meta object literal for the '<em><b>Extends</b></em>' reference feature. <!-- begin-user-doc --> <!--
@@ -4186,6 +4633,22 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EReference CLASS__EXTENDS = eINSTANCE.getClass_Extends();
+
+        /**
+         * The meta object literal for the '<em><b>Extended By</b></em>' reference list feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CLASS__EXTENDED_BY = eINSTANCE.getClass_ExtendedBy();
+
+        /**
+         * The meta object literal for the '<em><b>Constructors</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CLASS__CONSTRUCTORS = eINSTANCE.getClass_Constructors();
 
         /**
          * The meta object literal for the '<em><b>Attributes</b></em>' containment reference list feature. <!--
@@ -4202,6 +4665,32 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EReference CLASS__OPERATIONS = eINSTANCE.getClass_Operations();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.ConstructorImpl
+         * <em>Constructor</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.ConstructorImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getConstructor()
+         * @generated
+         */
+        EClass CONSTRUCTOR = eINSTANCE.getConstructor();
+
+        /**
+         * The meta object literal for the '<em><b>Parameters</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CONSTRUCTOR__PARAMETERS = eINSTANCE.getConstructor_Parameters();
+
+        /**
+         * The meta object literal for the '<em><b>Visibility</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CONSTRUCTOR__VISIBILITY = eINSTANCE.getConstructor_Visibility();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.AttributeImpl
@@ -4256,6 +4745,30 @@ public interface PapayaPackage extends EPackage {
         EAttribute OPERATION__VISIBILITY = eINSTANCE.getOperation_Visibility();
 
         /**
+         * The meta object literal for the '<em><b>Abstract</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute OPERATION__ABSTRACT = eINSTANCE.getOperation_Abstract();
+
+        /**
+         * The meta object literal for the '<em><b>Final</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute OPERATION__FINAL = eINSTANCE.getOperation_Final();
+
+        /**
+         * The meta object literal for the '<em><b>Static</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute OPERATION__STATIC = eINSTANCE.getOperation_Static();
+
+        /**
          * The meta object literal for the '<em><b>Parameters</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -4290,14 +4803,6 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EReference RECORD__COMPONENTS = eINSTANCE.getRecord_Components();
-
-        /**
-         * The meta object literal for the '<em><b>Implements</b></em>' reference list feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference RECORD__IMPLEMENTS = eINSTANCE.getRecord_Implements();
 
         /**
          * The meta object literal for the '<em><b>Operations</b></em>' containment reference list feature. <!--

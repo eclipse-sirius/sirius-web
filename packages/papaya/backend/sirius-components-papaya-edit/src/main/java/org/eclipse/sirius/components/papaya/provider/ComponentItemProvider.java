@@ -52,7 +52,7 @@ public class ComponentItemProvider extends NamedElementItemProvider {
             super.getPropertyDescriptors(object);
 
             this.addDependenciesPropertyDescriptor(object);
-            this.addUsedByPropertyDescriptor(object);
+            this.addUsedAsDependencyByPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -69,14 +69,15 @@ public class ComponentItemProvider extends NamedElementItemProvider {
     }
 
     /**
-     * This adds a property descriptor for the Used By feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Used As Dependency By feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
-    protected void addUsedByPropertyDescriptor(Object object) {
+    protected void addUsedAsDependencyByPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_Component_usedBy_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Component_usedBy_feature", "_UI_Component_type"),
-                PapayaPackage.Literals.COMPONENT__USED_BY, true, false, true, null, null, null));
+                this.getString("_UI_Component_usedAsDependencyBy_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Component_usedAsDependencyBy_feature", "_UI_Component_type"),
+                PapayaPackage.Literals.COMPONENT__USED_AS_DEPENDENCY_BY, true, false, true, null, null, null));
     }
 
     /**

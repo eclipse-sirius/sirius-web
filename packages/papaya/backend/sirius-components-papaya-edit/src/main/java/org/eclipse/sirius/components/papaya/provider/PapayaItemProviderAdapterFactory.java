@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.papaya.provider.spec.ClassItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ComponentExchangeItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ComponentItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ComponentPortItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.ConstructorItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ContributionItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.DataTypeItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.EnumItemProviderSpec;
@@ -414,6 +415,29 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.AnnotationField}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected AnnotationFieldItemProvider annotationFieldItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.AnnotationField}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createAnnotationFieldAdapter() {
+        if (this.annotationFieldItemProvider == null) {
+            this.annotationFieldItemProvider = new AnnotationFieldItemProvider(this);
+        }
+
+        return this.annotationFieldItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.TypeParameter}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -480,6 +504,29 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
         }
 
         return this.classItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Constructor}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConstructorItemProvider constructorItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Constructor}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createConstructorAdapter() {
+        if (this.constructorItemProvider == null) {
+            this.constructorItemProvider = new ConstructorItemProviderSpec(this);
+        }
+
+        return this.constructorItemProvider;
     }
 
     /**
@@ -821,12 +868,16 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
             this.genericTypeItemProvider.dispose();
         if (this.annotationItemProvider != null)
             this.annotationItemProvider.dispose();
+        if (this.annotationFieldItemProvider != null)
+            this.annotationFieldItemProvider.dispose();
         if (this.typeParameterItemProvider != null)
             this.typeParameterItemProvider.dispose();
         if (this.interfaceItemProvider != null)
             this.interfaceItemProvider.dispose();
         if (this.classItemProvider != null)
             this.classItemProvider.dispose();
+        if (this.constructorItemProvider != null)
+            this.constructorItemProvider.dispose();
         if (this.attributeItemProvider != null)
             this.attributeItemProvider.dispose();
         if (this.operationItemProvider != null)

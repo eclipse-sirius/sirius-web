@@ -22,8 +22,8 @@ import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.Project;
-import org.eclipse.sirius.web.papaya.factories.api.IEObjectIndexer;
-import org.eclipse.sirius.web.papaya.factories.api.IObjectFactory;
+import org.eclipse.sirius.web.papaya.factories.services.api.IEObjectIndexer;
+import org.eclipse.sirius.web.papaya.factories.services.api.IObjectFactory;
 
 /**
  * Used to create the Reactive Streams project.
@@ -33,7 +33,7 @@ import org.eclipse.sirius.web.papaya.factories.api.IObjectFactory;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ReactiveStreamsProjectFactory implements IObjectFactory {
     @Override
-    public void create(IEObjectIndexer eObjectIndexer, IEMFEditingContext editingContext) {
+    public void create(IEMFEditingContext editingContext) {
         var documentId = UUID.randomUUID();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
         var resourceMetadataAdapter = new ResourceMetadataAdapter("Reactive Streams");
@@ -42,7 +42,6 @@ public class ReactiveStreamsProjectFactory implements IObjectFactory {
 
         var reactiveStreamsProject = this.reactiveStreamsProject();
         resource.getContents().add(reactiveStreamsProject);
-        eObjectIndexer.index(reactiveStreamsProject);
     }
 
     private Project reactiveStreamsProject() {
@@ -93,7 +92,7 @@ public class ReactiveStreamsProjectFactory implements IObjectFactory {
     }
 
     @Override
-    public void link(IEObjectIndexer eObjectIndexer, IEMFEditingContext editingContext) {
+    public void link(IEObjectIndexer eObjectIndexer) {
         var publisherInterface = eObjectIndexer.getInterface("org.reactivestreams.Publisher");
         var subscriberInterface = eObjectIndexer.getInterface("org.reactivestreams.Subscriber");
         var processorInterface = eObjectIndexer.getInterface("org.reactivestreams.Processor");
