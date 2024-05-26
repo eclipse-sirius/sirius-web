@@ -134,6 +134,14 @@ public interface PapayaFactory extends EFactory {
     Annotation createAnnotation();
 
     /**
+     * Returns a new object of class '<em>Annotation Field</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Annotation Field</em>'.
+     * @generated
+     */
+    AnnotationField createAnnotationField();
+
+    /**
      * Returns a new object of class '<em>Type Parameter</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Type Parameter</em>'.
@@ -156,6 +164,14 @@ public interface PapayaFactory extends EFactory {
      * @generated
      */
     Class createClass();
+
+    /**
+     * Returns a new object of class '<em>Constructor</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Constructor</em>'.
+     * @generated
+     */
+    Constructor createConstructor();
 
     /**
      * Returns a new object of class '<em>Attribute</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

@@ -12,7 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.papaya.provider.spec;
 
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.sirius.components.papaya.GenericType;
+import org.eclipse.sirius.components.papaya.Type;
 import org.eclipse.sirius.components.papaya.provider.GenericTypeItemProvider;
 
 /**
@@ -28,5 +33,23 @@ public class GenericTypeItemProviderSpec extends GenericTypeItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/GenericType.svg"));
+    }
+
+    @Override
+    public String getText(Object object) {
+        if (object instanceof GenericType genericType) {
+            var text = Optional.ofNullable(genericType.getRawType()).map(Type::getName).orElse("");
+            if (!genericType.getTypeArguments().isEmpty()) {
+                text = text + "<";
+
+                text = text + genericType.getTypeArguments().stream()
+                        .map(this::getText)
+                        .collect(Collectors.joining(", "));
+
+                text = text + ">";
+            }
+            return text;
+        }
+        return super.getText(object);
     }
 }

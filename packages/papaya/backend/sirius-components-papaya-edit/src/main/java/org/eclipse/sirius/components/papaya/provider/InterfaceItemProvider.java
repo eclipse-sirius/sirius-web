@@ -52,6 +52,8 @@ public class InterfaceItemProvider extends ClassifierItemProvider {
             super.getPropertyDescriptors(object);
 
             this.addExtendsPropertyDescriptor(object);
+            this.addExtendedByPropertyDescriptor(object);
+            this.addImplementedByPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -65,6 +67,28 @@ public class InterfaceItemProvider extends ClassifierItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Interface_extends_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Interface_extends_feature", "_UI_Interface_type"),
                 PapayaPackage.Literals.INTERFACE__EXTENDS, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Extended By feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addExtendedByPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Interface_extendedBy_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Interface_extendedBy_feature", "_UI_Interface_type"),
+                PapayaPackage.Literals.INTERFACE__EXTENDED_BY, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Implemented By feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addImplementedByPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Interface_implementedBy_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Interface_implementedBy_feature", "_UI_Interface_type"),
+                PapayaPackage.Literals.INTERFACE__IMPLEMENTED_BY, true, false, true, null, null, null));
     }
 
     /**
@@ -158,25 +182,6 @@ public class InterfaceItemProvider extends ClassifierItemProvider {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.INTERFACE__OPERATIONS, PapayaFactory.eINSTANCE.createOperation()));
-    }
-
-    /**
-     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
-
-        boolean qualify = childFeature == PapayaPackage.Literals.MODEL_ELEMENT__TAGS || childFeature == PapayaPackage.Literals.TYPE__TYPES;
-
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
-        }
-        return super.getCreateChildText(owner, feature, child, selection);
     }
 
 }

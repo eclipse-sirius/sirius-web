@@ -190,23 +190,4 @@ public class PackageItemProvider extends NamedElementItemProvider {
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PACKAGE__PACKAGES, PapayaFactory.eINSTANCE.createPackage()));
     }
 
-    /**
-     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
-
-        boolean qualify = childFeature == PapayaPackage.Literals.MODEL_ELEMENT__TAGS || childFeature == PapayaPackage.Literals.PACKAGE__TYPES;
-
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
-        }
-        return super.getCreateChildText(owner, feature, child, selection);
-    }
-
 }

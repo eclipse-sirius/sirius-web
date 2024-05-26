@@ -30,8 +30,8 @@ import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAd
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;

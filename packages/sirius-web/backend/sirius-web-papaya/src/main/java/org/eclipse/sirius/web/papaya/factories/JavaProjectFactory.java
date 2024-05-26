@@ -23,8 +23,8 @@ import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.Type;
-import org.eclipse.sirius.web.papaya.factories.api.IEObjectIndexer;
-import org.eclipse.sirius.web.papaya.factories.api.IObjectFactory;
+import org.eclipse.sirius.web.papaya.factories.services.api.IEObjectIndexer;
+import org.eclipse.sirius.web.papaya.factories.services.api.IObjectFactory;
 
 /**
  * Used to create the Java project.
@@ -34,7 +34,7 @@ import org.eclipse.sirius.web.papaya.factories.api.IObjectFactory;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class JavaProjectFactory implements IObjectFactory {
     @Override
-    public void create(IEObjectIndexer eObjectIndexer, IEMFEditingContext editingContext) {
+    public void create(IEMFEditingContext editingContext) {
         var documentId = UUID.randomUUID();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
         var resourceMetadataAdapter = new ResourceMetadataAdapter("Java");
@@ -43,7 +43,6 @@ public class JavaProjectFactory implements IObjectFactory {
 
         var java = this.java();
         resource.getContents().add(java);
-        eObjectIndexer.index(java);
     }
 
     private Project java() {
@@ -139,8 +138,8 @@ public class JavaProjectFactory implements IObjectFactory {
         var booleanClass = PapayaFactory.eINSTANCE.createClass();
         booleanClass.setName("Boolean");
 
-        var charClass = PapayaFactory.eINSTANCE.createClass();
-        charClass.setName("Char");
+        var characterClass = PapayaFactory.eINSTANCE.createClass();
+        characterClass.setName("Character");
 
         var autoCloseableInterface = PapayaFactory.eINSTANCE.createInterface();
         autoCloseableInterface.setName("AutoCloseable");
@@ -154,7 +153,29 @@ public class JavaProjectFactory implements IObjectFactory {
         comparableInterface.setName("Comparable");
         comparableInterface.getTypeParameters().add(comparableTTypeParameter);
 
-        return List.of(objectClass, stringClass, voidClass, byteClass, shortClass, integerClass, longClass, floatClass, doubleClass, booleanClass, charClass, autoCloseableInterface, cloneableInterface, comparableInterface);
+        var iterableTTypeParameter = PapayaFactory.eINSTANCE.createTypeParameter();
+        iterableTTypeParameter.setName("T");
+        var iterableInterface = PapayaFactory.eINSTANCE.createInterface();
+        iterableInterface.setName("Iterable");
+        iterableInterface.getTypeParameters().add(iterableTTypeParameter);
+
+        return List.of(
+                objectClass,
+                stringClass,
+                voidClass,
+                byteClass,
+                shortClass,
+                integerClass,
+                longClass,
+                floatClass,
+                doubleClass,
+                booleanClass,
+                characterClass,
+                autoCloseableInterface,
+                cloneableInterface,
+                comparableInterface,
+                iterableInterface
+        );
     }
 
     private Package javaIo() {
@@ -218,14 +239,20 @@ public class JavaProjectFactory implements IObjectFactory {
         var temporalInterface = PapayaFactory.eINSTANCE.createInterface();
         temporalInterface.setName("Temporal");
 
+        var javaTimeTemporalTypes = List.of(temporalAccessorInterface, temporalAdjusterInterface, temporalInterface);
+
+        var javaTimeTemporal = PapayaFactory.eINSTANCE.createPackage();
+        javaTimeTemporal.setName("temporal");
+        javaTimeTemporal.getTypes().addAll(javaTimeTemporalTypes);
+
+
         var instantClass = PapayaFactory.eINSTANCE.createClass();
         instantClass.setName("Instant");
 
-        var javaTimeTypes = List.of(temporalAccessorInterface, temporalAdjusterInterface, temporalInterface, instantClass);
-
         var javaTime = PapayaFactory.eINSTANCE.createPackage();
         javaTime.setName("java.time");
-        javaTime.getTypes().addAll(javaTimeTypes);
+        javaTime.getTypes().add(instantClass);
+        javaTime.getPackages().add(javaTimeTemporal);
 
         return javaTime;
     }
@@ -233,12 +260,6 @@ public class JavaProjectFactory implements IObjectFactory {
     private Package javaUtil() {
         var uuidClass = PapayaFactory.eINSTANCE.createClass();
         uuidClass.setName("UUID");
-
-        var iterableTTypeParameter = PapayaFactory.eINSTANCE.createTypeParameter();
-        iterableTTypeParameter.setName("T");
-        var iterableInterface = PapayaFactory.eINSTANCE.createInterface();
-        iterableInterface.setName("Iterable");
-        iterableInterface.getTypeParameters().add(iterableTTypeParameter);
 
         var collectionETypeParameter = PapayaFactory.eINSTANCE.createTypeParameter();
         collectionETypeParameter.setName("E");
@@ -273,7 +294,7 @@ public class JavaProjectFactory implements IObjectFactory {
         optionalClass.setName("Optional");
         optionalClass.getTypeParameters().add(optionalTTypeParameter);
 
-        var javaUtilTypes = List.of(uuidClass, iterableInterface, collectionInterface, listInterface, setInterface, mapInterface, optionalClass);
+        var javaUtilTypes = List.of(uuidClass, collectionInterface, listInterface, setInterface, mapInterface, optionalClass);
         var javaUtilPackages = List.of(this.javaUtilConcurrent(), this.javaUtilFunction(), this.javaUtilStream());
 
         var javaUtil = PapayaFactory.eINSTANCE.createPackage();
@@ -396,7 +417,7 @@ public class JavaProjectFactory implements IObjectFactory {
     }
 
     @Override
-    public void link(IEObjectIndexer eObjectIndexer, IEMFEditingContext editingContext) {
+    public void link(IEObjectIndexer eObjectIndexer) {
         // java.io
         var autoCloseableInterface = eObjectIndexer.getInterface("java.lang.AutoCloseable");
         var closeableInterface = eObjectIndexer.getInterface("java.io.Closeable");
@@ -423,16 +444,16 @@ public class JavaProjectFactory implements IObjectFactory {
 
         // java.time
         var comparableInterface = eObjectIndexer.getInterface("java.lang.Comparable");
-        var temporalAdjusterInterface = eObjectIndexer.getInterface("java.time.TemporalAdjuster");
-        var temporalAccessorInterface = eObjectIndexer.getInterface("java.time.TemporalAccessor");
-        var temporalInterface = eObjectIndexer.getInterface("java.time.Temporal");
+        var temporalAdjusterInterface = eObjectIndexer.getInterface("java.time.temporal.TemporalAdjuster");
+        var temporalAccessorInterface = eObjectIndexer.getInterface("java.time.temporal.TemporalAccessor");
+        var temporalInterface = eObjectIndexer.getInterface("java.time.temporal.Temporal");
         var instantClass = eObjectIndexer.getClass("java.time.Instant");
 
         temporalInterface.getExtends().add(temporalAccessorInterface);
         instantClass.getImplements().addAll(List.of(temporalInterface, temporalAdjusterInterface, comparableInterface, serializableInterface));
 
         // java.util
-        var iterableInterface = eObjectIndexer.getInterface("java.util.Iterable");
+        var iterableInterface = eObjectIndexer.getInterface("java.lang.Iterable");
         var collectionInterface = eObjectIndexer.getInterface("java.util.Collection");
         var listInterface = eObjectIndexer.getInterface("java.util.List");
         var setInterface = eObjectIndexer.getInterface("java.util.Set");

@@ -51,9 +51,12 @@ public class ClassItemProvider extends ClassifierItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addAbstractPropertyDescriptor(object);
             this.addImplementsPropertyDescriptor(object);
+            this.addAbstractPropertyDescriptor(object);
+            this.addFinalPropertyDescriptor(object);
+            this.addStaticPropertyDescriptor(object);
             this.addExtendsPropertyDescriptor(object);
+            this.addExtendedByPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -70,14 +73,37 @@ public class ClassItemProvider extends ClassifierItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the Final feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addFinalPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Class_final_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Class_final_feature", "_UI_Class_type"), PapayaPackage.Literals.CLASS__FINAL, true,
+                false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Static feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addStaticPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Class_static_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Class_static_feature", "_UI_Class_type"), PapayaPackage.Literals.CLASS__STATIC,
+                true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This adds a property descriptor for the Implements feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addImplementsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_Class_implements_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Class_implements_feature", "_UI_Class_type"),
-                PapayaPackage.Literals.CLASS__IMPLEMENTS, true, false, true, null, null, null));
+                this.getString("_UI_InterfaceImplementation_implements_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_InterfaceImplementation_implements_feature", "_UI_InterfaceImplementation_type"),
+                PapayaPackage.Literals.INTERFACE_IMPLEMENTATION__IMPLEMENTS, true, false, true, null, null, null));
     }
 
     /**
@@ -92,6 +118,17 @@ public class ClassItemProvider extends ClassifierItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the Extended By feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addExtendedByPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Class_extendedBy_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Class_extendedBy_feature", "_UI_Class_type"),
+                PapayaPackage.Literals.CLASS__EXTENDED_BY, true, false, true, null, null, null));
+    }
+
+    /**
      * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
      * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
      * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
@@ -103,6 +140,7 @@ public class ClassItemProvider extends ClassifierItemProvider {
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
+            this.childrenFeatures.add(PapayaPackage.Literals.CLASS__CONSTRUCTORS);
             this.childrenFeatures.add(PapayaPackage.Literals.CLASS__ATTRIBUTES);
             this.childrenFeatures.add(PapayaPackage.Literals.CLASS__OPERATIONS);
         }
@@ -166,8 +204,11 @@ public class ClassItemProvider extends ClassifierItemProvider {
 
         switch (notification.getFeatureID(org.eclipse.sirius.components.papaya.Class.class)) {
             case PapayaPackage.CLASS__ABSTRACT:
+            case PapayaPackage.CLASS__FINAL:
+            case PapayaPackage.CLASS__STATIC:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
+            case PapayaPackage.CLASS__CONSTRUCTORS:
             case PapayaPackage.CLASS__ATTRIBUTES:
             case PapayaPackage.CLASS__OPERATIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
@@ -186,28 +227,11 @@ public class ClassItemProvider extends ClassifierItemProvider {
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CLASS__CONSTRUCTORS, PapayaFactory.eINSTANCE.createConstructor()));
+
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CLASS__ATTRIBUTES, PapayaFactory.eINSTANCE.createAttribute()));
 
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CLASS__OPERATIONS, PapayaFactory.eINSTANCE.createOperation()));
-    }
-
-    /**
-     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
-
-        boolean qualify = childFeature == PapayaPackage.Literals.MODEL_ELEMENT__TAGS || childFeature == PapayaPackage.Literals.TYPE__TYPES;
-
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
-        }
-        return super.getCreateChildText(owner, feature, child, selection);
     }
 
 }

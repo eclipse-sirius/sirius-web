@@ -28,7 +28,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Enum extends Type, Tag {
+public interface Enum extends Type {
     /**
      * Returns the value of the '<em><b>Literals</b></em>' containment reference list. The list contents are of type
      * {@link org.eclipse.sirius.components.papaya.EnumLiteral}. <!-- begin-user-doc --> <!-- end-user-doc -->

@@ -22,7 +22,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.Component#getDependencies <em>Dependencies</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Component#getUsedBy <em>Used By</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Component#getUsedAsDependencyBy <em>Used As Dependency By</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Component#getComponents <em>Components</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Component#getPackages <em>Packages</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Component#getPorts <em>Ports</em>}</li>
@@ -38,30 +38,30 @@ public interface Component extends NamedElement {
     /**
      * Returns the value of the '<em><b>Dependencies</b></em>' reference list. The list contents are of type
      * {@link org.eclipse.sirius.components.papaya.Component}. It is bidirectional and its opposite is
-     * '{@link org.eclipse.sirius.components.papaya.Component#getUsedBy <em>Used By</em>}'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * '{@link org.eclipse.sirius.components.papaya.Component#getUsedAsDependencyBy <em>Used As Dependency By</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Dependencies</em>' reference list.
      * @see org.eclipse.sirius.components.papaya.PapayaPackage#getComponent_Dependencies()
-     * @see org.eclipse.sirius.components.papaya.Component#getUsedBy
-     * @model opposite="usedBy"
+     * @see org.eclipse.sirius.components.papaya.Component#getUsedAsDependencyBy
+     * @model opposite="usedAsDependencyBy"
      * @generated
      */
     EList<Component> getDependencies();
 
     /**
-     * Returns the value of the '<em><b>Used By</b></em>' reference list. The list contents are of type
+     * Returns the value of the '<em><b>Used As Dependency By</b></em>' reference list. The list contents are of type
      * {@link org.eclipse.sirius.components.papaya.Component}. It is bidirectional and its opposite is
      * '{@link org.eclipse.sirius.components.papaya.Component#getDependencies <em>Dependencies</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Used By</em>' reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getComponent_UsedBy()
+     * @return the value of the '<em>Used As Dependency By</em>' reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getComponent_UsedAsDependencyBy()
      * @see org.eclipse.sirius.components.papaya.Component#getDependencies
      * @model opposite="dependencies"
      * @generated
      */
-    EList<Component> getUsedBy();
+    EList<Component> getUsedAsDependencyBy();
 
     /**
      * Returns the value of the '<em><b>Components</b></em>' containment reference list. The list contents are of type

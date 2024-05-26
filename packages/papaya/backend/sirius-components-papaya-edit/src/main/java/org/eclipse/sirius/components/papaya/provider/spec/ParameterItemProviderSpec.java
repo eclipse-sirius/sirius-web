@@ -13,6 +13,9 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.sirius.components.papaya.Parameter;
+import org.eclipse.sirius.components.papaya.provider.PapayaItemProviderAdapterFactory;
 import org.eclipse.sirius.components.papaya.provider.ParameterItemProvider;
 
 /**
@@ -28,5 +31,22 @@ public class ParameterItemProviderSpec extends ParameterItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Parameter.svg"));
+    }
+
+    @Override
+    public String getText(Object object) {
+        if (object instanceof Parameter parameter && parameter.getName() != null && !parameter.getName().isBlank()) {
+            var text = parameter.getName();
+
+            if (parameter.getType() != null) {
+                var adapter = new PapayaItemProviderAdapterFactory().adapt(parameter.getType(), IItemLabelProvider.class);
+                if (adapter instanceof IItemLabelProvider itemLabelProvider) {
+                    text = text + ": " + itemLabelProvider.getText(parameter.getType());
+                }
+            }
+
+            return text;
+        }
+        return super.getText(object);
     }
 }

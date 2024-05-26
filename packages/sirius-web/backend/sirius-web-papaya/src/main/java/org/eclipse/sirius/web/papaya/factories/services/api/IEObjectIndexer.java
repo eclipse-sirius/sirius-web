@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.factories.api;
+package org.eclipse.sirius.web.papaya.factories.services.api;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.papaya.Class;
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.Enum;
@@ -26,7 +25,6 @@ import org.eclipse.sirius.components.papaya.Type;
  * @author sbegaudeau
  */
 public interface IEObjectIndexer {
-    void index(EObject eObject);
 
     Type getType(String qualifiedName);
 

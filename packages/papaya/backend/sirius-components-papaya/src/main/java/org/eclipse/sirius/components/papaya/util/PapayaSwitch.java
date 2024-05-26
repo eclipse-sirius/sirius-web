@@ -17,16 +17,19 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.papaya.AnnotableElement;
 import org.eclipse.sirius.components.papaya.Annotation;
+import org.eclipse.sirius.components.papaya.AnnotationField;
 import org.eclipse.sirius.components.papaya.Attribute;
 import org.eclipse.sirius.components.papaya.Classifier;
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
+import org.eclipse.sirius.components.papaya.Constructor;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.DataType;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
+import org.eclipse.sirius.components.papaya.InterfaceImplementation;
 import org.eclipse.sirius.components.papaya.Iteration;
 import org.eclipse.sirius.components.papaya.ModelElement;
 import org.eclipse.sirius.components.papaya.NamedElement;
@@ -288,6 +291,21 @@ public class PapayaSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case PapayaPackage.ANNOTATION_FIELD: {
+                AnnotationField annotationField = (AnnotationField) theEObject;
+                T result = this.caseAnnotationField(annotationField);
+                if (result == null)
+                    result = this.caseTypedElement(annotationField);
+                if (result == null)
+                    result = this.caseNamedElement(annotationField);
+                if (result == null)
+                    result = this.caseAnnotableElement(annotationField);
+                if (result == null)
+                    result = this.caseModelElement(annotationField);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             case PapayaPackage.CLASSIFIER: {
                 Classifier classifier = (Classifier) theEObject;
                 T result = this.caseClassifier(classifier);
@@ -331,11 +349,20 @@ public class PapayaSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case PapayaPackage.INTERFACE_IMPLEMENTATION: {
+                InterfaceImplementation interfaceImplementation = (InterfaceImplementation) theEObject;
+                T result = this.caseInterfaceImplementation(interfaceImplementation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             case PapayaPackage.CLASS: {
                 org.eclipse.sirius.components.papaya.Class class_ = (org.eclipse.sirius.components.papaya.Class) theEObject;
                 T result = this.caseClass(class_);
                 if (result == null)
                     result = this.caseClassifier(class_);
+                if (result == null)
+                    result = this.caseInterfaceImplementation(class_);
                 if (result == null)
                     result = this.caseType(class_);
                 if (result == null)
@@ -344,6 +371,15 @@ public class PapayaSwitch<T> extends Switch<T> {
                     result = this.caseAnnotableElement(class_);
                 if (result == null)
                     result = this.caseModelElement(class_);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.CONSTRUCTOR: {
+                Constructor constructor = (Constructor) theEObject;
+                T result = this.caseConstructor(constructor);
+                if (result == null)
+                    result = this.caseAnnotableElement(constructor);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -399,6 +435,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseClassifier(record);
                 if (result == null)
+                    result = this.caseInterfaceImplementation(record);
+                if (result == null)
                     result = this.caseType(record);
                 if (result == null)
                     result = this.caseNamedElement(record);
@@ -445,8 +483,6 @@ public class PapayaSwitch<T> extends Switch<T> {
                 T result = this.caseEnum(enum_);
                 if (result == null)
                     result = this.caseType(enum_);
-                if (result == null)
-                    result = this.caseTag(enum_);
                 if (result == null)
                     result = this.caseNamedElement(enum_);
                 if (result == null)
@@ -733,6 +769,21 @@ public class PapayaSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Annotation Field</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Annotation Field</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseAnnotationField(AnnotationField object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Classifier</em>'. <!-- begin-user-doc -->
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
@@ -776,6 +827,21 @@ public class PapayaSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Interface Implementation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Interface Implementation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseInterfaceImplementation(InterfaceImplementation object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Class</em>'. <!-- begin-user-doc --> This
      * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
@@ -786,6 +852,20 @@ public class PapayaSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseClass(org.eclipse.sirius.components.papaya.Class object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Constructor</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Constructor</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConstructor(Constructor object) {
         return null;
     }
 

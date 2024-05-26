@@ -18,16 +18,19 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.papaya.AnnotableElement;
 import org.eclipse.sirius.components.papaya.Annotation;
+import org.eclipse.sirius.components.papaya.AnnotationField;
 import org.eclipse.sirius.components.papaya.Attribute;
 import org.eclipse.sirius.components.papaya.Classifier;
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
+import org.eclipse.sirius.components.papaya.Constructor;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.DataType;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
+import org.eclipse.sirius.components.papaya.InterfaceImplementation;
 import org.eclipse.sirius.components.papaya.Iteration;
 import org.eclipse.sirius.components.papaya.ModelElement;
 import org.eclipse.sirius.components.papaya.NamedElement;
@@ -186,6 +189,11 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseAnnotationField(AnnotationField object) {
+            return PapayaAdapterFactory.this.createAnnotationFieldAdapter();
+        }
+
+        @Override
         public Adapter caseClassifier(Classifier object) {
             return PapayaAdapterFactory.this.createClassifierAdapter();
         }
@@ -201,8 +209,18 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseInterfaceImplementation(InterfaceImplementation object) {
+            return PapayaAdapterFactory.this.createInterfaceImplementationAdapter();
+        }
+
+        @Override
         public Adapter caseClass(org.eclipse.sirius.components.papaya.Class object) {
             return PapayaAdapterFactory.this.createClassAdapter();
+        }
+
+        @Override
+        public Adapter caseConstructor(Constructor object) {
+            return PapayaAdapterFactory.this.createConstructorAdapter();
         }
 
         @Override
@@ -508,6 +526,20 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.AnnotationField
+     * <em>Annotation Field</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.AnnotationField
+     * @generated
+     */
+    public Adapter createAnnotationFieldAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Classifier
      * <em>Classifier</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
      * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
@@ -549,6 +581,20 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.InterfaceImplementation
+     * <em>Interface Implementation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.InterfaceImplementation
+     * @generated
+     */
+    public Adapter createInterfaceImplementationAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Class <em>Class</em>}'.
      * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
@@ -558,6 +604,20 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createClassAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Constructor
+     * <em>Constructor</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Constructor
+     * @generated
+     */
+    public Adapter createConstructorAdapter() {
         return null;
     }
 

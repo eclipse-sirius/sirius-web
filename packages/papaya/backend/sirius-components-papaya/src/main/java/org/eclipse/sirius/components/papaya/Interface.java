@@ -22,7 +22,9 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.Interface#getExtends <em>Extends</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Interface#getExtendedBy <em>Extended By</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Interface#getOperations <em>Operations</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Interface#getImplementedBy <em>Implemented By</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getInterface()
@@ -32,14 +34,31 @@ import org.eclipse.emf.common.util.EList;
 public interface Interface extends Classifier {
     /**
      * Returns the value of the '<em><b>Extends</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Interface}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * {@link org.eclipse.sirius.components.papaya.Interface}. It is bidirectional and its opposite is
+     * '{@link org.eclipse.sirius.components.papaya.Interface#getExtendedBy <em>Extended By</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Extends</em>' reference list.
      * @see org.eclipse.sirius.components.papaya.PapayaPackage#getInterface_Extends()
-     * @model
+     * @see org.eclipse.sirius.components.papaya.Interface#getExtendedBy
+     * @model opposite="extendedBy"
      * @generated
      */
     EList<Interface> getExtends();
+
+    /**
+     * Returns the value of the '<em><b>Extended By</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.Interface}. It is bidirectional and its opposite is
+     * '{@link org.eclipse.sirius.components.papaya.Interface#getExtends <em>Extends</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Extended By</em>' reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getInterface_ExtendedBy()
+     * @see org.eclipse.sirius.components.papaya.Interface#getExtends
+     * @model opposite="extends"
+     * @generated
+     */
+    EList<Interface> getExtendedBy();
 
     /**
      * Returns the value of the '<em><b>Operations</b></em>' containment reference list. The list contents are of type
@@ -51,5 +70,19 @@ public interface Interface extends Classifier {
      * @generated
      */
     EList<Operation> getOperations();
+
+    /**
+     * Returns the value of the '<em><b>Implemented By</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.InterfaceImplementation}. It is bidirectional and its opposite is
+     * '{@link org.eclipse.sirius.components.papaya.InterfaceImplementation#getImplements <em>Implements</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Implemented By</em>' reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getInterface_ImplementedBy()
+     * @see org.eclipse.sirius.components.papaya.InterfaceImplementation#getImplements
+     * @model opposite="implements"
+     * @generated
+     */
+    EList<InterfaceImplementation> getImplementedBy();
 
 } // Interface

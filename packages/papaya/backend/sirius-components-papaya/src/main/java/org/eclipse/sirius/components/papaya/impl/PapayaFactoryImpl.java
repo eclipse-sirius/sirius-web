@@ -22,10 +22,12 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.papaya.Annotation;
+import org.eclipse.sirius.components.papaya.AnnotationField;
 import org.eclipse.sirius.components.papaya.Attribute;
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
+import org.eclipse.sirius.components.papaya.Constructor;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.DataType;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
@@ -119,12 +121,16 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
                 return this.createGenericType();
             case PapayaPackage.ANNOTATION:
                 return this.createAnnotation();
+            case PapayaPackage.ANNOTATION_FIELD:
+                return this.createAnnotationField();
             case PapayaPackage.TYPE_PARAMETER:
                 return this.createTypeParameter();
             case PapayaPackage.INTERFACE:
                 return this.createInterface();
             case PapayaPackage.CLASS:
                 return this.createClass();
+            case PapayaPackage.CONSTRUCTOR:
+                return this.createConstructor();
             case PapayaPackage.ATTRIBUTE:
                 return this.createAttribute();
             case PapayaPackage.OPERATION:
@@ -333,6 +339,17 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
      * @generated
      */
     @Override
+    public AnnotationField createAnnotationField() {
+        AnnotationFieldImpl annotationField = new AnnotationFieldImpl();
+        return annotationField;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public TypeParameter createTypeParameter() {
         TypeParameterImpl typeParameter = new TypeParameterImpl();
         return typeParameter;
@@ -358,6 +375,17 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     public org.eclipse.sirius.components.papaya.Class createClass() {
         ClassImpl class_ = new ClassSpec();
         return class_;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Constructor createConstructor() {
+        ConstructorImpl constructor = new ConstructorImpl();
+        return constructor;
     }
 
     /**
