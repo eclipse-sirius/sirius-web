@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,8 @@ package org.eclipse.sirius.components.starter.services;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramConfiguration;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -42,10 +44,12 @@ public class EditingContextDispatcher implements IEditingContextDispatcher {
 
     @Override
     public Mono<IPayload> dispatchQuery(String editingContextId, IInput input) {
-        // @formatter:off
+        if (input instanceof IDiagramInput diagramInput) {
+            var editingContextEventProcessor = this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(editingContextId);
+            editingContextEventProcessor.ifPresent(iEditingContextEventProcessor -> iEditingContextEventProcessor.acquireRepresentationEventProcessor(new DiagramConfiguration(diagramInput.representationId()), diagramInput));
+        }
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
                 .defaultIfEmpty(new ErrorPayload(input.id(), this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR")));
-        // @formatter:on
     }
 
     @Override

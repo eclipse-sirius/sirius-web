@@ -15,6 +15,8 @@ package org.eclipse.sirius.web.starter;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramConfiguration;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -42,6 +44,10 @@ public class EditingContextDispatcher implements IEditingContextDispatcher {
 
     @Override
     public Mono<IPayload> dispatchQuery(String editingContextId, IInput input) {
+        if (input instanceof IDiagramInput diagramInput) {
+            var editingContextEventProcessor = this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(editingContextId);
+            editingContextEventProcessor.ifPresent(iEditingContextEventProcessor -> iEditingContextEventProcessor.acquireRepresentationEventProcessor(new DiagramConfiguration(diagramInput.representationId()), diagramInput));
+        }
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
                 .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()));
     }
