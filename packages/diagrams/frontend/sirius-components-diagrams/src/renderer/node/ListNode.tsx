@@ -79,9 +79,7 @@ export const ListNode = memo(({ data, id, selected, dragging }: NodeProps<ListNo
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
         data-testid={`List - ${data?.insideLabel?.text}`}>
-        {data.insideLabel ? (
-          <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
-        ) : null}
+        {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
         {selected ? (
           <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
         ) : null}

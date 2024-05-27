@@ -11,41 +11,36 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import Tooltip from '@material-ui/core/Tooltip';
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { ServerContext } from '../contexts/ServerContext';
 import { ServerContextValue } from '../contexts/ServerContext.types';
 import { IconOverlayProps } from './IconOverlay.types';
 
-export const IconOverlay = ({
-  iconURL,
-  alt,
-  title,
-  customIconWidth,
-  customIconHeight,
-  customIconStyle,
-}: IconOverlayProps) => {
-  const iconWidth: number = customIconWidth || 16;
-  const iconHeight: number = customIconHeight || 16;
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+export const IconOverlay = memo(
+  ({ iconURL, alt, title, customIconWidth, customIconHeight, customIconStyle }: IconOverlayProps) => {
+    const iconWidth: number = customIconWidth || 16;
+    const iconHeight: number = customIconHeight || 16;
+    const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
-  return (
-    <>
-      {iconURL?.length > 0 && (
-        <div style={{ position: 'relative', width: iconWidth, height: iconHeight, ...customIconStyle }}>
-          {iconURL.map((url: string, index) => (
-            <Tooltip title={title || ''} key={'tooltip_' + index}>
-              <img
-                height={iconHeight}
-                width={iconWidth}
-                key={index}
-                alt={alt}
-                src={httpOrigin + url}
-                style={{ zIndex: index, position: 'absolute', top: 0, left: 0 }}
-              />
-            </Tooltip>
-          ))}
-        </div>
-      )}
-    </>
-  );
-};
+    return (
+      <>
+        {iconURL?.length > 0 && (
+          <div style={{ position: 'relative', width: iconWidth, height: iconHeight, ...customIconStyle }}>
+            {iconURL.map((url: string, index) => (
+              <Tooltip title={title || ''} key={'tooltip_' + index}>
+                <img
+                  height={iconHeight}
+                  width={iconWidth}
+                  key={index}
+                  alt={alt}
+                  src={httpOrigin + url}
+                  style={{ zIndex: index, position: 'absolute', top: 0, left: 0 }}
+                />
+              </Tooltip>
+            ))}
+          </div>
+        )}
+      </>
+    );
+  }
+);
