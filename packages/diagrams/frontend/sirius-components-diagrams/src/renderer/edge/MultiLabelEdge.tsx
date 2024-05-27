@@ -55,6 +55,15 @@ const getTranslateFromHandlePositon = (position: Position) => {
   }
 };
 
+const labelContainerStyle = (transform: string): React.CSSProperties => {
+  return {
+    transform,
+    position: 'absolute',
+    padding: 5,
+    zIndex: 1001,
+  };
+};
+
 export const MultiLabelEdge = memo(
   ({
     id,
@@ -163,23 +172,19 @@ export const MultiLabelEdge = memo(
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={label ? label.id : null} /> : null}
         <EdgeLabelRenderer>
           {beginLabel && (
-            <Label
-              diagramElementId={id}
-              transform={`${sourceLabelTranslation} translate(${sourceX}px,${sourceY}px)`}
-              label={beginLabel}
-              faded={faded || false}
-            />
+            <div style={labelContainerStyle(`${sourceLabelTranslation} translate(${sourceX}px,${sourceY}px)`)}>
+              <Label diagramElementId={id} label={beginLabel} faded={!!faded} />
+            </div>
           )}
           {label && (
-            <Label diagramElementId={id} transform={`translate(${labelX}px,${labelY}px)`} label={label} faded={false} />
+            <div style={labelContainerStyle(`translate(${labelX}px,${labelY}px)`)}>
+              <Label diagramElementId={id} label={label} faded={!!faded} />
+            </div>
           )}
           {endLabel && (
-            <Label
-              diagramElementId={id}
-              transform={`${targetLabelTranslation} translate(${targetX}px,${targetY}px)`}
-              label={endLabel}
-              faded={faded || false}
-            />
+            <div style={labelContainerStyle(`${targetLabelTranslation} translate(${targetX}px,${targetY}px)`)}>
+              <Label diagramElementId={id} label={endLabel} faded={!!faded} />
+            </div>
           )}
         </EdgeLabelRenderer>
       </>

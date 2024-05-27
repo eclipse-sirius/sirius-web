@@ -78,14 +78,12 @@ export const convertInsideLabel = (
     if (alignement.primaryAlignment === 'MIDDLE') {
       data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'center' };
     }
-    if (alignement.secondaryAlignment === 'CENTER') {
-      data.style = { ...data.style, alignItems: 'center' };
-    }
+    data.style = { ...data.style, alignItems: 'stretch' };
     if (alignement.secondaryAlignment === 'LEFT') {
-      data.style = { ...data.style, alignItems: 'flex-start' };
+      insideLabel.style = { ...insideLabel.style, marginRight: 'auto' };
     }
     if (alignement.secondaryAlignment === 'RIGHT') {
-      data.style = { ...data.style, alignItems: 'flex-end' };
+      insideLabel.style = { ...insideLabel.style, marginLeft: 'auto' };
     }
   }
   return insideLabel;

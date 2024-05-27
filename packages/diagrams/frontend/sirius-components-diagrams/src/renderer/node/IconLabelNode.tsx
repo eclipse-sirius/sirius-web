@@ -62,9 +62,7 @@ export const IconLabelNode = memo(({ data, id, selected, dragging }: NodeProps<I
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
         data-testid={`IconLabel - ${data?.insideLabel?.text}`}>
-        {data.insideLabel ? (
-          <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
-        ) : null}
+        {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={data?.insideLabel?.id ?? null} /> : null}
       </div>
     </div>

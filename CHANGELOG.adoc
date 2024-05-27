@@ -57,6 +57,8 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3628[#3628] [sirius-web] Restore support for expand all and reveal in the explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/3616[#3616] [diagram] Fix potential exceptions due to duplicate keys in diagram event processing
 - https://github.com/eclipse-sirius/sirius-web/issues/3624[#3624] [diagram] Fix an issue where the header separator does not fill the entire width of the node
+- https://github.com/eclipse-sirius/sirius-web/issues/3531[#3531] [diagram] Fix unnecessary edges label re render
+
 
 === New Features
 

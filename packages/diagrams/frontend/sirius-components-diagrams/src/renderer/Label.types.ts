@@ -17,5 +17,4 @@ export interface LabelProps {
   diagramElementId: string;
   label: EdgeLabel | InsideLabel | OutsideLabel;
   faded: boolean;
-  transform: string;
 }

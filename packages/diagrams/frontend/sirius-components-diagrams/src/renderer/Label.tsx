@@ -16,10 +16,10 @@ import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
+import { EdgeLabel, InsideLabel, LabelOverflowStrategy, OutsideLabel } from './DiagramRenderer.types';
 import { DiagramDirectEditInput } from './direct-edit/DiagramDirectEditInput';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { LabelProps } from './Label.types';
-import { EdgeLabel, InsideLabel, LabelOverflowStrategy, OutsideLabel } from './DiagramRenderer.types';
 
 const getOverflowStrategy = (label: EdgeLabel | InsideLabel | OutsideLabel): LabelOverflowStrategy | undefined => {
   if ('overflowStrategy' in label) {
@@ -49,14 +49,8 @@ const getHeaderSeparatorStyle = (label: EdgeLabel | InsideLabel | OutsideLabel):
   return undefined;
 };
 
-const labelStyle = (
-  theme: Theme,
-  style: React.CSSProperties,
-  faded: Boolean,
-  transform: string
-): React.CSSProperties => {
+const labelStyle = (theme: Theme, style: React.CSSProperties, faded: Boolean): React.CSSProperties => {
   return {
-    transform,
     opacity: faded ? '0.4' : '',
     pointerEvents: 'all',
     display: 'flex',
@@ -64,6 +58,7 @@ const labelStyle = (
     alignItems: 'center',
     justifyContent: 'flex-start',
     whiteSpace: 'pre-line',
+    maxWidth: '100%',
     ...style,
     color: style.color ? getCSSColor(String(style.color), theme) : undefined,
   };
@@ -114,7 +109,7 @@ const labelOverflowStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): Reac
   return style;
 };
 
-export const Label = memo(({ diagramElementId, label, faded, transform }: LabelProps) => {
+export const Label = memo(({ diagramElementId, label, faded }: LabelProps) => {
   const theme: Theme = useTheme();
   const { currentlyEditedLabelId, editingKey, resetDirectEdit } = useDiagramDirectEdit();
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -147,7 +142,7 @@ export const Label = memo(({ diagramElementId, label, faded, transform }: LabelP
       <div
         data-id={label.id}
         data-testid={`Label - ${label.text}`}
-        style={labelStyle(theme, label.style, faded, transform)}
+        style={labelStyle(theme, label.style, faded)}
         className="nopan">
         {content}
       </div>
