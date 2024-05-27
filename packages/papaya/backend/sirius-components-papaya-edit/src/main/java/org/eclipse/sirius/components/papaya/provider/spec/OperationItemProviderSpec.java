@@ -13,11 +13,15 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.papaya.Operation;
 import org.eclipse.sirius.components.papaya.provider.OperationItemProvider;
+import org.eclipse.sirius.components.papaya.provider.PapayaItemProviderAdapterFactory;
 import org.eclipse.sirius.components.papaya.provider.spec.images.VisibilityOverlayImageProvider;
 
 /**
@@ -41,5 +45,32 @@ public class OperationItemProviderSpec extends OperationItemProvider {
             ));
         }
         return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Operation.svg"));
+    }
+
+    @Override
+    public String getText(Object object) {
+        if (object instanceof Operation operation && operation.getName() != null && !operation.getName().isBlank()) {
+            var text = operation.getName();
+
+            var parameters = operation.getParameters().stream()
+                    .map(parameter -> Optional.ofNullable(new PapayaItemProviderAdapterFactory().adapt(parameter, IItemLabelProvider.class))
+                            .filter(IItemLabelProvider.class::isInstance)
+                            .map(IItemLabelProvider.class::cast)
+                            .map(itemLabelProvider -> itemLabelProvider.getText(parameter))
+                            .orElse("")
+                    )
+                    .collect(Collectors.joining(", ", "(", ")"));
+
+            var type = "";
+            if (operation.getType() != null) {
+                var adapter = new PapayaItemProviderAdapterFactory().adapt(operation.getType(), IItemLabelProvider.class);
+                if (adapter instanceof IItemLabelProvider itemLabelProvider) {
+                    type = ": " + itemLabelProvider.getText(operation.getType());
+                }
+            }
+
+            return text + parameters + type;
+        }
+        return super.getText(object);
     }
 }

@@ -22,8 +22,10 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.Component#getDependencies <em>Dependencies</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Component#getAllDependencies <em>All Dependencies</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Component#getUsedAsDependencyBy <em>Used As Dependency By</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Component#getComponents <em>Components</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Component#getAllComponents <em>All Components</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Component#getPackages <em>Packages</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Component#getPorts <em>Ports</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Component#getProvidedServices <em>Provided Services</em>}</li>
@@ -50,6 +52,17 @@ public interface Component extends NamedElement {
     EList<Component> getDependencies();
 
     /**
+     * Returns the value of the '<em><b>All Dependencies</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.Component}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>All Dependencies</em>' reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getComponent_AllDependencies()
+     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @generated
+     */
+    EList<Component> getAllDependencies();
+
+    /**
      * Returns the value of the '<em><b>Used As Dependency By</b></em>' reference list. The list contents are of type
      * {@link org.eclipse.sirius.components.papaya.Component}. It is bidirectional and its opposite is
      * '{@link org.eclipse.sirius.components.papaya.Component#getDependencies <em>Dependencies</em>}'. <!--
@@ -73,6 +86,17 @@ public interface Component extends NamedElement {
      * @generated
      */
     EList<Component> getComponents();
+
+    /**
+     * Returns the value of the '<em><b>All Components</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.Component}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>All Components</em>' reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getComponent_AllComponents()
+     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @generated
+     */
+    EList<Component> getAllComponents();
 
     /**
      * Returns the value of the '<em><b>Packages</b></em>' containment reference list. The list contents are of type

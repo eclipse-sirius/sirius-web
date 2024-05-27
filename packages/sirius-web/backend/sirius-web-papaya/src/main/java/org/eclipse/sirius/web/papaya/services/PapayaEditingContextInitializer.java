@@ -16,11 +16,12 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.papaya.services.api.IPapayaViewProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,8 +34,11 @@ public class PapayaEditingContextInitializer implements IEditingContextProcessor
 
     private final IProjectSearchService projectSearchService;
 
-    public PapayaEditingContextInitializer(IProjectSearchService projectSearchService) {
+    private final IPapayaViewProvider papayaViewProvider;
+
+    public PapayaEditingContextInitializer(IProjectSearchService projectSearchService, IPapayaViewProvider papayaViewProvider) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.papayaViewProvider = Objects.requireNonNull(papayaViewProvider);
     }
 
     @Override
@@ -46,9 +50,11 @@ public class PapayaEditingContextInitializer implements IEditingContextProcessor
                         .anyMatch(PapayaProjectTemplateProvider.PAPAYA_NATURE::equals))
                 .isPresent();
 
-        if (isPapayaProject && editingContext instanceof IEMFEditingContext emfEditingContext) {
+        if (isPapayaProject && editingContext instanceof EditingContext emfEditingContext) {
             var packageRegistry = emfEditingContext.getDomain().getResourceSet().getPackageRegistry();
             packageRegistry.put(PapayaPackage.eNS_URI, PapayaPackage.eINSTANCE);
+
+            emfEditingContext.getViews().add(this.papayaViewProvider.create());
         }
     }
 }

@@ -52,7 +52,9 @@ public class ComponentItemProvider extends NamedElementItemProvider {
             super.getPropertyDescriptors(object);
 
             this.addDependenciesPropertyDescriptor(object);
+            this.addAllDependenciesPropertyDescriptor(object);
             this.addUsedAsDependencyByPropertyDescriptor(object);
+            this.addAllComponentsPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -69,6 +71,17 @@ public class ComponentItemProvider extends NamedElementItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the All Dependencies feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addAllDependenciesPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Component_allDependencies_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Component_allDependencies_feature", "_UI_Component_type"),
+                PapayaPackage.Literals.COMPONENT__ALL_DEPENDENCIES, false, false, false, null, null, null));
+    }
+
+    /**
      * This adds a property descriptor for the Used As Dependency By feature. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -78,6 +91,17 @@ public class ComponentItemProvider extends NamedElementItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Component_usedAsDependencyBy_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Component_usedAsDependencyBy_feature", "_UI_Component_type"),
                 PapayaPackage.Literals.COMPONENT__USED_AS_DEPENDENCY_BY, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the All Components feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addAllComponentsPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Component_allComponents_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Component_allComponents_feature", "_UI_Component_type"),
+                PapayaPackage.Literals.COMPONENT__ALL_COMPONENTS, false, false, false, null, null, null));
     }
 
     /**

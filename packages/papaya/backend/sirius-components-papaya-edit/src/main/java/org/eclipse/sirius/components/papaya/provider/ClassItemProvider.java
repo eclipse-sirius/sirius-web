@@ -57,6 +57,7 @@ public class ClassItemProvider extends ClassifierItemProvider {
             this.addStaticPropertyDescriptor(object);
             this.addExtendsPropertyDescriptor(object);
             this.addExtendedByPropertyDescriptor(object);
+            this.addAllExtendedByPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -126,6 +127,17 @@ public class ClassItemProvider extends ClassifierItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Class_extendedBy_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Class_extendedBy_feature", "_UI_Class_type"),
                 PapayaPackage.Literals.CLASS__EXTENDED_BY, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the All Extended By feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addAllExtendedByPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Class_allExtendedBy_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Class_allExtendedBy_feature", "_UI_Class_type"),
+                PapayaPackage.Literals.CLASS__ALL_EXTENDED_BY, false, false, false, null, null, null));
     }
 
     /**

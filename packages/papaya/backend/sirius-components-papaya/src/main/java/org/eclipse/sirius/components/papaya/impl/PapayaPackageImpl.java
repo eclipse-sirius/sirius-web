@@ -492,7 +492,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_ComponentExchanges() {
+    public EReference getProject_AllComponents() {
         return (EReference) this.projectEClass.getEStructuralFeatures().get(2);
     }
 
@@ -502,7 +502,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_Iterations() {
+    public EReference getProject_ComponentExchanges() {
         return (EReference) this.projectEClass.getEStructuralFeatures().get(3);
     }
 
@@ -512,7 +512,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_Tasks() {
+    public EReference getProject_Iterations() {
         return (EReference) this.projectEClass.getEStructuralFeatures().get(4);
     }
 
@@ -522,8 +522,18 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_Contributions() {
+    public EReference getProject_Tasks() {
         return (EReference) this.projectEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getProject_Contributions() {
+        return (EReference) this.projectEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -722,7 +732,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getComponent_UsedAsDependencyBy() {
+    public EReference getComponent_AllDependencies() {
         return (EReference) this.componentEClass.getEStructuralFeatures().get(1);
     }
 
@@ -732,7 +742,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getComponent_Components() {
+    public EReference getComponent_UsedAsDependencyBy() {
         return (EReference) this.componentEClass.getEStructuralFeatures().get(2);
     }
 
@@ -742,7 +752,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getComponent_Packages() {
+    public EReference getComponent_Components() {
         return (EReference) this.componentEClass.getEStructuralFeatures().get(3);
     }
 
@@ -752,7 +762,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getComponent_Ports() {
+    public EReference getComponent_AllComponents() {
         return (EReference) this.componentEClass.getEStructuralFeatures().get(4);
     }
 
@@ -762,7 +772,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getComponent_ProvidedServices() {
+    public EReference getComponent_Packages() {
         return (EReference) this.componentEClass.getEStructuralFeatures().get(5);
     }
 
@@ -772,8 +782,28 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getComponent_RequiredServices() {
+    public EReference getComponent_Ports() {
         return (EReference) this.componentEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getComponent_ProvidedServices() {
+        return (EReference) this.componentEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getComponent_RequiredServices() {
+        return (EReference) this.componentEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -1103,7 +1133,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      */
     @Override
     public EReference getInterface_Operations() {
-        return (EReference) this.interfaceEClass.getEStructuralFeatures().get(2);
+        return (EReference) this.interfaceEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -1113,7 +1143,27 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      */
     @Override
     public EReference getInterface_ImplementedBy() {
+        return (EReference) this.interfaceEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getInterface_Subtypes() {
         return (EReference) this.interfaceEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getInterface_AllSubtypes() {
+        return (EReference) this.interfaceEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -1202,7 +1252,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getClass_Constructors() {
+    public EReference getClass_AllExtendedBy() {
         return (EReference) this.classEClass.getEStructuralFeatures().get(5);
     }
 
@@ -1212,7 +1262,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getClass_Attributes() {
+    public EReference getClass_Constructors() {
         return (EReference) this.classEClass.getEStructuralFeatures().get(6);
     }
 
@@ -1222,8 +1272,18 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getClass_Operations() {
+    public EReference getClass_Attributes() {
         return (EReference) this.classEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getClass_Operations() {
+        return (EReference) this.classEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -1519,6 +1579,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.projectEClass = this.createEClass(PROJECT);
         this.createEReference(this.projectEClass, PROJECT__PROJECTS);
         this.createEReference(this.projectEClass, PROJECT__COMPONENTS);
+        this.createEReference(this.projectEClass, PROJECT__ALL_COMPONENTS);
         this.createEReference(this.projectEClass, PROJECT__COMPONENT_EXCHANGES);
         this.createEReference(this.projectEClass, PROJECT__ITERATIONS);
         this.createEReference(this.projectEClass, PROJECT__TASKS);
@@ -1546,8 +1607,10 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
 
         this.componentEClass = this.createEClass(COMPONENT);
         this.createEReference(this.componentEClass, COMPONENT__DEPENDENCIES);
+        this.createEReference(this.componentEClass, COMPONENT__ALL_DEPENDENCIES);
         this.createEReference(this.componentEClass, COMPONENT__USED_AS_DEPENDENCY_BY);
         this.createEReference(this.componentEClass, COMPONENT__COMPONENTS);
+        this.createEReference(this.componentEClass, COMPONENT__ALL_COMPONENTS);
         this.createEReference(this.componentEClass, COMPONENT__PACKAGES);
         this.createEReference(this.componentEClass, COMPONENT__PORTS);
         this.createEReference(this.componentEClass, COMPONENT__PROVIDED_SERVICES);
@@ -1598,8 +1661,10 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.interfaceEClass = this.createEClass(INTERFACE);
         this.createEReference(this.interfaceEClass, INTERFACE__EXTENDS);
         this.createEReference(this.interfaceEClass, INTERFACE__EXTENDED_BY);
-        this.createEReference(this.interfaceEClass, INTERFACE__OPERATIONS);
         this.createEReference(this.interfaceEClass, INTERFACE__IMPLEMENTED_BY);
+        this.createEReference(this.interfaceEClass, INTERFACE__SUBTYPES);
+        this.createEReference(this.interfaceEClass, INTERFACE__ALL_SUBTYPES);
+        this.createEReference(this.interfaceEClass, INTERFACE__OPERATIONS);
 
         this.interfaceImplementationEClass = this.createEClass(INTERFACE_IMPLEMENTATION);
         this.createEReference(this.interfaceImplementationEClass, INTERFACE_IMPLEMENTATION__IMPLEMENTS);
@@ -1610,6 +1675,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.createEAttribute(this.classEClass, CLASS__STATIC);
         this.createEReference(this.classEClass, CLASS__EXTENDS);
         this.createEReference(this.classEClass, CLASS__EXTENDED_BY);
+        this.createEReference(this.classEClass, CLASS__ALL_EXTENDED_BY);
         this.createEReference(this.classEClass, CLASS__CONSTRUCTORS);
         this.createEReference(this.classEClass, CLASS__ATTRIBUTES);
         this.createEReference(this.classEClass, CLASS__OPERATIONS);
@@ -1740,6 +1806,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getProject_Components(), this.getComponent(), null, "components", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getProject_AllComponents(), this.getComponent(), null, "allComponents", null, 0, -1, Project.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getProject_ComponentExchanges(), this.getComponentExchange(), null, "componentExchanges", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getProject_Iterations(), this.getIteration(), null, "iterations", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -1786,10 +1854,14 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.initEClass(this.componentEClass, Component.class, "Component", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getComponent_Dependencies(), this.getComponent(), this.getComponent_UsedAsDependencyBy(), "dependencies", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getComponent_AllDependencies(), this.getComponent(), null, "allDependencies", null, 0, -1, Component.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getComponent_UsedAsDependencyBy(), this.getComponent(), this.getComponent_Dependencies(), "usedAsDependencyBy", null, 0, -1, Component.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getComponent_Components(), this.getComponent(), null, "components", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getComponent_AllComponents(), this.getComponent(), null, "allComponents", null, 0, -1, Component.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getComponent_Packages(), this.getPackage(), null, "packages", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getComponent_Ports(), this.getComponentPort(), null, "ports", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -1862,10 +1934,14 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getInterface_ExtendedBy(), this.getInterface(), this.getInterface_Extends(), "extendedBy", null, 0, -1, Interface.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getInterface_Operations(), this.getOperation(), null, "operations", null, 0, -1, Interface.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getInterface_ImplementedBy(), this.getInterfaceImplementation(), this.getInterfaceImplementation_Implements(), "implementedBy", null, 0, -1, Interface.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getInterface_Subtypes(), this.getClassifier(), null, "subtypes", null, 0, -1, Interface.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getInterface_AllSubtypes(), this.getClassifier(), null, "allSubtypes", null, 0, -1, Interface.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getInterface_Operations(), this.getOperation(), null, "operations", null, 0, -1, Interface.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.interfaceImplementationEClass, InterfaceImplementation.class, "InterfaceImplementation", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getInterfaceImplementation_Implements(), this.getInterface(), this.getInterface_ImplementedBy(), "implements", null, 0, -1, InterfaceImplementation.class,
@@ -1882,6 +1958,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
                 IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getClass_ExtendedBy(), this.getClass_(), this.getClass_Extends(), "extendedBy", null, 0, -1, org.eclipse.sirius.components.papaya.Class.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getClass_AllExtendedBy(), this.getClass_(), null, "allExtendedBy", null, 0, -1, org.eclipse.sirius.components.papaya.Class.class, IS_TRANSIENT, IS_VOLATILE,
+                !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getClass_Constructors(), this.getConstructor(), null, "constructors", null, 0, -1, org.eclipse.sirius.components.papaya.Class.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getClass_Attributes(), this.getAttribute(), null, "attributes", null, 0, -1, org.eclipse.sirius.components.papaya.Class.class, !IS_TRANSIENT, !IS_VOLATILE,

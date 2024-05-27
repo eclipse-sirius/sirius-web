@@ -12,6 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.papaya.spec;
 
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.sirius.components.papaya.Class;
+import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.impl.ClassImpl;
 import org.eclipse.sirius.components.papaya.spec.derived.TypeIsSetQualifiedNamePredicate;
 import org.eclipse.sirius.components.papaya.spec.derived.TypeQualifiedNameProvider;
@@ -30,5 +37,16 @@ public class ClassSpec extends ClassImpl {
     @Override
     public boolean isSetQualifiedName() {
         return new TypeIsSetQualifiedNamePredicate().test(this);
+    }
+
+    @Override
+    public EList<Class> getAllExtendedBy() {
+        List<Class> allExtendedBy = this.getExtendedBy().stream()
+                .flatMap(extendingClass -> Stream.concat(
+                        Stream.of(extendingClass),
+                        extendingClass.getAllExtendedBy().stream()
+                ))
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, PapayaPackage.Literals.CLASS__ALL_EXTENDED_BY, allExtendedBy.size(), allExtendedBy.toArray());
     }
 }

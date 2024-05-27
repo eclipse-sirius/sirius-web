@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getProjects <em>Projects</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getComponents <em>Components</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Project#getAllComponents <em>All Components</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getComponentExchanges <em>Component Exchanges</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getIterations <em>Iterations</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getTasks <em>Tasks</em>}</li>
@@ -55,6 +56,17 @@ public interface Project extends NamedElement {
      * @generated
      */
     EList<Component> getComponents();
+
+    /**
+     * Returns the value of the '<em><b>All Components</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.Component}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>All Components</em>' reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_AllComponents()
+     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @generated
+     */
+    EList<Component> getAllComponents();
 
     /**
      * Returns the value of the '<em><b>Component Exchanges</b></em>' containment reference list. The list contents are

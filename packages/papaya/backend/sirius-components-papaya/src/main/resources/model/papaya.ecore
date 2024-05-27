@@ -18,6 +18,8 @@
         eType="#//Project" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
         eType="#//Component" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allComponents" upperBound="-1"
+        eType="#//Component" changeable="false" volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="componentExchanges" upperBound="-1"
         eType="#//ComponentExchange" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="iterations" upperBound="-1"
@@ -64,10 +66,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="Component" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
         eType="#//Component" eOpposite="#//Component/usedAsDependencyBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allDependencies" upperBound="-1"
+        eType="#//Component" changeable="false" volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="usedAsDependencyBy" upperBound="-1"
         eType="#//Component" eOpposite="#//Component/dependencies"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
         eType="#//Component" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allComponents" upperBound="-1"
+        eType="#//Component" changeable="false" volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
         eType="#//Package" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ports" upperBound="-1"
@@ -145,10 +151,16 @@
         eType="#//Interface" eOpposite="#//Interface/extendedBy"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="extendedBy" upperBound="-1"
         eType="#//Interface" eOpposite="#//Interface/extends"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
-        eType="#//Operation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="implementedBy" upperBound="-1"
         eType="#//InterfaceImplementation" eOpposite="#//InterfaceImplementation/implements"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subtypes" upperBound="-1"
+        eType="#//Classifier" changeable="false" volatile="true" transient="true"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allSubtypes" upperBound="-1"
+        eType="#//Classifier" changeable="false" volatile="true" transient="true"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
+        eType="#//Operation" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InterfaceImplementation" abstract="true"
       interface="true">
@@ -163,6 +175,8 @@
         eOpposite="#//Class/extendedBy"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="extendedBy" upperBound="-1"
         eType="#//Class" eOpposite="#//Class/extends"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allExtendedBy" upperBound="-1"
+        eType="#//Class" changeable="false" volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constructors" upperBound="-1"
         eType="#//Constructor" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"

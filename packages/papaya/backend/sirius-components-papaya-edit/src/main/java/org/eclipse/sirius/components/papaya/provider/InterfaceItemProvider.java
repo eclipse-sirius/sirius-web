@@ -54,6 +54,8 @@ public class InterfaceItemProvider extends ClassifierItemProvider {
             this.addExtendsPropertyDescriptor(object);
             this.addExtendedByPropertyDescriptor(object);
             this.addImplementedByPropertyDescriptor(object);
+            this.addSubtypesPropertyDescriptor(object);
+            this.addAllSubtypesPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -89,6 +91,28 @@ public class InterfaceItemProvider extends ClassifierItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Interface_implementedBy_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Interface_implementedBy_feature", "_UI_Interface_type"),
                 PapayaPackage.Literals.INTERFACE__IMPLEMENTED_BY, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Subtypes feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addSubtypesPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Interface_subtypes_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Interface_subtypes_feature", "_UI_Interface_type"),
+                PapayaPackage.Literals.INTERFACE__SUBTYPES, false, false, false, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the All Subtypes feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addAllSubtypesPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Interface_allSubtypes_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Interface_allSubtypes_feature", "_UI_Interface_type"),
+                PapayaPackage.Literals.INTERFACE__ALL_SUBTYPES, false, false, false, null, null, null));
     }
 
     /**

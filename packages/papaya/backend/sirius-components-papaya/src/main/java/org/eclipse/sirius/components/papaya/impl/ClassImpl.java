@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ClassImpl#isStatic <em>Static</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ClassImpl#getExtends <em>Extends</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ClassImpl#getExtendedBy <em>Extended By</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ClassImpl#getAllExtendedBy <em>All Extended By</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ClassImpl#getConstructors <em>Constructors</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ClassImpl#getAttributes <em>Attributes</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ClassImpl#getOperations <em>Operations</em>}</li>
@@ -355,6 +356,21 @@ public class ClassImpl extends ClassifierImpl implements org.eclipse.sirius.comp
      * @generated
      */
     @Override
+    public EList<org.eclipse.sirius.components.papaya.Class> getAllExtendedBy() {
+        // TODO: implement this method to return the 'All Extended By' reference list
+        // Ensure that you remove @generated or mark it @generated NOT
+        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and
+        // org.eclipse.emf.ecore.EStructuralFeature.Setting
+        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EList<Constructor> getConstructors() {
         if (this.constructors == null) {
             this.constructors = new EObjectContainmentEList<>(Constructor.class, this, PapayaPackage.CLASS__CONSTRUCTORS);
@@ -455,6 +471,8 @@ public class ClassImpl extends ClassifierImpl implements org.eclipse.sirius.comp
                 return this.basicGetExtends();
             case PapayaPackage.CLASS__EXTENDED_BY:
                 return this.getExtendedBy();
+            case PapayaPackage.CLASS__ALL_EXTENDED_BY:
+                return this.getAllExtendedBy();
             case PapayaPackage.CLASS__CONSTRUCTORS:
                 return this.getConstructors();
             case PapayaPackage.CLASS__ATTRIBUTES:
@@ -569,6 +587,8 @@ public class ClassImpl extends ClassifierImpl implements org.eclipse.sirius.comp
                 return this.extends_ != null;
             case PapayaPackage.CLASS__EXTENDED_BY:
                 return this.extendedBy != null && !this.extendedBy.isEmpty();
+            case PapayaPackage.CLASS__ALL_EXTENDED_BY:
+                return !this.getAllExtendedBy().isEmpty();
             case PapayaPackage.CLASS__CONSTRUCTORS:
                 return this.constructors != null && !this.constructors.isEmpty();
             case PapayaPackage.CLASS__ATTRIBUTES:

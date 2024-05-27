@@ -12,6 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.papaya.spec;
 
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.sirius.components.papaya.Class;
+import org.eclipse.sirius.components.papaya.Classifier;
+import org.eclipse.sirius.components.papaya.Interface;
+import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.impl.InterfaceImpl;
 import org.eclipse.sirius.components.papaya.spec.derived.TypeIsSetQualifiedNamePredicate;
 import org.eclipse.sirius.components.papaya.spec.derived.TypeQualifiedNameProvider;
@@ -30,5 +39,35 @@ public class InterfaceSpec extends InterfaceImpl {
     @Override
     public boolean isSetQualifiedName() {
         return new TypeIsSetQualifiedNamePredicate().test(this);
+    }
+
+    @Override
+    public EList<Classifier> getSubtypes() {
+        List<Classifier> subtypes = Stream.concat(
+                this.getExtendedBy().stream(),
+                this.getImplementedBy().stream().filter(Classifier.class::isInstance).map(Classifier.class::cast)
+        ).toList();
+        return new EcoreEList.UnmodifiableEList<>(this, PapayaPackage.Literals.INTERFACE__SUBTYPES, subtypes.size(), subtypes.toArray());
+    }
+
+    @Override
+    public EList<Classifier> getAllSubtypes() {
+        List<Classifier> allSubtypes = this.getSubtypes().stream()
+                .flatMap(subtype -> {
+                    Stream<Classifier> subtypeStream = Stream.empty();
+                    if (subtype instanceof Interface anInterface) {
+                        subtypeStream = Stream.concat(
+                                Stream.of(anInterface),
+                                anInterface.getAllSubtypes().stream()
+                        );
+                    } else if (subtype instanceof Class aClass) {
+                        subtypeStream = Stream.concat(
+                                Stream.of(aClass),
+                                aClass.getAllExtendedBy().stream()
+                        );
+                    }
+                    return subtypeStream;
+                }).toList();
+        return new EcoreEList.UnmodifiableEList<>(this, PapayaPackage.Literals.INTERFACE__ALL_SUBTYPES, allSubtypes.size(), allSubtypes.toArray());
     }
 }
