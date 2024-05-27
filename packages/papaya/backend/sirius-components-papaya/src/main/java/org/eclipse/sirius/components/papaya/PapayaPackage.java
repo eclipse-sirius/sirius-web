@@ -247,13 +247,22 @@ public interface PapayaPackage extends EPackage {
     int PROJECT__COMPONENTS = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>All Components</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PROJECT__ALL_COMPONENTS = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
      * The feature id for the '<em><b>Component Exchanges</b></em>' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PROJECT__COMPONENT_EXCHANGES = NAMED_ELEMENT_FEATURE_COUNT + 2;
+    int PROJECT__COMPONENT_EXCHANGES = NAMED_ELEMENT_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Iterations</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -262,7 +271,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PROJECT__ITERATIONS = NAMED_ELEMENT_FEATURE_COUNT + 3;
+    int PROJECT__ITERATIONS = NAMED_ELEMENT_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Tasks</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -271,7 +280,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PROJECT__TASKS = NAMED_ELEMENT_FEATURE_COUNT + 4;
+    int PROJECT__TASKS = NAMED_ELEMENT_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Contributions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -280,7 +289,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PROJECT__CONTRIBUTIONS = NAMED_ELEMENT_FEATURE_COUNT + 5;
+    int PROJECT__CONTRIBUTIONS = NAMED_ELEMENT_FEATURE_COUNT + 6;
 
     /**
      * The number of structural features of the '<em>Project</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -288,7 +297,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PROJECT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 6;
+    int PROJECT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 7;
 
     /**
      * The number of operations of the '<em>Project</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -613,13 +622,22 @@ public interface PapayaPackage extends EPackage {
     int COMPONENT__DEPENDENCIES = NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>All Dependencies</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COMPONENT__ALL_DEPENDENCIES = NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
      * The feature id for the '<em><b>Used As Dependency By</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int COMPONENT__USED_AS_DEPENDENCY_BY = NAMED_ELEMENT_FEATURE_COUNT + 1;
+    int COMPONENT__USED_AS_DEPENDENCY_BY = NAMED_ELEMENT_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Components</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -628,7 +646,16 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT__COMPONENTS = NAMED_ELEMENT_FEATURE_COUNT + 2;
+    int COMPONENT__COMPONENTS = NAMED_ELEMENT_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>All Components</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COMPONENT__ALL_COMPONENTS = NAMED_ELEMENT_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Packages</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -637,7 +664,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT__PACKAGES = NAMED_ELEMENT_FEATURE_COUNT + 3;
+    int COMPONENT__PACKAGES = NAMED_ELEMENT_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Ports</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -646,7 +673,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT__PORTS = NAMED_ELEMENT_FEATURE_COUNT + 4;
+    int COMPONENT__PORTS = NAMED_ELEMENT_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Provided Services</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -655,7 +682,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT__PROVIDED_SERVICES = NAMED_ELEMENT_FEATURE_COUNT + 5;
+    int COMPONENT__PROVIDED_SERVICES = NAMED_ELEMENT_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Required Services</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -664,7 +691,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT__REQUIRED_SERVICES = NAMED_ELEMENT_FEATURE_COUNT + 6;
+    int COMPONENT__REQUIRED_SERVICES = NAMED_ELEMENT_FEATURE_COUNT + 8;
 
     /**
      * The number of structural features of the '<em>Component</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -673,7 +700,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 7;
+    int COMPONENT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 9;
 
     /**
      * The number of operations of the '<em>Component</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1671,22 +1698,39 @@ public interface PapayaPackage extends EPackage {
     int INTERFACE__EXTENDED_BY = CLASSIFIER_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Operations</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int INTERFACE__OPERATIONS = CLASSIFIER_FEATURE_COUNT + 2;
-
-    /**
      * The feature id for the '<em><b>Implemented By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int INTERFACE__IMPLEMENTED_BY = CLASSIFIER_FEATURE_COUNT + 3;
+    int INTERFACE__IMPLEMENTED_BY = CLASSIFIER_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Subtypes</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INTERFACE__SUBTYPES = CLASSIFIER_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>All Subtypes</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INTERFACE__ALL_SUBTYPES = CLASSIFIER_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Operations</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INTERFACE__OPERATIONS = CLASSIFIER_FEATURE_COUNT + 5;
 
     /**
      * The number of structural features of the '<em>Interface</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1695,7 +1739,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INTERFACE_FEATURE_COUNT = CLASSIFIER_FEATURE_COUNT + 4;
+    int INTERFACE_FEATURE_COUNT = CLASSIFIER_FEATURE_COUNT + 6;
 
     /**
      * The number of operations of the '<em>Interface</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1869,13 +1913,22 @@ public interface PapayaPackage extends EPackage {
     int CLASS__EXTENDED_BY = CLASSIFIER_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>All Extended By</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CLASS__ALL_EXTENDED_BY = CLASSIFIER_FEATURE_COUNT + 6;
+
+    /**
      * The feature id for the '<em><b>Constructors</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CLASS__CONSTRUCTORS = CLASSIFIER_FEATURE_COUNT + 6;
+    int CLASS__CONSTRUCTORS = CLASSIFIER_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Attributes</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1884,7 +1937,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CLASS__ATTRIBUTES = CLASSIFIER_FEATURE_COUNT + 7;
+    int CLASS__ATTRIBUTES = CLASSIFIER_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Operations</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1893,7 +1946,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CLASS__OPERATIONS = CLASSIFIER_FEATURE_COUNT + 8;
+    int CLASS__OPERATIONS = CLASSIFIER_FEATURE_COUNT + 9;
 
     /**
      * The number of structural features of the '<em>Class</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1901,7 +1954,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CLASS_FEATURE_COUNT = CLASSIFIER_FEATURE_COUNT + 9;
+    int CLASS_FEATURE_COUNT = CLASSIFIER_FEATURE_COUNT + 10;
 
     /**
      * The number of operations of the '<em>Class</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2821,6 +2874,18 @@ public interface PapayaPackage extends EPackage {
     EReference getProject_Components();
 
     /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.Project#getAllComponents <em>All Components</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>All Components</em>'.
+     * @see org.eclipse.sirius.components.papaya.Project#getAllComponents()
+     * @see #getProject()
+     * @generated
+     */
+    EReference getProject_AllComponents();
+
+    /**
      * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.papaya.Project#getComponentExchanges <em>Component Exchanges</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -3080,6 +3145,18 @@ public interface PapayaPackage extends EPackage {
 
     /**
      * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.Component#getAllDependencies <em>All Dependencies</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>All Dependencies</em>'.
+     * @see org.eclipse.sirius.components.papaya.Component#getAllDependencies()
+     * @see #getComponent()
+     * @generated
+     */
+    EReference getComponent_AllDependencies();
+
+    /**
+     * Returns the meta object for the reference list
      * '{@link org.eclipse.sirius.components.papaya.Component#getUsedAsDependencyBy <em>Used As Dependency By</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3101,6 +3178,18 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EReference getComponent_Components();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.Component#getAllComponents <em>All Components</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>All Components</em>'.
+     * @see org.eclipse.sirius.components.papaya.Component#getAllComponents()
+     * @see #getComponent()
+     * @generated
+     */
+    EReference getComponent_AllComponents();
 
     /**
      * Returns the meta object for the containment reference list
@@ -3525,6 +3614,29 @@ public interface PapayaPackage extends EPackage {
     EReference getInterface_ImplementedBy();
 
     /**
+     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Interface#getSubtypes
+     * <em>Subtypes</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Subtypes</em>'.
+     * @see org.eclipse.sirius.components.papaya.Interface#getSubtypes()
+     * @see #getInterface()
+     * @generated
+     */
+    EReference getInterface_Subtypes();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.Interface#getAllSubtypes <em>All Subtypes</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>All Subtypes</em>'.
+     * @see org.eclipse.sirius.components.papaya.Interface#getAllSubtypes()
+     * @see #getInterface()
+     * @generated
+     */
+    EReference getInterface_AllSubtypes();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.InterfaceImplementation
      * <em>Interface Implementation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3610,6 +3722,18 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EReference getClass_ExtendedBy();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.Class#getAllExtendedBy <em>All Extended By</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>All Extended By</em>'.
+     * @see org.eclipse.sirius.components.papaya.Class#getAllExtendedBy()
+     * @see #getClass_()
+     * @generated
+     */
+    EReference getClass_AllExtendedBy();
 
     /**
      * Returns the meta object for the containment reference list
@@ -4035,6 +4159,14 @@ public interface PapayaPackage extends EPackage {
         EReference PROJECT__COMPONENTS = eINSTANCE.getProject_Components();
 
         /**
+         * The meta object literal for the '<em><b>All Components</b></em>' reference list feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PROJECT__ALL_COMPONENTS = eINSTANCE.getProject_AllComponents();
+
+        /**
          * The meta object literal for the '<em><b>Component Exchanges</b></em>' containment reference list feature.
          * <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -4227,6 +4359,14 @@ public interface PapayaPackage extends EPackage {
         EReference COMPONENT__DEPENDENCIES = eINSTANCE.getComponent_Dependencies();
 
         /**
+         * The meta object literal for the '<em><b>All Dependencies</b></em>' reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference COMPONENT__ALL_DEPENDENCIES = eINSTANCE.getComponent_AllDependencies();
+
+        /**
          * The meta object literal for the '<em><b>Used As Dependency By</b></em>' reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -4241,6 +4381,14 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EReference COMPONENT__COMPONENTS = eINSTANCE.getComponent_Components();
+
+        /**
+         * The meta object literal for the '<em><b>All Components</b></em>' reference list feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference COMPONENT__ALL_COMPONENTS = eINSTANCE.getComponent_AllComponents();
 
         /**
          * The meta object literal for the '<em><b>Packages</b></em>' containment reference list feature. <!--
@@ -4575,6 +4723,22 @@ public interface PapayaPackage extends EPackage {
         EReference INTERFACE__IMPLEMENTED_BY = eINSTANCE.getInterface_ImplementedBy();
 
         /**
+         * The meta object literal for the '<em><b>Subtypes</b></em>' reference list feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference INTERFACE__SUBTYPES = eINSTANCE.getInterface_Subtypes();
+
+        /**
+         * The meta object literal for the '<em><b>All Subtypes</b></em>' reference list feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference INTERFACE__ALL_SUBTYPES = eINSTANCE.getInterface_AllSubtypes();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.InterfaceImplementation
          * <em>Interface Implementation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -4641,6 +4805,14 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EReference CLASS__EXTENDED_BY = eINSTANCE.getClass_ExtendedBy();
+
+        /**
+         * The meta object literal for the '<em><b>All Extended By</b></em>' reference list feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CLASS__ALL_EXTENDED_BY = eINSTANCE.getClass_AllExtendedBy();
 
         /**
          * The meta object literal for the '<em><b>Constructors</b></em>' containment reference list feature. <!--

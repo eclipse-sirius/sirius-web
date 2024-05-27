@@ -49,10 +49,12 @@ import org.eclipse.sirius.components.papaya.TypeParameter;
 import org.eclipse.sirius.components.papaya.Visibility;
 import org.eclipse.sirius.components.papaya.spec.AnnotationSpec;
 import org.eclipse.sirius.components.papaya.spec.ClassSpec;
+import org.eclipse.sirius.components.papaya.spec.ComponentSpec;
 import org.eclipse.sirius.components.papaya.spec.DataTypeSpec;
 import org.eclipse.sirius.components.papaya.spec.EnumSpec;
 import org.eclipse.sirius.components.papaya.spec.InterfaceSpec;
 import org.eclipse.sirius.components.papaya.spec.PackageSpec;
+import org.eclipse.sirius.components.papaya.spec.ProjectSpec;
 import org.eclipse.sirius.components.papaya.spec.RecordSpec;
 
 /**
@@ -204,11 +206,11 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Project createProject() {
-        ProjectImpl project = new ProjectImpl();
+        ProjectImpl project = new ProjectSpec();
         return project;
     }
 
@@ -248,11 +250,11 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Component createComponent() {
-        ComponentImpl component = new ComponentImpl();
+        ComponentImpl component = new ComponentSpec();
         return component;
     }
 

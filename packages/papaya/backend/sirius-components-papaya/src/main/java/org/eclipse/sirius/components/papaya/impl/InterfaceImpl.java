@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.papaya.Classifier;
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.components.papaya.InterfaceImplementation;
 import org.eclipse.sirius.components.papaya.Operation;
@@ -34,8 +35,10 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.InterfaceImpl#getExtends <em>Extends</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.InterfaceImpl#getExtendedBy <em>Extended By</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.InterfaceImpl#getOperations <em>Operations</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.InterfaceImpl#getImplementedBy <em>Implemented By</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.InterfaceImpl#getSubtypes <em>Subtypes</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.InterfaceImpl#getAllSubtypes <em>All Subtypes</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.InterfaceImpl#getOperations <em>Operations</em>}</li>
  * </ul>
  *
  * @generated
@@ -62,16 +65,6 @@ public class InterfaceImpl extends ClassifierImpl implements Interface {
     protected EList<Interface> extendedBy;
 
     /**
-     * The cached value of the '{@link #getOperations() <em>Operations</em>}' containment reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getOperations()
-     * @generated
-     * @ordered
-     */
-    protected EList<Operation> operations;
-
-    /**
      * The cached value of the '{@link #getImplementedBy() <em>Implemented By</em>}' reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -80,6 +73,16 @@ public class InterfaceImpl extends ClassifierImpl implements Interface {
      * @ordered
      */
     protected EList<InterfaceImplementation> implementedBy;
+
+    /**
+     * The cached value of the '{@link #getOperations() <em>Operations</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getOperations()
+     * @generated
+     * @ordered
+     */
+    protected EList<Operation> operations;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -158,6 +161,36 @@ public class InterfaceImpl extends ClassifierImpl implements Interface {
      *
      * @generated
      */
+    @Override
+    public EList<Classifier> getSubtypes() {
+        // TODO: implement this method to return the 'Subtypes' reference list
+        // Ensure that you remove @generated or mark it @generated NOT
+        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and
+        // org.eclipse.emf.ecore.EStructuralFeature.Setting
+        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<Classifier> getAllSubtypes() {
+        // TODO: implement this method to return the 'All Subtypes' reference list
+        // Ensure that you remove @generated or mark it @generated NOT
+        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and
+        // org.eclipse.emf.ecore.EStructuralFeature.Setting
+        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     @SuppressWarnings("unchecked")
     @Override
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -184,10 +217,10 @@ public class InterfaceImpl extends ClassifierImpl implements Interface {
                 return ((InternalEList<?>) this.getExtends()).basicRemove(otherEnd, msgs);
             case PapayaPackage.INTERFACE__EXTENDED_BY:
                 return ((InternalEList<?>) this.getExtendedBy()).basicRemove(otherEnd, msgs);
-            case PapayaPackage.INTERFACE__OPERATIONS:
-                return ((InternalEList<?>) this.getOperations()).basicRemove(otherEnd, msgs);
             case PapayaPackage.INTERFACE__IMPLEMENTED_BY:
                 return ((InternalEList<?>) this.getImplementedBy()).basicRemove(otherEnd, msgs);
+            case PapayaPackage.INTERFACE__OPERATIONS:
+                return ((InternalEList<?>) this.getOperations()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -204,10 +237,14 @@ public class InterfaceImpl extends ClassifierImpl implements Interface {
                 return this.getExtends();
             case PapayaPackage.INTERFACE__EXTENDED_BY:
                 return this.getExtendedBy();
-            case PapayaPackage.INTERFACE__OPERATIONS:
-                return this.getOperations();
             case PapayaPackage.INTERFACE__IMPLEMENTED_BY:
                 return this.getImplementedBy();
+            case PapayaPackage.INTERFACE__SUBTYPES:
+                return this.getSubtypes();
+            case PapayaPackage.INTERFACE__ALL_SUBTYPES:
+                return this.getAllSubtypes();
+            case PapayaPackage.INTERFACE__OPERATIONS:
+                return this.getOperations();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -229,13 +266,13 @@ public class InterfaceImpl extends ClassifierImpl implements Interface {
                 this.getExtendedBy().clear();
                 this.getExtendedBy().addAll((Collection<? extends Interface>) newValue);
                 return;
-            case PapayaPackage.INTERFACE__OPERATIONS:
-                this.getOperations().clear();
-                this.getOperations().addAll((Collection<? extends Operation>) newValue);
-                return;
             case PapayaPackage.INTERFACE__IMPLEMENTED_BY:
                 this.getImplementedBy().clear();
                 this.getImplementedBy().addAll((Collection<? extends InterfaceImplementation>) newValue);
+                return;
+            case PapayaPackage.INTERFACE__OPERATIONS:
+                this.getOperations().clear();
+                this.getOperations().addAll((Collection<? extends Operation>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -255,11 +292,11 @@ public class InterfaceImpl extends ClassifierImpl implements Interface {
             case PapayaPackage.INTERFACE__EXTENDED_BY:
                 this.getExtendedBy().clear();
                 return;
-            case PapayaPackage.INTERFACE__OPERATIONS:
-                this.getOperations().clear();
-                return;
             case PapayaPackage.INTERFACE__IMPLEMENTED_BY:
                 this.getImplementedBy().clear();
+                return;
+            case PapayaPackage.INTERFACE__OPERATIONS:
+                this.getOperations().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -277,10 +314,14 @@ public class InterfaceImpl extends ClassifierImpl implements Interface {
                 return this.extends_ != null && !this.extends_.isEmpty();
             case PapayaPackage.INTERFACE__EXTENDED_BY:
                 return this.extendedBy != null && !this.extendedBy.isEmpty();
-            case PapayaPackage.INTERFACE__OPERATIONS:
-                return this.operations != null && !this.operations.isEmpty();
             case PapayaPackage.INTERFACE__IMPLEMENTED_BY:
                 return this.implementedBy != null && !this.implementedBy.isEmpty();
+            case PapayaPackage.INTERFACE__SUBTYPES:
+                return !this.getSubtypes().isEmpty();
+            case PapayaPackage.INTERFACE__ALL_SUBTYPES:
+                return !this.getAllSubtypes().isEmpty();
+            case PapayaPackage.INTERFACE__OPERATIONS:
+                return this.operations != null && !this.operations.isEmpty();
         }
         return super.eIsSet(featureID);
     }

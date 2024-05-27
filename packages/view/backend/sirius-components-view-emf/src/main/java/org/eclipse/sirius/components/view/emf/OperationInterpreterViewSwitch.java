@@ -97,9 +97,8 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
         Optional<Boolean> testResult = this.interpreter.evaluateExpression(this.variableManager.getVariables(), ifOperation.getConditionExpression()).asBoolean();
         if (testResult.isPresent() && Boolean.TRUE.equals(testResult.get())) {
             return this.operationInterpreter.executeOperations(ifOperation.getChildren(), this.variableManager);
-        } else {
-            return Optional.empty();
         }
+        return Optional.of(this.variableManager);
     }
 
     @Override

@@ -23,8 +23,10 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.Interface#getExtends <em>Extends</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Interface#getExtendedBy <em>Extended By</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Interface#getOperations <em>Operations</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Interface#getImplementedBy <em>Implemented By</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Interface#getSubtypes <em>Subtypes</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Interface#getAllSubtypes <em>All Subtypes</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Interface#getOperations <em>Operations</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getInterface()
@@ -84,5 +86,29 @@ public interface Interface extends Classifier {
      * @generated
      */
     EList<InterfaceImplementation> getImplementedBy();
+
+    /**
+     * Returns the value of the '<em><b>Subtypes</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.InterfaceImplementation}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Subtypes</em>' reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getInterface_Subtypes()
+     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @generated
+     */
+    EList<Classifier> getSubtypes();
+
+    /**
+     * Returns the value of the '<em><b>All Subtypes</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.InterfaceImplementation}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>All Subtypes</em>' reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getInterface_AllSubtypes()
+     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @generated
+     */
+    EList<Classifier> getAllSubtypes();
 
 } // Interface

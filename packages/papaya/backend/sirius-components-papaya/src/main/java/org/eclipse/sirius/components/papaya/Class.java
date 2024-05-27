@@ -26,6 +26,7 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.components.papaya.Class#isStatic <em>Static</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Class#getExtends <em>Extends</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Class#getExtendedBy <em>Extended By</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Class#getAllExtendedBy <em>All Extended By</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Class#getConstructors <em>Constructors</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Class#getAttributes <em>Attributes</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Class#getOperations <em>Operations</em>}</li>
@@ -140,6 +141,17 @@ public interface Class extends Classifier, InterfaceImplementation {
      * @generated
      */
     EList<Class> getExtendedBy();
+
+    /**
+     * Returns the value of the '<em><b>All Extended By</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.Class}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>All Extended By</em>' reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getClass_AllExtendedBy()
+     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @generated
+     */
+    EList<Class> getAllExtendedBy();
 
     /**
      * Returns the value of the '<em><b>Constructors</b></em>' containment reference list. The list contents are of type

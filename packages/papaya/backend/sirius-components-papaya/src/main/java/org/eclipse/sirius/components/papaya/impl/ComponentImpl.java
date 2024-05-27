@@ -34,9 +34,11 @@ import org.eclipse.sirius.components.papaya.RequiredService;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getDependencies <em>Dependencies</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getAllDependencies <em>All Dependencies</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getUsedAsDependencyBy <em>Used As Dependency
  * By</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getComponents <em>Components</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getAllComponents <em>All Components</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getPackages <em>Packages</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getPorts <em>Ports</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentImpl#getProvidedServices <em>Provided
@@ -156,6 +158,21 @@ public class ComponentImpl extends NamedElementImpl implements Component {
      * @generated
      */
     @Override
+    public EList<Component> getAllDependencies() {
+        // TODO: implement this method to return the 'All Dependencies' reference list
+        // Ensure that you remove @generated or mark it @generated NOT
+        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and
+        // org.eclipse.emf.ecore.EStructuralFeature.Setting
+        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EList<Component> getUsedAsDependencyBy() {
         if (this.usedAsDependencyBy == null) {
             this.usedAsDependencyBy = new EObjectWithInverseResolvingEList.ManyInverse<>(Component.class, this, PapayaPackage.COMPONENT__USED_AS_DEPENDENCY_BY, PapayaPackage.COMPONENT__DEPENDENCIES);
@@ -174,6 +191,21 @@ public class ComponentImpl extends NamedElementImpl implements Component {
             this.components = new EObjectContainmentEList<>(Component.class, this, PapayaPackage.COMPONENT__COMPONENTS);
         }
         return this.components;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<Component> getAllComponents() {
+        // TODO: implement this method to return the 'All Components' reference list
+        // Ensure that you remove @generated or mark it @generated NOT
+        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and
+        // org.eclipse.emf.ecore.EStructuralFeature.Setting
+        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -281,10 +313,14 @@ public class ComponentImpl extends NamedElementImpl implements Component {
         switch (featureID) {
             case PapayaPackage.COMPONENT__DEPENDENCIES:
                 return this.getDependencies();
+            case PapayaPackage.COMPONENT__ALL_DEPENDENCIES:
+                return this.getAllDependencies();
             case PapayaPackage.COMPONENT__USED_AS_DEPENDENCY_BY:
                 return this.getUsedAsDependencyBy();
             case PapayaPackage.COMPONENT__COMPONENTS:
                 return this.getComponents();
+            case PapayaPackage.COMPONENT__ALL_COMPONENTS:
+                return this.getAllComponents();
             case PapayaPackage.COMPONENT__PACKAGES:
                 return this.getPackages();
             case PapayaPackage.COMPONENT__PORTS:
@@ -381,10 +417,14 @@ public class ComponentImpl extends NamedElementImpl implements Component {
         switch (featureID) {
             case PapayaPackage.COMPONENT__DEPENDENCIES:
                 return this.dependencies != null && !this.dependencies.isEmpty();
+            case PapayaPackage.COMPONENT__ALL_DEPENDENCIES:
+                return !this.getAllDependencies().isEmpty();
             case PapayaPackage.COMPONENT__USED_AS_DEPENDENCY_BY:
                 return this.usedAsDependencyBy != null && !this.usedAsDependencyBy.isEmpty();
             case PapayaPackage.COMPONENT__COMPONENTS:
                 return this.components != null && !this.components.isEmpty();
+            case PapayaPackage.COMPONENT__ALL_COMPONENTS:
+                return !this.getAllComponents().isEmpty();
             case PapayaPackage.COMPONENT__PACKAGES:
                 return this.packages != null && !this.packages.isEmpty();
             case PapayaPackage.COMPONENT__PORTS:

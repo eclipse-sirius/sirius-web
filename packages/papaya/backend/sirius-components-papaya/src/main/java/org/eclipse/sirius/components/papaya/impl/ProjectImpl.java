@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.papaya.Task;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getProjects <em>Projects</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getComponents <em>Components</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getAllComponents <em>All Components</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getComponentExchanges <em>Component
  * Exchanges</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getIterations <em>Iterations</em>}</li>
@@ -157,6 +158,21 @@ public class ProjectImpl extends NamedElementImpl implements Project {
      * @generated
      */
     @Override
+    public EList<Component> getAllComponents() {
+        // TODO: implement this method to return the 'All Components' reference list
+        // Ensure that you remove @generated or mark it @generated NOT
+        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and
+        // org.eclipse.emf.ecore.EStructuralFeature.Setting
+        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EList<ComponentExchange> getComponentExchanges() {
         if (this.componentExchanges == null) {
             this.componentExchanges = new EObjectContainmentEList<>(ComponentExchange.class, this, PapayaPackage.PROJECT__COMPONENT_EXCHANGES);
@@ -239,6 +255,8 @@ public class ProjectImpl extends NamedElementImpl implements Project {
                 return this.getProjects();
             case PapayaPackage.PROJECT__COMPONENTS:
                 return this.getComponents();
+            case PapayaPackage.PROJECT__ALL_COMPONENTS:
+                return this.getAllComponents();
             case PapayaPackage.PROJECT__COMPONENT_EXCHANGES:
                 return this.getComponentExchanges();
             case PapayaPackage.PROJECT__ITERATIONS:
@@ -330,6 +348,8 @@ public class ProjectImpl extends NamedElementImpl implements Project {
                 return this.projects != null && !this.projects.isEmpty();
             case PapayaPackage.PROJECT__COMPONENTS:
                 return this.components != null && !this.components.isEmpty();
+            case PapayaPackage.PROJECT__ALL_COMPONENTS:
+                return !this.getAllComponents().isEmpty();
             case PapayaPackage.PROJECT__COMPONENT_EXCHANGES:
                 return this.componentExchanges != null && !this.componentExchanges.isEmpty();
             case PapayaPackage.PROJECT__ITERATIONS:
