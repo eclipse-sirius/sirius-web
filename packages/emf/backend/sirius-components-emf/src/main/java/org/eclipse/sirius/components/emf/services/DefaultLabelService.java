@@ -30,6 +30,7 @@ import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.IDefaultLabelService;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,16 +59,17 @@ public class DefaultLabelService implements IDefaultLabelService {
     }
     @Override
     public String getLabel(Object object) {
-        String label = "";
-        if (object instanceof EObject eObject) {
-            label = this.getLabelEAttribute(eObject)
-                    .map(eObject::eGet)
-                    .map(Object::toString)
-                    .orElse("");
-        } else if (object instanceof IRepresentation representation) {
-            label = representation.getLabel();
-        }
-        return label;
+        return this.getStyledLabel(object).toString();
+    }
+
+    public StyledString getStyledLabel(Object object) {
+        var label = Optional.of(object).filter(EObject.class::isInstance)
+                .map(EObject.class::cast)
+                .flatMap(eObject -> this.getLabelEAttribute(eObject).map(eObject::eGet))
+                .map(Object::toString)
+                .orElse("");
+
+        return StyledString.of(label);
     }
 
     @Override

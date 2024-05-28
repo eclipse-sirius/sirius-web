@@ -20,6 +20,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -42,7 +43,7 @@ public final class TreeDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> kindProvider;
 
-    private Function<VariableManager, String> labelProvider;
+    private Function<VariableManager, StyledString> labelProvider;
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
@@ -96,7 +97,7 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.kindProvider;
     }
 
-    public Function<VariableManager, String> getLabelProvider() {
+    public Function<VariableManager, StyledString> getLabelProvider() {
         return this.labelProvider;
     }
 
@@ -169,7 +170,7 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> kindProvider;
 
-        private Function<VariableManager, String> labelProvider;
+        private Function<VariableManager, StyledString> labelProvider;
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
@@ -217,7 +218,7 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder labelProvider(Function<VariableManager, String> labelProvider) {
+        public Builder labelProvider(Function<VariableManager, StyledString> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
             return this;
         }

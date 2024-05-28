@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLStyledString } from '@eclipse-sirius/sirius-components-core';
 import { GQLTreeItem } from '../views/TreeView.types';
 
 export const splitText = (label: string, userInput: string | null): string[] => {
@@ -44,9 +45,13 @@ export const splitText = (label: string, userInput: string | null): string[] => 
   return splitLabel;
 };
 
+const getString = (styledString: GQLStyledString): string => {
+  return styledString.styledStringFragments.map((fragments) => fragments.text).join();
+};
+
 export const isFilterCandidate = (treeItem: GQLTreeItem, textToFilter: string | null): boolean => {
   let filter: boolean = false;
-  const splitLabelWithTextToHighlight: string[] = splitText(treeItem.label, textToFilter);
+  const splitLabelWithTextToHighlight: string[] = splitText(getString(treeItem.label), textToFilter);
   if (textToFilter === null || textToFilter === '') {
     filter = false;
   } else if (splitLabelWithTextToHighlight.length > 1) {
@@ -67,7 +72,7 @@ export const isFilterCandidate = (treeItem: GQLTreeItem, textToFilter: string | 
     treeItem.hasChildren &&
     treeItem.expanded &&
     treeItem.children
-      .map((child) => child.label.toLocaleLowerCase().split(textToFilter.toLocaleLowerCase()).length)
+      .map((child) => getString(child.label).toLocaleLowerCase().split(textToFilter.toLocaleLowerCase()).length)
       .every((v) => v === 1)
   ) {
     filter = treeItem.children.map((child) => isFilterCandidate(child, textToFilter)).every((v) => v === true);

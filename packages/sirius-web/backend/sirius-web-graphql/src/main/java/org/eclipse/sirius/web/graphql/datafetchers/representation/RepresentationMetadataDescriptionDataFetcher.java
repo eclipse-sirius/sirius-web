@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 
 import graphql.schema.DataFetchingEnvironment;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import reactor.core.publisher.Mono;
 
 /**
@@ -61,7 +62,7 @@ public class RepresentationMetadataDescriptionDataFetcher implements IDataFetche
             .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
             .treeItemIdProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
             .kindProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
-            .labelProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
+            .labelProvider(variableManager -> new StyledString(List.of()))
             .iconURLProvider(variableManager -> List.of(TreeEventProcessorFactory.TREE_ID))
             .editableProvider(variableManager -> null)
             .deletableProvider(variableManager -> null)
