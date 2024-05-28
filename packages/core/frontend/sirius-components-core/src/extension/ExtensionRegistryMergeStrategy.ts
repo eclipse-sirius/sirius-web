@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ExtensionRegistry, ExtensionRegistryMergeStrategy } from '@eclipse-sirius/sirius-components-core';
-import { Theme } from '@material-ui/core/styles';
-import { ReactNode } from 'react';
 
-export interface SiriusWebApplicationProps {
-  httpOrigin: string;
-  wsOrigin: string;
-  extensionRegistry?: ExtensionRegistry;
-  extensionRegistryMergeStrategy?: ExtensionRegistryMergeStrategy;
-  theme?: Theme;
-  children?: ReactNode;
+import { ComponentExtension, DataExtension } from './ExtensionRegistry.types';
+
+export interface ExtensionRegistryMergeStrategy {
+  mergeComponentExtensions(
+    identifier: string,
+    existingValues: ComponentExtension<any>[],
+    newValues: ComponentExtension<any>[]
+  ): ComponentExtension<any>[];
+  mergeDataExtensions(
+    identifier: string,
+    existingValue: DataExtension<any>,
+    newValue: DataExtension<any>
+  ): DataExtension<any>;
 }

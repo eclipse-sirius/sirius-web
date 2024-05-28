@@ -23,5 +23,8 @@ export function useData<P>(extensionPoint: DataExtensionPoint<P>): DataExtension
   if (dataExtension) {
     return dataExtension as DataExtension<P>;
   }
-  return { data: extensionPoint.fallback };
+  return {
+    identifier: 'fallback_' + extensionPoint.identifier,
+    data: extensionPoint.fallback,
+  };
 }

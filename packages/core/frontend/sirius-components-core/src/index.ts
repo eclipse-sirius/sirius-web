@@ -27,6 +27,7 @@ export {
   type DataExtension,
   type DataExtensionPoint,
 } from './extension/ExtensionRegistry.types';
+export { type ExtensionRegistryMergeStrategy } from './extension/ExtensionRegistryMergeStrategy';
 export { useComponent } from './extension/useComponent';
 export { useComponents } from './extension/useComponents';
 export { useData } from './extension/useData';
