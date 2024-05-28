@@ -44,6 +44,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3511[#3511] [diagram] Improve edge handle position for border nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/2837[#2837] [gantt] Enhance gantt scroll bar management
 - https://github.com/eclipse-sirius/sirius-web/issues/3441[#3441] [gantt] Use a DateTime widget for AbstractTask entity
+- https://github.com/eclipse-sirius/sirius-web/issues/3539[#3539] [diagram] Add editing context variable in diagram delete tool
 
 == v2024.5.0
 
