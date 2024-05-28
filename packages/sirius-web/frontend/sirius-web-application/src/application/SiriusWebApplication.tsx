@@ -44,6 +44,7 @@ import {
   defaultNodeTypeRegistry,
 } from '../diagrams/DiagramRepresentationConfiguration';
 import { DiagramRepresentationConfigurationProps } from '../diagrams/DiagramRepresentationConfiguration.types';
+import { DefaultExtensionRegistryMergeStrategy } from '../extension/DefaultExtensionRegistryMergeStrategy';
 import { propertySectionsRegistry } from '../forms/defaultPropertySectionRegistry';
 import { ApolloGraphQLProvider } from '../graphql/ApolloGraphQLProvider';
 import { OnboardArea } from '../onboarding/OnboardArea';
@@ -63,6 +64,7 @@ export const SiriusWebApplication = ({
   httpOrigin,
   wsOrigin,
   extensionRegistry,
+  extensionRegistryMergeStrategy,
   theme,
   children,
 }: SiriusWebApplicationProps) => {
@@ -117,10 +119,19 @@ export const SiriusWebApplication = ({
   ];
 
   const internalExtensionRegistry = new ExtensionRegistry();
-  internalExtensionRegistry.addComponent(workbenchMainAreaExtensionPoint, { Component: OnboardArea });
-  internalExtensionRegistry.putData(workbenchViewContributionExtensionPoint, { data: workbenchViewContributions });
+  internalExtensionRegistry.addComponent(workbenchMainAreaExtensionPoint, {
+    identifier: 'siriusweb_workbench#mainArea',
+    Component: OnboardArea,
+  });
+  internalExtensionRegistry.putData(workbenchViewContributionExtensionPoint, {
+    identifier: 'siriusweb_workbench#viewContribution',
+    data: workbenchViewContributions,
+  });
   if (extensionRegistry) {
-    internalExtensionRegistry.addAll(extensionRegistry);
+    internalExtensionRegistry.addAll(
+      extensionRegistry,
+      extensionRegistryMergeStrategy ? extensionRegistryMergeStrategy : new DefaultExtensionRegistryMergeStrategy()
+    );
   }
 
   return (

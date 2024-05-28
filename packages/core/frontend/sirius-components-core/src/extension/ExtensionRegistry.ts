@@ -17,6 +17,7 @@ import {
   DataExtension,
   DataExtensionPoint,
 } from './ExtensionRegistry.types';
+import { ExtensionRegistryMergeStrategy } from './ExtensionRegistryMergeStrategy';
 
 export class ExtensionRegistry {
   private components: Record<string, ComponentExtension<any>[]> = {};
@@ -53,12 +54,37 @@ export class ExtensionRegistry {
     return this.data[extensionPoint.identifier] ?? null;
   }
 
-  public addAll(extensionRegistry: ExtensionRegistry): void {
+  public addAll(
+    extensionRegistry: ExtensionRegistry,
+    extensionRegistryMergeStrategy: ExtensionRegistryMergeStrategy
+  ): void {
     Object.entries(extensionRegistry.components).forEach((entry) => {
-      this.components[entry[0]] = entry[1];
+      const extensionPointIdentifier = entry[0];
+      const existingValues = this.components[extensionPointIdentifier];
+      const newValues = entry[1];
+      if (existingValues) {
+        this.components[extensionPointIdentifier] = extensionRegistryMergeStrategy.mergeComponentExtensions(
+          extensionPointIdentifier,
+          existingValues,
+          newValues
+        );
+      } else {
+        this.components[extensionPointIdentifier] = newValues;
+      }
     });
     Object.entries(extensionRegistry.data).forEach((entry) => {
-      this.data[entry[0]] = entry[1];
+      const extensionPointIdentifier = entry[0];
+      const existingValues = this.data[extensionPointIdentifier];
+      const newValues = entry[1];
+      if (existingValues) {
+        this.data[extensionPointIdentifier] = extensionRegistryMergeStrategy.mergeDataExtensions(
+          extensionPointIdentifier,
+          existingValues,
+          newValues
+        );
+      } else {
+        this.data[extensionPointIdentifier] = newValues;
+      }
     });
   }
 }

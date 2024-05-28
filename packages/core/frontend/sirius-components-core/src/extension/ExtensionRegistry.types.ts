@@ -22,9 +22,11 @@ export interface DataExtensionPoint<P> {
 }
 
 export interface ComponentExtension<P> {
+  identifier: string;
   Component: React.ComponentType<P>;
 }
 
 export interface DataExtension<P> {
+  identifier: string;
   data: P;
 }

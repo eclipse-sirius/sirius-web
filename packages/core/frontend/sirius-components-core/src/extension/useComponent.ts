@@ -22,6 +22,7 @@ export function useComponent<P>(extensionPoint: ComponentExtensionPoint<P>): Com
 
   if (!componentExtension) {
     const componentExtension: ComponentExtension<P> = {
+      identifier: 'fallback_' + extensionPoint.identifier,
       Component: extensionPoint.FallbackComponent,
     };
     return componentExtension;
