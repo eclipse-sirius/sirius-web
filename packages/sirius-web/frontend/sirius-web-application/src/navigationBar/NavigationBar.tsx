@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useComponent } from '@eclipse-sirius/sirius-components-core';
+import { useComponent, useComponents } from '@eclipse-sirius/sirius-components-core';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
@@ -19,7 +19,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { emphasize, makeStyles } from '@material-ui/core/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import { NavigationBarProps } from './NavigationBar.types';
-import { navigationBarIconExtensionPoint, navigationBarMenuExtensionPoint } from './NavigationBarExtensionPoints';
+import {
+  navigationBarIconExtensionPoint,
+  navigationBarLeftContributionExtensionPoint,
+  navigationBarMenuExtensionPoint,
+  navigationBarRightContributionExtensionPoint,
+} from './NavigationBarExtensionPoints';
 
 const useNavigationBarStyles = makeStyles((theme) => ({
   navbar: {
@@ -31,15 +36,15 @@ const useNavigationBarStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.navigationBar.border,
   },
   toolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    display: 'grid',
+    gridTemplateColumns: '1fr min-content 1fr',
     backgroundColor: theme.palette.navigationBar.background,
   },
   left: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    gap: theme.spacing(1),
   },
   link: {
     display: 'flex',
@@ -51,6 +56,7 @@ const useNavigationBarStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    gap: theme.spacing(1),
   },
   onDarkBackground: {
     '&:hover': {
@@ -64,6 +70,8 @@ export const NavigationBar = ({ children }: NavigationBarProps) => {
 
   const { Component: Icon } = useComponent(navigationBarIconExtensionPoint);
   const { Component: Menu } = useComponent(navigationBarMenuExtensionPoint);
+  const leftContributions = useComponents(navigationBarLeftContributionExtensionPoint);
+  const rightContributions = useComponents(navigationBarRightContributionExtensionPoint);
 
   return (
     <div className={classes.navbar}>
@@ -78,9 +86,15 @@ export const NavigationBar = ({ children }: NavigationBarProps) => {
                 </IconButton>
               </Link>
             </Tooltip>
+            {leftContributions.map(({ Component: LeftContribution }, index) => (
+              <LeftContribution key={index} />
+            ))}
           </div>
-          {children}
+          <div>{children}</div>
           <div className={classes.right}>
+            {rightContributions.map(({ Component: RightContribution }, index) => (
+              <RightContribution key={index} />
+            ))}
             <Menu />
           </div>
         </Toolbar>

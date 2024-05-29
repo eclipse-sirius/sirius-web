@@ -27,10 +27,17 @@ export {
   httpOptionsConfigurersExtensionPoint,
   webSocketOptionsConfigurersExtensionPoint,
 } from './graphql/useCreateApolloClientExtensionPoints';
-export { type NavigationBarIconProps, type NavigationBarMenuProps } from './navigationBar/NavigationBar.types';
+export {
+  type NavigationBarIconProps,
+  type NavigationBarLeftContributionProps,
+  type NavigationBarMenuProps,
+  type NavigationBarRightContributionProps,
+} from './navigationBar/NavigationBar.types';
 export {
   navigationBarIconExtensionPoint,
+  navigationBarLeftContributionExtensionPoint,
   navigationBarMenuExtensionPoint,
+  navigationBarRightContributionExtensionPoint,
 } from './navigationBar/NavigationBarExtensionPoints';
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
 export { projectActionButtonMenuItemExtensionPoint } from './views/project-browser/list-projects-area/ProjectActionButtonExtensionPoints';

@@ -20,3 +20,7 @@ export interface NavigationBarProps {
 export interface NavigationBarIconProps {}
 
 export interface NavigationBarMenuProps {}
+
+export interface NavigationBarLeftContributionProps {}
+
+export interface NavigationBarRightContributionProps {}
