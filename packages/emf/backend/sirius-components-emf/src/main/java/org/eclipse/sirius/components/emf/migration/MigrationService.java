@@ -40,14 +40,23 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
 
     private final List<IMigrationParticipant> migrationParticipants;
     private MigrationData documentMigrationData;
+    private List<IMigrationParticipant> migrationParticipantsCandidates;
 
     public MigrationService(List<IMigrationParticipant> migrationParticipants) {
         this.migrationParticipants = Objects.requireNonNull(migrationParticipants);
         this.documentMigrationData = new MigrationData("none", "0");
+        this.updateCandidates();
     }
 
     private boolean isCandidateVersion(IMigrationParticipant migrationParticipant) {
         return migrationParticipant.getVersion().compareTo(this.documentMigrationData.migrationVersion()) > 0;
+    }
+
+    private void updateCandidates() {
+        this.migrationParticipantsCandidates =  this.migrationParticipants.stream()
+                .filter(this::isCandidateVersion)
+                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
+                .toList();
     }
 
     public MigrationData getMostRecentParticipantMigrationData() {
@@ -63,11 +72,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     @Override
     public EStructuralFeature getElement(EClass eClass, String namespace, String eStructuralFeatureName) {
         EStructuralFeature structuralFeature = eClass.getEStructuralFeature(eStructuralFeatureName);
-        var migrationParticipantsCandidate = this.migrationParticipants.stream()
-                .filter(this::isCandidateVersion)
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
-                .toList();
-        for (IMigrationParticipant migrationParticipant : migrationParticipantsCandidate) {
+        for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
             EStructuralFeature newStructuralFeature = migrationParticipant.getEStructuralFeature(eClass, eStructuralFeatureName);
             if (newStructuralFeature != null) {
                 structuralFeature = newStructuralFeature;
@@ -79,11 +84,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     @Override
     public EClassifier getType(EPackage ePackage, String typeName) {
         EClassifier eClassifier = ePackage.getEClassifier(typeName);
-        var migrationParticipantsCandidate = this.migrationParticipants.stream()
-                .filter(this::isCandidateVersion)
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
-                .toList();
-        for (IMigrationParticipant migrationParticipant : migrationParticipantsCandidate) {
+        for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
             EClassifier newEClassifier = migrationParticipant.getEClassifier(ePackage, typeName);
             if (newEClassifier != null) {
                 eClassifier = newEClassifier;
@@ -95,11 +96,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     @Override
     public EPackage getPackage(String nsURI) {
         EPackage ePackage = super.getPackage(nsURI);
-        var migrationParticipantsCandidate = this.migrationParticipants.stream()
-                .filter(this::isCandidateVersion)
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
-                .toList();
-        for (IMigrationParticipant migrationParticipant : migrationParticipantsCandidate) {
+        for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
             EPackage newEPackage = migrationParticipant.getPackage(nsURI);
             if (newEPackage != null) {
                 ePackage = newEPackage;
@@ -112,11 +109,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     public void preDeserialization(JsonResource resource, JsonObject jsonObject) {
         this.setMigrationDataFromDocumentContent(jsonObject);
         this.setResourceMetadataAdapterMigrationData(resource, this.documentMigrationData);
-        var migrationParticipantsCandidates = this.migrationParticipants.stream()
-                .filter(this::isCandidateVersion)
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
-                .toList();
-        for (IMigrationParticipant migrationParticipant : migrationParticipantsCandidates) {
+        for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
             migrationParticipant.preDeserialization(resource, jsonObject);
             this.setResourceMetadataAdapterMigrationData(resource, new MigrationData(migrationParticipant.getClass().getSimpleName(), migrationParticipant.getVersion()));
         }
@@ -132,22 +125,14 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
                 }
             }
         });
-        var migrationParticipantsCandidates = this.migrationParticipants.stream()
-                .filter(this::isCandidateVersion)
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
-                .toList();
-        for (IMigrationParticipant migrationParticipant : migrationParticipantsCandidates) {
+        for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
             migrationParticipant.postSerialization(resource, jsonObject);
         }
     }
 
     @Override
     public void postObjectLoading(EObject eObject, JsonObject jsonObject, boolean isTopObject) {
-        var migrationParticipantsCandidates = this.migrationParticipants.stream()
-                .filter(this::isCandidateVersion)
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
-                .toList();
-        for (IMigrationParticipant migrationParticipant : migrationParticipantsCandidates) {
+        for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
             migrationParticipant.postObjectLoading(eObject, jsonObject);
         }
     }
@@ -155,11 +140,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     @Override
     public Object getValue(EObject object, EStructuralFeature feature, Object value) {
         Object returnValue = value;
-        var migrationParticipantsCandidates = this.migrationParticipants.stream()
-                .filter(this::isCandidateVersion)
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
-                .toList();
-        for (IMigrationParticipant migrationParticipant : migrationParticipantsCandidates) {
+        for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
             Object newValue = migrationParticipant.getValue(object, feature, value);
             if (newValue != null) {
                 returnValue = newValue;
@@ -182,6 +163,9 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     private void setMigrationDataFromDocumentContent(JsonObject jsonObject) {
         var optionalMigrationData = Optional.ofNullable(jsonObject.getAsJsonObject(MigrationData.JSON_OBJECT_ROOT))
                 .map(migrationRootElement -> new Gson().fromJson(migrationRootElement, MigrationData.class)).stream().findFirst();
-        optionalMigrationData.ifPresent(migrationData -> this.documentMigrationData = migrationData);
+        optionalMigrationData.ifPresent(migrationData -> {
+            this.documentMigrationData = migrationData;
+            this.updateCandidates();
+        });
     }
 }

@@ -48,6 +48,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3539[#3539] [diagram] Add editing context variable in diagram delete tool
 - https://github.com/eclipse-sirius/sirius-web/issues/3529[#3529] [diagram] Improve edge path when a layout direction is defined
 - https://github.com/eclipse-sirius/sirius-web/issues/3489[#3489] [diagram] Apply a fit to screen after an arrange all
+- https://github.com/eclipse-sirius/sirius-web/issues/3548[#3548] [core] Avoid costly recomputations in MigrationService
 
 == v2024.5.0
 
