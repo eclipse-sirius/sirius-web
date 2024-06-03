@@ -13,9 +13,10 @@
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { makeStyles } from 'tss-react/mui';
+import { ProjectSettingTabProps } from '../ProjectSettingsView.types';
 import { ImageTable } from './ImageTable';
 import { ProjectImagesSettingsParams, ProjectImagesSettingsState } from './ProjectImagesSettings.types';
 import { UploadImageModal } from './upload-image/UploadImageModal';
@@ -43,7 +44,7 @@ const useProjectImagesSettingsStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const ProjectImagesSettings = () => {
+export const ProjectImagesSettings = ({}: ProjectSettingTabProps) => {
   const [state, setState] = useState<ProjectImagesSettingsState>({
     modal: null,
   });
@@ -83,7 +84,7 @@ export const ProjectImagesSettings = () => {
     <>
       <div className={classes.imageSettingsViewContainer}>
         <div className={classes.header}>
-          <Typography variant="h4">Project Images</Typography>
+          <Typography variant="h5">Project Images</Typography>
 
           <div className={classes.actions}>
             <Button data-testid="upload-image" color="primary" variant="outlined" onClick={onTriggerUpload}>

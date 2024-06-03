@@ -45,6 +45,7 @@ import {
 } from '@eclipse-sirius/sirius-components-widget-reference';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import Filter from '@mui/icons-material/Filter';
+import ImageIcon from '@mui/icons-material/Image';
 import LinkIcon from '@mui/icons-material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import WarningIcon from '@mui/icons-material/Warning';
@@ -62,10 +63,13 @@ import { createProjectAreaCardExtensionPoint } from '../views/project-browser/cr
 import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
 import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
 import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
+import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
 import { ellipseNodeStyleDocumentTransform } from './ElipseNodeDocumentTransform';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
+import { ProjectSettingTabContribution } from '../views/project-settings/ProjectSettingsView.types';
+import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
   const params = new URLSearchParams(query);
@@ -276,7 +280,7 @@ defaultExtensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
 const isReferenceWidget = (widget: GQLWidget): widget is GQLReferenceWidget => widget.__typename === 'ReferenceWidget';
 
 defaultExtensionRegistry.putData(widgetContributionExtensionPoint, {
-  identifier: 'siriusWeb_${widgetContributionExtensionPoint.identifier}_referenceWidget',
+  identifier: `siriusWeb_${widgetContributionExtensionPoint.identifier}_referenceWidget`,
   data: [
     {
       name: 'ReferenceWidget',
@@ -292,6 +296,27 @@ defaultExtensionRegistry.putData(widgetContributionExtensionPoint, {
       },
     },
   ],
+});
+
+/*******************************************************************************
+ *
+ * Project settings
+ *
+ * Used to register the settings pages for the projects
+ *
+ *******************************************************************************/
+const defaultSettingPages: ProjectSettingTabContribution[] = [
+  {
+    id: 'images',
+    title: 'Images',
+    icon: <ImageIcon />,
+    component: ProjectImagesSettings,
+  },
+];
+
+defaultExtensionRegistry.putData(projectSettingsTabExtensionPoint, {
+  identifier: `siriusWeb_${projectSettingsTabExtensionPoint.identifier}`,
+  data: defaultSettingPages,
 });
 
 export { defaultExtensionRegistry };

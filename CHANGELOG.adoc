@@ -96,6 +96,8 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3785[#3785] [sirius-web] Add an extension point to contribute custom tree item menu entry
 - https://github.com/eclipse-sirius/sirius-web/issues/3782[#3782] [sirius-web] Add an extension point to contribute custom widgets
 - https://github.com/eclipse-sirius/sirius-web/issues/3801[#3801] Add an equivalent of IViewDiagramDescriptionSearchService for Form descriptions
+- https://github.com/eclipse-sirius/sirius-web/issues/3557[#3550] [sirius-web] Add an extension point to contribute setting pages
+
 
 == v2024.7.0
 
@@ -200,6 +202,7 @@ image:doc/screenshots/diagramFilterView.png[Diagram Filter View, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3591[#3591] [sirius-web] Add EditProject subtitle extension point
 - https://github.com/eclipse-sirius/sirius-web/issues/3662[#3662] [sirius-web] Add an extension point to contribute props to ReactFlow diagram renderer, contributed props must be memoized
 - https://github.com/eclipse-sirius/sirius-web/issues/3695[#3695] [form] Add an extension point to contribute widget labels decorators
+
 
 === Improvements
 
