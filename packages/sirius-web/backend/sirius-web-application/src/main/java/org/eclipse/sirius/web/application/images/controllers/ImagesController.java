@@ -21,6 +21,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.core.api.IImagePathService;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.images.services.api.IImageApplicationService;
 import org.eclipse.sirius.web.application.images.services.api.IProjectImageApplicationService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
@@ -82,10 +83,13 @@ public class ImagesController {
 
     private final List<IImagePathService> pathResourcesServices;
 
-    private final IProjectImageApplicationService imageApplicationService;
+    private final IProjectImageApplicationService projectImageApplicationService;
 
-    public ImagesController(List<IImagePathService> pathResourcesServices, IProjectImageApplicationService imageApplicationService) {
+    private final IImageApplicationService imageApplicationService;
+
+    public ImagesController(List<IImagePathService> pathResourcesServices, IProjectImageApplicationService projectImageApplicationService, IImageApplicationService imageApplicationService) {
         this.pathResourcesServices = pathResourcesServices;
+        this.projectImageApplicationService = Objects.requireNonNull(projectImageApplicationService);
         this.imageApplicationService = Objects.requireNonNull(imageApplicationService);
     }
 
@@ -117,16 +121,29 @@ public class ImagesController {
 
     private ResponseEntity<Resource> getImage(String imagePath) {
         var imageId = imagePath.substring("/".length());
+        ResponseEntity<Resource> response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
 
-        return new UUIDParser().parse(imageId)
-                .flatMap(this.imageApplicationService::findById)
-                .map(image -> {
-                    HttpHeaders headers = new HttpHeaders();
-                    headers.setContentType(MediaType.valueOf(image.getContentType()));
-                    Resource resource = new ByteArrayResource(image.getContent());
-                    return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-                })
-                .orElse(new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND));
+        var optionalImageId = new UUIDParser().parse(imageId);
+        if (optionalImageId.isPresent()) {
+            var id = optionalImageId.get();
+            var optionalProjectImage = this.projectImageApplicationService.findById(id);
+            var optionalImage = this.imageApplicationService.findById(id);
+            if (optionalProjectImage.isPresent()) {
+                var image = optionalProjectImage.get();
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.valueOf(image.getContentType()));
+                Resource resource = new ByteArrayResource(image.getContent());
+                response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
+            } else if (optionalImage.isPresent()) {
+                var image = optionalImage.get();
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.valueOf(image.getContentType()));
+                Resource resource = new ByteArrayResource(image.getContent());
+                response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
+            }
+        }
+
+        return response;
     }
 
     private MediaType getContentType(String imagePath) {
