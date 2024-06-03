@@ -10,24 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+package org.eclipse.sirius.web.application.images.services.api;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
 
 /**
- * Used to find images.
+ * Application services used to manipulate images.
  *
  * @author sbegaudeau
  */
-public interface IImageSearchService {
+public interface IImageApplicationService {
 
     Optional<Image> findById(UUID id);
-
-    boolean existsByLabel(String label);
-
-    List<Image> findAll();
 }
