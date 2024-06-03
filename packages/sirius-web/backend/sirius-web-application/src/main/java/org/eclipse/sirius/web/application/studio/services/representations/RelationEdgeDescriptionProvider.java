@@ -60,7 +60,7 @@ public class RelationEdgeDescriptionProvider implements IEdgeDescriptionProvider
     private EdgeStyle relationEdgeStyle() {
         return new DiagramBuilders()
                 .newEdgeStyle()
-                .targetArrowStyle(ArrowStyle.FILL_DIAMOND)
+                .sourceArrowStyle(ArrowStyle.FILL_DIAMOND)
                 .color(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BLACK_COLOR))
                 .build();
     }
