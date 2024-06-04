@@ -17,15 +17,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
 import org.eclipse.sirius.components.collaborative.representations.migration.RepresentationMigrationService;
-import org.eclipse.sirius.components.collaborative.representations.migration.RepresentationMigrationData;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
@@ -62,8 +61,7 @@ public class RepresentationSearchService implements IRepresentationSearchService
     public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
         return new UUIDParser().parse(representationId)
                 .flatMap(this.representationDataSearchService::findById)
-                .map(RepresentationData::getContent)
-                .map(this::migrateContent)
+                .map(this::migratedContent)
                 .flatMap(this::toRepresentation)
                 .filter(representationClass::isInstance)
                 .map(representationClass::cast);
@@ -82,26 +80,32 @@ public class RepresentationSearchService implements IRepresentationSearchService
         return optionalRepresentation;
     }
 
-    private String migrateContent(String content) {
-        try {
-            JsonNode rootJsonNode = this.objectMapper.readTree(content);
-            ObjectNode rootObjectNode = (ObjectNode) rootJsonNode;
-            var id = rootJsonNode.get("id").asText();
-            var representationData = this.representationDataSearchService.findById(UUID.fromString(id));
-
-            if (representationData.isPresent()) {
-                var lastMigrationPerformed = representationData.get().getLastMigrationPerformed();
-                var migrationVersion = representationData.get().getMigrationVersion();
-                var migrationData = new RepresentationMigrationData(lastMigrationPerformed, migrationVersion);
-                var migrationService = new RepresentationMigrationService(migrationParticipants, migrationData, rootObjectNode);
+    private String migratedContent(RepresentationData representationData) {
+        List<IRepresentationMigrationParticipant> applicableParticipants = this.getApplicableMigrationParticipants(representationData);
+        if (!applicableParticipants.isEmpty()) {
+            try {
+                JsonNode rootJsonNode = this.objectMapper.readTree(representationData.getContent());
+                ObjectNode rootObjectNode = (ObjectNode) rootJsonNode;
+                var migrationService = new RepresentationMigrationService(applicableParticipants, rootObjectNode);
                 migrationService.parseProperties(rootObjectNode, this.objectMapper);
                 return rootObjectNode.toString();
+            } catch (JsonProcessingException | IllegalArgumentException exception) {
+                this.logger.warn(exception.getMessage());
             }
         }
-        catch (JsonProcessingException | IllegalArgumentException exception) {
-            this.logger.warn(exception.getMessage());
-        }
-        return content;
+        return representationData.getContent();
+    }
+
+
+    private List<IRepresentationMigrationParticipant> getApplicableMigrationParticipants(RepresentationData representationData) {
+        var migrationVersion = representationData.getMigrationVersion();
+        var kind = representationData.getKind();
+
+        return this.migrationParticipants.stream()
+                .filter(migrationParticipant -> Objects.equals(migrationParticipant.getKind(), kind))
+                .filter(migrationParticipant -> migrationParticipant.getVersion().compareTo(migrationVersion) > 0)
+                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
+                .toList();
     }
 
 }

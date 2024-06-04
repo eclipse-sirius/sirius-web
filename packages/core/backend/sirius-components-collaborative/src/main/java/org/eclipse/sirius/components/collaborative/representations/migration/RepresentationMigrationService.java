@@ -17,10 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Used to manipulate the Json content before deserialization.
@@ -30,14 +28,8 @@ import java.util.Optional;
 public class RepresentationMigrationService {
     private final List<IRepresentationMigrationParticipant> migrationParticipants;
 
-    public RepresentationMigrationService(List<IRepresentationMigrationParticipant> migrationParticipants, RepresentationMigrationData representationMigrationData, ObjectNode root) {
-        String migrationVersion = Objects.requireNonNull(representationMigrationData).migrationVersion();
-        Optional<String> optionalRepresentationKind = Optional.ofNullable(root.get("kind")).map(JsonNode::asText);
-
-        this.migrationParticipants = Objects.requireNonNull(migrationParticipants).stream()
-                .filter(migrationParticipant -> optionalRepresentationKind.filter(representationKind -> migrationParticipant.getVersion().compareTo(migrationVersion) > 0 && migrationParticipant.getKind().equals(representationKind)).isPresent())
-                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
-                .toList();
+    public RepresentationMigrationService(List<IRepresentationMigrationParticipant> migrationParticipants, ObjectNode root) {
+        this.migrationParticipants = Objects.requireNonNull(migrationParticipants);
     }
 
     public void parseProperties(ObjectNode root, ObjectMapper mapper) {
