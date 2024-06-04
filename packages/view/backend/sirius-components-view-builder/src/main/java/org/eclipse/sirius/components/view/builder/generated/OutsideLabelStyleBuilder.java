@@ -96,12 +96,62 @@ public class OutsideLabelStyleBuilder {
     }
 
     /**
+     * Setter for BorderColor.
+     *
+     * @generated
+     */
+    public OutsideLabelStyleBuilder borderColor(org.eclipse.sirius.components.view.UserColor value) {
+        this.getOutsideLabelStyle().setBorderColor(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderRadius.
+     *
+     * @generated
+     */
+    public OutsideLabelStyleBuilder borderRadius(java.lang.Integer value) {
+        this.getOutsideLabelStyle().setBorderRadius(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderSize.
+     *
+     * @generated
+     */
+    public OutsideLabelStyleBuilder borderSize(java.lang.Integer value) {
+        this.getOutsideLabelStyle().setBorderSize(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderLineStyle.
+     *
+     * @generated
+     */
+    public OutsideLabelStyleBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
+        this.getOutsideLabelStyle().setBorderLineStyle(value);
+        return this;
+    }
+
+    /**
      * Setter for LabelColor.
      *
      * @generated
      */
     public OutsideLabelStyleBuilder labelColor(org.eclipse.sirius.components.view.UserColor value) {
         this.getOutsideLabelStyle().setLabelColor(value);
+        return this;
+    }
+
+    /**
+     * Setter for Background.
+     *
+     * @generated
+     */
+    public OutsideLabelStyleBuilder background(org.eclipse.sirius.components.view.UserColor value) {
+        this.getOutsideLabelStyle().setBackground(value);
         return this;
     }
 

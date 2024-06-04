@@ -253,6 +253,11 @@ public class DiagramRendererNodeTests {
                 .colorProvider(VariableManager -> LABEL_COLOR)
                 .fontSizeProvider(variableManager -> LABEL_FONT_SIZE)
                 .iconURLProvider(VariableManager -> List.of())
+                .backgroundProvider(variableManager -> "transparent")
+                .borderColorProvider(variableManager -> "black")
+                .borderRadiusProvider(variableManager -> 0)
+                .borderSizeProvider(variableManager -> 0)
+                .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .build();
 
         InsideLabelDescription insideLbelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")

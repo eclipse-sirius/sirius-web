@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.impl;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
@@ -34,6 +39,11 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#isUnderline <em>Underline</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#isStrikeThrough <em>Strike
  * Through</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getBorderColor <em>Border Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getBorderRadius <em>Border Radius</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getBorderSize <em>Border Size</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getBorderLineStyle <em>Border Line
+ * Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getLineStyle <em>Line Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getSourceArrowStyle <em>Source Arrow
  * Style</em>}</li>
@@ -42,230 +52,284 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getEdgeWidth <em>Edge Width</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#isShowIcon <em>Show Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getLabelIcon <em>Label Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getBackground <em>Background</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
+
     /**
      * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getFontSize()
      * @generated
      * @ordered
+     * @see #getFontSize()
      */
     protected static final int FONT_SIZE_EDEFAULT = 14;
-
-    /**
-     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
-    protected int fontSize = FONT_SIZE_EDEFAULT;
-
     /**
      * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #isItalic()
      * @generated
      * @ordered
+     * @see #isItalic()
      */
     protected static final boolean ITALIC_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
-    protected boolean italic = ITALIC_EDEFAULT;
-
     /**
      * The default value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
-     * @see #isBold()
      * @generated
      * @ordered
+     * @see #isBold()
      */
     protected static final boolean BOLD_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #isBold()
-     * @generated
-     * @ordered
-     */
-    protected boolean bold = BOLD_EDEFAULT;
-
     /**
      * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #isUnderline()
      * @generated
      * @ordered
+     * @see #isUnderline()
      */
     protected static final boolean UNDERLINE_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
-    protected boolean underline = UNDERLINE_EDEFAULT;
-
     /**
      * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @see #isStrikeThrough()
      * @generated
      * @ordered
+     * @see #isStrikeThrough()
      */
     protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
-
     /**
-     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+     * The default value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @see #isStrikeThrough()
      * @generated
      * @ordered
+     * @see #getBorderRadius()
      */
-    protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
-
+    protected static final int BORDER_RADIUS_EDEFAULT = 3;
+    /**
+     * The default value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderSize()
+     */
+    protected static final int BORDER_SIZE_EDEFAULT = 1;
+    /**
+     * The default value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderLineStyle()
+     */
+    protected static final LineStyle BORDER_LINE_STYLE_EDEFAULT = LineStyle.SOLID;
     /**
      * The default value of the '{@link #getLineStyle() <em>Line Style</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLineStyle()
      * @generated
      * @ordered
+     * @see #getLineStyle()
      */
     protected static final LineStyle LINE_STYLE_EDEFAULT = LineStyle.SOLID;
-
-    /**
-     * The cached value of the '{@link #getLineStyle() <em>Line Style</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getLineStyle()
-     * @generated
-     * @ordered
-     */
-    protected LineStyle lineStyle = LINE_STYLE_EDEFAULT;
-
     /**
      * The default value of the '{@link #getSourceArrowStyle() <em>Source Arrow Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getSourceArrowStyle()
      * @generated
      * @ordered
+     * @see #getSourceArrowStyle()
      */
     protected static final ArrowStyle SOURCE_ARROW_STYLE_EDEFAULT = ArrowStyle.NONE;
-
-    /**
-     * The cached value of the '{@link #getSourceArrowStyle() <em>Source Arrow Style</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSourceArrowStyle()
-     * @generated
-     * @ordered
-     */
-    protected ArrowStyle sourceArrowStyle = SOURCE_ARROW_STYLE_EDEFAULT;
-
     /**
      * The default value of the '{@link #getTargetArrowStyle() <em>Target Arrow Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getTargetArrowStyle()
      * @generated
      * @ordered
+     * @see #getTargetArrowStyle()
      */
     protected static final ArrowStyle TARGET_ARROW_STYLE_EDEFAULT = ArrowStyle.INPUT_ARROW;
-
-    /**
-     * The cached value of the '{@link #getTargetArrowStyle() <em>Target Arrow Style</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getTargetArrowStyle()
-     * @generated
-     * @ordered
-     */
-    protected ArrowStyle targetArrowStyle = TARGET_ARROW_STYLE_EDEFAULT;
-
     /**
      * The default value of the '{@link #getEdgeWidth() <em>Edge Width</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getEdgeWidth()
      * @generated
      * @ordered
+     * @see #getEdgeWidth()
      */
     protected static final int EDGE_WIDTH_EDEFAULT = 1;
-
-    /**
-     * The cached value of the '{@link #getEdgeWidth() <em>Edge Width</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getEdgeWidth()
-     * @generated
-     * @ordered
-     */
-    protected int edgeWidth = EDGE_WIDTH_EDEFAULT;
-
     /**
      * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #isShowIcon()
      * @generated
      * @ordered
+     * @see #isShowIcon()
      */
     protected static final boolean SHOW_ICON_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isShowIcon()
-     * @generated
-     * @ordered
-     */
-    protected boolean showIcon = SHOW_ICON_EDEFAULT;
-
     /**
      * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLabelIcon()
      * @generated
      * @ordered
+     * @see #getLabelIcon()
      */
     protected static final String LABEL_ICON_EDEFAULT = null;
-
+    /**
+     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getFontSize()
+     */
+    protected int fontSize = FONT_SIZE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isItalic()
+     */
+    protected boolean italic = ITALIC_EDEFAULT;
+    /**
+     * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     * @see #isBold()
+     */
+    protected boolean bold = BOLD_EDEFAULT;
+    /**
+     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isUnderline()
+     */
+    protected boolean underline = UNDERLINE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isStrikeThrough()
+     */
+    protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderColor()
+     */
+    protected UserColor borderColor;
+    /**
+     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderRadius()
+     */
+    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderSize()
+     */
+    protected int borderSize = BORDER_SIZE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderLineStyle()
+     */
+    protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getLineStyle() <em>Line Style</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getLineStyle()
+     */
+    protected LineStyle lineStyle = LINE_STYLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getSourceArrowStyle() <em>Source Arrow Style</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSourceArrowStyle()
+     */
+    protected ArrowStyle sourceArrowStyle = SOURCE_ARROW_STYLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getTargetArrowStyle() <em>Target Arrow Style</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getTargetArrowStyle()
+     */
+    protected ArrowStyle targetArrowStyle = TARGET_ARROW_STYLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getEdgeWidth() <em>Edge Width</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getEdgeWidth()
+     */
+    protected int edgeWidth = EDGE_WIDTH_EDEFAULT;
+    /**
+     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isShowIcon()
+     */
+    protected boolean showIcon = SHOW_ICON_EDEFAULT;
     /**
      * The cached value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLabelIcon()
      * @generated
      * @ordered
+     * @see #getLabelIcon()
      */
     protected String labelIcon = LABEL_ICON_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBackground()
+     */
+    protected UserColor background;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -399,6 +463,115 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         this.strikeThrough = newStrikeThrough;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__STRIKE_THROUGH, oldStrikeThrough, this.strikeThrough));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public UserColor getBorderColor() {
+        if (this.borderColor != null && this.borderColor.eIsProxy()) {
+            InternalEObject oldBorderColor = (InternalEObject) this.borderColor;
+            this.borderColor = (UserColor) this.eResolveProxy(oldBorderColor);
+            if (this.borderColor != oldBorderColor) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.EDGE_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
+            }
+        }
+        return this.borderColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderColor(UserColor newBorderColor) {
+        UserColor oldBorderColor = this.borderColor;
+        this.borderColor = newBorderColor;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetBorderColor() {
+        return this.borderColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int getBorderRadius() {
+        return this.borderRadius;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderRadius(int newBorderRadius) {
+        int oldBorderRadius = this.borderRadius;
+        this.borderRadius = newBorderRadius;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__BORDER_RADIUS, oldBorderRadius, this.borderRadius));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int getBorderSize() {
+        return this.borderSize;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderSize(int newBorderSize) {
+        int oldBorderSize = this.borderSize;
+        this.borderSize = newBorderSize;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__BORDER_SIZE, oldBorderSize, this.borderSize));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LineStyle getBorderLineStyle() {
+        return this.borderLineStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderLineStyle(LineStyle newBorderLineStyle) {
+        LineStyle oldBorderLineStyle = this.borderLineStyle;
+        this.borderLineStyle = newBorderLineStyle == null ? BORDER_LINE_STYLE_EDEFAULT : newBorderLineStyle;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE, oldBorderLineStyle, this.borderLineStyle));
     }
 
     /**
@@ -545,6 +718,46 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * @generated
      */
     @Override
+    public UserColor getBackground() {
+        if (this.background != null && this.background.eIsProxy()) {
+            InternalEObject oldBackground = (InternalEObject) this.background;
+            this.background = (UserColor) this.eResolveProxy(oldBackground);
+            if (this.background != oldBackground) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.EDGE_STYLE__BACKGROUND, oldBackground, this.background));
+            }
+        }
+        return this.background;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBackground(UserColor newBackground) {
+        UserColor oldBackground = this.background;
+        this.background = newBackground;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__BACKGROUND, oldBackground, this.background));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetBackground() {
+        return this.background;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.EDGE_STYLE__FONT_SIZE:
@@ -557,6 +770,16 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
                 return this.isUnderline();
             case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
                 return this.isStrikeThrough();
+            case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
+                if (resolve)
+                    return this.getBorderColor();
+                return this.basicGetBorderColor();
+            case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
+                return this.getBorderRadius();
+            case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
+                return this.getBorderSize();
+            case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
+                return this.getBorderLineStyle();
             case DiagramPackage.EDGE_STYLE__LINE_STYLE:
                 return this.getLineStyle();
             case DiagramPackage.EDGE_STYLE__SOURCE_ARROW_STYLE:
@@ -569,6 +792,10 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
                 return this.isShowIcon();
             case DiagramPackage.EDGE_STYLE__LABEL_ICON:
                 return this.getLabelIcon();
+            case DiagramPackage.EDGE_STYLE__BACKGROUND:
+                if (resolve)
+                    return this.getBackground();
+                return this.basicGetBackground();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -596,6 +823,18 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
             case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
                 this.setStrikeThrough((Boolean) newValue);
                 return;
+            case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
+                this.setBorderColor((UserColor) newValue);
+                return;
+            case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
+                this.setBorderRadius((Integer) newValue);
+                return;
+            case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
+                this.setBorderSize((Integer) newValue);
+                return;
+            case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
+                this.setBorderLineStyle((LineStyle) newValue);
+                return;
             case DiagramPackage.EDGE_STYLE__LINE_STYLE:
                 this.setLineStyle((LineStyle) newValue);
                 return;
@@ -613,6 +852,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
                 return;
             case DiagramPackage.EDGE_STYLE__LABEL_ICON:
                 this.setLabelIcon((String) newValue);
+                return;
+            case DiagramPackage.EDGE_STYLE__BACKGROUND:
+                this.setBackground((UserColor) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -641,6 +883,18 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
             case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
                 this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
                 return;
+            case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
+                this.setBorderColor(null);
+                return;
+            case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
+                this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
+                return;
+            case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
+                this.setBorderSize(BORDER_SIZE_EDEFAULT);
+                return;
+            case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
+                this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
+                return;
             case DiagramPackage.EDGE_STYLE__LINE_STYLE:
                 this.setLineStyle(LINE_STYLE_EDEFAULT);
                 return;
@@ -658,6 +912,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
                 return;
             case DiagramPackage.EDGE_STYLE__LABEL_ICON:
                 this.setLabelIcon(LABEL_ICON_EDEFAULT);
+                return;
+            case DiagramPackage.EDGE_STYLE__BACKGROUND:
+                this.setBackground(null);
                 return;
         }
         super.eUnset(featureID);
@@ -681,6 +938,14 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
                 return this.underline != UNDERLINE_EDEFAULT;
             case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
                 return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
+            case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
+                return this.borderColor != null;
+            case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
+                return this.borderRadius != BORDER_RADIUS_EDEFAULT;
+            case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
+                return this.borderSize != BORDER_SIZE_EDEFAULT;
+            case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
+                return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
             case DiagramPackage.EDGE_STYLE__LINE_STYLE:
                 return this.lineStyle != LINE_STYLE_EDEFAULT;
             case DiagramPackage.EDGE_STYLE__SOURCE_ARROW_STYLE:
@@ -692,7 +957,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
             case DiagramPackage.EDGE_STYLE__SHOW_ICON:
                 return this.showIcon != SHOW_ICON_EDEFAULT;
             case DiagramPackage.EDGE_STYLE__LABEL_ICON:
-                return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
+                return !Objects.equals(LABEL_ICON_EDEFAULT, this.labelIcon);
+            case DiagramPackage.EDGE_STYLE__BACKGROUND:
+                return this.background != null;
         }
         return super.eIsSet(featureID);
     }
@@ -716,6 +983,20 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
                     return ViewPackage.LABEL_STYLE__UNDERLINE;
                 case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
                     return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+                default:
+                    return -1;
+            }
+        }
+        if (baseClass == BorderStyle.class) {
+            switch (derivedFeatureID) {
+                case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
+                    return DiagramPackage.BORDER_STYLE__BORDER_COLOR;
+                case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
+                    return DiagramPackage.BORDER_STYLE__BORDER_RADIUS;
+                case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
+                    return DiagramPackage.BORDER_STYLE__BORDER_SIZE;
+                case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
+                    return DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE;
                 default:
                     return -1;
             }
@@ -746,6 +1027,20 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
                     return -1;
             }
         }
+        if (baseClass == BorderStyle.class) {
+            switch (baseFeatureID) {
+                case DiagramPackage.BORDER_STYLE__BORDER_COLOR:
+                    return DiagramPackage.EDGE_STYLE__BORDER_COLOR;
+                case DiagramPackage.BORDER_STYLE__BORDER_RADIUS:
+                    return DiagramPackage.EDGE_STYLE__BORDER_RADIUS;
+                case DiagramPackage.BORDER_STYLE__BORDER_SIZE:
+                    return DiagramPackage.EDGE_STYLE__BORDER_SIZE;
+                case DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE:
+                    return DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE;
+                default:
+                    return -1;
+            }
+        }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
@@ -759,31 +1054,36 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (fontSize: ");
-        result.append(this.fontSize);
-        result.append(", italic: ");
-        result.append(this.italic);
-        result.append(", bold: ");
-        result.append(this.bold);
-        result.append(", underline: ");
-        result.append(this.underline);
-        result.append(", strikeThrough: ");
-        result.append(this.strikeThrough);
-        result.append(", lineStyle: ");
-        result.append(this.lineStyle);
-        result.append(", sourceArrowStyle: ");
-        result.append(this.sourceArrowStyle);
-        result.append(", targetArrowStyle: ");
-        result.append(this.targetArrowStyle);
-        result.append(", edgeWidth: ");
-        result.append(this.edgeWidth);
-        result.append(", showIcon: ");
-        result.append(this.showIcon);
-        result.append(", labelIcon: ");
-        result.append(this.labelIcon);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (fontSize: " +
+                this.fontSize +
+                ", italic: " +
+                this.italic +
+                ", bold: " +
+                this.bold +
+                ", underline: " +
+                this.underline +
+                ", strikeThrough: " +
+                this.strikeThrough +
+                ", borderRadius: " +
+                this.borderRadius +
+                ", borderSize: " +
+                this.borderSize +
+                ", borderLineStyle: " +
+                this.borderLineStyle +
+                ", lineStyle: " +
+                this.lineStyle +
+                ", sourceArrowStyle: " +
+                this.sourceArrowStyle +
+                ", targetArrowStyle: " +
+                this.targetArrowStyle +
+                ", edgeWidth: " +
+                this.edgeWidth +
+                ", showIcon: " +
+                this.showIcon +
+                ", labelIcon: " +
+                this.labelIcon +
+                ')';
+        return result;
     }
 
 } // EdgeStyleImpl

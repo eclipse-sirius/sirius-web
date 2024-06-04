@@ -76,6 +76,7 @@ public class PapayaViewBuilder {
 
         var insideLabelStyle = DiagramFactory.eINSTANCE.createInsideLabelStyle();
         insideLabelStyle.setLabelColor(labelColor);
+        insideLabelStyle.setBorderSize(0);
 
         insideLabel.setStyle(insideLabelStyle);
         return insideLabel;
@@ -90,6 +91,7 @@ public class PapayaViewBuilder {
         insideLabelStyle.setLabelColor(labelColor);
         insideLabelStyle.setWithHeader(true);
         insideLabelStyle.setDisplayHeaderSeparator(withSeparator);
+        insideLabelStyle.setBorderSize(0);
 
         insideLabel.setStyle(insideLabelStyle);
         return insideLabel;
@@ -102,6 +104,7 @@ public class PapayaViewBuilder {
 
         var outsideLabelStyle = DiagramFactory.eINSTANCE.createOutsideLabelStyle();
         outsideLabelStyle.setLabelColor(labelColor);
+        outsideLabelStyle.setBorderSize(0);
 
         outsideLabel.setStyle(outsideLabelStyle);
         return outsideLabel;

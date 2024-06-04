@@ -78,12 +78,62 @@ public abstract class NodeLabelStyleBuilder {
     }
 
     /**
+     * Setter for BorderColor.
+     *
+     * @generated
+     */
+    public NodeLabelStyleBuilder borderColor(org.eclipse.sirius.components.view.UserColor value) {
+        this.getNodeLabelStyle().setBorderColor(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderRadius.
+     *
+     * @generated
+     */
+    public NodeLabelStyleBuilder borderRadius(java.lang.Integer value) {
+        this.getNodeLabelStyle().setBorderRadius(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderSize.
+     *
+     * @generated
+     */
+    public NodeLabelStyleBuilder borderSize(java.lang.Integer value) {
+        this.getNodeLabelStyle().setBorderSize(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderLineStyle.
+     *
+     * @generated
+     */
+    public NodeLabelStyleBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
+        this.getNodeLabelStyle().setBorderLineStyle(value);
+        return this;
+    }
+
+    /**
      * Setter for LabelColor.
      *
      * @generated
      */
     public NodeLabelStyleBuilder labelColor(org.eclipse.sirius.components.view.UserColor value) {
         this.getNodeLabelStyle().setLabelColor(value);
+        return this;
+    }
+
+    /**
+     * Setter for Background.
+     *
+     * @generated
+     */
+    public NodeLabelStyleBuilder background(org.eclipse.sirius.components.view.UserColor value) {
+        this.getNodeLabelStyle().setBackground(value);
         return this;
     }
 

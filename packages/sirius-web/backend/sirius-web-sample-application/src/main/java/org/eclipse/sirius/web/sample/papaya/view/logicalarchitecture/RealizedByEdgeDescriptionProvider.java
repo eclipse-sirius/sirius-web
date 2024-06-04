@@ -46,6 +46,7 @@ public class RealizedByEdgeDescriptionProvider implements IEdgeDescriptionProvid
         realizedByEdgeStyle.setLineStyle(LineStyle.SOLID);
         realizedByEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         realizedByEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
+        realizedByEdgeStyle.setBorderSize(0);
 
         var realizedByEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         realizedByEdgeDescription.setName("Edge Realized by");

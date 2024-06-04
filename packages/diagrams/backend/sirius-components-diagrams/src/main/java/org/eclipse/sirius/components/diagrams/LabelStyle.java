@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,16 @@ public final class LabelStyle {
 
     private List<String> iconURL;
 
+    private String background;
+
+    private String borderColor;
+
+    private int borderSize;
+
+    private int borderRadius;
+
+    private LineStyle borderStyle;
+
     private LabelStyle() {
         // Prevent instantiation
     }
@@ -75,6 +85,26 @@ public final class LabelStyle {
         return this.iconURL;
     }
 
+    public String getBackground() {
+        return this.background;
+    }
+
+    public String getBorderColor() {
+        return this.borderColor;
+    }
+
+    public int getBorderSize() {
+        return this.borderSize;
+    }
+
+    public int getBorderRadius() {
+        return this.borderRadius;
+    }
+
+    public LineStyle getBorderStyle() {
+        return this.borderStyle;
+    }
+
     /**
      * The builder used to create the label style.
      *
@@ -96,6 +126,16 @@ public final class LabelStyle {
         private boolean strikeThrough;
 
         private List<String> iconURL;
+
+        private String background;
+
+        private String borderColor;
+
+        private int borderSize;
+
+        private int borderRadius;
+
+        private LineStyle borderStyle;
 
         private Builder() {
         }
@@ -135,6 +175,31 @@ public final class LabelStyle {
             return this;
         }
 
+        public Builder background(String background) {
+            this.background = Objects.requireNonNull(background);
+            return this;
+        }
+
+        public Builder borderColor(String borderColor) {
+            this.borderColor = Objects.requireNonNull(borderColor);
+            return this;
+        }
+
+        public Builder borderSize(int borderSize) {
+            this.borderSize = borderSize;
+            return this;
+        }
+
+        public Builder borderRadius(int borderRadius) {
+            this.borderRadius = borderRadius;
+            return this;
+        }
+
+        public Builder borderStyle(LineStyle borderStyle) {
+            this.borderStyle = Objects.requireNonNull(borderStyle);
+            return this;
+        }
+
         public LabelStyle build() {
             LabelStyle labelDescription = new LabelStyle();
             labelDescription.color = Objects.requireNonNull(this.color);
@@ -144,7 +209,11 @@ public final class LabelStyle {
             labelDescription.strikeThrough = this.strikeThrough;
             labelDescription.underline = this.underline;
             labelDescription.iconURL = Objects.requireNonNull(this.iconURL);
-
+            labelDescription.background = Objects.requireNonNull(this.background);
+            labelDescription.borderColor = Objects.requireNonNull(this.borderColor);
+            labelDescription.borderSize = this.borderSize;
+            labelDescription.borderRadius = this.borderRadius;
+            labelDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
             return labelDescription;
         }
     }

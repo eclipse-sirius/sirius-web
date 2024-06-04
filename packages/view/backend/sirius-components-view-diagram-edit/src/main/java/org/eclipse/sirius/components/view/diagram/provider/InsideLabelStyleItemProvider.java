@@ -52,13 +52,62 @@ public class InsideLabelStyleItemProvider extends LabelStyleItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addBorderColorPropertyDescriptor(object);
+            this.addBorderRadiusPropertyDescriptor(object);
+            this.addBorderSizePropertyDescriptor(object);
+            this.addBorderLineStylePropertyDescriptor(object);
             this.addLabelColorPropertyDescriptor(object);
+            this.addBackgroundPropertyDescriptor(object);
             this.addShowIconPropertyDescriptor(object);
             this.addLabelIconPropertyDescriptor(object);
             this.addWithHeaderPropertyDescriptor(object);
             this.addDisplayHeaderSeparatorPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Border Color feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBorderColorPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderColor_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderColor_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, true, false, false, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Border Radius feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBorderRadiusPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderRadius_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderRadius_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Border Size feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBorderSizePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderSize_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderSize_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Border Line Style feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBorderLineStylePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderLineStyle_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderLineStyle_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -92,6 +141,17 @@ public class InsideLabelStyleItemProvider extends LabelStyleItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_NodeLabelStyle_labelIcon_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_NodeLabelStyle_labelIcon_feature", "_UI_NodeLabelStyle_type"),
                 DiagramPackage.Literals.NODE_LABEL_STYLE__LABEL_ICON, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Background feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBackgroundPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeLabelStyle_background_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_NodeLabelStyle_background_feature", "_UI_NodeLabelStyle_type"),
+                DiagramPackage.Literals.NODE_LABEL_STYLE__BACKGROUND, true, false, true, null, null, null));
     }
 
     /**
@@ -161,6 +221,10 @@ public class InsideLabelStyleItemProvider extends LabelStyleItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(InsideLabelStyle.class)) {
+            case DiagramPackage.INSIDE_LABEL_STYLE__BORDER_COLOR:
+            case DiagramPackage.INSIDE_LABEL_STYLE__BORDER_RADIUS:
+            case DiagramPackage.INSIDE_LABEL_STYLE__BORDER_SIZE:
+            case DiagramPackage.INSIDE_LABEL_STYLE__BORDER_LINE_STYLE:
             case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON:
             case DiagramPackage.INSIDE_LABEL_STYLE__LABEL_ICON:
             case DiagramPackage.INSIDE_LABEL_STYLE__WITH_HEADER:

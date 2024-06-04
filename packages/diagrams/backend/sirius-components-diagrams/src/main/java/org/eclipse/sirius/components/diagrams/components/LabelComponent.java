@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
@@ -60,6 +61,11 @@ public class LabelComponent implements IComponent {
         Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
         List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
+        String background = labelStyleDescription.getBackgroundProvider().apply(variableManager);
+        String borderColor = labelStyleDescription.getBorderColorProvider().apply(variableManager);
+        Integer borderRadius = labelStyleDescription.getBorderRadiusProvider().apply(variableManager);
+        Integer borderSize = labelStyleDescription.getBorderSizeProvider().apply(variableManager);
+        LineStyle borderLineStyle = labelStyleDescription.getBorderStyleProvider().apply(variableManager);
 
         Position position = optionalPreviousLabel.map(Label::getPosition).orElse(Position.UNDEFINED);
         Size size = optionalPreviousLabel.map(Label::getSize).orElse(Size.UNDEFINED);
@@ -74,6 +80,11 @@ public class LabelComponent implements IComponent {
                 .strikeThrough(strikeThrough)
                 .underline(underline)
                 .iconURL(iconURL)
+                .background(background)
+                .borderColor(borderColor)
+                .borderRadius(borderRadius)
+                .borderSize(borderSize)
+                .borderStyle(borderLineStyle)
                 .build();
 
         LabelElementProps labelElementProps = LabelElementProps.newLabelElementProps(id)

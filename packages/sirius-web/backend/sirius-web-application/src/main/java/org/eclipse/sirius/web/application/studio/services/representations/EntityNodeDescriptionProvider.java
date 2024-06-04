@@ -98,6 +98,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .showIcon(true)
                 .withHeader(true)
                 .displayHeaderSeparator(true)
+                .borderSize(0)
                 .build();
 
         var abstractEntityLabelStyle = new DiagramBuilders()
@@ -107,6 +108,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .withHeader(true)
                 .displayHeaderSeparator(true)
                 .italic(true)
+                .borderSize(0)
                 .build();
 
         var conditionalLabelStyle = new DiagramBuilders()
@@ -152,6 +154,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .fontSize(12)
                 .labelColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.GREY_COLOR))
                 .showIcon(true)
+                .borderSize(0)
                 .build();
 
         var requiredAttributeLabelStyle = new DiagramBuilders()
@@ -160,6 +163,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .labelColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.GREY_COLOR))
                 .showIcon(true)
                 .bold(true)
+                .borderSize(0)
                 .build();
 
         var conditionalLabelStyle = new DiagramBuilders()

@@ -23,6 +23,11 @@ fragment labelFragment on Label {
     underline
     strikeThrough
     iconURL
+    background
+    borderColor
+    borderStyle
+    borderSize
+    borderRadius
   }
 }
 `;
@@ -44,6 +49,11 @@ fragment insideLabelFragment on InsideLabel {
     underline
     strikeThrough
     iconURL
+    background
+    borderColor
+    borderStyle
+    borderSize
+    borderRadius
   }
 }
 `;
@@ -62,6 +72,11 @@ fragment outsideLabelFragment on OutsideLabel {
     underline
     strikeThrough
     iconURL
+    background
+    borderColor
+    borderStyle
+    borderSize
+    borderRadius
   }
   overflowStrategy
 }

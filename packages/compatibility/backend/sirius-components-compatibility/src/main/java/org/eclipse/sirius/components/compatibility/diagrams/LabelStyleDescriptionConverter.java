@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -28,6 +29,8 @@ import org.eclipse.sirius.viewpoint.FontFormat;
  * @author hmarchadour
  */
 public class LabelStyleDescriptionConverter {
+
+    private static final String DEFAULT_COLOR = "transparent";
 
     private final AQLInterpreter interpreter;
 
@@ -67,11 +70,8 @@ public class LabelStyleDescriptionConverter {
             return 16;
         };
 
-        Function<VariableManager, String> colorProvider = variableManager -> {
-            return new ColorDescriptionConverter(this.interpreter, variableManager.getVariables()).convert(labelStyleDescription.getLabelColor());
-        };
+        Function<VariableManager, String> colorProvider = variableManager -> new ColorDescriptionConverter(this.interpreter, variableManager.getVariables()).convert(labelStyleDescription.getLabelColor());
 
-        // @formatter:off
         return LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(colorProvider)
                 .fontSizeProvider(fontSizeProvider)
@@ -80,7 +80,11 @@ public class LabelStyleDescriptionConverter {
                 .underlineProvider(variableManager -> fontFormats.contains(FontFormat.UNDERLINE_LITERAL))
                 .strikeThroughProvider(variableManager -> fontFormats.contains(FontFormat.STRIKE_THROUGH_LITERAL))
                 .iconURLProvider(iconURLProvider)
+                .backgroundProvider(variableManager -> DEFAULT_COLOR)
+                .borderColorProvider(variableManager -> DEFAULT_COLOR)
+                .borderRadiusProvider(variableManager -> 0)
+                .borderSizeProvider(variableManager -> 0)
+                .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .build();
-        // @formatter:on
     }
 }

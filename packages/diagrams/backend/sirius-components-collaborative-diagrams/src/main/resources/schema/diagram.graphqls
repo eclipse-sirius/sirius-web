@@ -163,6 +163,11 @@ type LabelStyle {
   italic: Boolean!
   strikeThrough: Boolean!
   underline: Boolean!
+  borderColor: String!
+  borderRadius: Int!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  background: String!
 }
 
 union INodeStyle = ImageNodeStyle | IconLabelNodeStyle | RectangularNodeStyle

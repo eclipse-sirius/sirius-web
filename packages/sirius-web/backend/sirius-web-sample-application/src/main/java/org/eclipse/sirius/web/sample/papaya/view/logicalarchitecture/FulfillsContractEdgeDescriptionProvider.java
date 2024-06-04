@@ -46,6 +46,7 @@ public class FulfillsContractEdgeDescriptionProvider implements IEdgeDescription
         fulfillsContractEdgeStyle.setLineStyle(LineStyle.DOT);
         fulfillsContractEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         fulfillsContractEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
+        fulfillsContractEdgeStyle.setBorderSize(0);
 
         var fulfillsContractEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         fulfillsContractEdgeDescription.setName("Edge Fulfills contract");

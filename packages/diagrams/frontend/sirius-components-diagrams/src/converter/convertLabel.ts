@@ -18,6 +18,7 @@ import {
 } from '../graphql/subscription/labelFragment.types';
 import { OutsideLabels, InsideLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { AlignmentMap } from './convertDiagram.types';
+import { convertLineStyle } from './convertDiagram';
 
 export const convertInsideLabel = (
   gqlInsideLabel: GQLInsideLabel | undefined,
@@ -42,6 +43,9 @@ export const convertInsideLabel = (
       padding: '8px 16px',
       textAlign: convertLabelTextAlign(gqlInsideLabel.textAlign),
       ...convertLabelStyle(labelStyle),
+    },
+    contentStyle: {
+      ...convertContentStyle(labelStyle),
     },
     iconURL: labelStyle.iconURL,
     overflowStrategy: gqlInsideLabel.overflowStrategy,
@@ -106,6 +110,9 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
         textAlign: convertLabelTextAlign(gqlOutsideLabel.textAlign),
         ...convertLabelStyle(labelStyle),
       },
+      contentStyle: {
+        ...convertContentStyle(labelStyle),
+      },
       overflowStrategy,
     };
 
@@ -158,4 +165,16 @@ const convertLabelTextAlign = (textAlign: GQLLabelTextAlign): 'left' | 'right' |
     default:
       return 'center';
   }
+};
+
+export const convertContentStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProperties => {
+  const style: React.CSSProperties = {};
+
+  style.background = gqlLabelStyle.background;
+  style.borderColor = gqlLabelStyle.borderColor;
+  style.borderRadius = gqlLabelStyle.borderRadius;
+  style.borderWidth = gqlLabelStyle.borderSize;
+  style.borderStyle = convertLineStyle(gqlLabelStyle.borderStyle);
+
+  return style;
 };

@@ -552,4 +552,61 @@ describe('Diagram - inside outside labels', () => {
       });
     });
   });
+
+  context('Given a view with inside label on rectangular node with background on label style', () => {
+    let studioProjectId: string = '';
+    let domainName: string = '';
+
+    before(() => {
+      cy.createProjectFromTemplate('studio-template').then((res) => {
+        const payload = res.body.data.createProjectFromTemplate;
+        if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+          const projectId = payload.project.id;
+          studioProjectId = projectId;
+
+          const project = new Project();
+          project.visit(projectId);
+          project.disableDeletionConfirmationDialog();
+
+          const explorer = new Explorer();
+          const details = new Details();
+          explorer.getTreeItemByLabel('DomainNewModel').dblclick();
+          cy.get('[title="domain::Domain"]').then(($div) => {
+            domainName = $div.data().testid;
+            explorer.expand('ViewNewModel');
+            explorer.expand('View');
+            explorer.expand(`${domainName} Diagram Description`);
+            explorer.expand('Entity1 Node');
+            explorer.expand('aql:self.name');
+            explorer.select('InsideLabelStyle');
+            details.openReferenceWidgetOptions('Background');
+            details.selectReferenceWidgetOption('cyan 500');
+          });
+        }
+      });
+    });
+
+    after(() => cy.deleteProject(studioProjectId));
+    context('When we create a new instance project', () => {
+      let instanceProjectId: string = '';
+
+      beforeEach(() => {
+        const studio = new Studio();
+        studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
+          instanceProjectId = res.projectId;
+          new Explorer().createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
+        });
+      });
+
+      afterEach(() => cy.deleteProject(instanceProjectId));
+
+      it('Then the label background matches the selected color', () => {
+        const explorer = new Explorer();
+        const details = new Details();
+        explorer.createObject('Root', 'Entity1s Entity1');
+        details.getTextField('Name').type('Entity 1{enter}');
+        cy.getByTestId('Label content - Entity 1').invoke('css', 'background').should('contain', 'rgb(0, 188, 212)');
+      });
+    });
+  });
 });

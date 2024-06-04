@@ -45,6 +45,7 @@ public class ExtendsInterfaceEdgeDescriptionProvider implements IEdgeDescription
         extendsInterfaceEdgeStyle.setLineStyle(LineStyle.SOLID);
         extendsInterfaceEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         extendsInterfaceEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
+        extendsInterfaceEdgeStyle.setBorderSize(0);
 
         var extendsInterfaceEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         extendsInterfaceEdgeDescription.setName("Edge Extends interface");

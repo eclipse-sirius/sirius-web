@@ -21,8 +21,12 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 
@@ -32,6 +36,10 @@ import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
  * @author arichard
  */
 public class DiagramColorAdapter extends EContentAdapter {
+
+    public static final String BLACK_COLOR_NAME = "black";
+
+    public static final String TRANSPARENT_COLOR_NAME = "transparent";
 
     private final ColorPaletteService colorPaletteService;
 
@@ -60,12 +68,64 @@ public class DiagramColorAdapter extends EContentAdapter {
                 && DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS == notification.getFeatureID(DiagramDescription.class)) {
             EdgeStyle style = edgeDescription.getStyle();
             if (style.getColor() == null) {
-                style.setColor(this.colorPaletteService.getColorFromPalette(edgeDescription, "black"));
+                style.setColor(this.colorPaletteService.getColorFromPalette(edgeDescription, BLACK_COLOR_NAME));
+            }
+            if (style.getBorderColor() == null) {
+                style.setBackground(this.colorPaletteService.getColorFromPalette(edgeDescription, TRANSPARENT_COLOR_NAME));
+            }
+            if (style.getBorderColor() == null) {
+                style.setBorderColor(this.colorPaletteService.getColorFromPalette(edgeDescription, BLACK_COLOR_NAME));
+                style.setBorderSize(0);
             }
         } else if (Notification.ADD == notification.getEventType() && notification.getNotifier() instanceof EdgeDescription condition && notification.getNewValue() instanceof EdgeStyle style
                 && DiagramPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES == notification.getFeatureID(EdgeDescription.class)) {
             if (style.getColor() == null) {
-                style.setColor(this.colorPaletteService.getColorFromPalette(condition, "black"));
+                style.setColor(this.colorPaletteService.getColorFromPalette(condition, BLACK_COLOR_NAME));
+            }
+            if (style.getBackground() == null) {
+                style.setBackground(this.colorPaletteService.getColorFromPalette(condition, TRANSPARENT_COLOR_NAME));
+            }
+            if (style.getBorderColor() == null) {
+                style.setBorderColor(this.colorPaletteService.getColorFromPalette(condition, BLACK_COLOR_NAME));
+                style.setBorderSize(0);
+            }
+        } else if (Notification.SET == notification.getEventType() && notification.getNotifier() instanceof OutsideLabelDescription description
+                && notification.getNewValue() instanceof OutsideLabelStyle outsideLabelStyle && DiagramPackage.OUTSIDE_LABEL_DESCRIPTION__STYLE == notification.getFeatureID(OutsideLabelDescription.class)) {
+            if (outsideLabelStyle.getBackground() == null) {
+                outsideLabelStyle.setBackground(this.colorPaletteService.getColorFromPalette(description, TRANSPARENT_COLOR_NAME));
+            }
+            if (outsideLabelStyle.getBorderColor() == null) {
+                outsideLabelStyle.setBorderColor(this.colorPaletteService.getColorFromPalette(description, BLACK_COLOR_NAME));
+                outsideLabelStyle.setBorderSize(0);
+            }
+        } else if (Notification.SET == notification.getEventType() && notification.getNotifier() instanceof InsideLabelDescription description
+                && notification.getNewValue() instanceof InsideLabelStyle insideLabelStyle && DiagramPackage.OUTSIDE_LABEL_DESCRIPTION__STYLE == notification.getFeatureID(InsideLabelDescription.class)) {
+            if (insideLabelStyle.getBackground() == null) {
+                insideLabelStyle.setBackground(this.colorPaletteService.getColorFromPalette(description, TRANSPARENT_COLOR_NAME));
+            }
+            if (insideLabelStyle.getBorderColor() == null) {
+                insideLabelStyle.setBorderColor(this.colorPaletteService.getColorFromPalette(description, BLACK_COLOR_NAME));
+                insideLabelStyle.setBorderSize(0);
+            }
+        } else if (Notification.ADD == notification.getEventType() && notification.getNotifier() instanceof NodeDescription description
+                && notification.getNewValue() instanceof OutsideLabelDescription outsideLabelDescription && DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS == notification.getFeatureID(NodeDescription.class)) {
+            OutsideLabelStyle style = outsideLabelDescription.getStyle();
+            if (style.getBackground() == null) {
+                style.setBackground(this.colorPaletteService.getColorFromPalette(description, TRANSPARENT_COLOR_NAME));
+            }
+            if (style.getBorderColor() == null) {
+                style.setBorderColor(this.colorPaletteService.getColorFromPalette(description, BLACK_COLOR_NAME));
+                style.setBorderSize(0);
+            }
+        } else if (Notification.SET == notification.getEventType() && notification.getNotifier() instanceof NodeDescription description
+                && notification.getNewValue() instanceof InsideLabelDescription insideLabelDescription && DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL == notification.getFeatureID(NodeDescription.class)) {
+            InsideLabelStyle style = insideLabelDescription.getStyle();
+            if (style.getBackground() == null) {
+                style.setBackground(this.colorPaletteService.getColorFromPalette(description, TRANSPARENT_COLOR_NAME));
+            }
+            if (style.getBorderColor() == null) {
+                style.setBorderColor(this.colorPaletteService.getColorFromPalette(description, BLACK_COLOR_NAME));
+                style.setBorderSize(0);
             }
         }
     }
@@ -78,7 +138,7 @@ public class DiagramColorAdapter extends EContentAdapter {
             iconLabelNodeStyleDescription.setBackground(this.colorPaletteService.getColorFromPalette(object, "white"));
         }
         if (style != null && style.getBorderColor() == null) {
-            style.setBorderColor(this.colorPaletteService.getColorFromPalette(object, "black"));
+            style.setBorderColor(this.colorPaletteService.getColorFromPalette(object, BLACK_COLOR_NAME));
         }
     }
 }

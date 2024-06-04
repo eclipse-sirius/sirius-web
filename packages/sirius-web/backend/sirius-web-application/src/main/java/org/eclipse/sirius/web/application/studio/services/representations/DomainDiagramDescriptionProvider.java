@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.DefaultColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -160,6 +161,7 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .domainType("domain::Domain")
                 .titleExpression("aql:'Domain'")
                 .palette(palette)
+                .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
                 .build();
     }
 

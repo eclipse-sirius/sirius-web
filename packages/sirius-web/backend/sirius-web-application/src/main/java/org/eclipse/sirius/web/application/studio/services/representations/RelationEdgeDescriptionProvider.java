@@ -62,6 +62,7 @@ public class RelationEdgeDescriptionProvider implements IEdgeDescriptionProvider
                 .newEdgeStyle()
                 .sourceArrowStyle(ArrowStyle.FILL_DIAMOND)
                 .color(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BLACK_COLOR))
+                .borderSize(0)
                 .build();
     }
 

@@ -138,6 +138,7 @@ public class FlowViewBuilder {
                         .bold(bold)
                         .withHeader(withHeader)
                         .displayHeaderSeparator(displayHeaderSeparator)
+                        .borderSize(0)
                         .build())
                 .position(InsideLabelPosition.TOP_CENTER)
                 .build();
@@ -148,6 +149,7 @@ public class FlowViewBuilder {
                 .labelExpression(labelExpression)
                 .style(this.diagramBuilderHelper.newOutsideLabelStyle()
                         .labelColor(colorProvider.getColor("Flow_Black"))
+                        .borderSize(0)
                         .build())
                 .position(OutsideLabelPosition.BOTTOM_CENTER)
                 .build();

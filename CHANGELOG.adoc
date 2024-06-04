@@ -98,6 +98,7 @@ image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove unused form payload
 - https://github.com/eclipse-sirius/sirius-web/issues/3627[#3627] [form] Remove unused mutation in form
 - https://github.com/eclipse-sirius/sirius-web/issues/3606[#3606] [test] Improve error handling in ExecuteEditingContextFunctionRunner and ExecuteEditingContextFunctionEventHandler
+- https://github.com/eclipse-sirius/sirius-web/issues/3561[#3561] [diagram] Add support for background and border on diagram labels
 
 == v2024.5.0
 

@@ -46,6 +46,7 @@ public class CEDComponentExchangeEdgeProvider implements IEdgeDescriptionProvide
         componentExchangeEdgeStyle.setLineStyle(LineStyle.SOLID);
         componentExchangeEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         componentExchangeEdgeStyle.setTargetArrowStyle(ArrowStyle.NONE);
+        componentExchangeEdgeStyle.setBorderSize(0);
 
         var componentExchangeEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         componentExchangeEdgeDescription.setName("Edge Component Exchange");

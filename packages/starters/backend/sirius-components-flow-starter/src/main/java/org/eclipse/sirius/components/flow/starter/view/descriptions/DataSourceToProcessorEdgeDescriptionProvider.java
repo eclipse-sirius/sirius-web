@@ -63,6 +63,7 @@ public class DataSourceToProcessorEdgeDescriptionProvider implements IEdgeDescri
                         .lineStyle(LineStyle.DASH)
                         .color(this.colorProvider.getColor("Flow_Gray"))
                         .targetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW)
+                        .borderSize(0)
                         .build())
                 .palette(this.createEdgePalette())
                 .build();

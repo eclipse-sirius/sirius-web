@@ -47,6 +47,7 @@ public class CDExtendsClassEdgeDescriptionProvider implements IEdgeDescriptionPr
         extendsClassEdgeStyle.setLineStyle(LineStyle.SOLID);
         extendsClassEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         extendsClassEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW);
+        extendsClassEdgeStyle.setBorderSize(0);
 
         var extendsClassEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         extendsClassEdgeDescription.setName(NAME);

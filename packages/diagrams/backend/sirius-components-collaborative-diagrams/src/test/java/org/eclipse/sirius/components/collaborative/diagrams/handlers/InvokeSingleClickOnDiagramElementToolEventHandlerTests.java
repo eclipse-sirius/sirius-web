@@ -76,30 +76,20 @@ import reactor.core.publisher.Sinks.One;
 public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
     private static final String DIAGRAM_ID = "diagramId";
-
     private static final String EDGE_1_ID = "edge1";
-
     private static final String EDGE_DESCRIPTION_ID = "edgeDescriptionId";
-
     private static final String EDITING_CONTEXT_ID = "editingContextId";
-
     private static final String NODE_DESCRIPTION_ID = "nodeDescriptionId";
-
     private static final String NODE_1_ID = "node1";
-
     private static final String OBJECT_1_ID = "object1";
-
     private static final String LINK_1_ID = "link1";
-
     private static final String REPRESENTATION_ID = "representationId";
-
     private static final String SELECTED_OBJECT_ID = "selectedObjectId";
-
     private static final String TOOL_ID = "toolId";
-
     private static final String TOOL_IMAGE_URL = "imageURL";
-
     private static final String TOOL_LABEL = "label";
+    private static final String TRANSPARENT_COLOR_NAME = "transparent";
+    private static final String BLACK_COLOR_NAME = "black";
 
     @Test
     public void testInvokeToolOnDiagram() {
@@ -381,6 +371,10 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .color("#000001")
                 .fontSize(16)
                 .iconURL(List.of())
+                .background(TRANSPARENT_COLOR_NAME)
+                .borderColor(BLACK_COLOR_NAME)
+                .borderSize(0)
+                .borderStyle(LineStyle.Solid)
                 .build();
         var label = InsideLabel.newLabel(UUID.randomUUID().toString())
                 .text("text")
@@ -420,6 +414,11 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
                 .iconURLProvider(variableManager -> List.of())
+                .backgroundProvider(variableManager -> TRANSPARENT_COLOR_NAME)
+                .borderColorProvider(variableManager -> BLACK_COLOR_NAME)
+                .borderRadiusProvider(variableManager -> 0)
+                .borderSizeProvider(variableManager -> 0)
+                .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .build();
 
         var insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescription")
@@ -457,6 +456,10 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .color("#000002")
                 .fontSize(14)
                 .iconURL(List.of())
+                .background(TRANSPARENT_COLOR_NAME)
+                .borderColor(BLACK_COLOR_NAME)
+                .borderSize(0)
+                .borderStyle(LineStyle.Solid)
                 .build();
 
         var label = Label.newLabel(UUID.randomUUID().toString())

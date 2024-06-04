@@ -212,9 +212,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OutsideLabelStyle" eSuperTypes="#//NodeLabelStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="NodeLabelStyle" abstract="true" interface="true"
-      eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle">
+      eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle #//BorderStyle">
     <eStructuralFeatures xsi:type="ecore:EReference" name="labelColor" lowerBound="1"
         eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="background" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="showIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -244,7 +245,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="IconLabelNodeStyleDescription" eSuperTypes="#//NodeStyleDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="background" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EdgeStyle" eSuperTypes="#//Style ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle">
+  <eClassifiers xsi:type="ecore:EClass" name="EdgeStyle" eSuperTypes="#//Style ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle #//BorderStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineStyle" lowerBound="1"
         eType="#//LineStyle" defaultValueLiteral="Solid"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceArrowStyle" lowerBound="1"
@@ -257,6 +258,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="showIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="background" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalEdgeStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//EdgeStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramPalette">

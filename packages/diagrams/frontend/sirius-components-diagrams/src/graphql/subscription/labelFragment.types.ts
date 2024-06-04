@@ -62,4 +62,9 @@ export interface GQLLabelStyle {
   underline: boolean;
   strikeThrough: boolean;
   iconURL: string[];
+  background: string;
+  borderColor: string;
+  borderStyle: string;
+  borderSize: string;
+  borderRadius: number;
 }

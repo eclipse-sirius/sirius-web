@@ -1112,12 +1112,53 @@ public interface DiagramPackage extends EPackage {
     int NODE_LABEL_STYLE__STRIKE_THROUGH = ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
 
     /**
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_LABEL_STYLE__BORDER_COLOR = ViewPackage.LABEL_STYLE_FEATURE_COUNT;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_LABEL_STYLE__BORDER_RADIUS = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_LABEL_STYLE__BORDER_SIZE = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_LABEL_STYLE__BORDER_LINE_STYLE = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 3;
+
+    /**
      * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_LABEL_STYLE__LABEL_COLOR = ViewPackage.LABEL_STYLE_FEATURE_COUNT;
+    int NODE_LABEL_STYLE__LABEL_COLOR = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_LABEL_STYLE__BACKGROUND = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1125,7 +1166,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_LABEL_STYLE__SHOW_ICON = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 1;
+    int NODE_LABEL_STYLE__SHOW_ICON = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1133,7 +1174,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_LABEL_STYLE__LABEL_ICON = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 2;
+    int NODE_LABEL_STYLE__LABEL_ICON = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 7;
 
     /**
      * The number of structural features of the '<em>Node Label Style</em>' class. <!-- begin-user-doc --> <!--
@@ -1142,7 +1183,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_LABEL_STYLE_FEATURE_COUNT = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 3;
+    int NODE_LABEL_STYLE_FEATURE_COUNT = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Node Label Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1203,12 +1244,53 @@ public interface DiagramPackage extends EPackage {
     int INSIDE_LABEL_STYLE__STRIKE_THROUGH = NODE_LABEL_STYLE__STRIKE_THROUGH;
 
     /**
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INSIDE_LABEL_STYLE__BORDER_COLOR = NODE_LABEL_STYLE__BORDER_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INSIDE_LABEL_STYLE__BORDER_RADIUS = NODE_LABEL_STYLE__BORDER_RADIUS;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INSIDE_LABEL_STYLE__BORDER_SIZE = NODE_LABEL_STYLE__BORDER_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INSIDE_LABEL_STYLE__BORDER_LINE_STYLE = NODE_LABEL_STYLE__BORDER_LINE_STYLE;
+
+    /**
      * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
     int INSIDE_LABEL_STYLE__LABEL_COLOR = NODE_LABEL_STYLE__LABEL_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INSIDE_LABEL_STYLE__BACKGROUND = NODE_LABEL_STYLE__BACKGROUND;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1312,12 +1394,53 @@ public interface DiagramPackage extends EPackage {
     int OUTSIDE_LABEL_STYLE__STRIKE_THROUGH = NODE_LABEL_STYLE__STRIKE_THROUGH;
 
     /**
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OUTSIDE_LABEL_STYLE__BORDER_COLOR = NODE_LABEL_STYLE__BORDER_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OUTSIDE_LABEL_STYLE__BORDER_RADIUS = NODE_LABEL_STYLE__BORDER_RADIUS;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OUTSIDE_LABEL_STYLE__BORDER_SIZE = NODE_LABEL_STYLE__BORDER_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OUTSIDE_LABEL_STYLE__BORDER_LINE_STYLE = NODE_LABEL_STYLE__BORDER_LINE_STYLE;
+
+    /**
      * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
     int OUTSIDE_LABEL_STYLE__LABEL_COLOR = NODE_LABEL_STYLE__LABEL_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OUTSIDE_LABEL_STYLE__BACKGROUND = NODE_LABEL_STYLE__BACKGROUND;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1785,12 +1908,45 @@ public interface DiagramPackage extends EPackage {
     int EDGE_STYLE__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__BORDER_COLOR = STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__BORDER_RADIUS = STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__BORDER_SIZE = STYLE_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__BORDER_LINE_STYLE = STYLE_FEATURE_COUNT + 8;
+
+    /**
      * The feature id for the '<em><b>Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_STYLE__LINE_STYLE = STYLE_FEATURE_COUNT + 5;
+    int EDGE_STYLE__LINE_STYLE = STYLE_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Source Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1799,7 +1955,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_STYLE__SOURCE_ARROW_STYLE = STYLE_FEATURE_COUNT + 6;
+    int EDGE_STYLE__SOURCE_ARROW_STYLE = STYLE_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Target Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1808,7 +1964,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_STYLE__TARGET_ARROW_STYLE = STYLE_FEATURE_COUNT + 7;
+    int EDGE_STYLE__TARGET_ARROW_STYLE = STYLE_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>Edge Width</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1816,7 +1972,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_STYLE__EDGE_WIDTH = STYLE_FEATURE_COUNT + 8;
+    int EDGE_STYLE__EDGE_WIDTH = STYLE_FEATURE_COUNT + 12;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1824,7 +1980,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_STYLE__SHOW_ICON = STYLE_FEATURE_COUNT + 9;
+    int EDGE_STYLE__SHOW_ICON = STYLE_FEATURE_COUNT + 13;
 
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1832,7 +1988,15 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_STYLE__LABEL_ICON = STYLE_FEATURE_COUNT + 10;
+    int EDGE_STYLE__LABEL_ICON = STYLE_FEATURE_COUNT + 14;
+
+    /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__BACKGROUND = STYLE_FEATURE_COUNT + 15;
 
     /**
      * The number of structural features of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1841,7 +2005,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 11;
+    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 16;
 
     /**
      * The number of operations of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1918,12 +2082,45 @@ public interface DiagramPackage extends EPackage {
     int CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__BORDER_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__BORDER_RADIUS = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__BORDER_SIZE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 8;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__BORDER_LINE_STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 9;
+
+    /**
      * The feature id for the '<em><b>Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__LINE_STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+    int CONDITIONAL_EDGE_STYLE__LINE_STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Source Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1932,7 +2129,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+    int CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>Target Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1941,7 +2138,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 8;
+    int CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 12;
 
     /**
      * The feature id for the '<em><b>Edge Width</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1949,7 +2146,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__EDGE_WIDTH = ViewPackage.CONDITIONAL_FEATURE_COUNT + 9;
+    int CONDITIONAL_EDGE_STYLE__EDGE_WIDTH = ViewPackage.CONDITIONAL_FEATURE_COUNT + 13;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1957,7 +2154,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__SHOW_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 10;
+    int CONDITIONAL_EDGE_STYLE__SHOW_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 14;
 
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1965,7 +2162,15 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE__LABEL_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 11;
+    int CONDITIONAL_EDGE_STYLE__LABEL_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 15;
+
+    /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__BACKGROUND = ViewPackage.CONDITIONAL_FEATURE_COUNT + 16;
 
     /**
      * The number of structural features of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
@@ -1974,7 +2179,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 12;
+    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 17;
 
     /**
      * The number of operations of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
@@ -3105,6 +3310,12 @@ public interface DiagramPackage extends EPackage {
      */
     int DROP_NODE_TOOL__ACCEPTED_NODE_TYPES = TOOL_FEATURE_COUNT;
     /**
+     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    DiagramPackage eINSTANCE = org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl.init();
+    /**
      * The number of structural features of the '<em>Drop Node Tool</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -3209,12 +3420,6 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelTextAlign()
      */
     int LABEL_TEXT_ALIGN = 53;
-    /**
-     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    DiagramPackage eINSTANCE = org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl.init();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
@@ -4088,6 +4293,18 @@ public interface DiagramPackage extends EPackage {
     EReference getNodeLabelStyle_LabelColor();
 
     /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getBackground <em>Background</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Background</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getBackground()
+     * @see #getNodeLabelStyle()
+     */
+    EReference getNodeLabelStyle_Background();
+
+    /**
      * Returns the meta object for the attribute
      * '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#isShowIcon <em>Show Icon</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -4347,6 +4564,18 @@ public interface DiagramPackage extends EPackage {
      * @see #getEdgeStyle()
      */
     EAttribute getEdgeStyle_LabelIcon();
+
+    /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getBackground <em>Background</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Background</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getBackground()
+     * @see #getEdgeStyle()
+     */
+    EReference getEdgeStyle_Background();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle
@@ -5786,6 +6015,14 @@ public interface DiagramPackage extends EPackage {
         EReference NODE_LABEL_STYLE__LABEL_COLOR = eINSTANCE.getNodeLabelStyle_LabelColor();
 
         /**
+         * The meta object literal for the '<em><b>Background</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_LABEL_STYLE__BACKGROUND = eINSTANCE.getNodeLabelStyle_Background();
+
+        /**
          * The meta object literal for the '<em><b>Show Icon</b></em>' attribute feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
@@ -5990,6 +6227,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute EDGE_STYLE__LABEL_ICON = eINSTANCE.getEdgeStyle_LabelIcon();
+
+        /**
+         * The meta object literal for the '<em><b>Background</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_STYLE__BACKGROUND = eINSTANCE.getEdgeStyle_Background();
 
         /**
          * The meta object literal for the

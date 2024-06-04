@@ -45,6 +45,7 @@ public class DependsOnEdgeDescriptionProvider implements IEdgeDescriptionProvide
         dependsOnEdgeStyle.setEdgeWidth(1);
         dependsOnEdgeStyle.setSourceArrowStyle(ArrowStyle.OUTPUT_FILL_CLOSED_ARROW);
         dependsOnEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW);
+        dependsOnEdgeStyle.setBorderSize(0);
 
         var builder = new PapayaViewBuilder();
 

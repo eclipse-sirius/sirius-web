@@ -46,6 +46,7 @@ import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
@@ -149,6 +150,37 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         Function<VariableManager, List<?>> colorOptionsProvider = variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList();
         var userColor = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.Color", "Color", DiagramPackage.Literals.STYLE__COLOR, colorOptionsProvider);
         controls.add(userColor);
+
+        var background = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.Background", "Background", DiagramPackage.Literals.EDGE_STYLE__BACKGROUND, colorOptionsProvider);
+        controls.add(background);
+
+        var borderColor = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.BorderColor", "Border Color", DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, colorOptionsProvider);
+        controls.add(borderColor);
+
+        var borderSize = this.propertiesWidgetCreationService.createTextField("edgestyle.BorderSize", "Border Size",
+                style -> String.valueOf(((BorderStyle) style).getBorderSize()),
+                (style, newValue) -> {
+                    try {
+                        ((BorderStyle) style).setBorderSize(Integer.parseInt(newValue));
+                    } catch (NumberFormatException nfe) {
+                        // Ignore.
+                    }
+                },
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_SIZE);
+        controls.add(borderSize);
+
+        var borderRadius = this.propertiesWidgetCreationService.createTextField("edgestyle.BorderRadius", "Border Radius",
+                style -> String.valueOf(((BorderStyle) style).getBorderRadius()),
+                (style, newValue) -> {
+                    try {
+                        ((BorderStyle) style).setBorderRadius(Integer.parseInt(newValue));
+                    } catch (NumberFormatException nfe) {
+                        // Ignore.
+                    }
+                },
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS);
+        controls.add(borderRadius);
+        controls.add(this.createBorderLineStyleSelectionField());
 
         return controls;
     }
@@ -334,6 +366,47 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 }
                 optionalEdgeStyle.get().setLabelIcon(newIcon);
                 return new Success();
+            }
+            return new Failure("");
+        };
+    }
+
+    private SelectDescription createBorderLineStyleSelectionField() {
+        return SelectDescription.newSelectDescription("edgestyle.borderLineStyleSelector")
+                .idProvider(variableManager -> "edgestyle.borderLineStyleSelector")
+                .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
+                .labelProvider(variableManager -> "Border Line Syle")
+                .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getBorderLineStyle)
+                        .map(LineStyle::getValue)
+                        .map(String::valueOf)
+                        .orElse(EMPTY))
+                .optionsProvider(variableManager -> LineStyle.VALUES)
+                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class)
+                        .map(LineStyle::getValue)
+                        .map(String::valueOf)
+                        .orElse(EMPTY))
+                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class)
+                        .map(Enumerator::getName)
+                        .orElse(EMPTY))
+                .optionIconURLProvider(variableManager -> List.of())
+                .newValueHandler(this.getBorderLineStyleValueHandler())
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE))
+                .kindProvider(this.propertiesConfigurerService.getKindProvider())
+                .messageProvider(this.propertiesConfigurerService.getMessageProvider())
+                .build();
+    }
+
+    private BiFunction<VariableManager, String, IStatus> getBorderLineStyleValueHandler() {
+        return (variableManager, newValue) -> {
+            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            if (optionalEdgeStyle.isPresent() && newValue != null && newValue.matches(INT_PATTERN)) {
+                int newLineStyle = Integer.parseInt(newValue);
+                LineStyle lineStyle = LineStyle.get(newLineStyle);
+                if (lineStyle != null) {
+                    optionalEdgeStyle.get().setBorderLineStyle(lineStyle);
+                    return new Success();
+                }
             }
             return new Failure("");
         };
