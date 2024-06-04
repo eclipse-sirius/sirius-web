@@ -23,58 +23,50 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Used to manipulate the Json content before deserializerion.
+ * Used to manipulate the Json content before deserialization.
  *
  * @author mcharfadi
  */
 public class RepresentationMigrationService {
-
-    private final RepresentationMigrationData representationMigrationData;
-
-    private Optional<String> optionalRepresentationKind = Optional.empty();
-
     private final List<IRepresentationMigrationParticipant> migrationParticipants;
 
     public RepresentationMigrationService(List<IRepresentationMigrationParticipant> migrationParticipants, RepresentationMigrationData representationMigrationData, ObjectNode root) {
-        this.optionalRepresentationKind = Optional.ofNullable(root.get("kind"))
-                .map(JsonNode::asText);
+        String migrationVersion = Objects.requireNonNull(representationMigrationData).migrationVersion();
+        Optional<String> optionalRepresentationKind = Optional.ofNullable(root.get("kind")).map(JsonNode::asText);
 
-        this.migrationParticipants = Objects.requireNonNull(migrationParticipants);
-        this.representationMigrationData = Objects.requireNonNull(representationMigrationData);
-    }
-
-    private boolean isCandidateVersion(IRepresentationMigrationParticipant migrationParticipant) {
-        return this.optionalRepresentationKind.filter(representationKind -> migrationParticipant.getVersion().compareTo(this.representationMigrationData.migrationVersion()) > 0 && migrationParticipant.getKind().equals(representationKind)).isPresent();
+        this.migrationParticipants = Objects.requireNonNull(migrationParticipants).stream()
+                .filter(migrationParticipant -> optionalRepresentationKind.filter(representationKind -> migrationParticipant.getVersion().compareTo(migrationVersion) > 0 && migrationParticipant.getKind().equals(representationKind)).isPresent())
+                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
+                .toList();
     }
 
     public void parseProperties(ObjectNode root, ObjectMapper mapper) {
+        if (this.migrationParticipants.isEmpty()) {
+            return;
+        }
+
         List<String> attributes = new ArrayList<>();
         root.fieldNames().forEachRemaining(attributes::add);
         for (String attribute : attributes) {
             var currentNode = root.get(attribute);
 
             if (currentNode.isObject() && currentNode.isContainerNode()) {
-                parseProperties((ObjectNode) currentNode, mapper);
+                this.parseProperties((ObjectNode) currentNode, mapper);
             }
             if (currentNode.isArray() && currentNode.isContainerNode()) {
                 for (JsonNode objNode : currentNode) {
                     if (objNode.isContainerNode()) {
-                        parseProperties((ObjectNode) objNode, mapper);
+                        this.parseProperties((ObjectNode) objNode, mapper);
                     }
                 }
             }
 
-            replaceJsonNode(root, attribute, currentNode);
+            this.replaceJsonNode(root, attribute, currentNode);
         }
     }
 
     private void replaceJsonNode(ObjectNode root, String currentAttribute, JsonNode currentValue) {
-        var migrationParticipantsCandidate = migrationParticipants.stream()
-                .filter(this::isCandidateVersion)
-                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
-                .toList();
-
-        for (IRepresentationMigrationParticipant migrationParticipant : migrationParticipantsCandidate) {
+        for (IRepresentationMigrationParticipant migrationParticipant : this.migrationParticipants) {
             migrationParticipant.replaceJsonNode(root, currentAttribute, currentValue);
         }
     }
