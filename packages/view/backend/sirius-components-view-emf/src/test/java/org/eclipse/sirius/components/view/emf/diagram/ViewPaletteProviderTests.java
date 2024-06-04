@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
@@ -242,6 +243,11 @@ public class ViewPaletteProviderTests {
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
                 .iconURLProvider(variableManager -> List.of())
+                .backgroundProvider(variableManager -> "transparent")
+                .borderColorProvider(variableManager -> "black")
+                .borderRadiusProvider(variableManager -> 0)
+                .borderSizeProvider(variableManager -> 0)
+                .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("nodeId")

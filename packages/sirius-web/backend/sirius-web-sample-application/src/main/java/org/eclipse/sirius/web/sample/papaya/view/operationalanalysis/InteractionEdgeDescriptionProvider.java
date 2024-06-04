@@ -45,6 +45,7 @@ public class InteractionEdgeDescriptionProvider implements IEdgeDescriptionProvi
         interactionEdgeStyle.setEdgeWidth(1);
         interactionEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         interactionEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW);
+        interactionEdgeStyle.setBorderSize(0);
 
         var builder = new PapayaViewBuilder();
 

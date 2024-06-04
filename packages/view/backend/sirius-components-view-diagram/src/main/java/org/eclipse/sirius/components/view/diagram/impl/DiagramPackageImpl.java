@@ -1296,7 +1296,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getNodeLabelStyle_ShowIcon() {
-        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(1);
+        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -1306,7 +1306,17 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getNodeLabelStyle_LabelIcon() {
-        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(2);
+        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getNodeLabelStyle_Background() {
+        return (EReference) this.nodeLabelStyleEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1517,6 +1527,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EAttribute getEdgeStyle_LabelIcon() {
         return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getEdgeStyle_Background() {
+        return (EReference) this.edgeStyleEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -2330,6 +2350,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.nodeLabelStyleEClass = this.createEClass(NODE_LABEL_STYLE);
         this.createEReference(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__LABEL_COLOR);
+        this.createEReference(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__BACKGROUND);
         this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__SHOW_ICON);
         this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__LABEL_ICON);
 
@@ -2361,6 +2382,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__EDGE_WIDTH);
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__SHOW_ICON);
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__LABEL_ICON);
+        this.createEReference(this.edgeStyleEClass, EDGE_STYLE__BACKGROUND);
 
         this.conditionalEdgeStyleEClass = this.createEClass(CONDITIONAL_EDGE_STYLE);
 
@@ -2490,6 +2512,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.insideLabelStyleEClass.getESuperTypes().add(this.getNodeLabelStyle());
         this.outsideLabelStyleEClass.getESuperTypes().add(this.getNodeLabelStyle());
         this.nodeLabelStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+        this.nodeLabelStyleEClass.getESuperTypes().add(this.getBorderStyle());
         this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getBorderStyle());
         this.conditionalNodeStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalInsideLabelStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
@@ -2499,6 +2522,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.iconLabelNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
         this.edgeStyleEClass.getESuperTypes().add(this.getStyle());
         this.edgeStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+        this.edgeStyleEClass.getESuperTypes().add(this.getBorderStyle());
         this.conditionalEdgeStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalEdgeStyleEClass.getESuperTypes().add(this.getEdgeStyle());
         this.deleteToolEClass.getESuperTypes().add(this.getTool());
@@ -2667,6 +2691,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEClass(this.nodeLabelStyleEClass, NodeLabelStyle.class, "NodeLabelStyle", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getNodeLabelStyle_LabelColor(), theViewPackage.getUserColor(), null, "labelColor", null, 1, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodeLabelStyle_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeLabelStyle_ShowIcon(), this.ecorePackage.getEBoolean(), "showIcon", "false", 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeLabelStyle_LabelIcon(), this.ecorePackage.getEString(), "labelIcon", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
@@ -2713,6 +2739,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getEdgeStyle_LabelIcon(), this.ecorePackage.getEString(), "labelIcon", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getEdgeStyle_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalEdgeStyleEClass, ConditionalEdgeStyle.class, "ConditionalEdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

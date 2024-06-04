@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -44,6 +45,8 @@ public final class StylesFactory {
 
     private static final String DEFAULT_COLOR = "black";
 
+    private static final String DEFAULT_TRANSPARENT_COLOR = "transparent";
+
     private final List<INodeStyleProvider> iNodeStyleProviders;
 
     private final IObjectService objectService;
@@ -55,11 +58,7 @@ public final class StylesFactory {
 
     public LabelStyleDescription createEdgeLabelStyleDescription(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle) {
         return LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> Optional.ofNullable(edgeStyle.getColor())
-                        .filter(FixedColor.class::isInstance)
-                        .map(FixedColor.class::cast)
-                        .map(FixedColor::getValue)
-                        .orElse(DEFAULT_COLOR))
+                .colorProvider(variableManager -> this.getFixedColorValue(edgeStyle.getColor(), DEFAULT_COLOR))
                 .fontSizeProvider(variableManager -> edgeStyle.getFontSize())
                 .boldProvider(variableManager -> edgeStyle.isBold())
                 .italicProvider(variableManager -> edgeStyle.isItalic())
@@ -75,16 +74,17 @@ public final class StylesFactory {
                     }
                     return iconURL;
                 })
+                .backgroundProvider(variableManager -> this.getFixedColorValue(edgeStyle.getBackground(), DEFAULT_TRANSPARENT_COLOR))
+                .borderColorProvider(variableManager -> this.getFixedColorValue(edgeStyle.getBorderColor(), DEFAULT_COLOR))
+                .borderSizeProvider(variableManager -> edgeStyle.getBorderSize())
+                .borderRadiusProvider(variableManager -> edgeStyle.getBorderRadius())
+                .borderStyleProvider(variableManager -> LineStyle.valueOf(edgeStyle.getBorderLineStyle().getLiteral()))
                 .build();
     }
 
     public EdgeStyle createEdgeStyle(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle) {
         return EdgeStyle.newEdgeStyle()
-                .color(Optional.ofNullable(edgeStyle.getColor())
-                        .filter(FixedColor.class::isInstance)
-                        .map(FixedColor.class::cast)
-                        .map(FixedColor::getValue)
-                        .orElse(DEFAULT_COLOR))
+                .color(this.getFixedColorValue(edgeStyle.getColor(), DEFAULT_COLOR))
                 .lineStyle(LineStyle.valueOf(edgeStyle.getLineStyle().getLiteral()))
                 .size(edgeStyle.getEdgeWidth())
                 .sourceArrow(ArrowStyle.valueOf(edgeStyle.getSourceArrowStyle().getLiteral()))
@@ -118,16 +118,8 @@ public final class StylesFactory {
                 break;
             case NodeType.NODE_RECTANGLE:
                 result = RectangularNodeStyle.newRectangularNodeStyle()
-                        .background(Optional.ofNullable(((RectangularNodeStyleDescription) nodeStyle).getBackground())
-                                .filter(FixedColor.class::isInstance)
-                                .map(FixedColor.class::cast)
-                                .map(FixedColor::getValue)
-                                .orElse(DEFAULT_COLOR))
-                        .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
-                                .filter(FixedColor.class::isInstance)
-                                .map(FixedColor.class::cast)
-                                .map(FixedColor::getValue)
-                                .orElse(""))
+                        .background(this.getFixedColorValue(((RectangularNodeStyleDescription) nodeStyle).getBackground(), DEFAULT_COLOR))
+                        .borderColor(this.getFixedColorValue(nodeStyle.getBorderColor(), ""))
                         .borderSize(nodeStyle.getBorderSize())
                         .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                         .borderRadius(nodeStyle.getBorderRadius())
@@ -144,16 +136,8 @@ public final class StylesFactory {
         }
         if (result == null) {
             result = RectangularNodeStyle.newRectangularNodeStyle()
-                    .background(Optional.ofNullable(((RectangularNodeStyleDescription) nodeStyle).getBackground())
-                            .filter(FixedColor.class::isInstance)
-                            .map(FixedColor.class::cast)
-                            .map(FixedColor::getValue)
-                            .orElse(DEFAULT_COLOR))
-                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
-                            .filter(FixedColor.class::isInstance)
-                            .map(FixedColor.class::cast)
-                            .map(FixedColor::getValue)
-                            .orElse(""))
+                    .background(this.getFixedColorValue(((RectangularNodeStyleDescription) nodeStyle).getBackground(), DEFAULT_COLOR))
+                    .borderColor(this.getFixedColorValue(nodeStyle.getBorderColor(), ""))
                     .borderSize(nodeStyle.getBorderSize())
                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                     .borderRadius(nodeStyle.getBorderRadius())
@@ -165,11 +149,7 @@ public final class StylesFactory {
 
     public LabelStyleDescription createInsideLabelStyle(InsideLabelStyle labelStyle) {
         return LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> Optional.ofNullable(labelStyle.getLabelColor())
-                        .filter(FixedColor.class::isInstance)
-                        .map(FixedColor.class::cast)
-                        .map(FixedColor::getValue)
-                        .orElse(DEFAULT_COLOR))
+                .colorProvider(variableManager -> this.getFixedColorValue(labelStyle.getLabelColor(), DEFAULT_COLOR))
                 .fontSizeProvider(variableManager -> labelStyle.getFontSize())
                 .boldProvider(variableManager -> labelStyle.isBold())
                 .italicProvider(variableManager -> labelStyle.isItalic())
@@ -185,16 +165,17 @@ public final class StylesFactory {
                     }
                     return iconURL;
                 })
+                .backgroundProvider(variableManager -> this.getFixedColorValue(labelStyle.getBackground(), DEFAULT_TRANSPARENT_COLOR))
+                .borderColorProvider(variableManager -> this.getFixedColorValue(labelStyle.getBorderColor(), DEFAULT_COLOR))
+                .borderSizeProvider(variableManager -> labelStyle.getBorderSize())
+                .borderRadiusProvider(variableManager -> labelStyle.getBorderRadius())
+                .borderStyleProvider(variableManager -> LineStyle.valueOf(labelStyle.getBorderLineStyle().getLiteral()))
                 .build();
     }
 
     public LabelStyleDescription createOutsideLabelStyle(OutsideLabelStyle labelStyle) {
         return LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> Optional.ofNullable(labelStyle.getLabelColor())
-                        .filter(FixedColor.class::isInstance)
-                        .map(FixedColor.class::cast)
-                        .map(FixedColor::getValue)
-                        .orElse(DEFAULT_COLOR))
+                .colorProvider(variableManager -> this.getFixedColorValue(labelStyle.getLabelColor(), DEFAULT_COLOR))
                 .fontSizeProvider(variableManager -> labelStyle.getFontSize())
                 .boldProvider(variableManager -> labelStyle.isBold())
                 .italicProvider(variableManager -> labelStyle.isItalic())
@@ -210,6 +191,19 @@ public final class StylesFactory {
                     }
                     return iconURL;
                 })
+                .backgroundProvider(variableManager -> this.getFixedColorValue(labelStyle.getBackground(), DEFAULT_TRANSPARENT_COLOR))
+                .borderColorProvider(variableManager -> this.getFixedColorValue(labelStyle.getBorderColor(), DEFAULT_COLOR))
+                .borderSizeProvider(variableManager -> labelStyle.getBorderSize())
+                .borderRadiusProvider(variableManager -> labelStyle.getBorderRadius())
+                .borderStyleProvider(variableManager -> LineStyle.valueOf(labelStyle.getBorderLineStyle().getLiteral()))
                 .build();
+    }
+
+    private String getFixedColorValue(UserColor color, String defaultValue) {
+        return Optional.ofNullable(color)
+                .filter(FixedColor.class::isInstance)
+                .map(FixedColor.class::cast)
+                .map(FixedColor::getValue)
+                .orElse(defaultValue);
     }
 }

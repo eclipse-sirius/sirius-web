@@ -12,12 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.impl;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
 
@@ -28,8 +32,18 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getBorderColor <em>Border
+ * Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getBorderRadius <em>Border
+ * Radius</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getBorderSize <em>Border
+ * Size</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getBorderLineStyle <em>Border Line
+ * Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getLabelColor <em>Label
  * Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getBackground
+ * <em>Background</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#isShowIcon <em>Show Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getLabelIcon <em>Label
  * Icon</em>}</li>
@@ -40,52 +54,120 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
 public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabelStyle {
 
     /**
-     * The cached value of the '{@link #getLabelColor() <em>Label Color</em>}' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The default value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
-     * @see #getLabelColor()
      * @generated
      * @ordered
+     * @see #getBorderRadius()
      */
-    protected UserColor labelColor;
-
+    protected static final int BORDER_RADIUS_EDEFAULT = 3;
+    /**
+     * The default value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderSize()
+     */
+    protected static final int BORDER_SIZE_EDEFAULT = 1;
+    /**
+     * The default value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderLineStyle()
+     */
+    protected static final LineStyle BORDER_LINE_STYLE_EDEFAULT = LineStyle.SOLID;
     /**
      * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #isShowIcon()
      * @generated
      * @ordered
+     * @see #isShowIcon()
      */
     protected static final boolean SHOW_ICON_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isShowIcon()
-     * @generated
-     * @ordered
-     */
-    protected boolean showIcon = SHOW_ICON_EDEFAULT;
-
     /**
      * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLabelIcon()
      * @generated
      * @ordered
+     * @see #getLabelIcon()
      */
     protected static final String LABEL_ICON_EDEFAULT = null;
-
+    /**
+     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderColor()
+     */
+    protected UserColor borderColor;
+    /**
+     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderRadius()
+     */
+    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderSize()
+     */
+    protected int borderSize = BORDER_SIZE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderLineStyle()
+     */
+    protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getLabelColor() <em>Label Color</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getLabelColor()
+     */
+    protected UserColor labelColor;
+    /**
+     * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBackground()
+     */
+    protected UserColor background;
+    /**
+     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isShowIcon()
+     */
+    protected boolean showIcon = SHOW_ICON_EDEFAULT;
     /**
      * The cached value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLabelIcon()
      * @generated
      * @ordered
+     * @see #getLabelIcon()
      */
     protected String labelIcon = LABEL_ICON_EDEFAULT;
 
@@ -106,6 +188,115 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
     @Override
     protected EClass eStaticClass() {
         return DiagramPackage.Literals.OUTSIDE_LABEL_STYLE;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public UserColor getBorderColor() {
+        if (this.borderColor != null && this.borderColor.eIsProxy()) {
+            InternalEObject oldBorderColor = (InternalEObject) this.borderColor;
+            this.borderColor = (UserColor) this.eResolveProxy(oldBorderColor);
+            if (this.borderColor != oldBorderColor) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
+            }
+        }
+        return this.borderColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderColor(UserColor newBorderColor) {
+        UserColor oldBorderColor = this.borderColor;
+        this.borderColor = newBorderColor;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetBorderColor() {
+        return this.borderColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int getBorderRadius() {
+        return this.borderRadius;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderRadius(int newBorderRadius) {
+        int oldBorderRadius = this.borderRadius;
+        this.borderRadius = newBorderRadius;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_RADIUS, oldBorderRadius, this.borderRadius));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int getBorderSize() {
+        return this.borderSize;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderSize(int newBorderSize) {
+        int oldBorderSize = this.borderSize;
+        this.borderSize = newBorderSize;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_SIZE, oldBorderSize, this.borderSize));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LineStyle getBorderLineStyle() {
+        return this.borderLineStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderLineStyle(LineStyle newBorderLineStyle) {
+        LineStyle oldBorderLineStyle = this.borderLineStyle;
+        this.borderLineStyle = newBorderLineStyle == null ? BORDER_LINE_STYLE_EDEFAULT : newBorderLineStyle;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_LINE_STYLE, oldBorderLineStyle, this.borderLineStyle));
     }
 
     /**
@@ -200,12 +391,66 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      * @generated
      */
     @Override
+    public UserColor getBackground() {
+        if (this.background != null && this.background.eIsProxy()) {
+            InternalEObject oldBackground = (InternalEObject) this.background;
+            this.background = (UserColor) this.eResolveProxy(oldBackground);
+            if (this.background != oldBackground) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND, oldBackground, this.background));
+            }
+        }
+        return this.background;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBackground(UserColor newBackground) {
+        UserColor oldBackground = this.background;
+        this.background = newBackground;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND, oldBackground, this.background));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetBackground() {
+        return this.background;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR:
+                if (resolve)
+                    return this.getBorderColor();
+                return this.basicGetBorderColor();
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_RADIUS:
+                return this.getBorderRadius();
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_SIZE:
+                return this.getBorderSize();
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_LINE_STYLE:
+                return this.getBorderLineStyle();
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_COLOR:
                 if (resolve)
                     return this.getLabelColor();
                 return this.basicGetLabelColor();
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND:
+                if (resolve)
+                    return this.getBackground();
+                return this.basicGetBackground();
             case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON:
                 return this.isShowIcon();
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
@@ -222,8 +467,23 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR:
+                this.setBorderColor((UserColor) newValue);
+                return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_RADIUS:
+                this.setBorderRadius((Integer) newValue);
+                return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_SIZE:
+                this.setBorderSize((Integer) newValue);
+                return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_LINE_STYLE:
+                this.setBorderLineStyle((LineStyle) newValue);
+                return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_COLOR:
                 this.setLabelColor((UserColor) newValue);
+                return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND:
+                this.setBackground((UserColor) newValue);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON:
                 this.setShowIcon((Boolean) newValue);
@@ -243,8 +503,23 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR:
+                this.setBorderColor(null);
+                return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_RADIUS:
+                this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
+                return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_SIZE:
+                this.setBorderSize(BORDER_SIZE_EDEFAULT);
+                return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_LINE_STYLE:
+                this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
+                return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_COLOR:
-                this.setLabelColor((UserColor) null);
+                this.setLabelColor(null);
+                return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND:
+                this.setBackground(null);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON:
                 this.setShowIcon(SHOW_ICON_EDEFAULT);
@@ -264,14 +539,72 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR:
+                return this.borderColor != null;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_RADIUS:
+                return this.borderRadius != BORDER_RADIUS_EDEFAULT;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_SIZE:
+                return this.borderSize != BORDER_SIZE_EDEFAULT;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_LINE_STYLE:
+                return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_COLOR:
                 return this.labelColor != null;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND:
+                return this.background != null;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON:
                 return this.showIcon != SHOW_ICON_EDEFAULT;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
-                return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
+                return !Objects.equals(LABEL_ICON_EDEFAULT, this.labelIcon);
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+        if (baseClass == BorderStyle.class) {
+            switch (derivedFeatureID) {
+                case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR:
+                    return DiagramPackage.BORDER_STYLE__BORDER_COLOR;
+                case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_RADIUS:
+                    return DiagramPackage.BORDER_STYLE__BORDER_RADIUS;
+                case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_SIZE:
+                    return DiagramPackage.BORDER_STYLE__BORDER_SIZE;
+                case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_LINE_STYLE:
+                    return DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE;
+                default:
+                    return -1;
+            }
+        }
+        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+        if (baseClass == BorderStyle.class) {
+            switch (baseFeatureID) {
+                case DiagramPackage.BORDER_STYLE__BORDER_COLOR:
+                    return DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR;
+                case DiagramPackage.BORDER_STYLE__BORDER_RADIUS:
+                    return DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_RADIUS;
+                case DiagramPackage.BORDER_STYLE__BORDER_SIZE:
+                    return DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_SIZE;
+                case DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE:
+                    return DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_LINE_STYLE;
+                default:
+                    return -1;
+            }
+        }
+        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
     /**
@@ -284,13 +617,18 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (showIcon: ");
-        result.append(this.showIcon);
-        result.append(", labelIcon: ");
-        result.append(this.labelIcon);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (borderRadius: " +
+                this.borderRadius +
+                ", borderSize: " +
+                this.borderSize +
+                ", borderLineStyle: " +
+                this.borderLineStyle +
+                ", showIcon: " +
+                this.showIcon +
+                ", labelIcon: " +
+                this.labelIcon +
+                ')';
+        return result;
     }
 
 } // OutsideLabelStyleImpl

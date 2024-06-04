@@ -102,6 +102,10 @@ public class TestDiagramBuilder {
                     .color("#000000")
                     .fontSize(16)
                     .iconURL(List.of())
+                    .background("transparent")
+                    .borderColor("black")
+                    .borderSize(0)
+                    .borderStyle(LineStyle.Solid)
                     .build();
             InsideLabel insideLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
                     .text("text")

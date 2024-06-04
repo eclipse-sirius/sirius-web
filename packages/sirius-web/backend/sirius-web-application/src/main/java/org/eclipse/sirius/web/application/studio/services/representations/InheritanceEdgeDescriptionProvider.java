@@ -58,6 +58,7 @@ public class InheritanceEdgeDescriptionProvider implements IEdgeDescriptionProvi
                 .newEdgeStyle()
                 .targetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW)
                 .color(this.colorProvider.getColor(DomainDiagramDescriptionProvider.LIGHT_GREY_COLOR))
+                .borderSize(0)
                 .build();
     }
 

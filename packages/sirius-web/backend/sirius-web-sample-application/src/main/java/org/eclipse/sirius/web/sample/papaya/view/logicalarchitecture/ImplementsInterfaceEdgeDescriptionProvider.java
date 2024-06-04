@@ -47,6 +47,7 @@ public class ImplementsInterfaceEdgeDescriptionProvider implements IEdgeDescript
         implementsInterfaceEdgeStyle.setLineStyle(LineStyle.DASH);
         implementsInterfaceEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         implementsInterfaceEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
+        implementsInterfaceEdgeStyle.setBorderSize(0);
 
         var implementsInterfaceEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         implementsInterfaceEdgeDescription.setName("Edge Implements interface");

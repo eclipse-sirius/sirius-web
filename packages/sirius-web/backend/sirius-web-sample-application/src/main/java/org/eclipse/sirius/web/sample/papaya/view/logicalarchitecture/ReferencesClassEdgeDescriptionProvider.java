@@ -45,6 +45,7 @@ public class ReferencesClassEdgeDescriptionProvider implements IEdgeDescriptionP
         extendsClassEdgeStyle.setLineStyle(LineStyle.SOLID);
         extendsClassEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         extendsClassEdgeStyle.setTargetArrowStyle(ArrowStyle.DIAMOND);
+        extendsClassEdgeStyle.setBorderSize(0);
 
         var extendsClassEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         extendsClassEdgeDescription.setName("Edge References class");

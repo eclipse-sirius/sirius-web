@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -40,6 +41,16 @@ public final class LabelStyleDescription {
     private Function<VariableManager, Boolean> strikeThroughProvider;
 
     private Function<VariableManager, List<String>> iconURLProvider;
+
+    private Function<VariableManager, String> backgroundProvider;
+
+    private Function<VariableManager, String> borderColorProvider;
+
+    private Function<VariableManager, Integer> borderSizeProvider;
+
+    private Function<VariableManager, Integer> borderRadiusProvider;
+
+    private Function<VariableManager, LineStyle> borderStyleProvider;
 
     private LabelStyleDescription() {
         // Prevent instantiation
@@ -77,6 +88,26 @@ public final class LabelStyleDescription {
         return this.iconURLProvider;
     }
 
+    public Function<VariableManager, String> getBackgroundProvider() {
+        return this.backgroundProvider;
+    }
+
+    public Function<VariableManager, String> getBorderColorProvider() {
+        return this.borderColorProvider;
+    }
+
+    public Function<VariableManager, Integer> getBorderSizeProvider() {
+        return this.borderSizeProvider;
+    }
+
+    public Function<VariableManager, Integer> getBorderRadiusProvider() {
+        return this.borderRadiusProvider;
+    }
+
+    public Function<VariableManager, LineStyle> getBorderStyleProvider() {
+        return this.borderStyleProvider;
+    }
+
     /**
      * The builder used to create a new label description.
      *
@@ -98,6 +129,16 @@ public final class LabelStyleDescription {
         private Function<VariableManager, Boolean> strikeThroughProvider;
 
         private Function<VariableManager, List<String>> iconURLProvider;
+
+        private Function<VariableManager, String> backgroundProvider;
+
+        private Function<VariableManager, String> borderColorProvider;
+
+        private Function<VariableManager, Integer> borderSizeProvider;
+
+        private Function<VariableManager, Integer> borderRadiusProvider;
+
+        private Function<VariableManager, LineStyle> borderStyleProvider;
 
         private Builder() {
         }
@@ -137,6 +178,31 @@ public final class LabelStyleDescription {
             return this;
         }
 
+        public Builder backgroundProvider(Function<VariableManager, String> backgroundProvider) {
+            this.backgroundProvider = Objects.requireNonNull(backgroundProvider);
+            return this;
+        }
+
+        public Builder borderColorProvider(Function<VariableManager, String> borderColorProvider) {
+            this.borderColorProvider = Objects.requireNonNull(borderColorProvider);
+            return this;
+        }
+
+        public Builder borderSizeProvider(Function<VariableManager, Integer> borderSizeProvider) {
+            this.borderSizeProvider = Objects.requireNonNull(borderSizeProvider);
+            return this;
+        }
+
+        public Builder borderRadiusProvider(Function<VariableManager, Integer> borderRadiusProvider) {
+            this.borderRadiusProvider = Objects.requireNonNull(borderRadiusProvider);
+            return this;
+        }
+
+        public Builder borderStyleProvider(Function<VariableManager, LineStyle> borderStyleProvider) {
+            this.borderStyleProvider = Objects.requireNonNull(borderStyleProvider);
+            return this;
+        }
+
         public LabelStyleDescription build() {
             LabelStyleDescription styleDescription = new LabelStyleDescription();
             styleDescription.colorProvider = Objects.requireNonNull(this.colorProvider);
@@ -146,6 +212,11 @@ public final class LabelStyleDescription {
             styleDescription.strikeThroughProvider = Objects.requireNonNull(this.strikeThroughProvider);
             styleDescription.underlineProvider = Objects.requireNonNull(this.underlineProvider);
             styleDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            styleDescription.backgroundProvider = Objects.requireNonNull(this.backgroundProvider);
+            styleDescription.borderColorProvider = Objects.requireNonNull(this.borderColorProvider);
+            styleDescription.borderSizeProvider = Objects.requireNonNull(this.borderSizeProvider);
+            styleDescription.borderRadiusProvider = Objects.requireNonNull(this.borderRadiusProvider);
+            styleDescription.borderStyleProvider = Objects.requireNonNull(this.borderStyleProvider);
             return styleDescription;
         }
 

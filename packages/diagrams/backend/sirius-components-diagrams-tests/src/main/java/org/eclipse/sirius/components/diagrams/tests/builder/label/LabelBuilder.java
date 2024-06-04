@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
@@ -31,6 +32,8 @@ import org.eclipse.sirius.components.diagrams.components.LabelType;
  */
 public final class LabelBuilder {
 
+    public static final String DEFAULT_COLOR_TRANSPARENT = "transparent";
+
     public Label basicLabel(String text, LabelType labelType) {
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
                 .color("black")
@@ -40,6 +43,10 @@ public final class LabelBuilder {
                 .underline(false)
                 .strikeThrough(false)
                 .iconURL(List.of())
+                .background(DEFAULT_COLOR_TRANSPARENT)
+                .borderColor(DEFAULT_COLOR_TRANSPARENT)
+                .borderSize(0)
+                .borderStyle(LineStyle.Solid)
                 .build();
 
         return Label.newLabel(UUID.randomUUID().toString())
@@ -61,6 +68,10 @@ public final class LabelBuilder {
                 .underline(false)
                 .strikeThrough(false)
                 .iconURL(List.of())
+                .background(DEFAULT_COLOR_TRANSPARENT)
+                .borderColor(DEFAULT_COLOR_TRANSPARENT)
+                .borderSize(0)
+                .borderStyle(LineStyle.Solid)
                 .build();
 
         return InsideLabel.newLabel(UUID.randomUUID().toString())

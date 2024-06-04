@@ -96,12 +96,62 @@ public class InsideLabelStyleBuilder {
     }
 
     /**
+     * Setter for BorderColor.
+     *
+     * @generated
+     */
+    public InsideLabelStyleBuilder borderColor(org.eclipse.sirius.components.view.UserColor value) {
+        this.getInsideLabelStyle().setBorderColor(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderRadius.
+     *
+     * @generated
+     */
+    public InsideLabelStyleBuilder borderRadius(java.lang.Integer value) {
+        this.getInsideLabelStyle().setBorderRadius(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderSize.
+     *
+     * @generated
+     */
+    public InsideLabelStyleBuilder borderSize(java.lang.Integer value) {
+        this.getInsideLabelStyle().setBorderSize(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderLineStyle.
+     *
+     * @generated
+     */
+    public InsideLabelStyleBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
+        this.getInsideLabelStyle().setBorderLineStyle(value);
+        return this;
+    }
+
+    /**
      * Setter for LabelColor.
      *
      * @generated
      */
     public InsideLabelStyleBuilder labelColor(org.eclipse.sirius.components.view.UserColor value) {
         this.getInsideLabelStyle().setLabelColor(value);
+        return this;
+    }
+
+    /**
+     * Setter for Background.
+     *
+     * @generated
+     */
+    public InsideLabelStyleBuilder background(org.eclipse.sirius.components.view.UserColor value) {
+        this.getInsideLabelStyle().setBackground(value);
         return this;
     }
 

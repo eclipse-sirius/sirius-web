@@ -85,6 +85,7 @@ export interface InsideLabel {
   text: string;
   iconURL: string[];
   style: React.CSSProperties;
+  contentStyle: React.CSSProperties;
   isHeader: boolean;
   displayHeaderSeparator: boolean;
   overflowStrategy: LabelOverflowStrategy;
@@ -101,6 +102,7 @@ export interface EdgeLabel {
   text: string;
   iconURL: string[];
   style: React.CSSProperties;
+  contentStyle: React.CSSProperties;
 }
 
 export interface OutsideLabel {
@@ -108,5 +110,6 @@ export interface OutsideLabel {
   text: string;
   iconURL: string[];
   style: React.CSSProperties;
+  contentStyle: React.CSSProperties;
   overflowStrategy: LabelOverflowStrategy;
 }

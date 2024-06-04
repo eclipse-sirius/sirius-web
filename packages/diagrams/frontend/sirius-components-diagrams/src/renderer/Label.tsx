@@ -69,7 +69,7 @@ const labelStyle = (
   };
 };
 
-const labelContentStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): React.CSSProperties => {
+const labelContentStyle = (theme: Theme, label: EdgeLabel | InsideLabel | OutsideLabel): React.CSSProperties => {
   const labelContentStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
@@ -85,7 +85,14 @@ const labelContentStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): React
     default:
       break;
   }
-  return labelContentStyle;
+  return {
+    ...labelContentStyle,
+    ...label.contentStyle,
+    background: label.contentStyle.background ? getCSSColor(String(label.contentStyle.background), theme) : undefined,
+    borderColor: label.contentStyle.borderColor
+      ? getCSSColor(String(label.contentStyle.borderColor), theme)
+      : undefined,
+  };
 };
 
 const labelOverflowStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): React.CSSProperties => {
@@ -124,7 +131,10 @@ export const Label = memo(({ diagramElementId, label, faded, transform }: LabelP
     label.id === currentlyEditedLabelId && !readOnly ? (
       <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} />
     ) : (
-      <div data-id={`${label.id}-content`} style={labelContentStyle(label)}>
+      <div
+        data-id={`${label.id}-content`}
+        data-testid={`Label content - ${label.text}`}
+        style={labelContentStyle(theme, label)}>
         <IconOverlay iconURL={label.iconURL} alt={label.text} customIconStyle={{ marginRight: theme.spacing(1) }} />
         <div style={labelOverflowStyle(label)}>{label.text}</div>
       </div>

@@ -167,6 +167,7 @@
     <genClasses ecoreClass="diagram.ecore#//OutsideLabelStyle"/>
     <genClasses image="false" ecoreClass="diagram.ecore#//NodeLabelStyle">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeLabelStyle/labelColor"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeLabelStyle/background"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/showIcon"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/labelIcon"/>
     </genClasses>
@@ -197,6 +198,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeStyle/edgeWidth"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeStyle/showIcon"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeStyle/labelIcon"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgeStyle/background"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//ConditionalEdgeStyle"/>
     <genClasses ecoreClass="diagram.ecore#//DiagramPalette">

@@ -175,6 +175,10 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .color("")
                 .fontSize(14)
                 .iconURL(List.of())
+                .background("transparent")
+                .borderColor("black")
+                .borderSize(0)
+                .borderStyle(LineStyle.Solid)
                 .build();
 
         var insideLabel = InsideLabel.newLabel("")

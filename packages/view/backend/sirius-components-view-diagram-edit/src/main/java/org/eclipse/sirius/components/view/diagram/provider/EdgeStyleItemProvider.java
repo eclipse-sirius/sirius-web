@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeStyle;
  * @generated
  */
 public class EdgeStyleItemProvider extends StyleItemProvider {
+
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -56,12 +57,17 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
             this.addBoldPropertyDescriptor(object);
             this.addUnderlinePropertyDescriptor(object);
             this.addStrikeThroughPropertyDescriptor(object);
+            this.addBorderColorPropertyDescriptor(object);
+            this.addBorderRadiusPropertyDescriptor(object);
+            this.addBorderSizePropertyDescriptor(object);
+            this.addBorderLineStylePropertyDescriptor(object);
             this.addLineStylePropertyDescriptor(object);
             this.addSourceArrowStylePropertyDescriptor(object);
             this.addTargetArrowStylePropertyDescriptor(object);
             this.addEdgeWidthPropertyDescriptor(object);
             this.addShowIconPropertyDescriptor(object);
             this.addLabelIconPropertyDescriptor(object);
+            this.addBackgroundPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -119,6 +125,50 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_LabelStyle_strikeThrough_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Border Color feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBorderColorPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderColor_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderColor_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, true, false, false, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Border Radius feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBorderRadiusPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderRadius_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderRadius_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Border Size feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBorderSizePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderSize_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderSize_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Border Line Style feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBorderLineStylePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderLineStyle_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderLineStyle_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -188,6 +238,17 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the Background feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addBackgroundPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeStyle_background_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_background_feature", "_UI_EdgeStyle_type"),
+                DiagramPackage.Literals.EDGE_STYLE__BACKGROUND, true, false, true, null, null, null));
+    }
+
+    /**
      * This returns EdgeStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -235,6 +296,10 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
             case DiagramPackage.EDGE_STYLE__BOLD:
             case DiagramPackage.EDGE_STYLE__UNDERLINE:
             case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
+            case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
+            case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
+            case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
+            case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
             case DiagramPackage.EDGE_STYLE__LINE_STYLE:
             case DiagramPackage.EDGE_STYLE__SOURCE_ARROW_STYLE:
             case DiagramPackage.EDGE_STYLE__TARGET_ARROW_STYLE:

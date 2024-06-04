@@ -329,6 +329,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         insideLabelDescription.setPosition(InsideLabelPosition.TOP_CENTER);
         InsideLabelStyle insideLabelStyle = DiagramFactory.eINSTANCE.createInsideLabelStyle();
         insideLabelStyle.setLabelColor(this.getColorFromPalette(view, "color_dark"));
+        insideLabelStyle.setBorderSize(0);
         insideLabelDescription.setStyle(insideLabelStyle);
         return insideLabelDescription;
     }

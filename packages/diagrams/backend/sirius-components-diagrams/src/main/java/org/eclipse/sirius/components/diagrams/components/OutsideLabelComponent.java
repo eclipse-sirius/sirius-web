@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.OutsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.elements.OutsideLabelElementProps;
@@ -54,6 +55,11 @@ public class OutsideLabelComponent implements IComponent {
         Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
         List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
+        String background = labelStyleDescription.getBackgroundProvider().apply(variableManager);
+        String borderColor = labelStyleDescription.getBorderColorProvider().apply(variableManager);
+        Integer borderRadius = labelStyleDescription.getBorderRadiusProvider().apply(variableManager);
+        Integer borderSize = labelStyleDescription.getBorderSizeProvider().apply(variableManager);
+        LineStyle borderLineStyle = labelStyleDescription.getBorderStyleProvider().apply(variableManager);
 
         var labelStyle = LabelStyle.newLabelStyle()
                 .color(color)
@@ -63,6 +69,11 @@ public class OutsideLabelComponent implements IComponent {
                 .strikeThrough(strikeThrough)
                 .underline(underline)
                 .iconURL(iconURL)
+                .background(background)
+                .borderColor(borderColor)
+                .borderRadius(borderRadius)
+                .borderSize(borderSize)
+                .borderStyle(borderLineStyle)
                 .build();
 
         OutsideLabelElementProps outsideLabelElementProps = OutsideLabelElementProps.newOutsideLabelElementProps(id)

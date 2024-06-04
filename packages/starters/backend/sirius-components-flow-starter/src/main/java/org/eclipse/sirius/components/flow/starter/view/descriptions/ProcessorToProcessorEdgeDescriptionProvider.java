@@ -63,6 +63,7 @@ public class ProcessorToProcessorEdgeDescriptionProvider implements IEdgeDescrip
                         .lineStyle(LineStyle.SOLID)
                         .color(this.colorProvider.getColor("Flow_Gray"))
                         .targetArrowStyle(ArrowStyle.INPUT_ARROW)
+                        .borderSize(0)
                         .build())
                 .palette(this.createEdgePalette())
                 .build();

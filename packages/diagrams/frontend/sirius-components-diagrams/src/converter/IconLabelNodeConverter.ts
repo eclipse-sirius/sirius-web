@@ -26,7 +26,7 @@ import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { isListLayoutStrategy } from './convertDiagram';
-import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
+import { convertLabelStyle, convertOutsideLabels, convertContentStyle } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -94,6 +94,9 @@ const toIconLabelNode = (
       text: insideLabel.text,
       style: {
         ...convertLabelStyle(labelStyle),
+      },
+      contentStyle: {
+        ...convertContentStyle(labelStyle),
       },
       iconURL: labelStyle.iconURL,
       isHeader: insideLabel.isHeader,

@@ -54,6 +54,8 @@ import org.springframework.stereotype.Service;
 public class DefaultViewResourceProvider implements IDefaultViewResourceProvider {
 
     private static final String VIEW_DOCUMENT_NAME = "ViewNewModel";
+    private static final String COLOR_NAME_DARK = "color_dark";
+    private static final String COLOR_NAME_TRANSPARENT = "color_transparent";
 
     private final List<IMigrationParticipant> migrationParticipants;
 
@@ -106,7 +108,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         entity1Node.setName("Entity1 Node");
         entity1Node.setDomainType(domainName + "::Entity1");
         entity1Node.setSemanticCandidatesExpression("aql:self.eContents()");
-        entity1Node.setInsideLabel(this.createInsideLabelDescription());
+        entity1Node.setInsideLabel(this.createInsideLabelDescription(view));
         entity1Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
         entity1Node.setStyle(this.createRectangularNodeStyle(view, "color_blue", "border_blue"));
         entity1Node.setPalette(defaultToolsFactory.createDefaultNodePalette());
@@ -118,7 +120,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         entity2Node.setName("Entity2 Node");
         entity2Node.setDomainType(domainName + "::Entity2");
         entity2Node.setSemanticCandidatesExpression("aql:self.eContents()");
-        entity2Node.setInsideLabel(this.createInsideLabelDescription());
+        entity2Node.setInsideLabel(this.createInsideLabelDescription(view));
         entity2Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
         entity2Node.setStyle(this.createRectangularNodeStyle(view, "color_green", "border_green"));
         entity2Node.setPalette(defaultToolsFactory.createDefaultNodePalette());
@@ -152,15 +154,23 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         viewDiagramDescription.getEdgeDescriptions().add(linkedToEdge);
 
         EdgeStyle edgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
-        edgeStyle.setColor(this.getColorFromPalette(view, "color_dark"));
+        edgeStyle.setColor(this.getColorFromPalette(view, COLOR_NAME_DARK));
+        edgeStyle.setBackground(this.getColorFromPalette(view, COLOR_NAME_TRANSPARENT));
+        edgeStyle.setBorderColor(this.getColorFromPalette(view, COLOR_NAME_DARK));
+        edgeStyle.setBorderSize(0);
         linkedToEdge.setStyle(edgeStyle);
     }
 
-    private InsideLabelDescription createInsideLabelDescription() {
+    private InsideLabelDescription createInsideLabelDescription(View view) {
         var insideLabel = DiagramFactory.eINSTANCE.createInsideLabelDescription();
         insideLabel.setLabelExpression("aql:self.name");
         insideLabel.setPosition(InsideLabelPosition.TOP_CENTER);
-        insideLabel.setStyle(DiagramFactory.eINSTANCE.createInsideLabelStyle());
+        var insideLabelStyle = DiagramFactory.eINSTANCE.createInsideLabelStyle();
+        insideLabelStyle.setLabelColor(this.getColorFromPalette(view, COLOR_NAME_DARK));
+        insideLabelStyle.setBackground(this.getColorFromPalette(view, COLOR_NAME_TRANSPARENT));
+        insideLabelStyle.setBorderColor(this.getColorFromPalette(view, COLOR_NAME_DARK));
+        insideLabelStyle.setBorderSize(0);
+        insideLabel.setStyle(insideLabelStyle);
         return insideLabel;
     }
 
@@ -198,11 +208,12 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
     private ColorPalette createColorPalette() {
         var colorPalette = ViewFactory.eINSTANCE.createColorPalette();
 
-        colorPalette.getColors().add(this.createFixedColor("color_dark", "#002639"));
+        colorPalette.getColors().add(this.createFixedColor(COLOR_NAME_DARK, "#002639"));
         colorPalette.getColors().add(this.createFixedColor("color_blue", "#E5F5F8"));
         colorPalette.getColors().add(this.createFixedColor("color_green", "#B1D8B7"));
         colorPalette.getColors().add(this.createFixedColor("border_blue", "#33B0C3"));
         colorPalette.getColors().add(this.createFixedColor("border_green", "#76B947"));
+        colorPalette.getColors().add(this.createFixedColor(COLOR_NAME_TRANSPARENT, "transparent"));
 
         return colorPalette;
     }

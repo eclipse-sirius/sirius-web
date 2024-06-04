@@ -278,6 +278,11 @@ public class UnsynchronizedDiagramTests {
                 .colorProvider(VariableManager -> "#FFFFFF")
                 .fontSizeProvider(variableManager -> 10)
                 .iconURLProvider(VariableManager -> List.of())
+                .backgroundProvider(variableManager -> "transparent")
+                .borderColorProvider(variableManager -> "black")
+                .borderRadiusProvider(variableManager -> 0)
+                .borderSizeProvider(variableManager -> 0)
+                .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")
@@ -298,9 +303,7 @@ public class UnsynchronizedDiagramTests {
                 .borderStyle(LineStyle.Solid)
                 .build();
 
-        Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
-            return new FreeFormLayoutStrategy();
-        };
+        Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> new FreeFormLayoutStrategy();
 
         NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription("subUnsynchronized")
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)

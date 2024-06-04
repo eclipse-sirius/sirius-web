@@ -100,6 +100,11 @@ public class TestDiagramDescriptionBuilder {
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
                 .iconURLProvider(variableManager -> List.of())
+                .backgroundProvider(variableManager -> "transparent")
+                .borderColorProvider(variableManager -> "black")
+                .borderRadiusProvider(variableManager -> 0)
+                .borderSizeProvider(variableManager -> 0)
+                .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")

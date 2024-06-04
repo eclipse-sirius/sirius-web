@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -97,6 +97,46 @@ public class EdgeStyleBuilder {
         return this;
     }
     /**
+     * Setter for BorderColor.
+     *
+     * @generated
+     */
+    public EdgeStyleBuilder borderColor(org.eclipse.sirius.components.view.UserColor value) {
+        this.getEdgeStyle().setBorderColor(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderRadius.
+     *
+     * @generated
+     */
+    public EdgeStyleBuilder borderRadius(java.lang.Integer value) {
+        this.getEdgeStyle().setBorderRadius(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderSize.
+     *
+     * @generated
+     */
+    public EdgeStyleBuilder borderSize(java.lang.Integer value) {
+        this.getEdgeStyle().setBorderSize(value);
+        return this;
+    }
+
+    /**
+     * Setter for BorderLineStyle.
+     *
+     * @generated
+     */
+    public EdgeStyleBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
+        this.getEdgeStyle().setBorderLineStyle(value);
+        return this;
+    }
+
+    /**
      * Setter for LineStyle.
      *
      * @generated
@@ -149,6 +189,16 @@ public class EdgeStyleBuilder {
      */
     public EdgeStyleBuilder labelIcon(java.lang.String value) {
         this.getEdgeStyle().setLabelIcon(value);
+        return this;
+    }
+
+    /**
+     * Setter for Background.
+     *
+     * @generated
+     */
+    public EdgeStyleBuilder background(org.eclipse.sirius.components.view.UserColor value) {
+        this.getEdgeStyle().setBackground(value);
         return this;
     }
 

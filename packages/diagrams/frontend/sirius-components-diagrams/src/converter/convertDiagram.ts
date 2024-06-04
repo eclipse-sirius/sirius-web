@@ -34,7 +34,7 @@ import { IconLabelNodeConverter } from './IconLabelNodeConverter';
 import { ImageNodeConverter } from './ImageNodeConverter';
 import { ListNodeConverter } from './ListNodeConverter';
 import { RectangleNodeConverter } from './RectangleNodeConverter';
-import { convertLabelStyle } from './convertLabel';
+import { convertLabelStyle, convertContentStyle } from './convertLabel';
 
 const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
@@ -60,6 +60,9 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): EdgeLabel => {
       padding: 5,
       zIndex: 1001,
       ...convertLabelStyle(gqlEdgeLabel.style),
+    },
+    contentStyle: {
+      ...convertContentStyle(gqlEdgeLabel.style),
     },
   };
 };
