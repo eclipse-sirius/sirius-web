@@ -63,6 +63,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3548[#3548] [core] Avoid costly recomputations in MigrationService
 - https://github.com/eclipse-sirius/sirius-web/issues/3566[#3566] [diagram] Remove `draggedNodeIdSelector` on nodes to improve performance on large diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/3552[#3552] [core] Rewrite EObjectIdManager using lower-level code for performance
+- https://github.com/eclipse-sirius/sirius-web/issues/3555[#3555] [core] Avoid costly recomputations in RepresentationMigrationService
 
 == v2024.5.0
 
