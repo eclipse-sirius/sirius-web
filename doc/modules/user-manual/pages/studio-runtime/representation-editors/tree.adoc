@@ -1,0 +1,9 @@
+= Tree
+
+A *`{tree}` representation* conforms to a `{mkr-tree}` of the _{stddef}_.
+
+== Purpose
+
+Trees represent domain data in a hierarchical manner.
+
+#TODO: When we have a nominal example of Tree representation, add a snapshot here, and add details of the UI.#

@@ -1,0 +1,26 @@
+= {ui-view-project-editor}
+
+The *{ui-view-project-editor}* displays actions that can be used to populate or navigate the contents of the project.
+
+.The _{ui-view-project-editor}_
+image::Project-Editor.png["{ui-view-project-editor}"]
+
+IMPORTANT: The _{ui-view-project-editor}_ is only opened when there are no other editor opened.
+
+These actions are grouped into the sections detailed below.
+
+== Create a new Model
+
+This section displays the _xref:user-manual:core-concepts.adoc#_stereotypes[Stereotypes]_ that can be created in the project.
+
+NOTE: Available stereotypes depend on the _{usr-data-models}_ contributed to the platform.
+
+== Create a new Representation
+
+This section displays the _xref:user-manual:studio-runtime/representation-editors.adoc[Representations]_ that can be created in the project for the element of the project that is currently selected.
+
+NOTE: Available representations depend on the _xref:user-manual:studio-runtime/representation-editors.adoc[View Models]_ contributed to the platform.
+
+== Open an existing Representation
+
+This section displays all the existing _xref:user-manual:studio-runtime/representation-editors.adoc[Representations]_ of the project. When a representing is selected, the corresponding editor opens.

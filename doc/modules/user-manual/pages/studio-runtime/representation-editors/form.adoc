@@ -1,0 +1,9 @@
+= {form}
+
+A *`{form}` representation* conforms to a `{mkr-form}` of the _{stddef}_.
+
+== Purpose
+
+Form representations represent the domain data as various fields. They are often used to for the edition of the attribute values on the domain entities.
+
+#TODO: When we have a nominal example of Form representation, add a snapshot here, and add details of the UI.#

@@ -1,0 +1,15 @@
+= {ui-view-project-toolbar}
+
+The *{ui-view-project-toolbar}* is located at the top of the _xref:user-manual:workbench-ui.adoc[]_ and is used to display and manage the metadata of a _xref:user-manual:core-concepts.adoc#_projects[Project]_.
+
+.The {ui-view-project-toolbar}
+image::Project-Toolbar.png["{ui-view-project-toolbar}"]
+
+* image:Project-Toolbar_Home.png["{ui-view-project-toolbar} Button Home"] (`Back to the homepage`): Redirects to the _xref:user-manual:workbench-ui/workbench-homepage.adoc[]_ of the application.
+* image:Project-Toolbar_Name.png["{ui-view-project-toolbar} Project Name"]: The name of the _{project}_.
+* image:Project-Toolbar_Menu.png["{ui-view-project-toolbar} Contextual Menu"]:
+. [[project-rename]]image:Project-Toolbar_Menu_Rename.png["{ui-view-project-toolbar} Contextual Menu Action Rename"]: Opens the dialog to change the name of the _{project}_.
+. [[project-download]]image:Project-Toolbar_Menu_Download.png["{ui-view-project-toolbar} Contextual Menu Action Download"]: _xref:user-manual:core-concepts/projects.adoc#_export[Downloads]_ the project as a ZIP archive of JSON files.
+. [[project-settings]]image:Project-Toolbar_Menu_Settings.png["{ui-view-project-toolbar} Contextual Menu Action Settings"]: Opens the settings of the _{project}_.
+. [[project-delete]]image:Project-Toolbar_Menu_Delete.png["{ui-view-project-toolbar} Contextual Menu Action Download"]: Opens the dialog to delete the _{project}_ from the workbench.
+* image:Project-Toolbar_Help.png["{ui-view-project-toolbar} Button Help"]: Opens the documentation of the application.

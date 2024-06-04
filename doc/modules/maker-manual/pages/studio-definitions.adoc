@@ -1,0 +1,5 @@
+= Studio Definitions
+
+*_{stddefs}_* are the *low-code artifacts* that define the core of a modeling studio based on {sw}. 
+
+include::partial$studio-definitions/nav.adoc[]

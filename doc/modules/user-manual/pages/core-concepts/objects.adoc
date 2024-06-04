@@ -1,0 +1,50 @@
+= {objects}
+
+== Purpose
+
+*_{objects}_* are the base semantic elements in _{models}_. Each _{object}_ *conforms to* an _Entity_ (or type) from one of the contributed _{usr-data-models}_.
+
+Depending on the type it conforms to, an _{object}_ holds values attached to its _attributes_ and _relations_:
+
+* _Attributes_ are typed by basic data types `String`, `Boolean` or `Number`.
+* _Relations_ are typed by other _Entities_.
+
+#TODO: Should we have more explanation here? Maybe this is enough for {stdusrs} and more details will need to be in the maker guide.#
+
+== Lifecycle
+
+Like _{usr-models}_, _{objects}_ are most often managed directly by _{stdusrs}_ through the _{usr-ui-workbench}_.
+They can also be managed programmatically by _{stddevs}_.
+
+=== Creation
+
+_{objects}_ can be created by either:
+
+* Using the xref:user-manual:workbench-ui/project-homepage/explorer.adoc#model-new-object[{model} contextual menu action].
+* Using the xref:user-manual:workbench-ui/project-homepage/explorer.adoc#object-new-object[{object} contextual menu action].
++
+--
+TIP: _{objects}_ may also be created as part of a _{usr-project-template}_ or a _{usr-project-stereotype}_.
+--
+
+=== Edition
+
+_{objects}_ can be edited by either:
+
+* xref:user-manual:core-concepts/representations.adoc#_edition[Editing the {representation}].
++
+--
+NOTE: The scope and possibilities of _{object}_ edition through a _{representation}_ depend on how it is configured. Refer to the documentation of your custom studio.
+--
+* Using the fields presented in the _{usr-ui-details}_ tab.
+
+=== Deletion
+
+_{objects}_ can be deleted by either:
+
+* xref:user-manual:core-concepts/representations.adoc#_edition[Editing the {representation}].
++
+--
+NOTE: Depends on how the _{representation}_ is defined in the _{stddef}_. In practice, it is common that deleting an element from a _{representation}_ is configured to also delete the corresponding _{object}_ in the underlying _{model}_.
+--
+* Using the xref:user-manual:workbench-ui/project-homepage/explorer.adoc#object-delete[{object} contextual menu action].

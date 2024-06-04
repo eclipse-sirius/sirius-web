@@ -1,0 +1,5 @@
+// Note: Cannot include an open block here.
+* xref:user-manual:core-concepts/projects.adoc[]
+* xref:user-manual:core-concepts/models.adoc[]
+* xref:user-manual:core-concepts/objects.adoc[]
+* xref:user-manual:core-concepts/representations.adoc[]

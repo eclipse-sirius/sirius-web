@@ -1,0 +1,82 @@
+= Diagrams
+
+== Overview
+
+#TODO: I think we need an overview of the structure of a Diagram Description to visualize the "grammar" of what's where. Could be in the form of a metamodel or grammar branching tree style? Doesn't have to contain attributes but should give us a structural overview.#
+
+include::partial$studio-definitions/view-models/diagrams/diagram-description.adoc[leveloffset=+1]
+include::partial$studio-definitions/view-models/diagrams/node-description.adoc[leveloffset=+1]
+include::partial$studio-definitions/view-models/diagrams/edge-description.adoc[leveloffset=+1]
+
+
+
+
+
+== Node Palette
+
+A *`Node Palette`* specifies the set of tools available on nodes stemming from the parent `Node Description`.
+
+TIP: `Node Description` may have at most 1 `Node Palette`.
+
+== Rectangular Node Style Description
+
+== Delete Tool
+
+== Label Edit Tool
+
+== Drop Node Tool
+
+== Node Tool
+
+== Edge Tool
+
+== Node Tool Section
+
+== Palette
+
+A `Diagram Description` may contain at most one `Palette`.
+
+A `Palette` is the top-level container for all the `Tools` defining available actions on nodes or edges of a diagram.
+
+=== Drop Tool
+
+A `Palette` may contain several `Drop Tool`.
+
+A `Drop Tool` defines the behavior to perform whenever an arbitrary element is dropped onto the diagram.
+
+* Name
+* Precondition Expression
+
+The behavior of this tool is specified through a xref:maker-manual:studio-definitions/view-models/actions.adoc#_model_operations[Model Operation].
+
+=== Drop Node Tool
+
+A `Palette` may contain several `Drop Node Tool`.
+
+A `Drop Node Tool` is a tool that defines the behavior to perform whenever a node from the diagram is drag-and-dropped into some target.
+
+* Name
+* Precondition Expression
+* Accepted Node Types
+
+The behavior of this tool is specified through a xref:maker-manual:studio-definitions/view-models/actions.adoc#_model_operations[Model Operation].
+
+=== Node Tool
+
+A `Palette` may contain several `Node Tool`.
+
+A `Node Tool` is a tool that defines arbitrary behaviors that may be performed on elements of a diagram.
+
+* Name
+* Precondition Expression
+* Icon URLs Expression
+
+The behavior of this tool is specified through a xref:maker-manual:studio-definitions/view-models/actions.adoc#_model_operations[Model Operation].
+
+=== Diagram Tool Section
+
+A `Palette` may contain several `Diagram Tool Section`.
+
+A `Diagram Tool Section` is a logical container for tools. It is used to logically group together tools in sub-groups.
+
+* Name

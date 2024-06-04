@@ -1,0 +1,9 @@
+= Portal Description
+
+A `Portal Description` defines how the _{usr-studio-runtime}_ creates xref:user-manual:studio-runtime/representation-editors/portal.adoc[Portal Representations].
+
+This type of representation description is a bit particular, as _{stdmkrs}_ may not create their own as part of their _{stddef}_.
+
+The single, generic, instance of `Portal Description` is contributed to the _{stddef}_ whenever the 'portal feature' is enabled for {sw} (which is the case with the default configuration). The application administrator may choose to disable it in order to prevent users from creating and manipulating Portal representations.
+
+Refer to the xref:user-manual:studio-runtime/representation-editors/portal.adoc#[Studio Runtime] documentation for how _Studio Users_ can create `Portal Representations`.

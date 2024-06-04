@@ -1,1 +1,6 @@
-* xref:index.adoc[]
+* xref:index.adoc[Welcome & Introduction]
+** xref:ROOT:introduction/overview.adoc[]
+** xref:ROOT:introduction/features.adoc[]
+** xref:ROOT:introduction/comparison.adoc[]
+** xref:ROOT:introduction/governance.adoc[]
+** xref:ROOT:introduction/sources.adoc[]

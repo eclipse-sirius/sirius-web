@@ -1,0 +1,7 @@
+= Core Concepts
+
+{sw} relies on a few core concepts upon which domain-specific studios are built.
+
+#TODO: Add diagram of the relations between projects, models, objects and representations.#
+
+include::partial$core-concepts/nav.adoc[leveloffset=+1]

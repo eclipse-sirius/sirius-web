@@ -1,0 +1,3 @@
+= External Edition
+
+#TODO: explain how we can edit projects with external tools by first exporting a project, tweaking one of the JSON files, and re-importing again. Notice how IDs might change because incremental import is not supported.#

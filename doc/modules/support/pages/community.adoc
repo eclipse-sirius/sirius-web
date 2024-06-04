@@ -1,0 +1,18 @@
+= Community
+
+== Official Forum
+
+The official community forum for {sw} is the {sw-forum}[GitHub 'Discussions' tab].
+
+== Bug Tracker
+
+The official bug tracker for {sw} is the {sw-tracker}[GitHub 'Issues' tab].
+
+== Contribute
+
+{sw} is an open-source project, and as such, accepts contributions.
+Refer to the {sw-github}/blob/master/CONTRIBUTING[Contributing Documentation] for how to contribute changes to {sw}.
+
+== Professional Support
+
+https://www.obeosoft.com/en/[Obeo], the main company behind this open-source project, can provide professional support, training or custom development. https://www.obeosoft.com/en/contact[Get in touch!]

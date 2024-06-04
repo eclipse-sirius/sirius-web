@@ -1,0 +1,5 @@
+= Developer Guide
+
+This guide is intended for _Developers_ who wish to take a *programmatic* approach to {sw}.
+
+It assumes a certain level of technical knowledge, particularly with the technologies used by {sw} to provide APIs. It may also assume knowledge about core concepts of {sw}, such as _{stddefs}_ and the _{stdrt}_, which is provided in both the xref:user-manual:index.adoc[] and the xref:maker-manual:index.adoc[].

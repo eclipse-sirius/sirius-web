@@ -1,0 +1,35 @@
+= About {sw} APIs
+
+== Overview
+
+#TODO: Include an overview of the APIs provided by {sw}.
+There should probably a sort of architecture diagram of the different APIs, and the technologies they rely on.
+e.g. backend provides Java APIs for Data Model / View Model / Workbench, and I think it exposes GraphQL / HTTP APIs. Frontend probably provides React API.#
+
+== Features
+
+[cols="2,1,4"]
+|===
+|*API Denomination*
+|*Technology*
+|*Purpose*
+
+|xref:developer-guide:studio-development/api-datamodel.adoc[Data Model API]
+|Java
+|Contribute your custom data models to the platform so that your custom studio fits the needs of your domain experts.
+
+|xref:developer-guide:studio-development/api-viewmodel.adoc[View Model API]
+|Java
+|Contribute your custom view models to the platform to define how users can visualize and/or edit their data.
+
+|xref:developer-guide:studio-development/api-workbench.adoc[Workbench API]
+|Java
+|Contribute to the xref:user-manual:workbench-ui.adoc[Generic Workbench UI] to improve the UX of your custom studio.
+
+|Studio Runtime API
+|Java
+|Configure parameters of the _{stdrt}_
+|===
+
+#TODO: Complete this table.
+Probably the Studio Runtime provides various APIs to configure some stuff?#

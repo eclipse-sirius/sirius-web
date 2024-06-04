@@ -1,0 +1,64 @@
+= Model Operations
+
+A _Model Operation_ is used to specify an arbitrary behavior in an imperative manner.
+
+[IMPORTANT] 
+.Operation Execution Context
+==== 
+Each operation is executed in a context made of _variables_.
+A _variable_ is essentially a _name_ attached to a _value_.
+Some operations may impact the context, usually by defining new variables or modifying the value attached to a variable.
+
+The context in which an operation is executed is _most of the time_ provided by the parent operation.
+That is, a child model operation is executed in the context resulting from the execution of the parent model operation.
+
+Root model operations are executed in a context provided by the parent element.
+Depending on the nature of that element, the available variables and the values to which they are bound will vary.
+To understand the context of a model operation, refer to the documentation of the parent element.
+====
+
+== Operation
+
+`{view-operation}` is the common supertype for all possible operations: `{view-changecontext-x}`, `{view-createinstance-x}`,`{view-deleteelement-x}`, `{view-if-x}`,`{view-let-x}`,`{view-setvalue-x}`,`{view-unsetvalue-x}`.
+
+Moreover, `{mkr-diagram}` adds two diagram-specific operations:
+* `{diagram-createview-x}`
+* `{diagram-deleteview-x}`
+
+=== Children
+
+* Technical name: `children`
+* Type: `{view-operation-x}`
+* Multiplicity: many
+* Necessity: optional
+* Semantics: The children `{view-operation}` are executed after this `{view-operation}`, in order, depth-first, in the context resulting from the execution of this `{view-operation}`.
+
+#TODO: Possibly re-write elements below depending on the formatting we ultimately choose to display references/attributes of our concepts.#
+
+== Control Flow Operations
+
+include::partial$studio-definitions/view-models/actions/model-operations/ChangeContext.adoc[leveloffset=+1]
+
+include::partial$studio-definitions/view-models/actions/model-operations/Let.adoc[leveloffset=+1]
+
+include::partial$studio-definitions/view-models/actions/model-operations/If.adoc[leveloffset=+1]
+
+== Model Change Operations
+
+When executed, the operations below have side-effects on the semantic model.
+
+include::partial$studio-definitions/view-models/actions/model-operations/CreateInstance.adoc[leveloffset=+1]
+
+include::partial$studio-definitions/view-models/actions/model-operations/SetValue.adoc[leveloffset=+1]
+
+include::partial$studio-definitions/view-models/actions/model-operations/UnsetValue.adoc[leveloffset=+1]
+
+include::partial$studio-definitions/view-models/actions/model-operations/DeleteElement.adoc[leveloffset=+1]
+
+== Representation Operations
+
+When executed, the operations below have side-effects on the representations of the model.
+
+include::partial$studio-definitions/view-models/actions/model-operations/CreateView.adoc[leveloffset=+1]
+
+include::partial$studio-definitions/view-models/actions/model-operations/DeleteView.adoc[leveloffset=+1]

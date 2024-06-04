@@ -1,0 +1,73 @@
+// TODO: Technically we should be able to set up a relative link to icons from packages/view/backend/sirius-components-view-diagram-edit/src/main/resources/icons/full/obj16
+// so that icons are always up to date.
+:DiagramDescription: image:DiagramDescription.svg["Diagram Description Icon"] Diagram Description
+
+= Diagram Description
+
+A *`{DiagramDescription}`* defines how the _{usr-studio-runtime}_ creates xref:user-manual:studio-runtime/representation-editors/diagram.adoc[Diagram Representations].
+
+`Diagram Descriptions` are contained by a `View` of the _{mkr-view-model}_.
+
+.Properties of a Sample `Diagram Description`
+image::Diagram-Description-Properties.png["Sample Diagram Description Properties"]
+
+#TODO: Not sure if the table format below is the right choice, we may have little to say for some properties, and much to say for others. Also I think most of the time the context will be mostly the same for all properties. I'll do a list in the next section so we can compare both styles.#
+
+.Properties of `Diagram Description`
+[cols="1,1,3a,3,1"]
+|===
+|_Property_
+|_Type_
+|_Context & Variables_
+|_Semantics_
+|_Example_
+
+|*`Name`*
+|`String`
+|N/A
+|The name for this Diagram Description
+|`My Diagram Description`
+
+|*`Domain Type`*
+|`Type literal`
+|All the _Data Models_ registered in the platform
+|The type of element for which this diagram description applies
+|`aql:domain::Entity`
+
+|*`Precondition Expression`*
+|`String` ({mkr-query})
+|[cols="1,2"]
+!===
+! _Name_ ! _Semantics_
+! `self`
+! The candidate semantic element
+!===
+|Returns a `Boolean` result indicating whether the {stdrt} must create a `Diagram Representation` for the candidate semantic element `self`.
+|`aql:self.isXXX`
+
+|*`Title Expression`*
+|`String` ({mkr-query})
+|[cols="1,2"]
+!===
+! _Name_ ! _Semantics_
+! `self`
+! The semantic element
+!===
+|Returns a `String` result used as the title for the created `Diagram Representation`.
+|`aql:self.name`
+
+|*`Auto Layout`*
+|`Boolean`
+|N/A
+|Returns whether the 'auto-layout' feature is enabled for the created `Diagram Representations`.
+|N/A
+
+|*`Arrange Layout Direction`*
+|`UNDEFINED`, `RIGHT`, `DOWN`, `LEFT`, `UP`
+|N/A
+|#TODO: no idea what this does.#
+|N/A
+
+|===
+
+#TODO: Maybe just removing last column will give us enough room to be OK?#

@@ -1,0 +1,5 @@
+= Setup
+
+In order to be able to create or edit a _{stddef}_ using the low-code approach of {sw}, make sure you meet the requirements and setup instructions detailed below.
+
+include::partial$setup/nav.adoc[]

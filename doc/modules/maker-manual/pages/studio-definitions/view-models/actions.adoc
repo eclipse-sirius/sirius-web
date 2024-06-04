@@ -1,0 +1,7 @@
+= Actions
+
+In {sw}, when specifying a _{mkr-view-model}_, we may need to be able to express the _behavior_ of *actions* which occur as part of the _Studio User_ interacting with a graphical representation.
+
+include::partial$studio-definitions/view-models/actions/model-operations.adoc[leveloffset=+1]
+
+The only action language supported by {sw} is the set of _Model Operations_.

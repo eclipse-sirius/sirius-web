@@ -1,0 +1,7 @@
+= Generic Workbench User Interface
+
+This is the reference documentation for the User Interface (UI) of the generic workbench provided by {sw}.
+
+NOTE: Some parts of the generic workbench UI may be removed, added or modified by custom applications based on {sw}. Refer to the internal documentation of your custom application for these changes.
+
+include::partial$workbench-ui/nav.adoc[]

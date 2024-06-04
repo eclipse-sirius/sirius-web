@@ -1,0 +1,10 @@
+= Studio Maker Manual
+
+This manual is intended for _{stdmkrs}_, who *create* custom studios using the *low-code* approach of {sw}.
+
+IMPORTANT: This manual assumes that _{stdmkrs}_ have no programming experience.
+
+* xref:maker-manual:setup.adoc[]
+* xref:maker-manual:interface-tour.adoc[]
+* xref:maker-manual:studio-definitions.adoc[]
+* xref:maker-manual:tutorials.adoc[]

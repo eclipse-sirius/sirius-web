@@ -1,0 +1,9 @@
+= Data Model APIs
+
+In the xref:maker-manual:studio-definitions/data-models.adoc[Studio Maker Manual], we explain how _{stdmkrs}_ can use a low-code approach to contribute or re-use a custom data model.
+
+But _{stddevs}_ can use a programmatic approach to contribute custom data model, which allows a finer-grained expressivity.
+
+include::partial$studio-development/api-datamodel/creation.adoc[leveloffset=+1]
+
+include::partial$studio-development/api-datamodel/contribution.adoc[leveloffset=+1]

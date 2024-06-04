@@ -1,0 +1,254 @@
+= Representation Descriptions
+
+A *Representation Description* is a mapping between concepts of the _xref:maker-manual:studio-definitions/data-models.adoc[Data Model]_ (e.g. the `name` attribute of type `Entity`) and standard elements from the UI (e.g. displayed as a label in a node of a `Diagram Representation`, and as an editable text field in a `Form Representation`).
+
+In these descriptions, the element from the _Data Model_ is often called the *semantic element* while the element produced that _represents_ it is often called the *graphical element*.
+
+
+== Default Descriptions
+
+{sw} provides 5 types of ready-to-use representation descriptions.
+
+=== Decks
+
+A *`{mkr-deck}`* defines how the _{usr-studio-runtime}_ creates `{usr-deck}` representations.
+
+[cols="1,2",frame=none,grid=none,border=none,stripe=none]
+|===
+a|In Deck Descriptions:
+
+* Semantic elements are represented as lanes and cards.
+* Lanes are vertical groupings of cards.
+
+a|.A sample `Deck Representation`
+image::DeckRepresentation.png["Sample Deck Representation"]
+|=== 
+
+=== Diagrams
+
+A *`{mkr-diagram}`* defines how the _{usr-studio-runtime}_ creates `{usr-diagram}` representations.
+
+[cols="1,2",frame=none,grid=none,border=none,stripe=none]
+|===
+a|In Diagram Descriptions:
+
+* Semantic elements can be mapped to nodes and/or edges.
+* Edges can also represent features between semantic elements.
+* Nodes can be inside or on the border of other nodes.
+* Nodes can use default shapes or rely on vector images, possibly animated.
+* Use powerful ready-to-use layout algorithms.
+* Edit the diagram through integrated palettes
+
+a|.A sample `Diagram Representation`
+image::DiagramRepresentation.png["Sample Diagram Representation"]
+|=== 
+
+
+=== Forms
+
+A *`{mkr-form}`* defines how the _{usr-studio-runtime}_ creates `{usr-form}` representations.
+
+#TODO: Insert example snapshot of a Form Representation.#
+
+
+=== Gantts
+
+A *`{mkr-gantt}`* defines how the _{usr-studio-runtime}_ creates `{usr-gantt}` representations.
+
+#TODO: Insert example snapshot of a Gantt Representation.#
+
+=== Portals
+
+A *`{mkr-portal}`* defines how the _{usr-studio-runtime}_ creates `{usr-portal}` representations.
+
+[cols="1,2",frame=none,grid=none,border=none,stripe=none]
+|===
+a|Portal Descriptions are a bit peculiar compared to other representation descriptions:
+
+* There is only *one single reflective instance*, so _{stdmkrs}_ cannot create their own.
+* This singleton instance may be activated by the administrator of the application.
+* The _Studio Users_ may create a _Portal Representation_ and configure which other representations get embedded into it, and how they are layed out.
+* Portal representations can be created for any semantic element.
+
+a|.A sample `Portal Representation`
+image::PortalRepresentation.png["Sample Portal Representation"]
+|=== 
+
+=== Trees
+
+A *`{mkr-tree}`* defines how the _{usr-studio-runtime}_ creates `{usr-tree}` representations.
+
+#TODO: Insert example snapshot of a Tree Representation.#
+
+
+== Custom Representation Descriptions
+
+Depending on your custom studio, it is possible that a _{stddev}_ may have contributed a xref:developer-guide:studio-development.adoc#_custom_representation_description_apis[Custom Representation Description]. In that case, the documentation provided by your studio should explain how the corresponding `Representation Description` works.
+
+
+== Representation Description
+
+`RepresentationDescription` is the common supertype for all available types of representation descriptions:
+* `{deck-deckdescription-x}`
+* `{diagram-diagramdescription-x}`
+* `{form-formdescription-x}`
+* `{gantt-ganttdescription-x}`
+* `{portal-portaldescription-x}`
+* `{tree-treedescription-x}`
+
+=== Name
+
+* Technical name: `name`
+* Type: `String`
+* Necessity: optional
+* Semantics: the name for this `RepresentationDescription`. This is a technical name that is not displayed to {stdusrs}, but possibly used by {stdmkrs} and {stddevs} to re-use (parts of) this `RepresentationDescription`.
+* Default value: `NewRepresentationDescription`
+* Example: `My Representation Description`
+
+=== Domain Type
+
+* Technical name: `domainType`
+* Type: `Type Literal`
+* Necessity: optional
+* Context & Variables: all the _Data Models_ registered in the platform.
+* Semantics: the type of semantic elements for which this `RepresentationDescription` applies. When empty, the description may be applied to all candidate semantic elements
++
+--
+IMPORTANT: Only candidate semantic elements which also validate the `xref:maker-manual:studio-definitions/view-models/representation-descriptions.adoc#_precondition_expression[Precondition Expression]` will ultimately be processed by the description.
+--
+
+* Default value: <empty>
+* Example: `domain::Entity`
+
+=== Precondition Expression
+
+* Technical name: `preconditionExpression`
+* Type: `String` ({mkr-query})
+* Necessity: optional
+* Semantics: returns a `Boolean` value indicating whether the {stdrt} should apply this `RepresentationDescription` to the candidate semantic element. When empty, the description may be applied to all candidate semantic elements.
++
+--
+IMPORTANT: Only candidate semantic elements which also validate the `xref:maker-manual:studio-definitions/view-models/representation-descriptions.adoc#_domain_type[Domain Type]` predicate are tested against this precondition.
+--
+
+* Default value: <empty>
+* Example: `aql:self.isXXX()`
+* Context & Variables:
++
+--
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The candidate semantic element, which has already validated the `xref:maker-manual:studio-definitions/view-models/representation-descriptions.adoc#_domain_type[Domain Type]` predicate.
+|===
+--
+
+=== Title Expression
+
+* Technical name: `titleExpression`
+* Type: `String` ({mkr-query})
+* Necessity: optional
+* Semantics: returns a `String` value that will be used as the default name for representations conforming to this `RepresentationDescription`.
+* Default value: `aql:'New Representation'`
+* Example: `aql:self.name + ' for ' + self.target.name`
+* Context & Variables:
++
+--
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The semantic element, which has validated both the `xref:maker-manual:studio-definitions/view-models/representation-descriptions.adoc#_domain_type[Domain Type]` predicate and the `xref:maker-manual:studio-definitions/view-models/representation-descriptions.adoc#_precondition_expression[Precondition Expression]`.
+|===
+--
+
+
+== Label Style
+
+`LabelStyle` is the common supertype of #TODO: add xref to appropriate section when they exist# `NodeLabelStyle`, `ListDescriptionStyle`, `SelectDescriptionStyle`, `MultiSelectDescriptionStyle`, `LabelDescriptionStyle`, `TextfieldDescriptionStyle`, `RadioDescriptionStyle`, `BarChartDescriptionStyle`, `TextareaDescriptionStyle`, `ReferenceWidgetDescriptionStyle`, `LinkDescriptionStyle`, `ButtonDescriptionStyle`, `PieChartDescriptionStyle`, `EdgeStyle`.
+
+=== Font Size
+
+* Technical name: `fontSize`
+* Type: `Integer`
+* Necessity: mandatory
+* Semantics: the size in #TODO: ???# to use for the font of the text styled by this `LabelStyle`.
+* Default value: `14`
+* Example: `16`
+
+=== Italic
+
+* Technical name: `italic`
+* Type: `Boolean`
+* Necessity: mandatory
+* Semantics: whether the text styled by this `LabelStyle` gets displayed in _italic_.
+* Default value: `false`
+* Example: `false`
+
+=== Bold
+
+* Technical name: `bold`
+* Type: `Boolean`
+* Necessity: mandatory
+* Semantics: whether the text styled by this `LabelStyle` gets displayed in *bold*.
+* Default value: `false`
+* Example: `false`
+
+=== Underline
+
+* Technical name: `underline`
+* Type: `Boolean`
+* Necessity: mandatory
+* Semantics: whether the text styled by this `LabelStyle` gets displayed with an [.underline]#underline#.
+* Default value: `false`
+* Example: `false`
+
+=== StrikeThrough
+
+* Technical name: `strikeThrough`
+* Type: `Boolean`
+* Necessity: mandatory
+* Semantics: whether the text styled by this `LabelStyle` gets displayed with [.line-through]#strikethrough#.
+* Default value: `false`
+* Example: `false`
+
+
+== Conditional 
+
+`{view-conditional-x}` is the common supertype of all styles which are enabled conditionnally (usually depending on the semantic element being represented).
+
+* In `{mkr-deck}`:
+** `{deck-conditionaldeckdescriptionstyle-x}`
+** `{deck-conditionaldeckelementdescriptionstyle-x}`
+* In `{mkr-diagram}`:
+** `{diagram-conditionalnodestyle-x}`
+** `{diagram-conditionaledgestyle-x}`
+** `{diagram-conditionallabelstyle-x}`
+** `{diagram-conditionalinsidelabelstyle-x}`
+** `{diagram-conditionaloutsidelabelstyle-x}`
+* In `{mkr-form}`:
+** `{form-conditionalbarchartdescriptionstyle-x}`
+** `{form-conditionalbuttondescriptionstyle-x}`
+** `{form-conditionalcheckboxdescriptionstyle-x}`
+** `{form-conditionalcontainerborderstyle-x}`
+** `{form-conditionaldatetimedescriptionstyle-x}`
+** `{form-conditionallabeldescriptionstyle-x}`
+** `{form-conditionallinkdescriptionstyle-x}`
+** `{form-conditionallistdescriptionstyle-x}`
+** `{form-conditionalmultiselectdescriptionstyle-x}`
+** `{form-conditionalpiechartdescriptionstyle-x}`
+** `{form-conditionalradiodescriptionstyle-x}`
+** `{form-conditionalselectdescriptionstyle-x}`
+** `{form-conditionaltextareadescriptionstyle-x}`
+** `{form-conditionaltextfielddescriptionstyle-x}`
+
+
+=== Condition
+
+* Technical name: `condition`
+* Type: `String` ({mkr-query})
+* Necessity: mandatory
+* Semantics: returns a `Boolean` value that determines whether this `{view-conditional-x}` is enabled or not.
+* Default value: `aql:false`
+* Example: `aql:self.isXXX()`

@@ -1,0 +1,15 @@
+= Overview
+
+{sw} is a framework providing the means to create custom domain-specific _{stddefs}_.
+A _{stddef}_ specifies a domain-specific _data model_, as well as ways to *represent* and/or *edit* such domain-specific data.
+
+{sw} also provides the _{stdrt}_ which renders a _{stddef}_ into a cloud-based modeling studio (as a standalone application, or embedded into your own web application) which allows users to visualize and edit their domain-specific data.
+
+The specificity of {sw} lies in the two different means it provides to create a _{stddef}_:
+
+* The *low-code* approach allows _{stdmkrs}_ to create or contribute to a _{stddef}_, without requiring any programming skills. This is ideal for non-technical users to develop or prototype a custom studio. Even for developers, this can be the best way to quickly set up a proof-of-concept, allowing them to focus on how to best present and edit their domain-specific data.
+* The *programmatic* approach allows _{stddevs}_ to create, contribute to, or extend, a _{stddef}_ using the {sw} APIs. This unleashes the full power of these APIs, which allows for a finer control of customizations to the studio, at the cost of additional complexity.
+
+#TODO: include a diagram that illustrates that the low-code and programmatic approach are just 2 different means to edit a _{stddef}_ (with more possibilities and complexity on the programmatic side). _{stdmkr}_ and _{stddev}_ personas should appear. The {sw} runtime should also be shown to interpret the {stddef} into a cloud-based modeling studio.#
+
+Both approaches are complementary, as any _{stddef}_ can be edited through both approaches. Of course, some of the specificities implemented programmatically cannot be represented or edited through the low-code approach.

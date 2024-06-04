@@ -1,0 +1,28 @@
+= Related Elements
+
+The *Related Elements* tab in the right sidebar of the _xref:user-manual:workbench-ui/project-homepage.adoc[]_ displays other project elements related to the currently-selected _Object_. It also allows quickly navigating to these related elements.
+
+.The _{ui-view-related}_ tab
+image::Related-Elements.png["{ui-view-related}" Tab Sample Snapshot]
+
+Related project elements are classified into three root categories:
+
+* image:Related-Elements_Incoming.png["{ui-view-related}" Tab Incoming Icon]: for project elements referencing the selected object.
+* image:Related-Elements_Current.png["{ui-view-related}" Tab Current Icon]: for project elements closely related to the selected object.
+* image:Related-Elements_Outgoing.png["{ui-view-related}" Tab Outgoing Icon]: for project elements referenced by the selected object.
+
+IMPORTANT: The related elements are computed according to the rules provided by the _{usr-data-model}_ to which the selected object conforms.
+
+A root category is represented as a tree. There are no restrictions on the width or depth of the tree.
+
+.The `CURRENT` category displayed as a tree
+image::Related-Elements_Tree.png["{ui-view-related}" Tab `CURRENT` Category Tree]
+
+* The root of the tree is the name of the category.
+* The project elements related to the currently-selected object are the leaves of the tree.
+* Intermediary nodes may be used to further organize the related elements.
+
+By default, all root categories are active, but clicking on a category hides the elements belonging to this category:
+
+.The _{ui-view-related}_ tab with the `CURRENT` category disabled
+image::Related-Elements_Filtered.png["{ui-view-related}" Tab Filtered Snapshot]

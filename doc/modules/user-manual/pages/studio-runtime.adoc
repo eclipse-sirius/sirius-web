@@ -1,0 +1,5 @@
+= Studio Runtime
+
+The _{stdrt}_ is the engine that takes a _xref:maker-manual:studio-definitions.adoc[{stddef}]_ and interprets it as a modeling studio as part of a cloud-based application. Most of the results of this interpretation ends up as contributions to the xref:user-manual:workbench-ui.adoc[].
+
+include::partial$studio-runtime/nav.adoc[leveloffset=+1]

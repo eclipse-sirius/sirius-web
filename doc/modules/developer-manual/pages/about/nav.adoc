@@ -1,3 +1,0 @@
-// Note: Cannot include an open block here.
-* xref:developer-manual:about/index.adoc[]
-** xref:developer-manual:about/contents/release-notes/index.adoc[]

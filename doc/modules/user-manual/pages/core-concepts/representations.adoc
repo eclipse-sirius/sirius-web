@@ -1,0 +1,49 @@
+= {representations}
+
+== Purpose
+
+*_{representations}_* are the _{model}_-specific manifestations of a description contributed by one of the _{usr-view-models}_.
+
+Its purpose is to provide a partial view on a _{usr-model}_, and, possibly, to also allow its edition. The partiality of this view depends on the intended audience: while Systems Engineers may be more familiar with detailed architecture diagrams, Qualiticians may need tables synthesizing some functional properties of the _{model}_ at hand, and Project Managers may rely on higher-level views that do not show all the details of the system.
+
+Most of the time a _{representation}_ allows both *visualizing* and *editing* a specific sub-set of a _{model}_. There are, however, no technical limitations regarding the scope of what can be visualized and edited. This means that it is possible for a _{representation}_ to be _read-only_, to represent a _whole {model}_ or only a very specific sub-set of it, etc.
+
+By default, _{representations}_ belong to a _{project}_ and are serialized with it. However it is also possible for {sw}-based applications to create on-the-fly _{representations}_ that are not meant to be saved with the project.
+
+A _{representation}_ is always _rooted_ in a particular _{object}_ belonging to a _{model}_.
+
+In the _{usr-ui-explorer}_ tab of the _{usr-ui-workbench}_, representations are located just below the _{object}_ they are rooted in.
+
+
+== Lifecycle
+
+Like _{usr-objects}_, _{representations}_ are most often managed directly by _{stdusrs}_ through the _{usr-ui-workbench}_. They can also be managed programmatically by _{stddevs}_.
+
+=== Creation
+
+_{representations}_ can be created by either:
+
+* Selecting a semantic element from the _{usr-ui-explorer}_ and, using the corresponding actions presented in the _xref:user-manual:workbench-ui/project-homepage/project-editor.adoc#_create_a_new_representation[{ui-view-project-editor}]_.
++
+--
+IMPORTANT: The creation of a new _{representation}_ on an _{object}_ is only possible if the _{object}_ matches the type and precondition specified for this type of _{representation}_.
+--
+* Using the _xref:user-manual:workbench-ui/project-homepage/explorer.adoc#object-new-representation[{object} contextual menu action]_.
+
+In both cases, the target _{object}_ for the newly-created _{representation}_ is the selected _{object}_.
+
+TIP: _{representations}_ may also be created as part of a _{usr-project-template}_ or a _{usr-project-stereotype}_.
+
+=== Edition
+
+_{representations}_ can be opened by either:
+
+* Using the the _xref:user-manual:workbench-ui/project-homepage/project-editor.adoc#_open_an_existing_representation[{ui-view-project-editor}]_
+* Selecting a _{representation}_ in the _{usr-ui-explorer}_.
+
+In both cases, the adequate _{usr-representation-editor}_ that opens depends on the nature of the _{representation}_.
+Usually, editing a _{representation}_ results in changes in the underlying _{usr-model}_.
+
+=== Deletion
+
+_{representations}_ can be deleted from the _{usr-ui-explorer}_ tab.

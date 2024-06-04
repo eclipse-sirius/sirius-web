@@ -1,0 +1,4 @@
+// Note: Cannot include an open block here.
+* xref:user-manual:tutorials/first-project.adoc[]
+* xref:user-manual:tutorials/first-validation.adoc[]
+* xref:user-manual:tutorials/external-edition.adoc[]

@@ -1,0 +1,10 @@
+= {ui-view-validation}
+
+The *{ui-view-validation}* tab in the left sidebar of the _xref:user-manual:workbench-ui/project-homepage.adoc[]_ displays the latest validation results of the contextual _xref:user-manual:core-concepts.adoc#_projects[Project]_.
+
+.The _{ui-view-validation}_ tab
+image::Validation.png["{ui-view-validation}"]
+
+The diagnostics are presented grouped according to their kind (usually `ERROR`, `WARNING` or `INFO`).
+
+NOTE: The validation rules applied on a _{usr-model}_ and its _Objects_ depend on the _{usr-data-model}_ to which it conforms.

@@ -1,0 +1,7 @@
+= Help & Support
+
+If you want to know more about {sw}, or you have an issue that could not be answered from the reference documentation, the resources below are at your disposal.
+
+* xref:support:best-practices.adoc[]
+* xref:support:faq.adoc[]
+* xref:support:community.adoc[]

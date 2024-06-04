@@ -1,0 +1,63 @@
+= {view-models}
+
+== Overview
+
+In a _{mkr-studio-definition}_, the _{view-model}_ defines how, xref:user-manual:studio-runtime.adoc[at runtime], domain-specific data conforming to the _{mkr-data-models}_ is to be *represented* and *edited* through {sw} _{usr-representations}_.
+
+NOTE: In fact, *_{view-model}_* is actually a particular _{usr-data-model}_ that is made available in all _{mkr-studio-projects}_.
+
+A _{view-model}_ is composed of several `{view-view-x}`. Each `{view-view}` is contains a list of so-called `{view-representationdescription-x}`.
+At runtime, each _{representation}_ stems from the application of a `{view-representationdescription}` onto a {usr-model}.
+
+NOTE: Most of the time, a _{view-model}_ will focus on providing _{representations}_ that focus on the _{data-model}_ contributed alongside it as part of the {stddef}. But there are no technical restrictions, so a _{view-model}_ could just as easily provide _{representations}_ for other _{data-models}_ available in the platform.
+
+Each `{view-view}` is a pre-defined, finite, set of `{view-representationdescription}`. Usually the scoping of a `{view-view}` is determined based on the intended audience: depending on the role of the _{stdusr}_ in the organization (e.g. architect, engineering, quality assurance, etc.), different means of visualizing and editing the same set of domain-specific data may be more appropriate.
+
+TIP: In some communities, this approach is known as _Viewpoints_ or _Perspectives_.
+
+== Editor
+
+#TODO: Not sure if this is the right location for this section.#
+
+As a _{stdmkr}_, the _{view-model}_ is edited through a dedicated editor embedded in {sw}.
+
+In this editor, edition happens through fields in the {usr-ui-details} tab. Most importantly, _some_ of the text fields rely on a specific syntax. They are identified by their background color, which differs from the default (white).
+
+=== Type Literals
+
+Text fields with a light green background expect a `Type literal`, that is, that the String entered by the {stdmkr} conforms to one of the valid syntaxes for referencing a type from one of the contributed _{usr-data-models}_ of the platform.
+
+.Sample type literal text field
+image::ViewModel_Editor_TextField_TypeLiteral.png["Snapshot of a sample type literal text field"]
+
+The following syntaxes are allowed:
+[source, bash]
+----
+typeName <1>
+packageName::typeName <2>
+packageName.typeName <2>
+----
+<1> A type name, if there is no ambiguity, i.e. no two types of different packages with the same name.
+<2> A type name, preceded by the name of the package that contains it, separated by `::` or `.`.
+
+When editing this kind of text field, the content assist can be brought up using keyboard shortcut `CTRL+SPACE`.
+
+.Sample type literal text field with content assist
+image::ViewModel_Editor_TextField_TypeLiteral_ContentAssist.png["Snapshot of a sample type literal text field with the content assist invoked"]
+
+Suggestions are based on the Data Models available in the platform, and the text preceding the cursor location.
+
+
+=== Queries
+
+Text fields with a light yellow background expect a `Query literal`, that is, that the String entered by the {stdmkr} is a valid _{mkr-query}_.
+
+.Sample query literal text field
+image::ViewModel_Editor_TextField_Query.png["Snapshot of a sample query literal text field"]
+
+Moreover, the content assist can be brought up using keyboard shortcut `CTRL+SPACE`.
+
+.Sample query literal text field with content assist
+image::ViewModel_Editor_TextField_Query_ContentAssist.png["Snapshot of a sample query literal text field with the content assist invoked"]
+
+Suggestions are based on the Data Models available in the platform , and the text preceding the cursor location.

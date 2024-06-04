@@ -1,0 +1,9 @@
+= Representations
+
+The *Representations* tab in the right sidebar of the _xref:user-manual:workbench-ui/project-homepage.adoc[]_ displays the list of all existing _xref:user-manual:core-concepts.adoc#_representations[Representations]_ rooted in the currently-selected _Object_.
+
+.The _{ui-view-representations}_ tab
+image::Representations.png["{ui-view-representations}"]
+
+* Clicking on the name of a representation opens it in the xref:user-manual:studio-runtime/representation-editors.adoc[appropriate editor].
+* image:Representations_Delete.png["{ui-view-representations} Delete Icon"]: Opens the dialog to delete the corresponding representation.

@@ -1,0 +1,69 @@
+= Lane Description
+
+A `LaneDescription` is a `xref:maker-manual:studio-definitions/view-models/decks.adoc#_deck_element_description[DeckElementDescription]` that specifies a column in a `DeckDescription`.
+
+#TODO: Add snapshot of a Deck representation and highlight Lanes in red.#
+
+== Name
+
+* Technical name: `name`
+* Type: `String`
+* Multiplicity: single
+* Necessity: mandatory
+* Semantics: The name of the `LaneDescription`. This is only used internally by _{stdmkrs}_.
+* Default value: `New Lane Description`
+
+== Domain Type
+
+* Technical name: `domainType`
+* Type: `Type Literal`
+* Necessity: optional
+* Context & Variables: all the _Data Models_ registered in the platform.
+* Semantics: the type of semantic elements for which this `LaneDescription` applies. When empty, the description may be applied to all candidate semantic elements
+
+== Owned Card Descriptions
+
+* Technical name: `ownedCardDescriptions`
+* Type: `xref:maker-manual:studio-definitions/view-models/decks.adoc#_card_description[CardDescription]`
+* Multiplicity: many
+* Necessity: optional
+* Semantics: only a `Card` conforming to one of these descriptions may belong in a `Lane` described by this `LaneDescription`.
+
+== Edit Tool
+
+* Technical name: `editTool`
+* Type: `xref:maker-manual:studio-definitions/view-models/decks.adoc#_edit_lane_tool[EditLaneTool]`
+* Multiplicity: single
+* Necessity: optional
+* Semantics: the `EditLaneTool` executed whenever the title of a `Lane` changes.
+
+== Create Tool
+
+* Technical name: `createTool`
+* Type: `xref:maker-manual:studio-definitions/view-models/decks.adoc#_create_card_tool[CreateCardTool]`
+* Multiplicity: single
+* Necessity: optional
+* Semantics: the `CreateCardTool` executed whenever the `Click to add card` button of a `Lane` is selected.
+
+== Card Drop Tool
+
+* Technical name: `cardDropTool`
+* Type: `xref:maker-manual:studio-definitions/view-models/decks.adoc#_card_drop_tool[CardDropTool]`
+* Multiplicity: single
+* Necessity: optional
+* Semantics: the `CardDropTool` executed whenever a `Card` is dropped in a `Lane`.
+
+== Is Collapsible Expresson
+
+* Technical name: `isCollapsibleExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The target semantic element of this `LaneDescription`
+|===
+* Semantics: Returns a `Boolean` value indicating whether a `Lane` described by this `LaneDescription` may be collapsed.
+* Example: `aql:self.isXXX()`
+* Default value: `aql:true`

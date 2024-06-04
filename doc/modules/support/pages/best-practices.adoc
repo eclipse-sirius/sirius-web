@@ -1,0 +1,9 @@
+= Best Practices
+
+The following best practices capitalize the first-hand experience of the {sw} developers with {sw}.
+
+include::partial$best-practices/studio-users.adoc[leveloffset=+1]
+
+include::partial$best-practices/studio-makers.adoc[leveloffset=+1]
+
+include::partial$best-practices/studio-developers.adoc[leveloffset=+1]

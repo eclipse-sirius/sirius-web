@@ -1,3 +1,0 @@
-= Mindstorms Robot Tutorial
-
-#TODO: someday in the future, maybe add here a simple tutorial similar to https://wiki.eclipse.org/Sirius/Tutorials/Mindstorms[Sirius Desktop's Mindstorms Robot Tutorial]#

@@ -1,0 +1,5 @@
+= View Models
+
+#TODO: Explain what the View Models available in the platform contribute for the {stdusr}. For instance that for any matching semantic element, representations may be created.#
+
+#TODO: Also explain which view models {sw} provides by default. I think there is one for editing Domains and maybe one for editing View Models.#

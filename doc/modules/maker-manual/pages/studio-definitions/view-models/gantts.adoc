@@ -1,0 +1,7 @@
+= Gantt Description
+
+A `Gantt Description` defines how the _{usr-studio-runtime}_ creates xref:user-manual:studio-runtime/representation-editors/gantt.adoc[Gantt Representations].
+
+#TODO: Migrate https://github.com/eclipse-sirius/sirius-web/blob/master/doc/specifier/representation-gantt.adoc#
+
+#TODO: Detail the contents of this description.#

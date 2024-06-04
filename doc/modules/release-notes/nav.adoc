@@ -1,0 +1,2 @@
+* xref:release-notes:index.adoc[]
+** xref:release-notes:2024.adoc[]

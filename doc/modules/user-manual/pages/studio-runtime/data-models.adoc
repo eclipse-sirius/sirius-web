@@ -1,0 +1,24 @@
+= Data Models
+
+A *Data Model* defines a set of inter-related types used to capture domain-specific knowledge.
+
+#TODO: Probably add a diagram that shows the structure of a Data Model.
+Also I wonder what is the runtime super-type of all entities? Could be worth explaining it somewhere.#
+
+It is at the heart of the capabilities of {sw} to provide a user experience tailored to the intended {stdusrs}.
+
+For every _Data Model_ contributed to the platform, its types become part of the scope used to by other parts of the platform, like the definition of a new _Data Model_ or _View Model_.
+
+Besides the _Data Model_ itself, there are a number of adjacent concepts which can be contributed to the platform:
+
+* Contributed xref:user-manual:core-concepts.adoc#_{project}_templates[Project Templates] appear as part of the xref:user-manual:workbench-ui/workbench-homepage.adoc[Application Homepage].
+* Contributed xref:user-manual:core-concepts.adoc#_stereotypes[Stereotypes] appear as part of the xref:user-manual:workbench-ui/project-homepage.adoc[Project Homepage].
+* Contributed semantic queries (#TODO: add section & link#) populate the xref:user-manual:workbench-ui/project-homepage/related-elements.adoc[{ui-view-related}] tab.
+
+== Domain Data Model
+
+#TODO: Explain that by default {sw} provides this {data-model} so that {stdmkrs} can create {stddefs}.#
+
+== View Data Model
+
+#TODO: Explain that by default {sw} provides this {data-model} so that {stdmkrs} can create {stddefs}.#

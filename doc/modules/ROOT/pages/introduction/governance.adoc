@@ -1,0 +1,5 @@
+= Governance
+
+{sw} is an open-source project under the umbrella of the https://www.eclipse.org/org/foundation/[Eclipse Foundation]. It is made available under the xref:legal:index.adoc[Eclipse Public License v2.0].
+
+Contributions are welcome! Refer to the {sw-github}/blob/master/CONTRIBUTING[Contributing Documentation] for how to do so.

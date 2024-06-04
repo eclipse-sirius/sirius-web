@@ -1,9 +1,271 @@
 name: sirius-web
 title: Sirius Web
 version: true
-start_page: root.adoc
+start_page: index.adoc
 nav:
   - modules/ROOT/nav.adoc
+  - modules/getting-started/nav.adoc
   - modules/user-manual/nav.adoc
-  - modules/developer-manual/nav.adoc
+  - modules/maker-manual/nav.adoc
+  - modules/developer-guide/nav.adoc
+  - modules/support/nav.adoc
+  - modules/release-notes/nav.adoc
   - modules/legal/nav.adoc
+
+asciidoc:
+  attributes:
+    # Vocabulary
+    deck: Deck
+    diagram: Diagram
+    form: Form
+    gantt: Gantt
+    portal: Portal
+    tree: Tree
+
+    project: Project
+    projects: Projects
+    studio-project: Studio {project}
+    studio-projects: Studio {projects}
+    nature: Nature
+    natures: Natures
+    template: Template
+    templates: Templates
+    stereotype: Stereotype
+    stereotypes: Stereotypes
+
+    model: Model
+    models: Models
+    object: Object
+    objects: Objects
+    representation: Representation
+    representations: Representations
+
+    data-model: Data Model
+    data-models: Data Models
+    view-model: View Model
+    view-models: View Models
+
+    stddef: Studio Definition
+    stddefs: Studio Definitions
+    stddev: Developer
+    stddevs: Developers
+    stdmkr: Studio Maker
+    stdmkrs: Studio Makers
+    stdrt: Studio Runtime
+    stdusr: Studio User
+    stdusrs: Studio Users
+    sw: Sirius Web
+
+    ui-view-details: Details
+    ui-view-explorer: Project Explorer
+    ui-view-homepage: Homepage
+    ui-view-project-editor: Project Editor
+    ui-view-project-toolbar: Project Toolbar
+    ui-view-related: Related Elements
+    ui-view-representations: Representations
+    ui-view-validation: Validation
+    
+    # view.ecore
+    view-view: View
+    view-view-x: xref:maker-manual:studio-definitions/view-models/views.adoc#_view[{view-view}]
+    view-labelstyle: LabelStyle
+    view-labelstyle-x: xref:maker-manual:studio-definitions/view-models/representation-descriptions.adoc#_label_style[{view-labelstyle}]
+    view-conditional: Conditional
+    view-conditional-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_conditional[{view-conditional}]
+
+    view-colorpalette: ColorPalette
+    view-colorpalette-x: xref:maker-manual:studio-definitions/view-models/colors.adoc#_color_palette[{view-colorpalette}]
+    view-fixedcolor: FixedColor
+    view-fixedcolor-x: xref:maker-manual:studio-definitions/view-models/colors.adoc#_fixed_color[{view-fixedcolor}]
+    view-usercolor: UserColor
+    view-usercolor-x: xref:maker-manual:studio-definitions/view-models/colors.adoc#_user_color[{view-usercolor}]
+    
+    view-operation: Operation
+    view-operation-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_operation[{view-operation}]
+    view-changecontext: ChangeContext
+    view-changecontext-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_change_context[{view-changecontext}]
+    view-createinstance: CreateInstance
+    view-createinstance-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_create_instance[{view-createinstance}]
+    view-setvalue: SetValue
+    view-setvalue-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_set_value[{view-setvalue}]
+    view-unsetvalue: UnsetValue
+    view-unsetvalue-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_unset_value[{view-unsetvalue}]
+    view-deleteelement: DeleteElement
+    view-deleteelement-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_delete_element[{view-deleteelement}]
+    view-let: Let
+    view-let-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_let[{view-let}]
+    view-if: If
+    view-if-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_if[{view-if}]
+    view-for: For
+    view-for-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_for[{view-for}]
+    view-representationdescription: RepresentationDescription
+    view-representationdescription-x: xref:maker-manual:studio-definitions/view-models/representation-descriptions.adoc#_representation_description[{view-representationdescription}]
+
+    # deck.ecore
+    deck-carddescription: CardDescription
+    deck-carddescription-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_card_description[{deck-carddescription}]
+    deck-carddroptool: CardDropTool
+    deck-carddroptool-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_card_drop_tool[{deck-carddroptool}]
+    deck-conditionaldeckdescriptionstyle: ConditionalDeckDescriptionStyle
+    deck-conditionaldeckdescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_conditional_deck_description_style[{deck-conditionaldeckdescriptionstyle}]
+    deck-conditionaldeckelementdescriptionstyle: ConditionalDeckElementDescriptionStyle
+    deck-conditionaldeckelementdescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_conditional_deck_element_description_style[{deck-conditionaldeckelementdescriptionstyle}]
+    deck-createcardtool: CreateCardTool
+    deck-createcardtool-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_create_card_tool[{deck-createcardtool}]
+    deck-deckdescription: DeckDescription
+    deck-deckdescription-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_deck_description[{deck-deckdescription}]
+    deck-deckdescriptionstyle: DeckDescriptionStyle
+    deck-deckdescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_deck_description_style[{deck-deckdescriptionstyle}]
+    deck-deckelementdescription: DeckElementDescription
+    deck-deckelementdescription-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_deck_element_description[{deck-deckelementdescription}]
+    deck-deckelementdescriptionstyle: DeckElementDescriptionStyle
+    deck-deckelementdescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_deck_element_description_style[{deck-deckelementdescriptionstyle}]
+    deck-decktool: DeckTool
+    deck-decktool-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_deck_tool[{deck-decktool}]
+    deck-deletecardtool: DeleteCardTool
+    deck-deletecardtool-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_delete_card_tool[{deck-deletecardtool}]
+    deck-editcardtool: EditCardTool
+    deck-editcardtool-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_edit_card_tool[{deck-editcardtool}]
+    deck-editlanetool: EditLaneTool
+    deck-editlanetool-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_edit_lane_tool[{deck-editlanetool}]
+    deck-lanedescription: LaneDescription
+    deck-lanedescription-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_lane_description[{deck-lanedescription}]
+    deck-lanedroptool: LaneDropTool
+    deck-lanedroptool-x: xref:maker-manual:studio-definitions/view-models/decks.adoc#_lane_drop_tool[{deck-lanedroptool}]
+
+    # diagram.ecore
+    diagram-conditionalnodestyle: ConditionalNodeStyle
+    diagram-conditionalnodestyle-x: xref:maker-manual:studio-definitions/view-models/diagrams.adoc#_conditional_node_style[{diagram-conditionalnodestyle}]
+    diagram-conditionaledgestyle: ConditionalEdgeStyle
+    diagram-conditionaledgestyle-x: xref:maker-manual:studio-definitions/view-models/diagrams.adoc#_conditional_edge_style[{diagram-conditionaledgestyle}]
+    diagram-conditionallabelstyle: ConditionalLabelStyle
+    diagram-conditionallabelstyle-x: xref:maker-manual:studio-definitions/view-models/diagrams.adoc#_conditional_label_style[{diagram-conditionallabelstyle}]
+    diagram-conditionalinsidelabelstyle: ConditionalInsideLabelStyle
+    diagram-conditionalinsidelabelstyle-x: xref:maker-manual:studio-definitions/view-models/diagrams.adoc#_conditional_inside_label_style[{diagram-conditionalinsidelabelstyle}]
+    diagram-conditionaloutsidelabelstyle: ConditionalOutsideLabelStyle
+    diagram-conditionaloutsidelabelstyle-x: xref:maker-manual:studio-definitions/view-models/diagrams.adoc#_conditional_outside_label_style[{diagram-conditionaloutsidelabelstyle}]
+    diagram-createview: CreateView
+    diagram-createview-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_create_view[{diagram-createview}]
+    diagram-diagramdescription: DiagramDescription
+    diagram-diagramdescription-x: xref:maker-manual:studio-definitions/view-models/diagrams.adoc#_diagram_description[{diagram-diagramdescription}]
+    diagram-deleteview: DeleteView
+    diagram-deleteview-x: xref:maker-manual:studio-definitions/view-models/actions.adoc#_delete_view[{diagram-deleteview}]
+
+    # form.ecore
+    form-conditionalbarchartdescriptionstyle: ConditionalBarChartDescriptionStyle
+    form-conditionalbarchartdescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionalbarchartdescriptionstyle}]
+    form-conditionalbuttondescriptionstyle: ConditionalButtonDescriptionStyle
+    form-conditionalbuttondescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionalbuttondescriptionstyle}]
+    form-conditionalcheckboxdescriptionstyle: ConditionalCheckboxDescriptionStyle
+    form-conditionalcheckboxdescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionalcheckboxdescriptionstyle}]
+    form-conditionalcontainerborderstyle: ConditionalContainerBorderStyle
+    form-conditionalcontainerborderstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_border_style[{form-conditionalcontainerborderstyle}]
+    form-conditionaldatetimedescriptionstyle: ConditionalDateTimeDescriptionStyle
+    form-conditionaldatetimedescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionaldatetimedescriptionstyle}]
+    form-conditionallabeldescriptionstyle: ConditionalLabelDescriptionStyle
+    form-conditionallabeldescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionallabeldescriptionstyle}]
+    form-conditionallinkdescriptionstyle: ConditionalLinkDescriptionStyle
+    form-conditionallinkdescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionallinkdescriptionstyle}]
+    form-conditionallistdescriptionstyle: ConditionalListDescriptionStyle
+    form-conditionallistdescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionallistdescriptionstyle}]
+    form-conditionalmultiselectdescriptionstyle: ConditionalMultiSelectDescriptionStyle
+    form-conditionalmultiselectdescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionalmultiselectdescriptionstyle}]
+    form-conditionalpiechartdescriptionstyle: ConditionalPieChartDescriptionStyle
+    form-conditionalpiechartdescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionalpiechartdescriptionstyle}]
+    form-conditionalradiodescriptionstyle: ConditionalRadioDescriptionStyle
+    form-conditionalradiodescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionalradiodescriptionstyle}]
+    form-conditionalselectdescriptionstyle: ConditionalSelectDescriptionStyle
+    form-conditionalselectdescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionalselectdescriptionstyle}]
+    form-conditionaltextareadescriptionstyle: ConditionalTextAreaDescriptionStyle
+    form-conditionaltextareadescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionaltextareadescriptionstyle}]
+    form-conditionaltextfielddescriptionstyle: ConditionalTextFieldDescriptionStyle
+    form-conditionaltextfielddescriptionstyle-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_conditional_bar_chart_description_style[{form-conditionaltextfielddescriptionstyle}]
+    form-formdescription: FormDescription
+    form-formdescription-x: xref:maker-manual:studio-definitions/view-models/forms.adoc#_form_description[{form-formdescription}]
+
+    # gantt.ecore
+    gantt-ganttdescription: GanttDescription
+    gantt-ganttdescription-x: xref:maker-manual:studio-definitions/view-models/gantts.adoc#_gantt_description[{gantt-ganttdescription}]
+
+    # portal.ecore
+    portal-portaldescription: PortalDescription
+    portal-portaldescription-x: xref:maker-manual:studio-definitions/view-models/portals.adoc#_portal_description[{portal-portaldescription}]
+
+    # tree.ecore
+    tree-treedescription: TreeDescription
+    tree-treedescription-x: xref:maker-manual:studio-definitions/view-models/trees.adoc#_tree_description[{tree-treedescription}]
+
+    # User Manual
+    usr-deck: xref:user-manual:studio-runtime/representation-editors/deck.adoc[{deck}]
+    usr-diagram: xref:user-manual:studio-runtime/representation-editors/diagram.adoc[{diagram}]
+    usr-form: xref:user-manual:studio-runtime/representation-editors/form.adoc[{form}]
+    usr-gantt: xref:user-manual:studio-runtime/representation-editors/gantt.adoc[{gantt}]
+    usr-portal: xref:user-manual:studio-runtime/representation-editors/portal.adoc[{portal}]
+    usr-tree: xref:user-manual:studio-runtime/representation-editors/tree.adoc[{tree}]
+
+    usr-data-model: xref:user-manual:studio-runtime/data-models.adoc[{data-model}]
+    usr-data-models: xref:user-manual:studio-runtime/data-models.adoc[{data-models}]
+    usr-view-model: xref:user-manual:studio-runtime/view-models.adoc[{view-model}]
+    usr-view-models: xref:user-manual:studio-runtime/view-models.adoc[{view-models}]
+    usr-domain: xref:user-manual:studio-runtime/data-models.adoc#_domain_data_model[Domain Data Model]
+    usr-view: xref:user-manual:studio-runtime/data-models.adoc#_view_data_model[View Data Model]
+    usr-studio-runtime: xref:user-manual:studio-runtime.adoc[{stdrt}]
+    usr-representation-editor: xref:user-manual:studio-runtime/representation-editors.adoc[Representation Editor]
+    usr-representation-editors: xref:user-manual:studio-runtime/representation-editors.adoc[Representation Editors]
+
+    usr-model: xref:user-manual:core-concepts/models.adoc[{model}]
+    usr-models: xref:user-manual:core-concepts/models.adoc[{models}]
+    usr-object: xref:user-manual:core-concepts/objects.adoc[{object}]
+    usr-objects: xref:user-manual:core-concepts/objects.adoc[{objects}]
+    usr-project: xref:user-manual:core-concepts/projects.adoc[{project}]
+    usr-projects: xref:user-manual:core-concepts/projects.adoc[{projects}]
+    usr-project-nature: xref:user-manual:core-concepts/projects.adoc#_natures[{nature}]
+    usr-project-natures: xref:user-manual:core-concepts/projects.adoc#_natures[{natures}]
+    usr-project-template: xref:user-manual:core-concepts/projects.adoc#_templates[{template}]
+    usr-project-templates: xref:user-manual:core-concepts/projects.adoc#_templates[{templates}]
+    usr-project-stereotype: xref:user-manual:core-concepts/projects.adoc#_stereotypes[{stereotype}]
+    usr-project-stereotypes: xref:user-manual:core-concepts/projects.adoc#_stereotypes[{stereotypes}]
+    usr-representation: xref:user-manual:core-concepts/represenations.adoc[{representation}]
+    usr-representations: xref:user-manual:core-concepts/representations.adoc[{representations}]
+
+    usr-ui-homepage: xref:user-manual:workbench-ui/workbench-homepage.adoc[Workbench Homepage]
+    usr-ui-details: xref:user-manual:workbench-ui/project-homepage/details.adoc[{ui-view-details}]
+    usr-ui-explorer: xref:user-manual:workbench-ui/project-homepage/explorer.adoc[{ui-view-explorer}]
+    usr-ui-related: xref:user-manual:workbench-ui/project-homepage/related.adoc[{ui-view-related}]
+    usr-ui-representations: xref:user-manual:workbench-ui/project-homepage/representations.adoc[{ui-view-representations}]
+    usr-ui-validation: xref:user-manual:workbench-ui/project-homepage/validation.adoc[{ui-view-validation}]
+    usr-ui-workbench: xref:user-manual:workbench-ui.adoc[Workbench UI]
+    usr-ui-project-editor: xref:user-manual:workbench-ui/project-homepage/project-editor.adoc[{ui-view-project-editor}]
+    usr-ui-project-toolbar: xref:user-manual:workbench-ui/project-homepage/project-toolbar.adoc[{ui-view-project-toolbar}]
+    
+    # Maker Manual
+    mkr-deck: xref:maker-manual:studio-definitions/view-models/decks.adoc[Deck Representation Description]
+    mkr-diagram: xref:maker-manual:studio-definitions/view-models/diagrams.adoc[Diagram Representation Description]
+    mkr-form: xref:maker-manual:studio-definitions/view-models/forms.adoc[Form Representation Description]
+    mkr-gantt: xref:maker-manual:studio-definitions/view-models/gantts.adoc[Gantt Representation Description]
+    mkr-portal: xref:maker-manual:studio-definitions/view-models/portals.adoc[Portal Representation Description]
+    mkr-tree: xref:maker-manual:studio-definitions/view-models/trees.adoc[Tree Representation Description]
+
+    mkr-query: xref:maker-manual:studio-definitions/view-models/queries.adoc[Query]
+
+    mkr-studio-project: xref:maker-manual:studio-definitions/studio-projects.adoc[{studio-project}]
+    mkr-studio-projects: xref:maker-manual:studio-definitions/studio-projects.adoc[{studio-projects}]
+    mkr-studio-definition: xref:maker-manual:studio-definitions.adoc[{stddef}]
+    mkr-data-model: xref:maker-manual:studio-definitions/data-models.adoc[{data-model}]
+    mkr-data-models: xref:maker-manual:studio-definitions/data-models.adoc[{data-models}]
+    mkr-domain: xref:maker-manual:studio-definitions/data-models.adoc#_creation_with_the_domain_data_model[Domain]
+    mkr-view: {mkr-view-model}
+    mkr-view-model: xref:maker-manual:studio-definitions/view-models.adoc[{view-model}]
+    mkr-view-models: xref:maker-manual:studio-definitions/view-models.adoc[{view-models}]
+
+    # Developer Guide
+    # TODO: Add other key concepts from this guide here
+
+    # URLs    
+    sirius-website: https://eclipse.dev/sirius
+    sw-forum: https://github.com/eclipse-sirius/sirius-web/discussions
+    sw-github: https://github.com/eclipse-sirius/sirius-web
+    sw-tracker: https://github.com/eclipse-sirius/sirius-web/issues
+    sw-website: https://eclipse.dev/sirius/sirius-web.html
+    
+    

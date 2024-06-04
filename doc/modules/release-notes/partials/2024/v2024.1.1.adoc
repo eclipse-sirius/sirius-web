@@ -1,0 +1,13 @@
+= v2024.1.1
+
+== Changes for Studio Users
+
+#TODO: List changes that impact end users, e.g. a new runtime functionality.#
+
+== Changes for Studio Makers
+
+#TODO: List changes that impact studio makers, e.g. a change in how a mapping is specified, or a new service available.#
+
+== Changes for Studio Developers
+
+#TODO: List changes that impact the way {sw} gets integrated into web applications.#

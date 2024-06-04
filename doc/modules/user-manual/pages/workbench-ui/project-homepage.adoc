@@ -1,0 +1,74 @@
+= Project Homepage
+
+Upon opening a _{project}_ from the workbench, the _Project Homepage_ opens up.
+
+.The Project Homepage
+image::Project-Homepage.png["Project Homepage"]
+
+This page is vertically divided into three sections.
+The central one is the main area where the project edition happens.
+In the left-most and right-most sections, different tabs can be activated to display or edit different concerns about the project or the currently-selected element in the project.
+
+The UI components listed below are scoped to the contextual _xref:user-manual:core-concepts.adoc#_projects[Project]_.
+
+== {ui-view-project-toolbar}
+
+.The {ui-view-project-toolbar}
+image::Project-Toolbar.png["{ui-view-project-toolbar}"]
+
+The _xref:user-manual:workbench-ui/project-homepage/project-toolbar.adoc[{ui-view-project-toolbar}]_ displays the project name and its contextual menu.
+
+
+== Central Panel
+
+=== _{ui-view-project-editor}_
+
+.The _{ui-view-project-editor}_ opened on a new blank project
+image::Project-Editor.png["{ui-view-project-editor}"]
+
+The _xref:user-manual:workbench-ui/project-homepage/project-editor.adoc[{ui-view-project-editor}]_ is used to add semantic elements and representations to the project.
+
+== Left Sidebar
+
+=== _{ui-view-explorer}_
+
+.The _{ui-view-explorer}_ of a _{project}_.
+image::Explorer.png["{ui-view-explorer}"]
+
+The _xref:user-manual:workbench-ui/project-homepage/explorer.adoc[{ui-view-explorer}]_ tab displays the contents of a project as a tree.
+It also allows some editing of the contents of the project through the contextual menus `...`.
+
+=== _{ui-view-validation}_
+
+.The _{ui-view-validation}_ tab displays the validation results of the current _{project}_
+image::Validation.png["{ui-view-validation}"]
+
+The _xref:user-manual:workbench-ui/project-homepage/validation.adoc[{ui-view-validation}]_ tab displays the latest validation results of a project.
+
+
+== Right Sidebar
+
+=== _{ui-view-details}_
+
+.The _{ui-view-details}_
+image::Details.png["{ui-view-details}"]
+
+The _xref:user-manual:workbench-ui/project-homepage/details.adoc[{ui-view-details}]_ tab displays the properties of the element currently selected in the project.
+Usually these properties are editable through this tab.
+
+=== _{ui-view-related}_
+
+.The _{ui-view-related}_
+image::Related-Elements.png["{ui-view-related}"]
+
+The _xref:user-manual:workbench-ui/project-homepage/related-elements.adoc[{ui-view-related}]_ tab displays elements related to the element currently selected in the project:
+* `Incoming`: elements referencing the selected element
+* `Current`: elements related to the selected element
+* `Outgoing`: elements referenced by the selected element
+
+=== _{ui-view-representations}_
+
+.The _{ui-view-representations}_ panel 
+image::Representations.png["{ui-view-representations}"]
+
+The _xref:user-manual:workbench-ui/project-homepage/representations.adoc[{ui-view-related}]_ tab displays the representations of the project whose target element is the element currently selected in the project.

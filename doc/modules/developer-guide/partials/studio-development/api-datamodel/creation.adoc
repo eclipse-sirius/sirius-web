@@ -1,0 +1,43 @@
+= Data Model Creation APIs
+
+There are 2 ways to programmatically create a custom data model.
+
+#TODO: Probably we want a comparison/list/matrix of which solution is best depending on user profile, expected expressivity, etc.#
+[cols="1,2,2"]
+|===
+|
+|*Domain DSL API*
+|*Ecore Metamodel*
+
+|Pros
+|?
+a|* Reuse existing artifact
+
+|Cons
+|Limited expressivity
+a|* Requires knowledge of EMF.
+* Customized generated code requires special handling for {sw}.
+|=== 
+
+== Domain Definition DSL API
+
+The _Domain Definition DSL_ is the DSL used by _{stdmkrs}_ to create a new custom data model. Its usage is explained in the xref:maker-manual:studio-definitions/data-models.adoc#_domain_definition_dsl[User Manual].
+
+This DSL can also be used programmatically...
+#TODO: not sure if this is really a recommended approach? At the very least, it should be technically possible. But not sure it's worth documenting if we don't want users to use it like this.#
+
+
+== Ecore Metamodel API
+
+Custom data models can be created using the https://eclipse.dev/modeling/emf/[Eclipse Modeling Framework (EMF)]. EMF provides a DSL for creating metamodels, called _Ecore_.
+Although Ecore metamodels can be created programmatically using the EMF Java APIs, they are most often created using dedicated tools such as https://eclipse.dev/ecoretools/[Ecoretools]. #TODO: There should probably be a link to a tutorial to show how to use Ecoretools to create a metamodel.#
+
+Java code can then be generated from the metamodel.
+#TODO: Probably explain that we just need the .model and .model.edit, and also I think the .ecore is not used at runtime. Probably only the generated code is actually required.#
+
+#TODO: List known limitations, for instance do we support features which are derived/transient/etc ? Generics ? EOperation ? etc.#
+
+
+== Custom Domain APIs
+
+#TODO: Check if {sw} will provide APIs to programmatically contribute custom data models? Or is maybe the Domain Definition DSL API the reference one internally?#

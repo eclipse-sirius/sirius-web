@@ -1,0 +1,13 @@
+= For Studio Developers
+
+== Development
+
+#TODO: to be able to hot reload in STS, set classpath entry "output" to "target/classes" instead of "bin". Maybe M2e would help support this?#
+
+== Build
+
+#TODO: never build in the command-line at the same time as in STS.#
+
+== Tests
+
+#TODO: run Cypress tests from a built artefact and not from the runtime.#

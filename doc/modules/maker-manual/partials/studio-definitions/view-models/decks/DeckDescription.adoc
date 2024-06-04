@@ -1,0 +1,37 @@
+= Deck Description
+
+A `DeckDescription` is a `xref:maker-manual:studio-definitions/view-models/representation-descriptions.adoc#_representation_description[RepresentationDescription]` in a `{view-view-x}`.
+
+#TODO: Add snapshot of a sample Deck representation#
+
+== Lane Descriptions
+
+* Technical name: `laneDescriptions`
+* Type: `xref:maker-manual:studio-definitions/view-models/decks.adoc#_lane_description[LaneDescription]`
+* Multiplicity: many
+* Necessity: optional
+* Semantics: The set of `LaneDescription` constituting this `DeckDescription`.
+
+== Lane Drop Tool
+
+* Technical name: `laneDropTool`
+* Type: `xref:maker-manual:studio-definitions/view-models/decks.adoc#_lane_drop_tool[LaneDropTool]`
+* Multiplicity: single
+* Necessity: optional
+* Semantics: The `LaneDropTool` that specifies the behavior applied when a `Lane` is dropped in a `Deck` conforming to this `DeckDescription`.
+
+== Style
+
+* Technical name: `style`
+* Type: `xref:maker-manual:studio-definitions/view-models/decks.adoc#_deck_description_style[DeckDescriptionStyle]`
+* Multiplicity: single
+* Necessity: optional
+* Semantics: The `DeckDescriptionStyle` that configures the visual style to apply to `Deck` instances.
+
+== Conditional Styles
+
+* Technical name: `conditionalStyles`
+* Type: `xref:maker-manual:studio-definitions/view-models/decks.adoc#_conditional_deck_description_style[ConditionalDeckDescriptionStyle]`
+* Multiplicity: many
+* Necessity: optional
+* Semantics: The list of `ConditionalDeckDescriptionStyle` that may customize the visual style to apply to `Deck` instances, pending on a specific condition being met.

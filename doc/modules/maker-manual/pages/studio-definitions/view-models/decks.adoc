@@ -1,0 +1,49 @@
+= Decks
+
+A `Deck Description` defines how the _{usr-studio-runtime}_ creates `{usr-deck}` representations.
+
+#TODO: Migrate https://github.com/eclipse-sirius/sirius-web/blob/master/doc/specifier/representation-deck.adoc#
+
+== Overview
+
+#TODO: see suggested overview for DiagramDescription#
+
+#TODO: I'm not sure of the best way to represent inheritance and inherited fields in concrete RepresentationDescriptions. So I'm trying one style here to check whether it works.#
+
+// One section for each concept from https://github.com/eclipse-sirius/sirius-web/blob/master/packages/view/backend/sirius-components-view-deck/src/main/resources/model/deck.ecore
+
+== Core 
+
+include::partial$studio-definitions/view-models/decks/DeckDescription.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/DeckElementDescription.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/LaneDescription.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/CardDescription.adoc[leveloffset=+2]
+
+== Styles
+
+include::partial$studio-definitions/view-models/decks/DeckDescriptionStyle.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/ConditionalDeckDescriptionStyle.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/DeckElementDescriptionStyle.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/ConditionalDeckElementDescriptionStyle.adoc[leveloffset=+2]
+
+== Tools
+
+include::partial$studio-definitions/view-models/decks/DeckTool.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/EditLaneTool.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/LaneDropTool.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/CreateCardTool.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/EditCardTool.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/DeleteCardTool.adoc[leveloffset=+2]
+
+include::partial$studio-definitions/view-models/decks/CardDropTool.adoc[leveloffset=+2]

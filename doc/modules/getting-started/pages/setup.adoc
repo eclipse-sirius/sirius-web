@@ -1,0 +1,55 @@
+= Setup
+
+* Start a PostgreSQL instance using Docker:
++
+--
+[source, bash]
+----
+docker run -p 5433:5432 --rm --name sirius-web-postgres \
+                                 -e POSTGRES_USER=dbuser \
+                                 -e POSTGRES_PASSWORD=dbpwd \
+                                 -e POSTGRES_DB=sirius-web-db \
+                                 -d postgres:12
+----
+--
++
+NOTE: This may take a while the first time you run this as Docker will first pull the PostgreSQL image.
+
+
+* Start the application using Java 17 and the application JAR file (e.g. the latest sample application as specified in the xref:getting-started:requirements.adoc[Requirements]):
++
+--
+[source, bash]
+----
+java -jar sirius-web-sample-application.jar \
+          --spring.datasource.url=jdbc:postgresql://localhost:5433/sirius-web-db \
+          --spring.datasource.username=dbuser \
+          --spring.datasource.password=dbpwd \
+          --spring.liquibase.change-log=classpath:db/changelog/sirius-web.db.changelog.xml
+----
+--
++
+TIP: If you encounter an error similar to `org.postgresql.util.PSQLException: FATAL: authentification`, check if your 5433 port is already used by another application. If so, change the command lines for docker and the Java application launcher to use another free port like 5434.
+
+* Point your browser to *http://localhost:8080*
++
+--
+.The homepage when you first open your {sw} application
+image::Default_Homepage.png["The default homepage"]
+--
++
+
+* Depending on what you want to test, you may now want to head on to either:
+** The xref:user-manual:tutorials.adoc[User Manual Tutorials] for how to create projects, models and their representations.
+** The xref:maker-manual:tutorials.adoc[Studio Maker Manual Tutorials] for how to create a custom studio with the low-code approach of {sw}.
+
+* When you are done, remember to stop the container:
++
+--
+[source, bash]
+----
+docker kill sirius-web-postgres
+----
+--
++
+CAUTION: This will remove all the data you have created while testing the application. 

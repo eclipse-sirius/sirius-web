@@ -1,0 +1,116 @@
+= Explorer
+
+The *Explorer* view is one of the views in the left sidebar of the generic workbench UI.
+
+.The _{ui-view-explorer}_ view
+image::Explorer.png["{ui-view-explorer} sample snapshot"]
+
+It represents and allows the edition, through a tree structure, of the contents of the project.
+
+In this tree structure:
+
+* The root elements are the _{usr-models}_ of the project.
+* The children elements of a _Model_ are its _Objects_.
+* The children elements of an _Object_ are:
+** Its children _Objects_, as defined by the _Data Model_ it conforms to
+** The _xref:user-manual:core-concepts.adoc#_representations[Representations]_ whose target is the _Object_ itself.
+* _Representations_ are *always* _leaves_ of the tree.
+* Each node (_Model_, _Object_ or _Representation_) is represented by an *icon* and a *label*. For an _Object_, they are provided by the _Data Model_ contributing the corresponding element.
+* The current selection is highlighted by the light pink background color.
+
+== Toolbar
+
+.The toolbar of the _{ui-view-explorer}_ view
+image::Explorer_Toolbar.png["{ui-view-explorer} Toolbar Sample Snapshot"]
+
+=== New Model
+
+image:Explorer_NewModel.png["New Model Icon"](`New Model`): Opens the creation dialog for a new _{usr-model}_ in the current project.
+
+=== Upload Model
+
+image:Explorer_UploadModel.png["Upload Model Icon"](`Upload Model`): Opens the filebrowser dialog to select a model to import from your filesystem.
+
+=== Show/Hide
+
+image:Explorer_ShowHide.png["Show/Hide Icon"](`Show/Hide`): Allows users to select filters applied to the tree shown in this view.
+
+=== Synchronization
+
+image:Explorer_Synchronization.png["Synchronization Icon"](`Disable synchronization with representation`): Defines whether to synchronize this view with the latest selection or not. When activated, selecting elements in other UI components of the workbench may change the selection in this view, and possibly expand the tree as a result.
+
+
+== Contextual Menus
+
+Each element displayed in the tree has its own contextual menu image:Explorer_Menu.png["{ui-view-explorer} Tree Node Contextual Menu Sample Snapshot"].
+
+Depending on the nature of the node, different actions are available.
+
+=== Model
+
+.The contextual menu of a _Model_
+image::Explorer_Menu_Model.png["{ui-view-explorer} Model Contextual Menu Sample Snapshot"]
+
+. [[model-new-object]]image:Explorer_Menu_NewObject.png["{ui-view-explorer} Model Contextual Menu New Object Sample Snapshot"]: Opens the dialog to create a new element under the selected _Model_.
++
+--
+NOTE: Available types depend on the _Data Model_ to which the _Model_ conforms.
+--
+. [[model-download]]image:Explorer_Menu_Download.png["{ui-view-explorer} Model Contextual Menu Download Sample Snapshot"]: Downloads the whole _Model_ as an https://en.wikipedia.org/wiki/XML_Metadata_Interchange[XMI file].
+. [[model-expand-all]]image:Explorer_Menu_ExpandAll.png["{ui-view-explorer} Model Contextual Menu Expand All Sample Snapshot"]: Expands all the tree nodes located below the selected node.
++
+--
+NOTE: This action only appears if there are tree nodes located below the selected node.
+--
+. [[model-rename]]image:Explorer_Menu_Rename.png["{ui-view-explorer} Model Contextual Menu Rename Sample Snapshot"]: Opens the dialog to update the name of the selected _Model_.
+. [[model-delete]]image:Explorer_Menu_Delete.png["{ui-view-explorer} Model Contextual Menu Delete Sample Snapshot"]: Opens the dialog to remove this _Model_ from the _{project}_.
+
+#TODO: If there can be cross-model and/or cross-project references, what happens to them upon deletion?#
+
+
+=== Object
+
+.The contextual menu of an _Object_
+image::Explorer_Menu_Object.png["{ui-view-explorer} Object Contextual Menu Sample Snapshot"]
+
+. [[object-new-object]]image:Explorer_Menu_NewObject.png["{ui-view-explorer} Object Contextual Menu New Object Sample Snapshot"]: Opens the dialog to create a new element under the selected _Object_.
++
+--
+NOTE: Available types depend on the _Data Model_ to which the _Object_ conforms.
+--
+. [[object-new-representation]]image:Explorer_Menu_NewRepresentation.png["{ui-view-explorer} Object Contextual Menu New Representation Sample Snapshot"]:[[object-new-representation]] Opens the dialog to create a new _Representation_ targetting the selected _Object_.
+. [[object-expand-all]]image:Explorer_Menu_ExpandAll.png["{ui-view-explorer} Object Contextual Menu Expand All Sample Snapshot"]: Expands all the tree nodes located below the selected node.
++
+--
+NOTE: This action only appears if there are tree nodes located below the selected node.
+--
+. [[object-rename]]image:Explorer_Menu_Rename.png["{ui-view-explorer} Object Contextual Menu Rename Sample Snapshot"]: Opens the dialog to update the name of the selected _Object_.
+. [[object-delete]]image:Explorer_Menu_Delete.png["{ui-view-explorer} Object Contextual Menu Delete Sample Snapshot"]: Opens the dialog to remove this _Object_ from its parent.
+
+
+=== Representation
+
+.The contextual menu of a _Representation_
+image::Explorer_Menu_Representation.png["{ui-view-explorer} Representation Contextual Menu Sample Snapshot"]
+
+. [[representation-rename]]image:Explorer_Menu_Rename.png["{ui-view-explorer} Representation Contextual Menu Rename Sample Snapshot"]: Opens the dialog to update the name of the selected _Representation_.
+. [[representation-delete]]image:Explorer_Menu_Delete.png["{ui-view-explorer} Representation Contextual Menu Delete Sample Snapshot"]: Opens the dialog to remove this _Representation_ from its parent.
+
+
+== Keyboard Shortcuts
+
+=== Search (Ctrl+F)
+
+When an element from the *Explorer* view is selected and in focus, keyboard shortcut `CTRL+F` opens a text popup that can be used to search for elements whose labels matches the given text.
+
+By default, the matching text among label elements is highlighted in the tree.
+
+.The Search popup
+image::Explorer_Search_Unfiltered.png["Explorer Search Unfiltered Sample Snapshot"]
+
+IMPORTANT: The text matching is case-insensitive.
+
+image:Explorer_Search_Filter.png["{ui-view-explorer} Search Filter Action Icon"]: It is also possible to filter the tree based on the resulting matches. In that case, only the matching elements and all of their ancestors in the tree are displayed.
+
+.The Search popup, with filter enabled
+image::Explorer_Search_Filtered.png["Explorer Search Filtered Sample Snapshot"]

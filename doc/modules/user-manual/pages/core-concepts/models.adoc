@@ -1,0 +1,41 @@
+= {models}
+
+== Purpose
+
+*_{models}_* are the root element inside the _{usr-projects}_ of the workbench. 
+
+A _{model}_ is made of _{usr-objects}_, which are the semantic data capturing the user data, and of _{usr-representations}_ which are used to visualize and edit the semantic data.
+
+A _{model}_ *conforms to* a _{usr-data-model}_ available from the platform, in the sense that its structure (_{objects}_, their attributes, and their relations to other _{objects}_) is defined by the _{usr-data-model}_.
+
+== Lifecycle
+
+Like _{usr-projects}_, _{models}_ are most often managed directly by _{stdusrs}_ through the _{usr-ui-workbench}_.
+They can also be managed programmatically by _{stddevs}_.
+
+=== Creation
+
+_{models}_ can be created by either:
+
+* Using the xref:user-manual:workbench-ui/project-homepage/explorer.adoc#_new_model[{ui-view-explorer} toolbar creation button].
+* Using the xref:user-manual:workbench-ui/project-homepage/explorer.adoc#_upload_model[{ui-view-explorer} toolbar upload button] to import existing data.
+
+NOTE: _{models}_ may also be created as part of a _{usr-project-template}_ or a _{usr-project-stereotype}_.
+
+=== Edition
+
+The _{model}_ itself can be edited through the xref:user-manual:workbench-ui/project-homepage/explorer.adoc#_model[{model} contextual menu].
+
+To edit its contents, check how to xref:user-manual:core-concepts/objects.adoc#_edition[edit {objects}] and how to xref:user-manual:core-concepts/representations.adoc#_edition[edit {representations}].
+
+=== Deletion
+
+_{models}_ can be deleted through the xref:user-manual:workbench-ui/project-homepage/explorer.adoc#model-delete[{model} contextual menu action].
+
+When the _{project}_ containing a _{model}_ is deleted, the _{model}_ is also deleted as a consequence.
+
+=== Export
+
+_{models}_ can be downloaded through the xref:user-manual:workbench-ui/project-homepage/explorer.adoc#model-download[{model} contextual menu action].
+
+The resulting file is formatted as an https://en.wikipedia.org/wiki/XML_Metadata_Interchange[XMI file].

@@ -1,0 +1,3 @@
+= Instructions
+
+#TODO: Add instructions in order to get started on creating a new View Model. Not sure how Data Models are supposed to be contributed in this scenario.#

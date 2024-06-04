@@ -1,0 +1,61 @@
+= Deck Element Description
+
+`DeckElementDescription` is the common supertype of `xref:maker-manual:studio-definitions/view-models/decks.adoc[LaneDescription]` and `xref:maker-manual:studio-definitions/view-models/decks.adoc[CardDescription]`.
+
+== Semantic Candidates Expression
+
+* Technical name: `semanticCandidatesExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The target element of the parent `DeckDescription`
+|===
+* Semantics: Returns the collection of semantic elements for which this `DeckElementDescription` may apply.
+* Example: `aql:self.isXXX()`
+
+== Title Expression
+
+* Technical name: `titleExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The semantic candidate element
+|===
+* Semantics: Returns the `String` to use as the title of this `DeckElementDescription`.
+* Example: `aql:self.name`
+
+== Label Expression
+
+* Technical name: `labelExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The semantic candidate element
+|===
+* Semantics: Returns the `String` to use as the label of this `DeckElementDescription`.
+* Example: `aql:self.description`
+
+== Style
+
+* Technical name: `style`
+* Type: `xref:maker-manual:studio-definitions/view-models/decks.adoc#_deck_element_description_style[DeckElementDescriptionStyle]`
+* Multiplicity: single
+* Necessity: optional
+* Semantics: The `DeckElementDescriptionStyle` that configures the visual style to apply to `DeckElementDescription` instances.
+
+== Conditional Styles
+
+* Technical name: `conditionalStyles`
+* Type: `xref:maker-manual:studio-definitions/view-models/decks.adoc#_conditional_deck_element_description_style[ConditionalDeckElementDescriptionStyle]`
+* Multiplicity: many
+* Necessity: optional
+* Semantics: The list of `ConditionalDeckElementDescriptionStyle` that may customize the visual style to apply to `DeckElementDescription` instances, pending on a specific condition being met.

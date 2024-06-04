@@ -1,0 +1,11 @@
+= Portal
+
+A *`{portal}` representation* conforms to a `{mkr-portal}` of the _{stddef}_.
+
+#TODO: Migrate https://github.com/eclipse-sirius/sirius-web/blob/master/doc/user/representation-portal.adoc#
+
+== Purpose
+
+Portals are dashboard-like representations that can be used to visualize and edit multiple other representations.
+
+#TODO: When we have a nominal example of Portal representation, add a snapshot here, and add details of the UI.#
