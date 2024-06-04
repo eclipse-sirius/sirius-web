@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,12 +36,12 @@ public class EObjectIDManager implements IDManager {
      */
     @Override
     public String getOrCreateId(EObject eObject) {
-        // @formatter:off
-        return this.findAdapter(eObject)
-                .map(IDAdapter::getId)
-                .orElseGet(UUID::randomUUID)
-                .toString();
-        // @formatter:on
+        var adapter = this.findAdapter(eObject);
+        if (adapter != null) {
+            return adapter.getId().toString();
+        } else {
+            return UUID.randomUUID().toString();
+        }
     }
 
     /**
@@ -55,11 +55,12 @@ public class EObjectIDManager implements IDManager {
      */
     @Override
     public Optional<String> findId(EObject eObject) {
-        // @formatter:off
-        return this.findAdapter(eObject)
-                .map(IDAdapter::getId)
-                .map(UUID::toString);
-        // @formatter:on
+        var adapter = this.findAdapter(eObject);
+        if (adapter != null) {
+            return Optional.of(adapter.getId().toString());
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -73,10 +74,15 @@ public class EObjectIDManager implements IDManager {
      */
     @Override
     public Optional<String> clearId(EObject eObject) {
-        var optionalAdapter = this.findAdapter(eObject);
-        optionalAdapter.ifPresent(adapter -> eObject.eAdapters().remove(adapter));
-
-        return optionalAdapter.map(IDAdapter::getId).map(UUID::toString);
+        var iterator = eObject.eAdapters().iterator();
+        while (iterator.hasNext()) {
+            var adapter = iterator.next();
+            if (adapter instanceof IDAdapter idAdapter) {
+                iterator.remove();
+                return Optional.of(idAdapter.getId().toString());
+            }
+        }
+        return Optional.empty();
     }
 
     /**
@@ -90,8 +96,13 @@ public class EObjectIDManager implements IDManager {
      */
     @Override
     public void setId(EObject eObject, String id) {
-        this.clearId(eObject);
-
+        var iterator = eObject.eAdapters().iterator();
+        while (iterator.hasNext()) {
+            var adapter = iterator.next();
+            if (adapter instanceof IDAdapter) {
+                iterator.remove();
+            }
+        }
         eObject.eAdapters().add(new IDAdapter(UUID.fromString(id)));
     }
 
@@ -103,13 +114,13 @@ public class EObjectIDManager implements IDManager {
      *            The eObject on which the {@link IDAdapter} may be attached
      * @return The attached {@link IDAdapter} or {@link Optional#empty()} otherwise
      */
-    private Optional<IDAdapter> findAdapter(EObject eObject) {
-        // @formatter:off
-        return eObject.eAdapters().stream()
-                .filter(IDAdapter.class::isInstance)
-                .map(IDAdapter.class::cast)
-                .findFirst();
-        // @formatter:on
+    private IDAdapter findAdapter(EObject eObject) {
+        for (var adapter : eObject.eAdapters()) {
+            if (adapter instanceof IDAdapter idAdapter) {
+                return idAdapter;
+            }
+        }
+        return null;
     }
 
 }
