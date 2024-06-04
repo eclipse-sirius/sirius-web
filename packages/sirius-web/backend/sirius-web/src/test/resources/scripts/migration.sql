@@ -293,7 +293,7 @@ INSERT INTO representation_data (
   '719d2b8f-ab70-438d-a999-306de10654a7',
   'siriusComponents://representationDescription?kind=TreeMap',
   'Hierarchy Migration',
-  'siriusComponents://representationDescription?kind=TreeMap',
+  'siriusComponents://representation?type=TreeMap',
   '{
     "id": "35f1cd7b-e5bb-443d-95ef-bab372a92b0f",
     "descriptionId": "siriusComponents://representation?type=TreeMap",
