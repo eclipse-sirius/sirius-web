@@ -26,6 +26,8 @@ import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.Result;
+import org.eclipse.sirius.components.interpreter.Status;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.UserColor;
@@ -83,6 +85,7 @@ public final class StylesFactory {
                 .borderSizeProvider(variableManager -> edgeStyle.getBorderSize())
                 .borderRadiusProvider(variableManager -> edgeStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(edgeStyle.getBorderLineStyle().getLiteral()))
+                .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(edgeStyle.getMaxWidthExpression(), variableManager))
                 .build();
     }
 
@@ -179,6 +182,7 @@ public final class StylesFactory {
                 .borderSizeProvider(variableManager -> labelStyle.getBorderSize())
                 .borderRadiusProvider(variableManager -> labelStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(labelStyle.getBorderLineStyle().getLiteral()))
+                .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(labelStyle.getMaxWidthExpression(), variableManager))
                 .build();
     }
 
@@ -210,6 +214,7 @@ public final class StylesFactory {
                 .borderSizeProvider(variableManager -> labelStyle.getBorderSize())
                 .borderRadiusProvider(variableManager -> labelStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(labelStyle.getBorderLineStyle().getLiteral()))
+                .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(labelStyle.getMaxWidthExpression(), variableManager))
                 .build();
     }
 
@@ -219,5 +224,15 @@ public final class StylesFactory {
                 .map(FixedColor.class::cast)
                 .map(FixedColor::getValue)
                 .orElse(defaultValue);
+    }
+
+    private String computeMaxWidthProvider(String maxWidthExpression, VariableManager variableManager) {
+        if (maxWidthExpression != null && !maxWidthExpression.isBlank()) {
+            Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), maxWidthExpression);
+            if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asString().isPresent()) {
+                return result.asString().get();
+            }
+        }
+        return null;
     }
 }

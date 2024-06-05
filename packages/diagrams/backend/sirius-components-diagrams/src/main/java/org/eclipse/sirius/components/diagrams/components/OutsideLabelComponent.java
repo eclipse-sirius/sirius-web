@@ -60,6 +60,7 @@ public class OutsideLabelComponent implements IComponent {
         Integer borderRadius = labelStyleDescription.getBorderRadiusProvider().apply(variableManager);
         Integer borderSize = labelStyleDescription.getBorderSizeProvider().apply(variableManager);
         LineStyle borderLineStyle = labelStyleDescription.getBorderStyleProvider().apply(variableManager);
+        String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
 
         var labelStyle = LabelStyle.newLabelStyle()
                 .color(color)
@@ -74,6 +75,7 @@ public class OutsideLabelComponent implements IComponent {
                 .borderRadius(borderRadius)
                 .borderSize(borderSize)
                 .borderStyle(borderLineStyle)
+                .maxWidth(maxWidth)
                 .build();
 
         OutsideLabelElementProps outsideLabelElementProps = OutsideLabelElementProps.newOutsideLabelElementProps(id)

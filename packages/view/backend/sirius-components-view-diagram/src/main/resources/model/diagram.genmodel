@@ -176,6 +176,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeLabelStyle/background"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/showIconExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/labelIcon"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/maxWidthExpression"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//NodeStyleDescription"/>
     <genClasses ecoreClass="diagram.ecore#//ConditionalNodeStyle">
@@ -205,6 +206,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeStyle/showIcon"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeStyle/labelIcon"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgeStyle/background"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeStyle/maxWidthExpression"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//ConditionalEdgeStyle"/>
     <genClasses ecoreClass="diagram.ecore#//DiagramPalette">

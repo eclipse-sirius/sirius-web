@@ -28,7 +28,7 @@
 As a result, the following maven modules have been deleted: `sirius-web-sample-application`, `sirius-web-spring`, `sirius-web-graphql`, `sirius-web-services-api`, `sirius-web-services`, `sirius-web-persistence`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3676[#3676] [representation] Remove the label from representation subscriptions and from graphql types.
 + Also remove the label from representation metadata (and sometimes the whole metadata) when the label or metadata were not needed.
-- https://github.com/eclipse-sirius/sirius-web/issues/1470[#1470] [view] Since the computation of converted description ID has changed, the identifier of existing representations is not valid anymore, and these representations cannot be opened. 
+- https://github.com/eclipse-sirius/sirius-web/issues/1470[#1470] [view] Since the computation of converted description ID has changed, the identifier of existing representations is not valid anymore, and these representations cannot be opened.
  - https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Update some API relative to the diagram:
 
  * The `NodeTool#selectionDescription` attribute of type `SelectionDescription` has been renamed into `dialogDescription` and is now of type `DialogDescription`.
@@ -64,6 +64,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3570[#3570] [diagram] Add max width expression in the View DSL for labels
 
 === Improvements
 
@@ -93,6 +94,7 @@ A migration participant has been added to automatically keep compatible all diag
 === Architectural decision records
 
 - [ADR-151] Improve Diagram Subscription Lifecycle
+- [ADR-152] Add max-width expression for diagram labels
 
 === Deprecation warning
 

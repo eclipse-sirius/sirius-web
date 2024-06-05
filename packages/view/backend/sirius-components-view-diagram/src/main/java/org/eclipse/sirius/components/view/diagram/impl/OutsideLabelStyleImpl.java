@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.impl;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -46,140 +48,149 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getLabelIcon <em>Label
  * Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getMaxWidthExpression <em>Max Width
+ * Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabelStyle {
-    /**
-     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getBorderColor()
-     * @generated
-     * @ordered
-     */
-    protected UserColor borderColor;
 
     /**
      * The default value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @see #getBorderRadius()
      * @generated
      * @ordered
+     * @see #getBorderRadius()
      */
     protected static final int BORDER_RADIUS_EDEFAULT = 3;
-
-    /**
-     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getBorderRadius()
-     * @generated
-     * @ordered
-     */
-    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
-
     /**
      * The default value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getBorderSize()
      * @generated
      * @ordered
+     * @see #getBorderSize()
      */
     protected static final int BORDER_SIZE_EDEFAULT = 1;
-
-    /**
-     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getBorderSize()
-     * @generated
-     * @ordered
-     */
-    protected int borderSize = BORDER_SIZE_EDEFAULT;
-
     /**
      * The default value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getBorderLineStyle()
      * @generated
      * @ordered
+     * @see #getBorderLineStyle()
      */
     protected static final LineStyle BORDER_LINE_STYLE_EDEFAULT = LineStyle.SOLID;
-
-    /**
-     * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @see #getBorderLineStyle()
-     * @generated
-     * @ordered
-     */
-    protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getLabelColor() <em>Label Color</em>}' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getLabelColor()
-     * @generated
-     * @ordered
-     */
-    protected UserColor labelColor;
-
-    /**
-     * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getBackground()
-     * @generated
-     * @ordered
-     */
-    protected UserColor background;
-
     /**
      * The default value of the '{@link #getShowIconExpression() <em>Show Icon Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getShowIconExpression()
      * @generated
      * @ordered
+     * @see #getShowIconExpression()
      */
     protected static final String SHOW_ICON_EXPRESSION_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getShowIconExpression() <em>Show Icon Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getShowIconExpression()
-     * @generated
-     * @ordered
-     */
-    protected String showIconExpression = SHOW_ICON_EXPRESSION_EDEFAULT;
-
     /**
      * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLabelIcon()
      * @generated
      * @ordered
+     * @see #getLabelIcon()
      */
     protected static final String LABEL_ICON_EDEFAULT = null;
-
+    /**
+     * The default value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getMaxWidthExpression()
+     */
+    protected static final String MAX_WIDTH_EXPRESSION_EDEFAULT = null;
+    /**
+     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderColor()
+     */
+    protected UserColor borderColor;
+    /**
+     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderRadius()
+     */
+    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderSize()
+     */
+    protected int borderSize = BORDER_SIZE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderLineStyle()
+     */
+    protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getLabelColor() <em>Label Color</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getLabelColor()
+     */
+    protected UserColor labelColor;
+    /**
+     * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBackground()
+     */
+    protected UserColor background;
+    /**
+     * The cached value of the '{@link #getShowIconExpression() <em>Show Icon Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getShowIconExpression()
+     */
+    protected String showIconExpression = SHOW_ICON_EXPRESSION_EDEFAULT;
     /**
      * The cached value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLabelIcon()
      * @generated
      * @ordered
+     * @see #getLabelIcon()
      */
     protected String labelIcon = LABEL_ICON_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getMaxWidthExpression()
+     */
+    protected String maxWidthExpression = MAX_WIDTH_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -223,8 +234,12 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      *
      * @generated
      */
-    public UserColor basicGetBorderColor() {
-        return this.borderColor;
+    @Override
+    public void setBorderColor(UserColor newBorderColor) {
+        UserColor oldBorderColor = this.borderColor;
+        this.borderColor = newBorderColor;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
     }
 
     /**
@@ -232,12 +247,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      *
      * @generated
      */
-    @Override
-    public void setBorderColor(UserColor newBorderColor) {
-        UserColor oldBorderColor = this.borderColor;
-        this.borderColor = newBorderColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
+    public UserColor basicGetBorderColor() {
+        return this.borderColor;
     }
 
     /**
@@ -332,8 +343,12 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      *
      * @generated
      */
-    public UserColor basicGetLabelColor() {
-        return this.labelColor;
+    @Override
+    public void setLabelColor(UserColor newLabelColor) {
+        UserColor oldLabelColor = this.labelColor;
+        this.labelColor = newLabelColor;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_COLOR, oldLabelColor, this.labelColor));
     }
 
     /**
@@ -341,12 +356,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      *
      * @generated
      */
-    @Override
-    public void setLabelColor(UserColor newLabelColor) {
-        UserColor oldLabelColor = this.labelColor;
-        this.labelColor = newLabelColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_COLOR, oldLabelColor, this.labelColor));
+    public UserColor basicGetLabelColor() {
+        return this.labelColor;
     }
 
     /**
@@ -372,8 +383,12 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      *
      * @generated
      */
-    public UserColor basicGetBackground() {
-        return this.background;
+    @Override
+    public void setBackground(UserColor newBackground) {
+        UserColor oldBackground = this.background;
+        this.background = newBackground;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND, oldBackground, this.background));
     }
 
     /**
@@ -381,12 +396,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      *
      * @generated
      */
-    @Override
-    public void setBackground(UserColor newBackground) {
-        UserColor oldBackground = this.background;
-        this.background = newBackground;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND, oldBackground, this.background));
+    public UserColor basicGetBackground() {
+        return this.background;
     }
 
     /**
@@ -441,6 +452,29 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      * @generated
      */
     @Override
+    public String getMaxWidthExpression() {
+        return this.maxWidthExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMaxWidthExpression(String newMaxWidthExpression) {
+        String oldMaxWidthExpression = this.maxWidthExpression;
+        this.maxWidthExpression = newMaxWidthExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION, oldMaxWidthExpression, this.maxWidthExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR:
@@ -465,6 +499,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
                 return this.getShowIconExpression();
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 return this.getLabelIcon();
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                return this.getMaxWidthExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -501,6 +537,9 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 this.setLabelIcon((String) newValue);
                 return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                this.setMaxWidthExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -514,7 +553,7 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
     public void eUnset(int featureID) {
         switch (featureID) {
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR:
-                this.setBorderColor((UserColor) null);
+                this.setBorderColor(null);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_RADIUS:
                 this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
@@ -526,16 +565,19 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
                 this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_COLOR:
-                this.setLabelColor((UserColor) null);
+                this.setLabelColor(null);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND:
-                this.setBackground((UserColor) null);
+                this.setBackground(null);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
                 this.setShowIconExpression(SHOW_ICON_EXPRESSION_EDEFAULT);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 this.setLabelIcon(LABEL_ICON_EDEFAULT);
+                return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                this.setMaxWidthExpression(MAX_WIDTH_EXPRESSION_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -562,9 +604,11 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND:
                 return this.background != null;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
-                return SHOW_ICON_EXPRESSION_EDEFAULT == null ? this.showIconExpression != null : !SHOW_ICON_EXPRESSION_EDEFAULT.equals(this.showIconExpression);
+                return !Objects.equals(SHOW_ICON_EXPRESSION_EDEFAULT, this.showIconExpression);
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
-                return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
+                return !Objects.equals(LABEL_ICON_EDEFAULT, this.labelIcon);
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                return !Objects.equals(MAX_WIDTH_EXPRESSION_EDEFAULT, this.maxWidthExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -627,19 +671,20 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (borderRadius: ");
-        result.append(this.borderRadius);
-        result.append(", borderSize: ");
-        result.append(this.borderSize);
-        result.append(", borderLineStyle: ");
-        result.append(this.borderLineStyle);
-        result.append(", showIconExpression: ");
-        result.append(this.showIconExpression);
-        result.append(", labelIcon: ");
-        result.append(this.labelIcon);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (borderRadius: " +
+                this.borderRadius +
+                ", borderSize: " +
+                this.borderSize +
+                ", borderLineStyle: " +
+                this.borderLineStyle +
+                ", showIconExpression: " +
+                this.showIconExpression +
+                ", labelIcon: " +
+                this.labelIcon +
+                ", maxWidthExpression: " +
+                this.maxWidthExpression +
+                ')';
+        return result;
     }
 
 } // OutsideLabelStyleImpl

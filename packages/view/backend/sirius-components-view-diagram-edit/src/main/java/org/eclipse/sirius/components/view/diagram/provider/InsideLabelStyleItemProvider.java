@@ -60,6 +60,7 @@ public class InsideLabelStyleItemProvider extends LabelStyleItemProvider {
             this.addBackgroundPropertyDescriptor(object);
             this.addShowIconExpressionPropertyDescriptor(object);
             this.addLabelIconPropertyDescriptor(object);
+            this.addMaxWidthExpressionPropertyDescriptor(object);
             this.addWithHeaderPropertyDescriptor(object);
             this.addDisplayHeaderSeparatorPropertyDescriptor(object);
         }
@@ -130,6 +131,19 @@ public class InsideLabelStyleItemProvider extends LabelStyleItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_NodeLabelStyle_labelIcon_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_NodeLabelStyle_labelIcon_feature", "_UI_NodeLabelStyle_type"),
                 DiagramPackage.Literals.NODE_LABEL_STYLE__LABEL_ICON, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Max Width Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addMaxWidthExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeLabelStyle_maxWidthExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeLabelStyle_maxWidthExpression_feature", "_UI_NodeLabelStyle_type"),
+                DiagramPackage.Literals.NODE_LABEL_STYLE__MAX_WIDTH_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -229,6 +243,7 @@ public class InsideLabelStyleItemProvider extends LabelStyleItemProvider {
             case DiagramPackage.INSIDE_LABEL_STYLE__BORDER_LINE_STYLE:
             case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
             case DiagramPackage.INSIDE_LABEL_STYLE__LABEL_ICON:
+            case DiagramPackage.INSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
             case DiagramPackage.INSIDE_LABEL_STYLE__WITH_HEADER:
             case DiagramPackage.INSIDE_LABEL_STYLE__DISPLAY_HEADER_SEPARATOR:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

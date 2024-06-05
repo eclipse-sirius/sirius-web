@@ -283,6 +283,7 @@ public class UnsynchronizedDiagramTests {
                 .borderRadiusProvider(variableManager -> 0)
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
+                .maxWidthProvider(variableManager -> null)
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")
@@ -356,7 +357,7 @@ public class UnsynchronizedDiagramTests {
                 .deleteHandler(variableManager -> new Success())
                 .build();
 
-        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription("diagram")
+        return DiagramDescription.newDiagramDescription("diagram")
                 .label("")
                 .canCreatePredicate(variableManager -> true)
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")
@@ -366,7 +367,5 @@ public class UnsynchronizedDiagramTests {
                 .palettes(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
-
-        return diagramDescription;
     }
 }

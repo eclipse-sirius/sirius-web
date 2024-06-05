@@ -505,6 +505,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .borderRadiusProvider(variableManager -> 0)
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
+                .maxWidthProvider(variableManager -> null)
                 .build();
 
         var insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescription")

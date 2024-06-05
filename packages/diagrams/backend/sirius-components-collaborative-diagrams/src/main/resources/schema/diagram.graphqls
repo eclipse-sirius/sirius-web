@@ -172,6 +172,7 @@ type LabelStyle {
   borderSize: Int!
   borderStyle: LineStyle!
   background: String!
+  maxWidth: String
 }
 
 union INodeStyle = ImageNodeStyle | IconLabelNodeStyle | RectangularNodeStyle
