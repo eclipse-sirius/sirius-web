@@ -1321,6 +1321,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getNodeLabelStyle_MaxWidthExpression() {
+        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getNodeLabelStyle_Background() {
         return (EReference) this.nodeLabelStyleEClass.getEStructuralFeatures().get(1);
     }
@@ -1553,6 +1563,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EReference getEdgeStyle_Background() {
         return (EReference) this.edgeStyleEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getEdgeStyle_MaxWidthExpression() {
+        return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(7);
     }
 
     /**
@@ -2389,6 +2409,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__BACKGROUND);
         this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__SHOW_ICON_EXPRESSION);
         this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__LABEL_ICON);
+        this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__MAX_WIDTH_EXPRESSION);
 
         this.nodeStyleDescriptionEClass = this.createEClass(NODE_STYLE_DESCRIPTION);
 
@@ -2419,6 +2440,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__SHOW_ICON);
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__LABEL_ICON);
         this.createEReference(this.edgeStyleEClass, EDGE_STYLE__BACKGROUND);
+        this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__MAX_WIDTH_EXPRESSION);
 
         this.conditionalEdgeStyleEClass = this.createEClass(CONDITIONAL_EDGE_STYLE);
 
@@ -2741,6 +2763,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeLabelStyle_LabelIcon(), this.ecorePackage.getEString(), "labelIcon", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeLabelStyle_MaxWidthExpression(), theViewPackage.getInterpretedExpression(), "maxWidthExpression", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.nodeStyleDescriptionEClass, NodeStyleDescription.class, "NodeStyleDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2785,6 +2809,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgeStyle_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getEdgeStyle_MaxWidthExpression(), theViewPackage.getInterpretedExpression(), "maxWidthExpression", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalEdgeStyleEClass, ConditionalEdgeStyle.class, "ConditionalEdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

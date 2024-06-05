@@ -99,7 +99,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
 
 
     public ViewPropertiesDescriptionRegistryConfigurer(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IEMFMessageService emfMessageService,
-                                                       IEMFKindService emfKindService, List<ITextfieldCustomizer> customizers, IFeedbackMessageService feedbackMessageService) {
+            IEMFKindService emfKindService, List<ITextfieldCustomizer> customizers, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
@@ -197,8 +197,8 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
         }
         ITextfieldCustomizer fallbackCustomizer = new ITextfieldCustomizer.NoOp() {
             @Override
-            public boolean handles(EAttribute eAttribute) {
-                return ViewPropertiesDescriptionRegistryConfigurer.this.customizers.stream().noneMatch(customizer -> customizer.handles(eAttribute));
+            public boolean handles(EAttribute eAttribute, EObject eObject) {
+                return ViewPropertiesDescriptionRegistryConfigurer.this.customizers.stream().noneMatch(customizer -> customizer.handles(eAttribute, eObject));
             }
         };
         ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, fallbackCustomizer, this.semanticTargetIdProvider).getIfDescription());

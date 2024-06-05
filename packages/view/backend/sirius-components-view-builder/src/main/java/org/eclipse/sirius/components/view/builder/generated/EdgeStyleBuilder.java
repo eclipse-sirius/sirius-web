@@ -202,5 +202,15 @@ public class EdgeStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for MaxWidthExpression.
+     *
+     * @generated
+     */
+    public EdgeStyleBuilder maxWidthExpression(java.lang.String value) {
+        this.getEdgeStyle().setMaxWidthExpression(value);
+        return this;
+    }
+
 }
 

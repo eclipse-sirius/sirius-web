@@ -224,6 +224,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="background" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="showIconExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxWidthExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeStyleDescription" abstract="true"
       interface="true" eSuperTypes="#//BorderStyle"/>
@@ -264,6 +265,7 @@
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="background" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxWidthExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalEdgeStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//EdgeStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramPalette">

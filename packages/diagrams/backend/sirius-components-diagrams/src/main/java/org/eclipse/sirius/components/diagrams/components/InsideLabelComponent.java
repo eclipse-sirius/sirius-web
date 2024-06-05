@@ -67,6 +67,7 @@ public class InsideLabelComponent implements IComponent {
         Integer borderRadius = labelStyleDescription.getBorderRadiusProvider().apply(variableManager);
         Integer borderSize = labelStyleDescription.getBorderSizeProvider().apply(variableManager);
         LineStyle borderLineStyle = labelStyleDescription.getBorderStyleProvider().apply(variableManager);
+        String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
 
         InsideLabelLocation insideLabelLocation = insideLabelDescription.getInsideLabelLocation();
 
@@ -83,6 +84,7 @@ public class InsideLabelComponent implements IComponent {
                 .borderRadius(borderRadius)
                 .borderSize(borderSize)
                 .borderStyle(borderLineStyle)
+                .maxWidth(maxWidth)
                 .build();
 
         InsideLabelElementProps insideLabelElementProps = InsideLabelElementProps.newInsideLabelElementProps(id)

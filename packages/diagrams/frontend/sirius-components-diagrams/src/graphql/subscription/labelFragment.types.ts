@@ -67,4 +67,5 @@ export interface GQLLabelStyle {
   borderStyle: string;
   borderSize: string;
   borderRadius: number;
+  maxWidth: string;
 }
