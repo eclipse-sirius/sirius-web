@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,24 +27,27 @@ import org.eclipse.sirius.components.view.LabelStyle;
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeWidth <em>Edge Width</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#isShowIcon <em>Show Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getLabelIcon <em>Label Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getMaxWidthExpression <em>Max Width
+ * Expression</em>}</li>
  * </ul>
  *
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle()
  * @model
  * @generated
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle()
  */
 public interface EdgeStyle extends Style, LabelStyle {
+
     /**
      * Returns the value of the '<em><b>Line Style</b></em>' attribute. The default value is <code>"Solid"</code>. The
      * literals are from the enumeration {@link org.eclipse.sirius.components.view.diagram.LineStyle}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Line Style</em>' attribute.
+     * @model default="Solid" required="true"
+     * @generated
      * @see org.eclipse.sirius.components.view.diagram.LineStyle
      * @see #setLineStyle(LineStyle)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_LineStyle()
-     * @model default="Solid" required="true"
-     * @generated
      */
     LineStyle getLineStyle();
 
@@ -53,10 +56,10 @@ public interface EdgeStyle extends Style, LabelStyle {
      * Style</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Line Style</em>' attribute.
+     *         the new value of the '<em>Line Style</em>' attribute.
+     * @generated
      * @see org.eclipse.sirius.components.view.diagram.LineStyle
      * @see #getLineStyle()
-     * @generated
      */
     void setLineStyle(LineStyle value);
 
@@ -66,11 +69,11 @@ public interface EdgeStyle extends Style, LabelStyle {
      * {@link org.eclipse.sirius.components.view.diagram.ArrowStyle}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Source Arrow Style</em>' attribute.
+     * @model default="None" required="true"
+     * @generated
      * @see org.eclipse.sirius.components.view.diagram.ArrowStyle
      * @see #setSourceArrowStyle(ArrowStyle)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_SourceArrowStyle()
-     * @model default="None" required="true"
-     * @generated
      */
     ArrowStyle getSourceArrowStyle();
 
@@ -79,10 +82,10 @@ public interface EdgeStyle extends Style, LabelStyle {
      * Arrow Style</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Source Arrow Style</em>' attribute.
+     *         the new value of the '<em>Source Arrow Style</em>' attribute.
+     * @generated
      * @see org.eclipse.sirius.components.view.diagram.ArrowStyle
      * @see #getSourceArrowStyle()
-     * @generated
      */
     void setSourceArrowStyle(ArrowStyle value);
 
@@ -92,11 +95,11 @@ public interface EdgeStyle extends Style, LabelStyle {
      * {@link org.eclipse.sirius.components.view.diagram.ArrowStyle}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Target Arrow Style</em>' attribute.
+     * @model default="InputArrow" required="true"
+     * @generated
      * @see org.eclipse.sirius.components.view.diagram.ArrowStyle
      * @see #setTargetArrowStyle(ArrowStyle)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_TargetArrowStyle()
-     * @model default="InputArrow" required="true"
-     * @generated
      */
     ArrowStyle getTargetArrowStyle();
 
@@ -105,10 +108,10 @@ public interface EdgeStyle extends Style, LabelStyle {
      * Arrow Style</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Target Arrow Style</em>' attribute.
+     *         the new value of the '<em>Target Arrow Style</em>' attribute.
+     * @generated
      * @see org.eclipse.sirius.components.view.diagram.ArrowStyle
      * @see #getTargetArrowStyle()
-     * @generated
      */
     void setTargetArrowStyle(ArrowStyle value);
 
@@ -117,10 +120,10 @@ public interface EdgeStyle extends Style, LabelStyle {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Edge Width</em>' attribute.
-     * @see #setEdgeWidth(int)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_EdgeWidth()
      * @model default="1" dataType="org.eclipse.sirius.components.view.Length" required="true"
      * @generated
+     * @see #setEdgeWidth(int)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_EdgeWidth()
      */
     int getEdgeWidth();
 
@@ -129,9 +132,9 @@ public interface EdgeStyle extends Style, LabelStyle {
      * Width</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Edge Width</em>' attribute.
-     * @see #getEdgeWidth()
+     *         the new value of the '<em>Edge Width</em>' attribute.
      * @generated
+     * @see #getEdgeWidth()
      */
     void setEdgeWidth(int value);
 
@@ -140,10 +143,10 @@ public interface EdgeStyle extends Style, LabelStyle {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Show Icon</em>' attribute.
-     * @see #setShowIcon(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_ShowIcon()
      * @model default="false"
      * @generated
+     * @see #setShowIcon(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_ShowIcon()
      */
     boolean isShowIcon();
 
@@ -152,9 +155,9 @@ public interface EdgeStyle extends Style, LabelStyle {
      * Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Show Icon</em>' attribute.
-     * @see #isShowIcon()
+     *         the new value of the '<em>Show Icon</em>' attribute.
      * @generated
+     * @see #isShowIcon()
      */
     void setShowIcon(boolean value);
 
@@ -162,10 +165,10 @@ public interface EdgeStyle extends Style, LabelStyle {
      * Returns the value of the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Label Icon</em>' attribute.
-     * @see #setLabelIcon(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_LabelIcon()
      * @model
      * @generated
+     * @see #setLabelIcon(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_LabelIcon()
      */
     String getLabelIcon();
 
@@ -174,10 +177,33 @@ public interface EdgeStyle extends Style, LabelStyle {
      * Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Label Icon</em>' attribute.
-     * @see #getLabelIcon()
+     *         the new value of the '<em>Label Icon</em>' attribute.
      * @generated
+     * @see #getLabelIcon()
      */
     void setLabelIcon(String value);
+
+    /**
+     * Returns the value of the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Max Width Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setMaxWidthExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_MaxWidthExpression()
+     */
+    String getMaxWidthExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getMaxWidthExpression <em>Max
+     * Width Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Max Width Expression</em>' attribute.
+     * @generated
+     * @see #getMaxWidthExpression()
+     */
+    void setMaxWidthExpression(String value);
 
 } // EdgeStyle

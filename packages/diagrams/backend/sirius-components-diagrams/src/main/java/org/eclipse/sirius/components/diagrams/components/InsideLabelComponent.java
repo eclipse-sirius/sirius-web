@@ -61,6 +61,7 @@ public class InsideLabelComponent implements IComponent {
         Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
         List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
+        String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
 
         InsideLabelLocation insideLabelLocation = insideLabelDescription.getInsideLabelLocation();
 
@@ -72,6 +73,7 @@ public class InsideLabelComponent implements IComponent {
                 .strikeThrough(strikeThrough)
                 .underline(underline)
                 .iconURL(iconURL)
+                .maxWidth(maxWidth)
                 .build();
 
         InsideLabelElementProps insideLabelElementProps = InsideLabelElementProps.newInsideLabelElementProps(id)

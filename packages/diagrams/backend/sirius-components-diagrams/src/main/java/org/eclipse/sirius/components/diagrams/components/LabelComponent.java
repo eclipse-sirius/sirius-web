@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,7 @@ public class LabelComponent implements IComponent {
         Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
         List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
+        String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
 
         Position position = optionalPreviousLabel.map(Label::getPosition).orElse(Position.UNDEFINED);
         Size size = optionalPreviousLabel.map(Label::getSize).orElse(Size.UNDEFINED);
@@ -74,6 +75,7 @@ public class LabelComponent implements IComponent {
                 .strikeThrough(strikeThrough)
                 .underline(underline)
                 .iconURL(iconURL)
+                .maxWidth(maxWidth)
                 .build();
 
         LabelElementProps labelElementProps = LabelElementProps.newLabelElementProps(id)

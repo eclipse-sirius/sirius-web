@@ -8,7 +8,8 @@
 
 === Architectural decision records
 
-[ADR-151] Improve Diagram Subscription Lifecycle
+- [ADR-151] Improve Diagram Subscription Lifecycle
+- [ADR-152] Add max-width expression for diagram labels
 
 === Deprecation warning
 
@@ -73,6 +74,7 @@ More existing APIs will be migrated to this new common pattern.
 This dialog presents diagram elements in a tree and allows to select them and update their visibility and status (e.g. hide, show, collapse).
 +
 image:doc/screenshots/diagramFilterView.png[Diagram Filter View, 70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/3570[#3570] [diagram] Add max width expression in the View DSL for labels
 
 === Improvements
 
@@ -94,7 +96,7 @@ image:doc/screenshots/diagramFilterView.png[Diagram Filter View, 70%]
 image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3574[#3574] [diagram] Add a loading indicator during execution of an arrange-all
 - https://github.com/eclipse-sirius/sirius-web/issues/3586[#3586] [diagram] Fix an issue with keypress listener attached to the palette
-- https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove unused form payload 
+- https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove unused form payload
 - https://github.com/eclipse-sirius/sirius-web/issues/3627[#3627] [form] Remove unused mutation in form
 - https://github.com/eclipse-sirius/sirius-web/issues/3606[#3606] [test] Improve error handling in ExecuteEditingContextFunctionRunner and ExecuteEditingContextFunctionEventHandler
 

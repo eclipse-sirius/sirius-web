@@ -54,6 +54,7 @@ public class OutsideLabelComponent implements IComponent {
         Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
         List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
+        String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
 
         var labelStyle = LabelStyle.newLabelStyle()
                 .color(color)
@@ -63,6 +64,7 @@ public class OutsideLabelComponent implements IComponent {
                 .strikeThrough(strikeThrough)
                 .underline(underline)
                 .iconURL(iconURL)
+                .maxWidth(maxWidth)
                 .build();
 
         OutsideLabelElementProps outsideLabelElementProps = OutsideLabelElementProps.newOutsideLabelElementProps(id)

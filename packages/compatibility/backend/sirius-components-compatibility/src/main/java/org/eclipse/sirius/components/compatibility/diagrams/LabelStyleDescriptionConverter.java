@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,11 +67,8 @@ public class LabelStyleDescriptionConverter {
             return 16;
         };
 
-        Function<VariableManager, String> colorProvider = variableManager -> {
-            return new ColorDescriptionConverter(this.interpreter, variableManager.getVariables()).convert(labelStyleDescription.getLabelColor());
-        };
+        Function<VariableManager, String> colorProvider = variableManager -> new ColorDescriptionConverter(this.interpreter, variableManager.getVariables()).convert(labelStyleDescription.getLabelColor());
 
-        // @formatter:off
         return LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(colorProvider)
                 .fontSizeProvider(fontSizeProvider)
@@ -80,7 +77,7 @@ public class LabelStyleDescriptionConverter {
                 .underlineProvider(variableManager -> fontFormats.contains(FontFormat.UNDERLINE_LITERAL))
                 .strikeThroughProvider(variableManager -> fontFormats.contains(FontFormat.STRIKE_THROUGH_LITERAL))
                 .iconURLProvider(iconURLProvider)
+                .maxWidthProvider(variableManager -> null)
                 .build();
-        // @formatter:on
     }
 }

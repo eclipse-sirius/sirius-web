@@ -23,6 +23,7 @@ fragment labelFragment on Label {
     underline
     strikeThrough
     iconURL
+    maxWidth
   }
 }
 `;
@@ -44,6 +45,7 @@ fragment insideLabelFragment on InsideLabel {
     underline
     strikeThrough
     iconURL
+    maxWidth
   }
 }
 `;
@@ -62,6 +64,7 @@ fragment outsideLabelFragment on OutsideLabel {
     underline
     strikeThrough
     iconURL
+    maxWidth
   }
   overflowStrategy
 }

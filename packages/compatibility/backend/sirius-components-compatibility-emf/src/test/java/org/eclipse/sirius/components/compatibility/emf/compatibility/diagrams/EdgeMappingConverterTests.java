@@ -101,6 +101,7 @@ public class EdgeMappingConverterTests {
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
                 .iconURLProvider(variableManager -> List.of())
+                .maxWidthProvider(variableManager -> null)
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription(id)

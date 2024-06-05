@@ -20,6 +20,7 @@ import java.util.function.Function;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
+
     /**
      * The background color used to visually distinguish domain types.
      */
@@ -46,7 +48,7 @@ public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
     private static final TextareaStyle STYLE = TextareaStyle.newTextareaStyle().backgroundColor(BACKGROUND_COLOR).build();
 
     @Override
-    public boolean handles(EAttribute eAttribute) {
+    public boolean handles(EAttribute eAttribute, EObject eObject) {
         return eAttribute.getEType() == ViewPackage.Literals.DOMAIN_TYPE;
     }
 
@@ -85,6 +87,11 @@ public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
                     .toList();
             // @formatter:on
         };
+    }
+
+    @Override
+    public Function<VariableManager, String> getHelpTextProvider() {
+        return null;
     }
 
     private List<EPackage> getEPackagesFromRegistry(EPackage.Registry ePackageRegistry) {

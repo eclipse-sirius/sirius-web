@@ -125,5 +125,15 @@ public class OutsideLabelStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for MaxWidthExpression.
+     *
+     * @generated
+     */
+    public OutsideLabelStyleBuilder maxWidthExpression(java.lang.String value) {
+        this.getOutsideLabelStyle().setMaxWidthExpression(value);
+        return this;
+    }
+
 }
 

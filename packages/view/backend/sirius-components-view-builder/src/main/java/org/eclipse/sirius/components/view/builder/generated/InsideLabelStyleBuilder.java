@@ -126,6 +126,16 @@ public class InsideLabelStyleBuilder {
     }
 
     /**
+     * Setter for MaxWidthExpression.
+     *
+     * @generated
+     */
+    public InsideLabelStyleBuilder maxWidthExpression(java.lang.String value) {
+        this.getInsideLabelStyle().setMaxWidthExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for WithHeader.
      *
      * @generated

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.impl;
+
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
@@ -55,240 +57,239 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
  * Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalEdgeStyleImpl#getLabelIcon <em>Label
  * Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalEdgeStyleImpl#getMaxWidthExpression <em>Max
+ * Width Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ConditionalEdgeStyleImpl extends ConditionalImpl implements ConditionalEdgeStyle {
-    /**
-     * The cached value of the '{@link #getColor() <em>Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #getColor()
-     * @generated
-     * @ordered
-     */
-    protected UserColor color;
 
     /**
      * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getFontSize()
      * @generated
      * @ordered
+     * @see #getFontSize()
      */
     protected static final int FONT_SIZE_EDEFAULT = 14;
-
-    /**
-     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
-    protected int fontSize = FONT_SIZE_EDEFAULT;
-
     /**
      * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #isItalic()
      * @generated
      * @ordered
+     * @see #isItalic()
      */
     protected static final boolean ITALIC_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
-    protected boolean italic = ITALIC_EDEFAULT;
-
     /**
      * The default value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
-     * @see #isBold()
      * @generated
      * @ordered
+     * @see #isBold()
      */
     protected static final boolean BOLD_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #isBold()
-     * @generated
-     * @ordered
-     */
-    protected boolean bold = BOLD_EDEFAULT;
-
     /**
      * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #isUnderline()
      * @generated
      * @ordered
+     * @see #isUnderline()
      */
     protected static final boolean UNDERLINE_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
-    protected boolean underline = UNDERLINE_EDEFAULT;
-
     /**
      * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @see #isStrikeThrough()
      * @generated
      * @ordered
+     * @see #isStrikeThrough()
      */
     protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #isStrikeThrough()
-     * @generated
-     * @ordered
-     */
-    protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
-
     /**
      * The default value of the '{@link #getLineStyle() <em>Line Style</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLineStyle()
      * @generated
      * @ordered
+     * @see #getLineStyle()
      */
     protected static final LineStyle LINE_STYLE_EDEFAULT = LineStyle.SOLID;
-
-    /**
-     * The cached value of the '{@link #getLineStyle() <em>Line Style</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getLineStyle()
-     * @generated
-     * @ordered
-     */
-    protected LineStyle lineStyle = LINE_STYLE_EDEFAULT;
-
     /**
      * The default value of the '{@link #getSourceArrowStyle() <em>Source Arrow Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getSourceArrowStyle()
      * @generated
      * @ordered
+     * @see #getSourceArrowStyle()
      */
     protected static final ArrowStyle SOURCE_ARROW_STYLE_EDEFAULT = ArrowStyle.NONE;
-
-    /**
-     * The cached value of the '{@link #getSourceArrowStyle() <em>Source Arrow Style</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSourceArrowStyle()
-     * @generated
-     * @ordered
-     */
-    protected ArrowStyle sourceArrowStyle = SOURCE_ARROW_STYLE_EDEFAULT;
-
     /**
      * The default value of the '{@link #getTargetArrowStyle() <em>Target Arrow Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getTargetArrowStyle()
      * @generated
      * @ordered
+     * @see #getTargetArrowStyle()
      */
     protected static final ArrowStyle TARGET_ARROW_STYLE_EDEFAULT = ArrowStyle.INPUT_ARROW;
-
-    /**
-     * The cached value of the '{@link #getTargetArrowStyle() <em>Target Arrow Style</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getTargetArrowStyle()
-     * @generated
-     * @ordered
-     */
-    protected ArrowStyle targetArrowStyle = TARGET_ARROW_STYLE_EDEFAULT;
-
     /**
      * The default value of the '{@link #getEdgeWidth() <em>Edge Width</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getEdgeWidth()
      * @generated
      * @ordered
+     * @see #getEdgeWidth()
      */
     protected static final int EDGE_WIDTH_EDEFAULT = 1;
-
-    /**
-     * The cached value of the '{@link #getEdgeWidth() <em>Edge Width</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getEdgeWidth()
-     * @generated
-     * @ordered
-     */
-    protected int edgeWidth = EDGE_WIDTH_EDEFAULT;
-
     /**
      * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #isShowIcon()
      * @generated
      * @ordered
+     * @see #isShowIcon()
      */
     protected static final boolean SHOW_ICON_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isShowIcon()
-     * @generated
-     * @ordered
-     */
-    protected boolean showIcon = SHOW_ICON_EDEFAULT;
-
     /**
      * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLabelIcon()
      * @generated
      * @ordered
+     * @see #getLabelIcon()
      */
     protected static final String LABEL_ICON_EDEFAULT = null;
-
+    /**
+     * The default value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getMaxWidthExpression()
+     */
+    protected static final String MAX_WIDTH_EXPRESSION_EDEFAULT = null;
+    /**
+     * The cached value of the '{@link #getColor() <em>Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     * @see #getColor()
+     */
+    protected UserColor color;
+    /**
+     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getFontSize()
+     */
+    protected int fontSize = FONT_SIZE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isItalic()
+     */
+    protected boolean italic = ITALIC_EDEFAULT;
+    /**
+     * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     * @see #isBold()
+     */
+    protected boolean bold = BOLD_EDEFAULT;
+    /**
+     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isUnderline()
+     */
+    protected boolean underline = UNDERLINE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isStrikeThrough()
+     */
+    protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getLineStyle() <em>Line Style</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getLineStyle()
+     */
+    protected LineStyle lineStyle = LINE_STYLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getSourceArrowStyle() <em>Source Arrow Style</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSourceArrowStyle()
+     */
+    protected ArrowStyle sourceArrowStyle = SOURCE_ARROW_STYLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getTargetArrowStyle() <em>Target Arrow Style</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getTargetArrowStyle()
+     */
+    protected ArrowStyle targetArrowStyle = TARGET_ARROW_STYLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getEdgeWidth() <em>Edge Width</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getEdgeWidth()
+     */
+    protected int edgeWidth = EDGE_WIDTH_EDEFAULT;
+    /**
+     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isShowIcon()
+     */
+    protected boolean showIcon = SHOW_ICON_EDEFAULT;
     /**
      * The cached value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLabelIcon()
      * @generated
      * @ordered
+     * @see #getLabelIcon()
      */
     protected String labelIcon = LABEL_ICON_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getMaxWidthExpression()
+     */
+    protected String maxWidthExpression = MAX_WIDTH_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -332,8 +333,12 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      *
      * @generated
      */
-    public UserColor basicGetColor() {
-        return this.color;
+    @Override
+    public void setColor(UserColor newColor) {
+        UserColor oldColor = this.color;
+        this.color = newColor;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CONDITIONAL_EDGE_STYLE__COLOR, oldColor, this.color));
     }
 
     /**
@@ -341,12 +346,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      *
      * @generated
      */
-    @Override
-    public void setColor(UserColor newColor) {
-        UserColor oldColor = this.color;
-        this.color = newColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CONDITIONAL_EDGE_STYLE__COLOR, oldColor, this.color));
+    public UserColor basicGetColor() {
+        return this.color;
     }
 
     /**
@@ -608,6 +609,29 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      */
     @Override
+    public String getMaxWidthExpression() {
+        return this.maxWidthExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMaxWidthExpression(String newMaxWidthExpression) {
+        String oldMaxWidthExpression = this.maxWidthExpression;
+        this.maxWidthExpression = newMaxWidthExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION, oldMaxWidthExpression, this.maxWidthExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__COLOR:
@@ -636,6 +660,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return this.isShowIcon();
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
                 return this.getLabelIcon();
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                return this.getMaxWidthExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -684,6 +710,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
                 this.setLabelIcon((String) newValue);
                 return;
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                this.setMaxWidthExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -697,7 +726,7 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     public void eUnset(int featureID) {
         switch (featureID) {
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-                this.setColor((UserColor) null);
+                this.setColor(null);
                 return;
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
                 this.setFontSize(FONT_SIZE_EDEFAULT);
@@ -731,6 +760,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return;
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
                 this.setLabelIcon(LABEL_ICON_EDEFAULT);
+                return;
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                this.setMaxWidthExpression(MAX_WIDTH_EXPRESSION_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -767,7 +799,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
                 return this.showIcon != SHOW_ICON_EDEFAULT;
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
-                return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
+                return !Objects.equals(LABEL_ICON_EDEFAULT, this.labelIcon);
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                return !Objects.equals(MAX_WIDTH_EXPRESSION_EDEFAULT, this.maxWidthExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -817,6 +851,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                     return DiagramPackage.EDGE_STYLE__SHOW_ICON;
                 case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
                     return DiagramPackage.EDGE_STYLE__LABEL_ICON;
+                case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                    return DiagramPackage.EDGE_STYLE__MAX_WIDTH_EXPRESSION;
                 default:
                     return -1;
             }
@@ -869,6 +905,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                     return DiagramPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON;
                 case DiagramPackage.EDGE_STYLE__LABEL_ICON:
                     return DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON;
+                case DiagramPackage.EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                    return DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION;
                 default:
                     return -1;
             }
@@ -886,31 +924,32 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (fontSize: ");
-        result.append(this.fontSize);
-        result.append(", italic: ");
-        result.append(this.italic);
-        result.append(", bold: ");
-        result.append(this.bold);
-        result.append(", underline: ");
-        result.append(this.underline);
-        result.append(", strikeThrough: ");
-        result.append(this.strikeThrough);
-        result.append(", lineStyle: ");
-        result.append(this.lineStyle);
-        result.append(", sourceArrowStyle: ");
-        result.append(this.sourceArrowStyle);
-        result.append(", targetArrowStyle: ");
-        result.append(this.targetArrowStyle);
-        result.append(", edgeWidth: ");
-        result.append(this.edgeWidth);
-        result.append(", showIcon: ");
-        result.append(this.showIcon);
-        result.append(", labelIcon: ");
-        result.append(this.labelIcon);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (fontSize: " +
+                this.fontSize +
+                ", italic: " +
+                this.italic +
+                ", bold: " +
+                this.bold +
+                ", underline: " +
+                this.underline +
+                ", strikeThrough: " +
+                this.strikeThrough +
+                ", lineStyle: " +
+                this.lineStyle +
+                ", sourceArrowStyle: " +
+                this.sourceArrowStyle +
+                ", targetArrowStyle: " +
+                this.targetArrowStyle +
+                ", edgeWidth: " +
+                this.edgeWidth +
+                ", showIcon: " +
+                this.showIcon +
+                ", labelIcon: " +
+                this.labelIcon +
+                ", maxWidthExpression: " +
+                this.maxWidthExpression +
+                ')';
+        return result;
     }
 
 } // ConditionalEdgeStyleImpl

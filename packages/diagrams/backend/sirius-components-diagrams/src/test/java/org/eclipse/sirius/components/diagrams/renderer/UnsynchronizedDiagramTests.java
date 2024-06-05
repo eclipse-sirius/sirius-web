@@ -278,6 +278,7 @@ public class UnsynchronizedDiagramTests {
                 .colorProvider(VariableManager -> "#FFFFFF")
                 .fontSizeProvider(variableManager -> 10)
                 .iconURLProvider(VariableManager -> List.of())
+                .maxWidthProvider(variableManager -> null)
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")

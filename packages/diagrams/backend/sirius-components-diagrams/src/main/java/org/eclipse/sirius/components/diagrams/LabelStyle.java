@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,8 @@ public final class LabelStyle {
 
     private List<String> iconURL;
 
+    private String maxWidth;
+
     private LabelStyle() {
         // Prevent instantiation
     }
@@ -75,6 +77,10 @@ public final class LabelStyle {
         return this.iconURL;
     }
 
+    public String getMaxWidth() {
+        return this.maxWidth;
+    }
+
     /**
      * The builder used to create the label style.
      *
@@ -96,6 +102,8 @@ public final class LabelStyle {
         private boolean strikeThrough;
 
         private List<String> iconURL;
+
+        private String maxWidth;
 
         private Builder() {
         }
@@ -135,6 +143,11 @@ public final class LabelStyle {
             return this;
         }
 
+        public Builder maxWidth(String maxWidth) {
+            this.maxWidth = maxWidth;
+            return this;
+        }
+
         public LabelStyle build() {
             LabelStyle labelDescription = new LabelStyle();
             labelDescription.color = Objects.requireNonNull(this.color);
@@ -144,6 +157,7 @@ public final class LabelStyle {
             labelDescription.strikeThrough = this.strikeThrough;
             labelDescription.underline = this.underline;
             labelDescription.iconURL = Objects.requireNonNull(this.iconURL);
+            labelDescription.maxWidth = this.maxWidth;
 
             return labelDescription;
         }

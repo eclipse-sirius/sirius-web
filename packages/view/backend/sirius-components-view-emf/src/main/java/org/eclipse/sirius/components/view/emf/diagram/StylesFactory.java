@@ -25,6 +25,9 @@ import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
+import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.Result;
+import org.eclipse.sirius.components.interpreter.Status;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
@@ -53,7 +56,7 @@ public final class StylesFactory {
         this.objectService = Objects.requireNonNull(objectService);
     }
 
-    public LabelStyleDescription createEdgeLabelStyleDescription(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle) {
+    public LabelStyleDescription createEdgeLabelStyleDescription(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle, AQLInterpreter interpreter) {
         return LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> Optional.ofNullable(edgeStyle.getColor())
                         .filter(FixedColor.class::isInstance)
@@ -75,6 +78,7 @@ public final class StylesFactory {
                     }
                     return iconURL;
                 })
+                .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(edgeStyle.getMaxWidthExpression(), variableManager, interpreter))
                 .build();
     }
 
@@ -163,7 +167,7 @@ public final class StylesFactory {
         return result;
     }
 
-    public LabelStyleDescription createInsideLabelStyle(InsideLabelStyle labelStyle) {
+    public LabelStyleDescription createInsideLabelStyle(InsideLabelStyle labelStyle, AQLInterpreter interpreter) {
         return LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> Optional.ofNullable(labelStyle.getLabelColor())
                         .filter(FixedColor.class::isInstance)
@@ -185,10 +189,11 @@ public final class StylesFactory {
                     }
                     return iconURL;
                 })
+                .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(labelStyle.getMaxWidthExpression(), variableManager, interpreter))
                 .build();
     }
 
-    public LabelStyleDescription createOutsideLabelStyle(OutsideLabelStyle labelStyle) {
+    public LabelStyleDescription createOutsideLabelStyle(OutsideLabelStyle labelStyle, AQLInterpreter interpreter) {
         return LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> Optional.ofNullable(labelStyle.getLabelColor())
                         .filter(FixedColor.class::isInstance)
@@ -210,6 +215,17 @@ public final class StylesFactory {
                     }
                     return iconURL;
                 })
+                .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(labelStyle.getMaxWidthExpression(), variableManager, interpreter))
                 .build();
+    }
+
+    private String computeMaxWidthProvider(String maxWidthExpression, VariableManager variableManager, AQLInterpreter interpreter) {
+        if (maxWidthExpression != null && !maxWidthExpression.isBlank()) {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), maxWidthExpression);
+            if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asString().isPresent()) {
+                return result.asString().get();
+            }
+        }
+        return null;
     }
 }

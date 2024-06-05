@@ -1136,13 +1136,22 @@ public interface DiagramPackage extends EPackage {
     int NODE_LABEL_STYLE__LABEL_ICON = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_LABEL_STYLE__MAX_WIDTH_EXPRESSION = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 3;
+
+    /**
      * The number of structural features of the '<em>Node Label Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_LABEL_STYLE_FEATURE_COUNT = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 3;
+    int NODE_LABEL_STYLE_FEATURE_COUNT = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 4;
 
     /**
      * The number of operations of the '<em>Node Label Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1225,6 +1234,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int INSIDE_LABEL_STYLE__LABEL_ICON = NODE_LABEL_STYLE__LABEL_ICON;
+
+    /**
+     * The feature id for the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION = NODE_LABEL_STYLE__MAX_WIDTH_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>With Header</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1334,6 +1352,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int OUTSIDE_LABEL_STYLE__LABEL_ICON = NODE_LABEL_STYLE__LABEL_ICON;
+
+    /**
+     * The feature id for the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION = NODE_LABEL_STYLE__MAX_WIDTH_EXPRESSION;
 
     /**
      * The number of structural features of the '<em>Outside Label Style</em>' class. <!-- begin-user-doc --> <!--
@@ -1835,13 +1862,22 @@ public interface DiagramPackage extends EPackage {
     int EDGE_STYLE__LABEL_ICON = STYLE_FEATURE_COUNT + 10;
 
     /**
+     * The feature id for the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__MAX_WIDTH_EXPRESSION = STYLE_FEATURE_COUNT + 11;
+
+    /**
      * The number of structural features of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 11;
+    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 12;
 
     /**
      * The number of operations of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1968,13 +2004,22 @@ public interface DiagramPackage extends EPackage {
     int CONDITIONAL_EDGE_STYLE__LABEL_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 11;
 
     /**
+     * The feature id for the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION = ViewPackage.CONDITIONAL_FEATURE_COUNT + 12;
+
+    /**
      * The number of structural features of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 12;
+    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 13;
 
     /**
      * The number of operations of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
@@ -3105,6 +3150,12 @@ public interface DiagramPackage extends EPackage {
      */
     int DROP_NODE_TOOL__ACCEPTED_NODE_TYPES = TOOL_FEATURE_COUNT;
     /**
+     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    DiagramPackage eINSTANCE = org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl.init();
+    /**
      * The number of structural features of the '<em>Drop Node Tool</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -3209,12 +3260,6 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelTextAlign()
      */
     int LABEL_TEXT_ALIGN = 53;
-    /**
-     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    DiagramPackage eINSTANCE = org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl.init();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
@@ -4112,6 +4157,18 @@ public interface DiagramPackage extends EPackage {
     EAttribute getNodeLabelStyle_LabelIcon();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getMaxWidthExpression <em>Max Width
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Max Width Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getMaxWidthExpression()
+     * @see #getNodeLabelStyle()
+     */
+    EAttribute getNodeLabelStyle_MaxWidthExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription
      * <em>Node Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4347,6 +4404,18 @@ public interface DiagramPackage extends EPackage {
      * @see #getEdgeStyle()
      */
     EAttribute getEdgeStyle_LabelIcon();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getMaxWidthExpression <em>Max Width
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Max Width Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getMaxWidthExpression()
+     * @see #getEdgeStyle()
+     */
+    EAttribute getEdgeStyle_MaxWidthExpression();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle
@@ -5802,6 +5871,14 @@ public interface DiagramPackage extends EPackage {
         EAttribute NODE_LABEL_STYLE__LABEL_ICON = eINSTANCE.getNodeLabelStyle_LabelIcon();
 
         /**
+         * The meta object literal for the '<em><b>Max Width Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_LABEL_STYLE__MAX_WIDTH_EXPRESSION = eINSTANCE.getNodeLabelStyle_MaxWidthExpression();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription
          * <em>Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -5990,6 +6067,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute EDGE_STYLE__LABEL_ICON = eINSTANCE.getEdgeStyle_LabelIcon();
+
+        /**
+         * The meta object literal for the '<em><b>Max Width Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute EDGE_STYLE__MAX_WIDTH_EXPRESSION = eINSTANCE.getEdgeStyle_MaxWidthExpression();
 
         /**
          * The meta object literal for the

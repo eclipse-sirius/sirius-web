@@ -420,6 +420,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
                 .iconURLProvider(variableManager -> List.of())
+                .maxWidthProvider(variableManager -> null)
                 .build();
 
         var insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescription")

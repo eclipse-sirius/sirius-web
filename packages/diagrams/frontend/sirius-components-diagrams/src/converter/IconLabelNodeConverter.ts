@@ -93,6 +93,7 @@ const toIconLabelNode = (
       id: insideLabel.id,
       text: insideLabel.text,
       style: {
+        maxWidth: insideLabel.overflowStrategy === 'NONE' ? undefined : labelStyle.maxWidth,
         ...convertLabelStyle(labelStyle),
       },
       iconURL: labelStyle.iconURL,

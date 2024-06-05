@@ -117,6 +117,7 @@ public class DiagramElementChangeVisibilityTests {
                 .colorProvider(VariableManager -> COLOR)
                 .fontSizeProvider(variableManager -> LABEL_FONT_SIZE)
                 .iconURLProvider(VariableManager -> List.of())
+                .maxWidthProvider(variableManager -> null)
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription(UUID.randomUUID().toString())
