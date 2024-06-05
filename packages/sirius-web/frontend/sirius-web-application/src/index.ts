@@ -40,6 +40,8 @@ export {
   navigationBarRightContributionExtensionPoint,
 } from './navigationBar/NavigationBarExtensionPoints';
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
+export { type EditProjectNavbarSubtitleProps } from './views/edit-project/EditProjectNavbar/EditProjectNavbar.types';
+export { editProjectNavbarSubtitleExtensionPoint } from './views/edit-project/EditProjectNavbar/EditProjectNavbarExtensionPoints';
 export { type CreateProjectAreaCardProps } from './views/project-browser/create-projects-area/CreateProjectArea.types';
 export { createProjectAreaCardExtensionPoint } from './views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 export { projectActionButtonMenuItemExtensionPoint } from './views/project-browser/list-projects-area/ProjectActionButtonExtensionPoints';

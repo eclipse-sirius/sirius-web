@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast, useComponent } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -32,6 +32,7 @@ import { RenameProjectModal } from '../../../modals/rename-project/RenameProject
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
 import { EditProjectNavbarProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
 
+import { editProjectNavbarSubtitleExtensionPoint } from './EditProjectNavbarExtensionPoints';
 import {
   EditProjectNavbarContext,
   EditProjectNavbarEvent,
@@ -63,10 +64,15 @@ const projectEventSubscription = gql`
 const useEditProjectViewNavbarStyles = makeStyles((theme) => ({
   center: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
   },
   title: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  titleLabel: {
     marginRight: theme.spacing(2),
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -163,24 +169,30 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
       modal = <DeleteProjectModal project={project} onSuccess={onProjectDeleted} onCancel={onCloseModal} />;
     }
   }
+
+  const { Component: ProjectSubtitle } = useComponent(editProjectNavbarSubtitleExtensionPoint);
   return (
     <>
       <NavigationBar>
         <div className={classes.center}>
-          <Typography variant="h6" noWrap className={classes.title} data-testid={`navbar-${projectName}`}>
-            {projectName}
-          </Typography>
-          <IconButton
-            className={classes.onDarkBackground}
-            edge="start"
-            aria-label="more"
-            aria-controls="more-menu"
-            aria-haspopup="true"
-            onClick={onMoreClick}
-            color="inherit"
-            data-testid="more">
-            <MoreVertIcon />
-          </IconButton>
+          <div className={classes.title}>
+            <Typography variant="h6" noWrap className={classes.titleLabel} data-testid={`navbar-${projectName}`}>
+              {projectName}
+            </Typography>
+            <IconButton
+              className={classes.onDarkBackground}
+              edge="start"
+              size="small" // Per #3591 it should remain "small" to keep vertical space for a potential subtitle
+              aria-label="more"
+              aria-controls="more-menu"
+              aria-haspopup="true"
+              onClick={onMoreClick}
+              color="inherit"
+              data-testid="more">
+              <MoreVertIcon />
+            </IconButton>
+          </div>
+          <ProjectSubtitle />
         </div>
       </NavigationBar>
 

@@ -11,24 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Project } from '../EditProjectView.types';
+import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { EditProjectNavbarSubtitleProps } from './EditProjectNavbar.types';
 
-export interface EditProjectNavbarProps {
-  project: Project;
-}
-
-export interface EditProjectNavbarSubtitleProps {}
-
-export interface GQLProjectEventSubscription {
-  projectEvent: GQLProjectEventPayload;
-}
-
-export interface GQLProjectEventPayload {
-  __typename: string;
-}
-
-export interface GQLProjectRenamedEventPayload extends GQLProjectEventPayload {
-  id: string;
-  projectId: string;
-  newName: string;
-}
+export const editProjectNavbarSubtitleExtensionPoint: ComponentExtensionPoint<EditProjectNavbarSubtitleProps> = {
+  identifier: 'editProjectNavbar#subtitle',
+  FallbackComponent: () => null,
+};
