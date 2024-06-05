@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.application.studio.services.api.IDomainProvider;
+import org.eclipse.sirius.web.application.studio.services.api.IStudioColorPalettesLoader;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.stereotype.Service;
 
@@ -49,12 +50,15 @@ public class EditingContextInitializer implements IEditingContextProcessor {
 
     private final IResourceLoader resourceLoader;
 
+    private final IStudioColorPalettesLoader studioColorPalettesLoader;
+
     private final List<IDomainProvider> domainProviders;
 
-    public EditingContextInitializer(ISemanticDataSearchService semanticDataSearchService, IResourceLoader resourceLoader, List<IDomainProvider> domainProviders) {
+    public EditingContextInitializer(ISemanticDataSearchService semanticDataSearchService, IResourceLoader resourceLoader, List<IDomainProvider> domainProviders, IStudioColorPalettesLoader studioColorPalettesLoader) {
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
         this.resourceLoader = Objects.requireNonNull(resourceLoader);
         this.domainProviders = Objects.requireNonNull(domainProviders);
+        this.studioColorPalettesLoader = Objects.requireNonNull(studioColorPalettesLoader);
     }
 
     @Override
@@ -79,6 +83,7 @@ public class EditingContextInitializer implements IEditingContextProcessor {
                 resourceSet.getPackageRegistry().put(DiagramPackage.eNS_URI, DiagramPackage.eINSTANCE);
                 resourceSet.getPackageRegistry().put(FormPackage.eNS_URI, FormPackage.eINSTANCE);
                 resourceSet.getPackageRegistry().put(GanttPackage.eNS_URI, GanttPackage.eINSTANCE);
+                this.studioColorPalettesLoader.loadStudioColorPalettes(resourceSet);
 
                 semanticData.getDocuments().forEach(document -> this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent()));
                 resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
