@@ -22,6 +22,7 @@ export interface DiagramPanelProps {
 export interface DiagramPanelState {
   dialogOpen: DiagramPanelDialog | null;
   arrangeAllDone: boolean;
+  arrangeAllInProgress: boolean;
 }
 
 export type DiagramPanelDialog = 'Share';

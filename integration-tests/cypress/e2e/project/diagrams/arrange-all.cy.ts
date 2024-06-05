@@ -34,7 +34,7 @@ describe('arrange all - Diagram', () => {
 
     afterEach(() => cy.deleteProject(projectId));
 
-    it('Check arrange all do not maked node as resizedByUser', () => {
+    it('Check arrange all do not marked node as resizedByUser', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
       explorer.expand('CompositeProcessor1');
@@ -51,6 +51,11 @@ describe('arrange all - Diagram', () => {
       diagram.getNodes('Topography', 'CompositeProcessor1').then(($node) => {
         expect(nodeHeight).to.be.greaterThan(Math.trunc($node.height() ?? 0));
       });
+    });
+
+    it('Check loading indicator is present during arrange action', () => {
+      cy.getByTestId('arrange-all').click();
+      cy.getByTestId('arrange-all-circular-loading').should('exist');
     });
   });
 });

@@ -13,6 +13,7 @@
 
 import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
@@ -48,6 +49,7 @@ export const DiagramPanel = memo(
     const [state, setState] = useState<DiagramPanelState>({
       dialogOpen: null,
       arrangeAllDone: false,
+      arrangeAllInProgress: false,
     });
 
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -172,17 +174,26 @@ export const DiagramPanel = memo(
               <IconButton
                 size="small"
                 aria-label="arrange all elements"
-                onClick={() =>
+                onClick={() => {
+                  setState((prevState) => ({
+                    ...prevState,
+                    arrangeAllInProgress: true,
+                  }));
                   arrangeAll().then(() =>
                     setState((prevState) => ({
                       ...prevState,
                       arrangeAllDone: true,
+                      arrangeAllInProgress: false,
                     }))
-                  )
-                }
+                  );
+                }}
                 data-testid={'arrange-all'}
                 disabled={readOnly}>
-                <AccountTreeIcon />
+                {state.arrangeAllInProgress ? (
+                  <CircularProgress size="24px" data-testid="arrange-all-circular-loading" />
+                ) : (
+                  <AccountTreeIcon />
+                )}
               </IconButton>
             </Tooltip>
             <Tooltip title="Reveal hidden elements">
