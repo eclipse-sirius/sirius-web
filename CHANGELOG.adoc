@@ -34,6 +34,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/2908[#2908] [diagram] Homogenize delete icon
 - https://github.com/eclipse-sirius/sirius-web/issues/3485[#3485] [diagram] Add a validation error message when background value is missing
 - https://github.com/eclipse-sirius/sirius-web/issues/3480[#3480] [diagram] Fix an error that prevents border color to be properly applied
+- https://github.com/eclipse-sirius/sirius-web/issues/3538[#3538] [fomrs] Register the Details view description in the editing context
 
 === New Features
 
