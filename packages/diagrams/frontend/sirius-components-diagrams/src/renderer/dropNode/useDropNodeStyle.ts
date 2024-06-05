@@ -13,13 +13,11 @@
 
 import { useTheme } from '@material-ui/core/styles';
 import { useContext, useMemo } from 'react';
-import { ReactFlowState, useStore } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { DropNodeContext } from './DropNodeContext';
+import { DropNodeContextValue } from './DropNodeContext.types';
 import { useDropNodeStyleValue } from './useDropNodeStyle.types';
-
-const draggedNodeIdSelector = (state: ReactFlowState) =>
-  Array.from(state.nodeInternals.values()).find((n) => n.dragging)?.id || '';
 
 export const useDropNodeStyle = (
   isDropNodeTarget: boolean,
@@ -27,7 +25,7 @@ export const useDropNodeStyle = (
   isDragging: boolean
 ): useDropNodeStyleValue => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const draggedNodeId = useStore(draggedNodeIdSelector);
+  const { draggedNodeId } = useContext<DropNodeContextValue>(DropNodeContext);
 
   const theme = useTheme();
   const style: React.CSSProperties = {};

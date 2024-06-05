@@ -11,18 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useCallback } from 'react';
-import { Node, NodeMouseHandler, ReactFlowState, useStore as useReactFlowStore } from 'reactflow';
+import { useCallback, useContext } from 'react';
+import { Node, NodeMouseHandler } from 'reactflow';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
+import { DropNodeContext } from '../dropNode/DropNodeContext';
+import { DropNodeContextValue } from '../dropNode/DropNodeContext.types';
 import { UseNodeHoverValue } from './useNodeHover.types';
-
-const draggedNodeIdSelector = (state: ReactFlowState) =>
-  Array.from(state.nodeInternals.values()).find((n) => n.dragging)?.id || '';
 
 export const useNodeHover = (): UseNodeHoverValue => {
   const { setNodes } = useStore();
-  const draggedNodeId = useReactFlowStore(draggedNodeIdSelector);
+  const { draggedNodeId } = useContext<DropNodeContextValue>(DropNodeContext);
 
   const onNodeMouseEnter: NodeMouseHandler = useCallback(
     (_: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData>) => {
