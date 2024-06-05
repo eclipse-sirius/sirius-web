@@ -83,6 +83,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3597[#3597] [core] Improve the creation of `RepresentationEventProcessor`
 - https://github.com/eclipse-sirius/sirius-web/issues/3544[#3544] [diagram] Add missing positions for inside label
 image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/3574[#3574] [diagram] Add a loading indicator during execution of an arrange-all
 
 == v2024.5.0
 
