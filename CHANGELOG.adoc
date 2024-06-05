@@ -82,6 +82,7 @@ This dialog presents diagram elements in a tree and allows to select them and up
 image:doc/screenshots/diagramFilterView.png[Diagram Filter View, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3523[#3523] [gantt] Support rounding dates when changing dates from gantt
 - https://github.com/eclipse-sirius/sirius-web/issues/3655[#3655] [gantt] Support "Delete Task Dependency" tool in gantt
+- https://github.com/eclipse-sirius/sirius-web/issues/3591[#3591] [sirius-web] Add EditProject subtitle extension point
 
 === Improvements
 
