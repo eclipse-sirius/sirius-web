@@ -49,6 +49,8 @@ public final class LabelStyle {
 
     private LineStyle borderStyle;
 
+    private String maxWidth;
+
     private LabelStyle() {
         // Prevent instantiation
     }
@@ -105,6 +107,10 @@ public final class LabelStyle {
         return this.borderStyle;
     }
 
+    public String getMaxWidth() {
+        return this.maxWidth;
+    }
+
     /**
      * The builder used to create the label style.
      *
@@ -136,6 +142,8 @@ public final class LabelStyle {
         private int borderRadius;
 
         private LineStyle borderStyle;
+
+        private String maxWidth;
 
         private Builder() {
         }
@@ -200,6 +208,11 @@ public final class LabelStyle {
             return this;
         }
 
+        public Builder maxWidth(String maxWidth) {
+            this.maxWidth = maxWidth;
+            return this;
+        }
+
         public LabelStyle build() {
             LabelStyle labelDescription = new LabelStyle();
             labelDescription.color = Objects.requireNonNull(this.color);
@@ -214,6 +227,8 @@ public final class LabelStyle {
             labelDescription.borderSize = this.borderSize;
             labelDescription.borderRadius = this.borderRadius;
             labelDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
+            labelDescription.maxWidth = this.maxWidth;
+
             return labelDescription;
         }
     }

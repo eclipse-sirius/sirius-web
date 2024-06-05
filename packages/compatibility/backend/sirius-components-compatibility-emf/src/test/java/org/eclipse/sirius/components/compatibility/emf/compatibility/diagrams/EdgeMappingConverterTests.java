@@ -107,6 +107,7 @@ public class EdgeMappingConverterTests {
                 .borderRadiusProvider(variableManager -> 0)
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
+                .maxWidthProvider(variableManager -> null)
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription(id)

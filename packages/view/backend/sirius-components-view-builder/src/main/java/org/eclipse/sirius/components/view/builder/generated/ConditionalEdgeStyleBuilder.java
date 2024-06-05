@@ -211,5 +211,15 @@ public class ConditionalEdgeStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for MaxWidthExpression.
+     *
+     * @generated
+     */
+    public ConditionalEdgeStyleBuilder maxWidthExpression(java.lang.String value) {
+        this.getConditionalEdgeStyle().setMaxWidthExpression(value);
+        return this;
+    }
+
 }
 

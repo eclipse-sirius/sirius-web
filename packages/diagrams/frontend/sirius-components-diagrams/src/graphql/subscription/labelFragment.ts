@@ -28,6 +28,7 @@ fragment labelFragment on Label {
     borderStyle
     borderSize
     borderRadius
+    maxWidth
   }
 }
 `;
@@ -54,6 +55,7 @@ fragment insideLabelFragment on InsideLabel {
     borderStyle
     borderSize
     borderRadius
+    maxWidth
   }
 }
 `;
@@ -77,6 +79,7 @@ fragment outsideLabelFragment on OutsideLabel {
     borderStyle
     borderSize
     borderRadius
+    maxWidth
   }
   overflowStrategy
 }

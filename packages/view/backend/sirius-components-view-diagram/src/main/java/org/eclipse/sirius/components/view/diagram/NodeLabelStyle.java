@@ -36,10 +36,10 @@ public interface NodeLabelStyle extends LabelStyle, BorderStyle {
      * Returns the value of the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Label Color</em>' reference.
-     * @see #setLabelColor(UserColor)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_LabelColor()
      * @model required="true"
      * @generated
+     * @see #setLabelColor(UserColor)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_LabelColor()
      */
     UserColor getLabelColor();
 
@@ -48,9 +48,9 @@ public interface NodeLabelStyle extends LabelStyle, BorderStyle {
      * Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Label Color</em>' reference.
-     * @see #getLabelColor()
+     *         the new value of the '<em>Label Color</em>' reference.
      * @generated
+     * @see #getLabelColor()
      */
     void setLabelColor(UserColor value);
 
@@ -58,10 +58,10 @@ public interface NodeLabelStyle extends LabelStyle, BorderStyle {
      * Returns the value of the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Label Icon</em>' attribute.
-     * @see #setLabelIcon(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_LabelIcon()
      * @model
      * @generated
+     * @see #setLabelIcon(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_LabelIcon()
      */
     String getLabelIcon();
 
@@ -70,20 +70,43 @@ public interface NodeLabelStyle extends LabelStyle, BorderStyle {
      * Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Label Icon</em>' attribute.
-     * @see #getLabelIcon()
+     *         the new value of the '<em>Label Icon</em>' attribute.
      * @generated
+     * @see #getLabelIcon()
      */
     void setLabelIcon(String value);
+
+    /**
+     * Returns the value of the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Max Width Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setMaxWidthExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_MaxWidthExpression()
+     */
+    String getMaxWidthExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getMaxWidthExpression
+     * <em>Max Width Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Max Width Expression</em>' attribute.
+     * @generated
+     * @see #getMaxWidthExpression()
+     */
+    void setMaxWidthExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Background</em>' reference.
-     * @see #setBackground(UserColor)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_Background()
      * @model
      * @generated
+     * @see #setBackground(UserColor)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_Background()
      */
     UserColor getBackground();
 
@@ -92,9 +115,9 @@ public interface NodeLabelStyle extends LabelStyle, BorderStyle {
      * <em>Background</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Background</em>' reference.
-     * @see #getBackground()
+     *         the new value of the '<em>Background</em>' reference.
      * @generated
+     * @see #getBackground()
      */
     void setBackground(UserColor value);
 
@@ -103,10 +126,10 @@ public interface NodeLabelStyle extends LabelStyle, BorderStyle {
      * end-user-doc -->
      *
      * @return the value of the '<em>Show Icon Expression</em>' attribute.
-     * @see #setShowIconExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_ShowIconExpression()
      * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
+     * @see #setShowIconExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_ShowIconExpression()
      */
     String getShowIconExpression();
 
@@ -115,9 +138,9 @@ public interface NodeLabelStyle extends LabelStyle, BorderStyle {
      * <em>Show Icon Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Show Icon Expression</em>' attribute.
-     * @see #getShowIconExpression()
+     *         the new value of the '<em>Show Icon Expression</em>' attribute.
      * @generated
+     * @see #getShowIconExpression()
      */
     void setShowIconExpression(String value);
 

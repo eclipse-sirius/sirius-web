@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 public class CustomizableEStringIfDescriptionProvider {
+
     private static final String IF_DESCRIPTION_ID = "EString";
 
     private static final String TEXTAREA_DESCRIPTION_ID = "Textarea";
@@ -60,28 +61,26 @@ public class CustomizableEStringIfDescriptionProvider {
     }
 
     public IfDescription getIfDescription() {
-        // @formatter:off
         return IfDescription.newIfDescription(IF_DESCRIPTION_ID)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .predicate(this.getPredicate())
                 .controlDescriptions(List.of(this.getTextareaDescription()))
                 .build();
-        // @formatter:on
     }
 
     private Function<VariableManager, Boolean> getPredicate() {
         return variableManager -> {
             var optionalEAttribute = variableManager.get(ViewPropertiesDescriptionRegistryConfigurer.ESTRUCTURAL_FEATURE, EAttribute.class);
+            var optionalSelf = variableManager.get("self", EObject.class);
             return optionalEAttribute.filter(eAttribute -> {
                 EClassifier eType = eAttribute.getEType();
                 boolean isTextfield = eType.equals(EcorePackage.Literals.ESTRING) || Objects.equals(eType.getInstanceClassName(), String.class.getName());
-                return isTextfield && this.customizer.handles(eAttribute);
+                return isTextfield && this.customizer.handles(eAttribute, optionalSelf.orElse(null));
             }).isPresent();
         };
     }
 
     private TextareaDescription getTextareaDescription() {
-        // @formatter:off
         var builder = TextareaDescription.newTextareaDescription(TEXTAREA_DESCRIPTION_ID)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new WidgetIdProvider())
@@ -92,9 +91,9 @@ public class CustomizableEStringIfDescriptionProvider {
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider());
-        // @formatter:on
         Optional.ofNullable(this.customizer.getStyleProvider()).ifPresent(builder::styleProvider);
         Optional.ofNullable(this.customizer.getCompletionProposalsProvider()).ifPresent(builder::completionProposalsProvider);
+        Optional.ofNullable(this.customizer.getHelpTextProvider()).ifPresent(builder::helpTextProvider);
         return builder.build();
     }
 

@@ -43,6 +43,7 @@ export const convertInsideLabel = (
       justifyContent: 'center',
       padding,
       textAlign: convertLabelTextAlign(gqlInsideLabel.textAlign),
+      maxWidth: gqlInsideLabel.overflowStrategy === 'NONE' ? undefined : labelStyle.maxWidth,
       ...convertLabelStyle(labelStyle),
     },
     contentStyle: {
@@ -80,10 +81,10 @@ export const convertInsideLabel = (
       data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'center' };
     }
     data.style = { ...data.style, alignItems: 'stretch' };
-    if (alignement.secondaryAlignment === 'LEFT') {
+    if (alignement.secondaryAlignment === 'LEFT' || alignement.secondaryAlignment === 'CENTER') {
       insideLabel.style = { ...insideLabel.style, marginRight: 'auto' };
     }
-    if (alignement.secondaryAlignment === 'RIGHT') {
+    if (alignement.secondaryAlignment === 'RIGHT' || alignement.secondaryAlignment === 'CENTER') {
       insideLabel.style = { ...insideLabel.style, marginLeft: 'auto' };
     }
   }
@@ -107,6 +108,7 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
       style: {
         justifyContent: 'center',
         textAlign: convertLabelTextAlign(gqlOutsideLabel.textAlign),
+        maxWidth: gqlOutsideLabel.overflowStrategy === 'NONE' ? undefined : labelStyle.maxWidth,
         ...convertLabelStyle(labelStyle),
       },
       contentStyle: {

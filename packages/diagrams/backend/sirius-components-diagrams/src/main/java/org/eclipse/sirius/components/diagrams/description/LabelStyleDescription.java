@@ -52,6 +52,8 @@ public final class LabelStyleDescription {
 
     private Function<VariableManager, LineStyle> borderStyleProvider;
 
+    private Function<VariableManager, String> maxWidthProvider;
+
     private LabelStyleDescription() {
         // Prevent instantiation
     }
@@ -108,6 +110,10 @@ public final class LabelStyleDescription {
         return this.borderStyleProvider;
     }
 
+    public Function<VariableManager, String> getMaxWidthProvider() {
+        return this.maxWidthProvider;
+    }
+
     /**
      * The builder used to create a new label description.
      *
@@ -139,6 +145,8 @@ public final class LabelStyleDescription {
         private Function<VariableManager, Integer> borderRadiusProvider;
 
         private Function<VariableManager, LineStyle> borderStyleProvider;
+
+        private Function<VariableManager, String> maxWidthProvider;
 
         private Builder() {
         }
@@ -203,6 +211,11 @@ public final class LabelStyleDescription {
             return this;
         }
 
+        public Builder maxWidthProvider(Function<VariableManager, String> maxWidthProvider) {
+            this.maxWidthProvider = Objects.requireNonNull(maxWidthProvider);
+            return this;
+        }
+
         public LabelStyleDescription build() {
             LabelStyleDescription styleDescription = new LabelStyleDescription();
             styleDescription.colorProvider = Objects.requireNonNull(this.colorProvider);
@@ -217,6 +230,7 @@ public final class LabelStyleDescription {
             styleDescription.borderSizeProvider = Objects.requireNonNull(this.borderSizeProvider);
             styleDescription.borderRadiusProvider = Objects.requireNonNull(this.borderRadiusProvider);
             styleDescription.borderStyleProvider = Objects.requireNonNull(this.borderStyleProvider);
+            styleDescription.maxWidthProvider = Objects.requireNonNull(this.maxWidthProvider);
             return styleDescription;
         }
 

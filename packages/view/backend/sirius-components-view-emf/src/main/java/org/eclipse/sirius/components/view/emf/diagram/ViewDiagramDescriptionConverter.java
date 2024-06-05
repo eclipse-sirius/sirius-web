@@ -584,7 +584,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .deleteHandler(this.createDeleteHandler(viewEdgeDescription, converterContext));
 
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getBeginLabelExpression(), "_beginlabel", interpreter, stylesFactory).ifPresent(builder::beginLabelDescription);
-        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getCenterLabelExpression(), "_centerlabel", interpreter, stylesFactory).ifPresent(builder::centerLabelDescription);
+        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getCenterLabelExpression(), "_centerlabel", interpreter, stylesFactory)
+                .ifPresent(builder::centerLabelDescription);
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getEndLabelExpression(), "_endlabel", interpreter, stylesFactory).ifPresent(builder::endLabelDescription);
         new ToolFinder().findEdgeLabelEditTool(viewEdgeDescription)
                 .ifPresent(labelEditTool -> builder.labelEditHandler(this.createEdgeLabelEditHandler(viewEdgeDescription, converterContext)));

@@ -13,6 +13,7 @@
 - [ADR-152] Add support for any kind of object as semantic element in the tree representation
 - [ADR-153] Restore the Selection Dialog support in diagrams
 - [ADR-154] Add support for finding parent in tree representation
+- [ADR-155] Add max-width expression for diagram labels
 
 === Deprecation warning
 
@@ -76,6 +77,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3758[#3578] [form] Store property and form payload in a context
 - https://github.com/eclipse-sirius/sirius-web/issues/3821[#3821] [sirius-web] Allow to filter resources in `RewriteProxiesEventHandler`.
 Introduce new `IRewriteProxiesResourceFilter` interface, to register resource filter for `RewriteProxiesEventHandler`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3570[#3570] [diagram] Add max width expression in the View DSL for labels
 
 === Improvements
 
