@@ -14,6 +14,9 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3562[#3562] [sirius-web] Update displayed default model creation action.
++ Projects that have a nature and need the action to create an empty model will need to register the empty model action like it is done in `StudioEditingContextActionProvider`.
+
 === Dependency update
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3510[#3510] [releng] Switch to Spring Boot 3.2.5
