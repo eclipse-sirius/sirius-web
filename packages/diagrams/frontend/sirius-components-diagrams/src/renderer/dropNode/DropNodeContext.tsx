@@ -18,6 +18,7 @@ const defaultValue: DropNodeContextValue = {
   initialPosition: null,
   initialPositionAbsolute: null,
   droppableOnDiagram: false,
+  draggedNodeId: '',
   initializeDrop: () => {},
   resetDrop: () => {},
 };
@@ -37,6 +38,7 @@ export const DropNodeContextProvider = ({ children }: DropNodeContextProviderPro
       initialPosition: null,
       initialPositionAbsolute: null,
       droppableOnDiagram: false,
+      draggedNodeId: '',
     }));
   };
 
@@ -46,6 +48,7 @@ export const DropNodeContextProvider = ({ children }: DropNodeContextProviderPro
         initialPosition: state.initialPosition,
         initialPositionAbsolute: state.initialPositionAbsolute,
         droppableOnDiagram: state.droppableOnDiagram,
+        draggedNodeId: state.draggedNodeId,
         initializeDrop,
         resetDrop,
       }}>

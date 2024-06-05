@@ -22,6 +22,7 @@ export interface DropNodeContextState {
   initialPosition: XYPosition | null;
   initialPositionAbsolute: XYPosition | null;
   droppableOnDiagram: boolean;
+  draggedNodeId: string;
 }
 
 export interface DropNodeContextProviderProps {
