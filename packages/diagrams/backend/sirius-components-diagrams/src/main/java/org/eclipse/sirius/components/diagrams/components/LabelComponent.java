@@ -66,6 +66,7 @@ public class LabelComponent implements IComponent {
         Integer borderRadius = labelStyleDescription.getBorderRadiusProvider().apply(variableManager);
         Integer borderSize = labelStyleDescription.getBorderSizeProvider().apply(variableManager);
         LineStyle borderLineStyle = labelStyleDescription.getBorderStyleProvider().apply(variableManager);
+        String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
 
         Position position = optionalPreviousLabel.map(Label::getPosition).orElse(Position.UNDEFINED);
         Size size = optionalPreviousLabel.map(Label::getSize).orElse(Size.UNDEFINED);
@@ -85,6 +86,7 @@ public class LabelComponent implements IComponent {
                 .borderRadius(borderRadius)
                 .borderSize(borderSize)
                 .borderStyle(borderLineStyle)
+                .maxWidth(maxWidth)
                 .build();
 
         LabelElementProps labelElementProps = LabelElementProps.newLabelElementProps(id)

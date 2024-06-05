@@ -100,6 +100,29 @@ public interface NodeLabelStyle extends LabelStyle, BorderStyle {
     void setLabelIcon(String value);
 
     /**
+     * Returns the value of the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Max Width Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setMaxWidthExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_MaxWidthExpression()
+     */
+    String getMaxWidthExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getMaxWidthExpression
+     * <em>Max Width Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Max Width Expression</em>' attribute.
+     * @generated
+     * @see #getMaxWidthExpression()
+     */
+    void setMaxWidthExpression(String value);
+
+    /**
      * Returns the value of the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Background</em>' reference.

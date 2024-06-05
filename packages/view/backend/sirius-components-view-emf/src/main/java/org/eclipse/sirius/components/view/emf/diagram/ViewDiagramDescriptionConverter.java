@@ -391,7 +391,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
             var effectiveStyle = this.findEffectiveInsideLabelStyle(viewInsideLabelDescription, interpreter, variableManager);
-            return this.stylesFactory.createInsideLabelStyle(effectiveStyle);
+            return this.stylesFactory.createInsideLabelStyle(effectiveStyle, interpreter);
         };
 
         Function<VariableManager, Boolean> isHeaderProvider = variableManager -> {
@@ -431,7 +431,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
             Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
                 var effectiveStyle = this.findEffectiveOutsideLabelStyle(outsideLabelDescription, interpreter, variableManager);
-                return this.stylesFactory.createOutsideLabelStyle(effectiveStyle);
+                return this.stylesFactory.createOutsideLabelStyle(effectiveStyle, interpreter);
             };
 
             return OutsideLabelDescription.newOutsideLabelDescription(EcoreUtil.getURI(viewNodeDescription)
@@ -478,7 +478,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                     .findFirst()
                     .orElseGet(viewEdgeDescription::getStyle);
 
-            return this.stylesFactory.createEdgeLabelStyleDescription(effectiveStyle);
+            return this.stylesFactory.createEdgeLabelStyleDescription(effectiveStyle, interpreter);
         };
 
         return Optional.of(LabelDescription.newLabelDescription(EcoreUtil.getURI(viewEdgeDescription).toString() + labelSuffix)

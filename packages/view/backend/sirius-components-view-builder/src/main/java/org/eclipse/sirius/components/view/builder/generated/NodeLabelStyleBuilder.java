@@ -157,5 +157,15 @@ public abstract class NodeLabelStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for MaxWidthExpression.
+     *
+     * @generated
+     */
+    public NodeLabelStyleBuilder maxWidthExpression(java.lang.String value) {
+        this.getNodeLabelStyle().setMaxWidthExpression(value);
+        return this;
+    }
+
 }
 
