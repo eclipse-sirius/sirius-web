@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.diagrams;
 
-export interface GQLNodeDescription {
-  id: string;
-  borderNodeDescriptionIds: string[];
-  childNodeDescriptionIds: string[];
-  userResizable: GQLUserResizableDirection;
-  keepAspectRatio: boolean;
+/**
+ * Direction where a node can be resized.
+ *
+ * @author frouene
+ */
+public enum UserResizableDirection {
+    BOTH, VERTICAL, HORIZONTAL, NONE
 }
-
-export type GQLUserResizableDirection = 'BOTH' | 'HORIZONTAL' | 'VERTICAL' | 'NONE';

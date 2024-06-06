@@ -10,6 +10,162 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 -- Sample migration project
 INSERT INTO project (
   id,
@@ -313,4 +469,145 @@ INSERT INTO representation_data (
   '2024-01-02 9:42:0.000',
   'none',
   '0'
+);
+
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  'a5441b64-83a5-4754-8794-57227bf8a322',
+  'UserResizable Migration Studio',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO nature (
+  project_id,
+  name
+) VALUES (
+  'a5441b64-83a5-4754-8794-57227bf8a322',
+  'siriusComponents://nature?kind=studio'
+);
+INSERT INTO semantic_data (
+  id,
+  project_id,
+  created_on,
+  last_modified_on
+) VALUES (
+  'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
+  'a5441b64-83a5-4754-8794-57227bf8a322',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
+  'http://www.eclipse.org/sirius-web/view'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
+  'http://www.eclipse.org/sirius-web/diagram'
+);
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  'a884a1a2-f7cc-4e61-8a0d-5ef96e76734d',
+  'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
+  'NodeDescription#userResizable migration',
+  '{
+     "json": { "version": "1.0", "encoding": "utf-8" },
+     "ns": {
+       "diagram": "http://www.eclipse.org/sirius-web/diagram",
+       "view": "http://www.eclipse.org/sirius-web/view"
+     },
+     "content": [
+       {
+         "id": "d44190f4-5da1-42c5-955d-bfe884a84bd7",
+         "eClass": "view:View",
+         "data": {
+           "colorPalettes": [
+             {
+               "data": {
+                 "colors": [
+                   {
+                     "data": {
+                       "name": "color_empty",
+                       "value": ""
+                     },
+                     "eClass": "view:FixedColor",
+                     "id": "4cca218a-89c9-4b8e-838b-ba8b13ab806d"
+                   }
+                 ]
+               },
+               "eClass": "view:ColorPalette",
+               "id": "230ca8e1-2d22-4bd9-b1b6-f9b623d6cf95"
+             }
+           ],
+           "descriptions": [
+             {
+               "id": "2677164f-963f-4ba7-a7f6-01f6a83b0c6d",
+               "eClass": "diagram:DiagramDescription",
+               "data": {
+                 "name": "NodeDescription#userResizable migration",
+                 "domainType": "flow::System",
+                 "nodeDescriptions": [
+                   {
+                     "id": "ff5276cd-edeb-418c-8d52-d03edb958ceb",
+                     "eClass": "diagram:NodeDescription",
+                     "data": {
+                       "name": "NodeWithUserResizableFalse migration",
+                       "domainType": "flow::CompositeProcessor",
+                       "userResizable": "false",
+                       "childrenLayoutStrategy": {
+                         "id": "20651d93-2ee5-41cb-b2bd-1e75958c73cf",
+                         "eClass": "diagram:FreeFormLayoutStrategyDescription"
+                       },
+                       "style": {
+                         "id": "92fe9d3f-2c5b-41ab-81ea-8482c8cd57b9",
+                         "eClass": "diagram:RectangularNodeStyleDescription",
+                         "data": {
+                           "borderColor": "//@colorPalettes.0/@colors.0",
+                           "color": "//@colorPalettes.0/@colors.0"
+                         }
+                       }
+                     }
+                   },
+                   {
+                     "id": "88f95390-ac15-4381-ae82-7b23a2017bd4",
+                     "eClass": "diagram:NodeDescription",
+                     "data": {
+                       "name": "NodeWithUserResizableTrue migration",
+                       "domainType": "flow::CompositeProcessor",
+                       "userResizable": "true",
+                       "childrenLayoutStrategy": {
+                         "id": "db92e810-5d51-4d0c-a6cf-6a1e00cea6d9",
+                         "eClass": "diagram:FreeFormLayoutStrategyDescription"
+                       },
+                       "style": {
+                         "id": "fa35806a-bdd0-4ba7-81bf-8cfba8f8fef5",
+                         "eClass": "diagram:ImageNodeStyleDescription"
+                       }
+                     }
+                   }
+                 ]
+               }
+             }
+           ]
+         }
+       }
+     ]
+   }',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
 );

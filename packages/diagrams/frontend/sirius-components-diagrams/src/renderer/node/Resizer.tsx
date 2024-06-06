@@ -37,7 +37,7 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme = useTheme();
 
-  if (data.nodeDescription?.userResizable && !readOnly) {
+  if (data.nodeDescription?.userResizable !== 'NONE' && !readOnly) {
     if (data.isListChild) {
       return (
         <NodeResizeControl
@@ -47,7 +47,7 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
           style={{ ...resizeControlLineStyle(theme) }}
         />
       );
-    } else {
+    } else if (data.nodeDescription?.userResizable === 'BOTH') {
       return (
         <NodeResizer
           handleStyle={{ ...resizeHandleStyle(theme) }}
@@ -58,8 +58,45 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
         />
       );
+    } else if (data.nodeDescription?.userResizable === 'HORIZONTAL' && selected) {
+      return (
+        <>
+          <NodeResizeControl
+            variant={ResizeControlVariant.Line}
+            position={'left'}
+            shouldResize={() => !data.isBorderNode}
+            style={{ ...resizeControlLineStyle(theme) }}
+            keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+          />
+          <NodeResizeControl
+            variant={ResizeControlVariant.Line}
+            position={'right'}
+            shouldResize={() => !data.isBorderNode}
+            style={{ ...resizeControlLineStyle(theme) }}
+            keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+          />
+        </>
+      );
+    } else if (data.nodeDescription?.userResizable === 'VERTICAL' && selected) {
+      return (
+        <>
+          <NodeResizeControl
+            variant={ResizeControlVariant.Line}
+            position={'top'}
+            shouldResize={() => !data.isBorderNode}
+            style={{ ...resizeControlLineStyle(theme) }}
+            keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+          />
+          <NodeResizeControl
+            variant={ResizeControlVariant.Line}
+            position={'bottom'}
+            shouldResize={() => !data.isBorderNode}
+            style={{ ...resizeControlLineStyle(theme) }}
+            keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+          />
+        </>
+      );
     }
-  } else {
-    return null;
   }
+  return null;
 });

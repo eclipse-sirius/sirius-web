@@ -83,7 +83,7 @@ export const EllipseNode = memo(({ data, id, selected, dragging }: NodeProps<Ell
 
   return (
     <>
-      {data.nodeDescription?.userResizable && !readOnly ? (
+      {data.nodeDescription?.userResizable !== 'NONE' && !readOnly ? (
         <NodeResizer
           handleStyle={{ ...resizeHandleStyle(theme) }}
           lineStyle={{ ...resizeLineStyle(theme) }}

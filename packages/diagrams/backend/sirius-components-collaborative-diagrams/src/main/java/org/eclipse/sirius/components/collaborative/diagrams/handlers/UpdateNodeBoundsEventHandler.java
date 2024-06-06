@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.springframework.stereotype.Service;
@@ -99,7 +100,7 @@ public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
 
         Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.diagramElementId());
 
-        if (optionalNode.isPresent() && (optionalNode.get().isUserResizable() || newSize.equals(optionalNode.get().getSize()))) {
+        if (optionalNode.isPresent() && (optionalNode.get().getUserResizable() != UserResizableDirection.NONE || newSize.equals(optionalNode.get().getSize()))) {
             Position oldPosition = optionalNode.get().getPosition();
             if (diagramContext.getDiagram().getLabel().endsWith("__EXPERIMENTAL")) {
                 NodeLayoutData nodeLayoutData = diagramContext.getDiagram().getLayoutData().nodeLayoutData().get(optionalNode.get().getId());

@@ -75,6 +75,7 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.diagram.ToolSection;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
@@ -467,6 +468,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     private EEnum labelTextAlignEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum userResizableDirectionEEnum = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2245,6 +2253,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EEnum getUserResizableDirection() {
+        return this.userResizableDirectionEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public DiagramFactory getDiagramFactory() {
         return (DiagramFactory) this.getEFactoryInstance();
     }
@@ -2476,6 +2494,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.labelOverflowStrategyEEnum = this.createEEnum(LABEL_OVERFLOW_STRATEGY);
         this.arrangeLayoutDirectionEEnum = this.createEEnum(ARRANGE_LAYOUT_DIRECTION);
         this.labelTextAlignEEnum = this.createEEnum(LABEL_TEXT_ALIGN);
+        this.userResizableDirectionEEnum = this.createEEnum(USER_RESIZABLE_DIRECTION);
     }
 
     /**
@@ -2584,7 +2603,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_ReusedBorderNodeDescriptions(), this.getNodeDescription(), null, "reusedBorderNodeDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeDescription_UserResizable(), this.ecorePackage.getEBoolean(), "userResizable", "true", 1, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+        this.initEAttribute(this.getNodeDescription_UserResizable(), this.getUserResizableDirection(), "userResizable", "BOTH", 1, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeDescription_DefaultWidthExpression(), theViewPackage.getInterpretedExpression(), "defaultWidthExpression", null, 0, 1, NodeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2929,6 +2948,12 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.addEEnumLiteral(this.labelTextAlignEEnum, LabelTextAlign.RIGHT);
         this.addEEnumLiteral(this.labelTextAlignEEnum, LabelTextAlign.CENTER);
         this.addEEnumLiteral(this.labelTextAlignEEnum, LabelTextAlign.JUSTIFY);
+
+        this.initEEnum(this.userResizableDirectionEEnum, UserResizableDirection.class, "UserResizableDirection");
+        this.addEEnumLiteral(this.userResizableDirectionEEnum, UserResizableDirection.BOTH);
+        this.addEEnumLiteral(this.userResizableDirectionEEnum, UserResizableDirection.HORIZONTAL);
+        this.addEEnumLiteral(this.userResizableDirectionEEnum, UserResizableDirection.VERTICAL);
+        this.addEEnumLiteral(this.userResizableDirectionEEnum, UserResizableDirection.NONE);
 
         // Create resource
         this.createResource(eNS_URI);

@@ -222,7 +222,7 @@ public class NodeComponent implements IComponent {
                 .style(style)
                 .position(position)
                 .size(size)
-                .userResizable(nodeDescription.isUserResizable())
+                .userResizable(nodeDescription.getUserResizable())
                 .children(List.of(nodeChildren))
                 .customizableProperties(customizableProperties)
                 .modifiers(modifiers)

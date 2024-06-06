@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -223,6 +224,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .map(borderNodeDescription -> this.convert(borderNodeDescription, converterContext))
                 .toList();
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.valueOf(viewNodeDescription.getSynchronizationPolicy().getName());
+        UserResizableDirection userResizableDirection = UserResizableDirection.valueOf(viewNodeDescription.getUserResizable().getLiteral());
 
         AQLInterpreter interpreter = converterContext.getInterpreter();
         Function<VariableManager, String> typeProvider = variableManager -> {
@@ -291,7 +293,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .reusedChildNodeDescriptionIds(reusedChildNodeDescriptionIds)
                 .reusedBorderNodeDescriptionIds(reusedBorderNodeDescriptionIds)
                 .sizeProvider(sizeProvider)
-                .userResizable(viewNodeDescription.isUserResizable())
+                .userResizable(userResizableDirection)
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
                 .shouldRenderPredicate(shouldRenderPredicate)
                 .isCollapsedByDefaultPredicate(isCollapsedByDefaultPredicate)

@@ -68,6 +68,12 @@
     <eLiterals name="CENTER" value="2"/>
     <eLiterals name="JUSTIFY" value="3"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="UserResizableDirection">
+    <eLiterals name="BOTH"/>
+    <eLiterals name="HORIZONTAL" value="1"/>
+    <eLiterals name="VERTICAL" value="2"/>
+    <eLiterals name="NONE" value="3"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoLayout" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -111,7 +117,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="reusedBorderNodeDescriptions"
         upperBound="-1" eType="#//NodeDescription"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="userResizable" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
+        eType="#//UserResizableDirection" defaultValueLiteral="BOTH"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultWidthExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultHeightExpression"

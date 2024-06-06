@@ -62,7 +62,7 @@ public final class Node implements IDiagramElement {
 
     private Size size;
 
-    private boolean userResizable;
+    private UserResizableDirection userResizable;
 
     private List<Node> borderNodes;
 
@@ -156,7 +156,7 @@ public final class Node implements IDiagramElement {
         return this.size;
     }
 
-    public boolean isUserResizable() {
+    public UserResizableDirection getUserResizable() {
         return this.userResizable;
     }
 
@@ -239,7 +239,7 @@ public final class Node implements IDiagramElement {
 
         private Size size;
 
-        private boolean userResizable;
+        private UserResizableDirection userResizable = UserResizableDirection.NONE;
 
         private List<Node> borderNodes;
 
@@ -361,8 +361,8 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
-        public Builder userResizable(boolean userResizable) {
-            this.userResizable = userResizable;
+        public Builder userResizable(UserResizableDirection userResizable) {
+            this.userResizable = Objects.requireNonNull(userResizable);
             return this;
         }
 
@@ -419,7 +419,7 @@ public final class Node implements IDiagramElement {
             node.childrenLayoutStrategy = this.childrenLayoutStrategy;
             node.position = Objects.requireNonNull(this.position);
             node.size = Objects.requireNonNull(this.size);
-            node.userResizable = this.userResizable;
+            node.userResizable = Objects.requireNonNull(this.userResizable);
             node.borderNodes = Objects.requireNonNull(this.borderNodes);
             node.childNodes = Objects.requireNonNull(this.childNodes);
             node.customizedProperties = this.customizedProperties;

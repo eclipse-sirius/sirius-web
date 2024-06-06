@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
@@ -62,7 +63,7 @@ public class FanDescriptionProvider implements INodeDescriptionProvider {
                 .outsideLabels(this.flowViewBuilder.getOutsideLabelDescription(this.colorProvider, "feature:speed"))
                 .defaultHeightExpression("aql:self.speed/2")
                 .defaultWidthExpression("aql:self.speed/2")
-                .userResizable(false)
+                .userResizable(UserResizableDirection.NONE)
                 .keepAspectRatio(true)
                 .style(this.flowViewBuilder.createImageNodeStyleDescription(FAN_SVG_ID, this.colorProvider))
                 .synchronizationPolicy(this.synchronizationPolicy)

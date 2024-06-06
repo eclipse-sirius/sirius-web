@@ -3310,12 +3310,6 @@ public interface DiagramPackage extends EPackage {
      */
     int DROP_NODE_TOOL__ACCEPTED_NODE_TYPES = TOOL_FEATURE_COUNT;
     /**
-     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    DiagramPackage eINSTANCE = org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl.init();
-    /**
      * The number of structural features of the '<em>Drop Node Tool</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -3420,6 +3414,21 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelTextAlign()
      */
     int LABEL_TEXT_ALIGN = 53;
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.UserResizableDirection <em>User
+     * Resizable Direction</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.UserResizableDirection
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getUserResizableDirection()
+     */
+    int USER_RESIZABLE_DIRECTION = 54;
+    /**
+     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    DiagramPackage eINSTANCE = org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl.init();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
@@ -3681,12 +3690,12 @@ public interface DiagramPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#isUserResizable <em>User Resizable</em>}'.
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getUserResizable <em>User Resizable</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>User Resizable</em>'.
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.NodeDescription#isUserResizable()
+     * @see org.eclipse.sirius.components.view.diagram.NodeDescription#getUserResizable()
      * @see #getNodeDescription()
      */
     EAttribute getNodeDescription_UserResizable();
@@ -5356,6 +5365,16 @@ public interface DiagramPackage extends EPackage {
     EEnum getLabelTextAlign();
 
     /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.UserResizableDirection
+     * <em>User Resizable Direction</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>User Resizable Direction</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.UserResizableDirection
+     */
+    EEnum getUserResizableDirection();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -6863,6 +6882,16 @@ public interface DiagramPackage extends EPackage {
          * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelTextAlign()
          */
         EEnum LABEL_TEXT_ALIGN = eINSTANCE.getLabelTextAlign();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.UserResizableDirection
+         * <em>User Resizable Direction</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @see org.eclipse.sirius.components.view.diagram.UserResizableDirection
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getUserResizableDirection()
+         */
+        EEnum USER_RESIZABLE_DIRECTION = eINSTANCE.getUserResizableDirection();
 
     }
 

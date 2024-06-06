@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.diagrams.ViewModifier;
 
 /**
  * Custom assertion class used to perform some tests on a node.
-
+ *
  * @author gdaniel
  */
 public class NodeAssert extends DiagramElementAssert<NodeAssert, Node> {
@@ -86,16 +86,6 @@ public class NodeAssert extends DiagramElementAssert<NodeAssert, Node> {
 
     public NodeAssert hasSize(Size size) {
         assertThat(this.actual.getSize()).isEqualTo(size);
-        return this;
-    }
-
-    public NodeAssert isUserResizable() {
-        assertThat(this.actual.isUserResizable()).isTrue();
-        return this;
-    }
-
-    public NodeAssert isNotUserResizable() {
-        assertThat(this.actual.isUserResizable()).isFalse();
         return this;
     }
 

@@ -196,12 +196,13 @@ public class NodeDescriptionBuilder {
         return this;
     }
 
+
     /**
      * Setter for UserResizable.
      *
      * @generated
      */
-    public NodeDescriptionBuilder userResizable(java.lang.Boolean value) {
+    public NodeDescriptionBuilder userResizable(org.eclipse.sirius.components.view.diagram.UserResizableDirection value) {
         this.getNodeDescription().setUserResizable(value);
         return this;
     }

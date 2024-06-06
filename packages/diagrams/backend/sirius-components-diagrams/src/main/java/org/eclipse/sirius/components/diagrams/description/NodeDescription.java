@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -61,7 +62,7 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private Function<VariableManager, Size> sizeProvider;
 
-    private boolean userResizable;
+    private UserResizableDirection userResizable;
 
     private List<NodeDescription> borderNodeDescriptions;
 
@@ -156,7 +157,7 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.sizeProvider;
     }
 
-    public boolean isUserResizable() {
+    public UserResizableDirection getUserResizable() {
         return this.userResizable;
     }
 
@@ -256,7 +257,7 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, Size> sizeProvider;
 
-        private boolean userResizable = true;
+        private UserResizableDirection userResizable = UserResizableDirection.BOTH;
 
         private List<NodeDescription> borderNodeDescriptions = new ArrayList<>();
 
@@ -380,8 +381,8 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
-        public Builder userResizable(boolean userResizable) {
-            this.userResizable = userResizable;
+        public Builder userResizable(UserResizableDirection userResizable) {
+            this.userResizable = Objects.requireNonNull(userResizable);
             return this;
         }
 
@@ -469,7 +470,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.outsideLabelDescriptions = Objects.requireNonNull(this.outsideLabelDescriptions);
             nodeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             nodeDescription.sizeProvider = Objects.requireNonNull(this.sizeProvider);
-            nodeDescription.userResizable = this.userResizable;
+            nodeDescription.userResizable = Objects.requireNonNull(this.userResizable);
             nodeDescription.childrenLayoutStrategyProvider = Objects.requireNonNull(this.childrenLayoutStrategyProvider);
             nodeDescription.borderNodeDescriptions = Objects.requireNonNull(this.borderNodeDescriptions);
             nodeDescription.childNodeDescriptions = Objects.requireNonNull(this.childNodeDescriptions);
