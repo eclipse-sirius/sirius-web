@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -212,7 +213,7 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
-                .userResizable(true)
+                .userResizable(UserResizableDirection.BOTH)
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .customizedProperties(Set.of())

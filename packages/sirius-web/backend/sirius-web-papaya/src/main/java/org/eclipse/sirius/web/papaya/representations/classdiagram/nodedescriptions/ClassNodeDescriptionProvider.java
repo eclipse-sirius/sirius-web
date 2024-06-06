@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
@@ -101,7 +102,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                         attributesNodeDescription,
                         operationsNodeDescription
                 )
-                .userResizable(true)
+                .userResizable(UserResizableDirection.BOTH)
                 .collapsible(true)
                 .build();
     }

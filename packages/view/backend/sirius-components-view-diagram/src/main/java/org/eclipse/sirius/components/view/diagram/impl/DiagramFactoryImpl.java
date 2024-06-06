@@ -64,6 +64,7 @@ import org.eclipse.sirius.components.view.diagram.SelectionDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
@@ -218,6 +219,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createArrangeLayoutDirectionFromString(eDataType, initialValue);
             case DiagramPackage.LABEL_TEXT_ALIGN:
                 return this.createLabelTextAlignFromString(eDataType, initialValue);
+            case DiagramPackage.USER_RESIZABLE_DIRECTION:
+                return this.createUserResizableDirectionFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -251,6 +254,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.convertArrangeLayoutDirectionToString(eDataType, instanceValue);
             case DiagramPackage.LABEL_TEXT_ALIGN:
                 return this.convertLabelTextAlignToString(eDataType, instanceValue);
+            case DiagramPackage.USER_RESIZABLE_DIRECTION:
+                return this.convertUserResizableDirectionToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -837,6 +842,27 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      * @generated
      */
     public String convertLabelTextAlignToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserResizableDirection createUserResizableDirectionFromString(EDataType eDataType, String initialValue) {
+        UserResizableDirection result = UserResizableDirection.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertUserResizableDirectionToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

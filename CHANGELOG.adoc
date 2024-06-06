@@ -64,7 +64,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3616[#3616] [diagram] Fix potential exceptions due to duplicate keys in diagram event processing
 - https://github.com/eclipse-sirius/sirius-web/issues/3624[#3624] [diagram] Fix an issue where the header separator does not fill the entire width of the node
 - https://github.com/eclipse-sirius/sirius-web/issues/3531[#3531] [diagram] Fix unnecessary edges label re render
-- https://github.com/eclipse-sirius/sirius-web/issues/3650[#3650] [diagram] Fix potential NPE in DiagramNavigator and Node toString method 
+- https://github.com/eclipse-sirius/sirius-web/issues/3650[#3650] [diagram] Fix potential NPE in DiagramNavigator and Node toString method
 - https://github.com/eclipse-sirius/sirius-web/issues/3649[#3649] [sirius-web] Restore support for Related elements view icons
 - https://github.com/eclipse-sirius/sirius-web/issues/3630[#3630] [sirius-web] Restore support for the deletion of dangling representations
 - https://github.com/eclipse-sirius/sirius-web/issues/3666[#3666] [core] Enable EMF's intrinsicIDToEObjectMap for JSON resources to support languages which use modeled identifiers (e.g. SysMLv2).
@@ -120,7 +120,7 @@ image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3645[#3645] [core] Revert earlier change made in #3595 which caused regressions
 - https://github.com/eclipse-sirius/sirius-web/issues/3651[#3651] [diagram] Improve performances when interacting with the diagram, especially when dragging a node
 - https://github.com/eclipse-sirius/sirius-web/issues/3641[#3641] [core] Do not fetch representation content when we only need the metadata
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3589[#3589] [diagram] Add the ability to limit the direction of resize for a node
 
 == v2024.5.0
 

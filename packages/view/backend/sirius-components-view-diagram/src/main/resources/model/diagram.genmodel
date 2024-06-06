@@ -81,6 +81,12 @@
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelTextAlign/CENTER"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelTextAlign/JUSTIFY"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//UserResizableDirection">
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//UserResizableDirection/BOTH"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//UserResizableDirection/HORIZONTAL"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//UserResizableDirection/VERTICAL"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//UserResizableDirection/NONE"/>
+    </genEnums>
     <genClasses ecoreClass="diagram.ecore#//DiagramDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/autoLayout"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/palette"/>

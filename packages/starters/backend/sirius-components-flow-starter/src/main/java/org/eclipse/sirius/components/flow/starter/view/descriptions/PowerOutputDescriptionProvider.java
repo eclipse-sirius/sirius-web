@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
@@ -58,7 +59,7 @@ public class PowerOutputDescriptionProvider implements INodeDescriptionProvider 
                 .childrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())
                 .defaultHeightExpression("50")
                 .defaultWidthExpression("50")
-                .userResizable(false)
+                .userResizable(UserResizableDirection.NONE)
                 .keepAspectRatio(true)
                 .style(this.flowViewBuilder.createImageNodeStyleDescription(POWER_OUTPUT_SVG_ID, this.colorProvider))
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

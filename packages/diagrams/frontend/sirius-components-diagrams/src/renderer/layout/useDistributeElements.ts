@@ -245,7 +245,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
       return getNodes().map((node) => {
         if (
           !selectedNodeIds.includes(node.id) ||
-          node.data.nodeDescription?.userResizable === false ||
+          node.data.nodeDescription?.userResizable === 'NONE' ||
           node.data.pinned
         ) {
           return node;
@@ -272,7 +272,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
       return getNodes().map((node) => {
         if (
           !selectedNodeIds.includes(node.id) ||
-          node.data.nodeDescription?.userResizable === false ||
+          node.data.nodeDescription?.userResizable === 'NONE' ||
           node.data.pinned
         ) {
           return node;
@@ -418,7 +418,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
         selectedNodeIds,
         (_selectedNodes, refNode) => {
           return getNodes().map((node) => {
-            if (!selectedNodeIds.includes(node.id) || node.data.nodeDescription?.userResizable === false) {
+            if (!selectedNodeIds.includes(node.id) || node.data.nodeDescription?.userResizable === 'NONE') {
               return node;
             }
 

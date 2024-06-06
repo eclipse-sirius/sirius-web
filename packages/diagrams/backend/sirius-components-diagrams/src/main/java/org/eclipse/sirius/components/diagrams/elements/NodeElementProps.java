@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
@@ -66,7 +67,7 @@ public final class NodeElementProps implements IProps {
 
     private Size size;
 
-    private boolean userResizable;
+    private UserResizableDirection userResizable;
 
     private Integer defaultWidth;
 
@@ -144,7 +145,7 @@ public final class NodeElementProps implements IProps {
         return this.size;
     }
 
-    public boolean isUserResizable() {
+    public UserResizableDirection getUserResizable() {
         return this.userResizable;
     }
 
@@ -215,7 +216,7 @@ public final class NodeElementProps implements IProps {
 
         private Size size;
 
-        private boolean userResizable;
+        private UserResizableDirection userResizable;
 
         private Integer defaultWidth;
 
@@ -298,8 +299,8 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
-        public Builder userResizable(boolean userResizable) {
-            this.userResizable = userResizable;
+        public Builder userResizable(UserResizableDirection userResizable) {
+            this.userResizable = Objects.requireNonNull(userResizable);
             return this;
         }
 
@@ -349,7 +350,7 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.childrenLayoutStrategy = this.childrenLayoutStrategy;
             nodeElementProps.position = Objects.requireNonNull(this.position);
             nodeElementProps.size = Objects.requireNonNull(this.size);
-            nodeElementProps.userResizable = this.userResizable;
+            nodeElementProps.userResizable = Objects.requireNonNull(this.userResizable);
             nodeElementProps.children = Objects.requireNonNull(this.children);
             nodeElementProps.labelEditable = this.labelEditable;
             nodeElementProps.customizableProperties = Objects.requireNonNull(this.customizableProperties);

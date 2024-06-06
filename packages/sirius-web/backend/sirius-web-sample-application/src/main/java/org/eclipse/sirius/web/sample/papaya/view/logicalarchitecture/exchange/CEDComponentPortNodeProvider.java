@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
@@ -46,7 +47,7 @@ public class CEDComponentPortNodeProvider implements INodeDescriptionProvider {
         nodeDescription.setSemanticCandidatesExpression("aql:self.ports");
         nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescription("aql:self.name", this.colorProvider.getColor("label_black")));
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
-        nodeDescription.setUserResizable(false);
+        nodeDescription.setUserResizable(UserResizableDirection.NONE);
         nodeDescription.setDefaultHeightExpression("aql:'20'");
         nodeDescription.setDefaultWidthExpression("aql:'20'");
         nodeDescription.setStyle(nodeStyle);

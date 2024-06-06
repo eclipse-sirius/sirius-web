@@ -118,7 +118,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_NodeDescription_userResizable_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_userResizable_feature", "_UI_NodeDescription_type"), DiagramPackage.Literals.NODE_DESCRIPTION__USER_RESIZABLE,
-                true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**

@@ -57,6 +57,13 @@ enum ViewModifier {
   Hidden
 }
 
+enum UserResizableDirection {
+  BOTH
+  HORIZONTAL
+  VERTICAL
+  NONE
+}
+
 type Node {
   id: ID!
   insideLabel: InsideLabel
@@ -67,7 +74,7 @@ type Node {
   targetObjectKind: String!
   targetObjectLabel: String!
   size: Size!
-  userResizable: Boolean!
+  userResizable: UserResizableDirection!
   position: Position!
   state: ViewModifier!
   pinned: Boolean!
@@ -341,7 +348,7 @@ type NodeDescription implements DiagramElementDescription {
   synchronizationPolicy: SynchronizationPolicy!
   childNodeDescriptionIds: [ID!]!
   borderNodeDescriptionIds: [ID!]!
-  userResizable: Boolean!
+  userResizable: UserResizableDirection!
   keepAspectRatio: Boolean!
 }
 

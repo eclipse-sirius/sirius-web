@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.view.diagram.impl;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -31,6 +32,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Node Description</b></em>'. <!-- end-user-doc
@@ -67,122 +69,20 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * The default value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #isCollapsible()
      * @generated
      * @ordered
+     * @see #isCollapsible()
      */
     protected static final boolean COLLAPSIBLE_EDEFAULT = false;
-
     /**
-     * The cached value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isCollapsible()
-     * @generated
-     * @ordered
-     */
-    protected boolean collapsible = COLLAPSIBLE_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
+     * The default value of the '{@link #getUserResizable() <em>User Resizable</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @see #getPalette()
      * @generated
      * @ordered
+     * @see #getUserResizable()
      */
-    protected NodePalette palette;
-
-    /**
-     * The cached value of the '{@link #getChildrenLayoutStrategy() <em>Children Layout Strategy</em>}' containment
-     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getChildrenLayoutStrategy()
-     * @generated
-     * @ordered
-     */
-    protected LayoutStrategyDescription childrenLayoutStrategy;
-
-    /**
-     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getStyle()
-     * @generated
-     * @ordered
-     */
-    protected NodeStyleDescription style;
-
-    /**
-     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getConditionalStyles()
-     * @generated
-     * @ordered
-     */
-    protected EList<ConditionalNodeStyle> conditionalStyles;
-
-    /**
-     * The cached value of the '{@link #getChildrenDescriptions() <em>Children Descriptions</em>}' containment reference
-     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getChildrenDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> childrenDescriptions;
-
-    /**
-     * The cached value of the '{@link #getBorderNodesDescriptions() <em>Border Nodes Descriptions</em>}' containment
-     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getBorderNodesDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> borderNodesDescriptions;
-
-    /**
-     * The cached value of the '{@link #getReusedChildNodeDescriptions() <em>Reused Child Node Descriptions</em>}'
-     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getReusedChildNodeDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> reusedChildNodeDescriptions;
-
-    /**
-     * The cached value of the '{@link #getReusedBorderNodeDescriptions() <em>Reused Border Node Descriptions</em>}'
-     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getReusedBorderNodeDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> reusedBorderNodeDescriptions;
-
-    /**
-     * The default value of the '{@link #isUserResizable() <em>User Resizable</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #isUserResizable()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean USER_RESIZABLE_EDEFAULT = true;
-
-    /**
-     * The cached value of the '{@link #isUserResizable() <em>User Resizable</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #isUserResizable()
-     * @generated
-     * @ordered
-     */
-    protected boolean userResizable = USER_RESIZABLE_EDEFAULT;
-
+    protected static final UserResizableDirection USER_RESIZABLE_EDEFAULT = UserResizableDirection.BOTH;
     /**
      * The default value of the '{@link #getDefaultWidthExpression() <em>Default Width Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -192,7 +92,141 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @see #getDefaultWidthExpression()
      */
     protected static final String DEFAULT_WIDTH_EXPRESSION_EDEFAULT = null;
-
+    /**
+     * The default value of the '{@link #getDefaultHeightExpression() <em>Default Height Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getDefaultHeightExpression()
+     */
+    protected static final String DEFAULT_HEIGHT_EXPRESSION_EDEFAULT = null;
+    /**
+     * The default value of the '{@link #isKeepAspectRatio() <em>Keep Aspect Ratio</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isKeepAspectRatio()
+     */
+    protected static final boolean KEEP_ASPECT_RATIO_EDEFAULT = false;
+    /**
+     * The default value of the '{@link #getIsCollapsedByDefaultExpression() <em>Is Collapsed By Default
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsCollapsedByDefaultExpression()
+     */
+    protected static final String IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT = null;
+    /**
+     * The default value of the '{@link #getIsHiddenByDefaultExpression() <em>Is Hidden By Default Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsHiddenByDefaultExpression()
+     */
+    protected static final String IS_HIDDEN_BY_DEFAULT_EXPRESSION_EDEFAULT = null;
+    /**
+     * The default value of the '{@link #getIsFadedByDefaultExpression() <em>Is Faded By Default Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsFadedByDefaultExpression()
+     */
+    protected static final String IS_FADED_BY_DEFAULT_EXPRESSION_EDEFAULT = null;
+    /**
+     * The cached value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isCollapsible()
+     */
+    protected boolean collapsible = COLLAPSIBLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPalette()
+     */
+    protected NodePalette palette;
+    /**
+     * The cached value of the '{@link #getChildrenLayoutStrategy() <em>Children Layout Strategy</em>}' containment
+     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getChildrenLayoutStrategy()
+     */
+    protected LayoutStrategyDescription childrenLayoutStrategy;
+    /**
+     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getStyle()
+     */
+    protected NodeStyleDescription style;
+    /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getConditionalStyles()
+     */
+    protected EList<ConditionalNodeStyle> conditionalStyles;
+    /**
+     * The cached value of the '{@link #getChildrenDescriptions() <em>Children Descriptions</em>}' containment reference
+     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getChildrenDescriptions()
+     */
+    protected EList<NodeDescription> childrenDescriptions;
+    /**
+     * The cached value of the '{@link #getBorderNodesDescriptions() <em>Border Nodes Descriptions</em>}' containment
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderNodesDescriptions()
+     */
+    protected EList<NodeDescription> borderNodesDescriptions;
+    /**
+     * The cached value of the '{@link #getReusedChildNodeDescriptions() <em>Reused Child Node Descriptions</em>}'
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getReusedChildNodeDescriptions()
+     */
+    protected EList<NodeDescription> reusedChildNodeDescriptions;
+    /**
+     * The cached value of the '{@link #getReusedBorderNodeDescriptions() <em>Reused Border Node Descriptions</em>}'
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getReusedBorderNodeDescriptions()
+     */
+    protected EList<NodeDescription> reusedBorderNodeDescriptions;
+    /**
+     * The cached value of the '{@link #getUserResizable() <em>User Resizable</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getUserResizable()
+     */
+    protected UserResizableDirection userResizable = USER_RESIZABLE_EDEFAULT;
     /**
      * The cached value of the '{@link #getDefaultWidthExpression() <em>Default Width Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -202,67 +236,33 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @see #getDefaultWidthExpression()
      */
     protected String defaultWidthExpression = DEFAULT_WIDTH_EXPRESSION_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getDefaultHeightExpression() <em>Default Height Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getDefaultHeightExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String DEFAULT_HEIGHT_EXPRESSION_EDEFAULT = null;
-
     /**
      * The cached value of the '{@link #getDefaultHeightExpression() <em>Default Height Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getDefaultHeightExpression()
      * @generated
      * @ordered
+     * @see #getDefaultHeightExpression()
      */
     protected String defaultHeightExpression = DEFAULT_HEIGHT_EXPRESSION_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isKeepAspectRatio() <em>Keep Aspect Ratio</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @see #isKeepAspectRatio()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean KEEP_ASPECT_RATIO_EDEFAULT = false;
-
     /**
      * The cached value of the '{@link #isKeepAspectRatio() <em>Keep Aspect Ratio</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @see #isKeepAspectRatio()
      * @generated
      * @ordered
+     * @see #isKeepAspectRatio()
      */
     protected boolean keepAspectRatio = KEEP_ASPECT_RATIO_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getIsCollapsedByDefaultExpression() <em>Is Collapsed By Default
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getIsCollapsedByDefaultExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT = null;
-
     /**
      * The cached value of the '{@link #getIsCollapsedByDefaultExpression() <em>Is Collapsed By Default
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getIsCollapsedByDefaultExpression()
      * @generated
      * @ordered
+     * @see #getIsCollapsedByDefaultExpression()
      */
     protected String isCollapsedByDefaultExpression = IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT;
-
     /**
      * The cached value of the '{@link #getInsideLabel() <em>Inside Label</em>}' containment reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -272,7 +272,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @see #getInsideLabel()
      */
     protected InsideLabelDescription insideLabel;
-
     /**
      * The cached value of the '{@link #getOutsideLabels() <em>Outside Labels</em>}' containment reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -282,44 +281,22 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @see #getOutsideLabels()
      */
     protected EList<OutsideLabelDescription> outsideLabels;
-
-    /**
-     * The default value of the '{@link #getIsHiddenByDefaultExpression() <em>Is Hidden By Default Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getIsHiddenByDefaultExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String IS_HIDDEN_BY_DEFAULT_EXPRESSION_EDEFAULT = null;
-
     /**
      * The cached value of the '{@link #getIsHiddenByDefaultExpression() <em>Is Hidden By Default Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getIsHiddenByDefaultExpression()
      * @generated
      * @ordered
+     * @see #getIsHiddenByDefaultExpression()
      */
     protected String isHiddenByDefaultExpression = IS_HIDDEN_BY_DEFAULT_EXPRESSION_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getIsFadedByDefaultExpression() <em>Is Faded By Default Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getIsFadedByDefaultExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String IS_FADED_BY_DEFAULT_EXPRESSION_EDEFAULT = null;
-
     /**
      * The cached value of the '{@link #getIsFadedByDefaultExpression() <em>Is Faded By Default Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getIsFadedByDefaultExpression()
      * @generated
      * @ordered
+     * @see #getIsFadedByDefaultExpression()
      */
     protected String isFadedByDefaultExpression = IS_FADED_BY_DEFAULT_EXPRESSION_EDEFAULT;
 
@@ -581,7 +558,7 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public boolean isUserResizable() {
+    public UserResizableDirection getUserResizable() {
         return this.userResizable;
     }
 
@@ -591,9 +568,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public void setUserResizable(boolean newUserResizable) {
-        boolean oldUserResizable = this.userResizable;
-        this.userResizable = newUserResizable;
+    public void setUserResizable(UserResizableDirection newUserResizable) {
+        UserResizableDirection oldUserResizable = this.userResizable;
+        this.userResizable = newUserResizable == null ? USER_RESIZABLE_EDEFAULT : newUserResizable;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE, oldUserResizable, this.userResizable));
     }
@@ -855,7 +832,7 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
                 return this.getReusedBorderNodeDescriptions();
             case DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE:
-                return this.isUserResizable();
+                return this.getUserResizable();
             case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
                 return this.getDefaultWidthExpression();
             case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
@@ -918,7 +895,7 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 this.getReusedBorderNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE:
-                this.setUserResizable((Boolean) newValue);
+                this.setUserResizable((UserResizableDirection) newValue);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
                 this.setDefaultWidthExpression((String) newValue);
@@ -961,13 +938,13 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 this.setCollapsible(COLLAPSIBLE_EDEFAULT);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
-                this.setPalette((NodePalette) null);
+                this.setPalette(null);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
+                this.setChildrenLayoutStrategy(null);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
-                this.setStyle((NodeStyleDescription) null);
+                this.setStyle(null);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
@@ -1000,7 +977,7 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 this.setIsCollapsedByDefaultExpression(IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
-                this.setInsideLabel((InsideLabelDescription) null);
+                this.setInsideLabel(null);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS:
                 this.getOutsideLabels().clear();
@@ -1044,22 +1021,21 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE:
                 return this.userResizable != USER_RESIZABLE_EDEFAULT;
             case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
-                return DEFAULT_WIDTH_EXPRESSION_EDEFAULT == null ? this.defaultWidthExpression != null : !DEFAULT_WIDTH_EXPRESSION_EDEFAULT.equals(this.defaultWidthExpression);
+                return !Objects.equals(DEFAULT_WIDTH_EXPRESSION_EDEFAULT, this.defaultWidthExpression);
             case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
-                return DEFAULT_HEIGHT_EXPRESSION_EDEFAULT == null ? this.defaultHeightExpression != null : !DEFAULT_HEIGHT_EXPRESSION_EDEFAULT.equals(this.defaultHeightExpression);
+                return !Objects.equals(DEFAULT_HEIGHT_EXPRESSION_EDEFAULT, this.defaultHeightExpression);
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
                 return this.keepAspectRatio != KEEP_ASPECT_RATIO_EDEFAULT;
             case DiagramPackage.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION:
-                return IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT == null ? this.isCollapsedByDefaultExpression != null
-                        : !IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT.equals(this.isCollapsedByDefaultExpression);
+                return !Objects.equals(IS_COLLAPSED_BY_DEFAULT_EXPRESSION_EDEFAULT, this.isCollapsedByDefaultExpression);
             case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
                 return this.insideLabel != null;
             case DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS:
                 return this.outsideLabels != null && !this.outsideLabels.isEmpty();
             case DiagramPackage.NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION:
-                return IS_HIDDEN_BY_DEFAULT_EXPRESSION_EDEFAULT == null ? this.isHiddenByDefaultExpression != null : !IS_HIDDEN_BY_DEFAULT_EXPRESSION_EDEFAULT.equals(this.isHiddenByDefaultExpression);
+                return !Objects.equals(IS_HIDDEN_BY_DEFAULT_EXPRESSION_EDEFAULT, this.isHiddenByDefaultExpression);
             case DiagramPackage.NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION:
-                return IS_FADED_BY_DEFAULT_EXPRESSION_EDEFAULT == null ? this.isFadedByDefaultExpression != null : !IS_FADED_BY_DEFAULT_EXPRESSION_EDEFAULT.equals(this.isFadedByDefaultExpression);
+                return !Objects.equals(IS_FADED_BY_DEFAULT_EXPRESSION_EDEFAULT, this.isFadedByDefaultExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -1074,25 +1050,24 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (collapsible: ");
-        result.append(this.collapsible);
-        result.append(", userResizable: ");
-        result.append(this.userResizable);
-        result.append(", defaultWidthExpression: ");
-        result.append(this.defaultWidthExpression);
-        result.append(", defaultHeightExpression: ");
-        result.append(this.defaultHeightExpression);
-        result.append(", keepAspectRatio: ");
-        result.append(this.keepAspectRatio);
-        result.append(", isCollapsedByDefaultExpression: ");
-        result.append(this.isCollapsedByDefaultExpression);
-        result.append(", isHiddenByDefaultExpression: ");
-        result.append(this.isHiddenByDefaultExpression);
-        result.append(", isFadedByDefaultExpression: ");
-        result.append(this.isFadedByDefaultExpression);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (collapsible: " +
+                this.collapsible +
+                ", userResizable: " +
+                this.userResizable +
+                ", defaultWidthExpression: " +
+                this.defaultWidthExpression +
+                ", defaultHeightExpression: " +
+                this.defaultHeightExpression +
+                ", keepAspectRatio: " +
+                this.keepAspectRatio +
+                ", isCollapsedByDefaultExpression: " +
+                this.isCollapsedByDefaultExpression +
+                ", isHiddenByDefaultExpression: " +
+                this.isHiddenByDefaultExpression +
+                ", isFadedByDefaultExpression: " +
+                this.isFadedByDefaultExpression +
+                ')';
+        return result;
     }
 
 } // NodeDescriptionImpl

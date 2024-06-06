@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
@@ -74,7 +75,7 @@ public class ProcessorDescriptionProvider implements INodeDescriptionProvider {
                 .outsideLabels(this.flowViewBuilder.getOutsideLabelDescription(this.colorProvider, "aql:self.name"))
                 .defaultHeightExpression("aql:self.capacity*15")
                 .defaultWidthExpression("aql:self.capacity*15")
-                .userResizable(false)
+                .userResizable(UserResizableDirection.NONE)
                 .keepAspectRatio(true)
                 .style(this.flowViewBuilder.createImageNodeStyleDescription(CPU_UNUSED_SVG_ID, this.colorProvider))
                 .synchronizationPolicy(this.synchronizationPolicy)
