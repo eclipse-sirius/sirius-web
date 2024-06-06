@@ -11,14 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLProjectTemplate } from './useProjectTemplates.types';
-
-export interface CreateProjectAreaProps {}
-
-export interface CreateProjectAreaCardProps {}
-
-export interface CreateProjectAreaState {
-  page: number;
-  limit: number;
-  runningTemplate: GQLProjectTemplate | null;
+export interface ShowAllProjectTemplatesCardState {
+  modalDisplayed: ShowAllProjectTemplatesModal | null;
 }
+
+export type ShowAllProjectTemplatesModal = 'SHOW_ALL_TEMPLATES';

@@ -67,6 +67,8 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3563[#3563] [sirius-web] Improve NavigationBar extensibility to allow the contribution of components on the left and right of the navigation bar.
 - https://github.com/eclipse-sirius/sirius-web/issues/3344[#3344] [core] Add support for reloading representations from the database
 - https://github.com/eclipse-sirius/sirius-web/issues/3553[#3553] [core] Add RepresentationFactory extension point
+- https://github.com/eclipse-sirius/sirius-web/issues/3587[#3587] [sirius-web] Add an extension point to contribute new project cards
+
 
 === Improvements
 

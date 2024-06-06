@@ -38,6 +38,10 @@ import LinkIcon from '@material-ui/icons/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import WarningIcon from '@material-ui/icons/Warning';
 import { OnboardArea } from '../onboarding/OnboardArea';
+import { createProjectAreaCardExtensionPoint } from '../views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
+import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
+import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
+import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
 
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
@@ -125,6 +129,27 @@ const representationFactories: RepresentationComponentFactory[] = [
 defaultExtensionRegistry.putData(representationFactoryExtensionPoint, {
   identifier: `siriusweb_${representationFactoryExtensionPoint.identifier}`,
   data: representationFactories,
+});
+
+/*******************************************************************************
+ *
+ * Project area cards
+ *
+ * Used to register all the type of cards in the project area
+ *
+ *******************************************************************************/
+
+defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
+  identifier: `siriusweb_${createProjectAreaCardExtensionPoint}_newProjectCard`,
+  Component: NewProjectCard,
+});
+defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
+  identifier: `siriusweb_${createProjectAreaCardExtensionPoint}_uploadProjectCard`,
+  Component: UploadProjectCard,
+});
+defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
+  identifier: `siriusweb_${createProjectAreaCardExtensionPoint}_showAllProjectTemplatesCard`,
+  Component: ShowAllProjectTemplatesCard,
 });
 
 export { defaultExtensionRegistry };
