@@ -19,7 +19,3 @@ export interface ProjectTemplateCardProps {
   disabled: boolean;
   onCreateProject: () => void;
 }
-
-export interface ShowAllTemplatesCardProps {
-  onClick: () => void;
-}

@@ -10,15 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { CreateProjectAreaCardProps } from './CreateProjectArea.types';
 
-import { GQLProjectTemplate } from './useProjectTemplates.types';
-
-export interface CreateProjectAreaProps {}
-
-export interface CreateProjectAreaCardProps {}
-
-export interface CreateProjectAreaState {
-  page: number;
-  limit: number;
-  runningTemplate: GQLProjectTemplate | null;
-}
+export const createProjectAreaCardExtensionPoint: ComponentExtensionPoint<CreateProjectAreaCardProps> = {
+  identifier: 'createProjectArea#card',
+  FallbackComponent: () => null,
+};
