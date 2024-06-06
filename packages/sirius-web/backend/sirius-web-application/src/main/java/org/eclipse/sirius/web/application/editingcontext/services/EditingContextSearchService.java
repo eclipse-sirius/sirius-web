@@ -17,8 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -117,6 +120,16 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
+
+        this.logger.atDebug()
+                .setMessage("{} objects have been loaded in {} ms")
+                .addArgument(() -> {
+                    var iterator = editingDomain.getResourceSet().getAllContents();
+                    var stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
+                    return stream.count();
+                })
+                .addArgument(end - start)
+                .log();
 
         return editingContext;
     }
