@@ -23,8 +23,8 @@ export interface UseConnectorValue {
   removeTempConnectionLine: () => void;
   connection: Connection | null;
   position: XYPosition | null;
-  isConnectionInProgress: boolean;
-  isReconnectionInProgress: boolean;
+  isConnectionInProgress: () => boolean;
+  isReconnectionInProgress: () => boolean;
   candidates: GQLNodeDescription[];
 }
 

@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { memo, useContext } from 'react';
+import { memo, useContext, useEffect } from 'react';
+import { useKeyPress } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
@@ -22,7 +23,7 @@ import { useDiagramElementPalette } from './useDiagramElementPalette';
 
 export const DiagramElementPalette = memo(({ diagramElementId, labelId }: DiagramElementPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { isOpened, x, y } = useDiagramElementPalette();
+  const { isOpened, x, y, hideDiagramElementPalette } = useDiagramElementPalette();
   const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
 
   if (readOnly) {
@@ -34,6 +35,14 @@ export const DiagramElementPalette = memo(({ diagramElementId, labelId }: Diagra
       setCurrentlyEditedLabelId('palette', labelId, null);
     }
   };
+
+  const escapePressed = useKeyPress('Escape');
+  useEffect(() => {
+    if (escapePressed) {
+      hideDiagramElementPalette();
+    }
+  }, [escapePressed, hideDiagramElementPalette]);
+
   return isOpened && x && y && !currentlyEditedLabelId ? (
     <PalettePortal>
       <Palette
