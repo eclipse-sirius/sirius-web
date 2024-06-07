@@ -13,14 +13,13 @@
 
 import {
   RepresentationComponentProps,
-  RepresentationContext,
-  RepresentationContextValue,
+  representationFactoryExtensionPoint,
+  useData,
 } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import { useContext } from 'react';
 import { RepresentationFrameProps } from './RepresentationFrame.types';
 
 const useFrameStyles = makeStyles((theme) => ({
@@ -59,8 +58,10 @@ export const RepresentationFrame = ({
   portalMode,
   onDelete,
 }: RepresentationFrameProps) => {
-  const { registry } = useContext<RepresentationContextValue>(RepresentationContext);
-  const RepresentationComponent = registry.getComponent(representation);
+  const { data: representationFactories } = useData(representationFactoryExtensionPoint);
+  const RepresentationComponent = representationFactories
+    .map((representationFactory) => representationFactory(representation))
+    .find((component) => component != null);
 
   if (RepresentationComponent) {
     const classes = useFrameStyles();

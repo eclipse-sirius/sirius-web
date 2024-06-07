@@ -26,7 +26,7 @@ export type GQLEditingContextEventSubscription = {
   editingContextEvent: GQLEditingContextEventPayload;
 };
 
-export type Representation = {
+export type RepresentationMetadata = {
   id: string;
   label: string;
   kind: string;
@@ -53,8 +53,8 @@ export interface MainAreaComponentProps {
 
 export type WorkbenchProps = {
   editingContextId: string;
-  initialRepresentationSelected: Representation | null;
-  onRepresentationSelected: (representation: Representation | null) => void;
+  initialRepresentationSelected: RepresentationMetadata | null;
+  onRepresentationSelected: (representation: RepresentationMetadata | null) => void;
   readOnly: boolean;
 };
 
@@ -65,3 +65,7 @@ export type RepresentationComponentProps = {
 };
 
 export type RepresentationComponent = React.ComponentType<RepresentationComponentProps>;
+
+export type RepresentationComponentFactory = {
+  (representationMetadata: RepresentationMetadata): RepresentationComponent | null;
+};

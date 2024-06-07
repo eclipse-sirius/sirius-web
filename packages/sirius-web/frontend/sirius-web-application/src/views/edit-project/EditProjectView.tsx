@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
 import {
-  Representation,
+  RepresentationMetadata,
   Selection,
   SelectionContextProvider,
   Toast,
@@ -148,7 +148,7 @@ export const EditProjectView = () => {
 
   let main = null;
   if (editProjectView === 'loaded' && project) {
-    const onRepresentationSelected = (representationSelected: Representation) => {
+    const onRepresentationSelected = (representationSelected: RepresentationMetadata) => {
       const selectRepresentationEvent: SelectRepresentationEvent = {
         type: 'SELECT_REPRESENTATION',
         representation: representationSelected,

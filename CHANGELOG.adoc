@@ -16,6 +16,9 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3562[#3562] [sirius-web] Update displayed default model creation action.
 + Projects that have a nature and need the action to create an empty model will need to register the empty model action like it is done in `StudioEditingContextActionProvider`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3553[#3553] [core] Remove the concepts `RepresentationContext`, `RepresentationContextProvider` and their types which were used to contribute representations for the Sirius Components workbench in favor of an API based on the extension registry.
+This is one of the first existing API used to extend Sirius Web deprecated in favor of the new extension registry.
+More existing APIs will be migrated to this new common pattern.
 
 === Dependency update
 
@@ -54,6 +57,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3550[#3550] [core] Add ExtensionRegistry merge strategy
 - https://github.com/eclipse-sirius/sirius-web/issues/3563[#3563] [sirius-web] Improve NavigationBar extensibility to allow the contribution of components on the left and right of the navigation bar.
 - https://github.com/eclipse-sirius/sirius-web/issues/3344[#3344] [core] Add support for reloading representations from the database
+- https://github.com/eclipse-sirius/sirius-web/issues/3553[#3553] [core] Add RepresentationFactory extension point
 
 === Improvements
 
