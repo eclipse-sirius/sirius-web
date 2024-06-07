@@ -52,21 +52,18 @@ public class PortalEventProcessorFactory implements IRepresentationEventProcesso
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return IPortalEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof PortalConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof PortalConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        if (IPortalEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof PortalConfiguration portalConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
+        if (configuration instanceof PortalConfiguration portalConfiguration) {
             var optionalPortal = this.representationSearchService.findById(editingContext, portalConfiguration.getId(), Portal.class);
             if (optionalPortal.isPresent()) {
                 Portal portal = optionalPortal.get();
                 var portalEventProcessor = new PortalEventProcessor(editingContext, this.representationSearchService, this.representationPersistenceService, this.portalEventHandlers, this.subscriptionManagerFactory.create(), portal);
-                return Optional.of(portalEventProcessor)
-                        .filter(representationEventProcessorClass::isInstance)
-                        .map(representationEventProcessorClass::cast);
+                return Optional.of(portalEventProcessor);
             }
         }
         return Optional.empty();

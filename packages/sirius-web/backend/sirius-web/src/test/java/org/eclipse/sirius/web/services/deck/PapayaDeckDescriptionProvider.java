@@ -22,10 +22,10 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.builder.generated.CardDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.DeckDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.LaneDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.DeckBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
+import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.emf.deck.IDeckIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -41,6 +41,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Conditional(OnStudioTests.class)
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
 
     private final IDeckIdProvider deckIdProvider;
@@ -49,6 +50,7 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
 
     private DeckDescription deckDescription;
 
+    private CreateCardTool createToDoCardTool;
 
     public PapayaDeckDescriptionProvider(IDeckIdProvider deckIdProvider) {
         this.deckIdProvider = Objects.requireNonNull(deckIdProvider);
@@ -64,6 +66,10 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
 
     public String getRepresentationDescriptionId() {
         return this.deckIdProvider.getId(this.deckDescription);
+    }
+
+    public String getCreateTodoCardToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.createToDoCardTool).toString().getBytes()).toString();
     }
 
     private View createView() {
@@ -84,33 +90,51 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
     }
 
     private DeckDescription createDeckDescription() {
-        var toDoCardDescription = new CardDescriptionBuilder()
+        var toDoCardDescription = new DeckBuilders().newCardDescription()
                 .name("To do Card")
                 .titleExpression("aql:self.name")
                 .semanticCandidatesExpression("aql:self.tasks->select(task | not task.done)")
                 .build();
 
-        var toDoLaneDescription = new LaneDescriptionBuilder()
+        this.createToDoCardTool = new DeckBuilders()
+                .newCreateCardTool()
+                .name("New card")
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:self")
+                                .children(
+                                        new ViewBuilders().newCreateInstance()
+                                                .referenceName("tasks")
+                                                .typeName("papaya::Task")
+                                                .variableName("newTask")
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
+
+        var toDoLaneDescription = new DeckBuilders().newLaneDescription()
                 .name("To do Lane")
                 .titleExpression("To do")
                 .semanticCandidatesExpression("aql:self")
                 .ownedCardDescriptions(toDoCardDescription)
+                .createTool(this.createToDoCardTool)
                 .build();
 
-        var doneCardDescription = new CardDescriptionBuilder()
+        var doneCardDescription = new DeckBuilders().newCardDescription()
                 .name("Done Card")
                 .titleExpression("aql:self.name")
                 .semanticCandidatesExpression("aql:self.tasks->select(task | task.done)")
                 .build();
 
-        var doneLaneDescription = new LaneDescriptionBuilder()
+        var doneLaneDescription = new DeckBuilders().newLaneDescription()
                 .name("Done Lane")
                 .titleExpression("Done")
                 .semanticCandidatesExpression("aql:self")
                 .ownedCardDescriptions(doneCardDescription)
                 .build();
 
-        this.deckDescription = new DeckDescriptionBuilder()
+        this.deckDescription = new DeckBuilders().newDeckDescription()
                 .name("Deck")
                 .titleExpression("aql:'Deck'")
                 .domainType("papaya:Project")

@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.controllers.selection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -21,10 +22,19 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionEventInput;
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.forms.Textarea;
+import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
+import org.eclipse.sirius.components.forms.tests.graphql.PropertiesEventSubscriptionRunner;
+import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -41,6 +51,7 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.execution.DataFetcherResult;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
@@ -49,6 +60,7 @@ import reactor.test.StepVerifier;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SelectionControllerIntegrationTests extends AbstractIntegrationTests {
 
@@ -74,6 +86,12 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
+    private PropertiesEventSubscriptionRunner propertiesEventSubscriptionRunner;
+
+    @Autowired
+    private EditTextfieldMutationRunner editTextfieldMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -101,6 +119,94 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
         StepVerifier.create(flux)
                 .consumeNextWith(selectionContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a selection representation, when we edit the details of an object, then the selection representation is updated")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSelectionRepresentationWhenWeEditTheDetailsOfAnObjectThenTheSelectionRepresentationIsUpdated() {
+        var selectionEventInput = new SelectionEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, PapayaIdentifiers.PROJECT_OBJECT.toString());
+        var selectionFlux = this.graphQLRequestor.subscribe(GET_SELECTION_EVENT_SUBSCRIPTION, selectionEventInput);
+
+        var detailsEventInput = new PropertiesEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString()));
+        var detailsFlux = this.propertiesEventSubscriptionRunner.run(detailsEventInput);
+
+        var formId = new AtomicReference<String>();
+        var textareaId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    formId.set(form.getId());
+
+                    var groupNavigator = new FormNavigator(form).page("Component sirius-web-domain").group("Core Properties");
+                    var textarea = groupNavigator.findWidget("Name", Textarea.class);
+
+                    textareaId.set(textarea.getId());
+                }, () -> fail("Missing form"));
+
+        Consumer<Object> selectionContentConsumer = object -> Optional.of(object)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(SelectionRefreshedEventPayload.class::isInstance)
+                .map(SelectionRefreshedEventPayload.class::cast)
+                .map(SelectionRefreshedEventPayload::selection)
+                .ifPresentOrElse(selection -> {
+                    assertThat(selection.getObjects())
+                            .isNotEmpty()
+                            .anyMatch(selectionObject -> selectionObject.getLabel().contains("sirius-web-domain"));
+                }, () -> fail("Missing selection"));
+
+        Runnable editTextfield = () -> {
+            var input = new EditTextfieldInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), textareaId.get(), "sirius-web-domain-EDITED");
+            var result = this.editTextfieldMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var groupNavigator = new FormNavigator(form).page("Component sirius-web-domain-EDITED").group("Core Properties");
+                    var textarea = groupNavigator.findWidget("Name", Textarea.class);
+
+                    assertThat(textarea).hasValue("sirius-web-domain-EDITED");
+                }, () -> fail("Missing form"));
+
+        Consumer<Object> updatedSelectionContentConsumer = object -> Optional.of(object)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(SelectionRefreshedEventPayload.class::isInstance)
+                .map(SelectionRefreshedEventPayload.class::cast)
+                .map(SelectionRefreshedEventPayload::selection)
+                .ifPresentOrElse(selection -> {
+                    assertThat(selection.getObjects())
+                            .isNotEmpty()
+                            .anyMatch(selectionObject -> selectionObject.getLabel().contains("sirius-web-domain-EDITED"));
+                }, () -> fail("Missing selection"));
+
+        StepVerifier.create(Flux.merge(selectionFlux, detailsFlux))
+                .consumeNextWith(selectionContentConsumer)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(editTextfield)
+                .consumeNextWith(updatedFormContentConsumer)
+                .consumeNextWith(updatedSelectionContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

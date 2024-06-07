@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.collaborative.api.RepresentationEventProces
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramConfiguration;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
@@ -71,14 +70,13 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return IDiagramEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof DiagramConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof DiagramConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        if (IDiagramEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof DiagramConfiguration diagramConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
+        if (configuration instanceof DiagramConfiguration diagramConfiguration) {
             var optionalDiagram = this.representationSearchService.findById(editingContext, diagramConfiguration.getId(), Diagram.class);
             if (optionalDiagram.isPresent()) {
                 Diagram diagram = optionalDiagram.get();
@@ -99,9 +97,7 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
 
                 IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
 
-                return Optional.of(diagramEventProcessor)
-                        .filter(representationEventProcessorClass::isInstance)
-                        .map(representationEventProcessorClass::cast);
+                return Optional.of(diagramEventProcessor);
             }
         }
         return Optional.empty();

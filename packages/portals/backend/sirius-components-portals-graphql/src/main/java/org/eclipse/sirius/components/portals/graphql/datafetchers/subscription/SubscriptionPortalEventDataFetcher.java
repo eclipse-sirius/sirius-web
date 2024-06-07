@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.portals.IPortalEventProcessor;
 import org.eclipse.sirius.components.collaborative.portals.api.PortalConfiguration;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -64,7 +63,7 @@ public class SubscriptionPortalEventDataFetcher implements IDataFetcherWithField
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
         localContext.put(LocalContextConstants.REPRESENTATION_ID, portalConfiguration.getId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IPortalEventProcessor.class, portalConfiguration, input), input)
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), portalConfiguration, input), input)
                 .map(payload ->  DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)

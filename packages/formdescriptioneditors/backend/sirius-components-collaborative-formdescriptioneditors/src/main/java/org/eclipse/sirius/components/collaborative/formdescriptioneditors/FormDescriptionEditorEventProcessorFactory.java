@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.collaborative.api.RepresentationEventProces
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.FormDescriptionEditorConfiguration;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorCreationService;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventHandler;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
@@ -63,21 +62,20 @@ public class FormDescriptionEditorEventProcessorFactory implements IRepresentati
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return IFormDescriptionEditorEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof FormDescriptionEditorConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof FormDescriptionEditorConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration,
             IEditingContext editingContext) {
-        if (IFormDescriptionEditorEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof FormDescriptionEditorConfiguration) {
-            FormDescriptionEditorConfiguration formDescriptionEditorConfiguration = (FormDescriptionEditorConfiguration) configuration;
-
+        if (configuration instanceof FormDescriptionEditorConfiguration formDescriptionEditorConfiguration) {
             Optional<FormDescriptionEditor> optionalFormDescriptionEditor = this.representationSearchService.findById(editingContext, formDescriptionEditorConfiguration.getId(),
                     FormDescriptionEditor.class);
             if (optionalFormDescriptionEditor.isPresent()) {
                 FormDescriptionEditor formDescriptionEditor = optionalFormDescriptionEditor.get();
                 FormDescriptionEditorContext formDescriptionEditorContext = new FormDescriptionEditorContext(formDescriptionEditor);
+
                 var parameters = FormDescriptionEditorEventProcessorParameters.newFormDescriptionEditorEventProcessorParameters()
                         .editingContext(editingContext)
                         .formDescriptionEditorContext(formDescriptionEditorContext)
@@ -90,7 +88,7 @@ public class FormDescriptionEditorEventProcessorFactory implements IRepresentati
                         .build();
                 IRepresentationEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(parameters);
 
-                return Optional.of(formDescriptionEditorEventProcessor).filter(representationEventProcessorClass::isInstance).map(representationEventProcessorClass::cast);
+                return Optional.of(formDescriptionEditorEventProcessor);
             }
         }
         return Optional.empty();

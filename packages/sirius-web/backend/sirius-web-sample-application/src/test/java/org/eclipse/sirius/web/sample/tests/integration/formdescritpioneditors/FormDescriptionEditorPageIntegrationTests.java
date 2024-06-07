@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.dto.CreateRootObjectInput;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.FormDescriptionEditorConfiguration;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventProcessor;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddPageInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.DeletePageInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorEventInput;
@@ -345,7 +344,7 @@ public class FormDescriptionEditorPageIntegrationTests extends AbstractIntegrati
     public void testPageMutations() {
         var configuration = new FormDescriptionEditorConfiguration(this.representationId.toString());
         var input = new FormDescriptionEditorEventInput(UUID.randomUUID(), this.projectId.toString(), this.representationId.toString());
-        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId.toString(), IFormDescriptionEditorEventProcessor.class, configuration, input);
+        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId.toString(), configuration, input);
         AtomicReference<String> defaultPageId = new AtomicReference<>();
         AtomicReference<String> newPageId = new AtomicReference<>();
 

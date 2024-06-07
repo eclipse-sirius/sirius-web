@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
-import org.eclipse.sirius.components.collaborative.selection.api.ISelectionEventProcessor;
 import org.eclipse.sirius.components.collaborative.selection.api.SelectionConfiguration;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -53,14 +52,13 @@ public class SelectionEventProcessorFactory implements IRepresentationEventProce
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return ISelectionEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof SelectionConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof SelectionConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        if (ISelectionEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof SelectionConfiguration selectionConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
+        if (configuration instanceof SelectionConfiguration selectionConfiguration) {
 
             // @formatter:off
             Optional<SelectionDescription> optionalSelectionDescription = this.representationDescriptionSearchService
@@ -77,12 +75,7 @@ public class SelectionEventProcessorFactory implements IRepresentationEventProce
                 IRepresentationEventProcessor selectionEventProcessor = new SelectionEventProcessor(editingContext, this.objectService, selectionDescription, selectionConfiguration.getId(), objectId,
                         this.subscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
 
-                // @formatter:off
-                return Optional.of(selectionEventProcessor)
-                        .filter(representationEventProcessorClass::isInstance)
-                        .map(representationEventProcessorClass::cast);
-                // @formatter:on
-
+                return Optional.of(selectionEventProcessor);
             }
         }
         return Optional.empty();

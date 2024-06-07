@@ -15,18 +15,24 @@ package org.eclipse.sirius.web.application.controllers.deck;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.deck.dto.DeckRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.CreateDeckCardInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.deck.PapayaDeckDescriptionProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDeckSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.deck.CreateDeckCardMutationRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,6 +51,7 @@ import reactor.test.StepVerifier;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTests {
 
@@ -56,6 +63,9 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
 
     @Autowired
     private PapayaDeckDescriptionProvider papayaDeckDescriptionProvider;
+
+    @Autowired
+    private CreateDeckCardMutationRunner createDeckCardMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -88,6 +98,57 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDeckContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a deck representation, when we create a new card, then the representation data are updated")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenDeckRepresentationWhenWeCreateNewCardThenTheRepresentationDataAreUpdated() {
+        var flux = this.givenSubscriptionToDeck();
+
+        var deckId = new AtomicReference<String>();
+        var laneId = new AtomicReference<String>();
+
+        Consumer<DeckRefreshedEventPayload> initialDeckContentConsumer = payload -> Optional.of(payload)
+                .map(DeckRefreshedEventPayload::deck)
+                .ifPresentOrElse(deck -> {
+                    deckId.set(deck.getId());
+                    assertThat(deck.lanes()).isNotEmpty();
+
+                    var lane = deck.lanes().get(0);
+                    laneId.set(lane.id());
+                    assertThat(lane.cards()).hasSize(5);
+                }, () -> fail("Missing deck"));
+
+        Runnable createNewCard = () -> {
+            var createDeckCardInput = new CreateDeckCardInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    deckId.get(),
+                    laneId.get(),
+                    "title",
+                    "label",
+                    "description"
+            );
+            var result = this.createDeckCardMutationRunner.run(createDeckCardInput);
+            String typename = JsonPath.read(result, "$.data.createDeckCard.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<DeckRefreshedEventPayload> updatedDeckContentConsumer = payload -> Optional.of(payload)
+                .map(DeckRefreshedEventPayload::deck)
+                .ifPresentOrElse(deck -> {
+                    assertThat(deck.lanes()).isNotEmpty();
+                    assertThat(deck.lanes().get(0).cards()).hasSize(6);
+                }, () -> fail("Missing deck"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDeckContentConsumer)
+                .then(createNewCard)
+                .consumeNextWith(updatedDeckContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

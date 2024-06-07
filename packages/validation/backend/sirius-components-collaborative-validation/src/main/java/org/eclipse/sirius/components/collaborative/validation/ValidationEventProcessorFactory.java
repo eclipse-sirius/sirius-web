@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPol
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationEventHandler;
-import org.eclipse.sirius.components.collaborative.validation.api.IValidationEventProcessor;
 import org.eclipse.sirius.components.collaborative.validation.api.ValidationConfiguration;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.validation.description.ValidationDescription;
@@ -56,27 +55,21 @@ public class ValidationEventProcessorFactory implements IRepresentationEventProc
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return IValidationEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof ValidationConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof ValidationConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        if (IValidationEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof ValidationConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
+        if (configuration instanceof ValidationConfiguration) {
             ValidationDescription validationDescription = this.validationDescriptionProvider.getDescription();
 
             ValidationContext validationContext = new ValidationContext(null);
             IRepresentationEventProcessor validationEventProcessor = new ValidationEventProcessor(editingContext, validationDescription, validationContext, this.validationEventHandlers,
                     this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
 
-            // @formatter:off
-            return Optional.of(validationEventProcessor)
-                    .filter(representationEventProcessorClass::isInstance)
-                    .map(representationEventProcessorClass::cast);
-            // @formatter:on
+            return Optional.of(validationEventProcessor);
         }
-
         return Optional.empty();
     }
 

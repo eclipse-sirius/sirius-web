@@ -351,18 +351,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IInput input) {
+    public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input) {
         var getRepresentationEventProcessorSample = Timer.start(this.meterRegistry);
 
         var optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(configuration.getId()))
-                .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
-                .filter(representationEventProcessorClass::isInstance)
-                .map(representationEventProcessorClass::cast);
+                .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor);
 
         if (!optionalRepresentationEventProcessor.isPresent()) {
-            optionalRepresentationEventProcessor = this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(representationEventProcessorClass, configuration,
-                    this.editingContext);
+            optionalRepresentationEventProcessor = this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(configuration, this.editingContext);
             if (optionalRepresentationEventProcessor.isPresent()) {
                 var representationEventProcessor = optionalRepresentationEventProcessor.get();
 

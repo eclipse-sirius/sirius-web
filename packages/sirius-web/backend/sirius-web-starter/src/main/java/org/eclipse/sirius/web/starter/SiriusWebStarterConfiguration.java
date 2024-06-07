@@ -16,7 +16,6 @@ import java.util.concurrent.Executors;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.forms.WidgetSubscriptionManager;
@@ -129,9 +128,9 @@ public class SiriusWebStarterConfiguration {
     public IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
         return new IEventProcessorSubscriptionProvider() {
             @Override
-            public <T extends IRepresentationEventProcessor> Flux<IPayload> getSubscription(String editingContextId, Class<T> representationEventProcessorClass, IRepresentationConfiguration representationConfiguration, IInput input) {
+            public Flux<IPayload> getSubscription(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input) {
                 return editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(editingContextId)
-                        .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationEventProcessorClass, representationConfiguration, input))
+                        .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationConfiguration, input))
                         .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
                         .orElse(Flux.empty());
             }

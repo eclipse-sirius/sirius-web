@@ -46,28 +46,22 @@ public class HierarchyEventProcessorFactory implements IRepresentationEventProce
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return IHierarchyEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof HierarchyConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof HierarchyConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        if (IHierarchyEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof HierarchyConfiguration) {
-            HierarchyConfiguration hierarchyConfiguration = (HierarchyConfiguration) configuration;
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
+        if (configuration instanceof HierarchyConfiguration hierarchyConfiguration) {
             var optionalHierarchy = this.representationSearchService.findById(editingContext, hierarchyConfiguration.getId(), Hierarchy.class);
             if (optionalHierarchy.isPresent()) {
                 Hierarchy hierarchy = optionalHierarchy.get();
 
-                // @formatter:off
                 HierarchyContext hierarchyContext = new HierarchyContext(hierarchy);
                 IRepresentationEventProcessor hierarchyEventProcessor = new HierarchyEventProcessor(editingContext, hierarchyContext,
                         this.subscriptionManagerFactory.create(), this.hierarchyCreationService, this.representationSearchService);
 
-                return Optional.of(hierarchyEventProcessor)
-                        .filter(representationEventProcessorClass::isInstance)
-                        .map(representationEventProcessorClass::cast);
-                // @formatter:on
+                return Optional.of(hierarchyEventProcessor);
             }
         }
         return Optional.empty();

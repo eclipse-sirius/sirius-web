@@ -61,7 +61,6 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
 
     private NodeTool createNodeTool;
 
-
     public ModelOperationDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.view = this.createView();
