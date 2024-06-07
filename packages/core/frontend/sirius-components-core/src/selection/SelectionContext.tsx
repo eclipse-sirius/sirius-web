@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,21 @@ export const SelectionContextProvider = ({ initialSelection, children }: Selecti
   });
 
   const setSelection = useCallback((selection: Selection) => {
-    setState((prevState) => ({ ...prevState, selection }));
+    setState((prevState) => {
+      const prevSelectionKey = prevState.selection.entries
+        .map((entry) => entry.id)
+        .sort()
+        .join(':');
+      const newSelectionKey = selection.entries
+        .map((entry) => entry.id)
+        .sort()
+        .join(':');
+      if (prevSelectionKey !== newSelectionKey) {
+        return { ...prevState, selection };
+      } else {
+        return prevState;
+      }
+    });
   }, []);
 
   return (

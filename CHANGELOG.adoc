@@ -66,6 +66,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3552[#3552] [core] Rewrite EObjectIdManager using lower-level code for performance
 - https://github.com/eclipse-sirius/sirius-web/issues/3555[#3555] [core] Avoid costly recomputations in RepresentationMigrationService
 - https://github.com/eclipse-sirius/sirius-web/issues/3558[#3558] [core] Avoid all representation migration overhead when not needed
+- https://github.com/eclipse-sirius/sirius-web/issues/3595[#3595] [core] Avoid re-rendering the workbench when the selection does not really change
 
 == v2024.5.0
 
