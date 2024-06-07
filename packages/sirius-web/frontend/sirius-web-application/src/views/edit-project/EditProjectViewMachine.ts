@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Representation } from '@eclipse-sirius/sirius-components-core';
+import { RepresentationMetadata } from '@eclipse-sirius/sirius-components-core';
 import { Machine, assign } from 'xstate';
 import { GQLGetProjectQueryData, Project } from './EditProjectView.types';
 
@@ -39,14 +39,14 @@ export type SchemaValue = {
 
 export interface EditProjectViewContext {
   project: Project | null;
-  representation: Representation | null;
+  representation: RepresentationMetadata | null;
   message: string | null;
 }
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
 export type HandleFetchedProjectEvent = { type: 'HANDLE_FETCHED_PROJECT'; data: GQLGetProjectQueryData };
-export type SelectRepresentationEvent = { type: 'SELECT_REPRESENTATION'; representation: Representation };
+export type SelectRepresentationEvent = { type: 'SELECT_REPRESENTATION'; representation: RepresentationMetadata };
 export type EditProjectViewEvent =
   | HandleFetchedProjectEvent
   | SelectRepresentationEvent
@@ -130,7 +130,7 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
         const { id, name, currentEditingContext } = gQLProject;
         const project = { id, name, currentEditingContext: { id: currentEditingContext.id } };
 
-        let representation: Representation | null = null;
+        let representation: RepresentationMetadata | null = null;
         if (gQLProject.currentEditingContext.representation) {
           representation = {
             id: gQLProject.currentEditingContext.representation.id,

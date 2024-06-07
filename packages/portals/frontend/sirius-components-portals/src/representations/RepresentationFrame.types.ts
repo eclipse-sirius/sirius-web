@@ -10,12 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Representation } from '@eclipse-sirius/sirius-components-core';
+import { RepresentationMetadata } from '@eclipse-sirius/sirius-components-core';
 import { PortalRepresentationMode } from './PortalRepresentation.types';
 
 export type RepresentationFrameProps = {
   editingContextId: string;
-  representation: Representation;
+  representation: RepresentationMetadata;
   onDelete: () => void;
   portalMode: PortalRepresentationMode;
 };

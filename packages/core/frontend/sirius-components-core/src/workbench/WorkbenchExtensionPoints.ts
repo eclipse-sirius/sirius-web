@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { ComponentExtensionPoint, DataExtensionPoint } from '../extension/ExtensionRegistry.types';
-import { MainAreaComponentProps, WorkbenchViewContribution } from './Workbench.types';
+import { MainAreaComponentProps, RepresentationComponentFactory, WorkbenchViewContribution } from './Workbench.types';
 
 export const workbenchMainAreaExtensionPoint: ComponentExtensionPoint<MainAreaComponentProps> = {
   identifier: 'workbench#mainArea',
@@ -21,5 +21,10 @@ export const workbenchMainAreaExtensionPoint: ComponentExtensionPoint<MainAreaCo
 
 export const workbenchViewContributionExtensionPoint: DataExtensionPoint<Array<WorkbenchViewContribution>> = {
   identifier: 'workbench#viewContribution',
+  fallback: [],
+};
+
+export const representationFactoryExtensionPoint: DataExtensionPoint<Array<RepresentationComponentFactory>> = {
+  identifier: 'workbench#representationFactory',
   fallback: [],
 };
