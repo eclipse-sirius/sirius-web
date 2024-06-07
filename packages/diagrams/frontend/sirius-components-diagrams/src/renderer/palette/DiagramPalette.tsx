@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { memo, useContext } from 'react';
+import { memo, useContext, useEffect } from 'react';
+import { useKeyPress } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { DiagramPaletteProps } from './DiagramPalette.types';
@@ -21,10 +22,17 @@ import { useDiagramPalette } from './useDiagramPalette';
 
 export const DiagramPalette = memo(({ diagramElementId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { isOpened, x, y } = useDiagramPalette();
+  const { isOpened, x, y, hideDiagramPalette } = useDiagramPalette();
   if (readOnly) {
     return null;
   }
+
+  const escapePressed = useKeyPress('Escape');
+  useEffect(() => {
+    if (escapePressed) {
+      hideDiagramPalette();
+    }
+  }, [escapePressed, hideDiagramPalette]);
 
   return isOpened && x && y ? (
     <PalettePortal>

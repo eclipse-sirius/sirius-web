@@ -20,17 +20,17 @@ import {
   OnConnectEnd,
   OnConnectStart,
   OnConnectStartParams,
-  useStore as reactFlowStore,
   useReactFlow,
+  useStoreApi,
   useUpdateNodeInternals,
 } from 'reactflow';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters } from '../edge/EdgeLayout';
 import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
 import { UseConnectorValue } from './useConnector.types';
-import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 
 const tempConnectionLineStyle = (theme: Theme): React.CSSProperties => {
   return {
@@ -58,10 +58,17 @@ export const useConnector = (): UseConnectorValue => {
   const { hideDiagramElementPalette } = useDiagramElementPalette();
   const updateNodeInternals = useUpdateNodeInternals();
   const { diagramDescription } = useDiagramDescription();
+  const store = useStoreApi();
 
-  const connectionNodeId = reactFlowStore((state) => state.connectionNodeId);
-  const isConnectionInProgress = (!!connectionNodeId && isNewConnection) || !!connection;
-  const isReconnectionInProgress = !!connectionNodeId && !isNewConnection;
+  const isConnectionInProgress = () => {
+    const connectionNodeId = store.getState().connectionNodeId;
+    return (!!connectionNodeId && isNewConnection) || !!connection;
+  };
+
+  const isReconnectionInProgress = () => {
+    const connectionNodeId = store.getState().connectionNodeId;
+    return !!connectionNodeId && !isNewConnection;
+  };
 
   const onConnect: OnConnect = useCallback((connection: Connection) => {
     setConnection(connection);

@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useCallback, useContext, useEffect } from 'react';
-import { Edge, Node, XYPosition, useKeyPress, useReactFlow, useStoreApi } from 'reactflow';
+import { useCallback, useContext } from 'react';
+import { Edge, Node, XYPosition, useReactFlow, useStoreApi } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramElementPaletteContext } from './DiagramElementPaletteContext';
 import { DiagramElementPaletteContextValue } from './DiagramElementPaletteContext.types';
@@ -28,9 +28,8 @@ const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DO
 export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
   const { x, y, isOpened, hideDiagramElementPalette, showDiagramElementPalette } =
     useContext<DiagramElementPaletteContextValue>(DiagramElementPaletteContext);
-  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
-
   const store = useStoreApi();
+  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
 
   const onDiagramElementClick = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>, elementClicked: Node | Edge) => {
@@ -54,13 +53,6 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
     },
     [showDiagramElementPalette, hideDiagramElementPalette]
   );
-
-  const escapePressed = useKeyPress('Escape');
-  useEffect(() => {
-    if (escapePressed) {
-      hideDiagramElementPalette();
-    }
-  }, [escapePressed, hideDiagramElementPalette]);
 
   return {
     x,

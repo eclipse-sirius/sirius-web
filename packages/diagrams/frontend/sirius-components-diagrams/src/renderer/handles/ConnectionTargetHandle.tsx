@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Handle, Position } from 'reactflow';
 import { useConnector } from '../connector/useConnector';
 import { ConnectionTargetHandleProps } from './ConnectionTargetHandle.types';
@@ -36,12 +36,19 @@ const targetTempHandleStyle: React.CSSProperties = {
 
 export const ConnectionTargetHandle = memo(({ nodeId, nodeDescription, isHovered }: ConnectionTargetHandleProps) => {
   const { isConnectionInProgress, candidates, isReconnectionInProgress } = useConnector();
-  const shouldRender =
-    ((isConnectionInProgress &&
-      !!nodeDescription?.id &&
-      candidates.map((candidate) => candidate.id).includes(nodeDescription.id)) ||
-      isReconnectionInProgress) &&
-    isHovered;
+
+  const shouldRender = useMemo(() => {
+    if (isHovered) {
+      return (
+        (isConnectionInProgress() &&
+          !!nodeDescription?.id &&
+          candidates.map((candidate) => candidate.id).includes(nodeDescription.id)) ||
+        isReconnectionInProgress()
+      );
+    } else {
+      return false;
+    }
+  }, [isHovered, isConnectionInProgress, isReconnectionInProgress]);
 
   useRefreshTargetHandles(nodeId, shouldRender);
 
