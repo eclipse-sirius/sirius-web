@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
 public interface IEditingContextEventProcessor extends IDisposablePublisher {
     String getEditingContextId();
 
-    <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration, IInput input);
+    Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input);
 
     List<IRepresentationEventProcessor> getRepresentationEventProcessors();
 
@@ -59,8 +59,7 @@ public interface IEditingContextEventProcessor extends IDisposablePublisher {
         }
 
         @Override
-        public <T extends IRepresentationEventProcessor> Optional<T> acquireRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-                IInput input) {
+        public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input) {
             return Optional.empty();
         }
 

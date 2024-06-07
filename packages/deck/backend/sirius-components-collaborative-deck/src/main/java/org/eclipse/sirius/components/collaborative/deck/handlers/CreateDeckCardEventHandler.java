@@ -39,7 +39,7 @@ import reactor.core.publisher.Sinks.One;
  * @author fbarbin
  */
 @Service
-public class CreateCardEventHandler implements IDeckEventHandler {
+public class CreateDeckCardEventHandler implements IDeckEventHandler {
 
     private final IDeckCardService deckCardService;
 
@@ -47,7 +47,7 @@ public class CreateCardEventHandler implements IDeckEventHandler {
 
     private final Counter counter;
 
-    public CreateCardEventHandler(IDeckCardService deckCardService, ICollaborativeDeckMessageService messageService, MeterRegistry meterRegistry) {
+    public CreateDeckCardEventHandler(IDeckCardService deckCardService, ICollaborativeDeckMessageService messageService, MeterRegistry meterRegistry) {
         this.deckCardService = Objects.requireNonNull(deckCardService);
         this.messageService = Objects.requireNonNull(messageService);
 

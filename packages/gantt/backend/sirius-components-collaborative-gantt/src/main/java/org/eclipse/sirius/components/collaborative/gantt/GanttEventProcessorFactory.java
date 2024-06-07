@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventHandler;
-import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventProcessor;
 import org.eclipse.sirius.components.collaborative.gantt.service.GanttCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.gantt.Gantt;
@@ -57,14 +56,14 @@ public class GanttEventProcessorFactory implements IRepresentationEventProcessor
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return IGanttEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof GanttConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof GanttConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration,
             IEditingContext editingContext) {
-        if (IGanttEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof GanttConfiguration ganttConfiguration) {
+        if (configuration instanceof GanttConfiguration ganttConfiguration) {
             var optionalGantt = this.representationSearchService.findById(editingContext, ganttConfiguration.getId(), Gantt.class);
             if (optionalGantt.isPresent()) {
                 GanttContext ganttContext = new GanttContext(optionalGantt.get());
@@ -72,7 +71,7 @@ public class GanttEventProcessorFactory implements IRepresentationEventProcessor
                 IRepresentationEventProcessor ganttEventProcessor = new GanttEventProcessor(editingContext, this.subscriptionManagerFactory.create(), this.ganttCreationService,
                         this.representationSearchService, this.ganttEventHandlers, ganttContext, this.representationPersistenceService);
 
-                return Optional.of(ganttEventProcessor).map(representationEventProcessorClass::cast);
+                return Optional.of(ganttEventProcessor);
             }
         }
         return Optional.empty();

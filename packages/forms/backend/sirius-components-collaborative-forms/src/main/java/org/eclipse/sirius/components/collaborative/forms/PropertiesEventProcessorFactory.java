@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFacto
 import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
-import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDescriptionService;
@@ -86,14 +85,13 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof PropertiesConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof PropertiesConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof PropertiesConfiguration propertiesConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
+        if (configuration instanceof PropertiesConfiguration propertiesConfiguration) {
 
             List<PageDescription> pageDescriptions = this.propertiesDescriptionService.getPropertiesDescriptions();
             var objects = propertiesConfiguration.getObjectIds().stream()
@@ -122,9 +120,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
                         this.representationRefreshPolicyRegistry,
                         this.formPostProcessor);
 
-                return Optional.of(formEventProcessor)
-                        .filter(representationEventProcessorClass::isInstance)
-                        .map(representationEventProcessorClass::cast);
+                return Optional.of(formEventProcessor);
             }
         }
         return Optional.empty();

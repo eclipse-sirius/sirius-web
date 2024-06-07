@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
-import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventProcessor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeCreationParameters;
@@ -65,14 +64,13 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return ITreeEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof TreeConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof TreeConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        if (ITreeEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof TreeConfiguration treeConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
+        if (configuration instanceof TreeConfiguration treeConfiguration) {
 
             Optional<TreeDescription> optionalTreeDescription = this.findTreeDescription(editingContext, treeConfiguration);
             if (optionalTreeDescription.isPresent()) {
@@ -87,9 +85,7 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
 
                 IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(editingContext, this.treeService, treeCreationParameters, this.treeEventHandlers,
                         this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
-                return Optional.of(treeEventProcessor)
-                        .filter(representationEventProcessorClass::isInstance)
-                        .map(representationEventProcessorClass::cast);
+                return Optional.of(treeEventProcessor);
             }
         }
         return Optional.empty();

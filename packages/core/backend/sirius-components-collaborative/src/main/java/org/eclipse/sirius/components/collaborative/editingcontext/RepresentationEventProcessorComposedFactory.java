@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,14 +42,11 @@ public class RepresentationEventProcessorComposedFactory implements IRepresentat
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        // @formatter:off
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
         return this.factories.stream()
-                .filter(factory -> factory.canHandle(representationEventProcessorClass, configuration))
+                .filter(factory -> factory.canHandle(configuration))
                 .findFirst()
-                .flatMap(factory -> factory.createRepresentationEventProcessor(representationEventProcessorClass, configuration, editingContext));
-        // @formatter:on
+                .flatMap(factory -> factory.createRepresentationEventProcessor(configuration, editingContext));
     }
 
 }

@@ -19,6 +19,11 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3553[#3553] [core] Remove the concepts `RepresentationContext`, `RepresentationContextProvider` and their types which were used to contribute representations for the Sirius Components workbench in favor of an API based on the extension registry.
 This is one of the first existing API used to extend Sirius Web deprecated in favor of the new extension registry.
 More existing APIs will be migrated to this new common pattern.
+- https://github.com/eclipse-sirius/sirius-web/issues/3597[#3597] [core] `IRepresentationEventProcessorFactory`, `IRepresentationEventProcessor` and `IEditingContextEventProcessor` change to the signature of the methods in order to create RepresentationEventProcessor without the need of `Class<T> representationEventProcessorClass` to :
+ * `boolean canHandle(IRepresentationConfiguration configuration)`;
+ * `Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext)`;
+ * `public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input)`;
+ * `Flux<IPayload> getSubscription(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input);`
 
 === Dependency update
 
@@ -74,6 +79,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3558[#3558] [core] Avoid all representation migration overhead when not needed
 - https://github.com/eclipse-sirius/sirius-web/issues/3595[#3595] [core] Avoid re-rendering the workbench when the selection does not really change
 - https://github.com/eclipse-sirius/sirius-web/issues/3601[#3601] [sirius-web] Extract test helper classes to sirius-web-tests
+- https://github.com/eclipse-sirius/sirius-web/issues/3597[#3597] [core] Improve the creation of `RepresentationEventProcessor`
 
 == v2024.5.0
 

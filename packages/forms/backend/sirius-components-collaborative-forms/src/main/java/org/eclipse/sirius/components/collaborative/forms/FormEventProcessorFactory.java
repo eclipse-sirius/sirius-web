@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.collaborative.api.RepresentationEventProces
 import org.eclipse.sirius.components.collaborative.forms.api.FormConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
-import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
@@ -79,14 +78,13 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof FormConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof FormConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof FormConfiguration formConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
+        if (configuration instanceof FormConfiguration formConfiguration) {
 
             Optional<Form> optionalForm = this.representationSearchService.findById(editingContext, formConfiguration.getId(), Form.class);
             if (optionalForm.isPresent()) {
@@ -115,10 +113,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                             this.representationRefreshPolicyRegistry,
                             this.formPostProcessor);
 
-                    return Optional.of(formEventProcessor)
-                            .filter(representationEventProcessorClass::isInstance)
-                            .map(representationEventProcessorClass::cast);
-
+                    return Optional.of(formEventProcessor);
                 }
             }
         }

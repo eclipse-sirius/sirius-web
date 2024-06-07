@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.dto.CreateRootObjectInput;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.forms.api.FormConfiguration;
-import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -341,7 +340,7 @@ public class ViewFormIntegrationTests extends AbstractIntegrationTests {
     public void givenDomainAndViewWhenDocumentAndRepresentationAreCreatedThenWeCanSubscribeToTheRepresentation() {
         var configuration = new FormConfiguration(this.representationId.toString());
         var input = new FormEventInput(UUID.randomUUID(), this.projectId.toString(), this.representationId.toString());
-        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId.toString(), IFormEventProcessor.class, configuration, input);
+        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId.toString(), configuration, input);
 
         Predicate<IPayload> isEmptyFormRefreshedEventPayload = payload -> {
             if (payload instanceof FormRefreshedEventPayload formRefreshedEventPayload) {
@@ -362,7 +361,7 @@ public class ViewFormIntegrationTests extends AbstractIntegrationTests {
     public void givenRenderedRormWeCanRetrieveTheDynamicallyComputedHelpTextOfAWidget() {
         var configuration = new FormConfiguration(this.representationId.toString());
         var input = new FormEventInput(UUID.randomUUID(), this.projectId.toString(), this.representationId.toString());
-        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId.toString(), IFormEventProcessor.class, configuration, input);
+        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId.toString(), configuration, input);
 
         AtomicReference<String> widgetId = new AtomicReference<>();
         Predicate<IPayload> isEmptyFormRefreshedEventPayload = payload -> {

@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventProcessor;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -65,7 +64,7 @@ public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCo
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
         localContext.put(LocalContextConstants.REPRESENTATION_ID, treeConfiguration.getId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), ITreeEventProcessor.class, treeConfiguration, input), input)
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), treeConfiguration, input), input)
                 .map(payload ->  DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)

@@ -32,7 +32,7 @@ import graphql.schema.DataFetchingEnvironment;
  * @author fbarbin
  */
 @MutationDataFetcher(type = "Mutation", field = "createDeckCard")
-public class MutationCreateCardDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
+public class MutationDeckCreateCardDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
     private static final String INPUT_ARGUMENT = "input";
 
@@ -42,7 +42,7 @@ public class MutationCreateCardDataFetcher implements IDataFetcherWithFieldCoord
 
     private final IEditingContextDispatcher editingContextDispatcher;
 
-    public MutationCreateCardDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEditingContextDispatcher editingContextDispatcher) {
+    public MutationDeckCreateCardDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEditingContextDispatcher editingContextDispatcher) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);

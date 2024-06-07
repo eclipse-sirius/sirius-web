@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
-import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventProcessor;
 import org.eclipse.sirius.components.collaborative.deck.service.DeckCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.deck.Deck;
@@ -57,14 +56,14 @@ public class DeckEventProcessorFactory implements IRepresentationEventProcessorF
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return IDeckEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof DeckConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof DeckConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration,
             IEditingContext editingContext) {
-        if (IDeckEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof DeckConfiguration deckConfiguration) {
+        if (configuration instanceof DeckConfiguration deckConfiguration) {
             var optionalDeck = this.representationSearchService.findById(editingContext, deckConfiguration.getId(), Deck.class);
             if (optionalDeck.isPresent()) {
                 Deck deck = optionalDeck.get();
@@ -73,7 +72,7 @@ public class DeckEventProcessorFactory implements IRepresentationEventProcessorF
                 IRepresentationEventProcessor deckEventProcessor = new DeckEventProcessor(editingContext, this.subscriptionManagerFactory.create(), this.deckCreationService, this.deckEventHandlers,
                         deckContext, this.representationPersistenceService, this.representationSearchService);
 
-                return Optional.of(deckEventProcessor).map(representationEventProcessorClass::cast);
+                return Optional.of(deckEventProcessor);
             }
         }
         return Optional.empty();

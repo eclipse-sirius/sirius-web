@@ -26,7 +26,6 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramConfiguration;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
@@ -326,7 +325,7 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
     public void givenDomainAndViewWhenDocumentAndRepresentationAreCreatedThenWeCanSubscribeToTheRepresentation() {
         var configuration = new DiagramConfiguration(this.representationId.toString());
         var input = new DiagramEventInput(UUID.randomUUID(), this.projectId.toString(), this.representationId.toString());
-        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId.toString(), IDiagramEventProcessor.class, configuration, input);
+        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId.toString(), configuration, input);
 
         Predicate<IPayload> isEmptyDiagramRefreshedEventPayload = payload -> {
             if (payload instanceof DiagramRefreshedEventPayload diagramRefreshedEventPayload) {

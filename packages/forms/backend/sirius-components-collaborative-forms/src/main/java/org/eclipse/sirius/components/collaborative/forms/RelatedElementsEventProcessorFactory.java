@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFacto
 import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
-import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IRelatedElementsDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
@@ -78,14 +77,14 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> boolean canHandle(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration) {
-        return IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof RelatedElementsConfiguration;
+    public boolean canHandle(IRepresentationConfiguration configuration) {
+        return configuration instanceof RelatedElementsConfiguration;
     }
 
     @Override
-    public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration,
             IEditingContext editingContext) {
-        if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof RelatedElementsConfiguration relatedElementsConfiguration) {
+        if (configuration instanceof RelatedElementsConfiguration relatedElementsConfiguration) {
 
             var objects = relatedElementsConfiguration.getObjectIds().stream()
                     .map(objectId -> this.objectService.getObject(editingContext, objectId))
@@ -108,9 +107,7 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
                         this.representationRefreshPolicyRegistry,
                         this.formPostProcessor);
 
-                return Optional.of(formEventProcessor)
-                        .filter(representationEventProcessorClass::isInstance)
-                        .map(representationEventProcessorClass::cast);
+                return Optional.of(formEventProcessor);
             }
         }
         return Optional.empty();
