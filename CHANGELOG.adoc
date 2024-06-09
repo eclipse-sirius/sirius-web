@@ -28,6 +28,7 @@
 - [releng] Remove the dependency to `reflect-metadata`
 - [releng] Switch to `subscriptions-transport-ws` 0.11.0
 - https://github.com/eclipse-sirius/sirius-web/issues/3466[#3466] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.14 to benefit for enhancements
+- [releng] Switch to EMF Json 2.3.10
 
 
 === Bug fixes
