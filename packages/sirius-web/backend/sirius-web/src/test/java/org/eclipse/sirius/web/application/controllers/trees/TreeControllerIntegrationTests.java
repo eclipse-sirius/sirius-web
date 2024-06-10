@@ -19,6 +19,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
@@ -41,6 +42,7 @@ import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscripti
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.DeleteTreeItemMutationRunner;
+import org.eclipse.sirius.components.trees.tests.graphql.InitialDirectEditTreeItemLabelQueryRunner;
 import org.eclipse.sirius.components.trees.tests.graphql.RenameTreeItemMutationRunner;
 import org.eclipse.sirius.components.trees.tests.graphql.TreeEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -139,6 +141,9 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     private PortalEventSubscriptionRunner portalEventSubscriptionRunner;
 
     @Autowired
+    private InitialDirectEditTreeItemLabelQueryRunner initialDirectEditTreeItemLabelQueryRunner;
+
+    @Autowired
     private IIdentityService identityService;
 
     private final Logger logger = LoggerFactory.getLogger(TreeControllerIntegrationTests.class);
@@ -202,6 +207,26 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
                 .expectNextMatches(hasNoMoreObject)
                 .then(this.deleteTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeId, TestIdentifiers.ECORE_SAMPLE_DOCUMENT))
                 .expectNextMatches(hasNoMoreDocument)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given the explorer of a project, when we trigger a tree item rename, then the initial direct edit label is executed")
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenExplorerOfProjectWhenWeTriggerATreeItemRenameThenTheInitialDirectEditTreeItemLabelIsExecuted() {
+        var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
+        var treeEventInput = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, expandedIds, List.of());
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
+
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample));
+
+        var treeId = new TreeConfiguration(treeEventInput.editingContextId(), treeEventInput.treeId(), treeEventInput.expanded(), treeEventInput.activeFilterIds()).getId();
+
+        StepVerifier.create(treeFlux)
+                .expectNextMatches(hasProjectContent)
+                .then(this.triggerDirectEditTreeItemLabel(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeId, TestIdentifiers.EPACKAGE_OBJECT, "Sample"))
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -312,6 +337,20 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             TestTransaction.flagForCommit();
             TestTransaction.end();
             TestTransaction.start();
+        };
+    }
+
+    private Runnable triggerDirectEditTreeItemLabel(String editingContextId, String treeId, UUID treeItemId, String expectedLabel) {
+        return () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", editingContextId,
+                    "representationId", treeId,
+                    "treeItemId", treeItemId
+            );
+            var result = this.initialDirectEditTreeItemLabelQueryRunner.run(variables);
+
+            String initialDirectEditLabel = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel");
+            assertThat(initialDirectEditLabel).isEqualTo(expectedLabel);
         };
     }
 }

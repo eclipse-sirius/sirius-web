@@ -47,14 +47,14 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests of the expand / collapse diagrams.
+ * Integration tests for the edition of diagram elements label.
  *
  * @author pcdavid
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
-public class EditLabelDiagramContollerTests extends AbstractIntegrationTests {
+public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
