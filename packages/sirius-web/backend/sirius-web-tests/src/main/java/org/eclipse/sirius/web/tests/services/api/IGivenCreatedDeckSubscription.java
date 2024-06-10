@@ -10,13 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api;
+package org.eclipse.sirius.web.tests.services.api;
+
+import org.eclipse.sirius.components.collaborative.deck.dto.DeckRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+
+import reactor.core.publisher.Flux;
 
 /**
- * Used to set up a test by committing the current transaction.
+ * Used to create a deck and subscribe to it.
  *
  * @author sbegaudeau
  */
-public interface IGivenCommittedTransaction {
-    void commit();
+public interface IGivenCreatedDeckSubscription {
+    Flux<DeckRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input);
 }

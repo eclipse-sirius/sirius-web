@@ -10,18 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api;
-
-import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-
-import reactor.core.publisher.Flux;
+package org.eclipse.sirius.web.tests.services.api;
 
 /**
- * Used to create a form and subscribe to it.
+ * Used to set up a test by committing the current transaction.
  *
  * @author sbegaudeau
  */
-public interface IGivenCreatedFormSubscription {
-    Flux<FormRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input);
+public interface IGivenCommittedTransaction {
+    void commit();
 }

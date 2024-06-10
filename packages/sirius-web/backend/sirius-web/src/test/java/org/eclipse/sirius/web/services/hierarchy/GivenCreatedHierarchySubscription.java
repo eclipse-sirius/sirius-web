@@ -18,9 +18,9 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.charts.HierarchyEventInput;
 import org.eclipse.sirius.components.collaborative.charts.HierarchyRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.services.api.IGivenCreatedHierarchySubscription;
-import org.eclipse.sirius.web.services.api.IGivenCreatedRepresentation;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
 

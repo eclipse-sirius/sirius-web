@@ -10,18 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api;
-
-import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorRefreshedEventPayload;
-
-import reactor.core.publisher.Flux;
+package org.eclipse.sirius.web.tests.services.api;
 
 /**
- * Used to create a form description editor and subscribe to it.
+ * Used to set up the initial state of a test.
  *
  * @author sbegaudeau
  */
-public interface IGivenCreatedFormDescriptionEditorSubscription {
-    Flux<FormDescriptionEditorRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input);
+public interface IGivenInitialServerState {
+    void initialize();
 }

@@ -10,45 +10,41 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.formdescriptioneditors;
+package org.eclipse.sirius.web.tests.services.deck;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetInput;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.DeckEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
-import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
+import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
 
+import reactor.core.publisher.Flux;
+
 /**
- * Used to add a widget to a form description editor.
+ * Used to get the form event subscription with the GraphQL API.
  *
  * @author sbegaudeau
  */
 @Service
-public class AddWidgetMutationRunner implements IMutationRunner<AddWidgetInput> {
+public class DeckEventSubscriptionRunner implements ISubscriptionRunner<DeckEventInput> {
 
-    private static final String ADD_WIDGET_MUTATION = """
-            mutation addWidget($input: AddWidgetInput!) {
-              addWidget(input: $input) {
+    private static final String DECK_EVENT_SUBSCRIPTION = """
+            subscription deckEvent($input: DeckEventInput!) {
+              deckEvent(input: $input) {
                 __typename
-                ... on SuccessPayload {
-                  id
-                }
-                ... on ErrorPayload {
-                  message
-                }
               }
             }
             """;
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public AddWidgetMutationRunner(IGraphQLRequestor graphQLRequestor) {
+    public DeckEventSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public String run(AddWidgetInput input) {
-        return this.graphQLRequestor.execute(ADD_WIDGET_MUTATION, input);
+    public Flux<Object> run(DeckEventInput input) {
+        return this.graphQLRequestor.subscribe(DECK_EVENT_SUBSCRIPTION, input);
     }
 }

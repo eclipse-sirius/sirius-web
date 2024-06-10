@@ -10,13 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services;
+package org.eclipse.sirius.web.tests.services;
 
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;

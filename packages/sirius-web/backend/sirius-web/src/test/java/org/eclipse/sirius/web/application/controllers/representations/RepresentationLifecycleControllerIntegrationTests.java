@@ -37,8 +37,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.R
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.eclipse.sirius.web.services.TestRepresentationDescription;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
-import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
-import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

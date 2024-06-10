@@ -10,41 +10,45 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.gantt;
+package org.eclipse.sirius.web.tests.services.formdescriptioneditors;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.gantt.dto.input.GanttEventInput;
+import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
-import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
+import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
 
-import reactor.core.publisher.Flux;
-
 /**
- * Used to get the gantt event subscription with the GraphQL API.
+ * Used to add a widget to a form description editor.
  *
  * @author sbegaudeau
  */
 @Service
-public class GanttEventSubscriptionRunner implements ISubscriptionRunner<GanttEventInput> {
+public class AddWidgetMutationRunner implements IMutationRunner<AddWidgetInput> {
 
-    private static final String GANTT_EVENT_SUBSCRIPTION = """
-            subscription ganttEvent($input: GanttEventInput!) {
-              ganttEvent(input: $input) {
+    private static final String ADD_WIDGET_MUTATION = """
+            mutation addWidget($input: AddWidgetInput!) {
+              addWidget(input: $input) {
                 __typename
+                ... on SuccessPayload {
+                  id
+                }
+                ... on ErrorPayload {
+                  message
+                }
               }
             }
             """;
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public GanttEventSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
+    public AddWidgetMutationRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public Flux<Object> run(GanttEventInput input) {
-        return this.graphQLRequestor.subscribe(GANTT_EVENT_SUBSCRIPTION, input);
+    public String run(AddWidgetInput input) {
+        return this.graphQLRequestor.execute(ADD_WIDGET_MUTATION, input);
     }
 }
