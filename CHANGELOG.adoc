@@ -51,6 +51,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3447[#3447] [view] Add support for For construct in the operations DSL
 - https://github.com/eclipse-sirius/sirius-web/issues/3526[#3526] [diagram] Add support for text alignment on node labels
 - https://github.com/eclipse-sirius/sirius-web/issues/3550[#3550] [core] Add ExtensionRegistry merge strategy
+- https://github.com/eclipse-sirius/sirius-web/issues/3557[#3550] [app] Add ProjectSettings tab extension point
 
 === Improvements
 

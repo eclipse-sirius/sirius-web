@@ -51,6 +51,9 @@ import { OnboardArea } from '../onboarding/OnboardArea';
 import { RepresentationContextProvider } from '../representations/RepresentationContextProvider';
 import { Router } from '../router/Router';
 import { siriusWebTheme as defaultTheme } from '../theme/siriusWebTheme';
+import { ProjectSettingTabContribution } from '../views/project-settings/ProjectSettingsView.types';
+import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
+import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
 import { SiriusWebApplicationProps } from './SiriusWebApplication.types';
 
 const style = {
@@ -118,6 +121,13 @@ export const SiriusWebApplication = ({
     },
   ];
 
+  const projectSettingsTabContributions: ProjectSettingTabContribution[] = [
+    {
+      title: 'Images',
+      component: ProjectImagesSettings,
+    },
+  ];
+
   const internalExtensionRegistry = new ExtensionRegistry();
   internalExtensionRegistry.addComponent(workbenchMainAreaExtensionPoint, {
     identifier: 'siriusweb_workbench#mainArea',
@@ -127,6 +137,11 @@ export const SiriusWebApplication = ({
     identifier: 'siriusweb_workbench#viewContribution',
     data: workbenchViewContributions,
   });
+  internalExtensionRegistry.putData(projectSettingsTabExtensionPoint, {
+    identifier: 'sw_projectSettingsTab',
+    data: projectSettingsTabContributions,
+  });
+
   if (extensionRegistry) {
     internalExtensionRegistry.addAll(
       extensionRegistry,
