@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-diagram</artifactId>
-	<version>2024.5.0</version>
+	<version>2024.5.1</version>
 	<name>sirius-components-view-diagram</name>
 	<description>Sirius Components Diagram View Definition DSL</description>
 	<properties>
@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 	</dependencies>
 

@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-task-edit</artifactId>
-	<version>2024.5.0</version>
+	<version>2024.5.1</version>
 	<name>sirius-components-task-edit</name>
 	<description>Sirius Components Task - Edit Support</description>
 
@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-task</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 	</dependencies>
 

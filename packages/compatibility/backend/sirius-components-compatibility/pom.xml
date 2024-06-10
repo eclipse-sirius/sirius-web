@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-compatibility</artifactId>
-	<version>2024.5.0</version>
+	<version>2024.5.1</version>
 	<name>sirius-components-compatibility</name>
 	<description>Sirius Components Compatibility</description>
 
@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -74,43 +74,43 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-diagrams</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-forms</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-selection</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-trees</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-interpreter</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>

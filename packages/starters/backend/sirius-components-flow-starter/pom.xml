@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-flow-starter</artifactId>
-	<version>2024.5.0</version>
+	<version>2024.5.1</version>
 	<name>sirius-components-flow-starter</name>
 	<description>Sirius Components Flow Starter</description>
 
@@ -63,37 +63,37 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-builder</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram-edit</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-services-api</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-persistence</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
@@ -108,19 +108,19 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-services</artifactId>
-			<version>2024.5.0</version>
+			<version>2024.5.1</version>
 		</dependency>
 	</dependencies>
 
