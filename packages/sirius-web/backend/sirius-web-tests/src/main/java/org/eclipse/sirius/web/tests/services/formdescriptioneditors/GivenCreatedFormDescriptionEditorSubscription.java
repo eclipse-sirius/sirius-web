@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.formdescriptioneditors;
+package org.eclipse.sirius.web.tests.services.formdescriptioneditors;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -18,9 +18,9 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorEventInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorRefreshedEventPayload;
-import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
-import org.eclipse.sirius.web.services.api.IGivenCreatedFormDescriptionEditorSubscription;
-import org.eclipse.sirius.web.services.api.IGivenCreatedRepresentation;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormDescriptionEditorSubscription;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
 

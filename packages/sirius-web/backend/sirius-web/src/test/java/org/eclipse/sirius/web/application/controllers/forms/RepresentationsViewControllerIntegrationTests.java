@@ -25,8 +25,8 @@ import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventP
 import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
-import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.graphql.RepresentationsEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

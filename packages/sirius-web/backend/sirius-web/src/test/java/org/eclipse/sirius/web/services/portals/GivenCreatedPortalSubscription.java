@@ -19,9 +19,9 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
-import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.services.api.IGivenCreatedPortalSubscription;
-import org.eclipse.sirius.web.services.api.IGivenCreatedRepresentation;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
 

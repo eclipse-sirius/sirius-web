@@ -38,9 +38,9 @@ import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskMutationRunne
 import org.eclipse.sirius.components.gantt.tests.navigation.GanttNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.services.api.IGivenCreatedGanttSubscription;
-import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.gantt.PapayaGanttDescriptionProvider;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedGanttSubscription;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

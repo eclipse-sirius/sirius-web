@@ -10,18 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.diagrams;
+package org.eclipse.sirius.web.tests.services.deck;
 
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.deck.dto.DeckRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.DeckEventInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DiagramEventSubscriptionRunner;
-import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
-import org.eclipse.sirius.web.services.api.IGivenCreatedDiagramSubscription;
-import org.eclipse.sirius.web.services.api.IGivenCreatedRepresentation;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDeckSubscription;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
 
@@ -29,33 +28,33 @@ import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 
 /**
- * Used to create a diagram and subscribe to it.
+ * Used to create a deck and subscribe to it.
  *
  * @author sbegaudeau
  */
 @Service
-public class GivenCreatedDiagramSubscription implements IGivenCreatedDiagramSubscription {
+public class GivenCreatedDeckSubscription implements IGivenCreatedDeckSubscription {
 
     private final IGivenCommittedTransaction givenCommittedTransaction;
 
     private final IGivenCreatedRepresentation givenCreatedRepresentation;
 
-    private final DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
+    private final DeckEventSubscriptionRunner deckEventSubscriptionRunner;
 
-    public GivenCreatedDiagramSubscription(IGivenCommittedTransaction givenCommittedTransaction, IGivenCreatedRepresentation givenCreatedRepresentation, DiagramEventSubscriptionRunner diagramEventSubscriptionRunner) {
+    public GivenCreatedDeckSubscription(IGivenCommittedTransaction givenCommittedTransaction, IGivenCreatedRepresentation givenCreatedRepresentation, DeckEventSubscriptionRunner deckEventSubscriptionRunner) {
         this.givenCommittedTransaction = Objects.requireNonNull(givenCommittedTransaction);
         this.givenCreatedRepresentation = Objects.requireNonNull(givenCreatedRepresentation);
-        this.diagramEventSubscriptionRunner = Objects.requireNonNull(diagramEventSubscriptionRunner);
+        this.deckEventSubscriptionRunner = Objects.requireNonNull(deckEventSubscriptionRunner);
     }
 
     @Override
-    public Flux<DiagramRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input) {
+    public Flux<DeckRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input) {
         this.givenCommittedTransaction.commit();
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), input.editingContextId(), representationId);
-        var flux = this.diagramEventSubscriptionRunner.run(diagramEventInput);
+        var deckEventInput = new DeckEventInput(UUID.randomUUID(), input.editingContextId(), UUID.fromString(representationId));
+        var flux = this.deckEventSubscriptionRunner.run(deckEventInput);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -64,7 +63,7 @@ public class GivenCreatedDiagramSubscription implements IGivenCreatedDiagramSubs
         return flux.filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast);
+                .filter(DeckRefreshedEventPayload.class::isInstance)
+                .map(DeckRefreshedEventPayload.class::cast);
     }
 }

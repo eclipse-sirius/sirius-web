@@ -10,13 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api;
+package org.eclipse.sirius.web.tests.services.api;
+
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+
+import reactor.core.publisher.Flux;
 
 /**
- * Used to set up the initial state of a test.
+ * Used to create a form and subscribe to it.
  *
  * @author sbegaudeau
  */
-public interface IGivenInitialServerState {
-    void initialize();
+public interface IGivenCreatedFormSubscription {
+    Flux<FormRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input);
 }

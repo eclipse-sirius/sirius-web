@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.formdescriptioneditors;
+package org.eclipse.sirius.web.tests.services.formdescriptioneditors;
 
 import java.util.Objects;
 

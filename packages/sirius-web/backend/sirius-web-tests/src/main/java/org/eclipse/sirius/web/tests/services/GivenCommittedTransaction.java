@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services;
+package org.eclipse.sirius.web.tests.services;
 
-import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
 

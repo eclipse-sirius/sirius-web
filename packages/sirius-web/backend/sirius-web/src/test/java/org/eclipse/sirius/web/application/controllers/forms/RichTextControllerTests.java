@@ -32,9 +32,9 @@ import org.eclipse.sirius.components.forms.tests.graphql.EditRichTextMutationRun
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.services.api.IGivenCreatedFormSubscription;
-import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.forms.FormWithRichTextDescriptionProvider;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

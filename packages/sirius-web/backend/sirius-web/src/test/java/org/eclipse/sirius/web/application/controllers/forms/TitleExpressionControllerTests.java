@@ -24,9 +24,9 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.services.api.IGivenCreatedFormSubscription;
-import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.forms.FormWithTitleExpressionDescriptionProvider;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

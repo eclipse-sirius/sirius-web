@@ -40,9 +40,9 @@ import org.eclipse.sirius.web.application.portal.services.PortalDescriptionProvi
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
-import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.services.portals.GivenCreatedPortalSubscription;
 import org.eclipse.sirius.web.services.portals.LayoutPortalMutationRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

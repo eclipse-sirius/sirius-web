@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.deck;
+package org.eclipse.sirius.web.tests.services.formdescriptioneditors;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.deck.dto.input.DeckEventInput;
+import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
@@ -22,16 +22,16 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 /**
- * Used to get the form event subscription with the GraphQL API.
+ * Used to get the form description editor event subscription with the GraphQL API.
  *
  * @author sbegaudeau
  */
 @Service
-public class DeckEventSubscriptionRunner implements ISubscriptionRunner<DeckEventInput> {
+public class FormDescriptionEditorSubscriptionRunner implements ISubscriptionRunner<FormDescriptionEditorEventInput> {
 
-    private static final String DECK_EVENT_SUBSCRIPTION = """
-            subscription deckEvent($input: DeckEventInput!) {
-              deckEvent(input: $input) {
+    private static final String FORM_DESCRIPTION_EDITOR_EVENT_SUBSCRIPTION = """
+            subscription formDescriptionEditorEvent($input: FormDescriptionEditorEventInput!) {
+              formDescriptionEditorEvent(input: $input) {
                 __typename
               }
             }
@@ -39,12 +39,12 @@ public class DeckEventSubscriptionRunner implements ISubscriptionRunner<DeckEven
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public DeckEventSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
+    public FormDescriptionEditorSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public Flux<Object> run(DeckEventInput input) {
-        return this.graphQLRequestor.subscribe(DECK_EVENT_SUBSCRIPTION, input);
+    public Flux<Object> run(FormDescriptionEditorEventInput input) {
+        return this.graphQLRequestor.subscribe(FORM_DESCRIPTION_EDITOR_EVENT_SUBSCRIPTION, input);
     }
 }

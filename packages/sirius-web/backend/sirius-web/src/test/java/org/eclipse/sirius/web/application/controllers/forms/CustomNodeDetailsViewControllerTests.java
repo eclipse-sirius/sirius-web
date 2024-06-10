@@ -37,7 +37,7 @@ import org.eclipse.sirius.components.forms.tests.graphql.PropertiesEventSubscrip
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
-import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.gantt;
+package org.eclipse.sirius.web.tests.services.gantt;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -18,9 +18,9 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.GanttRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.GanttEventInput;
-import org.eclipse.sirius.web.services.api.IGivenCommittedTransaction;
-import org.eclipse.sirius.web.services.api.IGivenCreatedGanttSubscription;
-import org.eclipse.sirius.web.services.api.IGivenCreatedRepresentation;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedGanttSubscription;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
 

@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api;
+package org.eclipse.sirius.web.tests.services.api;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.gantt.dto.GanttRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorRefreshedEventPayload;
 
 import reactor.core.publisher.Flux;
 
 /**
- * Used to create a gantt and subscribe to it.
+ * Used to create a form description editor and subscribe to it.
  *
  * @author sbegaudeau
  */
-public interface IGivenCreatedGanttSubscription {
-    Flux<GanttRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input);
+public interface IGivenCreatedFormDescriptionEditorSubscription {
+    Flux<FormDescriptionEditorRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input);
 }

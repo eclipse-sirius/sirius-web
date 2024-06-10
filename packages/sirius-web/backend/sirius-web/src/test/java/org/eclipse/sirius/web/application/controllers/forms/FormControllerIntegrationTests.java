@@ -46,8 +46,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
 import org.eclipse.sirius.web.services.FormVariableViewPreEditingContextProcessor;
 import org.eclipse.sirius.web.services.MasterDetailsFormDescriptionProvider;
-import org.eclipse.sirius.web.services.api.IGivenCreatedFormSubscription;
-import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

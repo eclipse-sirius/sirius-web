@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,9 +39,9 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
-import org.eclipse.sirius.web.services.api.IGivenCreatedGanttSubscription;
-import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.gantt.PapayaGanttDescriptionProvider;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedGanttSubscription;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

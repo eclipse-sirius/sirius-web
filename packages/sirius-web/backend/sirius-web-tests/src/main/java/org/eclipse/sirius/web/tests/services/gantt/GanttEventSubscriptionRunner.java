@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.formdescriptioneditors;
+package org.eclipse.sirius.web.tests.services.gantt;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorEventInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.GanttEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
@@ -22,16 +22,16 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 /**
- * Used to get the form description editor event subscription with the GraphQL API.
+ * Used to get the gantt event subscription with the GraphQL API.
  *
  * @author sbegaudeau
  */
 @Service
-public class FormDescriptionEditorSubscriptionRunner implements ISubscriptionRunner<FormDescriptionEditorEventInput> {
+public class GanttEventSubscriptionRunner implements ISubscriptionRunner<GanttEventInput> {
 
-    private static final String FORM_DESCRIPTION_EDITOR_EVENT_SUBSCRIPTION = """
-            subscription formDescriptionEditorEvent($input: FormDescriptionEditorEventInput!) {
-              formDescriptionEditorEvent(input: $input) {
+    private static final String GANTT_EVENT_SUBSCRIPTION = """
+            subscription ganttEvent($input: GanttEventInput!) {
+              ganttEvent(input: $input) {
                 __typename
               }
             }
@@ -39,12 +39,12 @@ public class FormDescriptionEditorSubscriptionRunner implements ISubscriptionRun
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public FormDescriptionEditorSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
+    public GanttEventSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public Flux<Object> run(FormDescriptionEditorEventInput input) {
-        return this.graphQLRequestor.subscribe(FORM_DESCRIPTION_EDITOR_EVENT_SUBSCRIPTION, input);
+    public Flux<Object> run(GanttEventInput input) {
+        return this.graphQLRequestor.subscribe(GANTT_EVENT_SUBSCRIPTION, input);
     }
 }

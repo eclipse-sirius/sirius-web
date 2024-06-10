@@ -32,10 +32,10 @@ import org.eclipse.sirius.components.graphql.tests.EditingContextEventSubscripti
 import org.eclipse.sirius.components.graphql.tests.EditingContextQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.InvokeEditingContextActionMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.StudioIdentifiers;
-import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.application.project.services.DefaultEditingContextActionProvider;
 import org.eclipse.sirius.web.application.studio.services.StudioEditingContextActionProvider;
+import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -50,6 +50,31 @@
 			<artifactId>sirius-web-application</artifactId>
 			<version>2024.5.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-diagrams-tests</artifactId>
+			<version>2024.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-deck</artifactId>
+			<version>2024.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-forms-tests</artifactId>
+			<version>2024.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-formdescriptioneditors</artifactId>
+			<version>2024.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-gantt</artifactId>
+			<version>2024.5.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
