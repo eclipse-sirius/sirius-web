@@ -26,6 +26,8 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
+import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.collaborative.trees.dto.DeleteTreeItemInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput;
@@ -35,6 +37,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.DeleteTreeItemMutationRunner;
@@ -47,6 +50,8 @@ import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
@@ -55,6 +60,7 @@ import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.execution.DataFetcherResult;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
@@ -109,6 +115,11 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             treeItem -> !treeItem.isHasChildren()
     );
 
+    private final TreeItemMatcher portalIsRenamed = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(0).getChildren().get(0),
+            treeItem -> treeItem.getLabel().equals("PortalRenamed")
+    );
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -125,7 +136,12 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     private IEditingContextSearchService editingContextSearchService;
 
     @Autowired
+    private PortalEventSubscriptionRunner portalEventSubscriptionRunner;
+
+    @Autowired
     private IIdentityService identityService;
+
+    private final Logger logger = LoggerFactory.getLogger(TreeControllerIntegrationTests.class);
 
     @BeforeEach
     public void beforeEach() {
@@ -195,22 +211,39 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenExplorerOfProjectWhenWeRenameTreeItemThenTheTreeIsRefreshed() {
+        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
+
+        Predicate<Object> portalRefreshedEventPayloadMatcher = object -> {
+            this.logger.info("portal refreshed event payload matcher");
+            this.logger.info(object.toString());
+            return Optional.of(object)
+                    .filter(DataFetcherResult.class::isInstance)
+                    .map(DataFetcherResult.class::cast)
+                    .map(DataFetcherResult::getData)
+                    .filter(PortalRefreshedEventPayload.class::isInstance)
+                    .isPresent();
+        };
+
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
-        var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, expandedIds, List.of());
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var treeEventInput = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, expandedIds, List.of());
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.representationIsAPortal));
         var hasObjectNewLabel = this.getTreeRefreshedEventPayloadMatcher(List.of(this.ePackageIsNamedSampleRenamed));
         var hasDocumentNewLabel = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcoreRenamed));
 
-        var treeId = new TreeConfiguration(input.editingContextId(), input.treeId(), input.expanded(), input.activeFilterIds()).getId();
+        var treeId = new TreeConfiguration(treeEventInput.editingContextId(), treeEventInput.treeId(), treeEventInput.expanded(), treeEventInput.activeFilterIds()).getId();
 
-        StepVerifier.create(flux)
+        StepVerifier.create(Flux.merge(portalFlux, treeFlux))
+                .expectNextMatches(portalRefreshedEventPayloadMatcher)
                 .expectNextMatches(hasProjectContent)
                 .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeId, TestIdentifiers.EPACKAGE_OBJECT, "SampleRenamed"))
                 .expectNextMatches(hasObjectNewLabel)
                 .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeId, TestIdentifiers.ECORE_SAMPLE_DOCUMENT, "EcoreRenamed"))
                 .expectNextMatches(hasDocumentNewLabel)
+                .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeId, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, "PortalRenamed"))
+                .expectNextMatches(portalRefreshedEventPayloadMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -239,15 +272,19 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             return treeItemMatcher.treeItemPredicate.test(treeItem);
         });
 
-        return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .filter(treeMatcher)
-                .isPresent();
+        return object -> {
+            this.logger.info("tree refreshed event payload matcher");
+            this.logger.info(object.toString());
+            return Optional.of(object)
+                    .filter(DataFetcherResult.class::isInstance)
+                    .map(DataFetcherResult.class::cast)
+                    .map(DataFetcherResult::getData)
+                    .filter(TreeRefreshedEventPayload.class::isInstance)
+                    .map(TreeRefreshedEventPayload.class::cast)
+                    .map(TreeRefreshedEventPayload::tree)
+                    .filter(treeMatcher)
+                    .isPresent();
+        };
     }
 
     private Runnable deleteTreeItem(String editingContextId, String treeId, UUID treeItemId) {
