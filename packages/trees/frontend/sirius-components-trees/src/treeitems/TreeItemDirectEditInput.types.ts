@@ -23,7 +23,7 @@ export interface TreeItemDirectEditInputState {
   newLabel: string;
 }
 
-export interface GQLInitialDirectEditElementLabelInput {
+export interface GQLInitialDirectEditElementLabelVariables {
   editingContextId: string;
   representationId: string;
   treeItemId: string;

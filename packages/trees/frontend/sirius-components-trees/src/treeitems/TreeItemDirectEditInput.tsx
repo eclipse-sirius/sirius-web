@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   GQLErrorPayload,
   GQLInitialDirectEditElementLabelData,
-  GQLInitialDirectEditElementLabelInput,
+  GQLInitialDirectEditElementLabelVariables,
   GQLRenameTreeItemPayload,
   GQLSuccessPayload,
   TreeItemDirectEditInputProps,
@@ -75,7 +75,7 @@ export const TreeItemDirectEditInput = ({
 
   const { data: initialLabelTreeItemItemData, error: initialLabelTreeItemItemError } = useQuery<
     GQLInitialDirectEditElementLabelData,
-    GQLInitialDirectEditElementLabelInput
+    GQLInitialDirectEditElementLabelVariables
   >(initialDirectEditElementLabeQuery, {
     variables: {
       editingContextId: editingContextId,
