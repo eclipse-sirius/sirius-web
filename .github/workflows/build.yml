@@ -171,7 +171,15 @@ jobs:
           REPOSITORY: sirius-web
           IMAGE_TAG: ${{ env.git_describe }}
         run: |
-          docker build -t siriusweb packages/sirius-web/backend/sirius-web-sample-application
+          docker build -t siriusweb packages/sirius-web/backend/sirius-web
+
+      - name: Build the legacy Docker image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: sirius-web
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          docker build -t siriusweb-legacy packages/sirius-web/backend/sirius-web-sample-application
 
       - name: Check the integration test code
         run: |
@@ -179,7 +187,7 @@ jobs:
           npm run eslint
         working-directory: integration-tests
 
-      - name: Run end to end tests against the application
+      - name: Run end to end tests against the legacy application
         if: startsWith(github.ref, 'refs/tags/v') == false && github.ref != 'refs/heads/master'
         uses: cypress-io/github-action@v5
         with:
