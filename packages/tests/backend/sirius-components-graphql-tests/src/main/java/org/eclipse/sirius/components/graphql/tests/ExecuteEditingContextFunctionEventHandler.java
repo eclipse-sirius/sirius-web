@@ -12,8 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.graphql.tests;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -29,17 +33,36 @@ import reactor.core.publisher.Sinks;
  */
 @Service
 public class ExecuteEditingContextFunctionEventHandler implements IEditingContextEventHandler {
+
+    private ICollaborativeMessageService messageService;
+
+    public ExecuteEditingContextFunctionEventHandler(ICollaborativeMessageService messageService) {
+        this.messageService = Objects.requireNonNull(messageService);
+    }
+
     @Override
     public boolean canHandle(IEditingContext editingContext, IInput input) {
         return input instanceof ExecuteEditingContextFunctionInput;
     }
 
     @Override
+    @SuppressWarnings("checkstyle:IllegalCatch")
     public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), ExecuteEditingContextFunctionInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(input.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
+
         if (input instanceof ExecuteEditingContextFunctionInput executeEditingContextFunctionInput) {
-            var result = executeEditingContextFunctionInput.function().apply(editingContext);
-            payloadSink.tryEmitValue(new ExecuteEditingContextFunctionSuccessPayload(input.id(), result));
+            changeDescription = executeEditingContextFunctionInput.changeDescription();
+
+            try {
+                payload = executeEditingContextFunctionInput.function().apply(editingContext, input);
+            } catch (Exception exception) {
+                payload = new ErrorPayload(input.id(), exception.getMessage());
+            }
         }
-        payloadSink.tryEmitValue(new ErrorPayload(input.id(), "Invalid payload"));
+
+        payloadSink.tryEmitValue(payload);
+        changeDescriptionSink.tryEmitNext(changeDescription);
     }
 }

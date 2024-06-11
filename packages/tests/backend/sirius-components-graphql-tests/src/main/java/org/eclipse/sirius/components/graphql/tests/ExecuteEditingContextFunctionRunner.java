@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.graphql.tests;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,7 @@ public class ExecuteEditingContextFunctionRunner implements IExecuteEditingConte
     }
 
     @Override
-    public Mono<ExecuteEditingContextFunctionSuccessPayload> execute(ExecuteEditingContextFunctionInput input) {
-        return this.editingContextDispatcher.dispatchMutation(input.editingContextId(), input)
-                .filter(ExecuteEditingContextFunctionSuccessPayload.class::isInstance)
-                .map(ExecuteEditingContextFunctionSuccessPayload.class::cast);
+    public Mono<IPayload> execute(ExecuteEditingContextFunctionInput input) {
+        return this.editingContextDispatcher.dispatchMutation(input.editingContextId(), input);
     }
 }

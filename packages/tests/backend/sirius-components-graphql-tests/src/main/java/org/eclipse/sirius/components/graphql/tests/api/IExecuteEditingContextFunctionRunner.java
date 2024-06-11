@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.graphql.tests.api;
 
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
-import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 
 import reactor.core.publisher.Mono;
 
@@ -23,5 +23,5 @@ import reactor.core.publisher.Mono;
  * @author sbegaudeau
  */
 public interface IExecuteEditingContextFunctionRunner {
-    Mono<ExecuteEditingContextFunctionSuccessPayload> execute(ExecuteEditingContextFunctionInput input);
+    Mono<IPayload> execute(ExecuteEditingContextFunctionInput input);
 }

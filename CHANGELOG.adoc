@@ -90,8 +90,9 @@ More existing APIs will be migrated to this new common pattern.
 image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3574[#3574] [diagram] Add a loading indicator during execution of an arrange-all
 - https://github.com/eclipse-sirius/sirius-web/issues/3586[#3586] [diagram] Fix an issue with keypress listener attached to the palette
-- https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form]  Remove unused form payload 
-- https://github.com/eclipse-sirius/sirius-web/issues/3627[#3627] [form]  Remove unused mutation in form
+- https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove unused form payload 
+- https://github.com/eclipse-sirius/sirius-web/issues/3627[#3627] [form] Remove unused mutation in form
+- https://github.com/eclipse-sirius/sirius-web/issues/3606[#3606] [test] Improve error handling in ExecuteEditingContextFunctionRunner and ExecuteEditingContextFunctionEventHandler
 
 == v2024.5.0
 
