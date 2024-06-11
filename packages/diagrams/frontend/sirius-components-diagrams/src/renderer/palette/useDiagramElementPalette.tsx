@@ -13,10 +13,10 @@
 
 import { useCallback, useContext, useEffect } from 'react';
 import { Edge, Node, XYPosition, useKeyPress, useReactFlow, useStoreApi } from 'reactflow';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramElementPaletteContext } from './DiagramElementPaletteContext';
 import { DiagramElementPaletteContextValue } from './DiagramElementPaletteContext.types';
 import { UseDiagramElementPaletteValue } from './useDiagramElementPalette.types';
-import { NodeData, EdgeData } from '../DiagramRenderer.types';
 
 const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DOMRect | undefined): XYPosition => {
   return {
@@ -41,7 +41,12 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
         ...getNodes().filter((node) => node.selected),
         ...getEdges().filter((edge) => edge.selected),
       ];
-      if (selectedElement.length === 1 && selectedElement[0] && selectedElement[0].id === elementClicked.id) {
+      if (
+        !event.altKey &&
+        selectedElement.length === 1 &&
+        selectedElement[0] &&
+        selectedElement[0].id === elementClicked.id
+      ) {
         showDiagramElementPalette(palettePosition.x, palettePosition.y);
       } else {
         hideDiagramElementPalette();

@@ -34,7 +34,9 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
       const { domNode } = store.getState();
       const element = domNode?.getBoundingClientRect();
       const palettePosition = computePalettePosition(event, element);
-      showDiagramPalette(palettePosition.x, palettePosition.y);
+      if (!event.altKey) {
+        showDiagramPalette(palettePosition.x, palettePosition.y);
+      }
     },
     [showDiagramPalette]
   );
