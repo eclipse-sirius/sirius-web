@@ -12,11 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.web.papaya.services.PapayaViewProvider;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +31,7 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class PapayaViewInjector implements Function<IEditingContext, Object> {
+public class PapayaViewInjector implements BiFunction<IEditingContext, IInput, IPayload> {
 
     private final PapayaViewProvider papayaViewProvider;
 
@@ -35,13 +40,13 @@ public class PapayaViewInjector implements Function<IEditingContext, Object> {
     }
 
     @Override
-    public Object apply(IEditingContext editingContext) {
+    public IPayload apply(IEditingContext editingContext, IInput input) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var view = this.papayaViewProvider.create();
             emfEditingContext.getDomain().getResourceSet().getResources().add(view.eResource());
 
-            return true;
+            return new ExecuteEditingContextFunctionSuccessPayload(input.id(), null);
         }
-        return false;
+        return new ErrorPayload(input.id(), "Invalid editing context", List.of());
     }
 }

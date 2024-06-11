@@ -25,20 +25,22 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeEventInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.trees.tests.graphql.TreeEventSubscriptionRunner;
 import org.eclipse.sirius.components.trees.tests.graphql.TreePathQueryRunner;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
@@ -76,9 +78,6 @@ public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
-
-    @Autowired
-    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     @Autowired
     private PapayaViewInjector papayaViewInjector;
@@ -121,30 +120,27 @@ public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
             var createViewInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), this.papayaViewInjector);
             this.executeEditingContextFunctionRunner.execute(createViewInput).block();
 
-            Function<IEditingContext, Object> getObjectIdFunction = editingContext -> Optional.of(editingContext)
-                    .filter(IEMFEditingContext.class::isInstance)
-                    .map(IEMFEditingContext.class::cast)
-                    .flatMap(emfEditingContext -> {
-                        var iterator = emfEditingContext.getDomain().getResourceSet().getAllContents();
-                        var stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
-                        return stream.filter(RectangularNodeStyleDescription.class::isInstance)
-                                .findFirst();
-                    })
-                    .map(this.identityService::getId)
-                    .orElse("");
+            BiFunction<IEditingContext, IInput, IPayload> getObjectIdFunction = (editingContext, executeEditingContextFunctionInput) -> {
+                var id = Optional.of(editingContext)
+                        .filter(IEMFEditingContext.class::isInstance)
+                        .map(IEMFEditingContext.class::cast)
+                        .flatMap(emfEditingContext -> {
+                            var iterator = emfEditingContext.getDomain().getResourceSet().getAllContents();
+                            var stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
+                            return stream.filter(RectangularNodeStyleDescription.class::isInstance)
+                                    .findFirst();
+                        })
+                        .map(this.identityService::getId)
+                        .orElse("");
+                return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), id);
+            };
 
-            var getObjectIdInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), getObjectIdFunction);
+            var getObjectIdInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), getObjectIdFunction, new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), createViewInput));
             var payload = this.executeEditingContextFunctionRunner.execute(getObjectIdInput).block();
-            objectId.set(payload.result().toString());
 
-            var optionalEditingContextEventProcessor = this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString()))
-                    .findFirst();
-
-            optionalEditingContextEventProcessor.ifPresentOrElse(editingContextEventProcessor -> {
-                editingContextEventProcessor.getRepresentationEventProcessors()
-                        .forEach(representationEventProcessor -> representationEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), createViewInput)));
-            }, () -> fail("Missing editing context event processor"));
+            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
+            ExecuteEditingContextFunctionSuccessPayload successPayload = (ExecuteEditingContextFunctionSuccessPayload) payload;
+            objectId.set(successPayload.result().toString());
         };
 
         Consumer<Object> updatedTreeContentConsumer = object -> Optional.of(object)

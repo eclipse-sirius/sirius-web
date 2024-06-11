@@ -22,10 +22,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
@@ -178,19 +180,24 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         String typename = JsonPath.read(result, "$.data.createDocument.__typename");
         assertThat(typename).isEqualTo(CreateDocumentSuccessPayload.class.getSimpleName());
 
-        Function<IEditingContext, Object> function = editingContext -> Optional.of(editingContext)
-                .filter(IEMFEditingContext.class::isInstance)
-                .map(IEMFEditingContext.class::cast)
-                .map(emfEditingContext -> emfEditingContext.getDomain().getResourceSet().getResources().stream()
-                        .anyMatch(resource -> resource.eAdapters().stream()
-                                .filter(ResourceMetadataAdapter.class::isInstance)
-                                .map(ResourceMetadataAdapter.class::cast)
-                                .map(ResourceMetadataAdapter::getName)
-                                .anyMatch(name::equals)))
-                .orElse(false);
+        BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
+            var resourceFound = Optional.of(editingContext)
+                    .filter(IEMFEditingContext.class::isInstance)
+                    .map(IEMFEditingContext.class::cast)
+                    .map(emfEditingContext -> emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                            .anyMatch(resource -> resource.eAdapters().stream()
+                                    .filter(ResourceMetadataAdapter.class::isInstance)
+                                    .map(ResourceMetadataAdapter.class::cast)
+                                    .map(ResourceMetadataAdapter::getName)
+                                    .anyMatch(name::equals)))
+                    .orElse(false);
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), resourceFound);
+        };
         var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, function));
 
-        Predicate<ExecuteEditingContextFunctionSuccessPayload> predicate = payload -> Optional.of(payload)
+        Predicate<IPayload> predicate = payload -> Optional.of(payload)
+                .filter(ExecuteEditingContextFunctionSuccessPayload.class::isInstance)
+                .map(ExecuteEditingContextFunctionSuccessPayload.class::cast)
                 .map(ExecuteEditingContextFunctionSuccessPayload::result)
                 .filter(Boolean.class::isInstance)
                 .map(Boolean.class::cast)
@@ -218,19 +225,24 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         String report = JsonPath.read(result, "$.data.uploadDocument.report");
         assertThat(report).isEqualTo("This is a test report");
 
-        Function<IEditingContext, Object> function = editingContext -> Optional.of(editingContext)
-                .filter(IEMFEditingContext.class::isInstance)
-                .map(IEMFEditingContext.class::cast)
-                .map(emfEditingContext -> emfEditingContext.getDomain().getResourceSet().getResources().stream()
-                        .anyMatch(resource -> resource.eAdapters().stream()
-                                .filter(ResourceMetadataAdapter.class::isInstance)
-                                .map(ResourceMetadataAdapter.class::cast)
-                                .map(ResourceMetadataAdapter::getName)
-                                .anyMatch(name::equals)))
-                .orElse(false);
+        BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
+            var resourceFound = Optional.of(editingContext)
+                    .filter(IEMFEditingContext.class::isInstance)
+                    .map(IEMFEditingContext.class::cast)
+                    .map(emfEditingContext -> emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                            .anyMatch(resource -> resource.eAdapters().stream()
+                                    .filter(ResourceMetadataAdapter.class::isInstance)
+                                    .map(ResourceMetadataAdapter.class::cast)
+                                    .map(ResourceMetadataAdapter::getName)
+                                    .anyMatch(name::equals)))
+                    .orElse(false);
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), resourceFound);
+        };
         var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, function));
 
-        Predicate<ExecuteEditingContextFunctionSuccessPayload> predicate = payload -> Optional.of(payload)
+        Predicate<IPayload> predicate = payload -> Optional.of(payload)
+                .filter(ExecuteEditingContextFunctionSuccessPayload.class::isInstance)
+                .map(ExecuteEditingContextFunctionSuccessPayload.class::cast)
                 .map(ExecuteEditingContextFunctionSuccessPayload::result)
                 .filter(Boolean.class::isInstance)
                 .map(Boolean.class::cast)

@@ -22,11 +22,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.migration.api.MigrationData;
@@ -176,7 +178,9 @@ public class NodeStyleDescriptionColorMigrationParticipantTests extends Abstract
         String typename = JsonPath.read(result, "$.data.uploadDocument.__typename");
         assertThat(typename).isEqualTo(UploadDocumentSuccessPayload.class.getSimpleName());
 
-        Predicate<ExecuteEditingContextFunctionSuccessPayload> predicate = payload -> Optional.of(payload)
+        Predicate<IPayload> predicate = payload -> Optional.of(payload)
+                .filter(ExecuteEditingContextFunctionSuccessPayload.class::isInstance)
+                .map(ExecuteEditingContextFunctionSuccessPayload.class::cast)
                 .map(ExecuteEditingContextFunctionSuccessPayload::result)
                 .filter(Boolean.class::isInstance)
                 .map(Boolean.class::cast)
@@ -189,18 +193,21 @@ public class NodeStyleDescriptionColorMigrationParticipantTests extends Abstract
         assertThat(optionalLastMigrationData).isPresent();
         var lastMigrationData = optionalLastMigrationData.get();
 
-        Function<IEditingContext, Object> function = editingContext -> Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(siriusWebEditingContext -> siriusWebEditingContext.getViews().stream()
-                        .anyMatch(view -> view.eResource().eAdapters().stream()
-                                .filter(ResourceMetadataAdapter.class::isInstance)
-                                .map(ResourceMetadataAdapter.class::cast)
-                                .filter(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData() != null)
-                                .anyMatch(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData().migrationVersion().equals(lastMigrationData.migrationVersion())
-                                        && resourceMetadataAdapter.getMigrationData().lastMigrationPerformed().equals(lastMigrationData.lastMigrationPerformed()))
-                        ))
-                .orElse(false);
+        BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
+            var isMigrated = Optional.of(editingContext)
+                    .filter(EditingContext.class::isInstance)
+                    .map(EditingContext.class::cast)
+                    .map(siriusWebEditingContext -> siriusWebEditingContext.getViews().stream()
+                            .anyMatch(view -> view.eResource().eAdapters().stream()
+                                    .filter(ResourceMetadataAdapter.class::isInstance)
+                                    .map(ResourceMetadataAdapter.class::cast)
+                                    .filter(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData() != null)
+                                    .anyMatch(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData().migrationVersion().equals(lastMigrationData.migrationVersion())
+                                            && resourceMetadataAdapter.getMigrationData().lastMigrationPerformed().equals(lastMigrationData.lastMigrationPerformed()))
+                            ))
+                    .orElse(false);
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), isMigrated);
+        };
 
         var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, function));
         StepVerifier.create(mono)
