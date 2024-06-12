@@ -17,6 +17,7 @@ import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.DateTime;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.Link;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.RichText;
@@ -47,6 +48,10 @@ public class FormAssertions extends Assertions {
 
     public static CheckboxAssert assertThat(Checkbox checkbox) {
         return new CheckboxAssert(checkbox);
+    }
+
+    public static LinkAssert assertThat(Link link) {
+        return new LinkAssert(link);
     }
 
     public static MultiSelectAssert assertThat(MultiSelect multiSelect) {
