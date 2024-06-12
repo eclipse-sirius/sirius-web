@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,62 +25,57 @@ const fallbackTheme = createTheme({
     selected: 'gray',
   },
   typography: {
+    fontSize: 12,
     h1: {
-      fontSize: '4rem',
+      fontSize: '3.42rem',
       fontWeight: 400,
       lineHeight: 1.167,
       letterSpacing: '0em',
     },
     h2: {
-      fontSize: '3rem',
+      fontSize: '2.5rem',
       fontWeight: 400,
       lineHeight: 1.2,
       letterSpacing: '0em',
     },
     h3: {
-      fontSize: '2.5rem',
+      fontSize: '2.142rem',
       fontWeight: 400,
       lineHeight: 1.167,
       letterSpacing: '0.3px',
     },
     h4: {
-      fontSize: '2rem',
+      fontSize: '1.7rem',
       fontWeight: 400,
       lineHeight: 1.235,
       letterSpacing: '0.00735em',
     },
     h5: {
-      fontSize: '1.5rem',
       fontWeight: 700,
       lineHeight: 1.334,
       letterSpacing: '0em',
     },
     h6: {
-      fontSize: '1.25rem',
       fontWeight: 700,
       lineHeight: 1.5,
       letterSpacing: '0.0075em',
     },
     subtitle1: {
-      fontSize: '1rem',
       fontWeight: 700,
       lineHeight: 1.7,
       letterSpacing: '0.03em',
     },
     subtitle2: {
-      fontSize: '0.875rem',
       fontWeight: 700,
       lineHeight: 2,
       letterSpacing: '0.06em',
     },
     body1: {
-      fontSize: '1rem',
       fontWeight: 400,
       lineHeight: 1.5,
       letterSpacing: '0.00938em',
     },
     body2: {
-      fontSize: '0.875rem',
       fontWeight: 400,
       lineHeight: 1.43,
       letterSpacing: '0.01071em',
