@@ -133,8 +133,10 @@ describe('/projects/:projectId/edit - Portal', () => {
         const diagramTitle = 'Topography';
         beforeEach(() => {
           const explorer = new Explorer();
+          const diagram = new Diagram();
           explorer.getTreeItemByLabel('Robot').should('exist');
           explorer.createRepresentation('Robot', 'Topography', diagramTitle);
+          diagram.getDiagram('Topography').should('exist');
         });
 
         it('The diagram can be added to the portal', () => {
@@ -190,12 +192,14 @@ describe('/projects/:projectId/edit - Portal', () => {
         });
 
         it('A portal which already contains a representation opens in direct mode', () => {
+          const explorer = new Explorer();
           const portal = new Portal();
           portal.addRepresentationFromExplorer('Portal', diagramTitle);
           portal.getFrame(diagramTitle).should('be.visible');
+          explorer.select('Robot');
           cy.getByTestId('close-representation-tab-Portal').click();
-          const explorer = new Explorer();
-          explorer.getTreeItemByLabel('Portal').click();
+          portal.getPortal().should('not.exist');
+          explorer.select('Portal');
           portal.getToolbar().then((res) => {
             const toolbar = cy.wrap(res);
             toolbar.should('be.visible');
