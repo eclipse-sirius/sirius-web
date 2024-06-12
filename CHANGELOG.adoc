@@ -53,6 +53,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3538[#3538] [form] Register the Details view description in the editing context
 - https://github.com/eclipse-sirius/sirius-web/issues/3575[#3575] [core] Restore support for studio palette colors
 - https://github.com/eclipse-sirius/sirius-web/issues/3582[#3582] [tree] Restore the initial direct edit tree item label for the explorer
+- https://github.com/eclipse-sirius/sirius-web/issues/3611[#3611] [diagram] Fix missing creation tool image in the contextual palette
 
 === New Features
 
