@@ -103,7 +103,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: vscode
-          path: vscode-extension/sirius-web-2024.5.3.vsix
+          path: vscode-extension/sirius-web-*.vsix
           retention-days: 20
 
       - name: Archive the code coverage results
