@@ -12,10 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.starter;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFluxCustomizer;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
@@ -67,6 +71,12 @@ import reactor.core.publisher.Flux;
     "org.eclipse.sirius.web.starter"
 })
 public class SiriusWebStarterConfiguration {
+
+    private final List<IRepresentationEventProcessorFluxCustomizer> representationEventProcessorFluxCustomizers;
+
+    public SiriusWebStarterConfiguration(List<IRepresentationEventProcessorFluxCustomizer> representationEventProcessorFluxCustomizers) {
+        this.representationEventProcessorFluxCustomizers = Objects.requireNonNull(representationEventProcessorFluxCustomizers);
+    }
 
     @Bean
     @ConditionalOnMissingBean(IEditingContextEventProcessorExecutorServiceProvider.class)
@@ -123,10 +133,20 @@ public class SiriusWebStarterConfiguration {
             public Flux<IPayload> getSubscription(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input) {
                 return editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(editingContextId)
                         .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationConfiguration, input))
-                        .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
+                        .map(representationEventProcessor -> customizeFlux(editingContextId, representationConfiguration, input, representationEventProcessor))
                         .orElse(Flux.empty());
             }
         };
+    }
+
+    private Flux<IPayload> customizeFlux(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input, IRepresentationEventProcessor representationEventProcessor) {
+        Flux<IPayload> flux = representationEventProcessor.getOutputEvents(input);
+        for (IRepresentationEventProcessorFluxCustomizer representationEventProcessorFluxCustomizer : this.representationEventProcessorFluxCustomizers) {
+            if (representationEventProcessorFluxCustomizer.canHandle(editingContextId, representationConfiguration, input, representationEventProcessor)) {
+                flux = representationEventProcessorFluxCustomizer.customize(editingContextId, representationConfiguration, input, representationEventProcessor, flux);
+            }
+        }
+        return flux;
     }
 
     @Bean

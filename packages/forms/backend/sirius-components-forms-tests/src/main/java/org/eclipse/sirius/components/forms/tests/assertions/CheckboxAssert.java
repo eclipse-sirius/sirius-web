@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.tests.assertions;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.forms.Checkbox;
 
@@ -25,4 +27,39 @@ public class CheckboxAssert extends AbstractAssert<CheckboxAssert, Checkbox> {
     public CheckboxAssert(Checkbox checkbox) {
         super(checkbox, CheckboxAssert.class);
     }
+
+    public CheckboxAssert hasLabel(String label) {
+        assertThat(this.actual.getLabel()).isEqualTo(label);
+
+        return this;
+    }
+
+    public CheckboxAssert hasValue(boolean value) {
+        assertThat(this.actual.isValue()).isEqualTo(value);
+
+        return this;
+    }
+
+    public CheckboxAssert hasHelp(String help) {
+        assertThat(this.actual.getHelpTextProvider().get()).isEqualTo(help);
+
+        return this;
+    }
+
+    public CheckboxAssert isReadOnly() {
+        assertThat(this.actual.isReadOnly())
+                .withFailMessage("Expecting the checkbox to be read only but was not read only instead")
+                .isTrue();
+
+        return this;
+    }
+
+    public CheckboxAssert isNotReadOnly() {
+        assertThat(this.actual.isReadOnly())
+                .withFailMessage("Expecting the checkbox not to be read only but was read only instead")
+                .isFalse();
+
+        return this;
+    }
+
 }
