@@ -55,7 +55,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public class NodeComponent implements IComponent {
 
     public static final String COLLAPSING_STATE = "collapsingState";
-    
+
     public static final String IS_BORDER_NODE = "isBorderNode";
 
     public static final String SEMANTIC_ELEMENT_IDS = "semanticElementIds";
@@ -83,9 +83,9 @@ public class NodeComponent implements IComponent {
                     .map(ViewCreationRequest::getTargetObjectId)
                     .toList();
             List<String> previousNodeIds = this.props.getPreviousTargetObjectIds();
-            List<String> semanticElementIds = new ArrayList<>(creationRequestsIds);
+            Set<String> semanticElementIds = new HashSet<>(creationRequestsIds);
             semanticElementIds.addAll(previousNodeIds);
-            nodeComponentVariableManager.put(SEMANTIC_ELEMENT_IDS, semanticElementIds);
+            nodeComponentVariableManager.put(SEMANTIC_ELEMENT_IDS, semanticElementIds.stream().toList());
         }
 
         List<Element> children = new ArrayList<>();
