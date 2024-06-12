@@ -137,7 +137,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
                         .collect(Collectors.toMap(
                                 NodeLayoutDataInput::id,
-                                nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser())
+                                nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser()),
+                                (oldValue, newValue) -> newValue
                         ));
 
                 var layoutData = new DiagramLayoutData(nodeLayoutData, Map.of(), Map.of());
