@@ -56,6 +56,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3582[#3582] [tree] Restore the initial direct edit tree item label for the explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/3611[#3611] [diagram] Fix missing creation tool image in the contextual palette
 - https://github.com/eclipse-sirius/sirius-web/issues/3628[#3628] [sirius-web] Restore support for expand all and reveal in the explorer
+- https://github.com/eclipse-sirius/sirius-web/issues/3616[#3616] [diagram] Fix potential exceptions due to duplicate keys in diagram event processing
 
 === New Features
 

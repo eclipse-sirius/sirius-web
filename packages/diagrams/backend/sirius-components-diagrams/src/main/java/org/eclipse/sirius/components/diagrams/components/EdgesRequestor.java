@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,10 +30,8 @@ public class EdgesRequestor implements IEdgesRequestor {
     private final Map<String, Edge> edgeId2Edges;
 
     public EdgesRequestor(List<Edge> previousEdges) {
-        // @formatter:off
         this.edgeId2Edges = previousEdges.stream()
-                .collect(Collectors.toMap(Edge::getId, Function.identity()));
-        // @formatter:on
+                .collect(Collectors.toMap(Edge::getId, Function.identity(), (oldValue, newValue) -> newValue));
     }
 
     @Override

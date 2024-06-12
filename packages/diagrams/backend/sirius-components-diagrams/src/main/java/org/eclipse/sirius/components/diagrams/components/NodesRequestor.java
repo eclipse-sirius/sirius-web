@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,10 +30,8 @@ public class NodesRequestor implements INodesRequestor {
     private final Map<String, Node> targetObjectId2Nodes;
 
     public NodesRequestor(List<Node> previousNodes) {
-        // @formatter:off
         this.targetObjectId2Nodes = previousNodes.stream()
-                .collect(Collectors.toMap(Node::getTargetObjectId, Function.identity()));
-        // @formatter:on
+                .collect(Collectors.toMap(Node::getTargetObjectId, Function.identity(), (oldValue, newValue) -> newValue));
     }
 
     @Override
