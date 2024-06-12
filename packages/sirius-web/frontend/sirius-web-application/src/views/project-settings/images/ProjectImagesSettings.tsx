@@ -83,7 +83,7 @@ export const ProjectImagesSettings = () => {
     <>
       <div className={classes.imageSettingsViewContainer}>
         <div className={classes.header}>
-          <Typography variant="h3">Project Images</Typography>
+          <Typography variant="h4">Project Images</Typography>
 
           <div className={classes.actions}>
             <Button data-testid="upload-image" color="primary" variant="outlined" onClick={onTriggerUpload}>

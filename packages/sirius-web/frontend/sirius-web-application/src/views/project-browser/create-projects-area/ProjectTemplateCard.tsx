@@ -46,7 +46,6 @@ const useProjectTemplateStyles = makeStyles((theme) => ({
   projectTemplateLabel: {
     textTransform: 'none',
     fontWeight: 400,
-    fontSize: theme.spacing(2),
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
@@ -68,7 +67,7 @@ export const ProjectTemplateCard = ({ template, running, disabled, onCreateProje
         </CardContent>
         <CardActions className={classes.templateCardActions}>
           <Tooltip title={template.label}>
-            <Typography variant="h5" className={classes.projectTemplateLabel}>
+            <Typography variant="body1" className={classes.projectTemplateLabel}>
               + {template.label}
             </Typography>
           </Tooltip>
@@ -91,7 +90,6 @@ const useProjectCardStyles = makeStyles((theme) => ({
   projectCardLabel: {
     textTransform: 'none',
     fontWeight: 400,
-    fontSize: theme.spacing(2),
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
@@ -129,7 +127,7 @@ export const NewProjectCard = () => {
         </CardContent>
         <CardActions className={classes.projectCardActions}>
           <Tooltip title={'Blank project'}>
-            <Typography variant="h5" className={classes.projectCardLabel}>
+            <Typography variant="body1" className={classes.projectCardLabel}>
               + Blank project
             </Typography>
           </Tooltip>
@@ -149,7 +147,7 @@ export const UploadProjectCard = () => {
         </CardContent>
         <CardActions className={classes.projectCardActions}>
           <Tooltip title={'Upload project'}>
-            <Typography variant="h5" className={classes.projectCardLabel}>
+            <Typography variant="body1" className={classes.projectCardLabel}>
               + Upload project
             </Typography>
           </Tooltip>
@@ -169,7 +167,7 @@ export const ShowAllTemplatesCard = ({ onClick }: ShowAllTemplatesCardProps) => 
         </CardContent>
         <CardActions className={classes.projectCardActions}>
           <Tooltip title={'Show all templates'}>
-            <Typography variant="h5" className={classes.projectCardLabel}>
+            <Typography variant="body1" className={classes.projectCardLabel}>
               Show all templates
             </Typography>
           </Tooltip>
