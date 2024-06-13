@@ -86,14 +86,14 @@ describe('Diagram - collapsible node', () => {
         diagram.fitToScreen();
         diagram
           .getNodes('diagram', 'Entity1')
-          .findByTestId('Label - Entity1')
+          .findByTestId('Label bottom separator - Entity1')
           .should('have.css', 'border-bottom', '1px solid rgb(51, 176, 195)');
         diagram.getNodes('diagram', 'Entity1').findByTestId('Label - Entity1').click();
         diagram.getPalette().should('exist');
         diagram.getPalette().findByTestId('Collapse - Tool').click();
         diagram
           .getNodes('diagram', 'Entity1')
-          .findByTestId('Label - Entity1')
+          .findByTestId('Label bottom separator - Entity1')
           .should('have.css', 'border-bottom-width', '0px');
       });
     });

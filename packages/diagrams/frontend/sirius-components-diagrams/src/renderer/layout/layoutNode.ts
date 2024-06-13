@@ -118,15 +118,17 @@ export const getChildNodePosition = (
 
 export const getHeaderHeightFootprint = (
   labelElement: HTMLElement | null,
-  withHeader: boolean,
-  displayHeaderSeparator: boolean
+  insideLabel: InsideLabel | null,
+  headerPosition: string | null
 ): number => {
   let headerHeightFootprint = 0;
+  const withHeader: boolean = insideLabel?.isHeader ?? false;
+  const displayHeaderSeparator: boolean = insideLabel?.displayHeaderSeparator ?? false;
 
   if (!labelElement) {
     return headerHeightFootprint;
   }
-  if (withHeader) {
+  if (withHeader && insideLabel?.headerPosition === headerPosition) {
     headerHeightFootprint = labelElement.getBoundingClientRect().height;
     if (displayHeaderSeparator) {
       headerHeightFootprint += rectangularNodePadding;

@@ -57,6 +57,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3611[#3611] [diagram] Fix missing creation tool image in the contextual palette
 - https://github.com/eclipse-sirius/sirius-web/issues/3628[#3628] [sirius-web] Restore support for expand all and reveal in the explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/3616[#3616] [diagram] Fix potential exceptions due to duplicate keys in diagram event processing
+- https://github.com/eclipse-sirius/sirius-web/issues/3624[#3624] [diagram] Fix an issue where the header separator does not fill the entire width of the node
 
 === New Features
 
@@ -94,7 +95,7 @@ image:doc/screenshots/diagramFilterView.png[Diagram Filter View, 70%]
 image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3574[#3574] [diagram] Add a loading indicator during execution of an arrange-all
 - https://github.com/eclipse-sirius/sirius-web/issues/3586[#3586] [diagram] Fix an issue with keypress listener attached to the palette
-- https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove unused form payload 
+- https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove unused form payload
 - https://github.com/eclipse-sirius/sirius-web/issues/3627[#3627] [form] Remove unused mutation in form
 - https://github.com/eclipse-sirius/sirius-web/issues/3606[#3606] [test] Improve error handling in ExecuteEditingContextFunctionRunner and ExecuteEditingContextFunctionEventHandler
 

@@ -88,7 +88,11 @@ export interface InsideLabel {
   isHeader: boolean;
   displayHeaderSeparator: boolean;
   overflowStrategy: LabelOverflowStrategy;
+  headerSeparatorStyle: React.CSSProperties;
+  headerPosition: HeaderPosition | undefined;
 }
+
+export type HeaderPosition = 'TOP' | 'BOTTOM';
 
 export type LabelOverflowStrategy = 'NONE' | 'WRAP' | 'ELLIPSIS';
 

@@ -402,4 +402,154 @@ describe('Diagram - inside outside labels', () => {
       });
     });
   });
+  context('Given a studio with a top header label node', () => {
+    let studioProjectId: string = '';
+    let domainName: string = '';
+
+    before(() => {
+      cy.createProjectFromTemplate('studio-template').then((res) => {
+        const payload = res.body.data.createProjectFromTemplate;
+        if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+          const projectId = payload.project.id;
+          studioProjectId = projectId;
+
+          const project = new Project();
+          project.visit(projectId);
+          project.disableDeletionConfirmationDialog();
+
+          const explorer = new Explorer();
+          const details = new Details();
+          explorer.expand('DomainNewModel');
+          cy.get('[title="domain::Domain"]').then(($div) => {
+            domainName = $div.data().testid;
+            explorer.expand(domainName);
+            explorer.createObject('Entity1', 'Relation');
+            details.getCheckBox('Containment').check();
+            details.openReferenceWidgetOptions('Target Type');
+            details.selectReferenceWidgetOption('Entity2');
+            explorer.expand('ViewNewModel');
+            explorer.expand('View');
+            explorer.expand(`${domainName} Diagram Description`);
+            explorer.select('Entity1 Node');
+            details.getCheckBox('Collapsible').check();
+            details.openReferenceWidgetOptions('Reused Child Node Descriptions');
+            details.selectReferenceWidgetOption('Entity2 Node');
+            explorer.expand('Entity1 Node');
+            explorer.select('aql:self.name');
+            details.getRadioOption('Position', 'TOP_LEFT').click();
+            explorer.expand('aql:self.name');
+            explorer.select('InsideLabelStyle');
+            details.getCheckBox('With Header').check();
+            details.getCheckBox('Display Header Separator').check();
+          });
+        }
+      });
+    });
+
+    after(() => cy.deleteProject(studioProjectId));
+    context('When we create a new instance project', () => {
+      let instanceProjectId: string = '';
+
+      beforeEach(() => {
+        const studio = new Studio();
+        studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
+          instanceProjectId = res.projectId;
+        });
+      });
+
+      afterEach(() => cy.deleteProject(instanceProjectId));
+
+      it('Then the separator is display under the label', () => {
+        const explorer = new Explorer();
+        const diagram = new Diagram();
+        const details = new Details();
+        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Entity1', 'Relation Entity2');
+        explorer.select('Entity1');
+        details.getTextField('Name').type('Entity1{enter}');
+        explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
+        diagram.fitToScreen();
+        diagram
+          .getNodes('diagram', 'Entity1')
+          .findByTestId('Label bottom separator - Entity1')
+          .should('have.css', 'border-bottom', '1px solid rgb(51, 176, 195)');
+        diagram.getNodes('diagram', 'Entity1').findByTestId('Label top separator - Entity1').should('not.exist');
+      });
+    });
+  });
+  context('Given a studio with a bottom header label node', () => {
+    let studioProjectId: string = '';
+    let domainName: string = '';
+
+    before(() => {
+      cy.createProjectFromTemplate('studio-template').then((res) => {
+        const payload = res.body.data.createProjectFromTemplate;
+        if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+          const projectId = payload.project.id;
+          studioProjectId = projectId;
+
+          const project = new Project();
+          project.visit(projectId);
+          project.disableDeletionConfirmationDialog();
+
+          const explorer = new Explorer();
+          const details = new Details();
+          explorer.expand('DomainNewModel');
+          cy.get('[title="domain::Domain"]').then(($div) => {
+            domainName = $div.data().testid;
+            explorer.expand(domainName);
+            explorer.createObject('Entity1', 'Relation');
+            details.getCheckBox('Containment').check();
+            details.openReferenceWidgetOptions('Target Type');
+            details.selectReferenceWidgetOption('Entity2');
+            explorer.expand('ViewNewModel');
+            explorer.expand('View');
+            explorer.expand(`${domainName} Diagram Description`);
+            explorer.select('Entity1 Node');
+            details.getCheckBox('Collapsible').check();
+            details.openReferenceWidgetOptions('Reused Child Node Descriptions');
+            details.selectReferenceWidgetOption('Entity2 Node');
+            explorer.expand('Entity1 Node');
+            explorer.select('aql:self.name');
+            details.getRadioOption('Position', 'BOTTOM_RIGHT').click();
+            explorer.expand('aql:self.name');
+            explorer.select('InsideLabelStyle');
+            details.getCheckBox('With Header').check();
+            details.getCheckBox('Display Header Separator').check();
+          });
+        }
+      });
+    });
+
+    after(() => cy.deleteProject(studioProjectId));
+    context('When we create a new instance project', () => {
+      let instanceProjectId: string = '';
+
+      beforeEach(() => {
+        const studio = new Studio();
+        studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
+          instanceProjectId = res.projectId;
+        });
+      });
+
+      afterEach(() => cy.deleteProject(instanceProjectId));
+
+      it('Then the separator is display under the label', () => {
+        const explorer = new Explorer();
+        const diagram = new Diagram();
+        const details = new Details();
+        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Entity1', 'Relation Entity2');
+        explorer.select('Entity1');
+        details.getTextField('Name').type('Entity1{enter}');
+        explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
+        diagram.fitToScreen();
+        diagram
+          .getNodes('diagram', 'Entity1')
+          .findByTestId('Label top separator - Entity1')
+          .should('have.css', 'border-top', '1px solid rgb(51, 176, 195)');
+        diagram.getNodes('diagram', 'Entity1').findByTestId('Label bottom separator - Entity1').should('not.exist');
+      });
+    });
+  });
 });

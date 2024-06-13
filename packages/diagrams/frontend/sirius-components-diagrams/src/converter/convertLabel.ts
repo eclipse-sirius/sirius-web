@@ -45,19 +45,29 @@ export const convertInsideLabel = (
     },
     iconURL: labelStyle.iconURL,
     overflowStrategy: gqlInsideLabel.overflowStrategy,
+    headerSeparatorStyle: {
+      width: '100%',
+    },
+    headerPosition: undefined,
   };
 
   const alignement = AlignmentMap[gqlInsideLabel.insideLabelLocation];
   if (alignement && alignement.isPrimaryVerticalAlignment) {
     if (alignement.primaryAlignment === 'TOP') {
+      if (insideLabel.isHeader) {
+        insideLabel.headerPosition = 'TOP';
+      }
       if (insideLabel.displayHeaderSeparator && hasVisibleChild) {
-        insideLabel.style.borderBottom = borderStyle;
+        insideLabel.headerSeparatorStyle.borderBottom = borderStyle;
       }
       data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
     }
     if (alignement.primaryAlignment === 'BOTTOM') {
+      if (insideLabel.isHeader) {
+        insideLabel.headerPosition = 'BOTTOM';
+      }
       if (insideLabel.displayHeaderSeparator && hasVisibleChild) {
-        insideLabel.style.borderTop = borderStyle;
+        insideLabel.headerSeparatorStyle.borderTop = borderStyle;
       }
       data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' };
     }
