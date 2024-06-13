@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.services.api.projects;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -26,9 +27,12 @@ public class Project {
 
     private final String name;
 
-    public Project(UUID id, String name) {
+    private final List<Nature> natures;
+
+    public Project(UUID id, String name, List<Nature> natures) {
         this.id = Objects.requireNonNull(id);
         this.name = Objects.requireNonNull(name);
+        this.natures = Objects.requireNonNull(natures);
     }
 
     public UUID getId() {
@@ -37,6 +41,10 @@ public class Project {
 
     public String getName() {
         return this.name;
+    }
+
+    public List<Nature> getNatures() {
+        return this.natures;
     }
 
     @Override

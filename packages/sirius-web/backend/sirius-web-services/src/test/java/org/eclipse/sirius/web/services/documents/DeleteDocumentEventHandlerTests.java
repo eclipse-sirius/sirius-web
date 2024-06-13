@@ -48,7 +48,7 @@ public class DeleteDocumentEventHandlerTests {
     @Test
     public void testDeleteDocument() {
         UUID projectId = UUID.randomUUID();
-        Document document = new Document(UUID.randomUUID(), new Project(projectId, ""), "name", "content");
+        Document document = new Document(UUID.randomUUID(), new Project(projectId, "", List.of()), "name", "content");
 
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override

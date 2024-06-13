@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo and others.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useContext } from 'react';
+import { ProjectContext } from './ProjectContext';
+import { ProjectContextValue } from './ProjectContext.types';
+import { UseCurrentProjectValue } from './useCurrentProject.types';
 
-export interface EditProjectViewParams {
-  projectId: string;
-  representationId: string;
-}
+export const useCurrentProject = (): UseCurrentProjectValue => {
+  const { project } = useContext<ProjectContextValue>(ProjectContext);
 
-export interface TreeItemContextMenuProviderProps {
-  children: React.ReactNode;
-}
-
-export interface TreeToolBarProviderProps {
-  children: React.ReactNode;
-}
-
-export interface DiagramPaletteToolProviderProps {
-  children: React.ReactNode;
-}
+  return { project };
+};

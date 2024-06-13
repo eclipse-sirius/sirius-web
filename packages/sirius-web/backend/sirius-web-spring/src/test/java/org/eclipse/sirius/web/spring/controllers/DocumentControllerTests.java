@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.spring.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,7 +53,7 @@ public class DocumentControllerTests {
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> getDocument(String projectId, UUID documentId) {
-                return Optional.of(new Document(documentId, new Project(UUID.fromString(projectId), ""), name, null));
+                return Optional.of(new Document(documentId, new Project(UUID.fromString(projectId), "", List.of()), name, null));
             }
 
             @Override

@@ -32,6 +32,7 @@ import { RenameProjectModal } from '../../../modals/rename-project/RenameProject
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
 import { EditProjectNavbarProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
 
+import { useCurrentProject } from '../useCurrentProject';
 import { editProjectNavbarSubtitleExtensionPoint } from './EditProjectNavbarExtensionPoints';
 import {
   EditProjectNavbarContext,
@@ -86,7 +87,8 @@ const useEditProjectViewNavbarStyles = makeStyles((theme) => ({
   },
 }));
 
-export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
+export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
+  const { project } = useCurrentProject();
   const classes = useEditProjectViewNavbarStyles();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 

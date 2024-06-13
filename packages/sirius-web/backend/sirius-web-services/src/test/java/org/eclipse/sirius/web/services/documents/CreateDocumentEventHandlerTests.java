@@ -87,7 +87,7 @@ public class CreateDocumentEventHandlerTests {
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
-                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), ""), name, content));
+                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), "", List.of()), name, content));
             }
         };
         IStereotypeService stereotypeService = new IStereotypeService.NoOp() {
@@ -127,7 +127,7 @@ public class CreateDocumentEventHandlerTests {
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
-                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), ""), name, content));
+                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), "", List.of()), name, content));
             }
         };
         IStereotypeService stereotypeService = new IStereotypeService.NoOp() {

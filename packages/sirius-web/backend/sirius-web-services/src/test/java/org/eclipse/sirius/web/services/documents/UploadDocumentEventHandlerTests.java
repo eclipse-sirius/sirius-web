@@ -171,7 +171,7 @@ public class UploadDocumentEventHandlerTests {
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
-                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), ""), name, content));
+                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), "", List.of()), name, content));
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
@@ -206,7 +206,7 @@ public class UploadDocumentEventHandlerTests {
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
-                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), ""), name, content));
+                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), "", List.of()), name, content));
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
@@ -302,7 +302,7 @@ public class UploadDocumentEventHandlerTests {
 
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
-                return Optional.of(new Document(documentId, new Project(UUID.fromString(projectId), ""), name, content));
+                return Optional.of(new Document(documentId, new Project(UUID.fromString(projectId), "", List.of()), name, content));
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();

@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.services.projects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -39,7 +40,7 @@ import reactor.core.publisher.Sinks.One;
 public class RenameProjectEventHandlerTests {
     @Test
     public void testRenameProject() {
-        Project project = new Project(UUID.randomUUID(), "newName");
+        Project project = new Project(UUID.randomUUID(), "newName", List.of());
 
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
         IProjectService projectService = new IProjectService.NoOp() {
