@@ -1,0 +1,241 @@
+= ADR-153 Restore the Selection Dialog support in diagrams
+
+== Context
+
+Since the migration from Sprotty to React-Flow, the Selection dialog has been deactivated.
+The purpose of this ADR is to explain how we will reactivate this feature on the new architecture.
+
+The backend and frontend part of the selection dialog are located here:
+
+* Backend
+** sirius-components-collaborative-selection
+** sirius-components-selection
+** sirius-components-selection-graphql
+* Frontend
+** packages/selection/frontend/sirius-components-selection
+
+=== Former Selection Dialog Lifecycle
+
+On the specifier side, the selection dialog was asked by adding a _SelectionDescription_ in the _NodeTool_.
+If a _SelectionDescription_ is defined on the node tool, the _selectionDescriptionId_ is set in the Tool pojo returned to the frontend.
+
+In the former diagram architecture, if the tool defined a selectionDescription (the tool.selectionDescriptionId value is defined) a SHOW_SELECTION_DIALOG event was dispatched on the DiagramWebSocketContainer state machine. 
+
+```ts
+if (tool.selectionDescriptionId) {
+  const showSelectionDialogEvent: ShowSelectionDialogEvent = {
+    type: 'SHOW_SELECTION_DIALOG',
+    activeTool: tool,
+  };
+  dispatch(showSelectionDialogEvent);
+} else {
+  invokeTool(tool, element.id, startingPosition);
+  diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
+}
+```
+
+Then we open the selection dialog: 
+
+```ts
+if (selectionDialog === 'visible') {
+  selectModelElementDialog = (
+    <SelectionDialogWebSocketContainer
+      editingContextId={editingContextId}
+      selectionRepresentationId={(activeTool as CreateNodeTool).selectionDescriptionId}
+      targetObjectId={contextualPalette.element.targetObjectId}
+      onClose={() => {
+        dispatch({ type: 'CLOSE_SELECTION_DIALOG' } as CloseSelectionDialogEvent);
+      }}
+      onFinish={(selectedObjectId) => {
+        dispatch({
+          type: 'HANDLE_SELECTED_OBJECT_IN_SELECTION_DIALOG',
+          selectedObjectId,
+        } as HandleSelectedObjectInSelectionDialogEvent);
+      }}
+    />
+  );
+}
+```
+
+The tool was finaly invoked within this useEffect (depending on the selectedObjectId value):
+
+```ts
+  useEffect(() => {
+    if (selectedObjectId && activeTool && contextualPalette) {
+      invokeTool(activeTool, contextualPalette.element.id, contextualPalette.startingPosition);
+      diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
+      const resetSelectedObjectInSelectionDialogEvent: ResetSelectedObjectInSelectionDialogEvent = {
+        type: 'RESET_SELECTED_OBJECT_IN_SELECTION_DIALOG',
+      };
+      dispatch(resetSelectedObjectInSelectionDialogEvent);
+    }
+  }, [activeTool, diagramServer, invokeTool, dispatch, selectedObjectId, contextualPalette]);
+```
+
+== Decision
+
+In addition to retrieving the former behavior of the Selection Dialog, we also want to make this feature as generic as possible:
+
+* We want to offer the possibility to create any other kind of Dialog
+* We also want to offer an API for developers extending sirius-web to contribute additional dialogs.
+
+=== Diagram View DSL ===
+We will create an abstract _DialogDescription_ under the _NodeTool_. The current _SelectionDescription_ will be renamed into _SelectionDialogDescription_ and will extend the _DialogDescription_ concept. 
+The View DSL will thus be ready for other kinds of dialogs.
+
+=== Dialog GraphQL API === 
+
+The _selectionDescriptionId_ from _SingleClickOnDiagramElementTool_ will be renamed into _dialogDescriptionId_
+
+```
+type SingleClickOnDiagramElementTool implements Tool {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  appliesToDiagramRoot: Boolean!
+  dialogDescriptionId: String
+  targetDescriptions: [DiagramElementDescription!]!
+}
+```
+
+The property _selectedObjectId_ from _InvokeSingleClickOnDiagramElementToolInput_ will be removed and will take a list of variables as parameter to be more generic: 
+
+```
+input InvokeSingleClickOnDiagramElementToolInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  variables: [ToolVariable!]!
+  diagramElementId: ID!
+  startingPositionX: Float!
+  startingPositionY: Float!
+  toolId: ID!
+}
+
+input ToolVariable {
+  name: String!
+  value: String!
+  type: ToolVariableType!
+}
+
+enum ToolVariableType {
+  STRING
+  OBJECT_ID
+  OBJECT_ID_ARRAY
+}
+```
+
+=== Frontend ===
+
+The new diagram architecture based on react-flow has changed significantly. The tools are now invoked in the _Palette_ component:
+
+```ts
+  const handleToolClick = (tool: GQLTool) => {
+    switch (tool.id) {
+      case 'edit':
+        onDirectEditClick();
+        break;
+      case 'semantic-delete':
+        showDeletionConfirmation(() => {
+          invokeDelete(diagramElementId, GQLDeletionPolicy.SEMANTIC);
+        });
+        break;
+      case 'graphical-delete':
+        invokeDelete(diagramElementId, GQLDeletionPolicy.GRAPHICAL);
+        break;
+      case 'expand':
+        collapseExpandElement(diagramElementId, GQLCollapsingState.EXPANDED);
+        break;
+      case 'collapse':
+        collapseExpandElement(diagramElementId, GQLCollapsingState.COLLAPSED);
+        break;
+      default:
+        invokeSingleClickTool(tool);
+        break;
+    }
+  };
+```
+
+In a similar way than the delete tool shows the deletion confirmation dialog, the palette should call a showDialog if the tool defines a DialogDescriptionID.
+
+Palette.tsx:
+```ts
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+  const { showDialog } = useDialog();
+```
+
+The Palette will not call the invokeSingleClickTool directly but it will first verify if we need to show a dialog.
+The callback when performing the finish action will be responsible for invoking the tool with the variables provided by the dialog.
+
+```ts
+if (tool.dialogDescriptionId) {
+  showDialog(editingContextId, tool.dialogRepresentationId, targetObjectId, onFinish, onClose);
+} else {
+  invokeSingleClickTool(tool);
+}
+
+```
+
+We will create a new hook "_useDialog_" in a similar way than the confirmationDialog. This hook will use the _DialogContext_.
+The _DialogContextProvider_ will be added in the DiagramRepresentation:
+
+```
+<FullscreenContextProvider>
+  <DialogContextProvider>
+    <DiagramRenderer
+      key={state.diagramRefreshedEventPayload.diagram.id}
+      diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+    />
+  </DialogContextProvider>
+</FullscreenContextProvider>
+
+```
+
+The _DialogContextProvider_ will retrieve the concrete dialog component in the _extensionRegistry_ via the _useData_ hook.
+
+We will create a new dedicated extension point _diagramDialogContributionExtensionPoint_.
+
+```ts
+const { data: dialogContributions } = useData(diagramDialogContributionExtensionPoint);
+
+const dialogContribution = dialogContributions.filter(dialogContribution => dialogContribution.canHandle(dialogId))[0];
+const DialogComponent = dialogDefinition.component;
+const dialogComponentProps: DialogComponentProps = { ... };
+return (
+   <DialogContext.Provider value={{ ... }}>
+      {children}
+      {state.open && (
+        <DialogComponent
+          {...dialogComponentProps}
+        />
+      )}
+    </DialogContext.Provider>
+)
+```
+
+The current _SelectionDialog_ will be contributed in the _defaultExtensionRegistry_ by Sirius-web.
+
+=== Possible Dialog API evolution ===
+
+With those changes it will not be possible to pass values from the tool defined in the backend to the frontend dialog.
+For the current Selection Dialog needs, it will not be a problem since it does not require any other information than the selected element.
+
+The GraphQL API could provide to the front a Dialog object with at least the dialog kind Id extended by the concrete dialog implementation:
+
+```
+type SingleClickOnDiagramElementTool implements Tool {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  appliesToDiagramRoot: Boolean!
+  dialog: Dialog
+  targetDescriptions: [DiagramElementDescription!]!
+}
+```
+
+== Status
+
+Work in progress
+
+== Consequences
+
