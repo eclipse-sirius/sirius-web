@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,20 +25,13 @@ const usePageStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Page = ({ editingContextId, formId, page, widgetSubscriptions, readOnly }: PageProps) => {
+export const Page = ({ editingContextId, formId, page, readOnly }: PageProps) => {
   const classes = usePageStyles();
   return (
     <div className={classes.page}>
       {page.groups.map((group) => {
         return (
-          <Group
-            editingContextId={editingContextId}
-            formId={formId}
-            group={group}
-            widgetSubscriptions={widgetSubscriptions}
-            key={group.id}
-            readOnly={readOnly}
-          />
+          <Group editingContextId={editingContextId} formId={formId} group={group} key={group.id} readOnly={readOnly} />
         );
       })}
     </div>

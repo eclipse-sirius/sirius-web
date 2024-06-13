@@ -21,12 +21,6 @@ subscription diagramEvent($input: DiagramEventInput!) {
       id
       message
     }
-    ... on SubscribersUpdatedEventPayload {
-      id
-      subscribers {
-        username
-      }
-    }
     ... on DiagramRefreshedEventPayload {
       id
       diagram {

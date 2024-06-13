@@ -17,19 +17,9 @@ input PropertiesEventInput {
   objectIds: [ID!]!
 }
 
-union FormEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
+union FormEventPayload = ErrorPayload | FormRefreshedEventPayload
 
-union PropertiesEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
-
-type WidgetSubscriptionsUpdatedEventPayload {
-  id: ID!
-  widgetSubscriptions: [WidgetSubscription]!
-}
-
-type WidgetSubscription {
-  widgetId: ID!
-  subscribers: [Subscriber]!
-}
+union PropertiesEventPayload = ErrorPayload | FormRefreshedEventPayload
 
 type FormRefreshedEventPayload {
   id: ID!

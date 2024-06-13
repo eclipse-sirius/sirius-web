@@ -80,7 +80,6 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLDateTime>) => {
   const props: DateTimeStyleProps = {
@@ -174,12 +173,7 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
           onBlur();
         }
       }}>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-      />
+      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <TextField
         id="datetime"
         disabled={readOnly || widget.readOnly}

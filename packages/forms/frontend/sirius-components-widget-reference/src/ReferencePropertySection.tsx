@@ -192,7 +192,6 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLReferenceWidget>) => {
   const classes = useStyles();
@@ -481,7 +480,6 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
           editingContextId={editingContextId}
           formId={formId}
           widget={widget}
-          subscribers={subscribers}
           data-testid={widget.label + '_' + widget.reference.referenceKind}
         />
         <ValuedReferenceAutocomplete

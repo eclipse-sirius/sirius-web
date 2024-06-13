@@ -8,7 +8,7 @@ input FormDescriptionEditorEventInput {
   formDescriptionEditorId: ID!
 }
 
-union FormDescriptionEditorEventPayload = ErrorPayload | FormDescriptionEditorRefreshedEventPayload | SubscribersUpdatedEventPayload
+union FormDescriptionEditorEventPayload = ErrorPayload | FormDescriptionEditorRefreshedEventPayload
 
 type FormDescriptionEditorRefreshedEventPayload {
   id: ID!

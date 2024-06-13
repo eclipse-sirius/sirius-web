@@ -10,8 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Avatar from '@material-ui/core/Avatar';
-import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { HelpTooltip } from './HelpTooltip';
@@ -43,10 +41,10 @@ const usePropertySectionLabelStyles = makeStyles((theme) => ({
   },
 }));
 
-export const PropertySectionLabel = ({ editingContextId, formId, widget, subscribers }: PropertySectionLabelProps) => {
+export const PropertySectionLabel = ({ editingContextId, formId, widget }: PropertySectionLabelProps) => {
   const classes = usePropertySectionLabelStyles();
 
-  if (!widget.label && subscribers.length == 0 && !widget.hasHelpText) {
+  if (!widget.label && !widget.hasHelpText) {
     return null;
   } else {
     return (
@@ -57,13 +55,6 @@ export const PropertySectionLabel = ({ editingContextId, formId, widget, subscri
         {widget.hasHelpText ? (
           <HelpTooltip editingContextId={editingContextId} formId={formId} widgetId={widget.id} />
         ) : null}
-        <div className={classes.subscribers}>
-          {subscribers.map((subscriber) => (
-            <Tooltip title={subscriber.username} arrow key={subscriber.username}>
-              <Avatar classes={{ root: classes.avatar }}>{subscriber.username.substring(0, 1).toUpperCase()}</Avatar>
-            </Tooltip>
-          ))}
-        </div>
       </div>
     );
   }

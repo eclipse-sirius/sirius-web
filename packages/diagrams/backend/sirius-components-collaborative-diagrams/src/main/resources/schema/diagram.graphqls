@@ -10,7 +10,6 @@ input DiagramEventInput {
 
 union DiagramEventPayload =
   ErrorPayload
-  | SubscribersUpdatedEventPayload
   | DiagramRefreshedEventPayload
 
 type DiagramRefreshedEventPayload {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,6 @@ import {
   GQLFormDescriptionEditorEventPayload,
   GQLFormDescriptionEditorEventSubscription,
   GQLFormDescriptionEditorRefreshedEventPayload,
-  GQLSubscribersUpdatedEventPayload,
-  Subscriber,
 } from './FormDescriptionEditorEventFragment.types';
 
 export interface FormDescriptionEditorRepresentationStateSchema {
@@ -48,7 +46,6 @@ export type SchemaValue = {
 export interface FormDescriptionEditorRepresentationContext {
   id: string;
   formDescriptionEditor: GQLFormDescriptionEditor;
-  subscribers: Subscriber[];
   message: string | null;
 }
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
@@ -74,9 +71,6 @@ const isFormDescriptionEditorRefreshedEventPayload = (
   payload: GQLFormDescriptionEditorEventPayload
 ): payload is GQLFormDescriptionEditorRefreshedEventPayload =>
   payload.__typename === 'FormDescriptionEditorRefreshedEventPayload';
-const isSubscribersUpdatedEventPayload = (
-  payload: GQLFormDescriptionEditorEventPayload
-): payload is GQLSubscribersUpdatedEventPayload => payload.__typename === 'SubscribersUpdatedEventPayload';
 
 export const formDescriptionEditorRepresentationMachine = Machine<
   FormDescriptionEditorRepresentationContext,
@@ -88,7 +82,6 @@ export const formDescriptionEditorRepresentationMachine = Machine<
     context: {
       id: crypto.randomUUID(),
       formDescriptionEditor: null,
-      subscribers: [],
       message: null,
     },
     states: {
@@ -163,9 +156,6 @@ export const formDescriptionEditorRepresentationMachine = Machine<
         if (isFormDescriptionEditorRefreshedEventPayload(data.formDescriptionEditorEvent)) {
           const { formDescriptionEditor } = data.formDescriptionEditorEvent;
           return { formDescriptionEditor };
-        } else if (isSubscribersUpdatedEventPayload(data.formDescriptionEditorEvent)) {
-          const { subscribers } = data.formDescriptionEditorEvent;
-          return { subscribers };
         }
         return {};
       }),

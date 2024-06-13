@@ -122,7 +122,6 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLList>) => {
   const props: ListStyleProps = {
@@ -260,12 +259,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
 
   return (
     <FormControl error={widget.diagnostics.length > 0} fullWidth>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-      />
+      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <Table size="small" data-testid={`table-${widget.label}`}>
         <TableBody>
           {items.map((item) => (

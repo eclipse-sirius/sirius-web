@@ -49,31 +49,6 @@ export interface GQLRepresentationsEventPayload {
   __typename: string;
 }
 
-export interface GQLSubscribersUpdatedEventPayload
-  extends GQLFormEventPayload,
-    GQLPropertiesEventPayload,
-    GQLRepresentationsEventPayload {
-  id: string;
-  subscribers: GQLSubscriber[];
-}
-
-export interface GQLWidgetSubscriptionsUpdatedEventPayload
-  extends GQLFormEventPayload,
-    GQLPropertiesEventPayload,
-    GQLRepresentationsEventPayload {
-  id: string;
-  widgetSubscriptions: GQLWidgetSubscription[];
-}
-
-export interface GQLWidgetSubscription {
-  widgetId: string;
-  subscribers: GQLSubscriber[];
-}
-
-export interface GQLSubscriber {
-  username: string;
-}
-
 export interface GQLFormRefreshedEventPayload
   extends GQLFormEventPayload,
     GQLPropertiesEventPayload,

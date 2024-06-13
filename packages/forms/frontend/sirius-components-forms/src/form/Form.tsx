@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,7 +71,7 @@ const a11yProps = (id: string) => {
   };
 };
 
-export const Form = ({ editingContextId, form, widgetSubscriptions, readOnly }: FormProps) => {
+export const Form = ({ editingContextId, form, readOnly }: FormProps) => {
   const classes = useFormStyles();
   const { id, pages } = form;
 
@@ -109,15 +109,7 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, readOnly }: 
 
   let page: JSX.Element | null = null;
   if (state.selectedPage) {
-    page = (
-      <Page
-        editingContextId={editingContextId}
-        formId={id}
-        page={state.selectedPage}
-        widgetSubscriptions={widgetSubscriptions}
-        readOnly={readOnly}
-      />
-    );
+    page = <Page editingContextId={editingContextId} formId={id} page={state.selectedPage} readOnly={readOnly} />;
   }
   const maxWidth: number = state.pages.length > 1 ? 100 : 390; // 390 is the maxWidth to fit to the default Details view
   const variant: 'scrollable' | 'standard' = state.pages.length > 1 ? 'scrollable' : 'standard';

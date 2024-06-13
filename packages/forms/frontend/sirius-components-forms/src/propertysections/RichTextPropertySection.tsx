@@ -79,7 +79,6 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLRichText>) => {
   const [editRichText, { loading: updateRichTextLoading, data: updateRichTextData, error: updateRichTextError }] =
@@ -154,12 +153,7 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
 
   return (
     <div>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-      />
+      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <div data-testid={widget.label}>
         <RichTextEditor
           value={widget.stringValue}

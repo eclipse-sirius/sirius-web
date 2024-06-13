@@ -89,7 +89,6 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLSelect>) => {
   const props: SelectStyleProps = {
@@ -180,12 +179,7 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
 
   return (
     <FormControl error={widget.diagnostics.length > 0}>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-      />
+      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <Select
         value={widget.value || ''}
         onChange={onChange}

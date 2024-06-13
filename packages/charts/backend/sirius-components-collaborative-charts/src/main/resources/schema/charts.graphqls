@@ -8,7 +8,7 @@ input HierarchyEventInput {
   hierarchyId: ID!
 }
 
-union HierarchyEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | HierarchyRefreshedEventPayload
+union HierarchyEventPayload = ErrorPayload | HierarchyRefreshedEventPayload
 
 type HierarchyRefreshedEventPayload {
   id: ID!

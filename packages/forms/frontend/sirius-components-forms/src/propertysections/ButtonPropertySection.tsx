@@ -113,7 +113,6 @@ export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLButton>) => {
   const props: ButtonStyleProps = {
@@ -204,7 +203,6 @@ export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         data-testid={widget.label}
       />
       <Button

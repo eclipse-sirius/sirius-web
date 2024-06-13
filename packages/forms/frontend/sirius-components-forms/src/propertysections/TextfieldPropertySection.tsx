@@ -144,7 +144,6 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLTextfield | GQLTextarea>) => {
   const inputElt = useRef<HTMLInputElement>();
@@ -368,12 +367,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
           onBlur();
         }
       }}>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-      />
+      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <TextField
         name={widget.label}
         placeholder={widget.label}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLWidget, GQLWidgetSubscription } from '../form/FormEventFragments.types';
+import { GQLWidget } from '../form/FormEventFragments.types';
 
 export interface PropertySectionProps {
   editingContextId: string;
   formId: string;
   widget: GQLWidget;
-  widgetSubscriptions: GQLWidgetSubscription[];
   readOnly: boolean;
 }

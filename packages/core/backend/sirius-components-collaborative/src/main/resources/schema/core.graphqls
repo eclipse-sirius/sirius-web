@@ -91,11 +91,6 @@ type EditingContextAction {
   label: String!
 }
 
-type SubscribersUpdatedEventPayload {
-  id: ID!
-  subscribers: [Subscriber]!
-}
-
 type Subscriber {
   username: String!
 }

@@ -29,12 +29,9 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
-import org.eclipse.sirius.components.collaborative.forms.api.IWidgetSubscriptionManager;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.RenameFormInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.UpdateWidgetFocusInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.UpdateWidgetFocusSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -83,8 +80,6 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final ISubscriptionManager subscriptionManager;
 
-    private final IWidgetSubscriptionManager widgetSubscriptionManager;
-
     private final IRepresentationSearchService representationSearchService;
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
@@ -98,7 +93,7 @@ public class FormEventProcessor implements IFormEventProcessor {
     private final VariableManager variableManager;
 
     public FormEventProcessor(FormEventProcessorConfiguration configuration,
-            ISubscriptionManager subscriptionManager, IWidgetSubscriptionManager widgetSubscriptionManager,
+            ISubscriptionManager subscriptionManager,
             IRepresentationSearchService representationSearchService,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, IFormPostProcessor formPostProcessor) {
         this.logger.trace("Creating the form event processor {}", configuration.formCreationParameters().getId());
@@ -109,7 +104,6 @@ public class FormEventProcessor implements IFormEventProcessor {
         this.formEventHandlers = Objects.requireNonNull(configuration.formEventHandlers());
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
-        this.widgetSubscriptionManager = Objects.requireNonNull(widgetSubscriptionManager);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
         this.formPostProcessor = Objects.requireNonNull(formPostProcessor);
 
@@ -158,20 +152,13 @@ public class FormEventProcessor implements IFormEventProcessor {
         }
         if (effectiveInput instanceof IFormInput formInput) {
 
-            if (formInput instanceof UpdateWidgetFocusInput input) {
-                this.widgetSubscriptionManager.handle(input);
+            Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 
-                payloadSink.tryEmitValue(new UpdateWidgetFocusSuccessPayload(input.id(), input.widgetId()));
-                changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.FOCUS_CHANGE, input.representationId(), input));
+            if (optionalFormEventHandler.isPresent()) {
+                IFormEventHandler formEventHandler = optionalFormEventHandler.get();
+                formEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.currentForm.get(), formInput);
             } else {
-                Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
-
-                if (optionalFormEventHandler.isPresent()) {
-                    IFormEventHandler formEventHandler = optionalFormEventHandler.get();
-                    formEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.currentForm.get(), formInput);
-                } else {
-                    this.logger.warn("No handler found for event: {}", formInput);
-                }
+                this.logger.warn("No handler found for event: {}", formInput);
             }
         }
     }
@@ -239,7 +226,6 @@ public class FormEventProcessor implements IFormEventProcessor {
 
         return Flux.merge(
                 refreshEventFlux,
-                this.widgetSubscriptionManager.getFlux(input),
                 this.subscriptionManager.getFlux(input)
         );
     }
@@ -249,7 +235,6 @@ public class FormEventProcessor implements IFormEventProcessor {
         this.logger.trace("Disposing the form event processor {}", this.formCreationParameters.getId());
 
         this.subscriptionManager.dispose();
-        this.widgetSubscriptionManager.dispose();
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {

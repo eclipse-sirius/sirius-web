@@ -41,7 +41,6 @@ export const LabelWidgetPropertySection: PropertySectionComponent<GQLLabelWidget
   editingContextId,
   formId,
   widget,
-  subscribers,
 }: PropertySectionComponentProps<GQLLabelWidget>) => {
   const props: LabelStyleProps = {
     color: widget.style?.color ?? null,
@@ -54,12 +53,7 @@ export const LabelWidgetPropertySection: PropertySectionComponent<GQLLabelWidget
   const classes = useStyle(props);
   return (
     <div className={classes.propertySection}>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-      />
+      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <Typography className={classes.style}>{widget.stringValue}</Typography>
     </div>
   );

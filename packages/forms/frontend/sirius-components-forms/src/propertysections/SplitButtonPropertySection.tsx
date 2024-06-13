@@ -130,7 +130,6 @@ export const SplitButtonPropertySection = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: SplitButtonPropertySectionProps) => {
   const { addErrorMessage, addMessages } = useMultiToast();
@@ -260,7 +259,6 @@ export const SplitButtonPropertySection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         data-testid={widget.label}
       />
       <ButtonGroup

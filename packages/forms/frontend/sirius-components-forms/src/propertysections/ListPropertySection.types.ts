@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
-import { GQLList, GQLSubscriber } from '../form/FormEventFragments.types';
+import { GQLList } from '../form/FormEventFragments.types';
 
 export interface ListStyleProps {
   color: string | null;
@@ -26,7 +26,6 @@ export interface ListPropertySectionProps {
   editingContextId: string;
   formId: string;
   widget: GQLList;
-  subscribers: GQLSubscriber[];
   readOnly: boolean;
 }
 

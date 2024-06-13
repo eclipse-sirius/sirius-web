@@ -13,27 +13,6 @@
 
 import { WidgetContribution } from './Form.types';
 
-export const subscribersUpdatedEventPayloadFragment = `
-  fragment subscribersUpdatedEventPayloadFragment on SubscribersUpdatedEventPayload {
-    id
-    subscribers {
-      username
-    }
-  }
-`;
-
-export const widgetSubscriptionsUpdatedEventPayloadFragment = `
-  fragment widgetSubscriptionsUpdatedEventPayloadFragment on WidgetSubscriptionsUpdatedEventPayload {
-    id
-    widgetSubscriptions {
-      widgetId
-      subscribers {
-        username
-      }
-    }
-  }
-`;
-
 export const commonFields = `
   fragment commonFields on Widget {
     id

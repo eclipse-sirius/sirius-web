@@ -95,7 +95,6 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLMultiSelect>) => {
   const props: MultiSelectStyleProps = {
@@ -189,12 +188,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
 
   return (
     <FormControl error={widget.diagnostics.length > 0}>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-      />
+      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <Select
         value={widget.values}
         onChange={onChange}

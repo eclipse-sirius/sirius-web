@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,10 +17,6 @@ import {
   GQLFormEventPayload,
   GQLFormEventSubscription,
   GQLFormRefreshedEventPayload,
-  GQLSubscriber,
-  GQLSubscribersUpdatedEventPayload,
-  GQLWidgetSubscription,
-  GQLWidgetSubscriptionsUpdatedEventPayload,
 } from '../form/FormEventFragments.types';
 
 export interface FormRepresentationStateSchema {
@@ -50,8 +46,6 @@ export interface FormRepresentationContext {
   id: string;
   formId: string;
   form: GQLForm | null;
-  subscribers: GQLSubscriber[];
-  widgetSubscriptions: GQLWidgetSubscription[];
   message: string | null;
 }
 
@@ -72,12 +66,6 @@ export type FormRepresentationEvent =
 
 const isFormRefreshedEventPayload = (payload: GQLFormEventPayload): payload is GQLFormRefreshedEventPayload =>
   payload.__typename === 'FormRefreshedEventPayload';
-const isSubscribersUpdatedEventPayload = (payload: GQLFormEventPayload): payload is GQLSubscribersUpdatedEventPayload =>
-  payload.__typename === 'SubscribersUpdatedEventPayload';
-const isWidgetSubscriptionsUpdatedEventPayload = (
-  payload: GQLFormEventPayload
-): payload is GQLWidgetSubscriptionsUpdatedEventPayload =>
-  payload.__typename == 'WidgetSubscriptionsUpdatedEventPayload';
 
 export const formRepresentationMachine = Machine<
   FormRepresentationContext,
@@ -90,8 +78,6 @@ export const formRepresentationMachine = Machine<
       id: crypto.randomUUID(),
       formId: null,
       form: null,
-      subscribers: [],
-      widgetSubscriptions: [],
       message: null,
     },
     states: {
@@ -187,12 +173,6 @@ export const formRepresentationMachine = Machine<
         if (isFormRefreshedEventPayload(data.formEvent)) {
           const { form } = data.formEvent;
           return { form };
-        } else if (isSubscribersUpdatedEventPayload(data.formEvent)) {
-          const { subscribers } = data.formEvent;
-          return { subscribers };
-        } else if (isWidgetSubscriptionsUpdatedEventPayload(data.formEvent)) {
-          const { widgetSubscriptions } = data.formEvent;
-          return { widgetSubscriptions };
         }
         return {};
       }),

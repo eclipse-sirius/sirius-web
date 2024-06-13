@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
-import { GQLForm, GQLWidgetSubscription } from '../form/FormEventFragments.types';
+import { GQLForm } from '../form/FormEventFragments.types';
 import { Group } from '../groups/Group';
 import { FormBasedView } from './FormBasedView';
 
@@ -25,22 +25,12 @@ const useRelatedElementsViewStyles = makeStyles((theme) => ({
 export const RelatedElementsView = (props: WorkbenchViewComponentProps) => {
   const classes = useRelatedElementsViewStyles();
 
-  const extractFirstGroup = (
-    props: WorkbenchViewComponentProps,
-    form: GQLForm,
-    widgetSubscriptions: GQLWidgetSubscription[]
-  ): JSX.Element => {
+  const extractFirstGroup = (props: WorkbenchViewComponentProps, form: GQLForm): JSX.Element => {
     const group = form.pages[0]?.groups[0];
     if (group) {
       return (
         <div className={classes.content}>
-          <Group
-            editingContextId={props.editingContextId}
-            formId={form.id}
-            readOnly={props.readOnly}
-            group={group}
-            widgetSubscriptions={widgetSubscriptions}
-          />
+          <Group editingContextId={props.editingContextId} formId={form.id} readOnly={props.readOnly} group={group} />
         </div>
       );
     } else {

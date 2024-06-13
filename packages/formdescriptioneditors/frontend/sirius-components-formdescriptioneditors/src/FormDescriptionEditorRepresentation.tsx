@@ -13,8 +13,6 @@
 import { gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, Toast } from '@eclipse-sirius/sirius-components-core';
 import { PropertySectionContext, PropertySectionContextValue } from '@eclipse-sirius/sirius-components-forms';
-import Avatar from '@material-ui/core/Avatar';
-import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
@@ -146,7 +144,7 @@ export const FormDescriptionEditorRepresentation = ({
     FormDescriptionEditorRepresentationEvent
   >(formDescriptionEditorRepresentationMachine);
   const { toast, formDescriptionEditorRepresentation } = value as SchemaValue;
-  const { id, formDescriptionEditor, subscribers, message } = context;
+  const { id, formDescriptionEditor, message } = context;
 
   const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
   const allWidgets: WidgetDescriptor[] = [...coreWidgets];
@@ -313,13 +311,6 @@ export const FormDescriptionEditorRepresentation = ({
       <div className={classes.formDescriptionEditor}>
         <div className={classes.header}>
           <Typography>Form</Typography>
-          <div className={classes.subscribers}>
-            {subscribers.map((subscriber) => (
-              <Tooltip title={subscriber.username} arrow key={subscriber.username}>
-                <Avatar classes={{ root: classes.avatar }}>{subscriber.username.substring(0, 1).toUpperCase()}</Avatar>
-              </Tooltip>
-            ))}
-          </div>
         </div>
         {readOnly ? <div className={classes.disabledOverlay}>{content}</div> : content}
         <Toast
