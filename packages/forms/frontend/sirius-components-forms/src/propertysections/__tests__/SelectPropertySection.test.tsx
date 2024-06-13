@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 import { MockedProvider } from '@apollo/client/testing';
 import { MessageOptions, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { cleanup, render } from '@testing-library/react';
+import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLSelect } from '../../form/FormEventFragments.types';
 import { SelectPropertySection } from '../SelectPropertySection';
@@ -21,7 +22,7 @@ crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
 afterEach(() => cleanup());
 
-const defaultSelect: GQLSelect = {
+const defaultSelect = {
   __typename: 'Select',
   id: 'selectId',
   label: 'SelectLabel',
@@ -30,18 +31,11 @@ const defaultSelect: GQLSelect = {
   diagnostics: [],
   value: '',
   options: [],
-  style: null,
+  readOnly: false,
 };
 
 const selectWithStyle: GQLSelect = {
-  __typename: 'Select',
-  id: 'selectId',
-  label: 'SelectLabel',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  value: '',
-  options: [],
+  ...defaultSelect,
   style: {
     backgroundColor: '#de1000',
     foregroundColor: '#fbb800',
@@ -54,14 +48,7 @@ const selectWithStyle: GQLSelect = {
 };
 
 const selectWithEmptyStyle: GQLSelect = {
-  __typename: 'Select',
-  id: 'selectId',
-  label: 'SelectLabel',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  value: '',
-  options: [],
+  ...defaultSelect,
   style: {
     backgroundColor: '',
     foregroundColor: '',
@@ -74,14 +61,7 @@ const selectWithEmptyStyle: GQLSelect = {
 };
 
 const readOnlySelect: GQLSelect = {
-  __typename: 'Select',
-  id: 'selectId',
-  label: 'SelectLabel',
-  iconURL: [],
-  diagnostics: [],
-  value: '',
-  options: [],
-  style: null,
+  ...selectWithEmptyStyle,
   readOnly: true,
 };
 
@@ -98,8 +78,7 @@ test('should render the select without style', () => {
         <SelectPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={defaultSelect}
-          subscribers={[]}
+          widget={selectWithEmptyStyle}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -116,7 +95,6 @@ test('should render the select with style', () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={selectWithStyle}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -133,7 +111,6 @@ test('should render the select with empty style', async () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={selectWithEmptyStyle}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -149,8 +126,7 @@ test('should render the select with help hint', () => {
         <SelectPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={{ ...defaultSelect, hasHelpText: true }}
-          subscribers={[]}
+          widget={{ ...selectWithEmptyStyle, hasHelpText: true }}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -167,7 +143,6 @@ test('should render a readOnly select from widget properties', () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={readOnlySelect}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>

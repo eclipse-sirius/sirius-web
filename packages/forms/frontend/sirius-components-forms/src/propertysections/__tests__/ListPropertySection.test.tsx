@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,14 +20,17 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLList, GQLListItem } from '../../form/FormEventFragments.types';
-import { clickListItemMutation, ListPropertySection } from '../ListPropertySection';
+import { ListPropertySection, clickListItemMutation } from '../ListPropertySection';
 import {
   GQLClickListItemMutationData,
   GQLClickListItemMutationVariables,
   GQLSuccessPayload,
 } from '../ListPropertySection.types';
+
+const setSelection = () => {};
 
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
@@ -56,7 +59,7 @@ const defaultListItems: GQLListItem[] = [
     deletable: true,
   },
 ];
-const defaultList: GQLList = {
+const defaultList = {
   label: 'myList',
   iconURL: [],
   hasHelpText: false,
@@ -65,13 +68,11 @@ const defaultList: GQLList = {
   __typename: 'List',
   diagnostics: [],
   id: 'listId',
+  readOnly: false,
 };
 
 const defaultListWithStyle: GQLList = {
-  label: 'myList',
-  iconURL: [],
-  hasHelpText: false,
-  items: defaultListItems,
+  ...defaultList,
   style: {
     color: 'RebeccaPurple',
     bold: true,
@@ -80,19 +81,10 @@ const defaultListWithStyle: GQLList = {
     strikeThrough: true,
     underline: true,
   },
-  __typename: 'List',
-  diagnostics: [],
-  id: 'listId',
 };
 
 const readOnlyList: GQLList = {
-  label: 'myList',
-  iconURL: [],
-  items: defaultListItems,
-  style: null,
-  __typename: 'List',
-  diagnostics: [],
-  id: 'listId',
+  ...defaultListWithStyle,
   readOnly: true,
 };
 
@@ -122,19 +114,15 @@ const emptySelection: Selection = {
   entries: [],
 };
 
-const emptySetSelection = (_: Selection) => {};
-
 test('render list widget', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
           <ListPropertySection
             editingContextId="editingContextId"
             formId="formId"
-            widget={defaultList}
-            subscribers={[]}
+            widget={defaultListWithStyle}
             readOnly={false}
           />
         </SelectionContext.Provider>
@@ -148,13 +136,11 @@ test('render list widget with style', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
           <ListPropertySection
             editingContextId="editingContextId"
             formId="formId"
             widget={defaultListWithStyle}
-            subscribers={[]}
             readOnly={false}
           />
         </SelectionContext.Provider>
@@ -180,13 +166,11 @@ test('should the click event sent on item click', async () => {
   const { container } = render(
     <MockedProvider mocks={[itemClickCalledCalledSuccessMock]}>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
           <ListPropertySection
             editingContextId="editingContextId"
             formId="formId"
             widget={defaultListWithStyle}
-            subscribers={[]}
             readOnly={false}
           />
         </SelectionContext.Provider>
@@ -212,13 +196,11 @@ test('render list widget with help hint', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
           <ListPropertySection
             editingContextId="editingContextId"
             formId="formId"
-            widget={{ ...defaultList, hasHelpText: true }}
-            subscribers={[]}
+            widget={{ ...defaultListWithStyle, hasHelpText: true }}
             readOnly={false}
           />
         </SelectionContext.Provider>
@@ -232,13 +214,11 @@ test('should render a readOnly list from widget properties', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
           <ListPropertySection
             editingContextId="editingContextId"
             formId="formId"
             widget={readOnlyList}
-            subscribers={[]}
             readOnly={false}
           />
         </SelectionContext.Provider>

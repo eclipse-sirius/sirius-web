@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,10 +26,6 @@ import {
   GQLPushButtonMutationVariables,
   GQLPushButtonPayload,
   GQLSuccessPayload,
-  GQLUpdateWidgetFocusInput,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusMutationVariables,
-  GQLUpdateWidgetFocusPayload,
   ToolbarActionProps,
   ToolbarActionStyleProps,
 } from './ToolbarAction.types';
@@ -80,24 +76,10 @@ export const pushButtonMutation = gql`
   }
 `;
 
-export const updateWidgetFocusMutation = gql`
-  mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
-    updateWidgetFocus(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
-const isErrorPayload = (payload: GQLPushButtonPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLPushButtonPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-const isSuccessPayload = (payload: GQLPushButtonPayload | GQLUpdateWidgetFocusPayload): payload is GQLSuccessPayload =>
+const isSuccessPayload = (payload: GQLPushButtonPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
 /**
@@ -139,43 +121,6 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
     }
   }, [loading, error, data]);
 
-  const [
-    updateWidgetFocus,
-    { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
-  ] = useMutation<GQLUpdateWidgetFocusMutationData, GQLUpdateWidgetFocusMutationVariables>(updateWidgetFocusMutation);
-
-  const sendUpdateWidgetFocus = (selected: boolean) => {
-    const input: GQLUpdateWidgetFocusInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: formId,
-      widgetId: widget.id,
-      selected,
-    };
-    const variables: GQLUpdateWidgetFocusMutationVariables = {
-      input,
-    };
-    updateWidgetFocus({ variables });
-  };
-
-  useEffect(() => {
-    if (!updateWidgetFocusLoading) {
-      if (updateWidgetFocusError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (updateWidgetFocusData) {
-        const { updateWidgetFocus } = updateWidgetFocusData;
-        if (isErrorPayload(updateWidgetFocus)) {
-          addMessages(updateWidgetFocus.messages);
-        }
-      }
-    }
-  }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError]);
-
-  const onFocus = () => sendUpdateWidgetFocus(true);
-  const onBlur = () => {
-    sendUpdateWidgetFocus(false);
-  };
   const onClick = () => {
     const input: GQLPushButtonInput = {
       id: crypto.randomUUID(),
@@ -203,8 +148,6 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
           variant="contained"
           color="primary"
           onClick={onClick}
-          onBlur={onBlur}
-          onFocus={onFocus}
           disabled={readOnly || widget.readOnly}
           classes={{ root: classes.style }}>
           {widget.imageURL?.length > 0 ? (

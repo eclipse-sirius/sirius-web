@@ -30,10 +30,6 @@ import {
   GQLEditTextfieldMutationVariables,
   GQLEditTextfieldPayload,
   GQLErrorPayload,
-  GQLUpdateWidgetFocusInput,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusMutationVariables,
-  GQLUpdateWidgetFocusPayload,
   TextFieldState,
   TextfieldStyleProps,
 } from './TextfieldPropertySection.types';
@@ -115,26 +111,11 @@ export const editTextfieldMutation = gql`
   }
 `;
 
-export const updateWidgetFocusMutation = gql`
-  mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
-    updateWidgetFocus(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
 const isTextarea = (widget: GQLWidget): widget is GQLTextarea => widget.__typename === 'Textarea';
-const isErrorPayload = (payload: GQLEditTextfieldPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLEditTextfieldPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (
-  payload: GQLEditTextfieldPayload | GQLUpdateWidgetFocusPayload
-): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
+const isSuccessPayload = (payload: GQLEditTextfieldPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 /**
  * Defines the content of a Textfield property section.
@@ -221,41 +202,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
     }
   }, [updateTextfieldLoading, updateTextfieldData, updateTextfieldError, dispatch]);
 
-  const [
-    updateWidgetFocus,
-    { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
-  ] = useMutation<GQLUpdateWidgetFocusMutationData, GQLUpdateWidgetFocusMutationVariables>(updateWidgetFocusMutation);
-  const sendUpdateWidgetFocus = (selected: boolean) => {
-    const input: GQLUpdateWidgetFocusInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: formId,
-      widgetId: widget.id,
-      selected,
-    };
-    const variables: GQLUpdateWidgetFocusMutationVariables = {
-      input,
-    };
-    updateWidgetFocus({ variables });
-  };
-
-  useEffect(() => {
-    if (!updateWidgetFocusLoading) {
-      if (updateWidgetFocusError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (updateWidgetFocusData) {
-        const { updateWidgetFocus } = updateWidgetFocusData;
-        if (isErrorPayload(updateWidgetFocus)) {
-          addMessages(updateWidgetFocus.messages);
-        }
-      }
-    }
-  }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError, dispatch]);
-
-  const onFocus = () => sendUpdateWidgetFocus(true);
   const onBlur = () => {
-    sendUpdateWidgetFocus(false);
     sendEditedValue();
   };
 
@@ -380,7 +327,6 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
         onChange={onChange}
-        onFocus={onFocus}
         onKeyPress={onKeyPress}
         data-testid={widget.label}
         disabled={readOnly || widget.readOnly}

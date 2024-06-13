@@ -30,18 +30,10 @@ export interface GQLEditSelectPayload {
   __typename: string;
 }
 
-export interface GQLErrorPayload extends GQLEditSelectPayload, GQLUpdateWidgetFocusPayload {
+export interface GQLErrorPayload extends GQLEditSelectPayload {
   messages: GQLMessage[];
 }
 
 export interface GQLSuccessPayload extends GQLEditSelectPayload {
   messages: GQLMessage[];
-}
-
-export interface GQLUpdateWidgetFocusMutationData {
-  updateWidgetFocus: GQLUpdateWidgetFocusPayload;
-}
-
-export interface GQLUpdateWidgetFocusPayload {
-  __typename: string;
 }

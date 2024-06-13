@@ -29,20 +29,12 @@ export interface GQLEditRadioPayload {
   __typename: string;
 }
 
-export interface GQLErrorPayload extends GQLEditRadioPayload, GQLUpdateWidgetFocusPayload {
+export interface GQLErrorPayload extends GQLEditRadioPayload {
   messages: GQLMessage[];
 }
 
 export interface GQLSuccessPayload extends GQLEditRadioPayload {
   messages: GQLMessage[];
-}
-
-export interface GQLUpdateWidgetFocusMutationData {
-  updateWidgetFocus: GQLUpdateWidgetFocusPayload;
-}
-
-export interface GQLUpdateWidgetFocusPayload {
-  __typename: string;
 }
 
 export interface GQLEditRadioMutationVariables {
@@ -56,17 +48,3 @@ export interface GQLEditRadioInput {
   radioId: string;
   newValue: string;
 }
-
-export interface GQLUpdateWidgetFocusMutationVariables {
-  input: GQLUpdateWidgetFocusInput;
-}
-
-export interface GQLUpdateWidgetFocusInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  widgetId: string;
-  selected: boolean;
-}
-
-export interface GQLUpdateWidgetFocusSuccessPayload extends GQLUpdateWidgetFocusPayload {}

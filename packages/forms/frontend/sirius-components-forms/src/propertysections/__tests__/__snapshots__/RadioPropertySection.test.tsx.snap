@@ -14,9 +14,6 @@ exports[`should display the error received 1`] = `
         >
           Status:
         </h6>
-        <div
-          class="makeStyles-subscribers-51"
-        />
       </div>
       <div
         aria-label="Status:"
@@ -74,7 +71,7 @@ exports[`should display the error received 1`] = `
             class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1"
+              class="MuiTypography-root makeStyles-style-47 makeStyles-style-49 MuiTypography-body1"
             >
               inactive
             </p>
@@ -130,7 +127,7 @@ exports[`should display the error received 1`] = `
             class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1"
+              class="MuiTypography-root makeStyles-style-47 makeStyles-style-49 MuiTypography-body1"
             >
               active
             </p>
@@ -159,9 +156,6 @@ exports[`should display the error received 2`] = `
         >
           Status:
         </h6>
-        <div
-          class="makeStyles-subscribers-51"
-        />
       </div>
       <div
         aria-label="Status:"
@@ -219,7 +213,7 @@ exports[`should display the error received 2`] = `
             class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1"
+              class="MuiTypography-root makeStyles-style-47 makeStyles-style-49 MuiTypography-body1"
             >
               inactive
             </p>
@@ -275,7 +269,7 @@ exports[`should display the error received 2`] = `
             class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1"
+              class="MuiTypography-root makeStyles-style-47 makeStyles-style-49 MuiTypography-body1"
             >
               active
             </p>
@@ -303,9 +297,6 @@ exports[`should render a readOnly radio 1`] = `
       >
         Status:
       </h6>
-      <div
-        class="makeStyles-subscribers-21"
-      />
     </div>
     <div
       aria-label="Status:"
@@ -362,7 +353,7 @@ exports[`should render a readOnly radio 1`] = `
           class="MuiTypography-root MuiFormControlLabel-label Mui-disabled MuiTypography-body1"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1"
+            class="MuiTypography-root makeStyles-style-17 makeStyles-style-19 MuiTypography-body1"
           >
             inactive
           </p>
@@ -417,7 +408,7 @@ exports[`should render a readOnly radio 1`] = `
           class="MuiTypography-root MuiFormControlLabel-label Mui-disabled MuiTypography-body1"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1"
+            class="MuiTypography-root makeStyles-style-17 makeStyles-style-19 MuiTypography-body1"
           >
             active
           </p>
@@ -444,9 +435,6 @@ exports[`should render a readOnly radio from widget properties 1`] = `
       >
         Status:
       </h6>
-      <div
-        class="makeStyles-subscribers-126"
-      />
     </div>
     <div
       aria-label="Status:"
@@ -503,7 +491,7 @@ exports[`should render a readOnly radio from widget properties 1`] = `
           class="MuiTypography-root MuiFormControlLabel-label Mui-disabled MuiTypography-body1"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1"
+            class="MuiTypography-root makeStyles-style-122 makeStyles-style-124 MuiTypography-body1"
           >
             inactive
           </p>
@@ -558,7 +546,7 @@ exports[`should render a readOnly radio from widget properties 1`] = `
           class="MuiTypography-root MuiFormControlLabel-label Mui-disabled MuiTypography-body1"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1"
+            class="MuiTypography-root makeStyles-style-122 makeStyles-style-124 MuiTypography-body1"
           >
             active
           </p>
@@ -585,9 +573,6 @@ exports[`should render the radio 1`] = `
       >
         Status:
       </h6>
-      <div
-        class="makeStyles-subscribers-6"
-      />
     </div>
     <div
       aria-label="Status:"
@@ -645,7 +630,7 @@ exports[`should render the radio 1`] = `
           class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1"
+            class="MuiTypography-root makeStyles-style-2 makeStyles-style-4 MuiTypography-body1"
           >
             inactive
           </p>
@@ -701,7 +686,7 @@ exports[`should render the radio 1`] = `
           class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1"
+            class="MuiTypography-root makeStyles-style-2 makeStyles-style-4 MuiTypography-body1"
           >
             active
           </p>
@@ -729,9 +714,6 @@ exports[`should render the radio with empty style 1`] = `
         >
           Status:
         </h6>
-        <div
-          class="makeStyles-subscribers-96"
-        />
       </div>
       <div
         aria-label="Status:"
@@ -886,9 +868,6 @@ exports[`should render the radio with help hint 1`] = `
             d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
           />
         </svg>
-        <div
-          class="makeStyles-subscribers-111"
-        />
       </div>
       <div
         aria-label="Status:"
@@ -946,7 +925,7 @@ exports[`should render the radio with help hint 1`] = `
             class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1"
+              class="MuiTypography-root makeStyles-style-107 makeStyles-style-109 MuiTypography-body1"
             >
               inactive
             </p>
@@ -1002,7 +981,7 @@ exports[`should render the radio with help hint 1`] = `
             class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1"
+              class="MuiTypography-root makeStyles-style-107 makeStyles-style-109 MuiTypography-body1"
             >
               active
             </p>
@@ -1031,9 +1010,6 @@ exports[`should render the radio with style 1`] = `
         >
           Status:
         </h6>
-        <div
-          class="makeStyles-subscribers-81"
-        />
       </div>
       <div
         aria-label="Status:"
@@ -1176,9 +1152,6 @@ exports[`should render the radio without style 1`] = `
         >
           Status:
         </h6>
-        <div
-          class="makeStyles-subscribers-66"
-        />
       </div>
       <div
         aria-label="Status:"
@@ -1236,7 +1209,7 @@ exports[`should render the radio without style 1`] = `
             class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1"
+              class="MuiTypography-root makeStyles-style-62 makeStyles-style-64 MuiTypography-body1"
             >
               inactive
             </p>
@@ -1292,7 +1265,7 @@ exports[`should render the radio without style 1`] = `
             class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1"
+              class="MuiTypography-root makeStyles-style-62 makeStyles-style-64 MuiTypography-body1"
             >
               active
             </p>
@@ -1320,9 +1293,6 @@ exports[`should send mutation when clicked 1`] = `
       >
         Status:
       </h6>
-      <div
-        class="makeStyles-subscribers-36"
-      />
     </div>
     <div
       aria-label="Status:"
@@ -1380,7 +1350,7 @@ exports[`should send mutation when clicked 1`] = `
           class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1"
+            class="MuiTypography-root makeStyles-style-32 makeStyles-style-34 MuiTypography-body1"
           >
             inactive
           </p>
@@ -1436,7 +1406,7 @@ exports[`should send mutation when clicked 1`] = `
           class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1"
+            class="MuiTypography-root makeStyles-style-32 makeStyles-style-34 MuiTypography-body1"
           >
             active
           </p>
@@ -1463,9 +1433,6 @@ exports[`should send mutation when clicked 2`] = `
       >
         Status:
       </h6>
-      <div
-        class="makeStyles-subscribers-36"
-      />
     </div>
     <div
       aria-label="Status:"
@@ -1523,7 +1490,7 @@ exports[`should send mutation when clicked 2`] = `
           class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1"
+            class="MuiTypography-root makeStyles-style-32 makeStyles-style-34 MuiTypography-body1"
           >
             inactive
           </p>
@@ -1579,7 +1546,7 @@ exports[`should send mutation when clicked 2`] = `
           class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
         >
           <p
-            class="MuiTypography-root MuiTypography-body1"
+            class="MuiTypography-root makeStyles-style-32 makeStyles-style-34 MuiTypography-body1"
           >
             active
           </p>

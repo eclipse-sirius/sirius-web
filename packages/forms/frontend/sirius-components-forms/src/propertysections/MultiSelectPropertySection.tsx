@@ -20,7 +20,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { Theme, makeStyles } from '@material-ui/core/styles';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLMultiSelect } from '../form/FormEventFragments.types';
 import {
@@ -28,8 +28,6 @@ import {
   GQLEditMultiSelectPayload,
   GQLErrorPayload,
   GQLSuccessPayload,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusPayload,
   MultiSelectStyleProps,
 } from './MultiSelectPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
@@ -71,25 +69,11 @@ export const editMultiSelectMutation = gql`
   }
 `;
 
-const updateWidgetFocusMutation = gql`
-  mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
-    updateWidgetFocus(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
-const isErrorPayload = (payload: GQLEditMultiSelectPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLEditMultiSelectPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (
-  payload: GQLEditMultiSelectPayload | GQLUpdateWidgetFocusPayload
-): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
+
+const isSuccessPayload = (payload: GQLEditMultiSelectPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect> = ({
   editingContextId,
@@ -107,8 +91,6 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyle(props);
-
-  const [isFocused, setFocus] = useState(false);
 
   const [editMultiSelect, { loading, error, data }] =
     useMutation<GQLEditMultiSelectMutationData>(editMultiSelectMutation);
@@ -142,50 +124,6 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
     }
   }, [loading, error, data]);
 
-  const [
-    updateWidgetFocus,
-    { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
-  ] = useMutation<GQLUpdateWidgetFocusMutationData>(updateWidgetFocusMutation);
-
-  const sendUpdateWidgetFocus = (selected: boolean) => {
-    const variables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        widgetId: widget.id,
-        selected,
-      },
-    };
-    updateWidgetFocus({ variables });
-  };
-
-  useEffect(() => {
-    if (!updateWidgetFocusLoading) {
-      if (updateWidgetFocusError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (updateWidgetFocusData) {
-        const { updateWidgetFocus } = updateWidgetFocusData;
-        if (isErrorPayload(updateWidgetFocus)) {
-          addMessages(updateWidgetFocus.messages);
-        }
-      }
-    }
-  }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError]);
-
-  const onFocus = () => {
-    if (!isFocused) {
-      setFocus(true);
-      sendUpdateWidgetFocus(true);
-    }
-  };
-
-  const onBlur = () => {
-    setFocus(false);
-    sendUpdateWidgetFocus(false);
-  };
-
   return (
     <FormControl error={widget.diagnostics.length > 0}>
       <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
@@ -193,8 +131,6 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
         value={widget.values}
         onChange={onChange}
         displayEmpty
-        onFocus={onFocus}
-        onBlur={onBlur}
         fullWidth
         data-testid={widget.label}
         disabled={readOnly || widget.readOnly}

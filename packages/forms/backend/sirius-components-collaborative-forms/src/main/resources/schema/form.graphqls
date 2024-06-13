@@ -452,7 +452,6 @@ extend type Mutation {
   editSelect(input: EditSelectInput!): EditSelectPayload!
   editTextfield(input: EditTextfieldInput!): EditTextfieldPayload!
   editRichText(input: EditRichTextInput!): EditRichTextPayload!
-  updateWidgetFocus(input: UpdateWidgetFocusInput!): UpdateWidgetFocusPayload!
   clickListItem(input: ClickListItemInput!): ClickListItemPayload!
   deleteListItem(input: DeleteListItemInput!): DeleteListItemPayload!
   pushButton(input: PushButtonInput!): PushButtonPayload!
@@ -530,21 +529,6 @@ input EditRichTextInput {
 }
 
 union EditRichTextPayload = ErrorPayload | SuccessPayload
-
-input UpdateWidgetFocusInput {
-  id: ID!
-  editingContextId: ID!
-  representationId: ID!
-  widgetId: ID!
-  selected: Boolean!
-}
-
-union UpdateWidgetFocusPayload = ErrorPayload | UpdateWidgetFocusSuccessPayload
-
-type UpdateWidgetFocusSuccessPayload {
-  id: ID!
-  updateFocusWidgetId: String!
-}
 
 input DeleteListItemInput {
   id: ID!

@@ -18,29 +18,8 @@ export interface SplitButtonPropertySectionProps {
   widget: GQLSplitButton;
   readOnly: boolean;
 }
-export interface GQLUpdateWidgetFocusMutationVariables {
-  input: GQLUpdateWidgetFocusInput;
-}
 
 export interface SplitButtonState {
   open: boolean;
   selectedIndex: number;
 }
-
-export interface GQLUpdateWidgetFocusInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  widgetId: string;
-  selected: boolean;
-}
-
-export interface GQLUpdateWidgetFocusMutationData {
-  updateWidgetFocus: GQLUpdateWidgetFocusPayload;
-}
-
-export interface GQLUpdateWidgetFocusPayload {
-  __typename: string;
-}
-
-export interface GQLUpdateWidgetFocusSuccessPayload extends GQLUpdateWidgetFocusPayload {}

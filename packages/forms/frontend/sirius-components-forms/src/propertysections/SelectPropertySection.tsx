@@ -18,7 +18,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { Theme, makeStyles } from '@material-ui/core/styles';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLSelect } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
@@ -27,7 +27,6 @@ import {
   GQLEditSelectPayload,
   GQLErrorPayload,
   GQLSuccessPayload,
-  GQLUpdateWidgetFocusMutationData,
   SelectStyleProps,
 } from './SelectPropertySection.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
@@ -66,20 +65,6 @@ export const editSelectMutation = gql`
   }
 `;
 
-const updateWidgetFocusMutation = gql`
-  mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
-    updateWidgetFocus(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
 const isErrorPayload = (payload: GQLEditSelectPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLEditSelectPayload): payload is GQLSuccessPayload =>
@@ -101,8 +86,6 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyle(props);
-
-  const [isFocused, setFocus] = useState(false);
 
   const [editSelect, { loading, error, data }] = useMutation<GQLEditSelectMutationData>(editSelectMutation);
   const onChange = (event) => {
@@ -135,48 +118,6 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
     }
   }, [loading, error, data]);
 
-  const [
-    updateWidgetFocus,
-    { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
-  ] = useMutation<GQLUpdateWidgetFocusMutationData>(updateWidgetFocusMutation);
-  const sendUpdateWidgetFocus = (selected: boolean) => {
-    const variables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        widgetId: widget.id,
-        selected,
-      },
-    };
-    updateWidgetFocus({ variables });
-  };
-
-  useEffect(() => {
-    if (!updateWidgetFocusLoading) {
-      if (updateWidgetFocusError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (updateWidgetFocusData) {
-        const { updateWidgetFocus } = updateWidgetFocusData;
-        if (isErrorPayload(updateWidgetFocus)) {
-          addMessages(updateWidgetFocus.messages);
-        }
-      }
-    }
-  }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError]);
-
-  const onFocus = () => {
-    if (!isFocused) {
-      setFocus(true);
-      sendUpdateWidgetFocus(true);
-    }
-  };
-  const onBlur = () => {
-    setFocus(false);
-    sendUpdateWidgetFocus(false);
-  };
-
   return (
     <FormControl error={widget.diagnostics.length > 0}>
       <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
@@ -184,8 +125,6 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
         value={widget.value || ''}
         onChange={onChange}
         displayEmpty
-        onFocus={onFocus}
-        onBlur={onBlur}
         fullWidth
         data-testid={widget.label}
         disabled={readOnly || widget.readOnly}

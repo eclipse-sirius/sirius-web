@@ -24,20 +24,12 @@ export interface GQLEditCheckboxPayload {
   __typename: string;
 }
 
-export interface GQLErrorPayload extends GQLEditCheckboxPayload, GQLUpdateWidgetFocusPayload {
+export interface GQLErrorPayload extends GQLEditCheckboxPayload {
   messages: GQLMessage[];
 }
 
 export interface GQLSuccessPayload extends GQLEditCheckboxPayload {
   messages: GQLMessage[];
-}
-
-export interface GQLUpdateWidgetFocusMutationData {
-  updateWidgetFocus: GQLUpdateWidgetFocusPayload;
-}
-
-export interface GQLUpdateWidgetFocusPayload {
-  __typename: string;
 }
 
 export interface GQLEditCheckboxMutationVariables {
@@ -51,17 +43,3 @@ export interface GQLEditCheckboxInput {
   checkboxId: string;
   newValue: boolean;
 }
-
-export interface GQLUpdateWidgetFocusMutationVariables {
-  input: GQLUpdateWidgetFocusInput;
-}
-
-export interface GQLUpdateWidgetFocusInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  widgetId: string;
-  selected: boolean;
-}
-
-export interface GQLUpdateWidgetFocusSuccessPayload extends GQLUpdateWidgetFocusPayload {}

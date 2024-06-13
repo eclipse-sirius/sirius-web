@@ -7,7 +7,7 @@ exports[`should display the error received 1`] = `
       class="MuiFormControl-root makeStyles-formControl-37"
     >
       <label
-        class="MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementTop"
       >
         <span
           aria-disabled="false"
@@ -50,9 +50,6 @@ exports[`should display the error received 1`] = `
             >
               CheckboxLabel
             </h6>
-            <div
-              class="makeStyles-subscribers-46"
-            />
           </div>
         </span>
       </label>
@@ -71,7 +68,7 @@ exports[`should display the error received 2`] = `
       class="MuiFormControl-root makeStyles-formControl-37"
     >
       <label
-        class="MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementTop"
       >
         <span
           aria-disabled="false"
@@ -114,9 +111,6 @@ exports[`should display the error received 2`] = `
             >
               CheckboxLabel
             </h6>
-            <div
-              class="makeStyles-subscribers-46"
-            />
           </div>
         </span>
       </label>
@@ -188,9 +182,6 @@ exports[`should render a checkbox with help hint 1`] = `
               d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
             />
           </svg>
-          <div
-            class="makeStyles-subscribers-94"
-          />
         </div>
       </span>
     </label>
@@ -249,9 +240,6 @@ exports[`should render a readOnly checkbox 1`] = `
           >
             CheckboxLabel
           </h6>
-          <div
-            class="makeStyles-subscribers-22"
-          />
         </div>
       </span>
     </label>
@@ -310,9 +298,6 @@ exports[`should render a readOnly checkbox from widget properties 1`] = `
           >
             CheckboxLabel
           </h6>
-          <div
-            class="makeStyles-subscribers-106"
-          />
         </div>
       </span>
     </label>
@@ -329,7 +314,7 @@ exports[`should render the checkbox 1`] = `
     class="MuiFormControl-root makeStyles-formControl-1"
   >
     <label
-      class="MuiFormControlLabel-root"
+      class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementTop"
     >
       <span
         aria-disabled="false"
@@ -372,9 +357,6 @@ exports[`should render the checkbox 1`] = `
           >
             CheckboxLabel
           </h6>
-          <div
-            class="makeStyles-subscribers-10"
-          />
         </div>
       </span>
     </label>
@@ -435,9 +417,6 @@ exports[`should render the checkbox with empty style 1`] = `
             >
               CheckboxLabel
             </h6>
-            <div
-              class="makeStyles-subscribers-82"
-            />
           </div>
         </span>
       </label>
@@ -499,9 +478,6 @@ exports[`should render the checkbox with style 1`] = `
             >
               CheckboxLabel
             </h6>
-            <div
-              class="makeStyles-subscribers-70"
-            />
           </div>
         </span>
       </label>
@@ -563,9 +539,6 @@ exports[`should render the checkbox without style 1`] = `
             >
               CheckboxLabel
             </h6>
-            <div
-              class="makeStyles-subscribers-58"
-            />
           </div>
         </span>
       </label>
@@ -583,7 +556,7 @@ exports[`should send mutation when clicked 1`] = `
     class="MuiFormControl-root makeStyles-formControl-25"
   >
     <label
-      class="MuiFormControlLabel-root"
+      class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementTop"
     >
       <span
         aria-disabled="false"
@@ -626,9 +599,6 @@ exports[`should send mutation when clicked 1`] = `
           >
             CheckboxLabel
           </h6>
-          <div
-            class="makeStyles-subscribers-34"
-          />
         </div>
       </span>
     </label>
@@ -645,7 +615,7 @@ exports[`should send mutation when clicked 2`] = `
     class="MuiFormControl-root makeStyles-formControl-25"
   >
     <label
-      class="MuiFormControlLabel-root"
+      class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementTop"
     >
       <span
         aria-disabled="false"
@@ -688,9 +658,6 @@ exports[`should send mutation when clicked 2`] = `
           >
             CheckboxLabel
           </h6>
-          <div
-            class="makeStyles-subscribers-34"
-          />
         </div>
       </span>
     </label>

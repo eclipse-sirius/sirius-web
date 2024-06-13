@@ -23,24 +23,6 @@ export interface DataTimeWidgetPropertySectionState {
   editedValue: string;
 }
 
-export interface GQLUpdateWidgetFocusMutationVariables {
-  input: GQLUpdateWidgetFocusInput;
-}
-
-export interface GQLUpdateWidgetFocusInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  widgetId: string;
-  selected: boolean;
-}
-
-export interface GQLUpdateWidgetFocusMutationData {
-  updateWidgetFocus: GQLUpdateWidgetFocusPayload;
-}
-
-export type GQLUpdateWidgetFocusPayload = GQLErrorPayload | GQLSuccessPayload;
-
 export interface GQLEditDateTimeMutationData {
   editDateTime: GQLEditDataTimePayload;
 }
