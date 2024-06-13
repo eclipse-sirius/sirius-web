@@ -7,7 +7,7 @@ input ValidationEventInput {
   editingContextId: ID!
 }
 
-union ValidationEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | ValidationRefreshedEventPayload
+union ValidationEventPayload = ErrorPayload | ValidationRefreshedEventPayload
 
 type ValidationRefreshedEventPayload {
   id: ID!

@@ -24,6 +24,7 @@ More existing APIs will be migrated to this new common pattern.
  * `Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext)`;
  * `public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input)`;
  * `Flux<IPayload> getSubscription(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input);`
+ - https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove `IWidgetSubscriptionManagerFactory`
 
 === Dependency update
 
@@ -86,6 +87,7 @@ More existing APIs will be migrated to this new common pattern.
 image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3574[#3574] [diagram] Add a loading indicator during execution of an arrange-all
 - https://github.com/eclipse-sirius/sirius-web/issues/3586[#3586] [diagram] Fix an issue with keypress listener attached to the palette
+- https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form]  Remove unused form payload 
 
 == v2024.5.0
 

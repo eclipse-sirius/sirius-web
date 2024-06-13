@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { GQLForm, GQLWidgetSubscription } from '../form/FormEventFragments.types';
+import { GQLForm } from '../form/FormEventFragments.types';
 import { FormConverter } from './FormConverter.types';
 
 export interface FormBasedViewProps extends WorkbenchViewComponentProps {
@@ -19,9 +19,5 @@ export interface FormBasedViewProps extends WorkbenchViewComponentProps {
   readOnly: boolean;
   subscriptionName: string;
   converter?: FormConverter;
-  postProcessor?: (
-    props: WorkbenchViewComponentProps,
-    form: GQLForm,
-    widgetSubscriptions: GQLWidgetSubscription[]
-  ) => JSX.Element;
+  postProcessor?: (props: WorkbenchViewComponentProps, form: GQLForm) => JSX.Element;
 }

@@ -10,7 +10,6 @@ input GanttEventInput {
 
 union GanttEventPayload =
     ErrorPayload
-  | SubscribersUpdatedEventPayload
   | GanttRefreshedEventPayload
 
 type GanttRefreshedEventPayload {

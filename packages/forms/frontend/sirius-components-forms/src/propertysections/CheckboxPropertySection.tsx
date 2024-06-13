@@ -91,7 +91,6 @@ export const CheckboxPropertySection: PropertySectionComponent<GQLCheckbox> = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLCheckbox>) => {
   const props: CheckboxStyleProps = {
@@ -170,14 +169,7 @@ export const CheckboxPropertySection: PropertySectionComponent<GQLCheckbox> = ({
     <FormControl classes={{ root: classes.formControl }} error={widget.diagnostics.length > 0}>
       <FormControlLabel
         labelPlacement={widget.style?.labelPlacement ?? 'end'}
-        label={
-          <PropertySectionLabel
-            editingContextId={editingContextId}
-            formId={formId}
-            widget={widget}
-            subscribers={subscribers}
-          />
-        }
+        label={<PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />}
         control={
           <Checkbox
             name={widget.label}

@@ -20,7 +20,7 @@ input TreeEventInput {
   activeFilterIds: [String!]!
 }
 
-union TreeEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | TreeRefreshedEventPayload
+union TreeEventPayload = ErrorPayload | TreeRefreshedEventPayload
 
 type TreeRefreshedEventPayload {
   id: ID!

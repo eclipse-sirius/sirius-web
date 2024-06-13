@@ -10,13 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLSplitButton, GQLSubscriber } from '../form/FormEventFragments.types';
+import { GQLSplitButton } from '../form/FormEventFragments.types';
 
 export interface SplitButtonPropertySectionProps {
   editingContextId: string;
   formId: string;
   widget: GQLSplitButton;
-  subscribers: GQLSubscriber[];
   readOnly: boolean;
 }
 export interface GQLUpdateWidgetFocusMutationVariables {

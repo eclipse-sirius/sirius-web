@@ -66,7 +66,7 @@ export const ImagePropertySection: PropertySectionComponent<GQLImage> = ({
   });
   return (
     <div>
-      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} subscribers={[]} />
+      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <div className={classes.container}>
         {validImage ? (
           <img id={widget.id} src={imageURL} width="100%" onError={onErrorLoadingImage} />

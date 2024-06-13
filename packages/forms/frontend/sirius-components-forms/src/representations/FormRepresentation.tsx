@@ -20,24 +20,20 @@ import { Form } from '../form/Form';
 import { WidgetContribution } from '../form/Form.types';
 import { PropertySectionContext } from '../form/FormContext';
 import { PropertySectionContextValue } from '../form/FormContext.types';
-import {
-  formRefreshedEventPayloadFragment,
-  subscribersUpdatedEventPayloadFragment,
-  widgetSubscriptionsUpdatedEventPayloadFragment,
-} from '../form/FormEventFragments';
+import { formRefreshedEventPayloadFragment } from '../form/FormEventFragments';
 import { GQLFormEventSubscription } from '../form/FormEventFragments.types';
 import { Page } from '../pages/Page';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import {
   FormRepresentationContext,
   FormRepresentationEvent,
-  formRepresentationMachine,
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
   SwitchFormEvent,
+  formRepresentationMachine,
 } from './FormRepresentationMachine';
 
 const formEventSubscription = (contributions: Array<WidgetContribution>) =>
@@ -45,19 +41,11 @@ const formEventSubscription = (contributions: Array<WidgetContribution>) =>
   subscription formEvent($input: FormEventInput!) {
     formEvent(input: $input) {
       __typename
-      ... on SubscribersUpdatedEventPayload {
-        ...subscribersUpdatedEventPayloadFragment
-      }
-      ... on WidgetSubscriptionsUpdatedEventPayload {
-        ...widgetSubscriptionsUpdatedEventPayloadFragment
-      }
       ... on FormRefreshedEventPayload {
         ...formRefreshedEventPayloadFragment
       }
     }
   }
-  ${subscribersUpdatedEventPayloadFragment}
-  ${widgetSubscriptionsUpdatedEventPayloadFragment}
   ${formRefreshedEventPayloadFragment(contributions)}
 `);
 
@@ -104,7 +92,7 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
     }
   );
   const { toast, formRepresentation } = value as SchemaValue;
-  const { id, formId, form, widgetSubscriptions, message } = context;
+  const { id, formId, form, message } = context;
 
   /**
    * Displays an other form if the selection indicates that we should display another properties view.
@@ -154,14 +142,7 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
   let content: JSX.Element | null = null;
   if (formRepresentation === 'ready') {
     if (form.pages.length > 1) {
-      content = (
-        <Form
-          editingContextId={editingContextId}
-          form={form}
-          widgetSubscriptions={widgetSubscriptions}
-          readOnly={readOnly}
-        />
-      );
+      content = <Form editingContextId={editingContextId} form={form} readOnly={readOnly} />;
     } else if (form.pages.length === 1) {
       let selectedPageToolbar = null;
       if (form.pages[0].toolbarActions?.length > 0) {
@@ -183,13 +164,7 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
       content = (
         <div data-testid="page" className={classes.page}>
           {selectedPageToolbar}
-          <Page
-            editingContextId={editingContextId}
-            formId={form.id}
-            page={form.pages[0]}
-            widgetSubscriptions={widgetSubscriptions}
-            readOnly={readOnly}
-          />
+          <Page editingContextId={editingContextId} formId={form.id} page={form.pages[0]} readOnly={readOnly} />
         </div>
       );
     }

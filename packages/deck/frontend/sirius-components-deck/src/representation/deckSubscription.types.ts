@@ -20,15 +20,6 @@ export interface GQLDeckEventPayload {
   __typename: string;
 }
 
-export interface GQLSubscribersUpdatedEventPayload extends GQLDeckEventPayload {
-  id: string;
-  subscribers: GQLSubscriber[];
-}
-
-export interface GQLSubscriber {
-  username: string;
-}
-
 export interface GQLDeckRefreshedEventPayload extends GQLDeckEventPayload {
   id: string;
   deck: GQLDeck;

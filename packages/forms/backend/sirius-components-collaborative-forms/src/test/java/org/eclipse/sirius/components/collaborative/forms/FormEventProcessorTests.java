@@ -31,9 +31,10 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.description.FormDescription;
-import org.junit.jupiter.api.Test;
 
 import reactor.test.StepVerifier;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests of the form event processor.
@@ -117,7 +118,6 @@ public class FormEventProcessorTests {
         FormEventProcessor formEventProcessor = new FormEventProcessor(
                 new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of()),
                 new SubscriptionManager(),
-                new WidgetSubscriptionManager(),
                 new IRepresentationSearchService.NoOp(),
                 new RepresentationRefreshPolicyRegistry(List.of()),
                 new IFormPostProcessor.NoOp());

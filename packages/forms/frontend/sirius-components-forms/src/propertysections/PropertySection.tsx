@@ -73,20 +73,8 @@ const isTree = (widget: GQLWidget): widget is GQLTree => widget.__typename === '
 const isImage = (widget: GQLWidget): widget is GQLImage => widget.__typename === 'Image';
 const isRichText = (widget: GQLWidget): widget is GQLRichText => widget.__typename === 'RichText';
 
-export const PropertySection = ({
-  editingContextId,
-  formId,
-  widget,
-  widgetSubscriptions,
-  readOnly,
-}: PropertySectionProps) => {
-  let subscribers = [];
-
+export const PropertySection = ({ editingContextId, formId, widget, readOnly }: PropertySectionProps) => {
   const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
-
-  widgetSubscriptions
-    .filter((subscription) => subscription.widgetId === widget.id)
-    .forEach((subscription) => subscribers.push(...subscription.subscribers));
 
   let propertySection: JSX.Element | null = null;
   if (isTextfield(widget) || isTextarea(widget)) {
@@ -95,7 +83,6 @@ export const PropertySection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         key={widget.id}
         readOnly={readOnly}
       />
@@ -106,7 +93,6 @@ export const PropertySection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         key={widget.id}
         readOnly={readOnly}
       />
@@ -117,7 +103,6 @@ export const PropertySection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         key={widget.id}
         readOnly={readOnly}
       />
@@ -128,7 +113,6 @@ export const PropertySection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         key={widget.id}
         readOnly={readOnly}
       />
@@ -139,7 +123,6 @@ export const PropertySection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         key={widget.id}
         readOnly={readOnly}
       />
@@ -151,7 +134,6 @@ export const PropertySection = ({
         formId={formId}
         widget={widget}
         key={widget.id}
-        subscribers={subscribers}
         readOnly={readOnly}
       />
     );
@@ -162,7 +144,6 @@ export const PropertySection = ({
         formId={formId}
         widget={widget}
         key={widget.id}
-        subscribers={subscribers}
         readOnly={readOnly}
       />
     );
@@ -173,7 +154,6 @@ export const PropertySection = ({
         formId={formId}
         widget={widget}
         key={widget.id}
-        subscribers={subscribers}
         readOnly={readOnly}
       />
     );
@@ -184,7 +164,6 @@ export const PropertySection = ({
         formId={formId}
         widget={widget}
         key={widget.id}
-        subscribers={subscribers}
         readOnly={readOnly}
       />
     );
@@ -194,7 +173,6 @@ export const PropertySection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         key={widget.id}
         readOnly={readOnly}
       />
@@ -205,7 +183,6 @@ export const PropertySection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         key={widget.id}
         readOnly={readOnly}
       />
@@ -217,7 +194,6 @@ export const PropertySection = ({
         formId={formId}
         widget={widget}
         key={widget.id}
-        widgetSubscriptions={widgetSubscriptions}
         readOnly={readOnly}
       />
     );
@@ -228,7 +204,6 @@ export const PropertySection = ({
         formId={formId}
         widget={widget}
         key={widget.id}
-        subscribers={subscribers}
         readOnly={readOnly}
       />
     );
@@ -239,7 +214,6 @@ export const PropertySection = ({
         formId={formId}
         widget={widget}
         key={widget.id}
-        subscribers={subscribers}
         readOnly={readOnly}
       />
     );
@@ -249,7 +223,6 @@ export const PropertySection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         key={widget.id}
         readOnly={readOnly}
       />
@@ -260,7 +233,6 @@ export const PropertySection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         key={widget.id}
         readOnly={readOnly}
       />
@@ -271,7 +243,6 @@ export const PropertySection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         key={widget.id}
         readOnly={readOnly}
       />
@@ -284,7 +255,6 @@ export const PropertySection = ({
           editingContextId={editingContextId}
           formId={formId}
           widget={widget}
-          subscribers={subscribers}
           key={widget.id}
           readOnly={readOnly}
         />

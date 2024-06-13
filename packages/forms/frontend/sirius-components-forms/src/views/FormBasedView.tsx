@@ -20,11 +20,7 @@ import { Form } from '../form/Form';
 import { WidgetContribution } from '../form/Form.types';
 import { PropertySectionContext } from '../form/FormContext';
 import { PropertySectionContextValue } from '../form/FormContext.types';
-import {
-  formRefreshedEventPayloadFragment,
-  subscribersUpdatedEventPayloadFragment,
-  widgetSubscriptionsUpdatedEventPayloadFragment,
-} from '../form/FormEventFragments';
+import { formRefreshedEventPayloadFragment } from '../form/FormEventFragments';
 import {
   GQLPropertiesEventInput,
   GQLPropertiesEventSubscription,
@@ -49,19 +45,11 @@ export const getFormEventSubscription = (subscriptionName: string, contributions
   subscription ${subscriptionName}($input: PropertiesEventInput!) {
     ${subscriptionName}(input: $input) {
       __typename
-      ... on SubscribersUpdatedEventPayload {
-        ...subscribersUpdatedEventPayloadFragment
-      }
-      ... on WidgetSubscriptionsUpdatedEventPayload {
-        ...widgetSubscriptionsUpdatedEventPayloadFragment
-      }
       ... on FormRefreshedEventPayload {
         ...formRefreshedEventPayloadFragment
       }
     }
   }
-  ${subscribersUpdatedEventPayloadFragment}
-  ${widgetSubscriptionsUpdatedEventPayloadFragment}
   ${formRefreshedEventPayloadFragment(contributions)}
 `;
 };
@@ -85,7 +73,7 @@ export const FormBasedView = ({
   const classes = useFormBasedViewStyles();
   const [{ value, context }, dispatch] = useMachine<FormBasedViewContext, FormBasedViewEvent>(formBasedViewMachine);
   const { toast, formBasedView } = value as SchemaValue;
-  const { id, currentSelection, form, widgetSubscriptions, message } = context;
+  const { id, currentSelection, form, message } = context;
   const { selection } = useSelection();
 
   /**
@@ -166,16 +154,9 @@ export const FormBasedView = ({
   }
   if ((formBasedView === 'idle' && form) || formBasedView === 'ready') {
     if (postProcessor) {
-      content = postProcessor({ editingContextId, readOnly }, formConverter.convert(form), widgetSubscriptions);
+      content = postProcessor({ editingContextId, readOnly }, formConverter.convert(form));
     } else {
-      content = (
-        <Form
-          editingContextId={editingContextId}
-          form={formConverter.convert(form)}
-          widgetSubscriptions={widgetSubscriptions}
-          readOnly={readOnly}
-        />
-      );
+      content = <Form editingContextId={editingContextId} form={formConverter.convert(form)} readOnly={readOnly} />;
     }
   }
   return (

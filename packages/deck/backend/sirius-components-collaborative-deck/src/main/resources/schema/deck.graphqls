@@ -8,7 +8,7 @@ input DeckEventInput {
   deckId: ID!
 }
 
-union DeckEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | DeckRefreshedEventPayload
+union DeckEventPayload = ErrorPayload |  DeckRefreshedEventPayload
 
 type DeckRefreshedEventPayload {
   id: ID!

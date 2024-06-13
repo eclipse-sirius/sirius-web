@@ -18,8 +18,6 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
-import org.eclipse.sirius.components.collaborative.forms.WidgetSubscriptionManager;
-import org.eclipse.sirius.components.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -87,12 +85,6 @@ public class SiriusWebStarterConfiguration {
     @ConditionalOnMissingBean(ISubscriptionManagerFactory.class)
     public ISubscriptionManagerFactory subscriptionManagerFactory() {
         return SubscriptionManager::new;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(IWidgetSubscriptionManagerFactory.class)
-    public IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory() {
-        return WidgetSubscriptionManager::new;
     }
 
     @Bean

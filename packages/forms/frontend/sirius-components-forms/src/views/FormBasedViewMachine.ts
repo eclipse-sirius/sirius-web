@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,15 +12,7 @@
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { assign, Machine } from 'xstate';
-import {
-  GQLForm,
-  GQLFormRefreshedEventPayload,
-  GQLPropertiesEventPayload,
-  GQLSubscriber,
-  GQLSubscribersUpdatedEventPayload,
-  GQLWidgetSubscription,
-  GQLWidgetSubscriptionsUpdatedEventPayload,
-} from '../form/FormEventFragments.types';
+import { GQLForm, GQLFormRefreshedEventPayload, GQLPropertiesEventPayload } from '../form/FormEventFragments.types';
 
 export interface FormBasedViewStateSchema {
   states: {
@@ -51,8 +43,6 @@ export interface FormBasedViewContext {
   id: string;
   currentSelection: Selection | null;
   form: GQLForm | null;
-  subscribers: GQLSubscriber[];
-  widgetSubscriptions: GQLWidgetSubscription[];
   message: string | null;
 }
 
@@ -76,13 +66,6 @@ export type FormBasedViewEvent =
 
 const isFormRefreshedEventPayload = (payload: GQLPropertiesEventPayload): payload is GQLFormRefreshedEventPayload =>
   payload.__typename === 'FormRefreshedEventPayload';
-const isSubscribersUpdatedEventPayload = (
-  payload: GQLPropertiesEventPayload
-): payload is GQLSubscribersUpdatedEventPayload => payload.__typename === 'SubscribersUpdatedEventPayload';
-const isWidgetSubscriptionsUpdatedEventPayload = (
-  payload: GQLPropertiesEventPayload
-): payload is GQLWidgetSubscriptionsUpdatedEventPayload =>
-  payload.__typename == 'WidgetSubscriptionsUpdatedEventPayload';
 
 export const formBasedViewMachine = Machine<FormBasedViewContext, FormBasedViewStateSchema, FormBasedViewEvent>(
   {
@@ -91,8 +74,6 @@ export const formBasedViewMachine = Machine<FormBasedViewContext, FormBasedViewS
       id: crypto.randomUUID(),
       currentSelection: null,
       form: null,
-      subscribers: [],
-      widgetSubscriptions: [],
       message: null,
     },
     states: {
@@ -247,12 +228,6 @@ export const formBasedViewMachine = Machine<FormBasedViewContext, FormBasedViewS
         if (isFormRefreshedEventPayload(result)) {
           const { form } = result;
           return { form };
-        } else if (isSubscribersUpdatedEventPayload(result)) {
-          const { subscribers } = result;
-          return { subscribers };
-        } else if (isWidgetSubscriptionsUpdatedEventPayload(result)) {
-          const { widgetSubscriptions } = result;
-          return { widgetSubscriptions };
         }
         return {};
       }),

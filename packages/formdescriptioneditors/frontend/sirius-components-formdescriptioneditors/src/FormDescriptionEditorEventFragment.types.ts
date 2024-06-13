@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,15 +29,6 @@ export interface GQLFormDescriptionEditorEventInput {
 
 export interface GQLFormDescriptionEditorEventPayload {
   __typename: string;
-}
-
-export interface GQLSubscribersUpdatedEventPayload extends GQLFormDescriptionEditorEventPayload {
-  id: string;
-  subscribers: GQLSubscriber[];
-}
-
-export interface GQLSubscriber {
-  username: string;
 }
 
 export interface GQLFormDescriptionEditorRefreshedEventPayload extends GQLFormDescriptionEditorEventPayload {

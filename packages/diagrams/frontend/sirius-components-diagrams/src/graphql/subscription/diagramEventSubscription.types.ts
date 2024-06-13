@@ -23,14 +23,6 @@ export interface GQLErrorPayload extends GQLDiagramEventPayload {
   message: string;
 }
 
-export interface GQLSubscribersUpdatedEventPayload extends GQLDiagramEventPayload {
-  subscribers: GQLSubscriber[];
-}
-
-export interface GQLSubscriber {
-  username: string;
-}
-
 export interface GQLDiagramRefreshedEventPayload extends GQLDiagramEventPayload {
   diagram: GQLDiagram;
   cause: GQLRefreshCause;

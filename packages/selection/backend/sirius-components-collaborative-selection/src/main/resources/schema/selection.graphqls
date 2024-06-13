@@ -9,7 +9,7 @@ input SelectionEventInput {
   targetObjectId: ID!
 }
 
-union SelectionEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | SelectionRefreshedEventPayload
+union SelectionEventPayload = ErrorPayload | SelectionRefreshedEventPayload
 
 type SelectionRefreshedEventPayload {
   id: ID!

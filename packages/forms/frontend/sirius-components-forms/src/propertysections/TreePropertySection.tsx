@@ -212,7 +212,6 @@ export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLTree>) => {
   let { nodes, expandedNodesIds } = widget;
@@ -284,12 +283,7 @@ export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
   const rootNodes = nodes.filter((node) => !node.parentId);
   return (
     <div>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-      />
+      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpanded={expandedNodesIds}

@@ -11,13 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
-import { GQLButton, GQLSubscriber } from '../form/FormEventFragments.types';
+import { GQLButton } from '../form/FormEventFragments.types';
 
 export interface ButtonPropertySectionProps {
   editingContextId: string;
   formId: string;
   widget: GQLButton;
-  subscribers: GQLSubscriber[];
   readOnly: boolean;
 }
 

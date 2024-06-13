@@ -29,7 +29,6 @@ export const ChartWidgetPropertySection: PropertySectionComponent<GQLChartWidget
   editingContextId,
   formId,
   widget,
-  subscribers,
 }: PropertySectionComponentProps<GQLChartWidget>) => {
   const classes = useStyles();
   const { chart } = widget;
@@ -49,12 +48,7 @@ export const ChartWidgetPropertySection: PropertySectionComponent<GQLChartWidget
   if (chartComponent) {
     content = (
       <>
-        <PropertySectionLabel
-          editingContextId={editingContextId}
-          formId={formId}
-          widget={widget}
-          subscribers={subscribers}
-        />
+        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
         {chartComponent}
       </>
     );

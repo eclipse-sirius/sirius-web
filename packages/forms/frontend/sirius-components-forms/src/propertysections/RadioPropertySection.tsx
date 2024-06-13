@@ -100,7 +100,6 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLRadio>) => {
   const props: RadioStyleProps = {
@@ -182,12 +181,7 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
   const selectedOption = widget.options.find((option) => option.selected);
   return (
     <FormControl error={widget.diagnostics.length > 0}>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-      />
+      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <RadioGroup
         classes={{ root: classes.radioGroupRoot }}
         aria-label={widget.label}

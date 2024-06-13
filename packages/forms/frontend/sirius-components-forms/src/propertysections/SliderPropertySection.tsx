@@ -74,7 +74,6 @@ export const SliderPropertySection: PropertySectionComponent<GQLSlider> = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLSlider>) => {
   const [editSlider, { loading, data, error }] = useMutation<GQLEditSliderMutationData, GQLEditSliderMutationVariables>(
@@ -157,7 +156,6 @@ export const SliderPropertySection: PropertySectionComponent<GQLSlider> = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         data-testid={widget.label}
       />
       <Slider

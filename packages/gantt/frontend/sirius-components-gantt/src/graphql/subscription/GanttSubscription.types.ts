@@ -21,15 +21,6 @@ export interface GQLGanttEventPayload {
   __typename: string;
 }
 
-export interface GQLSubscribersUpdatedEventPayload extends GQLGanttEventPayload {
-  id: string;
-  subscribers: GQLSubscriber[];
-}
-
-export interface GQLSubscriber {
-  username: string;
-}
-
 export interface GQLGanttRefreshedEventPayload extends GQLGanttEventPayload {
   id: string;
   gantt: GQLGantt;

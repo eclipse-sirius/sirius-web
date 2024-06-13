@@ -29,7 +29,6 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDescriptionService;
-import org.eclipse.sirius.components.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.forms.api.PropertiesConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
@@ -64,8 +63,6 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
-    private final IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory;
-
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
     private final IFormPostProcessor formPostProcessor;
@@ -79,7 +76,6 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
-        this.widgetSubscriptionManagerFactory = Objects.requireNonNull(formConfiguration.getWidgetSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
     }
@@ -115,7 +111,6 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
                 IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
                         new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers),
                         this.subscriptionManagerFactory.create(),
-                        this.widgetSubscriptionManagerFactory.create(),
                         this.representationSearchService,
                         this.representationRefreshPolicyRegistry,
                         this.formPostProcessor);

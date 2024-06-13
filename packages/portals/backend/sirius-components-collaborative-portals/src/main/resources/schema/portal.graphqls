@@ -8,7 +8,7 @@ input PortalEventInput {
   portalId: String!
 }
 
-union PortalEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | PortalRefreshedEventPayload
+union PortalEventPayload = ErrorPayload | PortalRefreshedEventPayload
 
 type PortalRefreshedEventPayload {
   id: ID!
