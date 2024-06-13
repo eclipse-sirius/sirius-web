@@ -78,7 +78,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
       const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
-      const headerHeightFootprint = labelElement ? getHeaderHeightFootprint(labelElement, false, false) : 0;
+      const headerHeightFootprint = labelElement ? getHeaderHeightFootprint(labelElement, null, null) : 0;
 
       if (!!createdNode) {
         child.position = createdNode.position;

@@ -28,6 +28,27 @@ const getOverflowStrategy = (label: EdgeLabel | InsideLabel | OutsideLabel): Lab
   return undefined;
 };
 
+const isDisplayTopHeaderSeparator = (label: EdgeLabel | InsideLabel | OutsideLabel): boolean => {
+  if ('displayHeaderSeparator' in label) {
+    return label.displayHeaderSeparator && label.headerPosition === 'BOTTOM';
+  }
+  return false;
+};
+
+const isDisplayBottomHeaderSeparator = (label: EdgeLabel | InsideLabel | OutsideLabel): boolean => {
+  if ('displayHeaderSeparator' in label) {
+    return label.displayHeaderSeparator && label.headerPosition === 'TOP';
+  }
+  return false;
+};
+
+const getHeaderSeparatorStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): React.CSSProperties | undefined => {
+  if ('headerSeparatorStyle' in label) {
+    return label.headerSeparatorStyle;
+  }
+  return undefined;
+};
+
 const labelStyle = (
   theme: Theme,
   style: React.CSSProperties,
@@ -109,12 +130,20 @@ export const Label = memo(({ diagramElementId, label, faded, transform }: LabelP
       </div>
     );
   return (
-    <div
-      data-id={label.id}
-      data-testid={`Label - ${label.text}`}
-      style={labelStyle(theme, label.style, faded, transform)}
-      className="nopan">
-      {content}
-    </div>
+    <>
+      {isDisplayTopHeaderSeparator(label) && (
+        <div data-testid={`Label top separator - ${label.text}`} style={getHeaderSeparatorStyle(label)} />
+      )}
+      <div
+        data-id={label.id}
+        data-testid={`Label - ${label.text}`}
+        style={labelStyle(theme, label.style, faded, transform)}
+        className="nopan">
+        {content}
+      </div>
+      {isDisplayBottomHeaderSeparator(label) && (
+        <div data-testid={`Label bottom separator - ${label.text}`} style={getHeaderSeparatorStyle(label)} />
+      )}
+    </>
   );
 });

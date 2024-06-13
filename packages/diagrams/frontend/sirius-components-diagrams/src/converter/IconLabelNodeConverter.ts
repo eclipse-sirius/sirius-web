@@ -99,6 +99,8 @@ const toIconLabelNode = (
       isHeader: insideLabel.isHeader,
       displayHeaderSeparator: insideLabel.displayHeaderSeparator,
       overflowStrategy: insideLabel.overflowStrategy,
+      headerSeparatorStyle: {},
+      headerPosition: undefined,
     };
   }
 
