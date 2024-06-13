@@ -18,6 +18,11 @@ type Project {
   name: String!
   currentEditingContext: EditingContext!
   images: [ImageMetadata!]!
+  natures: [Nature!]!
+}
+
+type Nature {
+  name: String!
 }
 
 extend type Subscription {

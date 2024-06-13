@@ -12,30 +12,18 @@
  *******************************************************************************/
 import { RepresentationMetadata } from '@eclipse-sirius/sirius-components-core';
 import { Machine, assign } from 'xstate';
-import { GQLGetProjectQueryData, Project } from './EditProjectView.types';
+import { EditingContext, Nature, Project } from './useCurrentProject.types';
+import { GQLGetProjectAndRepresentationMetadataQueryData } from './useProjectAndRepresentationMetadata.types';
 
 export interface EditProjectViewStateSchema {
   states: {
-    toast: {
-      states: {
-        visible: {};
-        hidden: {};
-      };
-    };
-    editProjectView: {
-      states: {
-        loading: {};
-        loaded: {};
-        missing: {};
-      };
-    };
+    loading: {};
+    loaded: {};
+    missing: {};
   };
 }
 
-export type SchemaValue = {
-  toast: 'visible' | 'hidden';
-  editProjectView: 'loading' | 'loaded' | 'missing';
-};
+export type SchemaValue = 'loading' | 'loaded' | 'missing';
 
 export interface EditProjectViewContext {
   project: Project | null;
@@ -43,76 +31,46 @@ export interface EditProjectViewContext {
   message: string | null;
 }
 
-export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
-export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type HandleFetchedProjectEvent = { type: 'HANDLE_FETCHED_PROJECT'; data: GQLGetProjectQueryData };
+export type HandleFetchedProjectEvent = {
+  type: 'HANDLE_FETCHED_PROJECT';
+  data: GQLGetProjectAndRepresentationMetadataQueryData;
+};
 export type SelectRepresentationEvent = { type: 'SELECT_REPRESENTATION'; representation: RepresentationMetadata };
-export type EditProjectViewEvent =
-  | HandleFetchedProjectEvent
-  | SelectRepresentationEvent
-  | ShowToastEvent
-  | HideToastEvent;
+export type EditProjectViewEvent = HandleFetchedProjectEvent | SelectRepresentationEvent;
 
 export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjectViewStateSchema, EditProjectViewEvent>(
   {
-    type: 'parallel',
     context: {
       project: null,
       representation: null,
       message: null,
     },
+    initial: 'loading',
     states: {
-      toast: {
-        initial: 'hidden',
-        states: {
-          hidden: {
-            on: {
-              SHOW_TOAST: {
-                target: 'visible',
-                actions: 'setMessage',
-              },
+      loading: {
+        on: {
+          HANDLE_FETCHED_PROJECT: [
+            {
+              cond: 'isMissing',
+              target: 'missing',
             },
-          },
-          visible: {
-            on: {
-              HIDE_TOAST: {
-                target: 'hidden',
-                actions: 'clearMessage',
-              },
+            {
+              target: 'loaded',
+              actions: 'updateProject',
             },
+          ],
+        },
+      },
+      loaded: {
+        on: {
+          SELECT_REPRESENTATION: {
+            target: 'loaded',
+            actions: 'selectRepresentation',
           },
         },
       },
-      editProjectView: {
-        initial: 'loading',
-        states: {
-          loading: {
-            on: {
-              HANDLE_FETCHED_PROJECT: [
-                {
-                  cond: 'isMissing',
-                  target: 'missing',
-                },
-                {
-                  target: 'loaded',
-                  actions: 'updateProject',
-                },
-              ],
-            },
-          },
-          loaded: {
-            type: 'final',
-            on: {
-              SELECT_REPRESENTATION: {
-                target: 'loaded',
-                actions: 'selectRepresentation',
-              },
-            },
-          },
-          missing: {
-            type: 'final',
-          },
-        },
+      missing: {
+        type: 'final',
       },
     },
   },
@@ -127,8 +85,10 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
       updateProject: assign((_, event) => {
         const { data } = event as HandleFetchedProjectEvent;
         const { project: gQLProject } = data.viewer;
-        const { id, name, currentEditingContext } = gQLProject;
-        const project = { id, name, currentEditingContext: { id: currentEditingContext.id } };
+
+        const natures: Nature[] = gQLProject.natures.map((gqlNature) => ({ name: gqlNature.name }));
+        const currentEditingContext: EditingContext = { id: gQLProject.currentEditingContext.id };
+        const project: Project = { id: gQLProject.id, name: gQLProject.name, natures, currentEditingContext };
 
         let representation: RepresentationMetadata | null = null;
         if (gQLProject.currentEditingContext.representation) {
@@ -144,13 +104,6 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
       selectRepresentation: assign((_, event) => {
         const { representation } = event as SelectRepresentationEvent;
         return { representation };
-      }),
-      setMessage: assign((_, event) => {
-        const { message } = event as ShowToastEvent;
-        return { message };
-      }),
-      clearMessage: assign((_) => {
-        return { message: null };
       }),
     },
   }

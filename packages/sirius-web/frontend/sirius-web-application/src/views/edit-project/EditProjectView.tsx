@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useQuery } from '@apollo/client';
 import {
   RepresentationMetadata,
   Selection,
   SelectionContextProvider,
-  Toast,
   Workbench,
 } from '@eclipse-sirius/sirius-components-core';
+import { useMachine } from '@xstate/react';
+
 import {
   DiagramPaletteToolContext,
   DiagramPaletteToolContextValue,
@@ -36,7 +36,6 @@ import {
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { useNodes } from 'reactflow';
@@ -44,40 +43,25 @@ import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from './DocumentTreeItemContextMenuContribution';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
-import { EditProjectViewParams, GQLGetProjectQueryData, GQLGetProjectQueryVariables } from './EditProjectView.types';
+import {
+  DiagramPaletteToolProviderProps,
+  EditProjectViewParams,
+  TreeItemContextMenuProviderProps,
+  TreeToolBarProviderProps,
+} from './EditProjectView.types';
 import {
   EditProjectViewContext,
   EditProjectViewEvent,
   HandleFetchedProjectEvent,
-  HideToastEvent,
-  SchemaValue,
   SelectRepresentationEvent,
-  ShowToastEvent,
   editProjectViewMachine,
 } from './EditProjectViewMachine';
 import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
+import { ProjectContext } from './ProjectContext';
 import { PapayaOperationActivityLabelDetailToolContribution } from './ToolContributions/PapayaOperationActivityLabelDetailToolContribution';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
-
-const getProjectQuery = gql`
-  query getRepresentation($projectId: ID!, $representationId: ID!, $includeRepresentation: Boolean!) {
-    viewer {
-      project(projectId: $projectId) {
-        id
-        name
-        currentEditingContext {
-          id
-          representation(representationId: $representationId) @include(if: $includeRepresentation) {
-            id
-            label
-            kind
-          }
-        }
-      }
-    }
-  }
-`;
+import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
 
 const useEditProjectViewStyles = makeStyles((_) => ({
   editProjectView: {
@@ -94,161 +78,150 @@ export const EditProjectView = () => {
   const routeMatch = useRouteMatch();
   const { projectId, representationId } = useParams<EditProjectViewParams>();
   const classes = useEditProjectViewStyles();
+
   const [{ value, context }, dispatch] = useMachine<EditProjectViewContext, EditProjectViewEvent>(
     editProjectViewMachine
   );
-  const { toast, editProjectView } = value as SchemaValue;
-  const { project, representation, message } = context;
 
-  const { loading, data, error } = useQuery<GQLGetProjectQueryData, GQLGetProjectQueryVariables>(getProjectQuery, {
-    variables: {
-      projectId,
-      representationId: representationId ?? '',
-      includeRepresentation: !!representationId,
-    },
-  });
+  const { data } = useProjectAndRepresentationMetadata(projectId, representationId);
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
-      }
-      if (data) {
-        const fetchProjectEvent: HandleFetchedProjectEvent = { type: 'HANDLE_FETCHED_PROJECT', data };
-        dispatch(fetchProjectEvent);
-      }
+    if (data) {
+      const fetchProjectEvent: HandleFetchedProjectEvent = { type: 'HANDLE_FETCHED_PROJECT', data };
+      dispatch(fetchProjectEvent);
     }
-  }, [loading, data, error, dispatch]);
+  }, [data]);
+
+  const onRepresentationSelected = (representationMetadata: RepresentationMetadata) => {
+    const selectRepresentationEvent: SelectRepresentationEvent = {
+      type: 'SELECT_REPRESENTATION',
+      representation: representationMetadata,
+    };
+    dispatch(selectRepresentationEvent);
+  };
 
   useEffect(() => {
-    if (representation && representation.id !== representationId) {
-      const pathname = generatePath(routeMatch.path, { projectId, representationId: representation.id });
+    if (context.representation && context.representation.id !== representationId) {
+      const pathname = generatePath(routeMatch.path, { projectId, representationId: context.representation.id });
       history.push({ pathname });
-    } else if (editProjectView === 'loaded' && representation === null && representationId) {
+    } else if (value === 'loaded' && context.representation === null && representationId) {
       const pathname = generatePath(routeMatch.path, { projectId, representationId: null });
       history.push({ pathname });
     }
-  }, [editProjectView, projectId, routeMatch, history, representation, representationId]);
+  }, [value, projectId, routeMatch, history, context.representation, representationId]);
 
-  let initialSelection: Selection = null;
-  if (representation) {
-    initialSelection = {
-      entries: [
-        {
-          id: representation?.id,
-          label: representation?.label,
-          kind: representation?.kind,
-        },
-      ],
+  let content: React.ReactNode = null;
+
+  if (value === 'loading') {
+    content = <NavigationBar />;
+  }
+
+  if (value === 'missing') {
+    content = (
+      <>
+        <NavigationBar />
+        <Grid container justifyContent="center" alignItems="center">
+          <Typography variant="h4" align="center" gutterBottom>
+            The project does not exist
+          </Typography>
+        </Grid>
+      </>
+    );
+  }
+
+  if (value === 'loaded' && context.project) {
+    const initialSelection: Selection = {
+      entries: context.representation
+        ? [
+            {
+              id: context.representation.id,
+              label: context.representation.label,
+              kind: context.representation.kind,
+            },
+          ]
+        : [],
     };
-  }
-
-  let main = null;
-  if (editProjectView === 'loaded' && project) {
-    const onRepresentationSelected = (representationSelected: RepresentationMetadata) => {
-      const selectRepresentationEvent: SelectRepresentationEvent = {
-        type: 'SELECT_REPRESENTATION',
-        representation: representationSelected,
-      };
-      dispatch(selectRepresentationEvent);
-    };
-
-    const treeItemContextMenuContributions: TreeItemContextMenuContextValue = [
-      <TreeItemContextMenuContribution
-        canHandle={(treeId: string, item: GQLTreeItem) =>
-          treeId.startsWith('explorer://') && item.kind.startsWith('siriusWeb://document')
-        }
-        component={DocumentTreeItemContextMenuContribution}
-      />,
-      <TreeItemContextMenuContribution
-        canHandle={(treeId: string, item: GQLTreeItem) =>
-          treeId.startsWith('explorer://') && item.kind.startsWith('siriusComponents://semantic')
-        }
-        component={ObjectTreeItemContextMenuContribution}
-      />,
-      <TreeItemContextMenuContribution
-        canHandle={(treeId: string, item: GQLTreeItem) =>
-          treeId.startsWith('explorer://') && item.kind === 'siriusComponents://representation?type=Diagram'
-        }
-        component={DiagramTreeItemContextMenuContribution}
-      />,
-    ];
-
-    const treeToolBarContributions: TreeToolBarContextValue = [
-      <TreeToolBarContribution component={NewDocumentModalContribution} />,
-      <TreeToolBarContribution component={UploadDocumentModalContribution} />,
-    ];
-    const diagramPaletteToolContributions: DiagramPaletteToolContextValue = [
-      <DiagramPaletteToolContribution
-        canHandle={(_diagramId, diagramElementId) => {
-          const nodes = useNodes<NodeData>();
-          const targetedNode = nodes.find((node) => node.id === diagramElementId);
-          if (targetedNode) {
-            return (
-              targetedNode.data.targetObjectKind ===
-              'siriusComponents://semantic?domain=papaya_operational_analysis&entity=OperationalActivity'
-            );
-          }
-          return false;
-        }}
-        component={PapayaOperationActivityLabelDetailToolContribution}
-      />,
-    ];
-
-    main = (
-      <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
-        <TreeToolBarContext.Provider value={treeToolBarContributions}>
-          <DiagramPaletteToolContext.Provider value={diagramPaletteToolContributions}>
-            <Workbench
-              editingContextId={project.currentEditingContext.id}
-              initialRepresentationSelected={representation}
-              onRepresentationSelected={onRepresentationSelected}
-              readOnly={false}
-            />
-          </DiagramPaletteToolContext.Provider>
-        </TreeToolBarContext.Provider>
-      </TreeItemContextMenuContext.Provider>
-    );
-  } else if (editProjectView === 'missing') {
-    main = (
-      <Grid container justifyContent="center" alignItems="center">
-        <Typography variant="h4" align="center" gutterBottom>
-          The project does not exist
-        </Typography>
-      </Grid>
+    content = (
+      <ProjectContext.Provider value={{ project: context.project }}>
+        <SelectionContextProvider initialSelection={initialSelection}>
+          <EditProjectNavbar />
+          <TreeItemContextMenuProvider>
+            <TreeToolBarProvider>
+              <DiagramPaletteToolProvider>
+                <Workbench
+                  editingContextId={context.project.currentEditingContext.id}
+                  initialRepresentationSelected={context.representation}
+                  onRepresentationSelected={onRepresentationSelected}
+                  readOnly={false}
+                />
+              </DiagramPaletteToolProvider>
+            </TreeToolBarProvider>
+          </TreeItemContextMenuProvider>
+        </SelectionContextProvider>
+      </ProjectContext.Provider>
     );
   }
 
-  let navbar = null;
-  if (editProjectView === 'missing' || editProjectView === 'loading') {
-    navbar = <NavigationBar />;
-  } else if (editProjectView === 'loaded') {
-    navbar = <EditProjectNavbar project={project} />;
-  }
+  return <div className={classes.editProjectView}>{content}</div>;
+};
 
-  if (editProjectView !== 'loaded') {
-    return (
-      <div className={classes.editProjectView}>
-        {navbar}
-        {main}
-      </div>
-    );
-  }
+const TreeItemContextMenuProvider = ({ children }: TreeItemContextMenuProviderProps) => {
+  const treeItemContextMenuContributions: TreeItemContextMenuContextValue = [
+    <TreeItemContextMenuContribution
+      canHandle={(treeId: string, item: GQLTreeItem) =>
+        treeId.startsWith('explorer://') && item.kind.startsWith('siriusWeb://document')
+      }
+      component={DocumentTreeItemContextMenuContribution}
+    />,
+    <TreeItemContextMenuContribution
+      canHandle={(treeId: string, item: GQLTreeItem) =>
+        treeId.startsWith('explorer://') && item.kind.startsWith('siriusComponents://semantic')
+      }
+      component={ObjectTreeItemContextMenuContribution}
+    />,
+    <TreeItemContextMenuContribution
+      canHandle={(treeId: string, item: GQLTreeItem) =>
+        treeId.startsWith('explorer://') && item.kind === 'siriusComponents://representation?type=Diagram'
+      }
+      component={DiagramTreeItemContextMenuContribution}
+    />,
+  ];
 
   return (
-    <SelectionContextProvider initialSelection={initialSelection}>
-      <div className={classes.editProjectView}>
-        {navbar}
-        {main}
-      </div>
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
-    </SelectionContextProvider>
+    <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
+      {children}
+    </TreeItemContextMenuContext.Provider>
+  );
+};
+
+const TreeToolBarProvider = ({ children }: TreeToolBarProviderProps) => {
+  const treeToolBarContributions: TreeToolBarContextValue = [
+    <TreeToolBarContribution component={NewDocumentModalContribution} />,
+    <TreeToolBarContribution component={UploadDocumentModalContribution} />,
+  ];
+
+  return <TreeToolBarContext.Provider value={treeToolBarContributions}>{children}</TreeToolBarContext.Provider>;
+};
+
+const DiagramPaletteToolProvider = ({ children }: DiagramPaletteToolProviderProps) => {
+  const diagramPaletteToolContributions: DiagramPaletteToolContextValue = [
+    <DiagramPaletteToolContribution
+      canHandle={(_diagramId, diagramElementId) => {
+        const nodes = useNodes<NodeData>();
+        const targetedNode = nodes.find((node) => node.id === diagramElementId);
+        if (targetedNode) {
+          return (
+            targetedNode.data.targetObjectKind ===
+            'siriusComponents://semantic?domain=papaya_operational_analysis&entity=OperationalActivity'
+          );
+        }
+        return false;
+      }}
+      component={PapayaOperationActivityLabelDetailToolContribution}
+    />,
+  ];
+  return (
+    <DiagramPaletteToolContext.Provider value={diagramPaletteToolContributions}>
+      {children}
+    </DiagramPaletteToolContext.Provider>
   );
 };

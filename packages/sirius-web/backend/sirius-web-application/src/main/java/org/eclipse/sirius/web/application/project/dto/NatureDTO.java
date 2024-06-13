@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.projects;
+package org.eclipse.sirius.web.application.project.dto;
 
-import java.util.List;
-
-import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
-import org.eclipse.sirius.web.services.api.projects.Project;
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Class used to convert project entities to project data transfer objects and vice versa.
+ * DTO used to represent the nature of a project.
  *
  * @author sbegaudeau
  */
-public class ProjectMapper {
-    public Project toDTO(ProjectEntity projectEntity) {
-        return new Project(projectEntity.getId(), projectEntity.getName(), List.of());
-    }
+public record NatureDTO(@NotNull String name) {
 }

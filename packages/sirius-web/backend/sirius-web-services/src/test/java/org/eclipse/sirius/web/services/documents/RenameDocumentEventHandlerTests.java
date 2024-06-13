@@ -57,7 +57,7 @@ public class RenameDocumentEventHandlerTests {
         IDocumentService noOpDocumentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> rename(UUID documentId, String newName) {
-                return Optional.of(new Document(documentId, new Project(UUID.randomUUID(), ""), newName, "noContent"));
+                return Optional.of(new Document(documentId, new Project(UUID.randomUUID(), "", List.of()), newName, "noContent"));
             }
         };
         RenameDocumentEventHandler handler = new RenameDocumentEventHandler(noOpDocumentService, new NoOpServicesMessageService(), new SimpleMeterRegistry());

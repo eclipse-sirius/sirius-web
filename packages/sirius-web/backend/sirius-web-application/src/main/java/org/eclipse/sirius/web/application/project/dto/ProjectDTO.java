@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.dto;
 
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.validation.constraints.NotNull;
@@ -23,5 +24,6 @@ import jakarta.validation.constraints.NotNull;
  */
 public record ProjectDTO(
         @NotNull UUID id,
-        @NotNull String name) {
+        @NotNull String name,
+        @NotNull List<NatureDTO> natures) {
 }

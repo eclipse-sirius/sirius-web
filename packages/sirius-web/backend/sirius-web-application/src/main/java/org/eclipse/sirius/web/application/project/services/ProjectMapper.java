@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
+import org.eclipse.sirius.web.application.project.dto.NatureDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
@@ -26,6 +27,9 @@ import org.springframework.stereotype.Component;
 public class ProjectMapper implements IProjectMapper {
     @Override
     public ProjectDTO toDTO(Project project) {
-        return new ProjectDTO(project.getId(), project.getName());
+        var natures = project.getNatures().stream()
+                .map(nature -> new NatureDTO(nature.name()))
+                .toList();
+        return new ProjectDTO(project.getId(), project.getName(), natures);
     }
 }
