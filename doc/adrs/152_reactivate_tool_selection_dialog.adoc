@@ -1,0 +1,144 @@
+= [ADR-152] Reactivate the Selection Dialog Tool
+
+== Context
+
+Since the migration from Sprotty to React-Flow, the Selection dialog has been deactivated. The purpose of this ADR is to explain how we will reactivate this feature on the new architecture.
+
+The backend and frontend part of the selection dialog are located here:
+
+* Backend
+** sirius-components-collaborative-selection
+** sirius-components-selection
+** sirius-components-selection-graphql
+* Frontend
+** packages/selection/frontend/sirius-components-selection
+
+=== Lifecycle
+
+On the specifier side, the selection dialog is asked by adding a _SelectionDescription_ in the _NodeTool_.
+If a _SelectionDescription_ is defined on the node tool, the _selectionDescriptionId_ is set in the Tool pojo returned to the frontend.
+
+In the former diagram architecture, if the tool defined a selectionDescription (the tool.selectionDescriptionId value is defined) a SHOW_SELECTION_DIALOG event was dispatched on the DiagramWebSocketContainer state machine. 
+
+```ts
+if (tool.selectionDescriptionId) {
+  const showSelectionDialogEvent: ShowSelectionDialogEvent = {
+    type: 'SHOW_SELECTION_DIALOG',
+    activeTool: tool,
+  };
+  dispatch(showSelectionDialogEvent);
+} else {
+  invokeTool(tool, element.id, startingPosition);
+  diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
+}
+```
+
+Then we open the selection dialog: 
+
+```ts
+if (selectionDialog === 'visible') {
+  selectModelElementDialog = (
+    <SelectionDialogWebSocketContainer
+      editingContextId={editingContextId}
+      selectionRepresentationId={(activeTool as CreateNodeTool).selectionDescriptionId}
+      targetObjectId={contextualPalette.element.targetObjectId}
+      onClose={() => {
+        dispatch({ type: 'CLOSE_SELECTION_DIALOG' } as CloseSelectionDialogEvent);
+      }}
+      onFinish={(selectedObjectId) => {
+        dispatch({
+          type: 'HANDLE_SELECTED_OBJECT_IN_SELECTION_DIALOG',
+          selectedObjectId,
+        } as HandleSelectedObjectInSelectionDialogEvent);
+      }}
+    />
+  );
+}
+```
+
+The tool was finaly invoked within this useEffect (depending on the selectedObjectId value):
+
+```ts
+  useEffect(() => {
+    if (selectedObjectId && activeTool && contextualPalette) {
+      invokeTool(activeTool, contextualPalette.element.id, contextualPalette.startingPosition);
+      diagramServer.actionDispatcher.dispatch({ kind: SOURCE_ELEMENT_ACTION });
+      const resetSelectedObjectInSelectionDialogEvent: ResetSelectedObjectInSelectionDialogEvent = {
+        type: 'RESET_SELECTED_OBJECT_IN_SELECTION_DIALOG',
+      };
+      dispatch(resetSelectedObjectInSelectionDialogEvent);
+    }
+  }, [activeTool, diagramServer, invokeTool, dispatch, selectedObjectId, contextualPalette]);
+```
+
+== Decision
+
+The new diagram architecture based on react-flow has changed significantly. The tools are now invoked in the _Palette_ component:
+
+```ts
+  const handleToolClick = (tool: GQLTool) => {
+    switch (tool.id) {
+      case 'edit':
+        onDirectEditClick();
+        break;
+      case 'semantic-delete':
+        showDeletionConfirmation(() => {
+          invokeDelete(diagramElementId, GQLDeletionPolicy.SEMANTIC);
+        });
+        break;
+      case 'graphical-delete':
+        invokeDelete(diagramElementId, GQLDeletionPolicy.GRAPHICAL);
+        break;
+      case 'expand':
+        collapseExpandElement(diagramElementId, GQLCollapsingState.EXPANDED);
+        break;
+      case 'collapse':
+        collapseExpandElement(diagramElementId, GQLCollapsingState.COLLAPSED);
+        break;
+      default:
+        invokeSingleClickTool(tool);
+        break;
+    }
+  };
+```
+
+In a similar way than the delete tool shows the deletion confirmation dialog, the palette should call a showSelectionDialog if the tool defines a selectionDescriptionID.
+
+Palette.tsx:
+```ts
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+  const { showSelectionDialog } = useSelectionDialog();
+```
+
+The Palette will not call the invokeSingleClickTool directly but it will first verify if we need to show the selection dialog. The callback when performing the finish action will be responsible for invoking the tool with the selectedElementId.
+
+```ts
+if (tool.selectionDescriptionId) {
+  showSelectionDialog(editingContextId, tool.selectionRepresentationId, targetObjectId, onFinish, onClose);
+} else {
+  invokeSingleClickTool(tool);
+}
+
+```
+
+We will create a new hook "_useSelectionDialog_" in a similar way than the confirmationDialog. This hook will use the _SelectionDialogContext_.
+The _SelectionDialogContextProvider_ will be added in the DiagramRepresentation:
+
+```
+<FullscreenContextProvider>
+  <SelectionDialogContextProvider>
+    <DiagramRenderer
+      key={state.diagramRefreshedEventPayload.diagram.id}
+      diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+    />
+  </SelectionDialogContextProvider>
+</FullscreenContextProvider>
+
+```
+
+== Status
+
+Work in progress
+
+== Consequences
+
