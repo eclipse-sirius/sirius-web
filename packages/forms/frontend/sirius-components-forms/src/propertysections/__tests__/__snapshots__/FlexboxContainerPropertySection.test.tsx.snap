@@ -14,9 +14,6 @@ exports[`should render the flexbox container with border style 1`] = `
       >
         label
       </h6>
-      <div
-        class="makeStyles-subscribers-8"
-      />
     </div>
     <div
       class="makeStyles-container-2 makeStyles-container-12"
@@ -39,9 +36,6 @@ exports[`should render the flexbox container without style 1`] = `
       >
         label
       </h6>
-      <div
-        class="makeStyles-subscribers-8"
-      />
     </div>
     <div
       class="makeStyles-container-2 makeStyles-container-5"

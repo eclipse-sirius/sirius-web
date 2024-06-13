@@ -25,10 +25,6 @@ import {
   GQLEditRichTextPayload,
   GQLErrorPayload,
   GQLSuccessPayload,
-  GQLUpdateWidgetFocusInput,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusMutationVariables,
-  GQLUpdateWidgetFocusPayload,
 } from './RichTextPropertySection.types';
 
 export const editRichTextMutation = gql`
@@ -51,25 +47,10 @@ export const editRichTextMutation = gql`
   }
 `;
 
-export const updateWidgetFocusMutation = gql`
-  mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
-    updateWidgetFocus(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
-const isErrorPayload = (payload: GQLEditRichTextPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLEditRichTextPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (
-  payload: GQLEditRichTextPayload | GQLUpdateWidgetFocusPayload
-): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
+const isSuccessPayload = (payload: GQLEditRichTextPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 /**
  * Defines the content of a Rich Text property section.
@@ -111,41 +92,7 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
     }
   }, [updateRichTextLoading, updateRichTextData, updateRichTextError]);
 
-  const [
-    updateWidgetFocus,
-    { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
-  ] = useMutation<GQLUpdateWidgetFocusMutationData, GQLUpdateWidgetFocusMutationVariables>(updateWidgetFocusMutation);
-  const sendUpdateWidgetFocus = (selected: boolean) => {
-    const input: GQLUpdateWidgetFocusInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: formId,
-      widgetId: widget.id,
-      selected,
-    };
-    const variables: GQLUpdateWidgetFocusMutationVariables = {
-      input,
-    };
-    updateWidgetFocus({ variables });
-  };
-
-  useEffect(() => {
-    if (!updateWidgetFocusLoading) {
-      if (updateWidgetFocusError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (updateWidgetFocusData) {
-        const { updateWidgetFocus } = updateWidgetFocusData;
-        if (isErrorPayload(updateWidgetFocus)) {
-          addMessages(updateWidgetFocus.messages);
-        }
-      }
-    }
-  }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError]);
-
-  const onFocus = () => sendUpdateWidgetFocus(true);
   const onBlur = (currentText: string) => {
-    sendUpdateWidgetFocus(false);
     if (currentText !== widget.stringValue) {
       sendEditedValue(currentText);
     }
@@ -158,7 +105,6 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
         <RichTextEditor
           value={widget.stringValue}
           placeholder={widget.label}
-          onFocus={onFocus}
           onBlur={onBlur}
           readOnly={readOnly || widget.readOnly}
         />

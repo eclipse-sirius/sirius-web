@@ -14,9 +14,6 @@ exports[`should display the error received 1`] = `
         >
           Label
         </h6>
-        <div
-          class="makeStyles-subscribers-34"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-31 MuiButton-contained MuiButton-containedPrimary"
@@ -52,9 +49,6 @@ exports[`should display the error received 2`] = `
         >
           Label
         </h6>
-        <div
-          class="makeStyles-subscribers-34"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-31 MuiButton-contained MuiButton-containedPrimary"
@@ -89,9 +83,6 @@ exports[`should render a readOnly button 1`] = `
       >
         Label
       </h6>
-      <div
-        class="makeStyles-subscribers-16"
-      />
     </div>
     <button
       class="MuiButtonBase-root MuiButton-root makeStyles-style-10 makeStyles-style-13 MuiButton-contained MuiButton-containedPrimary Mui-disabled Mui-disabled"
@@ -124,9 +115,6 @@ exports[`should render a readOnly button from widget properties 1`] = `
         >
           Label
         </h6>
-        <div
-          class="makeStyles-subscribers-79"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root makeStyles-style-73 makeStyles-style-76 MuiButton-contained MuiButton-containedPrimary Mui-disabled Mui-disabled"
@@ -159,9 +147,6 @@ exports[`should render the button 1`] = `
       >
         Label
       </h6>
-      <div
-        class="makeStyles-subscribers-7"
-      />
     </div>
     <button
       class="MuiButtonBase-root MuiButton-root makeStyles-style-1 makeStyles-style-4 MuiButton-contained MuiButton-containedPrimary"
@@ -196,9 +181,6 @@ exports[`should render the button with empty style 1`] = `
         >
           Label
         </h6>
-        <div
-          class="makeStyles-subscribers-61"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root makeStyles-style-55 makeStyles-style-58 MuiButton-contained MuiButton-containedPrimary"
@@ -247,9 +229,6 @@ exports[`should render the button with help hint 1`] = `
             d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
           />
         </svg>
-        <div
-          class="makeStyles-subscribers-70"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root makeStyles-style-64 makeStyles-style-67 MuiButton-contained MuiButton-containedPrimary"
@@ -285,9 +264,6 @@ exports[`should render the button with style 1`] = `
         >
           Label
         </h6>
-        <div
-          class="makeStyles-subscribers-52"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root makeStyles-style-46 makeStyles-style-49 MuiButton-contained MuiButton-containedPrimary"
@@ -323,9 +299,6 @@ exports[`should render the button without style 1`] = `
         >
           Label
         </h6>
-        <div
-          class="makeStyles-subscribers-43"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root makeStyles-style-37 makeStyles-style-40 MuiButton-contained MuiButton-containedPrimary"
@@ -360,9 +333,6 @@ exports[`should send mutation when clicked 1`] = `
       >
         Label
       </h6>
-      <div
-        class="makeStyles-subscribers-25"
-      />
     </div>
     <button
       class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-22 MuiButton-contained MuiButton-containedPrimary"
@@ -396,9 +366,6 @@ exports[`should send mutation when clicked 2`] = `
       >
         Label
       </h6>
-      <div
-        class="makeStyles-subscribers-25"
-      />
     </div>
     <button
       class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-22 MuiButton-contained MuiButton-containedPrimary"

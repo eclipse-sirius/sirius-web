@@ -33,10 +33,6 @@ import {
   GQLEditRadioPayload,
   GQLErrorPayload,
   GQLSuccessPayload,
-  GQLUpdateWidgetFocusInput,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusMutationVariables,
-  GQLUpdateWidgetFocusPayload,
   RadioStyleProps,
 } from './RadioPropertySection.types';
 
@@ -51,20 +47,6 @@ export const editRadioMutation = gql`
         }
       }
       ... on SuccessPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
-export const updateWidgetFocusMutation = gql`
-  mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
-    updateWidgetFocus(input: $input) {
-      __typename
-      ... on ErrorPayload {
         messages {
           body
           level
@@ -91,9 +73,9 @@ const useRadioPropertySectionStyles = makeStyles<Theme, RadioStyleProps>((theme)
   },
 }));
 
-const isErrorPayload = (payload: GQLEditRadioPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLEditRadioPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (payload: GQLEditRadioPayload | GQLUpdateWidgetFocusPayload): payload is GQLSuccessPayload =>
+const isSuccessPayload = (payload: GQLEditRadioPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
 export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
@@ -143,41 +125,6 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
     }
   }, [loading, error, data]);
 
-  const [
-    updateWidgetFocus,
-    { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
-  ] = useMutation<GQLUpdateWidgetFocusMutationData>(updateWidgetFocusMutation);
-  const sendUpdateWidgetFocus = (selected: boolean) => {
-    const input: GQLUpdateWidgetFocusInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: formId,
-      widgetId: widget.id,
-      selected,
-    };
-    const variables: GQLUpdateWidgetFocusMutationVariables = {
-      input,
-    };
-    updateWidgetFocus({ variables });
-  };
-
-  useEffect(() => {
-    if (!updateWidgetFocusLoading) {
-      if (updateWidgetFocusError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (updateWidgetFocusData) {
-        const { updateWidgetFocus } = updateWidgetFocusData;
-        if (isErrorPayload(updateWidgetFocus)) {
-          addMessages(updateWidgetFocus.messages);
-        }
-      }
-    }
-  }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError]);
-
-  const onFocus = () => sendUpdateWidgetFocus(true);
-  const onBlur = () => sendUpdateWidgetFocus(false);
-
   const selectedOption = widget.options.find((option) => option.selected);
   return (
     <FormControl error={widget.diagnostics.length > 0}>
@@ -191,15 +138,7 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
         {widget.options.map((option) => (
           <FormControlLabel
             value={option.id}
-            control={
-              <Radio
-                className={classes.radio}
-                color="primary"
-                onFocus={onFocus}
-                onBlur={onBlur}
-                data-testid={option.label}
-              />
-            }
+            control={<Radio className={classes.radio} color="primary" data-testid={option.label} />}
             label={
               <Typography
                 classes={

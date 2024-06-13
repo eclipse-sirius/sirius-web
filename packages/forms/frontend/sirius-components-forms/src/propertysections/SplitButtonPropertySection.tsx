@@ -35,14 +35,7 @@ import {
   GQLSuccessPayload,
 } from './ButtonPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
-import {
-  GQLUpdateWidgetFocusInput,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusMutationVariables,
-  GQLUpdateWidgetFocusPayload,
-  SplitButtonPropertySectionProps,
-  SplitButtonState,
-} from './SplitButtonPropertySection.types';
+import { SplitButtonPropertySectionProps, SplitButtonState } from './SplitButtonPropertySection.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<Theme, ButtonStyleProps>((theme) => ({
@@ -86,20 +79,6 @@ const useContainerStyle = makeStyles<Theme>((theme) => ({
   },
 }));
 
-export const updateWidgetFocusMutation = gql`
-  mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
-    updateWidgetFocus(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
 export const pushButtonMutation = gql`
   mutation pushButton($input: PushButtonInput!) {
     pushButton(input: $input) {
@@ -120,10 +99,10 @@ export const pushButtonMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLPushButtonPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLPushButtonPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-const isSuccessPayload = (payload: GQLPushButtonPayload | GQLUpdateWidgetFocusPayload): payload is GQLSuccessPayload =>
+const isSuccessPayload = (payload: GQLPushButtonPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
 export const SplitButtonPropertySection = ({
@@ -188,44 +167,6 @@ export const SplitButtonPropertySection = ({
     }
   }, [loading, error, data]);
 
-  const [
-    updateWidgetFocus,
-    { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
-  ] = useMutation<GQLUpdateWidgetFocusMutationData, GQLUpdateWidgetFocusMutationVariables>(updateWidgetFocusMutation);
-
-  const sendUpdateWidgetFocus = (selected: boolean) => {
-    const input: GQLUpdateWidgetFocusInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: formId,
-      widgetId: widget.id,
-      selected,
-    };
-    const variables: GQLUpdateWidgetFocusMutationVariables = {
-      input,
-    };
-    updateWidgetFocus({ variables });
-  };
-
-  useEffect(() => {
-    if (!updateWidgetFocusLoading) {
-      if (updateWidgetFocusError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (updateWidgetFocusData) {
-        const { updateWidgetFocus } = updateWidgetFocusData;
-        if (isErrorPayload(updateWidgetFocus)) {
-          addMessages(updateWidgetFocus.messages);
-        }
-      }
-    }
-  }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError]);
-
-  const onFocus = () => sendUpdateWidgetFocus(true);
-  const onBlur = () => {
-    sendUpdateWidgetFocus(false);
-  };
-
   const handleClick = () => {
     const button: GQLButton = widget.actions[state.selectedIndex];
     const input: GQLPushButtonInput = {
@@ -261,13 +202,7 @@ export const SplitButtonPropertySection = ({
         widget={widget}
         data-testid={widget.label}
       />
-      <ButtonGroup
-        variant="contained"
-        color="primary"
-        ref={buttonGroupRef}
-        aria-label="split button"
-        onFocus={onFocus}
-        onBlur={onBlur}>
+      <ButtonGroup variant="contained" color="primary" ref={buttonGroupRef} aria-label="split button">
         <Button
           data-testid={widget.label}
           variant="contained"

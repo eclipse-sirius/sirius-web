@@ -37,10 +37,6 @@ import {
   GQLEditTreeCheckboxPayload,
   GQLErrorPayload,
   GQLSuccessPayload,
-  GQLUpdateWidgetFocusInput,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusMutationVariables,
-  GQLUpdateWidgetFocusPayload,
   TreeItemProps,
 } from './TreePropertySection.types';
 
@@ -73,12 +69,10 @@ const treeItemLabelStyle = (theme: Theme, readOnly: boolean): React.CSSPropertie
   }
   return treeItemLabelStyle;
 };
-const isErrorPayload = (
-  payload: GQLEditTreeCheckboxPayload | GQLUpdateWidgetFocusPayload
-): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (
-  payload: GQLEditTreeCheckboxPayload | GQLUpdateWidgetFocusPayload
-): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
+const isErrorPayload = (payload: GQLEditTreeCheckboxPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLEditTreeCheckboxPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 export const editTreeCheckboxMutation = gql`
   mutation editTreeCheckbox($input: EditTreeCheckboxInput!) {
@@ -91,20 +85,6 @@ export const editTreeCheckboxMutation = gql`
         }
       }
       ... on SuccessPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
-export const updateWidgetFocusMutation = gql`
-  mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
-    updateWidgetFocus(input: $input) {
-      __typename
-      ... on ErrorPayload {
         messages {
           body
           level
@@ -216,53 +196,6 @@ export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
 }: PropertySectionComponentProps<GQLTree>) => {
   let { nodes, expandedNodesIds } = widget;
 
-  const { addErrorMessage, addMessages } = useMultiToast();
-
-  const [
-    updateWidgetFocus,
-    { loading: updateWidgetFocusLoading, data: updateWidgetFocusData, error: updateWidgetFocusError },
-  ] = useMutation<GQLUpdateWidgetFocusMutationData>(updateWidgetFocusMutation);
-
-  const sendUpdateWidgetFocus = (selected: boolean) => {
-    const input: GQLUpdateWidgetFocusInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: formId,
-      widgetId: widget.id,
-      selected,
-    };
-    const variables: GQLUpdateWidgetFocusMutationVariables = {
-      input,
-    };
-    updateWidgetFocus({ variables });
-  };
-
-  useEffect(() => {
-    if (!updateWidgetFocusLoading) {
-      if (updateWidgetFocusError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (updateWidgetFocusData) {
-        const { updateWidgetFocus } = updateWidgetFocusData;
-        if (isErrorPayload(updateWidgetFocus)) {
-          addMessages(updateWidgetFocus.messages);
-        }
-      }
-    }
-  }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError]);
-
-  const onFocus = () => {
-    sendUpdateWidgetFocus(true);
-  };
-
-  const onBlur = (e) => {
-    // if the blur was because of outside focus
-    // currentTarget is the parent element, relatedTarget is the clicked element
-    if (!e.currentTarget.contains(e.relatedTarget)) {
-      sendUpdateWidgetFocus(false);
-    }
-  };
-
   if (widget.nodes.length === 0) {
     expandedNodesIds = [];
     nodes = [
@@ -287,9 +220,7 @@ export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpanded={expandedNodesIds}
-        defaultExpandIcon={<ChevronRightIcon />}
-        onFocus={onFocus}
-        onBlur={onBlur}>
+        defaultExpandIcon={<ChevronRightIcon />}>
         {rootNodes.map((rootNode) => (
           <TreeItem
             node={rootNode}

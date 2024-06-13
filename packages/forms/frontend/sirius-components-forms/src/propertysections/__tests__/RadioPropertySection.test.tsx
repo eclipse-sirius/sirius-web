@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,34 +14,29 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { MessageOptions, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLRadio } from '../../form/FormEventFragments.types';
-import {
-  editRadioMutation,
-  RadioPropertySection,
-  updateWidgetFocusMutation,
-} from '../../propertysections/RadioPropertySection';
+import { RadioPropertySection, editRadioMutation } from '../../propertysections/RadioPropertySection';
 import {
   GQLEditRadioMutationData,
   GQLEditRadioMutationVariables,
   GQLErrorPayload,
   GQLSuccessPayload,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusMutationVariables,
-  GQLUpdateWidgetFocusSuccessPayload,
 } from '../../propertysections/RadioPropertySection.types';
 
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
 afterEach(() => cleanup());
 
-const defaultRadio: GQLRadio = {
+const defaultRadio = {
   __typename: 'Radio',
   id: 'radioId',
   label: 'Status:',
   iconURL: [],
   hasHelpText: false,
   diagnostics: [],
+  readOnly: false,
   options: [
     {
       id: '0',
@@ -54,28 +49,10 @@ const defaultRadio: GQLRadio = {
       selected: false,
     },
   ],
-  style: null,
 };
 
 const radioWithStyle: GQLRadio = {
-  __typename: 'Radio',
-  id: 'radioId',
-  label: 'Status:',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  options: [
-    {
-      id: '0',
-      label: 'inactive',
-      selected: true,
-    },
-    {
-      id: '1',
-      label: 'active',
-      selected: false,
-    },
-  ],
+  ...defaultRadio,
   style: {
     color: '#de1000',
     fontSize: 20,
@@ -87,24 +64,7 @@ const radioWithStyle: GQLRadio = {
 };
 
 const radioWithEmptyStyle: GQLRadio = {
-  __typename: 'Radio',
-  id: 'radioId',
-  label: 'Status:',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  options: [
-    {
-      id: '0',
-      label: 'inactive',
-      selected: true,
-    },
-    {
-      id: '1',
-      label: 'active',
-      selected: false,
-    },
-  ],
+  ...defaultRadio,
   style: {
     color: '',
     fontSize: 14,
@@ -116,24 +76,7 @@ const radioWithEmptyStyle: GQLRadio = {
 };
 
 const readOnlyRadio: GQLRadio = {
-  __typename: 'Radio',
-  id: 'radioId',
-  label: 'Status:',
-  iconURL: [],
-  diagnostics: [],
-  options: [
-    {
-      id: '0',
-      label: 'inactive',
-      selected: true,
-    },
-    {
-      id: '1',
-      label: 'active',
-      selected: false,
-    },
-  ],
-  style: null,
+  ...radioWithEmptyStyle,
   readOnly: true,
 };
 
@@ -166,35 +109,6 @@ const editRadioErrorData: GQLEditRadioMutationData = {
   editRadio: editRadioErrorPayload,
 };
 
-const updateWidgetFocusVariables: GQLUpdateWidgetFocusMutationVariables = {
-  input: {
-    id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-    editingContextId: 'editingContextId',
-    representationId: 'formId',
-    widgetId: 'radioId',
-    selected: true,
-  },
-};
-const updateWidgetFocusSuccessPayload: GQLUpdateWidgetFocusSuccessPayload = {
-  __typename: 'UpdateWidgetFocusSuccessPayload',
-};
-const updateWidgetFocusSuccessData: GQLUpdateWidgetFocusMutationData = {
-  updateWidgetFocus: updateWidgetFocusSuccessPayload,
-};
-
-const updateWidgetFocusErrorPayload: GQLErrorPayload = {
-  __typename: 'ErrorPayload',
-  messages: [
-    {
-      body: 'An error has occurred, please refresh the page',
-      level: 'ERROR',
-    },
-  ],
-};
-const updateWidgetFocusErrorData: GQLUpdateWidgetFocusMutationData = {
-  updateWidgetFocus: updateWidgetFocusErrorPayload,
-};
-
 const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 
 const toastContextMock: ToastContextValue = {
@@ -208,8 +122,7 @@ test('should render the radio', () => {
         <RadioPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={defaultRadio}
-          subscribers={[]}
+          widget={radioWithEmptyStyle}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -222,13 +135,7 @@ test('should render a readOnly radio', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <RadioPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={defaultRadio}
-          subscribers={[]}
-          readOnly
-        />
+        <RadioPropertySection editingContextId="editingContextId" formId="formId" widget={readOnlyRadio} readOnly />
       </ToastContext.Provider>
     </MockedProvider>
   );
@@ -236,18 +143,6 @@ test('should render a readOnly radio', () => {
 });
 
 test('should send mutation when clicked', async () => {
-  let updateWidgetFocusCalled = false;
-  const updateWidgetFocusSuccessMock: MockedResponse<Record<string, any>> = {
-    request: {
-      query: updateWidgetFocusMutation,
-      variables: updateWidgetFocusVariables,
-    },
-    result: () => {
-      updateWidgetFocusCalled = true;
-      return { data: updateWidgetFocusSuccessData };
-    },
-  };
-
   let editRadioCalled = false;
   const editRadioSuccessMock: MockedResponse<Record<string, any>> = {
     request: {
@@ -260,15 +155,14 @@ test('should send mutation when clicked', async () => {
     },
   };
 
-  const mocks = [updateWidgetFocusSuccessMock, editRadioSuccessMock];
+  const mocks = [editRadioSuccessMock];
   const { container } = render(
     <MockedProvider mocks={mocks}>
       <ToastContext.Provider value={toastContextMock}>
         <RadioPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={defaultRadio}
-          subscribers={[]}
+          widget={radioWithEmptyStyle}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -276,37 +170,26 @@ test('should send mutation when clicked', async () => {
   );
   expect(container).toMatchSnapshot();
 
-  const inactive: HTMLInputElement = screen.getByTestId('inactive').querySelector('input');
-  expect(inactive.checked).toBe(true);
+  const inactive: HTMLInputElement | null = screen.getByTestId('inactive').querySelector('input');
+  expect(inactive && inactive.checked).toBe(true);
 
-  const active: HTMLInputElement = screen.getByTestId('active').querySelector('input');
-  expect(active.checked).toBe(false);
+  const active: HTMLInputElement | null = screen.getByTestId('active').querySelector('input');
+  expect(active && active.checked).toBe(false);
 
   await act(async () => {
-    userEvent.click(active);
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    if (active) {
+      userEvent.click(active);
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
-    await waitFor(() => {
-      expect(updateWidgetFocusCalled).toBeTruthy();
-      expect(editRadioCalled).toBeTruthy();
-      expect(container).toMatchSnapshot();
-    });
+      await waitFor(() => {
+        expect(editRadioCalled).toBeTruthy();
+        expect(container).toMatchSnapshot();
+      });
+    }
   });
 });
 
 test('should display the error received', async () => {
-  let updateWidgetFocusCalled = false;
-  const updateWidgetFocusErrorMock: MockedResponse<Record<string, any>> = {
-    request: {
-      query: updateWidgetFocusMutation,
-      variables: updateWidgetFocusVariables,
-    },
-    result: () => {
-      updateWidgetFocusCalled = true;
-      return { data: updateWidgetFocusErrorData };
-    },
-  };
-
   let editRadioCalled = false;
   const editRadioErrorMock: MockedResponse<Record<string, any>> = {
     request: {
@@ -319,15 +202,14 @@ test('should display the error received', async () => {
     },
   };
 
-  const mocks = [updateWidgetFocusErrorMock, editRadioErrorMock];
+  const mocks = [editRadioErrorMock];
   const { baseElement } = render(
     <MockedProvider mocks={mocks}>
       <ToastContext.Provider value={toastContextMock}>
         <RadioPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={defaultRadio}
-          subscribers={[]}
+          widget={radioWithEmptyStyle}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -335,22 +217,23 @@ test('should display the error received', async () => {
   );
   expect(baseElement).toMatchSnapshot();
 
-  const inactive: HTMLInputElement = screen.getByTestId('inactive').querySelector('input');
-  expect(inactive.checked).toBe(true);
+  const inactive: HTMLInputElement | null = screen.getByTestId('inactive').querySelector('input');
+  expect(inactive && inactive.checked).toBe(true);
 
-  const active: HTMLInputElement = screen.getByTestId('active').querySelector('input');
-  expect(active.checked).toBe(false);
+  const active: HTMLInputElement | null = screen.getByTestId('active').querySelector('input');
+  expect(active && active.checked).toBe(false);
 
   await act(async () => {
-    userEvent.click(active);
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    if (active) {
+      userEvent.click(active);
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
-    await waitFor(() => {
-      expect(updateWidgetFocusCalled).toBeTruthy();
-      expect(editRadioCalled).toBeTruthy();
-      expect(mockEnqueue).toHaveBeenCalledTimes(3);
-      expect(baseElement).toMatchSnapshot();
-    });
+      await waitFor(() => {
+        expect(editRadioCalled).toBeTruthy();
+        expect(mockEnqueue).toHaveBeenCalledTimes(2);
+        expect(baseElement).toMatchSnapshot();
+      });
+    }
   });
 });
 
@@ -361,8 +244,7 @@ test('should render the radio without style', () => {
         <RadioPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={defaultRadio}
-          subscribers={[]}
+          widget={radioWithStyle}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -379,7 +261,6 @@ test('should render the radio with style', () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={radioWithStyle}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -396,7 +277,6 @@ test('should render the radio with empty style', async () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={radioWithEmptyStyle}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -412,8 +292,7 @@ test('should render the radio with help hint', async () => {
         <RadioPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={{ ...defaultRadio, hasHelpText: true }}
-          subscribers={[]}
+          widget={{ ...radioWithEmptyStyle, hasHelpText: true }}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -430,7 +309,6 @@ test('should render a readOnly radio from widget properties', () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={readOnlyRadio}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>

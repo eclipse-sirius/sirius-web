@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { MockedProvider, MockedResponse } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing';
 import {
   MessageOptions,
   Selection,
@@ -25,13 +25,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLTree, GQLTreeNode } from '../../form/FormEventFragments.types';
-import { TreePropertySection, updateWidgetFocusMutation } from '../TreePropertySection';
-import {
-  GQLErrorPayload,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusMutationVariables,
-  GQLUpdateWidgetFocusSuccessPayload,
-} from '../TreePropertySection.types';
+import { TreePropertySection } from '../TreePropertySection';
 
 afterEach(() => cleanup());
 
@@ -40,36 +34,8 @@ const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 const toastContextMock: ToastContextValue = {
   enqueueSnackbar: mockEnqueue,
 };
+
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
-const updateWidgetFocusVariables: GQLUpdateWidgetFocusMutationVariables = {
-  input: {
-    id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-    editingContextId: 'editingContextId',
-    representationId: 'formId',
-    widgetId: 'treeId',
-    selected: true,
-  },
-};
-
-const updateWidgetFocusSuccessPayload: GQLUpdateWidgetFocusSuccessPayload = {
-  __typename: 'UpdateWidgetFocusSuccessPayload',
-};
-const updateWidgetFocusSuccessData: GQLUpdateWidgetFocusMutationData = {
-  updateWidgetFocus: updateWidgetFocusSuccessPayload,
-};
-
-const updateWidgetFocusErrorPayload: GQLErrorPayload = {
-  __typename: 'ErrorPayload',
-  messages: [
-    {
-      body: 'An error has occurred, please refresh the page',
-      level: 'ERROR',
-    },
-  ],
-};
-const updateWidgetFocusErrorData: GQLUpdateWidgetFocusMutationData = {
-  updateWidgetFocus: updateWidgetFocusErrorPayload,
-};
 
 // Helper to make fixtures more readable
 function createNode(
@@ -96,7 +62,7 @@ const emptySelection: Selection = {
   entries: [],
 };
 
-const emptySetSelection = (_selection: Selection) => {};
+const emptySetSelection = () => {};
 
 test('should render the tree', () => {
   const treeWidget: GQLTree = {
@@ -120,7 +86,6 @@ test('should render the tree', () => {
               editingContextId="editingContextId"
               formId="formId"
               widget={treeWidget}
-              subscribers={[]}
               readOnly={false}
             />
           </SelectionContext.Provider>
@@ -166,7 +131,6 @@ test('should render a multi-level tree correctly', () => {
               editingContextId="editingContextId"
               formId="formId"
               widget={treeWidget}
-              subscribers={[]}
               readOnly={false}
             />
           </SelectionContext.Provider>
@@ -228,7 +192,6 @@ test('should correctly interpret the order of nodes with the same parent in the 
               editingContextId="editingContextId"
               formId="formId"
               widget={treeWidget}
-              subscribers={[]}
               readOnly={false}
             />
           </SelectionContext.Provider>
@@ -287,7 +250,6 @@ test('should only expand the specified nodes on initial render', () => {
               editingContextId="editingContextId"
               formId="formId"
               widget={treeWidget}
-              subscribers={[]}
               readOnly={false}
             />
           </SelectionContext.Provider>
@@ -312,20 +274,6 @@ test('should only expand the specified nodes on initial render', () => {
 });
 
 test('should change the selection when a selectable node is clicked', () => {
-  let updateWidgetFocusCalled = false;
-  const updateWidgetFocusSuccessMock: MockedResponse<
-    GQLUpdateWidgetFocusMutationData,
-    GQLUpdateWidgetFocusMutationVariables
-  > = {
-    request: {
-      query: updateWidgetFocusMutation,
-      variables: updateWidgetFocusVariables,
-    },
-    result: () => {
-      updateWidgetFocusCalled = true;
-      return { data: updateWidgetFocusSuccessData };
-    },
-  };
   const treeWidget: GQLTree = {
     __typename: 'TreeWidget',
     id: 'treeId',
@@ -337,16 +285,17 @@ test('should change the selection when a selectable node is clicked', () => {
     expandedNodesIds: ['1', '2'],
     diagnostics: [],
   };
+
   let selection: SelectionEntry = { id: 'undefined', kind: '', label: '' };
 
-  const mocks = [updateWidgetFocusSuccessMock, updateWidgetFocusSuccessMock];
+  const mocks = [];
   const { container } = render(
     <MockedProvider mocks={mocks}>
       <ToastContext.Provider value={toastContextMock}>
         <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
           <SelectionContext.Provider
             value={{
-              selection: { entries: [selection] },
+              selection,
               setSelection: (newSelection: Selection) => {
                 selection = newSelection.entries[0];
               },
@@ -355,7 +304,6 @@ test('should change the selection when a selectable node is clicked', () => {
               editingContextId="editingContextId"
               formId="formId"
               widget={treeWidget}
-              subscribers={[]}
               readOnly={false}
             />
           </SelectionContext.Provider>
@@ -387,21 +335,6 @@ test('should change the selection when a selectable node is clicked', () => {
 });
 
 test('should collapse/expand a non-selectable node when clicked', async () => {
-  let updateWidgetFocusCalled = false;
-  const updateWidgetFocusSuccessMock: MockedResponse<
-    GQLUpdateWidgetFocusMutationData,
-    GQLUpdateWidgetFocusMutationVariables
-  > = {
-    request: {
-      query: updateWidgetFocusMutation,
-      variables: updateWidgetFocusVariables,
-    },
-    result: () => {
-      updateWidgetFocusCalled = true;
-      return { data: updateWidgetFocusSuccessData };
-    },
-  };
-
   const treeWidget: GQLTree = {
     __typename: 'TreeWidget',
     id: 'treeId',
@@ -415,14 +348,14 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
   };
   let selection: SelectionEntry = { id: 'undefined', kind: '', label: '' };
 
-  const mocks = [updateWidgetFocusSuccessMock];
+  const mocks = [];
   const { container } = render(
     <MockedProvider mocks={mocks}>
       <ToastContext.Provider value={toastContextMock}>
         <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
           <SelectionContext.Provider
             value={{
-              selection: { entries: [selection] },
+              selection,
               setSelection: (newSelection: Selection) => {
                 selection = newSelection.entries[0];
               },
@@ -431,7 +364,6 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
               editingContextId="editingContextId"
               formId="formId"
               widget={treeWidget}
-              subscribers={[]}
               readOnly={false}
             />
           </SelectionContext.Provider>
@@ -458,7 +390,6 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     await waitFor(() => {
-      expect(updateWidgetFocusCalled).toBeTruthy();
       expect(selection).toEqual({
         id: 'undefined',
         label: '',
@@ -506,7 +437,6 @@ test('should render the tree with a help hint', () => {
               editingContextId="editingContextId"
               formId="formId"
               widget={treeWidget}
-              subscribers={[]}
               readOnly={false}
             />
           </SelectionContext.Provider>

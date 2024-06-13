@@ -51,31 +51,9 @@ export interface GQLSuccessPayload extends GQLEditTextfieldPayload {
   messages: GQLMessage[];
 }
 
-export interface GQLErrorPayload extends GQLEditTextfieldPayload, GQLUpdateWidgetFocusPayload {
+export interface GQLErrorPayload extends GQLEditTextfieldPayload {
   messages: GQLMessage[];
 }
-
-export interface GQLUpdateWidgetFocusMutationVariables {
-  input: GQLUpdateWidgetFocusInput;
-}
-
-export interface GQLUpdateWidgetFocusInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  widgetId: string;
-  selected: boolean;
-}
-
-export interface GQLUpdateWidgetFocusMutationData {
-  updateWidgetFocus: GQLUpdateWidgetFocusPayload;
-}
-
-export interface GQLUpdateWidgetFocusPayload {
-  __typename: string;
-}
-
-export interface GQLUpdateWidgetFocusSuccessPayload extends GQLUpdateWidgetFocusPayload {}
 
 export interface GQLCompletionProposalsQueryData {
   viewer: GQLViewer;

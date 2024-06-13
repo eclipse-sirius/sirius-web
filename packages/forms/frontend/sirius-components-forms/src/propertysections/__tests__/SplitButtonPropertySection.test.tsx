@@ -17,15 +17,12 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLButton, GQLSplitButton } from '../../form/FormEventFragments.types';
-import { pushButtonMutation, updateWidgetFocusMutation } from '../ButtonPropertySection';
+import { pushButtonMutation } from '../ButtonPropertySection';
 import {
   GQLErrorPayload,
   GQLPushButtonMutationData,
   GQLPushButtonMutationVariables,
   GQLSuccessPayload,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusMutationVariables,
-  GQLUpdateWidgetFocusSuccessPayload,
 } from '../ButtonPropertySection.types';
 import { SplitButtonPropertySection } from '../SplitButtonPropertySection';
 
@@ -149,35 +146,6 @@ const pushButtonErrorData: GQLPushButtonMutationData = {
   pushButton: pushButtonErrorPayload,
 };
 
-const updateWidgetFocusVariables: GQLUpdateWidgetFocusMutationVariables = {
-  input: {
-    id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-    editingContextId: 'editingContextId',
-    representationId: 'formId',
-    widgetId: 'buttonId',
-    selected: true,
-  },
-};
-const updateWidgetFocusSuccessPayload: GQLUpdateWidgetFocusSuccessPayload = {
-  __typename: 'UpdateWidgetFocusSuccessPayload',
-};
-const updateWidgetFocusSuccessData: GQLUpdateWidgetFocusMutationData = {
-  updateWidgetFocus: updateWidgetFocusSuccessPayload,
-};
-
-const updateWidgetFocusErrorPayload: GQLErrorPayload = {
-  __typename: 'ErrorPayload',
-  messages: [
-    {
-      body: 'An error has occurred, please refresh the page',
-      level: 'ERROR',
-    },
-  ],
-};
-const updateWidgetFocusErrorData: GQLUpdateWidgetFocusMutationData = {
-  updateWidgetFocus: updateWidgetFocusErrorPayload,
-};
-
 const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 
 const toastContextMock: ToastContextValue = {
@@ -193,7 +161,6 @@ test('should render the split button and his actions', () => {
             editingContextId="editingContextId"
             formId="formId"
             widget={defaultSplitButton}
-            subscribers={[]}
             readOnly={false}
           />
         </ToastContext.Provider>
@@ -213,7 +180,6 @@ test('should render a readOnly button and his actions', () => {
             editingContextId="editingContextId"
             formId="formId"
             widget={defaultSplitButton}
-            subscribers={[]}
             readOnly
           />
         </ToastContext.Provider>
@@ -225,18 +191,6 @@ test('should render a readOnly button and his actions', () => {
 });
 
 test('should send mutation when clicked', async () => {
-  let updateWidgetFocusCalled = false;
-  const updateWidgetFocusSuccessMock: MockedResponse<Record<string, any>> = {
-    request: {
-      query: updateWidgetFocusMutation,
-      variables: updateWidgetFocusVariables,
-    },
-    result: () => {
-      updateWidgetFocusCalled = true;
-      return { data: updateWidgetFocusSuccessData };
-    },
-  };
-
   let pushButtonCalled = false;
   const pushButtonSuccessMock: MockedResponse<Record<string, any>> = {
     request: {
@@ -249,7 +203,7 @@ test('should send mutation when clicked', async () => {
     },
   };
 
-  const mocks = [updateWidgetFocusSuccessMock, pushButtonSuccessMock];
+  const mocks = [pushButtonSuccessMock];
   const { container } = render(
     <MockedProvider mocks={mocks}>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
@@ -258,7 +212,6 @@ test('should send mutation when clicked', async () => {
             editingContextId="editingContextId"
             formId="formId"
             widget={defaultSplitButton}
-            subscribers={[]}
             readOnly={false}
           />
         </ToastContext.Provider>
@@ -274,7 +227,6 @@ test('should send mutation when clicked', async () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     await waitFor(() => {
-      expect(updateWidgetFocusCalled).toBeTruthy();
       expect(pushButtonCalled).toBeTruthy();
       expect(container).toMatchSnapshot();
     });
@@ -282,18 +234,6 @@ test('should send mutation when clicked', async () => {
 });
 
 test('should display the error received', async () => {
-  let updateWidgetFocusCalled = false;
-  const updateWidgetFocusErrorMock: MockedResponse<Record<string, any>> = {
-    request: {
-      query: updateWidgetFocusMutation,
-      variables: updateWidgetFocusVariables,
-    },
-    result: () => {
-      updateWidgetFocusCalled = true;
-      return { data: updateWidgetFocusErrorData };
-    },
-  };
-
   let pushButtonCalled = false;
   const pushButtonErrorMock: MockedResponse<Record<string, any>> = {
     request: {
@@ -306,7 +246,7 @@ test('should display the error received', async () => {
     },
   };
 
-  const mocks = [updateWidgetFocusErrorMock, pushButtonErrorMock];
+  const mocks = [pushButtonErrorMock];
   const { baseElement } = render(
     <MockedProvider mocks={mocks}>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
@@ -315,7 +255,6 @@ test('should display the error received', async () => {
             editingContextId="editingContextId"
             formId="formId"
             widget={defaultSplitButton}
-            subscribers={[]}
             readOnly={false}
           />
         </ToastContext.Provider>
@@ -331,9 +270,8 @@ test('should display the error received', async () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     await waitFor(() => {
-      expect(updateWidgetFocusCalled).toBeTruthy();
       expect(pushButtonCalled).toBeTruthy();
-      expect(mockEnqueue).toHaveBeenCalledTimes(3);
+      expect(mockEnqueue).toHaveBeenCalledTimes(2);
       expect(baseElement).toMatchSnapshot();
     });
   });
@@ -348,7 +286,6 @@ test('should render the button and his actions with style', () => {
             editingContextId="editingContextId"
             formId="formId"
             widget={splitButtonWithStyle}
-            subscribers={[]}
             readOnly={false}
           />
         </ToastContext.Provider>
@@ -369,7 +306,6 @@ test('should render the button with help hint', () => {
             editingContextId="editingContextId"
             formId="formId"
             widget={{ ...defaultSplitButton, hasHelpText: true }}
-            subscribers={[]}
             readOnly={false}
           />
         </ToastContext.Provider>

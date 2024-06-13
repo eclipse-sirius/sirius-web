@@ -23,9 +23,6 @@ import {
   GQLEditDateTimeInput,
   GQLEditDateTimeMutationData,
   GQLEditDateTimeMutationVariables,
-  GQLUpdateWidgetFocusInput,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusMutationVariables,
 } from './DateTimeWidgetPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
@@ -41,20 +38,6 @@ const useStyle = makeStyles<Theme, DateTimeStyleProps>((theme) => ({
     marginBottom: theme.spacing(0.5),
   },
 }));
-
-export const updateWidgetFocusMutation = gql`
-  mutation updateWidgetFocus($input: UpdateWidgetFocusInput!) {
-    updateWidgetFocus(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
 
 export const editDateTimeMutation = gql`
   mutation editDateTime($input: EditDateTimeInput!) {
@@ -98,26 +81,6 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
     setState((prevState) => ({ ...prevState, editedValue: widget.stringValue }));
   }, [widget.stringValue]);
 
-  const [updateWidgetFocus, mutationUpdateWidgetFocusResult] = useMutation<
-    GQLUpdateWidgetFocusMutationData,
-    GQLUpdateWidgetFocusMutationVariables
-  >(updateWidgetFocusMutation);
-
-  const sendUpdateWidgetFocus = (selected: boolean) => {
-    const input: GQLUpdateWidgetFocusInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: formId,
-      widgetId: widget.id,
-      selected,
-    };
-    const variables: GQLUpdateWidgetFocusMutationVariables = {
-      input,
-    };
-    updateWidgetFocus({ variables });
-  };
-  useReporting(mutationUpdateWidgetFocusResult, (data: GQLUpdateWidgetFocusMutationData) => data?.updateWidgetFocus);
-
   const [editDateTime, mutationEditDateTimeResult] = useMutation<
     GQLEditDateTimeMutationData,
     GQLEditDateTimeMutationVariables
@@ -140,16 +103,14 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
   };
   useReporting(mutationEditDateTimeResult, (data: GQLEditDateTimeMutationData) => data?.editDateTime);
 
-  const onFocus = () => sendUpdateWidgetFocus(true);
-  const onBlur = () => {
-    sendUpdateWidgetFocus(false);
-    sendEditedValue();
-  };
-
   const onKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     if ('Enter' === event.key) {
       sendEditedValue();
     }
+  };
+
+  const onBlur = () => {
+    sendEditedValue();
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -192,7 +153,6 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
           className: classes.input,
         }}
         onChange={onChange}
-        onFocus={onFocus}
         onKeyPress={onKeyPress}
       />
     </div>

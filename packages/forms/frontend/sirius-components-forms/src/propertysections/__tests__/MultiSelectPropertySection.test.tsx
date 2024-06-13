@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 import { MockedProvider } from '@apollo/client/testing';
 import { MessageOptions, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { cleanup, render } from '@testing-library/react';
+import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLMultiSelect } from '../../form/FormEventFragments.types';
 import { MultiSelectPropertySection } from '../MultiSelectPropertySection';
@@ -21,7 +22,7 @@ crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
 afterEach(() => cleanup());
 
-const defaultMultiSelect: GQLMultiSelect = {
+const defaultMultiSelect = {
   __typename: 'MultiSelect',
   id: 'multiSelectId',
   label: 'MultiSelectLabel',
@@ -31,17 +32,11 @@ const defaultMultiSelect: GQLMultiSelect = {
   values: [],
   options: [],
   style: null,
+  readOnly: false,
 };
 
 const multiSelectWithStyle: GQLMultiSelect = {
-  __typename: 'MultiSelect',
-  id: 'multiSelectId',
-  label: 'MultiSelectLabel',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  values: [],
-  options: [],
+  ...defaultMultiSelect,
   style: {
     backgroundColor: '#de1000',
     foregroundColor: '#fbb800',
@@ -54,14 +49,7 @@ const multiSelectWithStyle: GQLMultiSelect = {
 };
 
 const multiSelectWithEmptyStyle: GQLMultiSelect = {
-  __typename: 'MultiSelect',
-  id: 'multiSelectId',
-  label: 'MultiSelectLabel',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  values: [],
-  options: [],
+  ...defaultMultiSelect,
   style: {
     backgroundColor: '',
     foregroundColor: '',
@@ -74,14 +62,7 @@ const multiSelectWithEmptyStyle: GQLMultiSelect = {
 };
 
 const readOnlyMultiSelect: GQLMultiSelect = {
-  __typename: 'MultiSelect',
-  id: 'multiSelectId',
-  label: 'MultiSelectLabel',
-  iconURL: [],
-  diagnostics: [],
-  values: [],
-  options: [],
-  style: null,
+  ...multiSelectWithStyle,
   readOnly: true,
 };
 
@@ -98,8 +79,7 @@ test('should render the multiSelect without style', () => {
         <MultiSelectPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={defaultMultiSelect}
-          subscribers={[]}
+          widget={multiSelectWithEmptyStyle}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -116,7 +96,6 @@ test('should render the multiSelect with style', () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={multiSelectWithStyle}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -133,7 +112,6 @@ test('should render the multiSelect with empty style', async () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={multiSelectWithEmptyStyle}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -149,8 +127,7 @@ test('should render the multiSelect help hint', () => {
         <MultiSelectPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={{ ...defaultMultiSelect, hasHelpText: true }}
-          subscribers={[]}
+          widget={{ ...multiSelectWithEmptyStyle, hasHelpText: true }}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -167,7 +144,6 @@ test('should render a readOnly multiselect from widget properties', () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={readOnlyMultiSelect}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>

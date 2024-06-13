@@ -14,9 +14,6 @@ exports[`should render a readOnly select from widget properties 1`] = `
         >
           SelectLabel
         </h6>
-        <div
-          class="makeStyles-subscribers-33"
-        />
       </div>
       <div
         class="MuiInputBase-root MuiInput-root MuiInput-underline Mui-disabled Mui-disabled MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl"
@@ -25,7 +22,7 @@ exports[`should render a readOnly select from widget properties 1`] = `
         <div
           aria-disabled="true"
           aria-haspopup="listbox"
-          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input Mui-disabled Mui-disabled Mui-disabled"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input makeStyles-style-29 makeStyles-style-31 Mui-disabled Mui-disabled Mui-disabled"
           role="button"
         >
           <em>
@@ -71,9 +68,6 @@ exports[`should render the select with empty style 1`] = `
         >
           SelectLabel
         </h6>
-        <div
-          class="makeStyles-subscribers-19"
-        />
       </div>
       <div
         class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl"
@@ -140,9 +134,6 @@ exports[`should render the select with help hint 1`] = `
             d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
           />
         </svg>
-        <div
-          class="makeStyles-subscribers-26"
-        />
       </div>
       <div
         class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl"
@@ -150,7 +141,7 @@ exports[`should render the select with help hint 1`] = `
       >
         <div
           aria-haspopup="listbox"
-          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input makeStyles-style-22 makeStyles-style-24"
           role="button"
           tabindex="0"
         >
@@ -197,9 +188,6 @@ exports[`should render the select with style 1`] = `
         >
           SelectLabel
         </h6>
-        <div
-          class="makeStyles-subscribers-12"
-        />
       </div>
       <div
         class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl"
@@ -254,9 +242,6 @@ exports[`should render the select without style 1`] = `
         >
           SelectLabel
         </h6>
-        <div
-          class="makeStyles-subscribers-5"
-        />
       </div>
       <div
         class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl"
@@ -264,7 +249,7 @@ exports[`should render the select without style 1`] = `
       >
         <div
           aria-haspopup="listbox"
-          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input makeStyles-style-1 makeStyles-style-3"
           role="button"
           tabindex="0"
         >

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,24 +14,22 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { MessageOptions, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLCheckbox } from '../../form/FormEventFragments.types';
-import { CheckboxPropertySection, editCheckboxMutation, updateWidgetFocusMutation } from '../CheckboxPropertySection';
+import { CheckboxPropertySection, editCheckboxMutation } from '../CheckboxPropertySection';
 import {
   GQLEditCheckboxMutationData,
   GQLEditCheckboxMutationVariables,
   GQLErrorPayload,
   GQLSuccessPayload,
-  GQLUpdateWidgetFocusMutationData,
-  GQLUpdateWidgetFocusMutationVariables,
-  GQLUpdateWidgetFocusSuccessPayload,
 } from '../CheckboxPropertySection.types';
 
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
 afterEach(() => cleanup());
 
-const defaultCheckbox: GQLCheckbox = {
+const defaultCheckbox = {
   __typename: 'Checkbox',
   id: 'checkboxId',
   label: 'CheckboxLabel',
@@ -39,17 +37,11 @@ const defaultCheckbox: GQLCheckbox = {
   hasHelpText: false,
   diagnostics: [],
   booleanValue: false,
-  style: null,
+  readOnly: false,
 };
 
 const checkboxWithStyle: GQLCheckbox = {
-  __typename: 'Checkbox',
-  id: 'checkboxId',
-  label: 'CheckboxLabel',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  booleanValue: false,
+  ...defaultCheckbox,
   style: {
     color: '#de1000',
     labelPlacement: 'top',
@@ -57,13 +49,7 @@ const checkboxWithStyle: GQLCheckbox = {
 };
 
 const checkboxWithEmptyStyle: GQLCheckbox = {
-  __typename: 'Checkbox',
-  id: 'checkboxId',
-  label: 'CheckboxLabel',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  booleanValue: false,
+  ...defaultCheckbox,
   style: {
     color: '',
     labelPlacement: 'end',
@@ -71,13 +57,7 @@ const checkboxWithEmptyStyle: GQLCheckbox = {
 };
 
 const readOnlyCheckbox: GQLCheckbox = {
-  __typename: 'Checkbox',
-  id: 'checkboxId',
-  label: 'CheckboxLabel',
-  iconURL: [],
-  diagnostics: [],
-  booleanValue: false,
-  style: null,
+  ...checkboxWithEmptyStyle,
   readOnly: true,
 };
 
@@ -110,35 +90,6 @@ const editCheckboxErrorData: GQLEditCheckboxMutationData = {
   editCheckbox: editCheckboxErrorPayload,
 };
 
-const updateWidgetFocusVariables: GQLUpdateWidgetFocusMutationVariables = {
-  input: {
-    id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-    editingContextId: 'editingContextId',
-    representationId: 'formId',
-    widgetId: 'checkboxId',
-    selected: true,
-  },
-};
-const updateWidgetFocusSuccessPayload: GQLUpdateWidgetFocusSuccessPayload = {
-  __typename: 'UpdateWidgetFocusSuccessPayload',
-};
-const updateWidgetFocusSuccessData: GQLUpdateWidgetFocusMutationData = {
-  updateWidgetFocus: updateWidgetFocusSuccessPayload,
-};
-
-const updateWidgetFocusErrorPayload: GQLErrorPayload = {
-  __typename: 'ErrorPayload',
-  messages: [
-    {
-      body: 'An error has occurred, please refresh the page',
-      level: 'ERROR',
-    },
-  ],
-};
-const updateWidgetFocusErrorData: GQLUpdateWidgetFocusMutationData = {
-  updateWidgetFocus: updateWidgetFocusErrorPayload,
-};
-
 const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 
 const toastContextMock: ToastContextValue = {
@@ -152,8 +103,7 @@ test('should render the checkbox', () => {
         <CheckboxPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={defaultCheckbox}
-          subscribers={[]}
+          widget={checkboxWithStyle}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -169,8 +119,7 @@ test('should render a readOnly checkbox', () => {
         <CheckboxPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={defaultCheckbox}
-          subscribers={[]}
+          widget={readOnlyCheckbox}
           readOnly
         />
       </ToastContext.Provider>
@@ -180,18 +129,6 @@ test('should render a readOnly checkbox', () => {
 });
 
 test('should send mutation when clicked', async () => {
-  let updateWidgetFocusCalled = false;
-  const updateWidgetFocusSuccessMock: MockedResponse<Record<string, any>> = {
-    request: {
-      query: updateWidgetFocusMutation,
-      variables: updateWidgetFocusVariables,
-    },
-    result: () => {
-      updateWidgetFocusCalled = true;
-      return { data: updateWidgetFocusSuccessData };
-    },
-  };
-
   let editCheckboxCalled = false;
   const editCheckboxSuccessMock: MockedResponse<Record<string, any>> = {
     request: {
@@ -204,15 +141,14 @@ test('should send mutation when clicked', async () => {
     },
   };
 
-  const mocks = [updateWidgetFocusSuccessMock, editCheckboxSuccessMock];
+  const mocks = [editCheckboxSuccessMock];
   const { container } = render(
     <MockedProvider mocks={mocks}>
       <ToastContext.Provider value={toastContextMock}>
         <CheckboxPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={defaultCheckbox}
-          subscribers={[]}
+          widget={checkboxWithStyle}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -220,34 +156,23 @@ test('should send mutation when clicked', async () => {
   );
   expect(container).toMatchSnapshot();
 
-  const element: HTMLInputElement = screen.getByTestId('CheckboxLabel').querySelector('input');
-  expect(element.checked).toBe(false);
+  const element: HTMLInputElement | null = screen.getByTestId('CheckboxLabel').querySelector('input');
+  expect(element && element.checked).toBe(false);
 
   await act(async () => {
-    userEvent.click(element);
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    if (element) {
+      userEvent.click(element);
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
-    await waitFor(() => {
-      expect(updateWidgetFocusCalled).toBeTruthy();
-      expect(editCheckboxCalled).toBeTruthy();
-      expect(container).toMatchSnapshot();
-    });
+      await waitFor(() => {
+        expect(editCheckboxCalled).toBeTruthy();
+        expect(container).toMatchSnapshot();
+      });
+    }
   });
 });
 
 test('should display the error received', async () => {
-  let updateWidgetFocusCalled = false;
-  const updateWidgetFocusErrorMock: MockedResponse<Record<string, any>> = {
-    request: {
-      query: updateWidgetFocusMutation,
-      variables: updateWidgetFocusVariables,
-    },
-    result: () => {
-      updateWidgetFocusCalled = true;
-      return { data: updateWidgetFocusErrorData };
-    },
-  };
-
   let editCheckboxCalled = false;
   const editCheckboxErrorMock: MockedResponse<Record<string, any>> = {
     request: {
@@ -260,15 +185,14 @@ test('should display the error received', async () => {
     },
   };
 
-  const mocks = [updateWidgetFocusErrorMock, editCheckboxErrorMock];
+  const mocks = [editCheckboxErrorMock];
   const { baseElement } = render(
     <MockedProvider mocks={mocks}>
       <ToastContext.Provider value={toastContextMock}>
         <CheckboxPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={defaultCheckbox}
-          subscribers={[]}
+          widget={checkboxWithStyle}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -276,19 +200,20 @@ test('should display the error received', async () => {
   );
   expect(baseElement).toMatchSnapshot();
 
-  const element: HTMLInputElement = screen.getByTestId('CheckboxLabel').querySelector('input');
-  expect(element.checked).toBe(false);
+  const element: HTMLInputElement | null = screen.getByTestId('CheckboxLabel').querySelector('input');
+  expect(element && element.checked).toBe(false);
 
   await act(async () => {
-    userEvent.click(element);
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    if (element) {
+      userEvent.click(element);
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
-    await waitFor(() => {
-      expect(updateWidgetFocusCalled).toBeTruthy();
-      expect(editCheckboxCalled).toBeTruthy();
-      expect(mockEnqueue).toHaveBeenCalledTimes(3);
-      expect(baseElement).toMatchSnapshot();
-    });
+      await waitFor(() => {
+        expect(editCheckboxCalled).toBeTruthy();
+        expect(mockEnqueue).toHaveBeenCalledTimes(2);
+        expect(baseElement).toMatchSnapshot();
+      });
+    }
   });
 });
 
@@ -299,8 +224,7 @@ test('should render the checkbox without style', () => {
         <CheckboxPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={defaultCheckbox}
-          subscribers={[]}
+          widget={checkboxWithEmptyStyle}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -317,7 +241,6 @@ test('should render the checkbox with style', () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={checkboxWithStyle}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -334,7 +257,6 @@ test('should render the checkbox with empty style', async () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={checkboxWithEmptyStyle}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>
@@ -350,8 +272,7 @@ test('should render a checkbox with help hint', () => {
         <CheckboxPropertySection
           editingContextId="editingContextId"
           formId="formId"
-          widget={{ ...defaultCheckbox, hasHelpText: true }}
-          subscribers={[]}
+          widget={{ ...checkboxWithEmptyStyle, hasHelpText: true }}
           readOnly
         />
       </ToastContext.Provider>
@@ -368,7 +289,6 @@ test('should render a readOnly checkbox from widget properties', () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={readOnlyCheckbox}
-          subscribers={[]}
           readOnly={false}
         />
       </ToastContext.Provider>
