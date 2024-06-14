@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { Column, Task, TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLColumn } from '../graphql/subscription/GanttSubscription.types';
+import { GQLColumn, GQLGanttDateRounding } from '../graphql/subscription/GanttSubscription.types';
 
 export enum TaskListColumnEnum {
   NAME = 'NAME',
@@ -34,6 +34,7 @@ export interface GanttProps {
   representationId: string;
   tasks: TaskOrEmpty[];
   gqlColumns: GQLColumn[];
+  gqlDateRounding: GQLGanttDateRounding;
   setSelection: (selection: Selection) => void;
   onCreateTask: (task: Task) => void;
   onEditTask: (task: TaskOrEmpty) => void;

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.gantt.GanttColumn;
+import org.eclipse.sirius.components.gantt.GanttDateRounding;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -24,7 +25,7 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author lfasani
  */
-public record GanttElementProps(String id, String descriptionId, String targetObjectId, String label, List<Element> children, List<GanttColumn> columns) implements IProps {
+public record GanttElementProps(String id, String descriptionId, String targetObjectId, String label, List<Element> children, List<GanttColumn> columns, GanttDateRounding dateRounding) implements IProps {
 
     public static final String TYPE = "Gantt";
 
@@ -35,6 +36,7 @@ public record GanttElementProps(String id, String descriptionId, String targetOb
         Objects.requireNonNull(label);
         Objects.requireNonNull(children);
         Objects.requireNonNull(columns);
+        Objects.requireNonNull(dateRounding);
     }
 
     @Override

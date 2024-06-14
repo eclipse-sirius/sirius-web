@@ -15,10 +15,7 @@ package org.eclipse.sirius.components.view.gantt.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
-import org.eclipse.sirius.components.view.Conditional;
-import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle;
 import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
@@ -27,7 +24,6 @@ import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
-import org.eclipse.sirius.components.view.gantt.TaskStyleDescription;
 import org.eclipse.sirius.components.view.gantt.TaskTool;
 
 /**
@@ -93,24 +89,6 @@ public class GanttSwitch<T> extends Switch<T> {
             case GanttPackage.TASK_DESCRIPTION: {
                 TaskDescription taskDescription = (TaskDescription) theEObject;
                 T result = this.caseTaskDescription(taskDescription);
-                if (result == null)
-                    result = this.defaultCase(theEObject);
-                return result;
-            }
-            case GanttPackage.TASK_STYLE_DESCRIPTION: {
-                TaskStyleDescription taskStyleDescription = (TaskStyleDescription) theEObject;
-                T result = this.caseTaskStyleDescription(taskStyleDescription);
-                if (result == null)
-                    result = this.caseLabelStyle(taskStyleDescription);
-                if (result == null)
-                    result = this.defaultCase(theEObject);
-                return result;
-            }
-            case GanttPackage.CONDITIONAL_TASK_STYLE: {
-                ConditionalTaskStyle conditionalTaskStyle = (ConditionalTaskStyle) theEObject;
-                T result = this.caseConditionalTaskStyle(conditionalTaskStyle);
-                if (result == null)
-                    result = this.caseConditional(conditionalTaskStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -198,36 +176,6 @@ public class GanttSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseTaskDescription(TaskDescription object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Task Style Description</em>'. <!--
-     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
-     * end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Task Style Description</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseTaskStyleDescription(TaskStyleDescription object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Conditional Task Style</em>'. <!--
-     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
-     * end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Conditional Task Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseConditionalTaskStyle(ConditionalTaskStyle object) {
         return null;
     }
 
@@ -332,34 +280,6 @@ public class GanttSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseRepresentationDescription(RepresentationDescription object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Label Style</em>'. <!-- begin-user-doc -->
-     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Label Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseLabelStyle(LabelStyle object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Conditional</em>'. <!-- begin-user-doc -->
-     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Conditional</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseConditional(Conditional object) {
         return null;
     }
 

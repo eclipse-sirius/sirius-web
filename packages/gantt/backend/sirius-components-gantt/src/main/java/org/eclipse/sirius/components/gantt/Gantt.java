@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  *
  * @author lfasani
  */
-public record Gantt(String id, String descriptionId, String targetObjectId, String label, List<Task> tasks, List<GanttColumn> columns) implements IRepresentation {
+public record Gantt(String id, String descriptionId, String targetObjectId, String label, List<Task> tasks, List<GanttColumn> columns, GanttDateRounding dateRounding) implements IRepresentation {
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Gantt";
 
@@ -68,7 +68,7 @@ public record Gantt(String id, String descriptionId, String targetObjectId, Stri
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+        private final String id;
 
         private String targetObjectId;
 
@@ -80,6 +80,8 @@ public record Gantt(String id, String descriptionId, String targetObjectId, Stri
 
         private List<GanttColumn> columns;
 
+        private GanttDateRounding dateRounding;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -89,6 +91,7 @@ public record Gantt(String id, String descriptionId, String targetObjectId, Stri
             this.targetObjectId = gantt.getTargetObjectId();
             this.descriptionId = gantt.getDescriptionId();
             this.label = gantt.getLabel();
+            this.dateRounding = gantt.dateRounding();
         }
 
         public Builder targetObjectId(String targetObjectId) {
@@ -116,8 +119,13 @@ public record Gantt(String id, String descriptionId, String targetObjectId, Stri
             return this;
         }
 
+        public Builder dateRounding(GanttDateRounding dateRounding) {
+            this.dateRounding = Objects.requireNonNull(dateRounding);
+            return this;
+        }
+
         public Gantt build() {
-            Gantt gantt = new Gantt(this.id, this.descriptionId, this.targetObjectId, this.label, this.tasks, this.columns);
+            Gantt gantt = new Gantt(this.id, this.descriptionId, this.targetObjectId, this.label, this.tasks, this.columns, this.dateRounding);
             return gantt;
         }
     }

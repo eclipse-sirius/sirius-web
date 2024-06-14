@@ -226,8 +226,6 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(GanttPackage.Literals.TASK_DESCRIPTION__STYLE);
-            this.childrenFeatures.add(GanttPackage.Literals.TASK_DESCRIPTION__CONDITIONAL_STYLES);
             this.childrenFeatures.add(GanttPackage.Literals.TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS);
         }
         return this.childrenFeatures;
@@ -301,8 +299,6 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
             case GanttPackage.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
-            case GanttPackage.TASK_DESCRIPTION__STYLE:
-            case GanttPackage.TASK_DESCRIPTION__CONDITIONAL_STYLES:
             case GanttPackage.TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
@@ -319,8 +315,6 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-
-        newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.TASK_DESCRIPTION__CONDITIONAL_STYLES, GanttFactory.eINSTANCE.createConditionalTaskStyle()));
 
         newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS, GanttFactory.eINSTANCE.createTaskDescription()));
     }

@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.view.gantt;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.eclipse.sirius.components.view.UserColor;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Description</b></em>'. <!-- end-user-doc -->
@@ -25,14 +24,14 @@ import org.eclipse.sirius.components.view.UserColor;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getTaskElementDescriptions <em>Task Element
  * Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getBackgroundColor <em>Background
- * Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getCreateTool <em>Create Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getEditTool <em>Edit Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDeleteTool <em>Delete Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDropTool <em>Drop Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getCreateTaskDependencyTool <em>Create Task
  * Dependency Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDateRoundingExpression <em>Date Rounding
+ * Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription()
@@ -51,29 +50,6 @@ public interface GanttDescription extends RepresentationDescription {
      * @generated
      */
     EList<TaskDescription> getTaskElementDescriptions();
-
-    /**
-     * Returns the value of the '<em><b>Background Color</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Background Color</em>' containment reference.
-     * @see #setBackgroundColor(UserColor)
-     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription_BackgroundColor()
-     * @model containment="true"
-     * @generated
-     */
-    UserColor getBackgroundColor();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getBackgroundColor
-     * <em>Background Color</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Background Color</em>' containment reference.
-     * @see #getBackgroundColor()
-     * @generated
-     */
-    void setBackgroundColor(UserColor value);
 
     /**
      * Returns the value of the '<em><b>Create Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -190,5 +166,28 @@ public interface GanttDescription extends RepresentationDescription {
      * @generated
      */
     void setCreateTaskDependencyTool(CreateTaskDependencyTool value);
+
+    /**
+     * Returns the value of the '<em><b>Date Rounding Expression</b></em>' attribute. The default value is
+     * <code>"12H"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Date Rounding Expression</em>' attribute.
+     * @see #setDateRoundingExpression(String)
+     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription_DateRoundingExpression()
+     * @model default="12H" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getDateRoundingExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDateRoundingExpression
+     * <em>Date Rounding Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Date Rounding Expression</em>' attribute.
+     * @see #getDateRoundingExpression()
+     * @generated
+     */
+    void setDateRoundingExpression(String value);
 
 } // GanttDescription

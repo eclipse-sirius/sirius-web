@@ -91,15 +91,6 @@ public class GanttDescriptionBuilder {
     }
 
     /**
-     * Setter for BackgroundColor.
-     *
-     * @generated
-     */
-    public GanttDescriptionBuilder backgroundColor(org.eclipse.sirius.components.view.UserColor value) {
-        this.getGanttDescription().setBackgroundColor(value);
-        return this;
-    }
-    /**
      * Setter for CreateTool.
      *
      * @generated
@@ -144,6 +135,16 @@ public class GanttDescriptionBuilder {
      */
     public GanttDescriptionBuilder createTaskDependencyTool(org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool value) {
         this.getGanttDescription().setCreateTaskDependencyTool(value);
+        return this;
+    }
+
+    /**
+     * Setter for DateRoundingExpression.
+     *
+     * @generated
+     */
+    public GanttDescriptionBuilder dateRoundingExpression(java.lang.String value) {
+        this.getGanttDescription().setDateRoundingExpression(value);
         return this;
     }
 

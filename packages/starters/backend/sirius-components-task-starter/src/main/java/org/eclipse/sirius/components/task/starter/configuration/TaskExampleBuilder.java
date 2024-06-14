@@ -108,15 +108,18 @@ public class TaskExampleBuilder {
         codeDev.setEndTime(Instant.parse(DATE_2023_12_15T17_30_00Z));
         codeDev.getAssignedPersons().add(peter);
         codeDev.setComputeStartEndDynamically(false);
+        codeDev.setProgress(40);
         Task frontDev = TaskFactory.eINSTANCE.createTask();
         frontDev.setName("Front");
         frontDev.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
         frontDev.setEndTime(Instant.parse("2023-12-14T17:30:00Z"));
+        frontDev.setProgress(30);
         frontDev.getAssignedPersons().add(peter);
         Task backDev = TaskFactory.eINSTANCE.createTask();
         backDev.setName("Back");
         backDev.setStartTime(Instant.parse("2023-12-14T14:00:00Z"));
         backDev.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
+        backDev.setProgress(40);
         backDev.getAssignedPersons().add(paul);
         codeDev.getSubTasks().addAll(List.of(frontDev, backDev));
 
@@ -306,7 +309,7 @@ public class TaskExampleBuilder {
         keyResultTestsOK.getSubTasks().addAll(List.of(manualsTest, automaticTests));
 
         objectiveAppicationRunning.getOwnedKeyResults().addAll(List.of(keyResultDevCompleted, keyResultTestsOK));
-        okrProject.getOwnedObjectives().addAll(List.of(objectiveAppicationRunning));
+        okrProject.getOwnedObjectives().add(objectiveAppicationRunning);
 
         return okrProject;
     }

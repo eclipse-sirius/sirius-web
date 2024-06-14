@@ -46,14 +46,6 @@ public interface GanttFactory extends EFactory {
     TaskDescription createTaskDescription();
 
     /**
-     * Returns a new object of class '<em>Conditional Task Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Task Style</em>'.
-     * @generated
-     */
-    ConditionalTaskStyle createConditionalTaskStyle();
-
-    /**
      * Returns a new object of class '<em>Create Task Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Create Task Tool</em>'.

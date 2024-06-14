@@ -24,10 +24,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
-import org.eclipse.sirius.components.view.gantt.TaskStyleDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Task Description</b></em>'. <!-- end-user-doc
@@ -249,26 +247,6 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @ordered
      */
     protected String taskDependenciesExpression = TASK_DEPENDENCIES_EXPRESSION_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getStyle()
-     * @generated
-     * @ordered
-     */
-    protected TaskStyleDescription style;
-
-    /**
-     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getConditionalStyles()
-     * @generated
-     * @ordered
-     */
-    protected EList<ConditionalTaskStyle> conditionalStyles;
 
     /**
      * The cached value of the '{@link #getSubTaskElementDescriptions() <em>Sub Task Element Descriptions</em>}'
@@ -547,67 +525,6 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @generated
      */
     @Override
-    public TaskStyleDescription getStyle() {
-        return this.style;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public NotificationChain basicSetStyle(TaskStyleDescription newStyle, NotificationChain msgs) {
-        TaskStyleDescription oldStyle = this.style;
-        this.style = newStyle;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__STYLE, oldStyle, newStyle);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setStyle(TaskStyleDescription newStyle) {
-        if (newStyle != this.style) {
-            NotificationChain msgs = null;
-            if (this.style != null)
-                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GanttPackage.TASK_DESCRIPTION__STYLE, null, msgs);
-            if (newStyle != null)
-                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GanttPackage.TASK_DESCRIPTION__STYLE, null, msgs);
-            msgs = this.basicSetStyle(newStyle, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__STYLE, newStyle, newStyle));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EList<ConditionalTaskStyle> getConditionalStyles() {
-        if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalTaskStyle.class, this, GanttPackage.TASK_DESCRIPTION__CONDITIONAL_STYLES);
-        }
-        return this.conditionalStyles;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EList<TaskDescription> getSubTaskElementDescriptions() {
         if (this.subTaskElementDescriptions == null) {
             this.subTaskElementDescriptions = new EObjectContainmentEList<>(TaskDescription.class, this, GanttPackage.TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS);
@@ -636,10 +553,6 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-            case GanttPackage.TASK_DESCRIPTION__STYLE:
-                return this.basicSetStyle(null, msgs);
-            case GanttPackage.TASK_DESCRIPTION__CONDITIONAL_STYLES:
-                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
             case GanttPackage.TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getSubTaskElementDescriptions()).basicRemove(otherEnd, msgs);
         }
@@ -674,10 +587,6 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return this.getComputeStartEndDynamicallyExpression();
             case GanttPackage.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION:
                 return this.getTaskDependenciesExpression();
-            case GanttPackage.TASK_DESCRIPTION__STYLE:
-                return this.getStyle();
-            case GanttPackage.TASK_DESCRIPTION__CONDITIONAL_STYLES:
-                return this.getConditionalStyles();
             case GanttPackage.TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS:
                 return this.getSubTaskElementDescriptions();
             case GanttPackage.TASK_DESCRIPTION__REUSED_TASK_ELEMENT_DESCRIPTIONS:
@@ -724,13 +633,6 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return;
             case GanttPackage.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION:
                 this.setTaskDependenciesExpression((String) newValue);
-                return;
-            case GanttPackage.TASK_DESCRIPTION__STYLE:
-                this.setStyle((TaskStyleDescription) newValue);
-                return;
-            case GanttPackage.TASK_DESCRIPTION__CONDITIONAL_STYLES:
-                this.getConditionalStyles().clear();
-                this.getConditionalStyles().addAll((Collection<? extends ConditionalTaskStyle>) newValue);
                 return;
             case GanttPackage.TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS:
                 this.getSubTaskElementDescriptions().clear();
@@ -782,12 +684,6 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
             case GanttPackage.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION:
                 this.setTaskDependenciesExpression(TASK_DEPENDENCIES_EXPRESSION_EDEFAULT);
                 return;
-            case GanttPackage.TASK_DESCRIPTION__STYLE:
-                this.setStyle((TaskStyleDescription) null);
-                return;
-            case GanttPackage.TASK_DESCRIPTION__CONDITIONAL_STYLES:
-                this.getConditionalStyles().clear();
-                return;
             case GanttPackage.TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS:
                 this.getSubTaskElementDescriptions().clear();
                 return;
@@ -827,10 +723,6 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
                         : !COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT.equals(this.computeStartEndDynamicallyExpression);
             case GanttPackage.TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION:
                 return TASK_DEPENDENCIES_EXPRESSION_EDEFAULT == null ? this.taskDependenciesExpression != null : !TASK_DEPENDENCIES_EXPRESSION_EDEFAULT.equals(this.taskDependenciesExpression);
-            case GanttPackage.TASK_DESCRIPTION__STYLE:
-                return this.style != null;
-            case GanttPackage.TASK_DESCRIPTION__CONDITIONAL_STYLES:
-                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
             case GanttPackage.TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS:
                 return this.subTaskElementDescriptions != null && !this.subTaskElementDescriptions.isEmpty();
             case GanttPackage.TASK_DESCRIPTION__REUSED_TASK_ELEMENT_DESCRIPTIONS:

@@ -273,41 +273,6 @@ public interface TaskDescription extends EObject {
     void setTaskDependenciesExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @return the value of the '<em>Style</em>' containment reference.
-     * @see #setStyle(TaskStyleDescription)
-     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getTaskDescription_Style()
-     * @model containment="true" required="true"
-     * @generated
-     */
-    TaskStyleDescription getStyle();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getStyle <em>Style</em>}'
-     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Style</em>' containment reference.
-     * @see #getStyle()
-     * @generated
-     */
-    void setStyle(TaskStyleDescription value);
-
-    /**
-     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getTaskDescription_ConditionalStyles()
-     * @model containment="true"
-     * @generated
-     */
-    EList<ConditionalTaskStyle> getConditionalStyles();
-
-    /**
      * Returns the value of the '<em><b>Sub Task Element Descriptions</b></em>' containment reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *

@@ -31,7 +31,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @PublicApi
 public record GanttDescription(String id, String label, Function<VariableManager, String> idProvider, Function<VariableManager, String> labelProvider,
         Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<TaskDescription> taskDescriptions, Consumer<VariableManager> createTaskProvider,
-        Consumer<VariableManager> editTaskProvider, Consumer<VariableManager> deleteTaskProvider, Consumer<VariableManager> dropTaskProvider, Consumer<VariableManager> createTaskDependencyProvider) implements IRepresentationDescription {
+        Consumer<VariableManager> editTaskProvider, Consumer<VariableManager> deleteTaskProvider, Consumer<VariableManager> dropTaskProvider, Consumer<VariableManager> createTaskDependencyProvider,
+        Function<VariableManager, String> dateRoundingProvider) implements IRepresentationDescription {
 
     public static final String LABEL = "label";
 
@@ -63,6 +64,7 @@ public record GanttDescription(String id, String label, Function<VariableManager
         Objects.requireNonNull(canCreatePredicate);
         Objects.requireNonNull(targetObjectIdProvider);
         Objects.requireNonNull(taskDescriptions);
+        Objects.requireNonNull(dateRoundingProvider);
     }
 
     @Override
@@ -98,7 +100,7 @@ public record GanttDescription(String id, String label, Function<VariableManager
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
+        private final String id;
 
         private String label;
 
@@ -121,6 +123,8 @@ public record GanttDescription(String id, String label, Function<VariableManager
         private Consumer<VariableManager> createTaskDependencyProvider;
 
         private List<TaskDescription> taskDescriptions;
+
+        private Function<VariableManager, String> dateRoundingProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -181,9 +185,14 @@ public record GanttDescription(String id, String label, Function<VariableManager
             return this;
         }
 
+        public Builder dateRoundingProvider(Function<VariableManager, String> dateRoundingProvider) {
+            this.dateRoundingProvider = Objects.requireNonNull(dateRoundingProvider);
+            return this;
+        }
+
         public GanttDescription build() {
             GanttDescription ganttDescription = new GanttDescription(this.id, this.label, this.idProvider, this.labelProvider, this.targetObjectIdProvider, this.canCreatePredicate,
-                    this.taskDescriptions, this.createTaskProvider, this.editTaskProvider, this.deleteTaskProvider, this.dropTaskProvider, this.createTaskDependencyProvider);
+                    this.taskDescriptions, this.createTaskProvider, this.editTaskProvider, this.deleteTaskProvider, this.dropTaskProvider, this.createTaskDependencyProvider, this.dateRoundingProvider);
             return ganttDescription;
         }
     }

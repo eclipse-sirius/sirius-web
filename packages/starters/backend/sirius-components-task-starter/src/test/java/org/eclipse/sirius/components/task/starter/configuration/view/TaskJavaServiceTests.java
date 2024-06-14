@@ -102,13 +102,13 @@ class TaskJavaServiceTests {
 
         service.createTask(task1);
         assertThat(project.getOwnedTasks()).hasSize(3);
-        assertThat(project.getOwnedTasks().get(2).getStartTime()).isEqualTo(Instant.ofEpochSecond(1704157260));
-        assertThat(project.getOwnedTasks().get(2).getEndTime()).isEqualTo(Instant.ofEpochSecond(2 * 1704157260 - 1704067200));
+        assertThat(project.getOwnedTasks().get(1).getStartTime()).isEqualTo(Instant.ofEpochSecond(1704157260));
+        assertThat(project.getOwnedTasks().get(1).getEndTime()).isEqualTo(Instant.ofEpochSecond(2L * 1704157260 - 1704067200));
 
         service.createTask(task11);
         assertThat(task1.getSubTasks()).hasSize(2);
         assertThat(task1.getSubTasks().get(1).getStartTime()).isEqualTo(Instant.ofEpochSecond(1704157260));
-        assertThat(task1.getSubTasks().get(1).getEndTime()).isEqualTo(Instant.ofEpochSecond(2 * 1704157260 - 1704067200));
+        assertThat(task1.getSubTasks().get(1).getEndTime()).isEqualTo(Instant.ofEpochSecond(2L * 1704157260 - 1704067200));
     }
 
 

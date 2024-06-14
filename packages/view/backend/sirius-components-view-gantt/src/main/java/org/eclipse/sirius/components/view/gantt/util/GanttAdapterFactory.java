@@ -16,10 +16,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.view.Conditional;
-import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle;
 import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
@@ -28,7 +25,6 @@ import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
-import org.eclipse.sirius.components.view.gantt.TaskStyleDescription;
 import org.eclipse.sirius.components.view.gantt.TaskTool;
 
 /**
@@ -93,16 +89,6 @@ public class GanttAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter caseTaskStyleDescription(TaskStyleDescription object) {
-            return GanttAdapterFactory.this.createTaskStyleDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalTaskStyle(ConditionalTaskStyle object) {
-            return GanttAdapterFactory.this.createConditionalTaskStyleAdapter();
-        }
-
-        @Override
         public Adapter caseTaskTool(TaskTool object) {
             return GanttAdapterFactory.this.createTaskToolAdapter();
         }
@@ -135,16 +121,6 @@ public class GanttAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseRepresentationDescription(RepresentationDescription object) {
             return GanttAdapterFactory.this.createRepresentationDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseLabelStyle(LabelStyle object) {
-            return GanttAdapterFactory.this.createLabelStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditional(Conditional object) {
-            return GanttAdapterFactory.this.createConditionalAdapter();
         }
 
         @Override
@@ -191,34 +167,6 @@ public class GanttAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTaskDescriptionAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.gantt.TaskStyleDescription <em>Task Style Description</em>}'. <!--
-     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
-     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.gantt.TaskStyleDescription
-     * @generated
-     */
-    public Adapter createTaskStyleDescriptionAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle <em>Conditional Task Style</em>}'. <!--
-     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
-     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle
-     * @generated
-     */
-    public Adapter createConditionalTaskStyleAdapter() {
         return null;
     }
 
@@ -316,33 +264,6 @@ public class GanttAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createRepresentationDescriptionAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label
-     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.LabelStyle
-     * @generated
-     */
-    public Adapter createLabelStyleAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.Conditional
-     * <em>Conditional</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
-     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
-     * -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.Conditional
-     * @generated
-     */
-    public Adapter createConditionalAdapter() {
         return null;
     }
 

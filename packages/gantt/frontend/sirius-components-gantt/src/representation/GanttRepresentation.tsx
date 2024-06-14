@@ -148,6 +148,7 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
         representationId={representationId}
         tasks={tasks}
         gqlColumns={gantt.columns}
+        gqlDateRounding={gantt.dateRounding}
         setSelection={setSelection}
         onCreateTask={createTask}
         onEditTask={handleEditTask}

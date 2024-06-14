@@ -19,9 +19,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.GanttColumn;
+import org.eclipse.sirius.components.gantt.GanttDateRounding;
+import org.eclipse.sirius.components.gantt.GanttDateRoundingTimeUnit;
 import org.eclipse.sirius.components.gantt.Task;
 import org.eclipse.sirius.components.gantt.description.GanttDescription;
 import org.eclipse.sirius.components.gantt.description.TaskDescription;
@@ -54,6 +58,8 @@ public class GanttComponent implements IComponent {
         String targetObjectId = ganttDescription.targetObjectIdProvider().apply(variableManager);
         String label = optionalPreviousGantt.map(Gantt::getLabel).orElseGet(() -> ganttDescription.labelProvider().apply(variableManager));
         List<GanttColumn> columns = computeColumn(optionalPreviousGantt);
+        String dateRoundingString = ganttDescription.dateRoundingProvider().apply(variableManager);
+        GanttDateRounding dateRounding = getDateRounding(dateRoundingString);
 
         List<Task> previousTasks = optionalPreviousGantt.map(Gantt::tasks).orElse(List.of());
 
@@ -66,9 +72,34 @@ public class GanttComponent implements IComponent {
                     return new Element(TaskDescriptionComponent.class, taskComponentProps);
                 }).toList();
 
-        GanttElementProps ganttElementProps = new GanttElementProps(ganttId, ganttDescription.getId(), targetObjectId, label, children, columns);
+        GanttElementProps ganttElementProps = new GanttElementProps(ganttId, ganttDescription.getId(), targetObjectId, label, children, columns, dateRounding);
         return new Element(GanttElementProps.TYPE, ganttElementProps);
     }
+
+    private GanttDateRounding getDateRounding(String dateRoundingString) {
+        GanttDateRounding ganttDateRounding = new GanttDateRounding(1, GanttDateRoundingTimeUnit.DAY);
+
+        String regex = "^(\\d+)([DHm])$";
+        Pattern compile = Pattern.compile(regex);
+        Matcher matcher = compile.matcher(dateRoundingString);
+        if (matcher.find()) {
+            try {
+                Integer value = Integer.parseInt(matcher.group(1));
+                String timeUnitLetter = matcher.group(2);
+                if ("m".equals(timeUnitLetter)) {
+                    ganttDateRounding = new GanttDateRounding(value, GanttDateRoundingTimeUnit.MINUTE);
+                } else if ("H".equals(timeUnitLetter)) {
+                    ganttDateRounding = new GanttDateRounding(value, GanttDateRoundingTimeUnit.HOUR);
+                } else if ("D".equals(timeUnitLetter)) {
+                    ganttDateRounding = new GanttDateRounding(value, GanttDateRoundingTimeUnit.DAY);
+                }
+            } catch (IllegalStateException | NumberFormatException | IndexOutOfBoundsException e) {
+                // do nothing
+            }
+        }
+        return ganttDateRounding;
+    }
+
 
     private List<GanttColumn> computeColumn(Optional<Gantt> optionalPreviousGantt) {
         return optionalPreviousGantt.map(previousGantt -> {

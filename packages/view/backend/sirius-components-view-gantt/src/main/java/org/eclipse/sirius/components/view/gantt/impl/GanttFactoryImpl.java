@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle;
 import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
@@ -72,8 +71,6 @@ public class GanttFactoryImpl extends EFactoryImpl implements GanttFactory {
                 return this.createGanttDescription();
             case GanttPackage.TASK_DESCRIPTION:
                 return this.createTaskDescription();
-            case GanttPackage.CONDITIONAL_TASK_STYLE:
-                return this.createConditionalTaskStyle();
             case GanttPackage.CREATE_TASK_TOOL:
                 return this.createCreateTaskTool();
             case GanttPackage.EDIT_TASK_TOOL:
@@ -109,17 +106,6 @@ public class GanttFactoryImpl extends EFactoryImpl implements GanttFactory {
     public TaskDescription createTaskDescription() {
         TaskDescriptionImpl taskDescription = new TaskDescriptionImpl();
         return taskDescription;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public ConditionalTaskStyle createConditionalTaskStyle() {
-        ConditionalTaskStyleImpl conditionalTaskStyle = new ConditionalTaskStyleImpl();
-        return conditionalTaskStyle;
     }
 
     /**

@@ -145,30 +145,6 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle} instances. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    protected ConditionalTaskStyleItemProvider conditionalTaskStyleItemProvider;
-
-    /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle}. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createConditionalTaskStyleAdapter() {
-        if (this.conditionalTaskStyleItemProvider == null) {
-            this.conditionalTaskStyleItemProvider = new ConditionalTaskStyleItemProvider(this);
-        }
-
-        return this.conditionalTaskStyleItemProvider;
-    }
-
-    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.gantt.CreateTaskTool}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -417,8 +393,6 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
             this.ganttDescriptionItemProvider.dispose();
         if (this.taskDescriptionItemProvider != null)
             this.taskDescriptionItemProvider.dispose();
-        if (this.conditionalTaskStyleItemProvider != null)
-            this.conditionalTaskStyleItemProvider.dispose();
         if (this.createTaskToolItemProvider != null)
             this.createTaskToolItemProvider.dispose();
         if (this.editTaskToolItemProvider != null)

@@ -18,9 +18,10 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttFactory;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
@@ -52,8 +53,22 @@ public class GanttDescriptionItemProvider extends RepresentationDescriptionItemP
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addDateRoundingExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Date Rounding Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDateRoundingExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_GanttDescription_dateRoundingExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_GanttDescription_dateRoundingExpression_feature", "_UI_GanttDescription_type"),
+                GanttPackage.Literals.GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -69,7 +84,6 @@ public class GanttDescriptionItemProvider extends RepresentationDescriptionItemP
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS);
-            this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__BACKGROUND_COLOR);
             this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__CREATE_TOOL);
             this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__EDIT_TOOL);
             this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__DELETE_TOOL);
@@ -135,8 +149,10 @@ public class GanttDescriptionItemProvider extends RepresentationDescriptionItemP
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(GanttDescription.class)) {
+            case GanttPackage.GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
             case GanttPackage.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS:
-            case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
             case GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL:
             case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
@@ -159,8 +175,6 @@ public class GanttDescriptionItemProvider extends RepresentationDescriptionItemP
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS, GanttFactory.eINSTANCE.createTaskDescription()));
-
-        newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.GANTT_DESCRIPTION__BACKGROUND_COLOR, ViewFactory.eINSTANCE.createFixedColor()));
 
         newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.GANTT_DESCRIPTION__CREATE_TOOL, GanttFactory.eINSTANCE.createCreateTaskTool()));
 

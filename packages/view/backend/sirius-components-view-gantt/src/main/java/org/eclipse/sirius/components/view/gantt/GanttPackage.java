@@ -116,22 +116,13 @@ public interface GanttPackage extends EPackage {
     int GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Background Color</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int GANTT_DESCRIPTION__BACKGROUND_COLOR = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
-
-    /**
      * The feature id for the '<em><b>Create Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int GANTT_DESCRIPTION__CREATE_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
+    int GANTT_DESCRIPTION__CREATE_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -140,7 +131,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GANTT_DESCRIPTION__EDIT_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
+    int GANTT_DESCRIPTION__EDIT_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -149,7 +140,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GANTT_DESCRIPTION__DELETE_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
+    int GANTT_DESCRIPTION__DELETE_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -158,7 +149,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GANTT_DESCRIPTION__DROP_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
+    int GANTT_DESCRIPTION__DROP_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Create Task Dependency Tool</b></em>' containment reference. <!-- begin-user-doc
@@ -167,7 +158,16 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
+    int GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Date Rounding Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -284,31 +284,13 @@ public interface GanttPackage extends EPackage {
     int TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION = 9;
 
     /**
-     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_DESCRIPTION__STYLE = 10;
-
-    /**
-     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_DESCRIPTION__CONDITIONAL_STYLES = 11;
-
-    /**
      * The feature id for the '<em><b>Sub Task Element Descriptions</b></em>' containment reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS = 12;
+    int TASK_DESCRIPTION__SUB_TASK_ELEMENT_DESCRIPTIONS = 10;
 
     /**
      * The feature id for the '<em><b>Reused Task Element Descriptions</b></em>' reference list. <!-- begin-user-doc -->
@@ -317,7 +299,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION__REUSED_TASK_ELEMENT_DESCRIPTIONS = 13;
+    int TASK_DESCRIPTION__REUSED_TASK_ELEMENT_DESCRIPTIONS = 11;
 
     /**
      * The number of structural features of the '<em>Task Description</em>' class. <!-- begin-user-doc --> <!--
@@ -326,7 +308,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_DESCRIPTION_FEATURE_COUNT = 14;
+    int TASK_DESCRIPTION_FEATURE_COUNT = 12;
 
     /**
      * The number of operations of the '<em>Task Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -337,146 +319,6 @@ public interface GanttPackage extends EPackage {
     int TASK_DESCRIPTION_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.gantt.impl.TaskStyleDescriptionImpl
-     * <em>Task Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.gantt.impl.TaskStyleDescriptionImpl
-     * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getTaskStyleDescription()
-     * @generated
-     */
-    int TASK_STYLE_DESCRIPTION = 2;
-
-    /**
-     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_STYLE_DESCRIPTION__FONT_SIZE = ViewPackage.LABEL_STYLE__FONT_SIZE;
-
-    /**
-     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_STYLE_DESCRIPTION__ITALIC = ViewPackage.LABEL_STYLE__ITALIC;
-
-    /**
-     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_STYLE_DESCRIPTION__BOLD = ViewPackage.LABEL_STYLE__BOLD;
-
-    /**
-     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_STYLE_DESCRIPTION__UNDERLINE = ViewPackage.LABEL_STYLE__UNDERLINE;
-
-    /**
-     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_STYLE_DESCRIPTION__STRIKE_THROUGH = ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
-
-    /**
-     * The feature id for the '<em><b>Label Color Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_STYLE_DESCRIPTION__LABEL_COLOR_EXPRESSION = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Background Color Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_STYLE_DESCRIPTION__BACKGROUND_COLOR_EXPRESSION = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>Progress Color Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_STYLE_DESCRIPTION__PROGRESS_COLOR_EXPRESSION = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 2;
-
-    /**
-     * The number of structural features of the '<em>Task Style Description</em>' class. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_STYLE_DESCRIPTION_FEATURE_COUNT = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 3;
-
-    /**
-     * The number of operations of the '<em>Task Style Description</em>' class. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TASK_STYLE_DESCRIPTION_OPERATION_COUNT = ViewPackage.LABEL_STYLE_OPERATION_COUNT + 0;
-
-    /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.gantt.impl.ConditionalTaskStyleImpl
-     * <em>Conditional Task Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.gantt.impl.ConditionalTaskStyleImpl
-     * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getConditionalTaskStyle()
-     * @generated
-     */
-    int CONDITIONAL_TASK_STYLE = 3;
-
-    /**
-     * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_TASK_STYLE__CONDITION = ViewPackage.CONDITIONAL__CONDITION;
-
-    /**
-     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_TASK_STYLE__STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 0;
-
-    /**
-     * The number of structural features of the '<em>Conditional Task Style</em>' class. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_TASK_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
-
-    /**
-     * The number of operations of the '<em>Conditional Task Style</em>' class. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_TASK_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT + 0;
-
-    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.gantt.impl.TaskToolImpl <em>Task
      * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -484,7 +326,7 @@ public interface GanttPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getTaskTool()
      * @generated
      */
-    int TASK_TOOL = 4;
+    int TASK_TOOL = 2;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -528,7 +370,7 @@ public interface GanttPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getCreateTaskTool()
      * @generated
      */
-    int CREATE_TASK_TOOL = 5;
+    int CREATE_TASK_TOOL = 3;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -572,7 +414,7 @@ public interface GanttPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getEditTaskTool()
      * @generated
      */
-    int EDIT_TASK_TOOL = 6;
+    int EDIT_TASK_TOOL = 4;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -616,7 +458,7 @@ public interface GanttPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getDeleteTaskTool()
      * @generated
      */
-    int DELETE_TASK_TOOL = 7;
+    int DELETE_TASK_TOOL = 5;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -660,7 +502,7 @@ public interface GanttPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getDropTaskTool()
      * @generated
      */
-    int DROP_TASK_TOOL = 8;
+    int DROP_TASK_TOOL = 6;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -704,7 +546,7 @@ public interface GanttPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getCreateTaskDependencyTool()
      * @generated
      */
-    int CREATE_TASK_DEPENDENCY_TOOL = 9;
+    int CREATE_TASK_DEPENDENCY_TOOL = 7;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -765,18 +607,6 @@ public interface GanttPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getBackgroundColor <em>Background Color</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Background Color</em>'.
-     * @see org.eclipse.sirius.components.view.gantt.GanttDescription#getBackgroundColor()
-     * @see #getGanttDescription()
-     * @generated
-     */
-    EReference getGanttDescription_BackgroundColor();
-
-    /**
-     * Returns the meta object for the containment reference
      * '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getCreateTool <em>Create Tool</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -834,6 +664,18 @@ public interface GanttPackage extends EPackage {
      * @generated
      */
     EReference getGanttDescription_CreateTaskDependencyTool();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDateRoundingExpression <em>Date Rounding
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Date Rounding Expression</em>'.
+     * @see org.eclipse.sirius.components.view.gantt.GanttDescription#getDateRoundingExpression()
+     * @see #getGanttDescription()
+     * @generated
+     */
+    EAttribute getGanttDescription_DateRoundingExpression();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.TaskDescription <em>Task
@@ -966,30 +808,6 @@ public interface GanttPackage extends EPackage {
     EAttribute getTaskDescription_TaskDependenciesExpression();
 
     /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Style</em>'.
-     * @see org.eclipse.sirius.components.view.gantt.TaskDescription#getStyle()
-     * @see #getTaskDescription()
-     * @generated
-     */
-    EReference getTaskDescription_Style();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getConditionalStyles <em>Conditional
-     * Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
-     * @see org.eclipse.sirius.components.view.gantt.TaskDescription#getConditionalStyles()
-     * @see #getTaskDescription()
-     * @generated
-     */
-    EReference getTaskDescription_ConditionalStyles();
-
-    /**
      * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getSubTaskElementDescriptions <em>Sub Task
      * Element Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1012,74 +830,6 @@ public interface GanttPackage extends EPackage {
      * @generated
      */
     EReference getTaskDescription_ReusedTaskElementDescriptions();
-
-    /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.TaskStyleDescription <em>Task
-     * Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for class '<em>Task Style Description</em>'.
-     * @see org.eclipse.sirius.components.view.gantt.TaskStyleDescription
-     * @generated
-     */
-    EClass getTaskStyleDescription();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.gantt.TaskStyleDescription#getLabelColorExpression <em>Label Color
-     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Label Color Expression</em>'.
-     * @see org.eclipse.sirius.components.view.gantt.TaskStyleDescription#getLabelColorExpression()
-     * @see #getTaskStyleDescription()
-     * @generated
-     */
-    EAttribute getTaskStyleDescription_LabelColorExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.gantt.TaskStyleDescription#getBackgroundColorExpression <em>Background
-     * Color Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Background Color Expression</em>'.
-     * @see org.eclipse.sirius.components.view.gantt.TaskStyleDescription#getBackgroundColorExpression()
-     * @see #getTaskStyleDescription()
-     * @generated
-     */
-    EAttribute getTaskStyleDescription_BackgroundColorExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.gantt.TaskStyleDescription#getProgressColorExpression <em>Progress
-     * Color Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Progress Color Expression</em>'.
-     * @see org.eclipse.sirius.components.view.gantt.TaskStyleDescription#getProgressColorExpression()
-     * @see #getTaskStyleDescription()
-     * @generated
-     */
-    EAttribute getTaskStyleDescription_ProgressColorExpression();
-
-    /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle
-     * <em>Conditional Task Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for class '<em>Conditional Task Style</em>'.
-     * @see org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle
-     * @generated
-     */
-    EClass getConditionalTaskStyle();
-
-    /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle#getStyle <em>Style</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Style</em>'.
-     * @see org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle#getStyle()
-     * @see #getConditionalTaskStyle()
-     * @generated
-     */
-    EReference getConditionalTaskStyle_Style();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.TaskTool <em>Task Tool</em>}'.
@@ -1205,14 +955,6 @@ public interface GanttPackage extends EPackage {
         EReference GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS = eINSTANCE.getGanttDescription_TaskElementDescriptions();
 
         /**
-         * The meta object literal for the '<em><b>Background Color</b></em>' containment reference feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference GANTT_DESCRIPTION__BACKGROUND_COLOR = eINSTANCE.getGanttDescription_BackgroundColor();
-
-        /**
          * The meta object literal for the '<em><b>Create Tool</b></em>' containment reference feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1251,6 +993,14 @@ public interface GanttPackage extends EPackage {
          * @generated
          */
         EReference GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL = eINSTANCE.getGanttDescription_CreateTaskDependencyTool();
+
+        /**
+         * The meta object literal for the '<em><b>Date Rounding Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION = eINSTANCE.getGanttDescription_DateRoundingExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.gantt.impl.TaskDescriptionImpl
@@ -1343,22 +1093,6 @@ public interface GanttPackage extends EPackage {
         EAttribute TASK_DESCRIPTION__TASK_DEPENDENCIES_EXPRESSION = eINSTANCE.getTaskDescription_TaskDependenciesExpression();
 
         /**
-         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference TASK_DESCRIPTION__STYLE = eINSTANCE.getTaskDescription_Style();
-
-        /**
-         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference TASK_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getTaskDescription_ConditionalStyles();
-
-        /**
          * The meta object literal for the '<em><b>Sub Task Element Descriptions</b></em>' containment reference list
          * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1373,60 +1107,6 @@ public interface GanttPackage extends EPackage {
          * @generated
          */
         EReference TASK_DESCRIPTION__REUSED_TASK_ELEMENT_DESCRIPTIONS = eINSTANCE.getTaskDescription_ReusedTaskElementDescriptions();
-
-        /**
-         * The meta object literal for the
-         * '{@link org.eclipse.sirius.components.view.gantt.impl.TaskStyleDescriptionImpl <em>Task Style
-         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @see org.eclipse.sirius.components.view.gantt.impl.TaskStyleDescriptionImpl
-         * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getTaskStyleDescription()
-         * @generated
-         */
-        EClass TASK_STYLE_DESCRIPTION = eINSTANCE.getTaskStyleDescription();
-
-        /**
-         * The meta object literal for the '<em><b>Label Color Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute TASK_STYLE_DESCRIPTION__LABEL_COLOR_EXPRESSION = eINSTANCE.getTaskStyleDescription_LabelColorExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Background Color Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute TASK_STYLE_DESCRIPTION__BACKGROUND_COLOR_EXPRESSION = eINSTANCE.getTaskStyleDescription_BackgroundColorExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Progress Color Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute TASK_STYLE_DESCRIPTION__PROGRESS_COLOR_EXPRESSION = eINSTANCE.getTaskStyleDescription_ProgressColorExpression();
-
-        /**
-         * The meta object literal for the
-         * '{@link org.eclipse.sirius.components.view.gantt.impl.ConditionalTaskStyleImpl <em>Conditional Task
-         * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @see org.eclipse.sirius.components.view.gantt.impl.ConditionalTaskStyleImpl
-         * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getConditionalTaskStyle()
-         * @generated
-         */
-        EClass CONDITIONAL_TASK_STYLE = eINSTANCE.getConditionalTaskStyle();
-
-        /**
-         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference CONDITIONAL_TASK_STYLE__STYLE = eINSTANCE.getConditionalTaskStyle_Style();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.gantt.impl.TaskToolImpl <em>Task
