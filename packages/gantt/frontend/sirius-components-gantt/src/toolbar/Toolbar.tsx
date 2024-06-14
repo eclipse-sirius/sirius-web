@@ -104,6 +104,8 @@ export const Toolbar = ({
       zoomLevel = ViewMode.HalfDay;
     } else if (fullTime < 24 * 10) {
       zoomLevel = ViewMode.Day;
+    } else if (fullTime < 24 * 25) {
+      zoomLevel = ViewMode.TwoDays;
     } else if (fullTime < 24 * 60) {
       zoomLevel = ViewMode.Week;
     } else if (fullTime < 24 * 30 * 7) {
@@ -205,6 +207,7 @@ export const Toolbar = ({
             <MenuItem value={ViewMode.QuarterDay}>Quarter Day</MenuItem>
             <MenuItem value={ViewMode.HalfDay}>Half Day</MenuItem>
             <MenuItem value={ViewMode.Day}>Day</MenuItem>
+            <MenuItem value={ViewMode.TwoDays}>Two Days</MenuItem>
             <MenuItem value={ViewMode.Week}>Week</MenuItem>
             <MenuItem value={ViewMode.Month}>Month</MenuItem>
             <MenuItem value={ViewMode.Year}>Year</MenuItem>

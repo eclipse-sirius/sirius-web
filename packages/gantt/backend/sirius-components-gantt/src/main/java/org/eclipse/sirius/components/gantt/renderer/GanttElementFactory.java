@@ -48,7 +48,7 @@ public class GanttElementFactory implements IElementFactory {
                 .map(Task.class::cast)
                 .toList();
 
-        return new Gantt(props.id(), props.descriptionId(), props.targetObjectId(), props.label(), tasks, props.columns());
+        return new Gantt(props.id(), props.descriptionId(), props.targetObjectId(), props.label(), tasks, props.columns(), props.dateRounding());
     }
 
     private Task instantiateTask(TaskElementProps props, List<Object> children) {
@@ -58,7 +58,7 @@ public class GanttElementFactory implements IElementFactory {
                 .toList();
 
         TaskDetail detail = props.detail();
-        if (detail.computeStartEndDynamically()) {
+        if (detail.computeStartEndDynamically() && !subTasks.isEmpty()) {
 
             Instant startTime = subTasks.stream()
                     .filter(task -> task.detail().startTime() != null)

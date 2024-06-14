@@ -137,27 +137,6 @@ public class TaskDescriptionBuilder {
     }
 
     /**
-     * Setter for Style.
-     *
-     * @generated
-     */
-    public TaskDescriptionBuilder style(org.eclipse.sirius.components.view.gantt.TaskStyleDescription value) {
-        this.getTaskDescription().setStyle(value);
-        return this;
-    }
-    /**
-     * Setter for ConditionalStyles.
-     *
-     * @generated
-     */
-    public TaskDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle ... values) {
-        for (org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle value : values) {
-            this.getTaskDescription().getConditionalStyles().add(value);
-        }
-        return this;
-    }
-
-    /**
      * Setter for SubTaskElementDescriptions.
      *
      * @generated

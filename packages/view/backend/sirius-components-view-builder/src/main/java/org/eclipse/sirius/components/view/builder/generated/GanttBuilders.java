@@ -40,16 +40,6 @@ public class GanttBuilders {
     }
 
     /**
-     * Instantiate a ConditionalTaskStyleBuilder .
-     *
-     * @author BuilderGenerator
-     * @generated
-     */
-    public ConditionalTaskStyleBuilder newConditionalTaskStyle() {
-        return new ConditionalTaskStyleBuilder();
-    }
-
-    /**
      * Instantiate a CreateTaskToolBuilder .
      *
      * @author BuilderGenerator

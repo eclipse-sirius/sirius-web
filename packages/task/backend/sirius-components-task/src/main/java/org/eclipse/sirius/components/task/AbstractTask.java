@@ -154,13 +154,13 @@ public interface AbstractTask extends EObject {
     void setProgress(int value);
 
     /**
-     * Returns the value of the '<em><b>Compute Start End Dynamically</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * Returns the value of the '<em><b>Compute Start End Dynamically</b></em>' attribute. The default value is
+     * <code>"true"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Compute Start End Dynamically</em>' attribute.
      * @see #setComputeStartEndDynamically(boolean)
      * @see org.eclipse.sirius.components.task.TaskPackage#getAbstractTask_ComputeStartEndDynamically()
-     * @model
+     * @model default="true"
      * @generated
      */
     boolean isComputeStartEndDynamically();

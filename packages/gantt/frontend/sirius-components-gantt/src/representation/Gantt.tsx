@@ -12,16 +12,19 @@
  *******************************************************************************/
 import '@ObeoNetwork/gantt-task-react';
 import {
+  BarMoveAction,
   ColorStyles,
   Column,
+  DateExtremity,
   Distances,
+  GanttDateRounding,
+  GanttDateRoundingTimeUnit,
   Gantt as GanttDiagram,
   Icons,
   OnMoveTaskBeforeAfter,
   OnMoveTaskInside,
   OnRelationChange,
   RelationKind,
-  RelationMoveTarget,
   Task,
   TaskOrEmpty,
   ViewMode,
@@ -32,8 +35,8 @@ import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useEffect, useRef, useState } from 'react';
-import { SelectableTask } from '../graphql/subscription/GanttSubscription.types';
-import { getDisplayedColumns, getSelectedColumns } from '../helper/helper';
+import { GQLGanttDateRoundingTimeUnit, SelectableTask } from '../graphql/subscription/GanttSubscription.types';
+import { checkIsHoliday, getDisplayedColumns, getSelectedColumns, roundDate } from '../helper/helper';
 import { getContextalPalette } from '../palette/ContextualPalette';
 import { Toolbar } from '../toolbar/Toolbar';
 import { GanttProps, GanttState, TaskListColumnEnum } from './Gantt.types';
@@ -59,6 +62,7 @@ export const Gantt = ({
   representationId,
   tasks,
   gqlColumns,
+  gqlDateRounding,
   setSelection,
   onCreateTask,
   onEditTask,
@@ -148,8 +152,8 @@ export const Gantt = ({
   };
 
   const handleRelationChange: OnRelationChange = (
-    from: [Task, RelationMoveTarget, number],
-    to: [Task, RelationMoveTarget, number]
+    from: [Task, DateExtremity, number],
+    to: [Task, DateExtremity, number]
   ) => {
     if (from[0].id !== to[0].id) {
       onCreateTaskDependency(from[0].id, to[0].id);
@@ -235,6 +239,22 @@ export const Gantt = ({
     ),
   };
 
+  const getTimeUnit = (timeUnit: GQLGanttDateRoundingTimeUnit) => {
+    if (timeUnit.toString() == GQLGanttDateRoundingTimeUnit[GQLGanttDateRoundingTimeUnit.DAY]) {
+      return GanttDateRoundingTimeUnit.DAY;
+    } else if (timeUnit.toString() == GQLGanttDateRoundingTimeUnit[GQLGanttDateRoundingTimeUnit.HOUR]) {
+      return GanttDateRoundingTimeUnit.HOUR;
+    } else if (timeUnit.toString() == GQLGanttDateRoundingTimeUnit[GQLGanttDateRoundingTimeUnit.MINUTE]) {
+      return GanttDateRoundingTimeUnit.MINUTE;
+    }
+    return GanttDateRoundingTimeUnit.DAY;
+  };
+
+  const dateRounding: GanttDateRounding = {
+    value: gqlDateRounding.value,
+    timeUnit: getTimeUnit(gqlDateRounding.timeUnit),
+  };
+
   return (
     <div ref={ganttContainerRef} className={ganttClasses.ganttContainer} data-testid={`gantt-representation`}>
       <Toolbar
@@ -259,8 +279,11 @@ export const Gantt = ({
         onDelete={onDeleteTask}
         onDoubleClick={(task) => onChangeTaskCollapseState(task.id, !task.hideChildren)}
         onClick={handleSelection}
-        roundEndDate={(date: Date) => date}
-        roundStartDate={(date: Date) => date}
+        roundDate={(date: Date, _: ViewMode, dateExtremity: DateExtremity, action: BarMoveAction) =>
+          roundDate(date, dateExtremity, action, dateRounding)
+        }
+        checkIsHoliday={checkIsHoliday}
+        dateMoveStep={dateRounding}
         onWheel={onwheel}
         ContextualPalette={getContextalPalette({
           onCreateTask,
@@ -276,6 +299,7 @@ export const Gantt = ({
         onChangeExpandState={(changedTask) => onChangeTaskCollapseState(changedTask.id, !!changedTask.hideChildren)}
         icons={icons}
         onResizeColumn={handleResizeColumn}
+        isAdjustToWorkingDates={true}
       />
     </div>
   );

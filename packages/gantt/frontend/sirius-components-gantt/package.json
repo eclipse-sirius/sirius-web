@@ -31,7 +31,7 @@
   },
   "peerDependencies": {
     "@apollo/client": "3.10.4",
-    "@ObeoNetwork/gantt-task-react": "0.4.14",
+    "@ObeoNetwork/gantt-task-react": "0.4.17",
     "@eclipse-sirius/sirius-components-core": "*",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
@@ -47,7 +47,7 @@
     "@eclipse-sirius/sirius-components-tsconfig": "*",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
-    "@ObeoNetwork/gantt-task-react": "0.4.14",
+    "@ObeoNetwork/gantt-task-react": "0.4.17",
     "@types/react": "17.0.37",
     "@vitejs/plugin-react": "4.3.0",
     "@xstate/react": "1.6.3",

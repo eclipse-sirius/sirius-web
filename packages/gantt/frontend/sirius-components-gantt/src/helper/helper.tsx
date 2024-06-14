@@ -10,7 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Column, ColumnProps, Dependency, TaskOrEmpty, TaskType, TitleColumn } from '@ObeoNetwork/gantt-task-react';
+import {
+  BarMoveAction,
+  Column,
+  ColumnProps,
+  DateExtremity,
+  Dependency,
+  GanttDateRounding,
+  GanttDateRoundingTimeUnit,
+  TaskOrEmpty,
+  TaskType,
+  TitleColumn,
+} from '@ObeoNetwork/gantt-task-react';
 import {
   GQLColumn,
   GQLGantt,
@@ -179,4 +190,83 @@ export const getDisplayedColumns = (gqlColumns: GQLColumn[]): Column[] => {
 
 export const getSelectedColumns = (gqlColumns: GQLColumn[]) => {
   return gqlColumns.filter((col) => col.displayed === true).map((col) => TaskListColumnEnum[col.id]);
+};
+
+const getDayOfTheYear = (date: Date) => {
+  const start = new Date(date.getFullYear(), 0, 0);
+  const diff = date.getTime() - start.getTime() + (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const day = Math.floor(diff / oneDay);
+  return day;
+};
+
+export const roundDate = (
+  date: Date,
+  dateExtremity: DateExtremity,
+  action: BarMoveAction,
+  dateMoveStep: GanttDateRounding
+): Date => {
+  let value = dateMoveStep.value;
+  const dimension = dateMoveStep.timeUnit;
+  const newdate = new Date(date);
+  if (dimension == GanttDateRoundingTimeUnit.DAY) {
+    let dayOfTheYear: number = getDayOfTheYear(newdate);
+    if (newdate.getMinutes() != 0 || newdate.getHours() != 0 || (dayOfTheYear - 1) % value > 0) {
+      newdate.setMinutes(0);
+      newdate.setHours(0);
+      if (dateExtremity == 'startOfTask' || action == 'move') {
+        // In case of move we need to round start and end date with the same direction (floor) so that the duration keeps unchanged
+        dayOfTheYear = Math.floor((dayOfTheYear - 1) / value) * value + 1;
+      } else if (dateExtremity == 'endOfTask') {
+        dayOfTheYear = Math.ceil(dayOfTheYear / value) * value + 1;
+      }
+      // setDate behaves differently according to the current date so ensure to start from the first day in the year
+      newdate.setMonth(0);
+      newdate.setDate(1);
+      newdate.setDate(dayOfTheYear);
+    }
+  } else if (dimension == GanttDateRoundingTimeUnit.HOUR) {
+    if (newdate.getMinutes() != 0 || newdate.getHours() % value > 0) {
+      newdate.setMinutes(0);
+      let hours = newdate.getHours();
+      if (dateExtremity == 'startOfTask' || action == 'move') {
+        // In case of move we need to round start and end date with the same direction (floor) so that the duration keeps unchanged
+        hours = Math.floor(newdate.getHours() / value) * value;
+      } else if (dateExtremity == 'endOfTask') {
+        hours = Math.ceil(newdate.getHours() / value) * value;
+      }
+      newdate.setHours(hours);
+    }
+  } else if (dimension == GanttDateRoundingTimeUnit.MINUTE) {
+    if (newdate.getMinutes() % value > 0) {
+      let minutes = newdate.getMinutes();
+      if (dateExtremity == 'startOfTask' || action == 'move') {
+        // In case of move we need to round start and end date with the same direction (floor) so that the duration keeps unchanged
+        minutes = Math.floor(newdate.getMinutes() / value) * value;
+      } else if (dateExtremity == 'endOfTask') {
+        minutes = Math.ceil(newdate.getMinutes() / value) * value;
+      }
+      newdate.setMinutes(minutes);
+    }
+  }
+  newdate.setSeconds(0);
+  newdate.setMilliseconds(0);
+  return newdate;
+};
+
+export const checkIsHoliday = (date: Date, _, __, dateExtremity: DateExtremity) => {
+  let isHoliday = false;
+
+  const day = date.getDay();
+  const isMondayStart = date.getDay() == 1 && date.getHours() == 0 && date.getMinutes() == 0;
+  const isStaturdayStart = date.getDay() == 6 && date.getHours() == 0 && date.getMinutes() == 0;
+  if (dateExtremity == 'startOfTask') {
+    //Monday 00:00 is excluded from WE
+    isHoliday = day == 6 || (day == 0 && !isMondayStart);
+  } else if (dateExtremity == 'endOfTask') {
+    //Saturday 00:00 is included from WE
+    isHoliday = (day == 6 && !isStaturdayStart) || day == 0 || isMondayStart;
+  }
+
+  return isHoliday;
 };

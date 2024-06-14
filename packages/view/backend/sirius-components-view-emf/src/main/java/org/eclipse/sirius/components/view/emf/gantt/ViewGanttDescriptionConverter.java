@@ -109,6 +109,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                         .orElse(variable -> {
                         }))
                 .taskDescriptions(taskDescriptions)
+                .dateRoundingProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewGanttDescription.getDateRoundingExpression()))
                 .build();
     }
 
@@ -132,7 +133,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
 
     private TaskDescription convert(org.eclipse.sirius.components.view.gantt.TaskDescription viewTaskDescription, AQLInterpreter interpreter, Map<org.eclipse.sirius.components.view.gantt.TaskDescription, String> taskDescription2Ids) {
         List<String> reusedTaskDescriptionIds = viewTaskDescription.getReusedTaskElementDescriptions().stream()
-                .map(taskDescription -> taskDescription2Ids.get(taskDescription))
+                .map(taskDescription2Ids::get)
                 .toList();
 
         List<TaskDescription> subTaskDescriptions = Optional.ofNullable(viewTaskDescription.getSubTaskElementDescriptions())
@@ -243,7 +244,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
     private String computeGanttLabel(org.eclipse.sirius.components.view.gantt.GanttDescription viewGanttDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         String title = variableManager.get(GanttDescription.LABEL, String.class)
                 .orElseGet(() -> this.evaluateString(interpreter, variableManager, viewGanttDescription.getTitleExpression()));
-        if (title == null || title.isBlank()) {
+        if (title.isBlank()) {
             return DEFAULT_GANTT_LABEL;
         } else {
             return title;

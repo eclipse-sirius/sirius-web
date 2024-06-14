@@ -164,7 +164,7 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
      * @generated
      * @ordered
      */
-    protected static final boolean COMPUTE_START_END_DYNAMICALLY_EDEFAULT = false;
+    protected static final boolean COMPUTE_START_END_DYNAMICALLY_EDEFAULT = true;
 
     /**
      * The cached value of the '{@link #isComputeStartEndDynamically() <em>Compute Start End Dynamically</em>}'

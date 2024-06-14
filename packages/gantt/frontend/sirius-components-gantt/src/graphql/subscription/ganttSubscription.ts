@@ -32,6 +32,10 @@ export const ganttEventSubscription = gql`
             label
           }
           targetObjectId
+          dateRounding {
+            value
+            timeUnit
+          }
           tasks {
             ...taskFields
             subTasks {

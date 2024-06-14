@@ -79,9 +79,11 @@ public class TaskJavaService {
 
             EObject parent = context.eContainer();
             if (parent instanceof Project project) {
-                project.getOwnedTasks().add(task);
+                int index = project.getOwnedTasks().indexOf(context);
+                project.getOwnedTasks().add(index + 1, task);
             } else if (parent instanceof AbstractTask parentTask) {
-                parentTask.getSubTasks().add(task);
+                int index = parentTask.getSubTasks().indexOf(context);
+                parentTask.getSubTasks().add(index + 1, task);
             }
         } else if (context instanceof Project project) {
             long epochSecondStartTime = Instant.now().getEpochSecond();
@@ -202,6 +204,10 @@ public class TaskJavaService {
                 targetTask.getSubTasks().move(subTasks.size() - 1, sourceTask);
             }
         } else {
+            boolean targetHadNoChild = subTasks.isEmpty();
+            if (targetHadNoChild) {
+                targetTask.setComputeStartEndDynamically(true);
+            }
             if (indexInTarget >= 0 && indexInTarget <= targetTask.getSubTasks().size()) {
                 targetTask.getSubTasks().add(indexInTarget, sourceTask);
             } else {

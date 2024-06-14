@@ -39,9 +39,8 @@ More existing APIs will be migrated to this new common pattern.
 - [releng] Switch to `maven-checkstyle-plugin` 3.3.1
 - [releng] Remove the dependency to `reflect-metadata`
 - [releng] Switch to `subscriptions-transport-ws` 0.11.0
-- https://github.com/eclipse-sirius/sirius-web/issues/3466[#3466] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.14 to benefit for enhancements
 - [releng] Switch to EMF Json 2.3.11
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3523[#3523] [gantt] Move to @ObeoNetwork/gantt-task-react 0.4.17 to benefit for enhancements
 
 === Bug fixes
 
@@ -74,6 +73,7 @@ More existing APIs will be migrated to this new common pattern.
 This dialog presents diagram elements in a tree and allows to select them and update their visibility and status (e.g. hide, show, collapse).
 +
 image:doc/screenshots/diagramFilterView.png[Diagram Filter View, 70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/3523[#3523] [gantt] Support rounding dates when changing dates from gantt
 
 === Improvements
 

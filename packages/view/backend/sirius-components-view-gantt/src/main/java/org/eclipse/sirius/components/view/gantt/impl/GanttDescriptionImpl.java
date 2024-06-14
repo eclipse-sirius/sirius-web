@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
@@ -41,8 +40,6 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getTaskElementDescriptions <em>Task
  * Element Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getBackgroundColor <em>Background
- * Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getCreateTool <em>Create
  * Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getEditTool <em>Edit Tool</em>}</li>
@@ -51,6 +48,8 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getDropTool <em>Drop Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getCreateTaskDependencyTool <em>Create
  * Task Dependency Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getDateRoundingExpression <em>Date
+ * Rounding Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -65,16 +64,6 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @ordered
      */
     protected EList<TaskDescription> taskElementDescriptions;
-
-    /**
-     * The cached value of the '{@link #getBackgroundColor() <em>Background Color</em>}' containment reference. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getBackgroundColor()
-     * @generated
-     * @ordered
-     */
-    protected UserColor backgroundColor;
 
     /**
      * The cached value of the '{@link #getCreateTool() <em>Create Tool</em>}' containment reference. <!--
@@ -127,6 +116,26 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
     protected CreateTaskDependencyTool createTaskDependencyTool;
 
     /**
+     * The default value of the '{@link #getDateRoundingExpression() <em>Date Rounding Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDateRoundingExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String DATE_ROUNDING_EXPRESSION_EDEFAULT = "12H";
+
+    /**
+     * The cached value of the '{@link #getDateRoundingExpression() <em>Date Rounding Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDateRoundingExpression()
+     * @generated
+     * @ordered
+     */
+    protected String dateRoundingExpression = DATE_ROUNDING_EXPRESSION_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -156,54 +165,6 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
             this.taskElementDescriptions = new EObjectContainmentEList<>(TaskDescription.class, this, GanttPackage.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS);
         }
         return this.taskElementDescriptions;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public UserColor getBackgroundColor() {
-        return this.backgroundColor;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public NotificationChain basicSetBackgroundColor(UserColor newBackgroundColor, NotificationChain msgs) {
-        UserColor oldBackgroundColor = this.backgroundColor;
-        this.backgroundColor = newBackgroundColor;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR, oldBackgroundColor, newBackgroundColor);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setBackgroundColor(UserColor newBackgroundColor) {
-        if (newBackgroundColor != this.backgroundColor) {
-            NotificationChain msgs = null;
-            if (this.backgroundColor != null)
-                msgs = ((InternalEObject) this.backgroundColor).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR, null, msgs);
-            if (newBackgroundColor != null)
-                msgs = ((InternalEObject) newBackgroundColor).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR, null, msgs);
-            msgs = this.basicSetBackgroundColor(newBackgroundColor, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR, newBackgroundColor, newBackgroundColor));
     }
 
     /**
@@ -453,12 +414,33 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @generated
      */
     @Override
+    public String getDateRoundingExpression() {
+        return this.dateRoundingExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDateRoundingExpression(String newDateRoundingExpression) {
+        String oldDateRoundingExpression = this.dateRoundingExpression;
+        this.dateRoundingExpression = newDateRoundingExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION, oldDateRoundingExpression, this.dateRoundingExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case GanttPackage.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getTaskElementDescriptions()).basicRemove(otherEnd, msgs);
-            case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
-                return this.basicSetBackgroundColor(null, msgs);
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
                 return this.basicSetCreateTool(null, msgs);
             case GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL:
@@ -483,8 +465,6 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
         switch (featureID) {
             case GanttPackage.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS:
                 return this.getTaskElementDescriptions();
-            case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
-                return this.getBackgroundColor();
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
                 return this.getCreateTool();
             case GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL:
@@ -495,6 +475,8 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.getDropTool();
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
                 return this.getCreateTaskDependencyTool();
+            case GanttPackage.GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION:
+                return this.getDateRoundingExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -512,9 +494,6 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 this.getTaskElementDescriptions().clear();
                 this.getTaskElementDescriptions().addAll((Collection<? extends TaskDescription>) newValue);
                 return;
-            case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
-                this.setBackgroundColor((UserColor) newValue);
-                return;
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
                 this.setCreateTool((CreateTaskTool) newValue);
                 return;
@@ -529,6 +508,9 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return;
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
                 this.setCreateTaskDependencyTool((CreateTaskDependencyTool) newValue);
+                return;
+            case GanttPackage.GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION:
+                this.setDateRoundingExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -545,9 +527,6 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
             case GanttPackage.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS:
                 this.getTaskElementDescriptions().clear();
                 return;
-            case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
-                this.setBackgroundColor((UserColor) null);
-                return;
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
                 this.setCreateTool((CreateTaskTool) null);
                 return;
@@ -563,6 +542,9 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
                 this.setCreateTaskDependencyTool((CreateTaskDependencyTool) null);
                 return;
+            case GanttPackage.GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION:
+                this.setDateRoundingExpression(DATE_ROUNDING_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -577,8 +559,6 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
         switch (featureID) {
             case GanttPackage.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS:
                 return this.taskElementDescriptions != null && !this.taskElementDescriptions.isEmpty();
-            case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
-                return this.backgroundColor != null;
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
                 return this.createTool != null;
             case GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL:
@@ -589,8 +569,27 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.dropTool != null;
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
                 return this.createTaskDependencyTool != null;
+            case GanttPackage.GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION:
+                return DATE_ROUNDING_EXPRESSION_EDEFAULT == null ? this.dateRoundingExpression != null : !DATE_ROUNDING_EXPRESSION_EDEFAULT.equals(this.dateRoundingExpression);
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String toString() {
+        if (this.eIsProxy())
+            return super.toString();
+
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (dateRoundingExpression: ");
+        result.append(this.dateRoundingExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // GanttDescriptionImpl

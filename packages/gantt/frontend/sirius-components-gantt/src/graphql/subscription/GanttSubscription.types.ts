@@ -48,6 +48,18 @@ export interface GQLGantt {
   backgroundColor: string;
   tasks: GQLTask[];
   columns: GQLColumn[];
+  dateRounding: GQLGanttDateRounding;
+}
+
+export interface GQLGanttDateRounding {
+  value: number;
+  timeUnit: GQLGanttDateRoundingTimeUnit;
+}
+
+export enum GQLGanttDateRoundingTimeUnit {
+  MINUTE,
+  HOUR,
+  DAY,
 }
 
 export interface GQLTask {

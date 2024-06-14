@@ -699,7 +699,7 @@ public class TaskPackageImpl extends EPackageImpl implements TaskPackage {
                 !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getAbstractTask_Progress(), this.ecorePackage.getEInt(), "progress", null, 0, 1, AbstractTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getAbstractTask_ComputeStartEndDynamically(), this.ecorePackage.getEBoolean(), "computeStartEndDynamically", null, 0, 1, AbstractTask.class, !IS_TRANSIENT,
+        this.initEAttribute(this.getAbstractTask_ComputeStartEndDynamically(), this.ecorePackage.getEBoolean(), "computeStartEndDynamically", "true", 0, 1, AbstractTask.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getAbstractTask_Tags(), this.getTaskTag(), null, "tags", null, 0, -1, AbstractTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

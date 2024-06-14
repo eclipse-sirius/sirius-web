@@ -23,6 +23,18 @@ type Gantt implements Representation {
   targetObjectId: ID!
   tasks: [Task!]!
   columns: [GanttColumn!]!
+  dateRounding: GanttDateRounding!
+}
+
+type GanttDateRounding {
+  value : Int!
+  timeUnit : GanttDateRoundingTimeUnit!
+}
+
+enum GanttDateRoundingTimeUnit {
+  MINUTE
+  HOUR
+  DAY
 }
 
 type GanttColumn {
