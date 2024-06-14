@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,8 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLRadio } from '../../form/FormEventFragments.types';
 import {
-  editRadioMutation,
   RadioPropertySection,
+  editRadioMutation,
   updateWidgetFocusMutation,
 } from '../../propertysections/RadioPropertySection';
 import {
@@ -41,6 +41,7 @@ const defaultRadio: GQLRadio = {
   label: 'Status:',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   diagnostics: [],
   options: [
     {
@@ -63,6 +64,7 @@ const radioWithStyle: GQLRadio = {
   label: 'Status:',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   diagnostics: [],
   options: [
     {
@@ -92,6 +94,7 @@ const radioWithEmptyStyle: GQLRadio = {
   label: 'Status:',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   diagnostics: [],
   options: [
     {
@@ -135,6 +138,7 @@ const readOnlyRadio: GQLRadio = {
   ],
   style: null,
   readOnly: true,
+  hasHelpText: false,
 };
 
 const editRadioVariables: GQLEditRadioMutationVariables = {

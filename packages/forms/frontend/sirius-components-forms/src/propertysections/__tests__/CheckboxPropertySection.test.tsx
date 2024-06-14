@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ const defaultCheckbox: GQLCheckbox = {
   label: 'CheckboxLabel',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   diagnostics: [],
   booleanValue: false,
   style: null,
@@ -48,6 +49,7 @@ const checkboxWithStyle: GQLCheckbox = {
   label: 'CheckboxLabel',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   diagnostics: [],
   booleanValue: false,
   style: {
@@ -62,6 +64,7 @@ const checkboxWithEmptyStyle: GQLCheckbox = {
   label: 'CheckboxLabel',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   diagnostics: [],
   booleanValue: false,
   style: {
@@ -79,6 +82,7 @@ const readOnlyCheckbox: GQLCheckbox = {
   booleanValue: false,
   style: null,
   readOnly: true,
+  hasHelpText: false,
 };
 
 const editCheckboxVariables: GQLEditCheckboxMutationVariables = {

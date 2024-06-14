@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ const defaultMultiSelect: GQLMultiSelect = {
   label: 'MultiSelectLabel',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   diagnostics: [],
   values: [],
   options: [],
@@ -39,6 +40,7 @@ const multiSelectWithStyle: GQLMultiSelect = {
   label: 'MultiSelectLabel',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   diagnostics: [],
   values: [],
   options: [],
@@ -59,6 +61,7 @@ const multiSelectWithEmptyStyle: GQLMultiSelect = {
   label: 'MultiSelectLabel',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   diagnostics: [],
   values: [],
   options: [],
@@ -83,6 +86,7 @@ const readOnlyMultiSelect: GQLMultiSelect = {
   options: [],
   style: null,
   readOnly: true,
+  hasHelpText: false,
 };
 
 const mockEnqueue = vi.fn<[string, MessageOptions?], void>();

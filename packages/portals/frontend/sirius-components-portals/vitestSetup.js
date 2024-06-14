@@ -12,4 +12,6 @@
  *******************************************************************************/
 import crypto from 'node:crypto';
 
-globalThis.crypto = crypto;
+globalThis.crypto = {
+  randomUUID: crypto.randomUUID,
+};

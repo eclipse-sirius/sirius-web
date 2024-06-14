@@ -16,7 +16,6 @@ import { GQLPage } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 
-import React from 'react';
 import { addPageMutation, deletePageMutation, movePageMutation } from '../FormDescriptionEditorEventFragment';
 import {
   GQLAddPageMutationData,

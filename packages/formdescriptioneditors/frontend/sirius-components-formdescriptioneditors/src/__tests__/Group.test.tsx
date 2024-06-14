@@ -14,7 +14,6 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { ConfirmationDialogContext, Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
 import { GQLContainerBorderStyle, GQLGroup, GQLPage } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { addGroupMutation, deleteGroupMutation, moveGroupMutation } from '../FormDescriptionEditorEventFragment';
 import {

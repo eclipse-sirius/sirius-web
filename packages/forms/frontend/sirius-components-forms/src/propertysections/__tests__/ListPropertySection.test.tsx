@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLList, GQLListItem } from '../../form/FormEventFragments.types';
-import { clickListItemMutation, ListPropertySection } from '../ListPropertySection';
+import { ListPropertySection, clickListItemMutation } from '../ListPropertySection';
 import {
   GQLClickListItemMutationData,
   GQLClickListItemMutationVariables,
@@ -60,6 +60,7 @@ const defaultList: GQLList = {
   label: 'myList',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   items: defaultListItems,
   style: null,
   __typename: 'List',
@@ -71,6 +72,7 @@ const defaultListWithStyle: GQLList = {
   label: 'myList',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   items: defaultListItems,
   style: {
     color: 'RebeccaPurple',
@@ -94,6 +96,7 @@ const readOnlyList: GQLList = {
   diagnostics: [],
   id: 'listId',
   readOnly: true,
+  hasHelpText: false,
 };
 
 const clickListItemVariables: GQLClickListItemMutationVariables = {
@@ -128,8 +131,7 @@ test('render list widget', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
           <ListPropertySection
             editingContextId="editingContextId"
             formId="formId"
@@ -148,8 +150,7 @@ test('render list widget with style', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
           <ListPropertySection
             editingContextId="editingContextId"
             formId="formId"
@@ -180,8 +181,7 @@ test('should the click event sent on item click', async () => {
   const { container } = render(
     <MockedProvider mocks={[itemClickCalledCalledSuccessMock]}>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
           <ListPropertySection
             editingContextId="editingContextId"
             formId="formId"
@@ -212,8 +212,7 @@ test('render list widget with help hint', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
           <ListPropertySection
             editingContextId="editingContextId"
             formId="formId"
@@ -232,8 +231,7 @@ test('should render a readOnly list from widget properties', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
           <ListPropertySection
             editingContextId="editingContextId"
             formId="formId"

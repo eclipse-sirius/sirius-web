@@ -26,6 +26,7 @@ const imageWithMaxWidth: GQLImage = {
   maxWidth: '42px',
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   __typename: 'Image',
   diagnostics: [],
   id: 'imageId',
@@ -37,6 +38,7 @@ const imageWithNoMaxWidth: GQLImage = {
   maxWidth: null,
   iconURL: [],
   hasHelpText: false,
+  readOnly: false,
   __typename: 'Image',
   diagnostics: [],
   id: 'imageId',
@@ -45,7 +47,13 @@ const imageWithNoMaxWidth: GQLImage = {
 test('render image widget with maxWidth', () => {
   const { container } = render(
     <MockedProvider>
-      <ImagePropertySection editingContextId="editingContextId" formId="formId" widget={imageWithMaxWidth} />
+      <ImagePropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={imageWithMaxWidth}
+        readOnly={false}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -57,7 +65,13 @@ test('render image widget with maxWidth', () => {
 test('render image widget without maxWidth', () => {
   const { container } = render(
     <MockedProvider>
-      <ImagePropertySection editingContextId="editingContextId" formId="formId" widget={imageWithNoMaxWidth} />
+      <ImagePropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={imageWithNoMaxWidth}
+        readOnly={false}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -73,6 +87,8 @@ test('render image widget with help hint', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={{ ...imageWithMaxWidth, hasHelpText: true }}
+        readOnly={false}
+        subscribers={[]}
       />
     </MockedProvider>
   );
