@@ -34,6 +34,8 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.studio.services.StudioExplorerTreeFilterProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +57,18 @@ import reactor.test.StepVerifier;
 public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests {
 
     @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
     private TreeEventSubscriptionRunner treeEventSubscriptionRunner;
 
     @Autowired
     private TreeFiltersQueryRunner treeFiltersQueryRunner;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.givenInitialServerState.initialize();
+    }
 
     @Test
     @DisplayName("Given a tree id, when we request its tree filters, then the list is returned")

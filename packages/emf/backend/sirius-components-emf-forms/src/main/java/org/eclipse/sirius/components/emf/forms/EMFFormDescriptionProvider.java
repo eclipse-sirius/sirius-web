@@ -187,7 +187,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
                 EcorePackage.Literals.ELONG_OBJECT,
                 EcorePackage.Literals.ESHORT,
                 EcorePackage.Literals.ESHORT_OBJECT
-                );
+        );
 
         for (var dataType : numericDataTypes) {
             ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, this.semanticTargetIdProvider).getIfDescription());
