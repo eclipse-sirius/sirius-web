@@ -189,8 +189,8 @@ export const getNodeCenter: GetNodeCenter = (node, visiblesNodes) => {
     };
     while (parentNode) {
       position = {
-        x: position.x + parentNode.position?.x ?? 0,
-        y: position.y + parentNode.position?.y ?? 0,
+        x: position.x + (parentNode.position?.x ?? 0),
+        y: position.y + (parentNode.position?.y ?? 0),
       };
       let parentNodeId = parentNode.parentNode ?? '';
       parentNode = visiblesNodes.find((nodeParent) => nodeParent.id === parentNodeId);

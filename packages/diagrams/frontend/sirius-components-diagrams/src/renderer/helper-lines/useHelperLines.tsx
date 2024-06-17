@@ -283,7 +283,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
             while (parentNode) {
               snapOffsetX -= parentNode.position.x;
               snapOffsetY -= parentNode.position.y;
-              parentNode = getNodes().find((node) => node.id === parentNode?.parentNode ?? '');
+              parentNode = getNodes().find((node) => node.id === (parentNode?.parentNode ?? ''));
             }
             if (helperLines.snapX && change.position) {
               change.position.x = helperLines.snapX + snapOffsetX;
@@ -324,7 +324,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
             while (parentNode) {
               snapOffsetX -= parentNode.position.x;
               snapOffsetY -= parentNode.position.y;
-              parentNode = getNodes().find((node) => node.id === parentNode?.parentNode ?? '');
+              parentNode = getNodes().find((node) => node.id === (parentNode?.parentNode ?? ''));
             }
             if (
               helperLines.snapX &&
