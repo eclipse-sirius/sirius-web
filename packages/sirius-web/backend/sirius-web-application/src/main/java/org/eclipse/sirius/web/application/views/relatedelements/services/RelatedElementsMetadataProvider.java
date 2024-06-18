@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.relatedelements.services;
 
+import java.util.Optional;
+
 import org.eclipse.sirius.components.collaborative.forms.api.RelatedElementsConfiguration;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
@@ -27,13 +29,11 @@ import org.springframework.stereotype.Service;
 public class RelatedElementsMetadataProvider implements IRepresentationMetadataProvider {
 
     @Override
-    public boolean canHandle(String representationId) {
-        return representationId != null && representationId.startsWith(RelatedElementsConfiguration.RELATED_PREFIX);
-    }
-
-    @Override
-    public RepresentationMetadata handle(String representationId) {
-        return new RepresentationMetadata(representationId, Form.KIND, RelatedElementsDescriptionProvider.FORM_TITLE, RelatedElementsDescriptionProvider.FORM_DESCRIPTION_ID);
+    public Optional<RepresentationMetadata> getMetadata(String representationId) {
+        if (representationId.startsWith(RelatedElementsConfiguration.RELATED_PREFIX)) {
+            return Optional.of(new RepresentationMetadata(representationId, Form.KIND, RelatedElementsDescriptionProvider.FORM_TITLE, RelatedElementsDescriptionProvider.FORM_DESCRIPTION_ID));
+        }
+        return Optional.empty();
     }
 
 }

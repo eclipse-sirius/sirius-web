@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.widget.reference.browser;
 
+import java.util.Optional;
+
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.trees.Tree;
@@ -26,19 +28,14 @@ import org.springframework.stereotype.Service;
 public class ModelBrowserMetadataProvider implements IRepresentationMetadataProvider {
 
     @Override
-    public boolean canHandle(String representationId) {
-        return representationId != null && (representationId.startsWith(ModelBrowsersDescriptionProvider.MODEL_BROWSER_CONTAINER_PREFIX) || representationId.startsWith(ModelBrowsersDescriptionProvider.MODEL_BROWSER_REFERENCE_PREFIX));
-    }
-
-    @Override
-    public RepresentationMetadata handle(String representationId) {
+    public Optional<RepresentationMetadata> getMetadata(String representationId) {
         RepresentationMetadata representationMetadata = null;
         if (representationId.startsWith(ModelBrowsersDescriptionProvider.MODEL_BROWSER_CONTAINER_PREFIX)) {
             representationMetadata = new RepresentationMetadata(representationId, Tree.KIND, ModelBrowsersDescriptionProvider.REPRESENTATION_NAME, ModelBrowsersDescriptionProvider.CONTAINER_DESCRIPTION_ID);
         } else if (representationId.startsWith(ModelBrowsersDescriptionProvider.MODEL_BROWSER_REFERENCE_PREFIX)) {
             representationMetadata = new RepresentationMetadata(representationId, Tree.KIND, ModelBrowsersDescriptionProvider.REPRESENTATION_NAME, ModelBrowsersDescriptionProvider.REFERENCE_DESCRIPTION_ID);
         }
-        return representationMetadata;
+        return Optional.ofNullable(representationMetadata);
     }
 
 }

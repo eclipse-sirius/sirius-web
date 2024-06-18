@@ -178,8 +178,7 @@ public class RepresentationService implements IRepresentationService, IRepresent
     @Override
     public Optional<RepresentationMetadata> findByRepresentationId(String representationId) {
         return this.representationMetadataProviders.stream()
-            .filter(provider -> provider.canHandle(representationId))
-            .map(provider -> provider.handle(representationId))
+            .flatMap(provider -> provider.getMetadata(representationId).stream())
             .findFirst();
     }
 

@@ -50,6 +50,11 @@ public class RepresentationDataSearchService implements IRepresentationDataSearc
     }
 
     @Override
+    public Optional<RepresentationDataMetadataOnly> findMetadataById(UUID id) {
+        return this.representationDataRepository.findMetadataById(id);
+    }
+
+    @Override
     public List<RepresentationData> findAllByProject(AggregateReference<Project, UUID> project) {
         return this.representationDataRepository.findAllByProjectId(project.getId());
     }

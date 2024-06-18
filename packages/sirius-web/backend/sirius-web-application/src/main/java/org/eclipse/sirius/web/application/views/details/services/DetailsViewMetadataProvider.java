@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.details.services;
 
+import java.util.Optional;
+
 import org.eclipse.sirius.components.collaborative.forms.PropertiesEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.forms.api.PropertiesConfiguration;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -28,13 +30,11 @@ import org.springframework.stereotype.Service;
 public class DetailsViewMetadataProvider implements IRepresentationMetadataProvider {
 
     @Override
-    public boolean canHandle(String representationId) {
-        return representationId != null && representationId.startsWith(PropertiesConfiguration.PROPERTIES_PREFIX);
-    }
-
-    @Override
-    public RepresentationMetadata handle(String representationId) {
-        return new RepresentationMetadata(representationId, Form.KIND, "Properties", PropertiesEventProcessorFactory.DETAILS_VIEW_ID);
+    public Optional<RepresentationMetadata> getMetadata(String representationId) {
+        if (representationId.startsWith(PropertiesConfiguration.PROPERTIES_PREFIX)) {
+            return Optional.of(new RepresentationMetadata(representationId, Form.KIND, "Properties", PropertiesEventProcessorFactory.DETAILS_VIEW_ID));
+        }
+        return Optional.empty();
     }
 
 }

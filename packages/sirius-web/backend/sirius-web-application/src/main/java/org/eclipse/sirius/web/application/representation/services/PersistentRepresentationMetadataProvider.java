@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.representation.services;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
@@ -35,16 +36,10 @@ public class PersistentRepresentationMetadataProvider implements IRepresentation
     }
 
     @Override
-    public boolean canHandle(String representationId) {
-        return new UUIDParser().parse(representationId).map(this.representationDataSearchService::existsById).orElse(false);
-    }
-
-    @Override
-    public RepresentationMetadata handle(String representationId) {
+    public Optional<RepresentationMetadata> getMetadata(String representationId) {
         return new UUIDParser().parse(representationId)
-                .flatMap(this.representationDataSearchService::findById)
-                .map(representation -> new RepresentationMetadata(representation.getId().toString(), representation.getKind(), representation.getLabel(), representation.getDescriptionId()))
-                .orElse(null);
+                .flatMap(this.representationDataSearchService::findMetadataById)
+                .map(representation -> new RepresentationMetadata(representation.id().toString(), representation.kind(), representation.label(), representation.descriptionId()));
     }
 
 }

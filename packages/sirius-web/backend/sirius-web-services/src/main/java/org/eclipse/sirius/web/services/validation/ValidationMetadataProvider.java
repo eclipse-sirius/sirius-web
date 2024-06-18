@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.services.validation;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
@@ -28,13 +29,11 @@ import org.springframework.stereotype.Service;
 public class ValidationMetadataProvider implements IRepresentationMetadataProvider {
 
     @Override
-    public boolean canHandle(String representationId) {
-        return Objects.equals(representationId, Validation.PREFIX);
-    }
-
-    @Override
-    public RepresentationMetadata handle(String representationId) {
-        return new RepresentationMetadata(representationId, Validation.KIND, ValidationDescriptionProvider.LABEL, ValidationDescriptionProvider.DESCRIPTION_ID);
+    public Optional<RepresentationMetadata> getMetadata(String representationId) {
+        if (Objects.equals(representationId, Validation.PREFIX)) {
+            return Optional.of(new RepresentationMetadata(representationId, Validation.KIND, ValidationDescriptionProvider.LABEL, ValidationDescriptionProvider.DESCRIPTION_ID));
+        }
+        return Optional.empty();
     }
 
 }
