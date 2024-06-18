@@ -17,7 +17,6 @@ import { DiagramRepresentationConfigurationProps } from './DiagramRepresentation
 export const defaultNodeTypeRegistry: NodeTypeContextValue = {
   nodeConverters: [],
   nodeLayoutHandlers: [],
-  graphQLNodeStyleFragments: [],
   nodeTypeContributions: [],
 };
 

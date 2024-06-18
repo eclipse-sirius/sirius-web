@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { NodeProps } from 'reactflow';
 import { INodeConverter } from '../converter/ConvertEngine.types';
-import { GraphQLNodeStyleFragment } from '../graphql/subscription/nodeFragment.types';
 import { NodeData } from '../renderer/DiagramRenderer.types';
 import { INodeLayoutHandler } from '../renderer/layout/LayoutEngine.types';
 
@@ -24,7 +23,6 @@ export interface NodeTypeContributionProps {
 export type NodeTypeContributionElement = React.ReactElement<NodeTypeContributionProps>;
 
 export interface NodeTypeContextValue {
-  graphQLNodeStyleFragments: GraphQLNodeStyleFragment[];
   nodeLayoutHandlers: INodeLayoutHandler<NodeData>[];
   nodeConverters: INodeConverter[];
   nodeTypeContributions: NodeTypeContributionElement[];

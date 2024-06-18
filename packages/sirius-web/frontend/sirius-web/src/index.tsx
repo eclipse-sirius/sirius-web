@@ -11,14 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
+import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
 import {
+  ApolloClientOptionsConfigurer,
   DiagramRepresentationConfiguration,
   NodeTypeRegistry,
   SiriusWebApplication,
+  apolloClientOptionsConfigurersExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
 import ReactDOM from 'react-dom';
 import { httpOrigin, wsOrigin } from './core/URL';
+import { ellipseNodeStyleDocumentTransform } from './nodes/ElipseNodeDocumentTransform';
 import { EllipseNode } from './nodes/EllipseNode';
 import { EllipseNodeConverter } from './nodes/EllipseNodeConverter';
 import { EllipseNodeLayoutHandler } from './nodes/EllipseNodeLayoutHandler';
@@ -34,20 +38,33 @@ if (process.env.NODE_ENV !== 'production') {
   loadErrorMessages();
 }
 
+const registry = new ExtensionRegistry();
+
+const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
+  const { documentTransform } = currentOptions;
+
+  const newDocumentTransform = documentTransform
+    ? documentTransform.concat(ellipseNodeStyleDocumentTransform)
+    : ellipseNodeStyleDocumentTransform;
+  return {
+    ...currentOptions,
+    documentTransform: newDocumentTransform,
+  };
+};
+
+registry.putData(apolloClientOptionsConfigurersExtensionPoint, {
+  identifier: `siriusWeb_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
+  data: [apolloClientOptionsConfigurer],
+});
+
 const nodeTypeRegistry: NodeTypeRegistry = {
-  graphQLNodeStyleFragments: [
-    {
-      type: 'EllipseNodeStyle',
-      fields: `borderColor borderSize borderStyle background`,
-    },
-  ],
   nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],
   nodeConverters: [new EllipseNodeConverter()],
   nodeTypeContributions: [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />],
 };
 
 ReactDOM.render(
-  <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin}>
+  <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} extensionRegistry={registry}>
     <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistry} />
   </SiriusWebApplication>,
   document.getElementById('root')

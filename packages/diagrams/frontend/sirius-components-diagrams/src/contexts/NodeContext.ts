@@ -16,7 +16,6 @@ import { NodeTypeContextValue } from './NodeContext.types';
 const value: NodeTypeContextValue = {
   nodeConverters: [],
   nodeLayoutHandlers: [],
-  graphQLNodeStyleFragments: [],
   nodeTypeContributions: [],
 };
 
