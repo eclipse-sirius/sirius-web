@@ -21,16 +21,15 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.migration.MigrationService;
+import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
-import org.eclipse.sirius.components.emf.migration.MigrationService;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 
 /**
@@ -64,6 +63,7 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
         Optional<DocumentData> optionalDocumentData = Optional.empty();
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             resource.save(outputStream, options);
+            resource.setModified(false);
 
             for (Resource.Diagnostic warning : resource.getWarnings()) {
                 this.logger.warn(warning.getMessage());

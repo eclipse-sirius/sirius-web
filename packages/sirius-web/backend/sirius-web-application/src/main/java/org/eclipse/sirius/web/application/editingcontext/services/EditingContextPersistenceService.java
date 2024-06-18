@@ -12,14 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -69,9 +75,12 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                     .map(AggregateReference::<Project, UUID>to)
                     .ifPresent(project -> {
 
-                        var documentData = emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                        var resources = emfEditingContext.getDomain().getResourceSet().getResources().stream()
                                 .filter(resource -> IEMFEditingContext.RESOURCE_SCHEME.equals(resource.getURI().scheme()))
                                 .filter(resource -> this.persistenceFilters.stream().allMatch(filter -> filter.shouldPersist(resource)))
+                                .toList();
+                        var resourcesToSave = this.findResourcesToSave(resources);
+                        var documentData = resourcesToSave.stream()
                                 .map(this.resourceToDocumentService::toDocument)
                                 .flatMap(Optional::stream)
                                 .collect(Collectors.toSet());
@@ -90,5 +99,46 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
+    }
+
+    private Collection<Resource> findResourcesToSave(List<Resource> resources) {
+        // "Dirty" resources are known as impacted and need to be saved
+        Set<Resource> dirty = resources.stream().filter(Resource::isModified).collect(Collectors.toCollection(LinkedHashSet::new));
+
+        // For "unknown" resources, we do not know yet; they are not directly modified themselves but may point to an impacted resource (in which case they are, at least potentially, impacted)
+        Set<Resource> unknown = resources.stream().filter(r -> !r.isModified()).collect(Collectors.toCollection(LinkedHashSet::new));
+
+        // "Clean" resources are known not to be impacted. We only need to keep track of their count.
+
+        int cleanCount = 0;
+        int totalCount = dirty.size() + unknown.size();
+
+        // Which resource contains (at least one) references to which other one(s)?
+        Map<Resource, Set<Resource>> topology = new HashMap<>();
+        for (Resource res : unknown) {
+            res.getAllContents().forEachRemaining(sourceObject -> {
+                sourceObject.eCrossReferences().forEach(targetObject -> {
+                    var targetResource = targetObject.eResource();
+                    if (targetResource != res) {
+                        topology.computeIfAbsent(res, uri -> new HashSet<>()).add(targetResource);
+                    }
+                });
+            });
+        }
+        // Loop until we've classified all unknown resources as either definitely clean or potentially impacted (dirty)
+        while (dirty.size() + cleanCount < totalCount) {
+            for (Resource candidate : Set.copyOf(unknown)) {
+                Set<Resource> referenced = topology.getOrDefault(candidate, Set.of());
+                if (referenced.stream().anyMatch(dirty::contains)) {
+                    dirty.add(candidate);
+                    unknown.remove(candidate);
+                } else if (referenced.stream().noneMatch(unknown::contains)) {
+                    // The candidate does not reference neither dirty or unknown (potentially dirty) resources, we can consider it clean
+                    cleanCount += 1;
+                }
+            }
+        }
+
+        return dirty;
     }
 }
