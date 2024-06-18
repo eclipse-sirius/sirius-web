@@ -32,6 +32,8 @@ public interface IRepresentationDataSearchService {
 
     Optional<RepresentationData> findById(UUID id);
 
+    Optional<RepresentationDataMetadataOnly> findMetadataById(UUID id);
+
     List<RepresentationData> findAllByProject(AggregateReference<Project, UUID> project);
 
     List<RepresentationDataMetadataOnly> findAllMetadataByProject(AggregateReference<Project, UUID> project);

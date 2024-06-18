@@ -21,8 +21,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.trees.Tree;
-import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.springframework.stereotype.Service;
 
@@ -46,17 +44,8 @@ public class RepresentationMetadataSearchService implements IRepresentationMetad
     @Override
     public Optional<RepresentationMetadata> findByRepresentationId(String representationId) {
         return this.representationMetadataProviders.stream()
-                .filter(provider -> provider.canHandle(representationId))
-                .map(provider -> provider.handle(representationId))
+                .flatMap(provider -> provider.getMetadata(representationId).stream())
                 .findFirst();
-    }
-
-    private Optional<RepresentationMetadata> findTransientRepresentationById(String representationId) {
-        Optional<RepresentationMetadata> representationMetadata = Optional.empty();
-        if (representationId.startsWith(ExplorerDescriptionProvider.PREFIX)) {
-            representationMetadata = Optional.of(new RepresentationMetadata(ExplorerDescriptionProvider.PREFIX, Tree.KIND, ExplorerDescriptionProvider.REPRESENTATION_NAME, ExplorerDescriptionProvider.DESCRIPTION_ID));
-        }
-        return representationMetadata;
     }
 
     @Override

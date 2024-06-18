@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.core.api;
 
+import java.util.Optional;
+
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 
 /**
@@ -21,6 +23,5 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
  * @author pcdavid
  */
 public interface IRepresentationMetadataProvider {
-    boolean canHandle(String representationId);
-    RepresentationMetadata handle(String representationId);
+    Optional<RepresentationMetadata> getMetadata(String representationId);
 }

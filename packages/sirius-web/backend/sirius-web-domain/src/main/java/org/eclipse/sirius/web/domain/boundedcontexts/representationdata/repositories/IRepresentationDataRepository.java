@@ -31,6 +31,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IRepresentationDataRepository extends ListPagingAndSortingRepository<RepresentationData, UUID>, ListCrudRepository<RepresentationData, UUID> {
     @Query("""
+            SELECT id, label, kind, target_object_id, description_id
+            FROM representation_data representationData
+            WHERE representationData.id = :id
+            """)
+    Optional<RepresentationDataMetadataOnly> findMetadataById(UUID id);
+
+    @Query("""
         SELECT *
         FROM representation_data representationData
         WHERE representationData.project_id = :projectId

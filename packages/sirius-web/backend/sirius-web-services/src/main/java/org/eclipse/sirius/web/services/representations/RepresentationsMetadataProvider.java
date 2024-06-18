@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.representations;
 
+import java.util.Optional;
+
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.forms.Form;
@@ -24,13 +26,11 @@ import org.eclipse.sirius.components.forms.Form;
 public class RepresentationsMetadataProvider implements IRepresentationMetadataProvider {
 
     @Override
-    public boolean canHandle(String representationId) {
-        return representationId != null && representationId.startsWith(RepresentationsDescriptionProvider.PREFIX);
-    }
-
-    @Override
-    public RepresentationMetadata handle(String representationId) {
-        return new RepresentationMetadata(representationId, Form.KIND, RepresentationsDescriptionProvider.TITLE, RepresentationsDescriptionProvider.REPRESENTATIONS_DEFAULT_FORM_DESCRIPTION_ID);
+    public Optional<RepresentationMetadata> getMetadata(String representationId) {
+        if (representationId.startsWith(RepresentationsDescriptionProvider.PREFIX)) {
+            return Optional.of(new RepresentationMetadata(representationId, Form.KIND, RepresentationsDescriptionProvider.TITLE, RepresentationsDescriptionProvider.REPRESENTATIONS_DEFAULT_FORM_DESCRIPTION_ID));
+        }
+        return Optional.empty();
     }
 
 }

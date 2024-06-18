@@ -30,6 +30,7 @@ More existing APIs will be migrated to this new common pattern.
  * `Flux<IPayload> getSubscription(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input);`
  - https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove `IWidgetSubscriptionManagerFactory`
  - https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] [sirius-web] Remove `GraphQLNodeStyleFragment` from `NodeTypeRegistry`, you can specify additional fields to be retreived by the subscription using the `DocumentTransform` GraphQL API and the `apolloClientOptionsConfigurersExtensionPoint` extension point
+ - https://github.com/eclipse-sirius/sirius-web/issues/3641[#3641] [core] `IRepresentationMetadataProvider` now defined a single method `Optional<RepresentationMetadata> getMetadata(String representationId)` instead of separate `canHandle` and `handle` methods.
 
 === Dependency update
 
@@ -116,6 +117,7 @@ image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3656[#3656] [core] Add the ability to customize the GraphQL type resolver
 - https://github.com/eclipse-sirius/sirius-web/issues/3645[#3645] [core] Revert earlier change made in #3595 which caused regressions
 - https://github.com/eclipse-sirius/sirius-web/issues/3651[#3651] [diagram] Improve performances when interacting with the diagram, especially when dragging a node
+- https://github.com/eclipse-sirius/sirius-web/issues/3641[#3641] [core] Do not fetch representation content when we only need the metadata
 
 
 == v2024.5.0
