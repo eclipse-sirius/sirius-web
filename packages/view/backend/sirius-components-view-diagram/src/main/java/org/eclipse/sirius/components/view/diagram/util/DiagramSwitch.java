@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
@@ -58,7 +59,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.SelectionDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
@@ -473,9 +474,11 @@ public class DiagramSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
-            case DiagramPackage.SELECTION_DESCRIPTION: {
-                SelectionDescription selectionDescription = (SelectionDescription) theEObject;
-                T result = this.caseSelectionDescription(selectionDescription);
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION: {
+                SelectionDialogDescription selectionDialogDescription = (SelectionDialogDescription) theEObject;
+                T result = this.caseSelectionDialogDescription(selectionDialogDescription);
+                if (result == null)
+                    result = this.caseDialogDescription(selectionDialogDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -519,6 +522,13 @@ public class DiagramSwitch<T> extends Switch<T> {
                 T result = this.caseDropNodeTool(dropNodeTool);
                 if (result == null)
                     result = this.caseTool(dropNodeTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.DIALOG_DESCRIPTION: {
+                DialogDescription dialogDescription = (DialogDescription) theEObject;
+                T result = this.caseDialogDescription(dialogDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1085,17 +1095,20 @@ public class DiagramSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Selection Description</em>'. <!--
+     * Returns the result of interpreting the object as an instance of '<em>Selection Dialog Description</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *            the target of the switch. <<<<<<< HEAD
      * @return the result of interpreting the object as an instance of '<em>Selection Description</em>'.
-     * @generated
+     * @generated =======
+     * @return the result of interpreting the object as an instance of '<em>Selection Dialog Description</em>'. >>>>>>>
+     *         e444ba2ad ([2759] Reactivate the SelectionDialog)
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
      */
-    public T caseSelectionDescription(SelectionDescription object) {
+    public T caseSelectionDialogDescription(SelectionDialogDescription object) {
         return null;
     }
 
@@ -1169,6 +1182,21 @@ public class DiagramSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseDropNodeTool(DropNodeTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Dialog Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Dialog Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDialogDescription(DialogDescription object) {
         return null;
     }
 

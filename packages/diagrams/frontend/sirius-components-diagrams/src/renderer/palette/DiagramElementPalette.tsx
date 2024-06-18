@@ -21,37 +21,40 @@ import { Palette } from './Palette';
 import { PalettePortal } from './PalettePortal';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 
-export const DiagramElementPalette = memo(({ diagramElementId, labelId }: DiagramElementPaletteProps) => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { isOpened, x, y, hideDiagramElementPalette } = useDiagramElementPalette();
-  const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
+export const DiagramElementPalette = memo(
+  ({ diagramElementId, targetObjectId, labelId }: DiagramElementPaletteProps) => {
+    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+    const { isOpened, x, y, hideDiagramElementPalette } = useDiagramElementPalette();
+    const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
 
-  const escapePressed = useKeyPress('Escape');
-  useEffect(() => {
-    if (escapePressed) {
-      hideDiagramElementPalette();
+    const escapePressed = useKeyPress('Escape');
+    useEffect(() => {
+      if (escapePressed) {
+        hideDiagramElementPalette();
+      }
+    }, [escapePressed, hideDiagramElementPalette]);
+
+    if (readOnly) {
+      return null;
     }
-  }, [escapePressed, hideDiagramElementPalette]);
 
-  if (readOnly) {
-    return null;
+    const handleDirectEditClick = () => {
+      if (labelId) {
+        setCurrentlyEditedLabelId('palette', labelId, null);
+      }
+    };
+
+    return isOpened && x && y && !currentlyEditedLabelId ? (
+      <PalettePortal>
+        <Palette
+          x={x}
+          y={y}
+          diagramElementId={diagramElementId}
+          targetObjectId={targetObjectId}
+          onDirectEditClick={handleDirectEditClick}
+          hideableDiagramElement
+        />
+      </PalettePortal>
+    ) : null;
   }
-
-  const handleDirectEditClick = () => {
-    if (labelId) {
-      setCurrentlyEditedLabelId('palette', labelId, null);
-    }
-  };
-
-  return isOpened && x && y && !currentlyEditedLabelId ? (
-    <PalettePortal>
-      <Palette
-        x={x}
-        y={y}
-        diagramElementId={diagramElementId}
-        onDirectEditClick={handleDirectEditClick}
-        hideableDiagramElement
-      />
-    </PalettePortal>
-  ) : null;
-});
+);

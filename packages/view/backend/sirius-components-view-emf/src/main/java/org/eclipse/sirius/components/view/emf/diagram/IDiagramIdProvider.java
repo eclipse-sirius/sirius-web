@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.view.emf.diagram;
 
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 
 /**
@@ -35,6 +36,8 @@ public interface IDiagramIdProvider extends IRepresentationDescriptionIdProvider
 
     String getId(DiagramElementDescription diagramElementDescription);
 
+    String getId(DialogDescription dialogDescription);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -49,6 +52,11 @@ public interface IDiagramIdProvider extends IRepresentationDescriptionIdProvider
 
         @Override
         public String getId(DiagramElementDescription diagramElementDescription) {
+            return "";
+        }
+
+        @Override
+        public String getId(DialogDescription dialogDescription) {
             return "";
         }
 

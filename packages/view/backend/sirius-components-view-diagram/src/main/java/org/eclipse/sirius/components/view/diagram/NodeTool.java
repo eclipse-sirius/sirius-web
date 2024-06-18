@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,7 @@ package org.eclipse.sirius.components.view.diagram;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.NodeTool#getSelectionDescription <em>Selection
- * Description</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.NodeTool#getDialogDescription <em>Dialog Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeTool#getIconURLsExpression <em>Icon UR Ls
  * Expression</em>}</li>
  * </ul>
@@ -31,27 +30,27 @@ package org.eclipse.sirius.components.view.diagram;
  */
 public interface NodeTool extends Tool {
     /**
-     * Returns the value of the '<em><b>Selection Description</b></em>' containment reference. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Dialog Description</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
-     * @return the value of the '<em>Selection Description</em>' containment reference.
-     * @see #setSelectionDescription(SelectionDescription)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_SelectionDescription()
+     * @return the value of the '<em>Dialog Description</em>' containment reference.
+     * @see #setDialogDescription(DialogDescription)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_DialogDescription()
      * @model containment="true"
      * @generated
      */
-    SelectionDescription getSelectionDescription();
+    DialogDescription getDialogDescription();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodeTool#getSelectionDescription
-     * <em>Selection Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodeTool#getDialogDescription <em>Dialog
+     * Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Selection Description</em>' containment reference.
-     * @see #getSelectionDescription()
+     *            the new value of the '<em>Dialog Description</em>' containment reference.
+     * @see #getDialogDescription()
      * @generated
      */
-    void setSelectionDescription(SelectionDescription value);
+    void setDialogDescription(DialogDescription value);
 
     /**
      * Returns the value of the '<em><b>Icon UR Ls Expression</b></em>' attribute. <!-- begin-user-doc --> <!--

@@ -64,10 +64,13 @@ public class ToolConverter {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
     };
 
-    public ToolConverter(IObjectService objectService, IEditService editService, IViewToolImageProvider viewToolImageProvider, IFeedbackMessageService feedbackMessageService) {
+    private final IDiagramIdProvider diagramIdProvider;
+
+    public ToolConverter(IObjectService objectService, IEditService editService, IViewToolImageProvider viewToolImageProvider, IFeedbackMessageService feedbackMessageService, IDiagramIdProvider diagramIdProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.feedbackMessageService = feedbackMessageService;
+        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
     }
 
     /**
@@ -181,7 +184,7 @@ public class ToolConverter {
                     return this.execute(converterContext, convertedNodes, nodeTool, child);
                 })
                 .targetDescriptions(List.of())
-                .selectionDescriptionId(this.objectService.getId(nodeTool.getSelectionDescription()))
+                .dialogDescriptionId(this.diagramIdProvider.getId(nodeTool.getDialogDescription()))
                 .appliesToDiagramRoot(appliesToDiagramRoot)
                 .build();
     }

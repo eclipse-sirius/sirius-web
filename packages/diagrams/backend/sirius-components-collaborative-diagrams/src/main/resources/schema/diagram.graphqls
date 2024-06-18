@@ -8,9 +8,7 @@ input DiagramEventInput {
   diagramId: ID!
 }
 
-union DiagramEventPayload =
-  ErrorPayload
-  | DiagramRefreshedEventPayload
+union DiagramEventPayload = ErrorPayload | DiagramRefreshedEventPayload
 
 type DiagramRefreshedEventPayload {
   id: ID!
@@ -223,7 +221,7 @@ type Edge {
   routingPoints: [Position]!
   sourceAnchorRelativePosition: Ratio!
   targetAnchorRelativePosition: Ratio!
-  centerLabelEditable : Boolean!
+  centerLabelEditable: Boolean!
 }
 
 type EdgeStyle {
@@ -292,7 +290,7 @@ type SingleClickOnDiagramElementTool implements Tool {
   label: String!
   iconURL: [String!]!
   appliesToDiagramRoot: Boolean!
-  selectionDescriptionId: String
+  dialogDescriptionId: String
   targetDescriptions: [DiagramElementDescription!]!
 }
 
@@ -465,11 +463,23 @@ input InvokeSingleClickOnDiagramElementToolInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  selectedObjectId: String
+  variables: [ToolVariable!]!
   diagramElementId: ID!
   startingPositionX: Float!
   startingPositionY: Float!
   toolId: ID!
+}
+
+input ToolVariable {
+  name: String!
+  value: String!
+  type: ToolVariableType!
+}
+
+enum ToolVariableType {
+  STRING
+  OBJECT_ID
+  OBJECT_ID_ARRAY
 }
 
 union InvokeSingleClickOnDiagramElementToolPayload =
@@ -597,7 +607,6 @@ input PinDiagramElementInput {
   elementIds: [ID!]!
   pinned: Boolean!
 }
-
 
 union PinDiagramElementPayload = ErrorPayload | SuccessPayload
 

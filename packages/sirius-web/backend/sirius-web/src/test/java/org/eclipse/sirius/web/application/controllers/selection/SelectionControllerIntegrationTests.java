@@ -25,6 +25,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
@@ -39,7 +41,9 @@ import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.services.diagrams.ModelOperationDiagramDescriptionProvider;
 import org.eclipse.sirius.web.services.selection.SelectionDescriptionProvider;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,7 +65,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,  properties = { "sirius.web.test.enabled=studio" })
 public class SelectionControllerIntegrationTests extends AbstractIntegrationTests {
 
     private static final String GET_SELECTION_EVENT_SUBSCRIPTION = """
@@ -92,6 +96,12 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
     @Autowired
     private EditTextfieldMutationRunner editTextfieldMutationRunner;
+
+    @Autowired
+    private ModelOperationDiagramDescriptionProvider modelOperationDiagramDescriptionProvider;
+
+    @Autowired
+    private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @BeforeEach
     public void beforeEach() {
@@ -128,7 +138,11 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSelectionRepresentationWhenWeEditTheDetailsOfAnObjectThenTheSelectionRepresentationIsUpdated() {
-        var selectionEventInput = new SelectionEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, PapayaIdentifiers.PROJECT_OBJECT.toString());
+        this.testSelectionRepresentationUpdate(PapayaIdentifiers.PROJECT_OBJECT.toString());
+    }
+
+    private void testSelectionRepresentationUpdate(String targetObjectId) throws AssertionError {
+        var selectionEventInput = new SelectionEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, targetObjectId);
         var selectionFlux = this.graphQLRequestor.subscribe(GET_SELECTION_EVENT_SUBSCRIPTION, selectionEventInput);
 
         var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString()));
@@ -211,6 +225,17 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 .verify(Duration.ofSeconds(10));
     }
 
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToModelOperationDiagram() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                this.modelOperationDiagramDescriptionProvider.getRepresentationDescriptionId(),
+                PapayaIdentifiers.PROJECT_OBJECT.toString(),
+                "ModelOperationDiagram"
+        );
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+    }
+
     @Test
     @DisplayName("Given a semantic object, when we subscribe to its selection events, then the URL of its objects is valid")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -240,4 +265,6 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
+
+
 }

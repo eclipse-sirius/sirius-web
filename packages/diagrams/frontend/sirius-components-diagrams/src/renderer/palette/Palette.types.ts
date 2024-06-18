@@ -20,6 +20,7 @@ export interface PaletteProps {
   x: number;
   y: number;
   diagramElementId: string;
+  targetObjectId: string;
   onDirectEditClick: () => void;
   hideableDiagramElement?: boolean;
 }
@@ -73,8 +74,15 @@ export interface GQLInvokeSingleClickOnDiagramElementToolInput {
   toolId: string;
   startingPositionX: number;
   startingPositionY: number;
-  selectedObjectId: string | null;
+  variables: GQLToolVariable[];
 }
+export interface GQLToolVariable {
+  name: string;
+  value: string;
+  type: GQLToolVariableType;
+}
+
+export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
 
 export interface GQLTool {
   id: string;
@@ -85,7 +93,7 @@ export interface GQLTool {
 
 export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   appliesToDiagramRoot: boolean;
-  selectionDescriptionId: string;
+  dialogDescriptionId: string;
 }
 
 export interface GQLGetToolSectionsVariables {

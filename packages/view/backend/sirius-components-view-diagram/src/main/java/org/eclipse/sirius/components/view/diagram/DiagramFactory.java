@@ -272,12 +272,13 @@ public interface DiagramFactory extends EFactory {
     DeleteView createDeleteView();
 
     /**
-     * Returns a new object of class '<em>Selection Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns a new object of class '<em>Selection Dialog Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
-     * @return a new object of class '<em>Selection Description</em>'.
+     * @return a new object of class '<em>Selection Dialog Description</em>'.
      * @generated
      */
-    SelectionDescription createSelectionDescription();
+    SelectionDialogDescription createSelectionDialogDescription();
 
     /**
      * Returns a new object of class '<em>Tool Section</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

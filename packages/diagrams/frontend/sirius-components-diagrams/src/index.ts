@@ -20,6 +20,13 @@ export { AlignmentMap } from './converter/convertDiagram.types';
 export type { IConvertEngine, INodeConverter } from './converter/ConvertEngine.types';
 export { convertHandles } from './converter/convertHandles';
 export { convertInsideLabel, convertLabelStyle, convertOutsideLabels } from './converter/convertLabel';
+export { diagramDialogContributionExtensionPoint } from './dialog/DialogContextExtensionPoints';
+export type {
+  DiagramDialogComponentProps,
+  DiagramDialogContribution,
+} from './dialog/DialogContextExtensionPoints.types';
+export { useDialog } from './dialog/useDialog';
+export type { UseDialogValue } from './dialog/useDialog.types';
 export type { GQLNodeDescription } from './graphql/query/nodeDescriptionFragment.types';
 export type { GQLDiagram, GQLNodeLayoutData } from './graphql/subscription/diagramFragment.types';
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
@@ -53,6 +60,7 @@ export type { DiagramPaletteToolContextValue } from './renderer/palette/DiagramP
 export { DiagramPaletteToolContext } from './renderer/palette/DiagramPaletteToolContext';
 export { DiagramPaletteToolContribution } from './renderer/palette/DiagramPaletteToolContribution';
 export type { DiagramPaletteToolContributionComponentProps } from './renderer/palette/DiagramPaletteToolContribution.types';
+export type { GQLToolVariable, GQLToolVariableType } from './renderer/palette/Palette.types';
 export type { DiagramPanelActionProps } from './renderer/panel/DiagramPanel.types';
 export { diagramPanelActionExtensionPoint } from './renderer/panel/DiagramPanelExtensionPoints';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';

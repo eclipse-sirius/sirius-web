@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -120,38 +120,6 @@ public enum UserResizableDirection implements Enumerator {
     public static final List<UserResizableDirection> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private final int value;
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private final String name;
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private final String literal;
-
-    /**
-     * Only this class can construct instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private UserResizableDirection(int value, String name, String literal) {
-        this.value = value;
-        this.name = name;
-        this.literal = literal;
-    }
-
-    /**
      * Returns the '<em><b>User Resizable Direction</b></em>' literal with the specified literal value. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -210,6 +178,38 @@ public enum UserResizableDirection implements Enumerator {
                 return NONE;
         }
         return null;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private final int value;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private final String name;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private final String literal;
+
+    /**
+     * Only this class can construct instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private UserResizableDirection(int value, String name, String literal) {
+        this.value = value;
+        this.name = name;
+        this.literal = literal;
     }
 
     /**

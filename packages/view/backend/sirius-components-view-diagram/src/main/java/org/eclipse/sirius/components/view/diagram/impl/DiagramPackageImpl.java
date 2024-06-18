@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
@@ -68,7 +69,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.SelectionDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -362,7 +363,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      *
      * @generated
      */
-    private EClass selectionDescriptionEClass = null;
+    private EClass selectionDialogDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -398,6 +399,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     private EClass dropNodeToolEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass dialogDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1893,7 +1901,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeTool_SelectionDescription() {
+    public EReference getNodeTool_DialogDescription() {
         return (EReference) this.nodeToolEClass.getEStructuralFeatures().get(0);
     }
 
@@ -2013,8 +2021,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EClass getSelectionDescription() {
-        return this.selectionDescriptionEClass;
+    public EClass getSelectionDialogDescription() {
+        return this.selectionDialogDescriptionEClass;
     }
 
     /**
@@ -2023,8 +2031,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getSelectionDescription_SelectionCandidatesExpression() {
-        return (EAttribute) this.selectionDescriptionEClass.getEStructuralFeatures().get(0);
+    public EAttribute getSelectionDialogDescription_SelectionCandidatesExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2033,8 +2041,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getSelectionDescription_SelectionMessage() {
-        return (EAttribute) this.selectionDescriptionEClass.getEStructuralFeatures().get(1);
+    public EAttribute getSelectionDialogDescription_SelectionMessage() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2145,6 +2153,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EReference getDropNodeTool_AcceptedNodeTypes() {
         return (EReference) this.dropNodeToolEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDialogDescription() {
+        return this.dialogDescriptionEClass;
     }
 
     /**
@@ -2446,7 +2464,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.labelEditToolEClass, LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION);
 
         this.nodeToolEClass = this.createEClass(NODE_TOOL);
-        this.createEReference(this.nodeToolEClass, NODE_TOOL__SELECTION_DESCRIPTION);
+        this.createEReference(this.nodeToolEClass, NODE_TOOL__DIALOG_DESCRIPTION);
         this.createEAttribute(this.nodeToolEClass, NODE_TOOL__ICON_UR_LS_EXPRESSION);
 
         this.sourceEdgeEndReconnectionToolEClass = this.createEClass(SOURCE_EDGE_END_RECONNECTION_TOOL);
@@ -2463,9 +2481,9 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.deleteViewEClass = this.createEClass(DELETE_VIEW);
         this.createEAttribute(this.deleteViewEClass, DELETE_VIEW__VIEW_EXPRESSION);
 
-        this.selectionDescriptionEClass = this.createEClass(SELECTION_DESCRIPTION);
-        this.createEAttribute(this.selectionDescriptionEClass, SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION);
-        this.createEAttribute(this.selectionDescriptionEClass, SELECTION_DESCRIPTION__SELECTION_MESSAGE);
+        this.selectionDialogDescriptionEClass = this.createEClass(SELECTION_DIALOG_DESCRIPTION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE);
 
         this.toolSectionEClass = this.createEClass(TOOL_SECTION);
         this.createEAttribute(this.toolSectionEClass, TOOL_SECTION__NAME);
@@ -2482,6 +2500,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.dropNodeToolEClass = this.createEClass(DROP_NODE_TOOL);
         this.createEReference(this.dropNodeToolEClass, DROP_NODE_TOOL__ACCEPTED_NODE_TYPES);
+
+        this.dialogDescriptionEClass = this.createEClass(DIALOG_DESCRIPTION);
 
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
@@ -2554,6 +2574,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.targetEdgeEndReconnectionToolEClass.getESuperTypes().add(this.getEdgeReconnectionTool());
         this.createViewEClass.getESuperTypes().add(theViewPackage.getOperation());
         this.deleteViewEClass.getESuperTypes().add(theViewPackage.getOperation());
+        this.selectionDialogDescriptionEClass.getESuperTypes().add(this.getDialogDescription());
         this.diagramToolSectionEClass.getESuperTypes().add(this.getToolSection());
         this.nodeToolSectionEClass.getESuperTypes().add(this.getToolSection());
         this.edgeToolSectionEClass.getESuperTypes().add(this.getToolSection());
@@ -2840,8 +2861,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.nodeToolEClass, NodeTool.class, "NodeTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getNodeTool_SelectionDescription(), this.getSelectionDescription(), null, "selectionDescription", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodeTool_DialogDescription(), this.getDialogDescription(), null, "dialogDescription", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeTool_IconURLsExpression(), theViewPackage.getInterpretedExpression(), "iconURLsExpression", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2865,11 +2886,11 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEAttribute(this.getDeleteView_ViewExpression(), theViewPackage.getInterpretedExpression(), "viewExpression", "aql:selectedNode", 1, 1, DeleteView.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        this.initEClass(this.selectionDescriptionEClass, SelectionDescription.class, "SelectionDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getSelectionDescription_SelectionCandidatesExpression(), theViewPackage.getInterpretedExpression(), "selectionCandidatesExpression", "aql:self", 0, 1,
-                SelectionDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getSelectionDescription_SelectionMessage(), this.ecorePackage.getEString(), "selectionMessage", null, 0, 1, SelectionDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEClass(this.selectionDialogDescriptionEClass, SelectionDialogDescription.class, "SelectionDialogDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getSelectionDialogDescription_SelectionCandidatesExpression(), theViewPackage.getInterpretedExpression(), "selectionCandidatesExpression", "aql:self", 0, 1,
+                SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_SelectionMessage(), this.ecorePackage.getEString(), "selectionMessage", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.toolSectionEClass, ToolSection.class, "ToolSection", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getToolSection_Name(), theViewPackage.getIdentifier(), "name", "Tool Section", 1, 1, ToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
@@ -2896,6 +2917,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEClass(this.dropNodeToolEClass, DropNodeTool.class, "DropNodeTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getDropNodeTool_AcceptedNodeTypes(), this.getNodeDescription(), null, "acceptedNodeTypes", null, 0, -1, DropNodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.dialogDescriptionEClass, DialogDescription.class, "DialogDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle");

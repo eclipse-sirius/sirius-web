@@ -18,6 +18,7 @@ import { nodeFragment } from './nodeFragment';
 export const diagramFragment = `
 fragment diagramFragment on Diagram {
   id
+  targetObjectId
   metadata {
     label
     kind
