@@ -149,6 +149,9 @@ describe('Diagram - group palette', () => {
         explorer.createObject('component', 'Packages Package');
         details.getTextField('Name').invoke('text').should('eq', '');
         details.getTextField('Name').type('package{enter}');
+        explorer.createObject('component', 'Packages Package');
+        details.getTextField('Name').invoke('text').should('eq', '');
+        details.getTextField('Name').type('package_bis{enter}');
         explorer.createObject('package', 'Types Class');
         details.getTextField('Name').invoke('text').should('eq', '');
         details.getTextField('Name').type('class{enter}');
@@ -172,15 +175,15 @@ describe('Diagram - group palette', () => {
         diagram.getGroupPalette().should('exist');
         diagram.getGroupPalette().findByTestId('Align left').should('not.exist');
         explorer.select('package');
-        explorer.select('class', true);
+        explorer.select('package_bis', true);
         diagram.fitToScreen();
-        diagram.getNodes('diagram', 'class').click('top');
+        diagram.getNodes('diagram', 'package_bis').click();
         diagram.getGroupPalette().should('exist');
         diagram.getGroupPalette().findByTestId('Align left').should('exist');
         explorer.select('attribute');
         explorer.select('package', true);
         diagram.fitToScreen();
-        diagram.getNodes('diagram', 'package').click('top');
+        diagram.getNodes('diagram', 'attribute').click();
         diagram.getGroupPalette().should('exist');
         diagram.getGroupPalette().findByTestId('Align left').should('not.exist');
       });
