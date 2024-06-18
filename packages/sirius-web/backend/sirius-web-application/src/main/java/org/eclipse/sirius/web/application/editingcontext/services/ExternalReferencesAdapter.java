@@ -49,7 +49,7 @@ public class ExternalReferencesAdapter extends AdapterImpl {
             res.getAllContents().forEachRemaining(sourceObject -> {
                 sourceObject.eCrossReferences().forEach(targetObject -> {
                     var targetResource = targetObject.eResource();
-                    if (targetResource != res) {
+                    if (targetResource != res && targetResource != null) {
                         this.references.add(targetResource.getURI());
                     }
                 });

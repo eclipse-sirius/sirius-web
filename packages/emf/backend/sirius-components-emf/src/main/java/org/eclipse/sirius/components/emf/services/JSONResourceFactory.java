@@ -47,7 +47,9 @@ public class JSONResourceFactory extends ResourceFactoryImpl {
         options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
         options.put(JsonResource.OPTION_DISPLAY_DYNAMIC_INSTANCES, true);
 
-        return new JsonResourceImpl(uri, options);
+        JsonResource resource = new JsonResourceImpl(uri, options);
+        resource.setTrackingModification(true);
+        return resource;
     }
 
     /**
