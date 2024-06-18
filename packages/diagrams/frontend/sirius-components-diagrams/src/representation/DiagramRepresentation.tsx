@@ -13,18 +13,15 @@
 
 import { gql, OnDataOptions, useQuery, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
-import { NodeTypeContext } from '../contexts/NodeContext';
-import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { diagramEventSubscription } from '../graphql/subscription/diagramEventSubscription';
 import {
   GQLDiagramEventPayload,
   GQLDiagramRefreshedEventPayload,
 } from '../graphql/subscription/diagramEventSubscription.types';
-import { GraphQLNodeStyleFragment } from '../graphql/subscription/nodeFragment.types';
 import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
@@ -44,7 +41,7 @@ import {
 } from './DiagramRepresentation.types';
 import { StoreContextProvider } from './StoreContext';
 
-const subscription = (contributions: GraphQLNodeStyleFragment[]) => gql(diagramEventSubscription(contributions));
+const subscription = gql(diagramEventSubscription);
 
 export const getDiagramDescription = gql`
   query getDiagramDescription($editingContextId: ID!, $representationId: ID!) {
@@ -139,9 +136,7 @@ export const DiagramRepresentation = ({
     setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: null, complete: true }));
   };
 
-  const { graphQLNodeStyleFragments } = useContext<NodeTypeContextValue>(NodeTypeContext);
-
-  const { error } = useSubscription<GQLDiagramEventData>(subscription(graphQLNodeStyleFragments), {
+  const { error } = useSubscription<GQLDiagramEventData>(subscription, {
     variables,
     fetchPolicy: 'no-cache',
     onData,

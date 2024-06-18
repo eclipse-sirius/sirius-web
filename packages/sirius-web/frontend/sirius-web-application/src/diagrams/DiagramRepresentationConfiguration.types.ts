@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import {
-  GraphQLNodeStyleFragment,
   INodeConverter,
   INodeLayoutHandler,
   NodeData,
@@ -24,7 +23,6 @@ export interface DiagramRepresentationConfigurationProps {
 }
 
 export interface NodeTypeRegistry {
-  graphQLNodeStyleFragments: GraphQLNodeStyleFragment[];
   nodeLayoutHandlers: INodeLayoutHandler<NodeData>[];
   nodeConverters: INodeConverter[];
   nodeTypeContributions: NodeTypeContributionElement[];

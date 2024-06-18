@@ -13,6 +13,9 @@
 
 === Deprecation warning
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] All the existing parts of the API used to contribute custom nodes with `nodeLayoutHandlers`, `nodeConverters` and `nodeTypeContributions` will be migrated soon to leverage the extension registry.
+The signature of the types to implement should not change but the way they are contributed will.
+
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3562[#3562] [sirius-web] Update displayed default model creation action.
@@ -26,6 +29,7 @@ More existing APIs will be migrated to this new common pattern.
  * `public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input)`;
  * `Flux<IPayload> getSubscription(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input);`
  - https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove `IWidgetSubscriptionManagerFactory`
+ - https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] [sirius-web] Remove `GraphQLNodeStyleFragment` from `NodeTypeRegistry`, you can specify additional fields to be retreived by the subscription using the `DocumentTransform` GraphQL API and the `apolloClientOptionsConfigurersExtensionPoint` extension point
 
 === Dependency update
 
@@ -104,6 +108,7 @@ image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3561[#3561] [diagram] Add support for background and border on diagram labels
 - https://github.com/eclipse-sirius/sirius-web/issues/3604[#3604] [diagram] Make node overlap resolution faster during "Arrange All"
 - https://github.com/eclipse-sirius/sirius-web/issues/3653[#3653] [gantt] Add documentation for gantt representation
+- https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] [sirius-web] Simplifying the contribution to the GraphQL subscription of the diagram for custom nodes
 
 == v2024.5.0
 

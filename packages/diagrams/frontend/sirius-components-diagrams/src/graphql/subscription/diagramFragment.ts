@@ -14,9 +14,8 @@
 import { edgeFragment } from './edgeFragment';
 import { insideLabelFragment, labelFragment, outsideLabelFragment } from './labelFragment';
 import { nodeFragment } from './nodeFragment';
-import { GraphQLNodeStyleFragment } from './nodeFragment.types';
 
-export const diagramFragment = (contributions: GraphQLNodeStyleFragment[]) => `
+export const diagramFragment = `
 fragment diagramFragment on Diagram {
   id
   targetObjectId
@@ -73,7 +72,7 @@ fragment diagramFragment on Diagram {
   }
 }
 
-${nodeFragment(contributions)}
+${nodeFragment}
 ${edgeFragment}
 ${labelFragment}
 ${insideLabelFragment}
