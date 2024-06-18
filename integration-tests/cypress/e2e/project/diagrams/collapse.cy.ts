@@ -69,8 +69,6 @@ describe('Diagram - collapsible node', () => {
         const studio = new Studio();
         studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
           instanceProjectId = res.projectId;
-
-          new Explorer().createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
         });
       });
 
@@ -84,12 +82,13 @@ describe('Diagram - collapsible node', () => {
         explorer.createObject('Entity1', 'Relation Entity2');
         explorer.select('Entity1');
         details.getTextField('Name').type('Entity1{enter}');
+        explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
         diagram.fitToScreen();
         diagram
           .getNodes('diagram', 'Entity1')
           .findByTestId('Label - Entity1')
           .should('have.css', 'border-bottom', '1px solid rgb(51, 176, 195)');
-        diagram.getNodes('diagram', 'Entity1').click('top');
+        diagram.getNodes('diagram', 'Entity1').findByTestId('Label - Entity1').click();
         diagram.getPalette().should('exist');
         diagram.getPalette().findByTestId('Collapse - Tool').click();
         diagram
