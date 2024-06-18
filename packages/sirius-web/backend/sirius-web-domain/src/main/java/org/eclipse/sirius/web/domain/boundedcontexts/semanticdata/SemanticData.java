@@ -90,7 +90,7 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
         return this.isNew;
     }
 
-    public void updateDocuments(Set<Document> newDocuments, Set<String> domainUris) {
+    public void updateDocuments(Set<Document> newDocuments, Set<UUID> unmodifiedDocumentIds, Set<String> domainUris) {
         boolean shouldBeUpdated = false;
 
         Set<Document> documentsToSet = new LinkedHashSet<>();
@@ -112,6 +112,8 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
                 shouldBeUpdated = true;
             }
         }
+        this.documents.stream().filter(existingDocument -> unmodifiedDocumentIds.contains(existingDocument.getId())).forEach(documentsToSet::add);
+
         // The previous code will not detect the removal of an existing document as cause for update, so also check if the set of document ids has changed
         shouldBeUpdated = shouldBeUpdated || !this.documents.stream()
                 .map(Document::getId)

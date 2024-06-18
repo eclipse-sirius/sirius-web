@@ -13,11 +13,9 @@
 package org.eclipse.sirius.web.application.editingcontext.services;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -25,6 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -85,6 +84,8 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                                 .flatMap(Optional::stream)
                                 .collect(Collectors.toSet());
 
+                        resourcesToSave.forEach(res -> ExternalReferencesAdapter.getOrInstall(res).update());
+
                         var documents = new LinkedHashSet<Document>();
                         var domainUris = new LinkedHashSet<String>();
 
@@ -93,7 +94,16 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                             domainUris.addAll(data.ePackageEntries().stream().map(EPackageEntry::nsURI).toList());
                         });
 
-                        this.semanticDataUpdateService.updateDocuments(project, documents, domainUris);
+                        Set<UUID> unmodifiedDocumentIds = new HashSet<>();
+                        for (Resource res : resources) {
+                            if (!resourcesToSave.contains(res)) {
+                                var resourceId = res.getURI().path().substring(1);
+                                var documentId = new UUIDParser().parse(resourceId).orElse(UUID.randomUUID());
+                                unmodifiedDocumentIds.add(documentId);
+                            }
+                        }
+
+                        this.semanticDataUpdateService.updateDocuments(project, documents, unmodifiedDocumentIds, domainUris);
                     });
         }
 
@@ -108,36 +118,14 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
         // For "unknown" resources, we do not know yet; they are not directly modified themselves but may point to an impacted resource (in which case they are, at least potentially, impacted)
         Set<Resource> unknown = resources.stream().filter(r -> !r.isModified()).collect(Collectors.toCollection(LinkedHashSet::new));
 
-        // "Clean" resources are known not to be impacted. We only need to keep track of their count.
-
-        int cleanCount = 0;
-        int totalCount = dirty.size() + unknown.size();
-
-        // Which resource contains (at least one) references to which other one(s)?
-        Map<Resource, Set<Resource>> topology = new HashMap<>();
-        for (Resource res : unknown) {
-            res.getAllContents().forEachRemaining(sourceObject -> {
-                sourceObject.eCrossReferences().forEach(targetObject -> {
-                    var targetResource = targetObject.eResource();
-                    if (targetResource != res) {
-                        topology.computeIfAbsent(res, uri -> new HashSet<>()).add(targetResource);
-                    }
-                });
-            });
-        }
-        // Loop until we've classified all unknown resources as either definitely clean or potentially impacted (dirty)
-        while (dirty.size() + cleanCount < totalCount) {
-            for (Resource candidate : Set.copyOf(unknown)) {
-                Set<Resource> referenced = topology.getOrDefault(candidate, Set.of());
-                if (referenced.stream().anyMatch(dirty::contains)) {
-                    dirty.add(candidate);
-                    unknown.remove(candidate);
-                } else if (referenced.stream().noneMatch(unknown::contains)) {
-                    // The candidate does not reference neither dirty or unknown (potentially dirty) resources, we can consider it clean
-                    cleanCount += 1;
-                }
+        for (Resource candidate : unknown) {
+            Set<URI> referenced = ExternalReferencesAdapter.getOrInstall(candidate).getReferences();
+            if (referenced.stream().anyMatch(uri -> dirty.stream().anyMatch(r -> r.getURI().equals(uri)))) {
+                dirty.add(candidate);
             }
         }
+
+        System.err.printf("Selected %d resources out of a total of %d for saving\n", dirty.size(), resources.size());
 
         return dirty;
     }
