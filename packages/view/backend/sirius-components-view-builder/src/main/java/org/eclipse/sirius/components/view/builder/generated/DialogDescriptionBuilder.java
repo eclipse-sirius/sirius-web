@@ -10,9 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.view.builder.generated;
 
-export interface DiagramElementPaletteProps {
-  diagramElementId: string;
-  targetObjectId: string | undefined;
-  labelId: string | null;
+/**
+ * Builder for org.eclipse.sirius.components.view.diagram.DialogDescription.
+ *
+ * @author BuilderGenerator
+ * @generated
+ */
+public abstract class DialogDescriptionBuilder {
+
+    /**
+     * Builder for org.eclipse.sirius.components.view.diagram.DialogDescription.
+     * @generated
+     */
+    protected abstract org.eclipse.sirius.components.view.diagram.DialogDescription getDialogDescription();
+
+
 }
+

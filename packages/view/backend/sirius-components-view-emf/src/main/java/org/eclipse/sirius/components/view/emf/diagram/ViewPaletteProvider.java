@@ -175,15 +175,15 @@ public class ViewPaletteProvider implements IPaletteProvider {
     private ITool createNodeTool(NodeTool viewNodeTool, boolean appliesToDiagramRoot, VariableManager variableManager, AQLInterpreter interpreter) {
         String toolId = this.idProvider.apply(viewNodeTool).toString();
         List<String> iconURLProvider = this.nodeToolIconURLProvider(viewNodeTool, interpreter, variableManager);
-        String selectionDescriptionId = "";
-        if (viewNodeTool.getSelectionDescription() != null) {
-            selectionDescriptionId = this.objectService.getId(viewNodeTool.getSelectionDescription());
+        String dialogDescriptionId = "";
+        if (viewNodeTool.getDialogDescription() != null) {
+            dialogDescriptionId = this.objectService.getId(viewNodeTool.getDialogDescription());
         }
 
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(viewNodeTool.getName())
                 .iconURL(iconURLProvider)
-                .selectionDescriptionId(selectionDescriptionId)
+                .dialogDescriptionId(dialogDescriptionId)
                 .targetDescriptions(List.of())
                 .appliesToDiagramRoot(appliesToDiagramRoot)
                 .build();

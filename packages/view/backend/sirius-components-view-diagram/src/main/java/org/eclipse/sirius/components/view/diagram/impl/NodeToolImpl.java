@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
-import org.eclipse.sirius.components.view.diagram.SelectionDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Node Tool</b></em>'. <!-- end-user-doc -->
@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.view.diagram.SelectionDescription;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolImpl#getSelectionDescription <em>Selection
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolImpl#getDialogDescription <em>Dialog
  * Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolImpl#getIconURLsExpression <em>Icon UR Ls
  * Expression</em>}</li>
@@ -37,14 +37,14 @@ import org.eclipse.sirius.components.view.diagram.SelectionDescription;
  */
 public class NodeToolImpl extends ToolImpl implements NodeTool {
     /**
-     * The cached value of the '{@link #getSelectionDescription() <em>Selection Description</em>}' containment
-     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getDialogDescription() <em>Dialog Description</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getSelectionDescription()
+     * @see #getDialogDescription()
      * @generated
      * @ordered
      */
-    protected SelectionDescription selectionDescription;
+    protected DialogDescription dialogDescription;
 
     /**
      * The default value of the '{@link #getIconURLsExpression() <em>Icon UR Ls Expression</em>}' attribute. <!--
@@ -91,8 +91,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      * @generated
      */
     @Override
-    public SelectionDescription getSelectionDescription() {
-        return this.selectionDescription;
+    public DialogDescription getDialogDescription() {
+        return this.dialogDescription;
     }
 
     /**
@@ -100,11 +100,11 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      *
      * @generated
      */
-    public NotificationChain basicSetSelectionDescription(SelectionDescription newSelectionDescription, NotificationChain msgs) {
-        SelectionDescription oldSelectionDescription = this.selectionDescription;
-        this.selectionDescription = newSelectionDescription;
+    public NotificationChain basicSetDialogDescription(DialogDescription newDialogDescription, NotificationChain msgs) {
+        DialogDescription oldDialogDescription = this.dialogDescription;
+        this.dialogDescription = newDialogDescription;
         if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION, oldSelectionDescription, newSelectionDescription);
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION, oldDialogDescription, newDialogDescription);
             if (msgs == null)
                 msgs = notification;
             else
@@ -119,18 +119,18 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      * @generated
      */
     @Override
-    public void setSelectionDescription(SelectionDescription newSelectionDescription) {
-        if (newSelectionDescription != this.selectionDescription) {
+    public void setDialogDescription(DialogDescription newDialogDescription) {
+        if (newDialogDescription != this.dialogDescription) {
             NotificationChain msgs = null;
-            if (this.selectionDescription != null)
-                msgs = ((InternalEObject) this.selectionDescription).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION, null, msgs);
-            if (newSelectionDescription != null)
-                msgs = ((InternalEObject) newSelectionDescription).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION, null, msgs);
-            msgs = this.basicSetSelectionDescription(newSelectionDescription, msgs);
+            if (this.dialogDescription != null)
+                msgs = ((InternalEObject) this.dialogDescription).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION, null, msgs);
+            if (newDialogDescription != null)
+                msgs = ((InternalEObject) newDialogDescription).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION, null, msgs);
+            msgs = this.basicSetDialogDescription(newDialogDescription, msgs);
             if (msgs != null)
                 msgs.dispatch();
         } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION, newSelectionDescription, newSelectionDescription));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION, newDialogDescription, newDialogDescription));
     }
 
     /**
@@ -164,8 +164,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-            case DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION:
-                return this.basicSetSelectionDescription(null, msgs);
+            case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:
+                return this.basicSetDialogDescription(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -178,8 +178,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION:
-                return this.getSelectionDescription();
+            case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:
+                return this.getDialogDescription();
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
                 return this.getIconURLsExpression();
         }
@@ -194,8 +194,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION:
-                this.setSelectionDescription((SelectionDescription) newValue);
+            case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:
+                this.setDialogDescription((DialogDescription) newValue);
                 return;
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
                 this.setIconURLsExpression((String) newValue);
@@ -212,8 +212,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION:
-                this.setSelectionDescription((SelectionDescription) null);
+            case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:
+                this.setDialogDescription((DialogDescription) null);
                 return;
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
                 this.setIconURLsExpression(ICON_UR_LS_EXPRESSION_EDEFAULT);
@@ -230,8 +230,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION:
-                return this.selectionDescription != null;
+            case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:
+                return this.dialogDescription != null;
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
                 return ICON_UR_LS_EXPRESSION_EDEFAULT == null ? this.iconURLsExpression != null : !ICON_UR_LS_EXPRESSION_EDEFAULT.equals(this.iconURLsExpression);
         }

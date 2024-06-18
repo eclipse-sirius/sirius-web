@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -234,9 +234,9 @@ public class ToolProvider implements IToolProvider {
         List<String> imagePath = this.toolImageProvider.getIcon(nodeCreationTool);
         List<IDiagramElementDescription> targetDescriptions = this.getParentNodeDescriptions(nodeCreationTool.getNodeMappings(), id2NodeDescriptions);
         var selectModelElementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(nodeCreationTool.getVariable());
-        String selectionDescriptionId = null;
+        String dialogDescriptionId = null;
         if (selectModelElementVariableOpt.isPresent()) {
-            selectionDescriptionId = this.identifierProvider.getIdentifier(selectModelElementVariableOpt.get());
+            dialogDescriptionId = this.identifierProvider.getIdentifier(selectModelElementVariableOpt.get());
         }
         // @formatter:off
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
@@ -245,7 +245,7 @@ public class ToolProvider implements IToolProvider {
                 .handler(this.createNodeCreationHandler(interpreter, nodeCreationTool))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(this.atLeastOneRootMapping(nodeCreationTool.getNodeMappings()))
-                .selectionDescriptionId(selectionDescriptionId)
+                .dialogDescriptionId(dialogDescriptionId)
                 .build();
         // @formatter:on
     }
@@ -257,9 +257,9 @@ public class ToolProvider implements IToolProvider {
         List<String> imagePath = this.toolImageProvider.getIcon(containerCreationDescription);
         List<IDiagramElementDescription> targetDescriptions = this.getParentNodeDescriptions(containerCreationDescription.getContainerMappings(), id2NodeDescriptions);
         var selectModelElementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(containerCreationDescription.getVariable());
-        String selectionDescriptionId = null;
+        String dialogDescriptionId = null;
         if (selectModelElementVariableOpt.isPresent()) {
-            selectionDescriptionId = this.identifierProvider.getIdentifier(selectModelElementVariableOpt.get());
+            dialogDescriptionId = this.identifierProvider.getIdentifier(selectModelElementVariableOpt.get());
         }
         // @formatter:off
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
@@ -268,7 +268,7 @@ public class ToolProvider implements IToolProvider {
                 .handler(this.createContainerCreationHandler(interpreter, containerCreationDescription))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(this.atLeastOneRootMapping(containerCreationDescription.getContainerMappings()))
-                .selectionDescriptionId(selectionDescriptionId)
+                .dialogDescriptionId(dialogDescriptionId)
                 .build();
         // @formatter:on
     }

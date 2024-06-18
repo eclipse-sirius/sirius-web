@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
+import { DialogContextProvider } from '../dialog/DialogContext';
 import { diagramEventSubscription } from '../graphql/subscription/diagramEventSubscription';
 import {
   GQLDiagramEventPayload,
@@ -182,10 +183,12 @@ export const DiagramRepresentation = ({
                           data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
                           <MarkerDefinitions />
                           <FullscreenContextProvider>
-                            <DiagramRenderer
-                              key={state.diagramRefreshedEventPayload.diagram.id}
-                              diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-                            />
+                            <DialogContextProvider>
+                              <DiagramRenderer
+                                key={state.diagramRefreshedEventPayload.diagram.id}
+                                diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+                              />
+                            </DialogContextProvider>
                           </FullscreenContextProvider>
                         </div>
                       </NodeContextProvider>

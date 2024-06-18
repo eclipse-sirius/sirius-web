@@ -181,7 +181,7 @@ public class ToolConverter {
                     return this.execute(converterContext, convertedNodes, nodeTool, child);
                 })
                 .targetDescriptions(List.of())
-                .selectionDescriptionId(this.objectService.getId(nodeTool.getSelectionDescription()))
+                .dialogDescriptionId(this.objectService.getId(nodeTool.getDialogDescription()))
                 .appliesToDiagramRoot(appliesToDiagramRoot)
                 .build();
     }

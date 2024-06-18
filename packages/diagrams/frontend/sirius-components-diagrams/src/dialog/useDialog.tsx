@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface DiagramElementPaletteProps {
-  diagramElementId: string;
-  targetObjectId: string | undefined;
-  labelId: string | null;
-}
+import { useContext } from 'react';
+import { DialogContext } from './DialogContext';
+import { UseDialogValue } from './useDialog.types';
+
+export const useDialog = (): UseDialogValue => {
+  const { showDialog } = useContext<UseDialogValue>(DialogContext);
+
+  return { showDialog };
+};

@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
@@ -59,7 +60,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.SelectionDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
@@ -279,8 +280,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter caseSelectionDescription(SelectionDescription object) {
-            return DiagramAdapterFactory.this.createSelectionDescriptionAdapter();
+        public Adapter caseSelectionDialogDescription(SelectionDialogDescription object) {
+            return DiagramAdapterFactory.this.createSelectionDialogDescriptionAdapter();
         }
 
         @Override
@@ -306,6 +307,11 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseDropNodeTool(DropNodeTool object) {
             return DiagramAdapterFactory.this.createDropNodeToolAdapter();
+        }
+
+        @Override
+        public Adapter caseDialogDescription(DialogDescription object) {
+            return DiagramAdapterFactory.this.createDialogDescriptionAdapter();
         }
 
         @Override
@@ -906,15 +912,15 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDescription <em>Selection Description</em>}'. <!--
-     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
-     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription <em>Selection Dialog
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.SelectionDescription
      */
-    public Adapter createSelectionDescriptionAdapter() {
+    public Adapter createSelectionDialogDescriptionAdapter() {
         return null;
     }
 
@@ -985,6 +991,20 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * @see org.eclipse.sirius.components.view.diagram.DropNodeTool
      */
     public Adapter createDropNodeToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.DialogDescription
+     * <em>Dialog Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.DialogDescription
+     * @generated
+     */
+    public Adapter createDialogDescriptionAdapter() {
         return null;
     }
 

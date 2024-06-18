@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.view.diagram;
 
-export interface DiagramElementPaletteProps {
-  diagramElementId: string;
-  targetObjectId: string | undefined;
-  labelId: string | null;
-}
+import org.eclipse.emf.ecore.EObject;
+
+/**
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Dialog Description</b></em>'. <!-- end-user-doc
+ * -->
+ *
+ *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDialogDescription()
+ * @model abstract="true"
+ * @generated
+ */
+public interface DialogDescription extends EObject {
+} // DialogDescription

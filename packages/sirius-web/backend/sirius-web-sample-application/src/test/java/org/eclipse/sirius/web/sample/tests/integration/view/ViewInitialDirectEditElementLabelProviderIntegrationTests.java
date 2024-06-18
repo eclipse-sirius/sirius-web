@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -416,7 +417,7 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
                     toolId,
                     0d,
                     0d,
-                    null
+                    List.of()
             );
 
             var invokeToolExecutionInput = ExecutionInput.newExecutionInput()

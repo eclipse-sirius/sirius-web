@@ -60,7 +60,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.SelectionDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
@@ -101,8 +101,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @deprecated
+     * @generated
      */
     @Deprecated
     public static DiagramPackage getPackage() {
@@ -175,8 +175,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createCreateView();
             case DiagramPackage.DELETE_VIEW:
                 return this.createDeleteView();
-            case DiagramPackage.SELECTION_DESCRIPTION:
-                return this.createSelectionDescription();
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION:
+                return this.createSelectionDialogDescription();
             case DiagramPackage.DIAGRAM_TOOL_SECTION:
                 return this.createDiagramToolSection();
             case DiagramPackage.NODE_TOOL_SECTION:
@@ -581,9 +581,9 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      * @generated
      */
     @Override
-    public SelectionDescription createSelectionDescription() {
-        SelectionDescriptionImpl selectionDescription = new SelectionDescriptionImpl();
-        return selectionDescription;
+    public SelectionDialogDescription createSelectionDialogDescription() {
+        SelectionDialogDescriptionImpl selectionDialogDescription = new SelectionDialogDescriptionImpl();
+        return selectionDialogDescription;
     }
 
     /**

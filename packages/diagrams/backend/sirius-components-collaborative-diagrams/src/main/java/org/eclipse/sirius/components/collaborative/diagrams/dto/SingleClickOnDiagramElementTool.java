@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescrip
  *
  * @author mcharfadi
  */
-public record SingleClickOnDiagramElementTool(String id, String label, List<String> iconURL, List<IDiagramElementDescription> targetDescriptions, String selectionDescriptionId,
+public record SingleClickOnDiagramElementTool(String id, String label, List<String> iconURL, List<IDiagramElementDescription> targetDescriptions, String dialogDescriptionId,
                                               boolean appliesToDiagramRoot) implements ITool {
 
     public SingleClickOnDiagramElementTool {
@@ -53,7 +53,7 @@ public record SingleClickOnDiagramElementTool(String id, String label, List<Stri
 
         private List<IDiagramElementDescription> targetDescriptions;
 
-        private String selectionDescriptionId;
+        private String dialogDescriptionId;
 
         private boolean appliesToDiagramRoot;
 
@@ -81,13 +81,13 @@ public record SingleClickOnDiagramElementTool(String id, String label, List<Stri
             return this;
         }
 
-        public Builder selectionDescriptionId(String selectionDescriptionId) {
-            this.selectionDescriptionId = selectionDescriptionId;
+        public Builder dialogDescriptionId(String dialogDescriptionId) {
+            this.dialogDescriptionId = dialogDescriptionId;
             return this;
         }
 
         public SingleClickOnDiagramElementTool build() {
-            return new SingleClickOnDiagramElementTool(this.id, this.label, this.iconURL, this.targetDescriptions, this.selectionDescriptionId, this.appliesToDiagramRoot);
+            return new SingleClickOnDiagramElementTool(this.id, this.label, this.iconURL, this.targetDescriptions, this.dialogDescriptionId, this.appliesToDiagramRoot);
         }
     }
 

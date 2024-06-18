@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -62,6 +64,8 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagramEventHandler {
 
+    private static final String OBJECT_ID_ARRAY_SEPARATOR = ",";
+
     private final Logger logger = LoggerFactory.getLogger(InvokeSingleClickOnDiagramElementToolEventHandler.class);
 
     private final IObjectService objectService;
@@ -75,6 +79,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
     private final Counter counter;
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
 
     public InvokeSingleClickOnDiagramElementToolEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService,
             ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
@@ -114,7 +119,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
             // @formatter:on
             if (optionalTool.isPresent()) {
                 IStatus status = this.executeTool(editingContext, diagramContext, input.diagramElementId(), optionalTool.get(), input.startingPositionX(), input.startingPositionY(),
-                        input.selectedObjectId());
+                        input.variables());
                 if (status instanceof Success success) {
                     WorkbenchSelection newSelection = null;
                     Object newSelectionParameter = success.getParameters().get(Success.NEW_SELECTION);
@@ -134,7 +139,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
     }
 
     private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramElementId, SingleClickOnDiagramElementTool tool, double startingPositionX,
-            double startingPositionY, String selectedObjectId) {
+            double startingPositionY, List<ToolVariable> variables) {
         IStatus result = new Failure("");
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
@@ -149,22 +154,45 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
 
         if (self.isPresent()) {
             VariableManager variableManager = this.populateVariableManager(editingContext, diagramContext, node, edge, self);
-            String selectionDescriptionId = tool.getSelectionDescriptionId();
-            if (selectionDescriptionId != null && selectedObjectId != null) {
-                var selectionDescriptionOpt = this.representationDescriptionSearchService.findById(editingContext, selectionDescriptionId);
-                var selectedObjectOpt = this.objectService.getObject(editingContext, selectedObjectId);
-                if (selectionDescriptionOpt.isPresent() && selectedObjectOpt.isPresent()) {
-                    variableManager.put(SingleClickOnDiagramElementTool.SELECTED_OBJECT, selectedObjectOpt.get());
-                }
+            String dialogDescriptionId = tool.getDialogDescriptionId();
+            if (dialogDescriptionId != null && !variables.isEmpty()) {
+                this.handleDialogVariables(editingContext, variableManager, variables);
             }
-            if (selectionDescriptionId == null || selectedObjectId != null) {
+
+            //We do not apply the tool if a dialog is defined but no variables have been provided
+            if (dialogDescriptionId == null || !variables.isEmpty()) {
                 result = tool.getHandler().apply(variableManager);
                 Position newPosition = Position.at(startingPositionX, startingPositionY);
-
                 diagramContext.getDiagramEvents().add(new SinglePositionEvent(diagramElementId, newPosition));
             }
         }
         return result;
+    }
+
+    private void handleDialogVariables(IEditingContext editingContext, VariableManager variableManager, List<ToolVariable> variables) {
+        variables.forEach(toolVariable -> {
+            this.handleToolVariable(toolVariable, editingContext, variableManager);
+        });
+    }
+
+    private void handleToolVariable(ToolVariable toolvariable, IEditingContext editingContext, VariableManager variableManager) {
+        switch (toolvariable.type()) {
+            case STRING -> variableManager.put(toolvariable.name(), toolvariable.value());
+            case OBJECT_ID -> {
+                var optionalObject = this.objectService.getObject(editingContext, toolvariable.value());
+                variableManager.put(toolvariable.name(), optionalObject.orElse(null));
+            }
+            case OBJECT_ID_ARRAY -> {
+                String value = toolvariable.value();
+                List<String> objectsIds = List.of(value.split(OBJECT_ID_ARRAY_SEPARATOR));
+                List<Object> objects = objectsIds.stream()
+                        .map(objectId -> this.objectService.getObject(editingContext, objectId))
+                        .map(optionalObject -> optionalObject.orElse(null))
+                        .toList();
+                variableManager.put(toolvariable.name(), objects);
+            }
+            default -> this.logger.warn("Unexpected value: " + toolvariable.type());
+        }
     }
 
     private Optional<Object> getCurrentContext(IEditingContext editingContext, String diagramElementId, SingleClickOnDiagramElementTool tool, Diagram diagram, Optional<Node> node,

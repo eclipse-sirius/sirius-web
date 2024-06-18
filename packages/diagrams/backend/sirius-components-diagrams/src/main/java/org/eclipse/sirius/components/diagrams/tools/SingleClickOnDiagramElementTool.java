@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,7 +45,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
 
     private boolean appliesToDiagramRoot;
 
-    private String selectionDescriptionId;
+    private String dialogDescriptionId;
 
     private SingleClickOnDiagramElementTool() {
         // Prevent instantiation
@@ -78,8 +78,8 @@ public final class SingleClickOnDiagramElementTool implements ITool {
         return this.label;
     }
 
-    public String getSelectionDescriptionId() {
-        return this.selectionDescriptionId;
+    public String getDialogDescriptionId() {
+        return this.dialogDescriptionId;
     }
 
     @Override
@@ -113,7 +113,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
 
         private boolean appliesToDiagramRoot;
 
-        private String selectionDescriptionId;
+        private String dialogDescriptionId;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -144,8 +144,8 @@ public final class SingleClickOnDiagramElementTool implements ITool {
             return this;
         }
 
-        public Builder selectionDescriptionId(String selectionDescriptionId) {
-            this.selectionDescriptionId = selectionDescriptionId;
+        public Builder dialogDescriptionId(String dialogDescriptionId) {
+            this.dialogDescriptionId = dialogDescriptionId;
             return this;
         }
 
@@ -157,7 +157,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
             tool.handler = Objects.requireNonNull(this.handler);
             tool.targetDescriptions = Objects.requireNonNull(this.targetDescriptions);
             tool.appliesToDiagramRoot = this.appliesToDiagramRoot;
-            tool.selectionDescriptionId = this.selectionDescriptionId;
+            tool.dialogDescriptionId = this.dialogDescriptionId;
             return tool;
         }
     }

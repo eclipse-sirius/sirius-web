@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-export interface DiagramElementPaletteProps {
-  diagramElementId: string;
-  targetObjectId: string | undefined;
-  labelId: string | null;
+import { GQLToolVariable } from '../renderer/palette/Palette.types';
+export interface UseDialogValue {
+  showDialog: (
+    dialogKindId: string,
+    editingContextID: string,
+    dialogDescriptionId: string,
+    targetObjectId: string,
+    onConfirm: (variables: GQLToolVariable[]) => void
+  ) => void;
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { IconOverlay, Toast } from '@eclipse-sirius/sirius-components-core';
+import { DialogComponentProps, GQLToolVariableType } from '@eclipse-sirius/sirius-components-diagrams';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -26,7 +27,6 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { SelectionDialogProps } from './SelectionDialog.types';
 import {
   HandleCompleteEvent,
   HandleSelectionUpdatedEvent,
@@ -35,8 +35,8 @@ import {
   SchemaValue,
   SelectionDialogContext,
   SelectionDialogEvent,
-  selectionDialogMachine,
   ShowToastEvent,
+  selectionDialogMachine,
 } from './SelectionDialogMachine';
 import { GQLSelectionEventSubscription } from './SelectionEvent.types';
 
@@ -71,13 +71,15 @@ const useSelectionObjectModalStyles = makeStyles((_theme) =>
   })
 );
 
+export const SELECTION_DIALOG_ID: string = 'SELECTION_DIALOG_ID';
+
 export const SelectionDialog = ({
   editingContextId,
-  selectionRepresentationId,
+  dialogDescriptionId,
   targetObjectId,
   onClose,
   onFinish,
-}: SelectionDialogProps) => {
+}: DialogComponentProps) => {
   const classes = useSelectionObjectModalStyles();
 
   const [{ value, context }, dispatch] = useMachine<SelectionDialogContext, SelectionDialogEvent>(
@@ -92,7 +94,7 @@ export const SelectionDialog = ({
       input: {
         id,
         editingContextId,
-        selectionId: selectionRepresentationId,
+        selectionId: dialogDescriptionId,
         targetObjectId: targetObjectId,
       },
     },
@@ -174,7 +176,7 @@ export const SelectionDialog = ({
             color="primary"
             onClick={() => {
               if (selectedObjectId) {
-                onFinish(selectedObjectId);
+                onFinish([{ name: 'selectedObject', value: selectedObjectId, type: GQLToolVariableType.objectId }]);
               }
             }}>
             Finish

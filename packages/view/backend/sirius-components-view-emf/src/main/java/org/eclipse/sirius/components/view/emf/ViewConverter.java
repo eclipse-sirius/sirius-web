@@ -103,13 +103,13 @@ public class ViewConverter implements IViewConverter {
     private List<IRepresentationDescription> convertSelectionsDialogs(View view, AQLInterpreter interpreter) {
         return view.getDescriptions().stream().filter(DiagramDescription.class::isInstance)
             .flatMap(this::getAllContent)
-            .filter(org.eclipse.sirius.components.view.diagram.SelectionDescription.class::isInstance)
-            .map(org.eclipse.sirius.components.view.diagram.SelectionDescription.class::cast)
+            .filter(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription.class::isInstance)
+            .map(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription.class::cast)
             .map(selectionDescription -> this.convertSelectionDialog(selectionDescription, interpreter))
             .toList();
     }
 
-    private IRepresentationDescription convertSelectionDialog(org.eclipse.sirius.components.view.diagram.SelectionDescription selectionDescription, AQLInterpreter interpreter) {
+    private IRepresentationDescription convertSelectionDialog(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription selectionDescription, AQLInterpreter interpreter) {
         String selectionDescriptionId = this.objectService.getId(selectionDescription);
 
         return SelectionDescription.newSelectionDescription(selectionDescriptionId)
