@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,28 @@ public class DiagramIdProvider implements IDiagramIdProvider {
         } else {
             return EDGE_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
         }
+    }
+
+    @Override
+    public String getId(DialogDescription dialogDescription) {
+        if (dialogDescription != null) {
+            String sourceId = this.getSourceIdFromElementDescription(dialogDescription);
+            String sourceElementId = this.objectService.getId(dialogDescription);
+            return this.getDialogDescriptionTypeName(dialogDescription) + "&" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
+                    + sourceElementId;
+        }
+        return null;
+    }
+
+    private String getDialogDescriptionTypeName(DialogDescription dialogDescription) {
+        String name = dialogDescription.eClass().getName();
+        String typeName = "siriusComponents://";
+        if (!name.isEmpty()) {
+            char[] charArray = name.toCharArray();
+            charArray[0] = Character.toLowerCase(charArray[0]);
+            typeName += new String(charArray);
+        }
+        return typeName;
     }
 
     private String getSourceIdFromElementDescription(EObject elementDescription) {

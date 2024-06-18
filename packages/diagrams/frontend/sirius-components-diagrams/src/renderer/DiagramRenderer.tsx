@@ -367,7 +367,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           refElementId={groupPaletteRefElementId}
           hidePalette={hideGroupPalette}
         />
-        <DiagramPalette diagramElementId={diagramRefreshedEventPayload.diagram.id} />
+        <DiagramPalette
+          diagramElementId={diagramRefreshedEventPayload.diagram.id}
+          targetObjectId={diagramRefreshedEventPayload.diagram.targetObjectId}
+        />
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
         <ConnectorContextualMenu />
         {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,26 +15,25 @@ package org.eclipse.sirius.components.view.diagram.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
-import org.eclipse.sirius.components.view.diagram.SelectionDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Selection Description</b></em>'. <!--
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Selection Dialog Description</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDescriptionImpl#getSelectionCandidatesExpression
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl#getSelectionCandidatesExpression
  * <em>Selection Candidates Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDescriptionImpl#getSelectionMessage <em>Selection
- * Message</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl#getSelectionMessage
+ * <em>Selection Message</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class SelectionDescriptionImpl extends MinimalEObjectImpl.Container implements SelectionDescription {
+public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implements SelectionDialogDescription {
     /**
      * The default value of the '{@link #getSelectionCandidatesExpression() <em>Selection Candidates Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -80,7 +79,7 @@ public class SelectionDescriptionImpl extends MinimalEObjectImpl.Container imple
      *
      * @generated
      */
-    protected SelectionDescriptionImpl() {
+    protected SelectionDialogDescriptionImpl() {
         super();
     }
 
@@ -91,7 +90,7 @@ public class SelectionDescriptionImpl extends MinimalEObjectImpl.Container imple
      */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.SELECTION_DESCRIPTION;
+        return DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION;
     }
 
     /**
@@ -114,7 +113,7 @@ public class SelectionDescriptionImpl extends MinimalEObjectImpl.Container imple
         String oldSelectionCandidatesExpression = this.selectionCandidatesExpression;
         this.selectionCandidatesExpression = newSelectionCandidatesExpression;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION, oldSelectionCandidatesExpression,
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION, oldSelectionCandidatesExpression,
                     this.selectionCandidatesExpression));
     }
 
@@ -138,7 +137,7 @@ public class SelectionDescriptionImpl extends MinimalEObjectImpl.Container imple
         String oldSelectionMessage = this.selectionMessage;
         this.selectionMessage = newSelectionMessage;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.SELECTION_DESCRIPTION__SELECTION_MESSAGE, oldSelectionMessage, this.selectionMessage));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE, oldSelectionMessage, this.selectionMessage));
     }
 
     /**
@@ -149,9 +148,9 @@ public class SelectionDescriptionImpl extends MinimalEObjectImpl.Container imple
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case DiagramPackage.SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION:
                 return this.getSelectionCandidatesExpression();
-            case DiagramPackage.SELECTION_DESCRIPTION__SELECTION_MESSAGE:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
                 return this.getSelectionMessage();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -165,10 +164,10 @@ public class SelectionDescriptionImpl extends MinimalEObjectImpl.Container imple
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case DiagramPackage.SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION:
                 this.setSelectionCandidatesExpression((String) newValue);
                 return;
-            case DiagramPackage.SELECTION_DESCRIPTION__SELECTION_MESSAGE:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
                 this.setSelectionMessage((String) newValue);
                 return;
         }
@@ -183,10 +182,10 @@ public class SelectionDescriptionImpl extends MinimalEObjectImpl.Container imple
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case DiagramPackage.SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION:
                 this.setSelectionCandidatesExpression(SELECTION_CANDIDATES_EXPRESSION_EDEFAULT);
                 return;
-            case DiagramPackage.SELECTION_DESCRIPTION__SELECTION_MESSAGE:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
                 this.setSelectionMessage(SELECTION_MESSAGE_EDEFAULT);
                 return;
         }
@@ -201,10 +200,10 @@ public class SelectionDescriptionImpl extends MinimalEObjectImpl.Container imple
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case DiagramPackage.SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION:
                 return SELECTION_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.selectionCandidatesExpression != null
                         : !SELECTION_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.selectionCandidatesExpression);
-            case DiagramPackage.SELECTION_DESCRIPTION__SELECTION_MESSAGE:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
                 return SELECTION_MESSAGE_EDEFAULT == null ? this.selectionMessage != null : !SELECTION_MESSAGE_EDEFAULT.equals(this.selectionMessage);
         }
         return super.eIsSet(featureID);
@@ -229,4 +228,4 @@ public class SelectionDescriptionImpl extends MinimalEObjectImpl.Container imple
         return result.toString();
     }
 
-} // SelectionDescriptionImpl
+} // SelectionDialogDescriptionImpl

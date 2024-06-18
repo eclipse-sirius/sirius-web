@@ -311,13 +311,13 @@ public class DiagramBuilders {
     }
 
     /**
-     * Instantiate a SelectionDescriptionBuilder .
+     * Instantiate a SelectionDialogDescriptionBuilder .
      *
      * @author BuilderGenerator
      * @generated
      */
-    public SelectionDescriptionBuilder newSelectionDescription() {
-        return new SelectionDescriptionBuilder();
+    public SelectionDialogDescriptionBuilder newSelectionDialogDescription() {
+        return new SelectionDialogDescriptionBuilder();
     }
 
     /**

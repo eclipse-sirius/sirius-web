@@ -246,7 +246,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//LabelEditTool/initialDirectEditLabelExpression"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//NodeTool">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeTool/selectionDescription"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeTool/dialogDescription"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeTool/iconURLsExpression"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//SourceEdgeEndReconnectionTool"/>
@@ -261,9 +261,9 @@
     <genClasses ecoreClass="diagram.ecore#//DeleteView">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DeleteView/viewExpression"/>
     </genClasses>
-    <genClasses ecoreClass="diagram.ecore#//SelectionDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDescription/selectionCandidatesExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDescription/selectionMessage"/>
+    <genClasses ecoreClass="diagram.ecore#//SelectionDialogDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/selectionCandidatesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/selectionMessage"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//ToolSection">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ToolSection/name"/>
@@ -281,5 +281,6 @@
     <genClasses ecoreClass="diagram.ecore#//DropNodeTool">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//DropNodeTool/acceptedNodeTypes"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="diagram.ecore#//DialogDescription"/>
   </genPackages>
 </genmodel:GenModel>

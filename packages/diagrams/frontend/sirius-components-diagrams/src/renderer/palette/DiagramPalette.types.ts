@@ -17,4 +17,5 @@ export type DiagramPaletteToolContextValue = React.ReactElement<DiagramPaletteTo
 
 export interface DiagramPaletteProps {
   diagramElementId: string;
+  targetObjectId: string;
 }

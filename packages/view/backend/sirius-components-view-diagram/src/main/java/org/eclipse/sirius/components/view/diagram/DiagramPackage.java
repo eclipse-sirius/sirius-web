@@ -2850,14 +2850,7 @@ public interface DiagramPackage extends EPackage {
      */
     int NODE_TOOL__BODY = TOOL__BODY;
 
-    /**
-     * The feature id for the '<em><b>Selection Description</b></em>' containment reference. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_TOOL__SELECTION_DESCRIPTION = TOOL_FEATURE_COUNT + 0;
+    int NODE_TOOL__DIALOG_DESCRIPTION = TOOL_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Icon UR Ls Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3120,14 +3113,42 @@ public interface DiagramPackage extends EPackage {
     int DELETE_VIEW_OPERATION_COUNT = ViewPackage.OPERATION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDescriptionImpl
-     * <em>Selection Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DialogDescriptionImpl
+     * <em>Dialog Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see org.eclipse.sirius.components.view.diagram.impl.SelectionDescriptionImpl
-     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSelectionDescription()
+     * @see org.eclipse.sirius.components.view.diagram.impl.DialogDescriptionImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDialogDescription()
      * @generated
      */
-    int SELECTION_DESCRIPTION = 38;
+    int DIALOG_DESCRIPTION = 44;
+
+    /**
+     * The number of structural features of the '<em>Dialog Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIALOG_DESCRIPTION_FEATURE_COUNT = 0;
+
+    /**
+     * The number of operations of the '<em>Dialog Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIALOG_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl
+     * <em>Selection Dialog Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSelectionDialogDescription()
+     * @generated
+     */
+    int SELECTION_DIALOG_DESCRIPTION = 38;
 
     /**
      * The feature id for the '<em><b>Selection Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3136,7 +3157,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION = 0;
+    int SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Selection Message</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -3145,25 +3166,25 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SELECTION_DESCRIPTION__SELECTION_MESSAGE = 1;
+    int SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE = DIALOG_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
-     * The number of structural features of the '<em>Selection Description</em>' class. <!-- begin-user-doc --> <!--
+     * The number of structural features of the '<em>Selection Dialog Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION_FEATURE_COUNT = DIALOG_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Selection Dialog Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SELECTION_DESCRIPTION_FEATURE_COUNT = 2;
-
-    /**
-     * The number of operations of the '<em>Selection Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SELECTION_DESCRIPTION_OPERATION_COUNT = 0;
+    int SELECTION_DIALOG_DESCRIPTION_OPERATION_COUNT = DIALOG_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl <em>Tool
@@ -3411,7 +3432,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 44;
+    int ARROW_STYLE = 45;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LayoutDirection <em>Layout
@@ -3421,7 +3442,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 45;
+    int LAYOUT_DIRECTION = 46;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LineStyle <em>Line Style</em>}'
@@ -3431,7 +3452,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 46;
+    int LINE_STYLE = 47;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.NodeContainmentKind <em>Node
@@ -3441,7 +3462,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeContainmentKind()
      * @generated
      */
-    int NODE_CONTAINMENT_KIND = 47;
+    int NODE_CONTAINMENT_KIND = 48;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.SynchronizationPolicy
@@ -3451,7 +3472,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 48;
+    int SYNCHRONIZATION_POLICY = 49;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.InsideLabelPosition <em>Inside
@@ -3461,7 +3482,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getInsideLabelPosition()
      * @generated
      */
-    int INSIDE_LABEL_POSITION = 49;
+    int INSIDE_LABEL_POSITION = 50;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelPosition <em>Outside
@@ -3471,7 +3492,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getOutsideLabelPosition()
      * @generated
      */
-    int OUTSIDE_LABEL_POSITION = 50;
+    int OUTSIDE_LABEL_POSITION = 51;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy <em>Label
@@ -3481,7 +3502,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelOverflowStrategy()
      * @generated
      */
-    int LABEL_OVERFLOW_STRATEGY = 51;
+    int LABEL_OVERFLOW_STRATEGY = 52;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection <em>Arrange
@@ -3491,7 +3512,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrangeLayoutDirection()
      * @generated
      */
-    int ARRANGE_LAYOUT_DIRECTION = 52;
+    int ARRANGE_LAYOUT_DIRECTION = 53;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelTextAlign <em>Label Text
@@ -3501,7 +3522,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelTextAlign()
      * @generated
      */
-    int LABEL_TEXT_ALIGN = 53;
+    int LABEL_TEXT_ALIGN = 54;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.UserResizableDirection <em>User
@@ -3511,7 +3532,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getUserResizableDirection()
      * @generated
      */
-    int USER_RESIZABLE_DIRECTION = 54;
+    int USER_RESIZABLE_DIRECTION = 55;
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5063,15 +5084,15 @@ public interface DiagramPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.diagram.NodeTool#getSelectionDescription <em>Selection
-     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeTool#getDialogDescription <em>Dialog Description</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the containment reference '<em>Selection Description</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.NodeTool#getSelectionDescription()
+     * @return the meta object for the containment reference '<em>Dialog Description</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeTool#getDialogDescription()
      * @see #getNodeTool()
      * @generated
      */
-    EReference getNodeTool_SelectionDescription();
+    EReference getNodeTool_DialogDescription();
 
     /**
      * Returns the meta object for the attribute
@@ -5200,38 +5221,38 @@ public interface DiagramPackage extends EPackage {
     EAttribute getDeleteView_ViewExpression();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.SelectionDescription
-     * <em>Selection Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription
+     * <em>Selection Dialog Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for class '<em>Selection Description</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.SelectionDescription
+     * @return the meta object for class '<em>Selection Dialog Description</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription
      * @generated
      */
-    EClass getSelectionDescription();
+    EClass getSelectionDialogDescription();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDescription#getSelectionCandidatesExpression
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionCandidatesExpression
      * <em>Selection Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Selection Candidates Expression</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.SelectionDescription#getSelectionCandidatesExpression()
-     * @see #getSelectionDescription()
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionCandidatesExpression()
+     * @see #getSelectionDialogDescription()
      * @generated
      */
-    EAttribute getSelectionDescription_SelectionCandidatesExpression();
+    EAttribute getSelectionDialogDescription_SelectionCandidatesExpression();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDescription#getSelectionMessage <em>Selection
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionMessage <em>Selection
      * Message</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Selection Message</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.SelectionDescription#getSelectionMessage()
-     * @see #getSelectionDescription()
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionMessage()
+     * @see #getSelectionDialogDescription()
      * @generated
      */
-    EAttribute getSelectionDescription_SelectionMessage();
+    EAttribute getSelectionDialogDescription_SelectionMessage();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ToolSection <em>Tool
@@ -5353,6 +5374,16 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EReference getDropNodeTool_AcceptedNodeTypes();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DialogDescription <em>Dialog
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Dialog Description</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DialogDescription
+     * @generated
+     */
+    EClass getDialogDescription();
 
     /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow
@@ -6642,12 +6673,12 @@ public interface DiagramPackage extends EPackage {
         EClass NODE_TOOL = eINSTANCE.getNodeTool();
 
         /**
-         * The meta object literal for the '<em><b>Selection Description</b></em>' containment reference feature. <!--
+         * The meta object literal for the '<em><b>Dialog Description</b></em>' containment reference feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EReference NODE_TOOL__SELECTION_DESCRIPTION = eINSTANCE.getNodeTool_SelectionDescription();
+        EReference NODE_TOOL__DIALOG_DESCRIPTION = eINSTANCE.getNodeTool_DialogDescription();
 
         /**
          * The meta object literal for the '<em><b>Icon UR Ls Expression</b></em>' attribute feature. <!--
@@ -6749,14 +6780,14 @@ public interface DiagramPackage extends EPackage {
 
         /**
          * The meta object literal for the
-         * '{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDescriptionImpl <em>Selection
+         * '{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl <em>Selection Dialog
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @see org.eclipse.sirius.components.view.diagram.impl.SelectionDescriptionImpl
-         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSelectionDescription()
+         * @see org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSelectionDialogDescription()
          * @generated
          */
-        EClass SELECTION_DESCRIPTION = eINSTANCE.getSelectionDescription();
+        EClass SELECTION_DIALOG_DESCRIPTION = eINSTANCE.getSelectionDialogDescription();
 
         /**
          * The meta object literal for the '<em><b>Selection Candidates Expression</b></em>' attribute feature. <!--
@@ -6764,7 +6795,7 @@ public interface DiagramPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION = eINSTANCE.getSelectionDescription_SelectionCandidatesExpression();
+        EAttribute SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION = eINSTANCE.getSelectionDialogDescription_SelectionCandidatesExpression();
 
         /**
          * The meta object literal for the '<em><b>Selection Message</b></em>' attribute feature. <!-- begin-user-doc
@@ -6772,7 +6803,7 @@ public interface DiagramPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute SELECTION_DESCRIPTION__SELECTION_MESSAGE = eINSTANCE.getSelectionDescription_SelectionMessage();
+        EAttribute SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE = eINSTANCE.getSelectionDialogDescription_SelectionMessage();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl
@@ -6872,6 +6903,16 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference DROP_NODE_TOOL__ACCEPTED_NODE_TYPES = eINSTANCE.getDropNodeTool_AcceptedNodeTypes();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.DialogDescriptionImpl
+         * <em>Dialog Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.impl.DialogDescriptionImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDialogDescription()
+         * @generated
+         */
+        EClass DIALOG_DESCRIPTION = eINSTANCE.getDialogDescription();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow

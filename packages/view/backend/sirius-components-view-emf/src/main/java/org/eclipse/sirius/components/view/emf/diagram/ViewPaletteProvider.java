@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwo
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -88,19 +87,16 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
     private final IDiagramIdProvider diagramIdProvider;
 
-    private final IObjectService objectService;
-
     private final IViewAQLInterpreterFactory aqlInterpreterFactory;
 
     private final Function<EObject, UUID> idProvider = (eObject) -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
 
-    public ViewPaletteProvider(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IDiagramIdProvider diagramIdProvider, IObjectService objectService, IViewAQLInterpreterFactory aqlInterpreterFactory) {
+    public ViewPaletteProvider(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IDiagramIdProvider diagramIdProvider, IViewAQLInterpreterFactory aqlInterpreterFactory) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
-        this.objectService = Objects.requireNonNull(objectService);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
     }
 
@@ -175,15 +171,15 @@ public class ViewPaletteProvider implements IPaletteProvider {
     private ITool createNodeTool(NodeTool viewNodeTool, boolean appliesToDiagramRoot, VariableManager variableManager, AQLInterpreter interpreter) {
         String toolId = this.idProvider.apply(viewNodeTool).toString();
         List<String> iconURLProvider = this.nodeToolIconURLProvider(viewNodeTool, interpreter, variableManager);
-        String selectionDescriptionId = "";
-        if (viewNodeTool.getSelectionDescription() != null) {
-            selectionDescriptionId = this.objectService.getId(viewNodeTool.getSelectionDescription());
+        String dialogDescriptionId = "";
+        if (viewNodeTool.getDialogDescription() != null) {
+            dialogDescriptionId = this.diagramIdProvider.getId(viewNodeTool.getDialogDescription());
         }
 
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(viewNodeTool.getName())
                 .iconURL(iconURLProvider)
-                .selectionDescriptionId(selectionDescriptionId)
+                .dialogDescriptionId(dialogDescriptionId)
                 .targetDescriptions(List.of())
                 .appliesToDiagramRoot(appliesToDiagramRoot)
                 .build();

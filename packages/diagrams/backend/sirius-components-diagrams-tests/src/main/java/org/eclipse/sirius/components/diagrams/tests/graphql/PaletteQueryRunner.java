@@ -54,7 +54,7 @@ public class PaletteQueryRunner implements IQueryRunner {
                 }
               }
             }
-            
+
             fragment ToolFields on Tool {
               __typename
               id
@@ -65,7 +65,7 @@ public class PaletteQueryRunner implements IQueryRunner {
                   id
                 }
                 appliesToDiagramRoot
-                selectionDescriptionId
+                dialogDescriptionId
               }
             }
             """;

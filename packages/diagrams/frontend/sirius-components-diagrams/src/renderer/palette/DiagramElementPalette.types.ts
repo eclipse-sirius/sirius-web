@@ -13,5 +13,6 @@
 
 export interface DiagramElementPaletteProps {
   diagramElementId: string;
+  targetObjectId: string;
   labelId: string | null;
 }

@@ -19,6 +19,7 @@ import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAss
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -136,7 +137,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable expandNodes = () -> {
             String expandToolId = this.expandCollapseDiagramDescriptionProvider.getExpandNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), collapsedNodeId.get(), expandToolId, 0, 0, null);
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), collapsedNodeId.get(), expandToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -182,7 +183,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable collapseNodes = () -> {
             String collapseToolId = this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), expandedNodeId.get(), collapseToolId, 0, 0, null);
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), expandedNodeId.get(), collapseToolId, 0, 0, List.of());
             var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");

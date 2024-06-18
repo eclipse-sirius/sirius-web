@@ -23,6 +23,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useReactFlow, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useDialog } from '../../dialog/useDialog';
 import { PinIcon } from '../../icons/PinIcon';
 import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -55,6 +56,7 @@ import {
   GQLRepresentationDescription,
   GQLSingleClickOnDiagramElementTool,
   GQLTool,
+  GQLToolVariable,
   GQLUpdateCollapsingStateData,
   GQLUpdateCollapsingStateInput,
   GQLUpdateCollapsingStateVariables,
@@ -95,7 +97,7 @@ const ToolFields = gql`
         id
       }
       appliesToDiagramRoot
-      selectionDescriptionId
+      dialogDescriptionId
     }
   }
 `;
@@ -212,6 +214,7 @@ export const Palette = ({
   x: paletteX,
   y: paletteY,
   diagramElementId,
+  targetObjectId,
   onDirectEditClick,
   hideableDiagramElement,
 }: PaletteProps) => {
@@ -225,6 +228,7 @@ export const Palette = ({
 
   const { addErrorMessage, addMessages } = useMultiToast();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+  const { showDialog } = useDialog();
 
   const diagramPaletteToolComponents = useContext<DiagramPaletteToolContextValue>(DiagramPaletteToolContext)
     .filter((contribution) => contribution.props.canHandle(diagramId, diagramElementId))
@@ -324,7 +328,7 @@ export const Palette = ({
   >(invokeSingleClickOnDiagramElementToolMutation);
 
   const invokeSingleClickTool = useCallback(
-    async (tool: GQLTool) => {
+    async (tool: GQLTool, variables: GQLToolVariable[]) => {
       if (isSingleClickOnDiagramElementTool(tool)) {
         const { id: toolId } = tool;
         const input: GQLInvokeSingleClickOnDiagramElementToolInput = {
@@ -335,7 +339,7 @@ export const Palette = ({
           toolId,
           startingPositionX: x,
           startingPositionY: y,
-          selectedObjectId: null,
+          variables,
         };
 
         const { data } = await invokeSingleClickOnDiagramElementTool({
@@ -412,6 +416,13 @@ export const Palette = ({
     [editingContextId, diagramId, collapseExpandMutation]
   );
 
+  const handleDialogDescription = (tool: GQLSingleClickOnDiagramElementTool) => {
+    const onConfirm = (variables: GQLToolVariable[]) => {
+      invokeSingleClickTool(tool, variables);
+    };
+    showDialog(tool.dialogDescriptionId, targetObjectId, onConfirm);
+  };
+
   const handleToolClick = (tool: GQLTool) => {
     switch (tool.id) {
       case 'edit':
@@ -432,7 +443,13 @@ export const Palette = ({
         collapseExpandElement(diagramElementId, GQLCollapsingState.COLLAPSED);
         break;
       default:
-        invokeSingleClickTool(tool);
+        if (isSingleClickOnDiagramElementTool(tool)) {
+          if (tool.dialogDescriptionId) {
+            handleDialogDescription(tool);
+          } else {
+            invokeSingleClickTool(tool, []);
+          }
+        }
         break;
     }
   };

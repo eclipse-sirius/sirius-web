@@ -145,3 +145,16 @@ Used to compute the nodes which should be considered as target of the edge
 - `self`: The current element on which the operation is performed
 - `editingContext`: The editing context is an abstraction used to access all the semantic data
 - `environment`: The environment may contain some information on the application currently running
+
+== NodeTool
+
+=== SelectionDialogDescription
+
+If a `SelectionDialogDescription` is defined on the `NodeTool`, the following variable becomes available:
+- `selectedObject`: own the semantic element selected by the user in the selection dialog.
+
+=== SelectionDialogDescription#SelectionCandidatesExpression
+
+Used to compute the list of elements that should be displayed in the selection dialog
+- `self`: The current diagram element on which the tool is currently applied.
+- `targetElement` The semantic target element of the diagram element in the `self` variable.

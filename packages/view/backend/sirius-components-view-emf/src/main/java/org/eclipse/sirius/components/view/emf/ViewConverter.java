@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.selection.description.SelectionDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -63,7 +64,9 @@ public class ViewConverter implements IViewConverter {
 
     private final IObjectService objectService;
 
-    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext, IObjectService objectService) {
+    private final IDiagramIdProvider diagramIdProvider;
+
+    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext, IObjectService objectService, IDiagramIdProvider diagramIdProvider) {
         this.javaServiceProviders = new ArrayList<>();
         this.javaServiceProviders.addAll(Objects.requireNonNull(javaServiceProviders));
         IServiceProvider nodeServiceProvider = (IReadOnlyQueryEnvironment queryEnvironment) -> ServiceUtils.getReceiverServices(null, Node.class).stream().toList();
@@ -71,6 +74,7 @@ public class ViewConverter implements IViewConverter {
         this.representationDescriptionConverters = Objects.requireNonNull(representationDescriptionConverters);
         this.applicationContext = Objects.requireNonNull(applicationContext);
         this.objectService = Objects.requireNonNull(objectService);
+        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
     }
 
     /**
@@ -103,15 +107,14 @@ public class ViewConverter implements IViewConverter {
     private List<IRepresentationDescription> convertSelectionsDialogs(View view, AQLInterpreter interpreter) {
         return view.getDescriptions().stream().filter(DiagramDescription.class::isInstance)
             .flatMap(this::getAllContent)
-            .filter(org.eclipse.sirius.components.view.diagram.SelectionDescription.class::isInstance)
-            .map(org.eclipse.sirius.components.view.diagram.SelectionDescription.class::cast)
+            .filter(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription.class::isInstance)
+            .map(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription.class::cast)
             .map(selectionDescription -> this.convertSelectionDialog(selectionDescription, interpreter))
             .toList();
     }
 
-    private IRepresentationDescription convertSelectionDialog(org.eclipse.sirius.components.view.diagram.SelectionDescription selectionDescription, AQLInterpreter interpreter) {
-        String selectionDescriptionId = this.objectService.getId(selectionDescription);
-
+    private IRepresentationDescription convertSelectionDialog(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription selectionDescription, AQLInterpreter interpreter) {
+        String selectionDescriptionId = this.diagramIdProvider.getId(selectionDescription);
         return SelectionDescription.newSelectionDescription(selectionDescriptionId)
                 .objectsProvider(variableManager -> {
                     Result result = interpreter.evaluateExpression(variableManager.getVariables(), selectionDescription.getSelectionCandidatesExpression());

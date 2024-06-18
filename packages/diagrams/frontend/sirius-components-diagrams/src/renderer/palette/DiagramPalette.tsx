@@ -20,7 +20,7 @@ import { Palette } from './Palette';
 import { PalettePortal } from './PalettePortal';
 import { useDiagramPalette } from './useDiagramPalette';
 
-export const DiagramPalette = memo(({ diagramElementId }: DiagramPaletteProps) => {
+export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { isOpened, x, y, hideDiagramPalette } = useDiagramPalette();
 
@@ -37,7 +37,13 @@ export const DiagramPalette = memo(({ diagramElementId }: DiagramPaletteProps) =
 
   return isOpened && x && y ? (
     <PalettePortal>
-      <Palette x={x} y={y} diagramElementId={diagramElementId} onDirectEditClick={() => {}} />
+      <Palette
+        x={x}
+        y={y}
+        diagramElementId={diagramElementId}
+        targetObjectId={targetObjectId}
+        onDirectEditClick={() => {}}
+      />
     </PalettePortal>
   ) : null;
 });

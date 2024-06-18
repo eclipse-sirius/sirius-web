@@ -328,7 +328,7 @@
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeTool" eSuperTypes="#//Tool">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="selectionDescription" eType="#//SelectionDescription"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dialogDescription" eType="#//DialogDescription"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="iconURLsExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
@@ -351,7 +351,7 @@
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:selectedNode"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SelectionDescription">
+  <eClassifiers xsi:type="ecore:EClass" name="SelectionDialogDescription" eSuperTypes="#//DialogDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectionCandidatesExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self"/>
@@ -379,4 +379,5 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="acceptedNodeTypes" upperBound="-1"
         eType="#//NodeDescription"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DialogDescription" abstract="true"/>
 </ecore:EPackage>

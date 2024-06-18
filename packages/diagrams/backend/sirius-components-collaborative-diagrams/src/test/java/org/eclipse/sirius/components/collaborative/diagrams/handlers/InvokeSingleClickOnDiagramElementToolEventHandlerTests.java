@@ -14,11 +14,13 @@ package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -28,12 +30,13 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQuerySer
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -60,7 +63,9 @@ import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
+import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -75,6 +80,16 @@ import reactor.core.publisher.Sinks.One;
  */
 public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
+    private static final String NAME_VARIABLE_VALUE = "nameVariableValue";
+
+    private static final String NAME_VARIABLE = "name";
+
+    private static final String SELECTED_OBJECTS = "selectedObjects";
+
+    private static final String SELECTED_OBJECT = "selectedObject";
+
+    private static final String DIALOG_DESCRIPTION_ID = "dialogDescriptionId";
+
     private static final String DIAGRAM_ID = "diagramId";
     private static final String EDGE_1_ID = "edge1";
     private static final String EDGE_DESCRIPTION_ID = "edgeDescriptionId";
@@ -82,9 +97,16 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
     private static final String NODE_DESCRIPTION_ID = "nodeDescriptionId";
     private static final String NODE_1_ID = "node1";
     private static final String OBJECT_1_ID = "object1";
+
+    private static final String OBJECT_2_ID = "object2";
+
+    private static final String OBJECT_3_ID = "object3";
+
     private static final String LINK_1_ID = "link1";
     private static final String REPRESENTATION_ID = "representationId";
-    private static final String SELECTED_OBJECT_ID = "selectedObjectId";
+
+    private static final List<ToolVariable> VARIABLES = List.of();
+
     private static final String TOOL_ID = "toolId";
     private static final String TOOL_IMAGE_URL = "imageURL";
     private static final String TOOL_LABEL = "label";
@@ -110,12 +132,10 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 return Optional.of(tool);
             }
         };
-        var representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp();
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(),
-                representationDescriptionSearchService);
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, DIAGRAM_ID, TOOL_ID, 5.0, 8.0, SELECTED_OBJECT_ID);
+        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, DIAGRAM_ID, TOOL_ID, 5.0, 8.0, VARIABLES);
 
         IEditingContext editingContext = () -> EDITING_CONTEXT_ID;
 
@@ -163,12 +183,10 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 return Optional.of(tool);
             }
         };
-        var representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp();
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(),
-                representationDescriptionSearchService);
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, NODE_1_ID, TOOL_ID, 5.0, 8.0, SELECTED_OBJECT_ID);
+        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, NODE_1_ID, TOOL_ID, 5.0, 8.0, VARIABLES);
 
         IEditingContext editingContext = () -> EDITING_CONTEXT_ID;
 
@@ -185,6 +203,76 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(InvokeSingleClickOnDiagramElementToolSuccessPayload.class);
+    }
+
+    @Test
+    public void testInvokeToolOnNodeWithDialogDescription() {
+        var object1 = new Object();
+        var object2 = new Object();
+        var object3 = new Object();
+
+        var objectService = new IObjectService.NoOp() {
+            @Override
+            public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
+                Object object = switch (objectId) {
+                    case OBJECT_1_ID -> object1;
+                    case OBJECT_2_ID -> object2;
+                    case OBJECT_3_ID -> object3;
+                    default -> null;
+                };
+                return Optional.of(object);
+            }
+        };
+
+        var nodeDescription = this.createNodeDescription(NODE_DESCRIPTION_ID);
+        var node1 = this.createNode(NODE_1_ID, NODE_DESCRIPTION_ID, OBJECT_1_ID);
+
+        var diagramQueryService = new IDiagramQueryService.NoOp() {
+            @Override
+            public Optional<Node> findNodeById(Diagram diagram, String nodeId) {
+                return Optional.of(node1);
+            }
+        };
+
+        final Map<String, Object> computedVariables = new HashMap<>();
+
+        Function<VariableManager, IStatus> toolHandler = variableManager -> {
+            computedVariables.putAll(variableManager.getVariables());
+            return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
+        };
+
+        var tool = this.createTool(TOOL_ID, false, List.of(nodeDescription), DIALOG_DESCRIPTION_ID, toolHandler);
+
+        var toolService = new IToolService.NoOp() {
+            @Override
+            public Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId) {
+                return Optional.of(tool);
+            }
+        };
+
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+
+        var variables = List.of(new ToolVariable(SELECTED_OBJECT, OBJECT_2_ID, ToolVariableType.OBJECT_ID), new ToolVariable(NAME_VARIABLE, NAME_VARIABLE_VALUE, ToolVariableType.STRING),
+                new ToolVariable(SELECTED_OBJECTS, OBJECT_1_ID + "," + OBJECT_2_ID + "," + OBJECT_3_ID, ToolVariableType.OBJECT_ID_ARRAY));
+
+        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, NODE_1_ID, TOOL_ID, 5.0, 8.0, variables);
+
+        IEditingContext editingContext = () -> EDITING_CONTEXT_ID;
+
+        assertThat(handler.canHandle(input)).isTrue();
+
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(InvokeSingleClickOnDiagramElementToolSuccessPayload.class);
+        assertThat(computedVariables).containsEntry(SELECTED_OBJECT, object2).containsEntry(NAME_VARIABLE, NAME_VARIABLE_VALUE).containsEntry(SELECTED_OBJECTS, List.of(object1, object2, object3));
     }
 
     @Test
@@ -219,12 +307,10 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 return Optional.of(tool);
             }
         };
-        var representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp();
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(),
-                representationDescriptionSearchService);
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, "anotherNodeId", TOOL_ID, 5.0, 8.0, SELECTED_OBJECT_ID);
+        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, "anotherNodeId", TOOL_ID, 5.0, 8.0, VARIABLES);
 
         IEditingContext editingContext = () -> EDITING_CONTEXT_ID;
 
@@ -275,12 +361,10 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 return Optional.of(tool);
             }
         };
-        var representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp();
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(),
-                representationDescriptionSearchService);
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, EDGE_1_ID, TOOL_ID, 5.0, 8.0, SELECTED_OBJECT_ID);
+        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, EDGE_1_ID, TOOL_ID, 5.0, 8.0, VARIABLES);
 
         IEditingContext editingContext = () -> EDITING_CONTEXT_ID;
 
@@ -331,12 +415,10 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 return Optional.of(tool);
             }
         };
-        var representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp();
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(),
-                representationDescriptionSearchService);
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, "anotherEdgeId", TOOL_ID, 5.0, 8.0, SELECTED_OBJECT_ID);
+        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, "anotherEdgeId", TOOL_ID, 5.0, 8.0, VARIABLES);
 
         IEditingContext editingContext = () -> EDITING_CONTEXT_ID;
 
@@ -356,12 +438,16 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
     }
 
     private SingleClickOnDiagramElementTool createTool(String toolId, boolean appliesToDiagramRoot, List<IDiagramElementDescription> diagramElementsDescriptions) {
+        return this.createTool(toolId, appliesToDiagramRoot, diagramElementsDescriptions, null, variableManager -> new Success(ChangeKind.SEMANTIC_CHANGE, Map.of()));
+    }
+
+    private SingleClickOnDiagramElementTool createTool(String toolId, boolean appliesToDiagramRoot, List<IDiagramElementDescription> diagramElementsDescriptions, String dialogDescriptionId, Function<VariableManager, IStatus> handler) {
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(TOOL_LABEL)
                 .iconURL(List.of(TOOL_IMAGE_URL))
                 .targetDescriptions(diagramElementsDescriptions)
-                .selectionDescriptionId(null)
-                .handler(variableManager -> new Success(ChangeKind.SEMANTIC_CHANGE, Map.of()))
+                .dialogDescriptionId(dialogDescriptionId)
+                .handler(handler)
                 .appliesToDiagramRoot(appliesToDiagramRoot)
                 .build();
     }

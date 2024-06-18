@@ -339,15 +339,6 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
 
     /**
      * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.diagram.SelectionDescription} instances. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    protected SelectionDescriptionItemProvider selectionDescriptionItemProvider;
-
-    /**
-     * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.DiagramToolSection} instances. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -831,18 +822,27 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.SelectionDescription}. <!--
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SelectionDialogDescriptionItemProvider selectionDialogDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
-    public Adapter createSelectionDescriptionAdapter() {
-        if (this.selectionDescriptionItemProvider == null) {
-            this.selectionDescriptionItemProvider = new SelectionDescriptionItemProvider(this);
+    public Adapter createSelectionDialogDescriptionAdapter() {
+        if (this.selectionDialogDescriptionItemProvider == null) {
+            this.selectionDialogDescriptionItemProvider = new SelectionDialogDescriptionItemProvider(this);
         }
 
-        return this.selectionDescriptionItemProvider;
+        return this.selectionDialogDescriptionItemProvider;
     }
 
     /**
@@ -1092,8 +1092,8 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.createViewItemProvider.dispose();
         if (this.deleteViewItemProvider != null)
             this.deleteViewItemProvider.dispose();
-        if (this.selectionDescriptionItemProvider != null)
-            this.selectionDescriptionItemProvider.dispose();
+        if (this.selectionDialogDescriptionItemProvider != null)
+            this.selectionDialogDescriptionItemProvider.dispose();
         if (this.diagramToolSectionItemProvider != null)
             this.diagramToolSectionItemProvider.dispose();
         if (this.nodeToolSectionItemProvider != null)

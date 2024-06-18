@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.builder.generated.InsideLabelDescripti
 import org.eclipse.sirius.components.view.builder.generated.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.RectangularNodeStyleDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.SelectionDialogDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -61,6 +62,8 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
 
     private NodeTool createNodeTool;
 
+    private NodeTool renameNodeTool;
+
     public ModelOperationDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.view = this.createView();
@@ -81,6 +84,10 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.createNodeTool).toString().getBytes()).toString();
     }
 
+    public String getRenameElementToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.renameNodeTool).toString().getBytes()).toString();
+    }
+
     private View createView() {
         ViewBuilder viewBuilder = new ViewBuilder();
         View unsynchronizedView = viewBuilder.build();
@@ -97,6 +104,7 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
 
         return unsynchronizedView;
     }
+
     private DiagramDescription createDiagramDescription() {
         var nodeStyle = new RectangularNodeStyleDescriptionBuilder()
                 .build();
@@ -116,6 +124,27 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                 .style(nodeStyle)
                 .build();
 
+        this.createCreateNodeTool();
+        this.createRenameElementNodeTool();
+
+        var diagramPalette = new DiagramPaletteBuilder()
+                .nodeTools(this.createNodeTool, this.renameNodeTool)
+                .build();
+
+        this.diagramDescription = new DiagramDescriptionBuilder()
+                .name("Diagram")
+                .titleExpression("aql:'ModelOperationDiagram'")
+                .domainType("papaya:Project")
+                .nodeDescriptions(nodeDescription)
+                .edgeDescriptions()
+                .palette(diagramPalette)
+                .autoLayout(false)
+                .build();
+
+        return this.diagramDescription;
+    }
+
+    private void createCreateNodeTool() {
         var createNewComponent = new CreateInstanceBuilder()
                 .typeName("papaya:Component")
                 .referenceName("components")
@@ -161,21 +190,28 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                                 .build()
                 )
                 .build();
+    }
 
-        var diagramPalette = new DiagramPaletteBuilder()
-                .nodeTools(this.createNodeTool)
+    private void createRenameElementNodeTool() {
+        var selectionDialog = new SelectionDialogDescriptionBuilder()
+                .selectionCandidatesExpression("aql:self.eResource().eAllContents()")
+                .selectionMessage("Select a new element")
                 .build();
 
-        this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram")
-                .titleExpression("aql:'ModelOperationDiagram'")
-                .domainType("papaya:Project")
-                .nodeDescriptions(nodeDescription)
-                .edgeDescriptions()
-                .palette(diagramPalette)
-                .autoLayout(false)
+        var setSelectedComponentName = new ViewBuilders().newSetValue()
+                .featureName("name")
+                .valueExpression("componentRenamedAfterSelectedElement")
                 .build();
 
-        return this.diagramDescription;
+        this.renameNodeTool = new NodeToolBuilder()
+                .name("Rename Component")
+                .body(
+                        new ChangeContextBuilder()
+                                .expression("aql:selectedObject")
+                                .children(setSelectedComponentName)
+                                .build()
+                )
+                .dialogDescription(selectionDialog)
+                .build();
     }
 }

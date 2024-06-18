@@ -12,11 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.view;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 import java.util.Optional;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.Test;
-import org.springframework.context.support.StaticApplicationContext;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
@@ -79,6 +78,7 @@ import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.view.form.BarChartDescription;
@@ -125,6 +125,8 @@ import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TreeDescription;
+import org.junit.jupiter.api.Test;
+import org.springframework.context.support.StaticApplicationContext;
 
 /**
  * Tests for dynamically defined forms.
@@ -535,8 +537,8 @@ public class DynamicFormsTests {
     private void checkSplitButton(SplitButton splitButton, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(splitButton.getLabel()).isEqualTo("SplitButton for EClass Class1");
         assertThat(splitButton.getActions()).hasSize(2);
-        checkButton(splitButton.getActions().get(0), checkStyle, checkConditionalStyle);
-        checkButton(splitButton.getActions().get(1), checkStyle, checkConditionalStyle);
+        this.checkButton(splitButton.getActions().get(0), checkStyle, checkConditionalStyle);
+        this.checkButton(splitButton.getActions().get(1), checkStyle, checkConditionalStyle);
     }
 
     private void checkFlexboxContainer(FlexboxContainer flexboxContainer, boolean checkStyle, boolean checkConditionalStyle) {
@@ -1363,7 +1365,7 @@ public class DynamicFormsTests {
 
         };
         ViewFormDescriptionConverter formDescriptionConverter = new ViewFormDescriptionConverter(objectService, editService, new IFormIdProvider.NoOp(), List.of(), new IFeedbackMessageService.NoOp());
-        var viewConverter = new ViewConverter(List.of(), List.of(formDescriptionConverter), new StaticApplicationContext(), new IObjectService.NoOp());
+        var viewConverter = new ViewConverter(List.of(), List.of(formDescriptionConverter), new StaticApplicationContext(), new IObjectService.NoOp(), new IDiagramIdProvider.NoOp());
         List<IRepresentationDescription> conversionResult = viewConverter.convert(List.of(view), List.of(EcorePackage.eINSTANCE));
         assertThat(conversionResult).hasSize(1);
         assertThat(conversionResult.get(0)).isInstanceOf(org.eclipse.sirius.components.forms.description.FormDescription.class);
