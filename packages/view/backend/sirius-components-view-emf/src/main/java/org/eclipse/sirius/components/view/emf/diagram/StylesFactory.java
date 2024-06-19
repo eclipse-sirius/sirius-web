@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
@@ -28,6 +29,7 @@ import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.diagram.DiagramStyleDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -46,6 +48,8 @@ public final class StylesFactory {
     private static final String DEFAULT_COLOR = "black";
 
     private static final String DEFAULT_TRANSPARENT_COLOR = "transparent";
+
+    private static final String DEFAULT_BACKGROUND_COLOR = "#FAFAFA";
 
     private final List<INodeStyleProvider> iNodeStyleProviders;
 
@@ -108,6 +112,16 @@ public final class StylesFactory {
             }
         }
         return type.orElse(NodeType.NODE_RECTANGLE);
+    }
+
+    public DiagramStyle createDiagramStyle(DiagramStyleDescription diagramStyleDescription) {
+        return DiagramStyle.newDiagramStyle()
+                .background(Optional.ofNullable(diagramStyleDescription.getBackground())
+                        .filter(FixedColor.class::isInstance)
+                        .map(FixedColor.class::cast)
+                        .map(FixedColor::getValue)
+                        .orElse(DEFAULT_BACKGROUND_COLOR))
+                .build();
     }
 
     public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {

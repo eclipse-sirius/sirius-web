@@ -65,6 +65,7 @@ public class PapayaViewProvider {
         this.diagramDescription.setName("Diagram");
         this.diagramDescription.setTitleExpression("Papaya Diagram");
         this.diagramDescription.setAutoLayout(false);
+        this.diagramDescription.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
 
         var dropTool = DiagramFactory.eINSTANCE.createDropTool();
         dropTool.setName("Drop Tool");

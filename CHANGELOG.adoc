@@ -64,8 +64,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3616[#3616] [diagram] Fix potential exceptions due to duplicate keys in diagram event processing
 - https://github.com/eclipse-sirius/sirius-web/issues/3624[#3624] [diagram] Fix an issue where the header separator does not fill the entire width of the node
 - https://github.com/eclipse-sirius/sirius-web/issues/3531[#3531] [diagram] Fix unnecessary edges label re render
-- https://github.com/eclipse-sirius/sirius-web/issues/3650[#3650] [diagram] Fix potential NPE in DiagramNavigator and Node toString method 
-- https://github.com/eclipse-sirius/sirius-web/issues/3649[#3649] [sirius-web] Restore support for Related elements view icons
+- https://github.com/eclipse-sirius/sirius-web/issues/3650[#3650] [diagram] Fix potential NPE in DiagramNavigator and Node toString method- https://github.com/eclipse-sirius/sirius-web/issues/3649[#3649] [sirius-web] Restore support for Related elements view icons
 - https://github.com/eclipse-sirius/sirius-web/issues/3630[#3630] [sirius-web] Restore support for the deletion of dangling representations
 - https://github.com/eclipse-sirius/sirius-web/issues/3666[#3666] [core] Enable EMF's intrinsicIDToEObjectMap for JSON resources to support languages which use modeled identifiers (e.g. SysMLv2).
 - https://github.com/eclipse-sirius/sirius-web/issues/3664[#3664] [core] The Default.svg image is no longer displayed with the new architecture.
@@ -88,6 +87,7 @@ image:doc/screenshots/diagramFilterView.png[Diagram Filter View, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3523[#3523] [gantt] Support rounding dates when changing dates from gantt
 - https://github.com/eclipse-sirius/sirius-web/issues/3655[#3655] [gantt] Support "Delete Task Dependency" tool in gantt
 - https://github.com/eclipse-sirius/sirius-web/issues/3591[#3591] [sirius-web] Add EditProject subtitle extension point
+- https://github.com/eclipse-sirius/sirius-web/issues/3647[#3647] [diagram] Add support for diagram style with background customization
 
 === Improvements
 
