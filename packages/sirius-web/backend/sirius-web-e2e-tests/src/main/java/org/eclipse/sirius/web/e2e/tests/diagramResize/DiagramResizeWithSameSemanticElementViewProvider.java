@@ -85,6 +85,7 @@ public class DiagramResizeWithSameSemanticElementViewProvider implements IE2EVie
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider).build())
                 .toolbar(toolbar)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
     }
 

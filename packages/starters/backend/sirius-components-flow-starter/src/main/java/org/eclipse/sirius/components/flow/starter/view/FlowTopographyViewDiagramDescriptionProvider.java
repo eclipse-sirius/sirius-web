@@ -61,6 +61,7 @@ public class FlowTopographyViewDiagramDescriptionProvider implements IRepresenta
                 .name("Topography")
                 .titleExpression("Topography")
                 .toolbar(toolbar)
+                .style(this.diagramBuilderHelper.newDiagramStyleDescription().build())
                 .build();
 
 

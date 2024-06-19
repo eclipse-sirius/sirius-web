@@ -84,8 +84,8 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
 
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
         var toolbar = new DiagramBuilders().newDiagramToolbar()
-            .expandedByDefault(true)
-            .build();
+                .expandedByDefault(true)
+                .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -97,13 +97,14 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
                 .palette(this.getDiagramPalette())
                 .nodeDescriptions(this.getNodeDescription(colorProvider, LabelOverflowStrategy.NONE))
                 .toolbar(toolbar)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
     }
 
     private DiagramDescription wrapLabelWithoutChangingNodeWidthDiagramDescription(IColorProvider colorProvider) {
         var toolbar = new DiagramBuilders().newDiagramToolbar()
-            .expandedByDefault(true)
-            .build();
+                .expandedByDefault(true)
+                .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -115,13 +116,14 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
                 .palette(this.getDiagramPalette())
                 .nodeDescriptions(this.getNodeDescription(colorProvider, LabelOverflowStrategy.WRAP))
                 .toolbar(toolbar)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
     }
 
     private DiagramDescription labelIsTruncatedWithoutChangingNodeWidthDiagramDescription(IColorProvider colorProvider) {
         var toolbar = new DiagramBuilders().newDiagramToolbar()
-            .expandedByDefault(true)
-            .build();
+                .expandedByDefault(true)
+                .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -133,6 +135,7 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
                 .palette(this.getDiagramPalette())
                 .nodeDescriptions(this.getNodeDescription(colorProvider, LabelOverflowStrategy.ELLIPSIS))
                 .toolbar(toolbar)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
     }
 

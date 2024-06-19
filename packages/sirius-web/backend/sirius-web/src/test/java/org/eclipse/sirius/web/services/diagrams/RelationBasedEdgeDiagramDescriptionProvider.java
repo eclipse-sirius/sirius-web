@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.emf.query.EditingContextServices;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.EdgeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.EdgeStyleBuilder;
@@ -125,6 +126,7 @@ public class RelationBasedEdgeDiagramDescriptionProvider implements IEditingCont
                 .nodeDescriptions(entityNodeDescription)
                 .edgeDescriptions(containmentEdgeDescription)
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 
         return this.diagramDescription;

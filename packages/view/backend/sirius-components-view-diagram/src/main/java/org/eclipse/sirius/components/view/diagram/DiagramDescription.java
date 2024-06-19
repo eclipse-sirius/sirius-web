@@ -32,6 +32,9 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange Layout
  * Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getConditionalStyles <em>Conditional
+ * Styles</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
@@ -159,6 +162,41 @@ public interface DiagramDescription extends RepresentationDescription {
      * @generated
      */
     void setArrangeLayoutDirection(ArrangeLayoutDirection value);
+
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @see #setStyle(DiagramStyleDescription)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Style()
+     * @model containment="true"
+     * @generated
+     */
+    DiagramStyleDescription getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle
+     * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Style</em>' containment reference.
+     * @see #getStyle()
+     * @generated
+     */
+    void setStyle(DiagramStyleDescription value);
+
+    /**
+     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_ConditionalStyles()
+     * @model containment="true"
+     * @generated
+     */
+    EList<ConditionalDiagramStyle> getConditionalStyles();
 
     /**
      * Returns the value of the '<em><b>Group Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--

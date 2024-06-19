@@ -188,6 +188,8 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
             .expandedByDefault(true)
             .build();
 
+        var style = new DiagramBuilders().newDiagramStyleDescription().build();
+
         var diagramDescription = new DiagramBuilders()
                 .newDiagramDescription()
                 .name("Domain")
@@ -196,6 +198,7 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .palette(palette)
                 .toolbar(toolbar)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
+                .style(style)
                 .build();
 
         return diagramDescription;

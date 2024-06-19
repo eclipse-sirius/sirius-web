@@ -316,6 +316,9 @@ export const convertDiagram = (
   computeBorderNodeLabelPosition(rawDiagram.nodes, rawDiagram.edges);
 
   return {
+    style: {
+      background: gqlDiagram.style.background,
+    },
     nodes: rawDiagram.nodes,
     edges: rawDiagram.edges,
   };

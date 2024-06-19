@@ -57,6 +57,7 @@ public class LifecycleDiagramDescriptionProvider implements IRepresentationDescr
         lifecycleDiagramDescription.setAutoLayout(false);
         lifecycleDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.UP);
         lifecycleDiagramDescription.setIconExpression("aql:'/papaya-representations/lifecycle-diagram.svg'");
+        lifecycleDiagramDescription.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
 
         var toolbar = DiagramFactory.eINSTANCE.createDiagramToolbar();
         toolbar.setExpandedByDefault(true);

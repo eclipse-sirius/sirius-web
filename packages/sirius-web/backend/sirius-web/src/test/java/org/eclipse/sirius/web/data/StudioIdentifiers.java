@@ -78,6 +78,8 @@ public final class StudioIdentifiers {
 
     public static final UUID EDGE_STYLE_OBJECT = UUID.fromString("a2a3713f-57bc-422b-92e8-b22ed69e94a8");
 
+    public static final UUID DIAGRAM_STYLE_DESCRIPTION_OBJECT = UUID.fromString("e7ed918c-0c7a-42a7-8df1-7f576143ba8e");
+
     private StudioIdentifiers() {
         // Prevent instantiation
     }

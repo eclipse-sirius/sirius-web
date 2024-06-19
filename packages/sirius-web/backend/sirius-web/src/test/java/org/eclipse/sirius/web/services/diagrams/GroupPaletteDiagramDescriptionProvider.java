@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,7 @@ import org.springframework.stereotype.Service;
 @Conditional(OnStudioTests.class)
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class GroupPaletteDiagramDescriptionProvider implements IEditingContextProcessor {
+
     private final IDiagramIdProvider diagramIdProvider;
 
     private final View view;
@@ -158,6 +159,7 @@ public class GroupPaletteDiagramDescriptionProvider implements IEditingContextPr
                 .palette(diagramPalette)
                 .groupPalette(groupPalette)
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 
         return this.diagramDescription;

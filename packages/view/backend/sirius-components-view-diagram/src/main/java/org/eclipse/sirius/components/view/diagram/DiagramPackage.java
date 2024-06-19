@@ -180,13 +180,31 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_DESCRIPTION__STYLE = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 8;
+
+    /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 7;
+    int DIAGRAM_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1751,6 +1769,41 @@ public interface DiagramPackage extends EPackage {
     int NODE_STYLE_DESCRIPTION_OPERATION_COUNT = BORDER_STYLE_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DiagramStyleDescriptionImpl
+     * <em>Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramStyleDescriptionImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramStyleDescription()
+     * @generated
+     */
+    int DIAGRAM_STYLE_DESCRIPTION = 16;
+
+    /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_STYLE_DESCRIPTION__BACKGROUND = 0;
+
+    /**
+     * The number of structural features of the '<em>Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_STYLE_DESCRIPTION_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Style Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_STYLE_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalNodeStyleImpl
      * <em>Conditional Node Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1758,7 +1811,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getConditionalNodeStyle()
      * @generated
      */
-    int CONDITIONAL_NODE_STYLE = 16;
+    int CONDITIONAL_NODE_STYLE = 17;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1796,6 +1849,51 @@ public interface DiagramPackage extends EPackage {
     int CONDITIONAL_NODE_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalDiagramStyleImpl
+     * <em>Conditional Diagram Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.ConditionalDiagramStyleImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getConditionalDiagramStyle()
+     * @generated
+     */
+    int CONDITIONAL_DIAGRAM_STYLE = 18;
+
+    /**
+     * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DIAGRAM_STYLE__CONDITION = ViewPackage.CONDITIONAL__CONDITION;
+
+    /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DIAGRAM_STYLE__STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Conditional Diagram Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DIAGRAM_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Conditional Diagram Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DIAGRAM_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the
      * '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalInsideLabelStyleImpl <em>Conditional Inside
      * Label Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1804,7 +1902,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getConditionalInsideLabelStyle()
      * @generated
      */
-    int CONDITIONAL_INSIDE_LABEL_STYLE = 17;
+    int CONDITIONAL_INSIDE_LABEL_STYLE = 19;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1850,7 +1948,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getConditionalOutsideLabelStyle()
      * @generated
      */
-    int CONDITIONAL_OUTSIDE_LABEL_STYLE = 18;
+    int CONDITIONAL_OUTSIDE_LABEL_STYLE = 20;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2133,7 +2231,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getRectangularNodeStyleDescription()
      * @generated
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION = 19;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION = 21;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl
@@ -2143,7 +2241,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getImageNodeStyleDescription()
      * @generated
      */
-    int IMAGE_NODE_STYLE_DESCRIPTION = 20;
+    int IMAGE_NODE_STYLE_DESCRIPTION = 22;
 
     /**
      * The meta object id for the
@@ -2154,7 +2252,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getIconLabelNodeStyleDescription()
      * @generated
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION = 21;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION = 23;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl <em>Edge
@@ -2164,7 +2262,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeStyle()
      * @generated
      */
-    int EDGE_STYLE = 22;
+    int EDGE_STYLE = 24;
 
     /**
      * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2355,7 +2453,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getConditionalEdgeStyle()
      * @generated
      */
-    int CONDITIONAL_EDGE_STYLE = 23;
+    int CONDITIONAL_EDGE_STYLE = 25;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2555,7 +2653,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramPalette()
      * @generated
      */
-    int DIAGRAM_PALETTE = 24;
+    int DIAGRAM_PALETTE = 26;
 
     /**
      * The feature id for the '<em><b>Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2626,7 +2724,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getGroupPalette()
      * @generated
      */
-    int GROUP_PALETTE = 25;
+    int GROUP_PALETTE = 27;
 
     /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2680,7 +2778,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodePalette()
      * @generated
      */
-    int NODE_PALETTE = 26;
+    int NODE_PALETTE = 28;
 
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2770,7 +2868,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgePalette()
      * @generated
      */
-    int EDGE_PALETTE = 27;
+    int EDGE_PALETTE = 29;
 
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2878,7 +2976,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getTool()
      * @generated
      */
-    int TOOL = 28;
+    int TOOL = 30;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2938,7 +3036,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDeleteTool()
      * @generated
      */
-    int DELETE_TOOL = 29;
+    int DELETE_TOOL = 31;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2999,7 +3097,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDropTool()
      * @generated
      */
-    int DROP_TOOL = 30;
+    int DROP_TOOL = 32;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3060,7 +3158,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeTool()
      * @generated
      */
-    int EDGE_TOOL = 31;
+    int EDGE_TOOL = 33;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3157,7 +3255,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeReconnectionTool()
      * @generated
      */
-    int EDGE_RECONNECTION_TOOL = 32;
+    int EDGE_RECONNECTION_TOOL = 34;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3219,7 +3317,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelEditTool()
      * @generated
      */
-    int LABEL_EDIT_TOOL = 33;
+    int LABEL_EDIT_TOOL = 35;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3289,7 +3387,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeTool()
      * @generated
      */
-    int NODE_TOOL = 34;
+    int NODE_TOOL = 36;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3493,7 +3591,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSourceEdgeEndReconnectionTool()
      * @generated
      */
-    int SOURCE_EDGE_END_RECONNECTION_TOOL = 35;
+    int SOURCE_EDGE_END_RECONNECTION_TOOL = 37;
 
     /**
      * The meta object id for the
@@ -3504,7 +3602,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getTargetEdgeEndReconnectionTool()
      * @generated
      */
-    int TARGET_EDGE_END_RECONNECTION_TOOL = 36;
+    int TARGET_EDGE_END_RECONNECTION_TOOL = 38;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl <em>Create
@@ -3514,7 +3612,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getCreateView()
      * @generated
      */
-    int CREATE_VIEW = 37;
+    int CREATE_VIEW = 39;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3594,7 +3692,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDeleteView()
      * @generated
      */
-    int DELETE_VIEW = 38;
+    int DELETE_VIEW = 40;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3638,7 +3736,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDialogDescription()
      * @generated
      */
-    int DIALOG_DESCRIPTION = 45;
+    int DIALOG_DESCRIPTION = 47;
 
     /**
      * The number of structural features of the '<em>Dialog Description</em>' class. <!-- begin-user-doc --> <!--
@@ -3666,7 +3764,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSelectionDialogDescription()
      * @generated
      */
-    int SELECTION_DIALOG_DESCRIPTION = 39;
+    int SELECTION_DIALOG_DESCRIPTION = 41;
 
     /**
      * The feature id for the '<em><b>Selection Message</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -3737,7 +3835,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getToolSection()
      * @generated
      */
-    int TOOL_SECTION = 40;
+    int TOOL_SECTION = 42;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3772,7 +3870,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramToolSection()
      * @generated
      */
-    int DIAGRAM_TOOL_SECTION = 41;
+    int DIAGRAM_TOOL_SECTION = 43;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3816,7 +3914,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeToolSection()
      * @generated
      */
-    int NODE_TOOL_SECTION = 42;
+    int NODE_TOOL_SECTION = 44;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3869,7 +3967,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeToolSection()
      * @generated
      */
-    int EDGE_TOOL_SECTION = 43;
+    int EDGE_TOOL_SECTION = 45;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3913,7 +4011,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDropNodeTool()
      * @generated
      */
-    int DROP_NODE_TOOL = 44;
+    int DROP_NODE_TOOL = 46;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3991,7 +4089,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSelectionDialogTreeDescription()
      * @generated
      */
-    int SELECTION_DIALOG_TREE_DESCRIPTION = 46;
+    int SELECTION_DIALOG_TREE_DESCRIPTION = 48;
 
     /**
      * The feature id for the '<em><b>Elements Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -4046,7 +4144,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getAction()
      * @generated
      */
-    int ACTION = 47;
+    int ACTION = 49;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4116,7 +4214,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramToolbar()
      * @generated
      */
-    int DIAGRAM_TOOLBAR = 48;
+    int DIAGRAM_TOOLBAR = 50;
 
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -4160,7 +4258,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 49;
+    int ARROW_STYLE = 51;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LayoutDirection <em>Layout
@@ -4170,7 +4268,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 50;
+    int LAYOUT_DIRECTION = 52;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LineStyle <em>Line Style</em>}'
@@ -4180,7 +4278,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 51;
+    int LINE_STYLE = 53;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.NodeContainmentKind <em>Node
@@ -4190,7 +4288,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeContainmentKind()
      * @generated
      */
-    int NODE_CONTAINMENT_KIND = 52;
+    int NODE_CONTAINMENT_KIND = 54;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.SynchronizationPolicy
@@ -4200,7 +4298,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 53;
+    int SYNCHRONIZATION_POLICY = 55;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.InsideLabelPosition <em>Inside
@@ -4210,7 +4308,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getInsideLabelPosition()
      * @generated
      */
-    int INSIDE_LABEL_POSITION = 54;
+    int INSIDE_LABEL_POSITION = 56;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelPosition <em>Outside
@@ -4220,7 +4318,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getOutsideLabelPosition()
      * @generated
      */
-    int OUTSIDE_LABEL_POSITION = 55;
+    int OUTSIDE_LABEL_POSITION = 57;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy <em>Label
@@ -4230,7 +4328,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelOverflowStrategy()
      * @generated
      */
-    int LABEL_OVERFLOW_STRATEGY = 56;
+    int LABEL_OVERFLOW_STRATEGY = 58;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection <em>Arrange
@@ -4240,7 +4338,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrangeLayoutDirection()
      * @generated
      */
-    int ARRANGE_LAYOUT_DIRECTION = 57;
+    int ARRANGE_LAYOUT_DIRECTION = 59;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelTextAlign <em>Label Text
@@ -4250,7 +4348,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelTextAlign()
      * @generated
      */
-    int LABEL_TEXT_ALIGN = 58;
+    int LABEL_TEXT_ALIGN = 60;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.UserResizableDirection <em>User
@@ -4260,7 +4358,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getUserResizableDirection()
      * @generated
      */
-    int USER_RESIZABLE_DIRECTION = 59;
+    int USER_RESIZABLE_DIRECTION = 61;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode
@@ -4270,7 +4368,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getHeaderSeparatorDisplayMode()
      * @generated
      */
-    int HEADER_SEPARATOR_DISPLAY_MODE = 60;
+    int HEADER_SEPARATOR_DISPLAY_MODE = 62;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.EdgeType <em>Edge Type</em>}' enum.
@@ -4280,7 +4378,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeType()
      * @generated
      */
-    int EDGE_TYPE = 61;
+    int EDGE_TYPE = 63;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
@@ -4365,6 +4463,30 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EAttribute getDiagramDescription_ArrangeLayoutDirection();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle <em>Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle()
+     * @see #getDiagramDescription()
+     * @generated
+     */
+    EReference getDiagramDescription_Style();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getConditionalStyles <em>Conditional
+     * Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramDescription#getConditionalStyles()
+     * @see #getDiagramDescription()
+     * @generated
+     */
+    EReference getDiagramDescription_ConditionalStyles();
 
     /**
      * Returns the meta object for the containment reference
@@ -5340,6 +5462,28 @@ public interface DiagramPackage extends EPackage {
     EAttribute getNodeStyleDescription_Description();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramStyleDescription
+     * <em>Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Style Description</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramStyleDescription
+     * @generated
+     */
+    EClass getDiagramStyleDescription();
+
+    /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramStyleDescription#getBackground <em>Background</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Background</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramStyleDescription#getBackground()
+     * @see #getDiagramStyleDescription()
+     * @generated
+     */
+    EReference getDiagramStyleDescription_Background();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle
      * <em>Conditional Node Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -5361,6 +5505,28 @@ public interface DiagramPackage extends EPackage {
      * @see #getConditionalNodeStyle()
      */
     EReference getConditionalNodeStyle_Style();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle
+     * <em>Conditional Diagram Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Conditional Diagram Style</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle
+     * @generated
+     */
+    EClass getConditionalDiagramStyle();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle#getStyle <em>Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle#getStyle()
+     * @see #getConditionalDiagramStyle()
+     * @generated
+     */
+    EReference getConditionalDiagramStyle_Style();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle
@@ -6895,6 +7061,22 @@ public interface DiagramPackage extends EPackage {
         EAttribute DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION = eINSTANCE.getDiagramDescription_ArrangeLayoutDirection();
 
         /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_DESCRIPTION__STYLE = eINSTANCE.getDiagramDescription_Style();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getDiagramDescription_ConditionalStyles();
+
+        /**
          * The meta object literal for the '<em><b>Group Palette</b></em>' containment reference feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -7587,6 +7769,25 @@ public interface DiagramPackage extends EPackage {
 
         /**
          * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.diagram.impl.DiagramStyleDescriptionImpl <em>Style
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramStyleDescriptionImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramStyleDescription()
+         * @generated
+         */
+        EClass DIAGRAM_STYLE_DESCRIPTION = eINSTANCE.getDiagramStyleDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Background</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_STYLE_DESCRIPTION__BACKGROUND = eINSTANCE.getDiagramStyleDescription_Background();
+
+        /**
+         * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalNodeStyleImpl <em>Conditional Node
          * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -7603,6 +7804,25 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference CONDITIONAL_NODE_STYLE__STYLE = eINSTANCE.getConditionalNodeStyle_Style();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalDiagramStyleImpl <em>Conditional Diagram
+         * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.impl.ConditionalDiagramStyleImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getConditionalDiagramStyle()
+         * @generated
+         */
+        EClass CONDITIONAL_DIAGRAM_STYLE = eINSTANCE.getConditionalDiagramStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CONDITIONAL_DIAGRAM_STYLE__STYLE = eINSTANCE.getConditionalDiagramStyle_Style();
 
         /**
          * The meta object literal for the

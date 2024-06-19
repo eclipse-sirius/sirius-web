@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramPaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.EdgeToolBuilder;
@@ -60,19 +61,17 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
     private static final String DIALOG_MESSAGE = "Select the objects to consider";
 
     private final View view;
+    private final IDiagramIdProvider diagramIdProvider;
 
     private DiagramDescription diagramDescription;
 
     private NodeTool createNodeTool;
-
-    private final IDiagramIdProvider diagramIdProvider;
 
     private SelectionDialogTreeDescription selectionDialogTreeDescription;
 
     private SelectionDialogDescription selectionDialog;
 
     private EdgeTool edgeTool;
-
 
     public SelectionDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
@@ -156,6 +155,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .edgeDescriptions()
                 .palette(diagramPalette)
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 
         return this.diagramDescription;

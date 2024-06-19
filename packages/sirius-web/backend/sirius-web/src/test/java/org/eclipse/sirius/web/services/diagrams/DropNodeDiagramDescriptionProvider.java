@@ -145,8 +145,8 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                 .build();
 
         var toolbar = new DiagramBuilders().newDiagramToolbar()
-            .expandedByDefault(true)
-            .build();
+                .expandedByDefault(true)
+                .build();
 
         this.diagramDescription = new DiagramBuilders().newDiagramDescription()
                 .name("Diagram")
@@ -157,6 +157,7 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                 .palette(diagramPalette)
                 .toolbar(toolbar)
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 
         return this.diagramDescription;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
@@ -65,10 +66,12 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramStyleDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
@@ -146,6 +149,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         List<EdgeDescription> edgeDescriptions = Stream.concat(edgeDescriptionsWithNodesAsSourceOrTarget.stream(), edgeDescriptionsWithAnotherEdgeAsSourceOrTarget.stream())
                 .map(edge -> this.convert(edge, converterContext, stylesFactory)).toList();
 
+        Function<VariableManager, DiagramStyle> styleProvider = variableManager -> {
+            var effectiveStyle = this.findEffectiveDiagramStyle(viewDiagramDescription, interpreter, variableManager);
+            return stylesFactory.createDiagramStyle(effectiveStyle);
+        };
+
         var builder = DiagramDescription.newDiagramDescription(this.diagramIdProvider.getId(viewDiagramDescription))
                 .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
                 .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
@@ -166,7 +174,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext))
-                .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewDiagramDescription.getIconExpression()));
+                .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewDiagramDescription.getIconExpression()))
+                .styleProvider(styleProvider);
 
         new ToolFinder().findDropNodeTool(viewDiagramDescription).ifPresent(dropNoteTool -> {
             builder.dropNodeHandler(this.createDropNodeHandler(dropNoteTool, converterContext));
@@ -263,12 +272,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         AQLInterpreter interpreter = converterContext.getInterpreter();
         Function<VariableManager, String> typeProvider = variableManager -> {
-            var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
+            var effectiveStyle = this.findEffectiveNodeStyle(viewNodeDescription, interpreter, variableManager);
             return stylesFactory.getNodeType(effectiveStyle);
         };
 
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
+            var effectiveStyle = this.findEffectiveNodeStyle(viewNodeDescription, interpreter, variableManager);
             ILayoutStrategy childrenLayoutStrategy = new FreeFormLayoutStrategy(); // FreeForm as default value
 
             LayoutStrategyDescription childrenLayoutStrategyFromViewModel = effectiveStyle.getChildrenLayoutStrategy();
@@ -402,10 +411,17 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return null;
     }
 
-    private NodeStyleDescription findEffectiveStyle(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
+    private NodeStyleDescription findEffectiveNodeStyle(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
         return viewNodeDescription.getConditionalStyles().stream().filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
                 .map(ConditionalNodeStyle::getStyle).findFirst()
                 .orElseGet(viewNodeDescription::getStyle);
+    }
+
+    private DiagramStyleDescription findEffectiveDiagramStyle(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, AQLInterpreter interpreter,
+            VariableManager variableManager) {
+        return viewDiagramDescription.getConditionalStyles().stream().filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                .map(ConditionalDiagramStyle::getStyle).findFirst()
+                .orElseGet(viewDiagramDescription::getStyle);
     }
 
     private boolean matches(AQLInterpreter interpreter, String condition, VariableManager variableManager) {

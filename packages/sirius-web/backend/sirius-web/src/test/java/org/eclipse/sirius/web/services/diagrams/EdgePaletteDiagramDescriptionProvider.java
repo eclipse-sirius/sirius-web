@@ -140,8 +140,8 @@ public class EdgePaletteDiagramDescriptionProvider implements IEditingContextPro
                 .build();
 
         var toolbar = new DiagramBuilders().newDiagramToolbar()
-            .expandedByDefault(true)
-            .build();
+                .expandedByDefault(true)
+                .build();
 
         this.diagramDescription = new DiagramBuilders().newDiagramDescription()
                 .name("Diagram")
@@ -150,6 +150,7 @@ public class EdgePaletteDiagramDescriptionProvider implements IEditingContextPro
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions(edgeDescription)
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .toolbar(toolbar)
                 .build();
 

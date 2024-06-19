@@ -110,8 +110,8 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
                 .build();
 
         var toolbar = new DiagramBuilders().newDiagramToolbar()
-            .expandedByDefault(true)
-            .build();
+                .expandedByDefault(true)
+                .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -126,6 +126,7 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
                         .dropNodeTool(dropEntity2Tool)
                         .build())
                 .toolbar(toolbar)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
     }
 

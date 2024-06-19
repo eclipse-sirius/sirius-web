@@ -105,12 +105,28 @@ public interface DiagramFactory extends EFactory {
     OutsideLabelStyle createOutsideLabelStyle();
 
     /**
+     * Returns a new object of class '<em>Style Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Style Description</em>'.
+     * @generated
+     */
+    DiagramStyleDescription createDiagramStyleDescription();
+
+    /**
      * Returns a new object of class '<em>Conditional Node Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Conditional Node Style</em>'.
      * @generated
      */
     ConditionalNodeStyle createConditionalNodeStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Diagram Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Diagram Style</em>'.
+     * @generated
+     */
+    ConditionalDiagramStyle createConditionalDiagramStyle();
 
     /**
      * Returns a new object of class '<em>Conditional Inside Label Style</em>'. <!-- begin-user-doc --> <!--

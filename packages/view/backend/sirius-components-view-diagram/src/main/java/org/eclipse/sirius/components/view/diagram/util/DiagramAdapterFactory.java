@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.Action;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramStyleDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DiagramToolbar;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
@@ -174,8 +176,18 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseDiagramStyleDescription(DiagramStyleDescription object) {
+            return DiagramAdapterFactory.this.createDiagramStyleDescriptionAdapter();
+        }
+
+        @Override
         public Adapter caseConditionalNodeStyle(ConditionalNodeStyle object) {
             return DiagramAdapterFactory.this.createConditionalNodeStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalDiagramStyle(ConditionalDiagramStyle object) {
+            return DiagramAdapterFactory.this.createConditionalDiagramStyleAdapter();
         }
 
         @Override
@@ -633,6 +645,20 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramStyleDescription <em>Style Description</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramStyleDescription
+     * @generated
+     */
+    public Adapter createDiagramStyleDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
      * '{@link org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle <em>Conditional Node Style</em>}'. <!--
      * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
      * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
@@ -642,6 +668,20 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * @see org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle
      */
     public Adapter createConditionalNodeStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle <em>Conditional Diagram Style</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle
+     * @generated
+     */
+    public Adapter createConditionalDiagramStyleAdapter() {
         return null;
     }
 

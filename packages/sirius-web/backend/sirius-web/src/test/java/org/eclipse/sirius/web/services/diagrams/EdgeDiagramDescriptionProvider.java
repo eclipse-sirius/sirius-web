@@ -182,6 +182,7 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
                 .edgeDescriptions(edgeDescription)
                 .autoLayout(false)
                 .toolbar(toolbar)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 
         return this.diagramDescription;

@@ -478,6 +478,29 @@ INSERT INTO document (
                "data":{
                  "name":"Root Diagram",
                  "domainType":"buck::Root",
+                 "style": {
+                   "id": "e7ed918c-0c7a-42a7-8df1-7f576143ba8e",
+                   "eClass": "diagram:DiagramStyleDescription",
+                   "data": {
+                    "background": "cccf659b-57a7-4517-bb8c-e284254cce1b"
+                   }
+                 },
+                 "conditionalStyles": [
+                   {
+                     "id": "4da615cd-1926-450c-bbda-4fd087c94d00",
+                     "eClass": "diagram:ConditionalDiagramStyle",
+                     "data": {
+                       "condition": "aql:self.eContents()->size()>2",
+                       "style": {
+                         "id": "d5bb9b65-6a3e-4948-a9cd-08575124f934",
+                         "eClass": "diagram:DiagramStyleDescription",
+                         "data": {
+                           "background": "0286a7e0-5a9d-40c8-aa23-e0a1c6fab90a"
+                         }
+                       }
+                     }
+                   }
+                 ],
                  "palette": {
                    "id": "46545c9a-c582-4dbe-8456-6affd7bfdfe8",
                    "eClass": "diagram:DiagramPalette",

@@ -111,8 +111,8 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
         ).build());
 
         var toolbar = new DiagramBuilders().newDiagramToolbar()
-            .expandedByDefault(true)
-            .build();
+                .expandedByDefault(true)
+                .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -124,6 +124,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .nodeDescriptions(nodeDescription1, nodeDescription2)
                 .edgeDescriptions(edgeDescription1, edgeDescription2, edgeDescription3, edgeDescription4, edgeDescription5)
                 .toolbar(toolbar)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
     }
 

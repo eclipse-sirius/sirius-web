@@ -109,7 +109,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onReconnectEdgeStart, reconnectEdge, onReconnectEdgeEnd } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
   const { onNodesDragStart, onNodesDrag, onNodesDragStop } = useDropNodes();
-  const { backgroundColor, largeGridColor, smallGridColor } = useDropDiagramStyle();
+  const { background, setBackground, largeGridColor, smallGridColor } = useDropDiagramStyle();
   const { nodeTypes } = useNodeType();
   const { setSelection } = useSelection();
 
@@ -266,6 +266,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           }
         }
       );
+    }
+    if (convertedDiagram.style.background) {
+      setBackground(String(convertedDiagram.style.background));
     }
     if (selectionFromTool) {
       setSelection(selectionFromTool);
@@ -468,7 +471,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           <>
             <Background
               id="small-grid"
-              style={{ backgroundColor }}
+              style={{ background }}
               variant={BackgroundVariant.Lines}
               gap={GRID_STEP}
               color={smallGridColor}
@@ -482,7 +485,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
             />
           </>
         ) : (
-          <Background style={{ backgroundColor }} color={backgroundColor} />
+          <Background style={{ background }} color="transparent" />
         )}
         {diagramDescription.toolbar ? <DiagramToolbar diagramToolbar={diagramDescription.toolbar} /> : null}
         {isOpened ? (
