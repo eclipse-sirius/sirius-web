@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,31 +77,28 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     @Override
     public synchronized Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(String editingContextId) {
-        Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = Optional.empty();
-        if (this.editingContextSearchService.existsById(editingContextId)) {
-            optionalEditingContextEventProcessor = Optional.ofNullable(this.editingContextEventProcessors.get(editingContextId))
-                    .map(EditingContextEventProcessorEntry::getEditingContextEventProcessor);
-            if (optionalEditingContextEventProcessor.isEmpty()) {
-                Optional<IEditingContext> optionalEditingContext = this.editingContextSearchService.findById(editingContextId);
-                if (optionalEditingContext.isPresent()) {
-                    IEditingContext editingContext = optionalEditingContext.get();
+        Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = Optional.ofNullable(this.editingContextEventProcessors.get(editingContextId))
+                .map(EditingContextEventProcessorEntry::getEditingContextEventProcessor);
+        if (optionalEditingContextEventProcessor.isEmpty()) {
+            Optional<IEditingContext> optionalEditingContext = this.editingContextSearchService.findById(editingContextId);
+            if (optionalEditingContext.isPresent()) {
+                IEditingContext editingContext = optionalEditingContext.get();
 
-                    var editingContextEventProcessor = this.editingContextEventProcessorFactory.createEditingContextEventProcessor(editingContext);
-                    Disposable subscription = editingContextEventProcessor.canBeDisposed().delayElements(this.disposeDelay).subscribe(canBeDisposed -> {
-                        // We will wait for the delay before trying to dispose the editing context event processor
-                        // We will check if the editing context event processor is still empty
-                        if (canBeDisposed.booleanValue() && editingContextEventProcessor.getRepresentationEventProcessors().isEmpty()) {
-                            this.disposeEditingContextEventProcessor(editingContextId);
-                        } else {
-                            this.logger.trace("Stopping the disposal of the editing context");
-                        }
-                    });
+                var editingContextEventProcessor = this.editingContextEventProcessorFactory.createEditingContextEventProcessor(editingContext);
+                Disposable subscription = editingContextEventProcessor.canBeDisposed().delayElements(this.disposeDelay).subscribe(canBeDisposed -> {
+                    // We will wait for the delay before trying to dispose the editing context event processor
+                    // We will check if the editing context event processor is still empty
+                    if (canBeDisposed.booleanValue() && editingContextEventProcessor.getRepresentationEventProcessors().isEmpty()) {
+                        this.disposeEditingContextEventProcessor(editingContextId);
+                    } else {
+                        this.logger.trace("Stopping the disposal of the editing context");
+                    }
+                });
 
-                    var editingContextEventProcessorEntry = new EditingContextEventProcessorEntry(editingContextEventProcessor, subscription);
-                    this.editingContextEventProcessors.put(editingContextId, editingContextEventProcessorEntry);
+                var editingContextEventProcessorEntry = new EditingContextEventProcessorEntry(editingContextEventProcessor, subscription);
+                this.editingContextEventProcessors.put(editingContextId, editingContextEventProcessorEntry);
 
-                    optionalEditingContextEventProcessor = Optional.of(editingContextEventProcessor);
-                }
+                optionalEditingContextEventProcessor = Optional.of(editingContextEventProcessor);
             }
         }
 
