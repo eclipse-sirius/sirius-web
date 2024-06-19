@@ -79,8 +79,8 @@ public class DiagramToolbarViewProvider implements IE2EViewProvider {
 
     private DiagramDescription getDiagramDescriptionWithToolbar(IColorProvider colorProvider) {
         var toolbar = new DiagramBuilders().newDiagramToolbar()
-            .expandedByDefault(true)
-            .build();
+                .expandedByDefault(true)
+                .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -91,24 +91,26 @@ public class DiagramToolbarViewProvider implements IE2EViewProvider {
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider))
                 .toolbar(toolbar)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
     }
 
     private DiagramDescription getDiagramDescriptionWithCollapsedToolbar(IColorProvider colorProvider) {
         var toolbar = new DiagramBuilders().newDiagramToolbar()
-            .expandedByDefault(false)
-            .build();
+                .expandedByDefault(false)
+                .build();
 
         return new DiagramBuilders()
-            .newDiagramDescription()
-            .name(DiagramToolbarDomainProvider.DOMAIN_NAME + " - with collapsed toolbar")
-            .domainType(DiagramToolbarDomainProvider.DOMAIN_NAME + "::Root")
-            .titleExpression(DiagramToolbarDomainProvider.DOMAIN_NAME + " diagram")
-            .autoLayout(false)
-            .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
-            .nodeDescriptions(this.getNodeDescription(colorProvider))
-            .toolbar(toolbar)
-            .build();
+                .newDiagramDescription()
+                .name(DiagramToolbarDomainProvider.DOMAIN_NAME + " - with collapsed toolbar")
+                .domainType(DiagramToolbarDomainProvider.DOMAIN_NAME + "::Root")
+                .titleExpression(DiagramToolbarDomainProvider.DOMAIN_NAME + " diagram")
+                .autoLayout(false)
+                .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
+                .nodeDescriptions(this.getNodeDescription(colorProvider))
+                .toolbar(toolbar)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
+                .build();
     }
 
     private DiagramDescription getDiagramDescriptionWithoutToolbar(IColorProvider colorProvider) {
@@ -120,6 +122,7 @@ public class DiagramToolbarViewProvider implements IE2EViewProvider {
                 .autoLayout(false)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider))
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
     }
 

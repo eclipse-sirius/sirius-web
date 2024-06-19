@@ -19,6 +19,7 @@ package org.eclipse.sirius.components.view.builder.generated.diagram;
  * @generated
  */
 public class DiagramBuilders {
+
     /**
      * Instantiate a DiagramDescriptionBuilder .
      *
@@ -110,6 +111,16 @@ public class DiagramBuilders {
     }
 
     /**
+     * Instantiate a DiagramStyleDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public DiagramStyleDescriptionBuilder newDiagramStyleDescription() {
+        return new DiagramStyleDescriptionBuilder();
+    }
+
+    /**
      * Instantiate a ConditionalNodeStyleBuilder .
      *
      * @author BuilderGenerator
@@ -118,6 +129,23 @@ public class DiagramBuilders {
     public ConditionalNodeStyleBuilder newConditionalNodeStyle() {
         return new ConditionalNodeStyleBuilder();
     }
+
+    /**
+     * Instantiate a ConditionalDiagramStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ConditionalDiagramStyleBuilder newConditionalDiagramStyle() {
+        return new ConditionalDiagramStyleBuilder();
+    }
+
+    /**
+     * Instantiate a ConditionalDiagramStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
 
     /**
      * Instantiate a ConditionalInsideLabelStyleBuilder .

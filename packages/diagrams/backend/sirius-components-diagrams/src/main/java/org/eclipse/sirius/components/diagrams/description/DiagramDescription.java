@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.annotations.PublicApi;
 import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -84,6 +85,8 @@ public final class DiagramDescription implements IRepresentationDescription {
     private Function<VariableManager, IStatus> dropNodeHandler;
 
     private Function<VariableManager, List<String>> iconURLsProvider;
+
+    private Function<VariableManager, DiagramStyle> styleProvider;
 
     private DiagramDescription() {
         // Prevent instantiation
@@ -277,6 +280,10 @@ public final class DiagramDescription implements IRepresentationDescription {
         return this.iconURLsProvider;
     }
 
+    public Function<VariableManager, DiagramStyle> getStyleProvider() {
+        return this.styleProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, nodeDescriptionCount: {3}, edgeDescriptionCount: {4}'}'";
@@ -315,6 +322,8 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private Function<VariableManager, List<String>> iconURLsProvider;
 
+        private Function<VariableManager, DiagramStyle> styleProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -332,6 +341,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             this.dropHandler = diagramDescription.getDropHandler();
             this.dropNodeHandler = diagramDescription.getDropNodeHandler();
             this.iconURLsProvider = diagramDescription.getIconURLsProvider();
+            this.styleProvider = diagramDescription.getStyleProvider();
         }
 
         public Builder label(String label) {
@@ -385,7 +395,12 @@ public final class DiagramDescription implements IRepresentationDescription {
         }
 
         public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
-            this.iconURLsProvider =  Objects.requireNonNull(iconURLsProvider);
+            this.iconURLsProvider = Objects.requireNonNull(iconURLsProvider);
+            return this;
+        }
+
+        public Builder styleProvider(Function<VariableManager, DiagramStyle> styleProvider) {
+            this.styleProvider = Objects.requireNonNull(styleProvider);
             return this;
         }
 
@@ -402,7 +417,8 @@ public final class DiagramDescription implements IRepresentationDescription {
             diagramDescription.edgeDescriptions = Objects.requireNonNull(this.edgeDescriptions);
             diagramDescription.dropHandler = Objects.requireNonNull(this.dropHandler);
             diagramDescription.dropNodeHandler = this.dropNodeHandler; // Optional on purpose.
-            diagramDescription.iconURLsProvider =  Objects.requireNonNull(this.iconURLsProvider);
+            diagramDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
+            diagramDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             return diagramDescription;
         }
     }

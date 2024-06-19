@@ -90,6 +90,7 @@ public class DiagramEdgeIconLabelViewProvider implements IE2EViewProvider {
                 .autoLayout(false)
                 .nodeDescriptions(nodeDescription1, nodeDescription2)
                 .edgeDescriptions(edgeDescription1)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
     }
 

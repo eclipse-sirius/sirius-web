@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.web.papaya.representations.dashboarddiagram.PapayaDashboardDiagramDescriptionProvider;
 import org.springframework.stereotype.Service;
@@ -95,8 +96,8 @@ public class PapayaDashboardEventProcessorFactory implements IRepresentationEven
         String diagramDescriptionId = optionalRepresentationMetadata.map(RepresentationMetadata::descriptionId).orElse("");
 
         //The diagram does not exist (transient)
-        var diagram = buildTransientDiagram(representationId, diagramDescriptionId, targetObjectId);
-        var optionalDiagramDescription = representationDescriptionSearchService.findById(editingContext, diagramDescriptionId)
+        var diagram = this.buildTransientDiagram(representationId, diagramDescriptionId, targetObjectId);
+        var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramDescriptionId)
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
         if (optionalDiagramDescription.isPresent()) {
@@ -127,6 +128,7 @@ public class PapayaDashboardEventProcessorFactory implements IRepresentationEven
                 .targetObjectId(targetObjectId)
                 .edges(List.of())
                 .nodes(List.of())
+                .style(DiagramStyle.newDiagramStyle().build())
                 .build();
     }
 }

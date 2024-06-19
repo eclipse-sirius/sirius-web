@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.Action;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
@@ -32,6 +33,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramStyleDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DiagramToolbar;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
@@ -266,11 +268,27 @@ public class DiagramSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case DiagramPackage.DIAGRAM_STYLE_DESCRIPTION: {
+                DiagramStyleDescription diagramStyleDescription = (DiagramStyleDescription) theEObject;
+                T result = this.caseDiagramStyleDescription(diagramStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             case DiagramPackage.CONDITIONAL_NODE_STYLE: {
                 ConditionalNodeStyle conditionalNodeStyle = (ConditionalNodeStyle) theEObject;
                 T result = this.caseConditionalNodeStyle(conditionalNodeStyle);
                 if (result == null)
                     result = this.caseConditional(conditionalNodeStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.CONDITIONAL_DIAGRAM_STYLE: {
+                ConditionalDiagramStyle conditionalDiagramStyle = (ConditionalDiagramStyle) theEObject;
+                T result = this.caseConditionalDiagramStyle(conditionalDiagramStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalDiagramStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -808,6 +826,21 @@ public class DiagramSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Style Description</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Style Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDiagramStyleDescription(DiagramStyleDescription object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Conditional Node Style</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
@@ -819,6 +852,21 @@ public class DiagramSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseConditionalNodeStyle(ConditionalNodeStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Diagram Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Diagram Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalDiagramStyle(ConditionalDiagramStyle object) {
         return null;
     }
 

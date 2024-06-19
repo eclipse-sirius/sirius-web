@@ -66,3 +66,59 @@ test.describe('diagram', () => {
     await expect(page.locator('.react-flow__minimap')).toBeAttached();
   });
 });
+
+test.describe('diagram', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('diagram-list', 'papaya-empty');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('diagramPapayaClassNode.xml');
+    await playwrightExplorer.expand('diagramPapayaClassNode.xml');
+    await playwrightExplorer.expand('Project');
+    await playwrightExplorer.expand('Component');
+
+    await playwrightExplorer.createRepresentation('Component', 'Class Diagram', 'diagram');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a diagram has a conditional style, then the style is changed after triggering the condition', async ({
+    page,
+  }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Package');
+    await page.waitForFunction(
+      () => {
+        const div = document.querySelector('[data-testid="rf__background"]');
+        if (!div) {
+          return false;
+        }
+
+        const background = window.getComputedStyle(div).getPropertyValue('background');
+        return background.includes('Drag and drop elements to get started');
+      },
+      { timeout: 2000 }
+    );
+
+    await (await playwrightExplorer.getTreeItemLabel('NewClass')).dragTo(page.getByTestId('rf__wrapper'));
+
+    await page.waitForFunction(
+      () => {
+        const div = document.querySelector('[data-testid="rf__background"]');
+        if (!div) {
+          return false;
+        }
+
+        const background = window.getComputedStyle(div).getPropertyValue('background');
+        return !background.includes('Drag and drop elements to get started');
+      },
+      { timeout: 2000 }
+    );
+  });
+});

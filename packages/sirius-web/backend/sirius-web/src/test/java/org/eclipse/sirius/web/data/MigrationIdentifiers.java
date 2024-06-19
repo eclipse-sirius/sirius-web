@@ -57,9 +57,13 @@ public final class MigrationIdentifiers {
 
     public static final UUID MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO = UUID.fromString("dc9643f8-b1ce-4c93-a176-379063d42b32");
 
+    public static final UUID MIGRATION_DIAGRAM_STYLE_DESCRIPTION = UUID.fromString("14df1eb9-0915-4a62-ba83-b26ce5e2cfe1");
+
     public static final String MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_DIAGRAM = "InsideLabelStyle#displayHeaderSeparator migration";
 
     public static final String MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_NODE_1 = "migration Node 1";
+
+    public static final String MIGRATION_DIAGRAM_STYLE_DESCRIPTION_DIAGRAM = "NodeStyleDescription#color migration";
 
     public static final UUID MIGRATION_WIDGET_DESCRIPTION_STYLE_LAYOUT_PROPERTIES_MIGRATION_PARTICIPANT_STUDIO = UUID.fromString("e344d967-a639-4f6c-9c00-a466d51063c6");
 

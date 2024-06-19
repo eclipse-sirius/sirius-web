@@ -21,6 +21,7 @@ export interface GQLDiagram {
   metadata: GQLRepresentationMetadata;
   nodes: GQLNode<GQLNodeStyle>[];
   edges: GQLEdge[];
+  style: GQLDiagramStyle;
   layoutData: GQLDiagramLayoutData;
 }
 
@@ -71,4 +72,8 @@ export interface GQLLabelLayoutData {
 export interface GQLRepresentationMetadata {
   kind: string;
   label: string;
+}
+
+export interface GQLDiagramStyle {
+  background: string;
 }

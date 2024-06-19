@@ -34,7 +34,7 @@
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3647[#3647] [diagram] Add support for diagram style with background customization
 
 
 === Improvements

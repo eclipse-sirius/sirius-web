@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
@@ -56,6 +57,7 @@ public class TestDiagramDescriptionBuilder {
                 .edgeDescriptions(edgeDescriptions)
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
+                .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .build();
     }
 
@@ -64,14 +66,14 @@ public class TestDiagramDescriptionBuilder {
         Function<VariableManager, List<Element>> targetProvider = variableManager -> List.of();
 
         Function<VariableManager, EdgeStyle> edgeStyleProvider = variableManager ->
-            EdgeStyle.newEdgeStyle()
-                .size(2)
-                .lineStyle(LineStyle.Dash_Dot)
-                .sourceArrow(ArrowStyle.InputArrowWithDiamond)
-                .targetArrow(ArrowStyle.None)
-                .color("rgb(1, 2, 3)")
-                .edgeType(EdgeType.Manhattan)
-                .build();
+                EdgeStyle.newEdgeStyle()
+                        .size(2)
+                        .lineStyle(LineStyle.Dash_Dot)
+                        .sourceArrow(ArrowStyle.InputArrowWithDiamond)
+                        .targetArrow(ArrowStyle.None)
+                        .color("rgb(1, 2, 3)")
+                        .edgeType(EdgeType.Manhattan)
+                        .build();
 
         Function<VariableManager, String> idProvider = variableManager -> variableManager.get(VariableManager.SELF, String.class).orElse(null);
 

@@ -62,6 +62,7 @@ public class FlowTopographyUnsynchronizedViewDiagramDescriptionProvider implemen
                 .name("Topography unsynchronized")
                 .titleExpression("Topography unsynchronized")
                 .toolbar(toolbar)
+                .style(this.diagramBuilderHelper.newDiagramStyleDescription().build())
                 .build();
 
 

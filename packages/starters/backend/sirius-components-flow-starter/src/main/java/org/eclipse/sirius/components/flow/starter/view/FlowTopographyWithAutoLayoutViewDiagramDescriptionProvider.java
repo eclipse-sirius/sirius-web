@@ -61,6 +61,7 @@ public class FlowTopographyWithAutoLayoutViewDiagramDescriptionProvider implemen
                 .name("Topography with auto layout")
                 .titleExpression("Topography with auto layout")
                 .toolbar(toolbar)
+                .style(this.diagramBuilderHelper.newDiagramStyleDescription().build())
                 .build();
 
 

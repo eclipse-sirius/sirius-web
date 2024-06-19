@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -308,9 +309,8 @@ public class UnsynchronizedDiagramTests {
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
 
-        NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription("subUnsynchronized")
+        NodeDescription subUnsynchronizedNodeDescription = this.getCommonNodeDescriptionBuilder("subUnsynchronized", insideLabelDescription, styleProvider)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(semanticElementsProvider)
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
                 .targetObjectKindProvider(variableManager -> "")
@@ -324,9 +324,8 @@ public class UnsynchronizedDiagramTests {
                 .initialChildBorderNodePositions(Map.of())
                 .build();
 
-        NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription("unsynchronized")
+        NodeDescription unsynchronizedNodeDescription = this.getCommonNodeDescriptionBuilder("unsynchronized", insideLabelDescription, styleProvider)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(semanticElementsProvider)
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
                 .targetObjectKindProvider(variableManager -> "")
@@ -340,9 +339,8 @@ public class UnsynchronizedDiagramTests {
                 .initialChildBorderNodePositions(Map.of())
                 .build();
 
-        NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription("synchronized")
+        NodeDescription synchronizedNodeDescription = this.getCommonNodeDescriptionBuilder("synchronized", insideLabelDescription, styleProvider)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
                 .targetObjectKindProvider(variableManager -> "")
@@ -365,6 +363,22 @@ public class UnsynchronizedDiagramTests {
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
+                .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .build();
+    }
+
+    private NodeDescription.Builder getCommonNodeDescriptionBuilder(String id,
+            InsideLabelDescription insideLabelDescription, Function<VariableManager, INodeStyle> styleProvider) {
+
+        return NodeDescription.newNodeDescription(id)
+                .typeProvider(variableManager -> NODE_TYPE)
+                .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
+                .insideLabelDescription(insideLabelDescription)
+                .styleProvider(styleProvider)
+                .borderNodeDescriptions(new ArrayList<>())
+                .labelEditHandler((variableManager, newLabel) -> new Success())
+                .deleteHandler(variableManager -> new Success());
     }
 }

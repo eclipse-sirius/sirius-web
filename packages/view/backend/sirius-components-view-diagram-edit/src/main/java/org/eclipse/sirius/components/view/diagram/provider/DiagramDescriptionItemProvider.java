@@ -106,6 +106,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__GROUP_PALETTE);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
+            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__STYLE);
+            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.childrenFeatures;
     }
@@ -175,6 +177,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
+            case DiagramPackage.DIAGRAM_DESCRIPTION__STYLE:
+            case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -193,6 +197,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__TOOLBAR, DiagramFactory.eINSTANCE.createDiagramToolbar()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__STYLE, DiagramFactory.eINSTANCE.createDiagramStyleDescription()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES, DiagramFactory.eINSTANCE.createConditionalDiagramStyle()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultDiagramPalette()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__GROUP_PALETTE, DiagramFactory.eINSTANCE.createGroupPalette()));
 

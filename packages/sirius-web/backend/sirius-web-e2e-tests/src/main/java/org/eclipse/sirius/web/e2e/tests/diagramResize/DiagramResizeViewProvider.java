@@ -79,8 +79,8 @@ public class DiagramResizeViewProvider implements IE2EViewProvider {
 
     private DiagramDescription diagramDescription(IColorProvider colorProvider) {
         var toolbar = new DiagramBuilders().newDiagramToolbar()
-            .expandedByDefault(true)
-            .build();
+                .expandedByDefault(true)
+                .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -95,6 +95,7 @@ public class DiagramResizeViewProvider implements IE2EViewProvider {
                         this.getNodeDescription(colorProvider, "Entity4 - Resize VERTICAL", "::Entity4", UserResizableDirection.VERTICAL),
                         this.getNodeDescriptionWithDefaultSize(colorProvider, "Entity5 - Resize Both - default size: (200, 100)", "::Entity5", UserResizableDirection.BOTH, "200", "100"))
                 .toolbar(toolbar)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
     }
 
