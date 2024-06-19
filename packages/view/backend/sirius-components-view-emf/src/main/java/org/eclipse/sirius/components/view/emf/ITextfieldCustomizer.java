@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.forms.CompletionProposal;
 import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -26,11 +27,14 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author pcdavid
  */
 public interface ITextfieldCustomizer {
-    boolean handles(EAttribute eAttribute);
+
+    boolean handles(EAttribute eAttribute, EObject eObject);
 
     Function<VariableManager, TextareaStyle> getStyleProvider();
 
     Function<VariableManager, List<CompletionProposal>> getCompletionProposalsProvider();
+
+    Function<VariableManager, String> getHelpTextProvider();
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -40,7 +44,7 @@ public interface ITextfieldCustomizer {
     class NoOp implements ITextfieldCustomizer {
 
         @Override
-        public boolean handles(EAttribute eAttribute) {
+        public boolean handles(EAttribute eAttribute, EObject eObject) {
             return false;
         }
 
@@ -51,6 +55,11 @@ public interface ITextfieldCustomizer {
 
         @Override
         public Function<VariableManager, List<CompletionProposal>> getCompletionProposalsProvider() {
+            return null;
+        }
+
+        @Override
+        public Function<VariableManager, String> getHelpTextProvider() {
             return null;
         }
 

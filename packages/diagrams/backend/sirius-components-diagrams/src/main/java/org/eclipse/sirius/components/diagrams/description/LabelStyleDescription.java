@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,8 @@ public final class LabelStyleDescription {
 
     private Function<VariableManager, List<String>> iconURLProvider;
 
+    private Function<VariableManager, String> maxWidthProvider;
+
     private LabelStyleDescription() {
         // Prevent instantiation
     }
@@ -77,6 +79,10 @@ public final class LabelStyleDescription {
         return this.iconURLProvider;
     }
 
+    public Function<VariableManager, String> getMaxWidthProvider() {
+        return this.maxWidthProvider;
+    }
+
     /**
      * The builder used to create a new label description.
      *
@@ -98,6 +104,8 @@ public final class LabelStyleDescription {
         private Function<VariableManager, Boolean> strikeThroughProvider;
 
         private Function<VariableManager, List<String>> iconURLProvider;
+
+        private Function<VariableManager, String> maxWidthProvider;
 
         private Builder() {
         }
@@ -137,6 +145,11 @@ public final class LabelStyleDescription {
             return this;
         }
 
+        public Builder maxWidthProvider(Function<VariableManager, String> maxWidthProvider) {
+            this.maxWidthProvider = Objects.requireNonNull(maxWidthProvider);
+            return this;
+        }
+
         public LabelStyleDescription build() {
             LabelStyleDescription styleDescription = new LabelStyleDescription();
             styleDescription.colorProvider = Objects.requireNonNull(this.colorProvider);
@@ -146,6 +159,7 @@ public final class LabelStyleDescription {
             styleDescription.strikeThroughProvider = Objects.requireNonNull(this.strikeThroughProvider);
             styleDescription.underlineProvider = Objects.requireNonNull(this.underlineProvider);
             styleDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            styleDescription.maxWidthProvider = Objects.requireNonNull(this.maxWidthProvider);
             return styleDescription;
         }
 

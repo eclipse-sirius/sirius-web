@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.impl;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -33,6 +35,8 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#isShowIcon <em>Show Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getLabelIcon <em>Label
  * Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getMaxWidthExpression <em>Max Width
+ * Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -40,54 +44,68 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
 public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabelStyle {
 
     /**
-     * The cached value of the '{@link #getLabelColor() <em>Label Color</em>}' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getLabelColor()
-     * @generated
-     * @ordered
-     */
-    protected UserColor labelColor;
-
-    /**
      * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #isShowIcon()
      * @generated
      * @ordered
+     * @see #isShowIcon()
      */
     protected static final boolean SHOW_ICON_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isShowIcon()
-     * @generated
-     * @ordered
-     */
-    protected boolean showIcon = SHOW_ICON_EDEFAULT;
-
     /**
      * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLabelIcon()
      * @generated
      * @ordered
+     * @see #getLabelIcon()
      */
     protected static final String LABEL_ICON_EDEFAULT = null;
-
+    /**
+     * The default value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getMaxWidthExpression()
+     */
+    protected static final String MAX_WIDTH_EXPRESSION_EDEFAULT = null;
+    /**
+     * The cached value of the '{@link #getLabelColor() <em>Label Color</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getLabelColor()
+     */
+    protected UserColor labelColor;
+    /**
+     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isShowIcon()
+     */
+    protected boolean showIcon = SHOW_ICON_EDEFAULT;
     /**
      * The cached value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getLabelIcon()
      * @generated
      * @ordered
+     * @see #getLabelIcon()
      */
     protected String labelIcon = LABEL_ICON_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getMaxWidthExpression()
+     */
+    protected String maxWidthExpression = MAX_WIDTH_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -200,6 +218,29 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      * @generated
      */
     @Override
+    public String getMaxWidthExpression() {
+        return this.maxWidthExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMaxWidthExpression(String newMaxWidthExpression) {
+        String oldMaxWidthExpression = this.maxWidthExpression;
+        this.maxWidthExpression = newMaxWidthExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION, oldMaxWidthExpression, this.maxWidthExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_COLOR:
@@ -210,6 +251,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
                 return this.isShowIcon();
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 return this.getLabelIcon();
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                return this.getMaxWidthExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -231,6 +274,9 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 this.setLabelIcon((String) newValue);
                 return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                this.setMaxWidthExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -244,13 +290,16 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
     public void eUnset(int featureID) {
         switch (featureID) {
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_COLOR:
-                this.setLabelColor((UserColor) null);
+                this.setLabelColor(null);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON:
                 this.setShowIcon(SHOW_ICON_EDEFAULT);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 this.setLabelIcon(LABEL_ICON_EDEFAULT);
+                return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                this.setMaxWidthExpression(MAX_WIDTH_EXPRESSION_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -269,7 +318,9 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
             case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON:
                 return this.showIcon != SHOW_ICON_EDEFAULT;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
-                return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
+                return !Objects.equals(LABEL_ICON_EDEFAULT, this.labelIcon);
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                return !Objects.equals(MAX_WIDTH_EXPRESSION_EDEFAULT, this.maxWidthExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -284,13 +335,14 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (showIcon: ");
-        result.append(this.showIcon);
-        result.append(", labelIcon: ");
-        result.append(this.labelIcon);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (showIcon: " +
+                this.showIcon +
+                ", labelIcon: " +
+                this.labelIcon +
+                ", maxWidthExpression: " +
+                this.maxWidthExpression +
+                ')';
+        return result;
     }
 
 } // OutsideLabelStyleImpl

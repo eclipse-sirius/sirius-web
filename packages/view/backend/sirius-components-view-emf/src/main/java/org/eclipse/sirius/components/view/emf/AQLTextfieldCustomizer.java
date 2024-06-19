@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.NodeLabelStyle;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -49,6 +50,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
+
     /**
      * The background color used to visually distinguish AQL expressions.
      */
@@ -68,8 +70,8 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
     }
 
     @Override
-    public boolean handles(EAttribute eAttribute) {
-        return eAttribute.getEType() == ViewPackage.Literals.INTERPRETED_EXPRESSION;
+    public boolean handles(EAttribute eAttribute, EObject eObject) {
+        return eAttribute.getEType() == ViewPackage.Literals.INTERPRETED_EXPRESSION && !(eAttribute.getName().equals("maxWidthExpression") && eObject instanceof NodeLabelStyle);
     }
 
     @Override
@@ -105,7 +107,6 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
             Set<ICompletionProposal> aqlProposals = new LinkedHashSet<>(completionResult.getProposals(QueryCompletion.createBasicFilter(completionResult)));
             List<ICompletionProposal> proposals = aqlProposals.stream().toList();
 
-            // @formatter:off
             List<CompletionProposal> allProposals = proposals.stream()
                     .filter(proposal -> currentText.substring(AQL_PREFIX.length(), cursorPosition).endsWith(proposal.getProposal().substring(0, completionResult.getReplacementLength())))
                     .sorted(Comparator.comparing(ICompletionProposal::getProposal))
@@ -117,19 +118,21 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
                     // Only keep the first proposal for a given textToInsert
                     .collect(Collectors.toMap(CompletionProposal::getTextToInsert, Function.identity(), (p1, p2) -> p1, LinkedHashMap::new)).values().stream()
                     .toList();
-            // @formatter:on
         };
+    }
+
+    @Override
+    public Function<VariableManager, String> getHelpTextProvider() {
+        return null;
     }
 
     private List<EPackage> getAccessibleEPackages(IEditingContext editingContext) {
         if (editingContext instanceof IEMFEditingContext) {
             Registry packageRegistry = ((IEMFEditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
-            // @formatter:off
             return packageRegistry.values().stream()
-                                  .filter(EPackage.class::isInstance)
-                                  .map(EPackage.class::cast)
-                                  .toList();
-            // @formatter:on
+                    .filter(EPackage.class::isInstance)
+                    .map(EPackage.class::cast)
+                    .toList();
         } else {
             return List.of();
         }
@@ -137,7 +140,6 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
 
     private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {
         AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
-        // @formatter:off
         List<Object> serviceInstances = this.javaServiceProviders.stream()
                 .flatMap(provider -> provider.getServiceClasses(view).stream())
                 .map(serviceClass -> {
@@ -151,7 +153,6 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
                 .filter(Objects::nonNull)
                 .map(Object.class::cast)
                 .toList();
-        // @formatter:on
         return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }
 

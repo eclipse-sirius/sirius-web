@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,12 +22,14 @@ public class EdgeStyleBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.EdgeStyle.
+     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createEdgeStyle();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.EdgeStyle.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.EdgeStyle getEdgeStyle() {
@@ -36,6 +38,7 @@ public class EdgeStyleBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.EdgeStyle.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.EdgeStyle build() {
@@ -51,6 +54,7 @@ public class EdgeStyleBuilder {
         this.getEdgeStyle().setColor(value);
         return this;
     }
+
     /**
      * Setter for FontSize.
      *
@@ -60,6 +64,7 @@ public class EdgeStyleBuilder {
         this.getEdgeStyle().setFontSize(value);
         return this;
     }
+
     /**
      * Setter for Italic.
      *
@@ -69,6 +74,7 @@ public class EdgeStyleBuilder {
         this.getEdgeStyle().setItalic(value);
         return this;
     }
+
     /**
      * Setter for Bold.
      *
@@ -78,6 +84,7 @@ public class EdgeStyleBuilder {
         this.getEdgeStyle().setBold(value);
         return this;
     }
+
     /**
      * Setter for Underline.
      *
@@ -87,6 +94,7 @@ public class EdgeStyleBuilder {
         this.getEdgeStyle().setUnderline(value);
         return this;
     }
+
     /**
      * Setter for StrikeThrough.
      *
@@ -96,6 +104,7 @@ public class EdgeStyleBuilder {
         this.getEdgeStyle().setStrikeThrough(value);
         return this;
     }
+
     /**
      * Setter for LineStyle.
      *
@@ -105,6 +114,7 @@ public class EdgeStyleBuilder {
         this.getEdgeStyle().setLineStyle(value);
         return this;
     }
+
     /**
      * Setter for SourceArrowStyle.
      *
@@ -114,6 +124,7 @@ public class EdgeStyleBuilder {
         this.getEdgeStyle().setSourceArrowStyle(value);
         return this;
     }
+
     /**
      * Setter for TargetArrowStyle.
      *
@@ -123,6 +134,7 @@ public class EdgeStyleBuilder {
         this.getEdgeStyle().setTargetArrowStyle(value);
         return this;
     }
+
     /**
      * Setter for EdgeWidth.
      *
@@ -132,6 +144,7 @@ public class EdgeStyleBuilder {
         this.getEdgeStyle().setEdgeWidth(value);
         return this;
     }
+
     /**
      * Setter for ShowIcon.
      *
@@ -149,6 +162,16 @@ public class EdgeStyleBuilder {
      */
     public EdgeStyleBuilder labelIcon(java.lang.String value) {
         this.getEdgeStyle().setLabelIcon(value);
+        return this;
+    }
+
+    /**
+     * Setter for MaxWidthExpression.
+     *
+     * @generated
+     */
+    public EdgeStyleBuilder maxWidthExpression(java.lang.String value) {
+        this.getEdgeStyle().setMaxWidthExpression(value);
         return this;
     }
 

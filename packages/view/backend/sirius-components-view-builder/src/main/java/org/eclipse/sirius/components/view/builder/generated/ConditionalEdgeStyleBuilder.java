@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,12 +22,14 @@ public class ConditionalEdgeStyleBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle.
+     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle conditionalEdgeStyle = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createConditionalEdgeStyle();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle getConditionalEdgeStyle() {
@@ -36,6 +38,7 @@ public class ConditionalEdgeStyleBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle build() {
@@ -51,6 +54,7 @@ public class ConditionalEdgeStyleBuilder {
         this.getConditionalEdgeStyle().setCondition(value);
         return this;
     }
+
     /**
      * Setter for Color.
      *
@@ -60,6 +64,7 @@ public class ConditionalEdgeStyleBuilder {
         this.getConditionalEdgeStyle().setColor(value);
         return this;
     }
+
     /**
      * Setter for FontSize.
      *
@@ -69,6 +74,7 @@ public class ConditionalEdgeStyleBuilder {
         this.getConditionalEdgeStyle().setFontSize(value);
         return this;
     }
+
     /**
      * Setter for Italic.
      *
@@ -78,6 +84,7 @@ public class ConditionalEdgeStyleBuilder {
         this.getConditionalEdgeStyle().setItalic(value);
         return this;
     }
+
     /**
      * Setter for Bold.
      *
@@ -87,6 +94,7 @@ public class ConditionalEdgeStyleBuilder {
         this.getConditionalEdgeStyle().setBold(value);
         return this;
     }
+
     /**
      * Setter for Underline.
      *
@@ -96,6 +104,7 @@ public class ConditionalEdgeStyleBuilder {
         this.getConditionalEdgeStyle().setUnderline(value);
         return this;
     }
+
     /**
      * Setter for StrikeThrough.
      *
@@ -105,6 +114,7 @@ public class ConditionalEdgeStyleBuilder {
         this.getConditionalEdgeStyle().setStrikeThrough(value);
         return this;
     }
+
     /**
      * Setter for LineStyle.
      *
@@ -114,6 +124,7 @@ public class ConditionalEdgeStyleBuilder {
         this.getConditionalEdgeStyle().setLineStyle(value);
         return this;
     }
+
     /**
      * Setter for SourceArrowStyle.
      *
@@ -123,6 +134,7 @@ public class ConditionalEdgeStyleBuilder {
         this.getConditionalEdgeStyle().setSourceArrowStyle(value);
         return this;
     }
+
     /**
      * Setter for TargetArrowStyle.
      *
@@ -132,6 +144,7 @@ public class ConditionalEdgeStyleBuilder {
         this.getConditionalEdgeStyle().setTargetArrowStyle(value);
         return this;
     }
+
     /**
      * Setter for EdgeWidth.
      *
@@ -141,6 +154,7 @@ public class ConditionalEdgeStyleBuilder {
         this.getConditionalEdgeStyle().setEdgeWidth(value);
         return this;
     }
+
     /**
      * Setter for ShowIcon.
      *
@@ -158,6 +172,16 @@ public class ConditionalEdgeStyleBuilder {
      */
     public ConditionalEdgeStyleBuilder labelIcon(java.lang.String value) {
         this.getConditionalEdgeStyle().setLabelIcon(value);
+        return this;
+    }
+
+    /**
+     * Setter for MaxWidthExpression.
+     *
+     * @generated
+     */
+    public ConditionalEdgeStyleBuilder maxWidthExpression(java.lang.String value) {
+        this.getConditionalEdgeStyle().setMaxWidthExpression(value);
         return this;
     }
 

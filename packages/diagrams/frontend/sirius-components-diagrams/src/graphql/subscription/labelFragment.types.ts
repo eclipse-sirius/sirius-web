@@ -62,4 +62,5 @@ export interface GQLLabelStyle {
   underline: boolean;
   strikeThrough: boolean;
   iconURL: string[];
+  maxWidth: string;
 }

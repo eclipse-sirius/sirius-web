@@ -41,6 +41,7 @@ export const convertInsideLabel = (
       justifyContent: 'center',
       padding: '8px 16px',
       textAlign: convertLabelTextAlign(gqlInsideLabel.textAlign),
+      maxWidth: gqlInsideLabel.overflowStrategy === 'NONE' ? undefined : labelStyle.maxWidth,
       ...convertLabelStyle(labelStyle),
     },
     iconURL: labelStyle.iconURL,
@@ -104,6 +105,7 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
       style: {
         justifyContent: 'center',
         textAlign: convertLabelTextAlign(gqlOutsideLabel.textAlign),
+        maxWidth: gqlOutsideLabel.overflowStrategy === 'NONE' ? undefined : labelStyle.maxWidth,
         ...convertLabelStyle(labelStyle),
       },
       overflowStrategy,

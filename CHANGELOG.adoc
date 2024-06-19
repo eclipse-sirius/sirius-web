@@ -8,7 +8,8 @@
 
 === Architectural decision records
 
-[ADR-151] Improve Diagram Subscription Lifecycle
+- [ADR-151] Improve Diagram Subscription Lifecycle
+- [ADR-152] Add max-width expression for diagram labels
 
 === Deprecation warning
 
@@ -74,6 +75,7 @@ More existing APIs will be migrated to this new common pattern.
 This dialog presents diagram elements in a tree and allows to select them and update their visibility and status (e.g. hide, show, collapse).
 +
 image:doc/screenshots/diagramFilterView.png[Diagram Filter View, 70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/3570[#3570] [diagram] Add max width expression in the View DSL for labels
 
 === Improvements
 
