@@ -69,7 +69,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-collaborative-portals", 79.0),
   new ModuleCoverage("sirius-components-portals-graphql", 71.0),
   new ModuleCoverage("sirius-components-interpreter", 80.0),
-  new ModuleCoverage("sirius-components-emf", 84.0),
+  new ModuleCoverage("sirius-components-emf", 85.0),
   new ModuleCoverage("sirius-components-graphql", 54.0),
   new ModuleCoverage("sirius-components-web", 54.0),
   new ModuleCoverage("sirius-components-domain", 72.0),

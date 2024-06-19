@@ -115,7 +115,7 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                 .build();
 
         var nodePalette = new DiagramBuilders().newNodePalette()
-                .dropNodeTool(dropNodeTool)
+                .dropNodeTool(this.dropNodeTool)
                 .build();
 
         var nodeDescription = new DiagramBuilders().newNodeDescription()
@@ -155,6 +155,7 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                 .edgeDescriptions(edgeDescription)
                 .palette(diagramPalette)
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 
         return this.diagramDescription;

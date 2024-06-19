@@ -35,7 +35,12 @@ type Diagram implements Representation {
   position: Position!
   nodes: [Node!]!
   edges: [Edge!]!
+  style: DiagramStyle!
   layoutData: DiagramLayoutData!
+}
+
+type DiagramStyle {
+  background: String
 }
 
 type DiagramLayoutData {

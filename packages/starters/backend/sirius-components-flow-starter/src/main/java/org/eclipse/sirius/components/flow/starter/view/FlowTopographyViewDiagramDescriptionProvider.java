@@ -51,7 +51,9 @@ public class FlowTopographyViewDiagramDescriptionProvider implements IRepresenta
                 .autoLayout(false)
                 .domainType("flow::System")
                 .name("Topography")
-                .titleExpression("Topography").build();
+                .titleExpression("Topography")
+                .style(this.diagramBuilderHelper.newDiagramStyleDescription().build())
+                .build();
 
 
         var cache = new ViewDiagramElementFinder();

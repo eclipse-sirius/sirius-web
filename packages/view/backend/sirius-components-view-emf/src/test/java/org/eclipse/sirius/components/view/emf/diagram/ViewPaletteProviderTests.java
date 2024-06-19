@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDia
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IURLParser;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
@@ -230,6 +231,7 @@ public class ViewPaletteProviderTests {
                 .nodeDescriptions(List.of())
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))
+                .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .build();
     }
 

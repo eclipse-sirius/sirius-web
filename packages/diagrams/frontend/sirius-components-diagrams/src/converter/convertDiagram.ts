@@ -219,6 +219,9 @@ export const convertDiagram = (
   layoutHandles(rawDiagram, diagramDescription, nodeInternals);
 
   return {
+    style: {
+      background: gqlDiagram.style.background,
+    },
     nodes: rawDiagram.nodes,
     edges: rawDiagram.edges,
   };

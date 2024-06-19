@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -64,6 +65,7 @@ public class CreateDiagramEventHandlerTests {
                         .nodeDescriptions(new ArrayList<>())
                         .targetObjectIdProvider(variableManager -> "targetObjectId")
                         .dropHandler(variableManager -> new Failure(""))
+                        .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                         .build();
                 // @formatter:on
 
