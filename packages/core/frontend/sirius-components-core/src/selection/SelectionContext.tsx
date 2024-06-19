@@ -32,21 +32,7 @@ export const SelectionContextProvider = ({ initialSelection, children }: Selecti
   });
 
   const setSelection = useCallback((selection: Selection) => {
-    setState((prevState) => {
-      const prevSelectionKey = prevState.selection.entries
-        .map((entry) => entry.id)
-        .sort()
-        .join(':');
-      const newSelectionKey = selection.entries
-        .map((entry) => entry.id)
-        .sort()
-        .join(':');
-      if (prevSelectionKey !== newSelectionKey) {
-        return { ...prevState, selection };
-      } else {
-        return prevState;
-      }
-    });
+    setState((prevState) => ({ ...prevState, selection }));
   }, []);
 
   return (
