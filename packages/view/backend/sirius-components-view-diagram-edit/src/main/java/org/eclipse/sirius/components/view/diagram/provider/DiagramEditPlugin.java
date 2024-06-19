@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.provider.ViewEditPlugin;
  * @generated
  */
 public final class DiagramEditPlugin extends EMFPlugin {
+
     /**
      * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -46,7 +47,7 @@ public final class DiagramEditPlugin extends EMFPlugin {
      * @generated
      */
     public DiagramEditPlugin() {
-        super(new ResourceLocator[] { ViewEditPlugin.INSTANCE, });
+        super(new ResourceLocator[] {ViewEditPlugin.INSTANCE,});
     }
 
     /**
@@ -82,7 +83,7 @@ public final class DiagramEditPlugin extends EMFPlugin {
      * Computes the file extension to be used with the key to specify an image resource.
      *
      * @param key
-     *            the key for the imagine.
+     *         the key for the imagine.
      * @return the file extension to be used with the key to specify an image resource.
      */
     protected static String extensionFor(String key) {
@@ -104,6 +105,7 @@ public final class DiagramEditPlugin extends EMFPlugin {
      * @generated
      */
     public static class Implementation extends EclipsePlugin {
+
         /**
          * Creates an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
          *

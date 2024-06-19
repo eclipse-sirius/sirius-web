@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.DefaultViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
@@ -31,6 +32,7 @@ import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptio
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.InterfaceNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.RecordNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.diagram.DiagramPaletteProvider;
+import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
  * Used to provide the view model used to create class diagrams.
@@ -50,6 +52,17 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
         classDiagramDescription.setAutoLayout(false);
         classDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.UP);
         classDiagramDescription.setIconExpression("aql:'/papaya-representations/class-diagram.svg'");
+        classDiagramDescription.setStyle(new DiagramBuilders().newDiagramStyleDescription()
+                .background(colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
+                .build());
+
+        var emptyDiagramStyle = new DiagramBuilders().newConditionalDiagramStyle()
+                .condition("aql:diagramContext.isDiagramEmpty()")
+                .style(new DiagramBuilders().newDiagramStyleDescription()
+                        .background(colorProvider.getColor(PapayaColorPaletteProvider.EMPTY_DIAGRAM_BACKGROUND))
+                        .build())
+                .build();
+        classDiagramDescription.getConditionalStyles().add(emptyDiagramStyle);
 
         var cache = new DefaultViewDiagramElementFinder();
 

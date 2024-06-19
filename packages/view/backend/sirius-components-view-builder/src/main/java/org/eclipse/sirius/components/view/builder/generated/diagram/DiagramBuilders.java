@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.builder.generated.SelectionDialogTreeD
  * @generated
  */
 public class DiagramBuilders {
+
     /**
      * Instantiate a DiagramDescriptionBuilder .
      *
@@ -112,14 +113,44 @@ public class DiagramBuilders {
     }
 
     /**
-     * Instantiate a ConditionalNodeStyleBuilder .
+     * Instantiate a DiagramStyleDescriptionBuilder .
      *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public DiagramStyleDescriptionBuilder newDiagramStyleDescription() {
+        return new DiagramStyleDescriptionBuilder();
+    }
+
+    /**
+     * Instantiate a DiagramStyleDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated /**
+     * Instantiate a ConditionalNodeStyleBuilder .
      * @author BuilderGenerator
      * @generated
      */
     public ConditionalNodeStyleBuilder newConditionalNodeStyle() {
         return new ConditionalNodeStyleBuilder();
     }
+
+    /**
+     * Instantiate a ConditionalDiagramStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ConditionalDiagramStyleBuilder newConditionalDiagramStyle() {
+        return new ConditionalDiagramStyleBuilder();
+    }
+
+    /**
+     * Instantiate a ConditionalDiagramStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
 
     /**
      * Instantiate a ConditionalInsideLabelStyleBuilder .

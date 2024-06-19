@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.SelectionDialogTreeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramPaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
@@ -150,6 +151,7 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                 .edgeDescriptions()
                 .palette(diagramPalette)
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 
         return this.diagramDescription;
@@ -216,16 +218,16 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                                 .expression("aql:self")
                                 .children(
                                         new ViewBuilders().newLet()
-                                            .variableName("project")
-                                            .valueExpression("aql:self")
-                                            .children(
-                                                    new ViewBuilders().newChangeContext().expression("aql:project").build(),
-                                                    this.createCreateNewComponentOperation("component1", "aql:'Component1'"),
-                                                    new ViewBuilders().newChangeContext().expression("aql:project").build(),
-                                                    this.createCreateNewComponentOperation("component2", "aql:'Component2'"),
-                                                    new ViewBuilders().newChangeContext().expression("aql:project").build(),
-                                                    this.createCreateNewComponentOperation("component3", "aql:'Component3'"))
-                                            .build()
+                                                .variableName("project")
+                                                .valueExpression("aql:self")
+                                                .children(
+                                                        new ViewBuilders().newChangeContext().expression("aql:project").build(),
+                                                        this.createCreateNewComponentOperation("component1", "aql:'Component1'"),
+                                                        new ViewBuilders().newChangeContext().expression("aql:project").build(),
+                                                        this.createCreateNewComponentOperation("component2", "aql:'Component2'"),
+                                                        new ViewBuilders().newChangeContext().expression("aql:project").build(),
+                                                        this.createCreateNewComponentOperation("component3", "aql:'Component3'"))
+                                                .build()
                                 )
                                 .build()
                 )

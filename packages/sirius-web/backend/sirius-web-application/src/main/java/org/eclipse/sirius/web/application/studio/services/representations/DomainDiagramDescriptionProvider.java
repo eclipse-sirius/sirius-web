@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -155,6 +155,8 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .nodeTools(newEntityNodeTool)
                 .build();
 
+        var style = new DiagramBuilders().newDiagramStyleDescription().build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name("Domain")
@@ -162,6 +164,7 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .titleExpression("aql:'Domain'")
                 .palette(palette)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
+                .style(style)
                 .build();
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,6 +65,8 @@ public final class StudioIdentifiers {
 
     public static final String TABLE_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=tableDescription&sourceKind=view&sourceId=" +
             StudioIdentifiers.VIEW_DOCUMENT + "&sourceElementId=" + StudioIdentifiers.TABLE_ID;
+
+    public static final UUID DIAGRAM_STYLE_DESCRIPTION_OBJECT = UUID.fromString("82dd8017-a782-4d48-8926-019c1a88db53");
 
     private StudioIdentifiers() {
         // Prevent instantiation

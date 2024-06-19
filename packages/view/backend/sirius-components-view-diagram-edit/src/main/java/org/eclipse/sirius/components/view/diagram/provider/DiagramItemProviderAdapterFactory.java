@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -373,6 +373,40 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     protected DropNodeToolItemProvider dropNodeToolItemProvider;
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.DiagramStyleDescription} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DiagramStyleDescriptionItemProvider diagramStyleDescriptionItemProvider;
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalDiagramStyleItemProvider conditionalDiagramStyleItemProvider;
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SelectionDialogDescriptionItemProvider selectionDialogDescriptionItemProvider;
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SelectionDialogTreeDescriptionItemProvider selectionDialogTreeDescriptionItemProvider;
+
+    /**
      * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -522,6 +556,21 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramStyleDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDiagramStyleDescriptionAdapter() {
+        if (this.diagramStyleDescriptionItemProvider == null) {
+            this.diagramStyleDescriptionItemProvider = new DiagramStyleDescriptionItemProvider(this);
+        }
+
+        return this.diagramStyleDescriptionItemProvider;
+    }
+
+    /**
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -534,6 +583,21 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
         }
 
         return this.conditionalNodeStyleItemProvider;
+    }
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalDiagramStyleAdapter() {
+        if (this.conditionalDiagramStyleItemProvider == null) {
+            this.conditionalDiagramStyleItemProvider = new ConditionalDiagramStyleItemProvider(this);
+        }
+
+        return this.conditionalDiagramStyleItemProvider;
     }
 
     /**
@@ -822,15 +886,6 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription} instances. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected SelectionDialogDescriptionItemProvider selectionDialogDescriptionItemProvider;
-
-    /**
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -904,15 +959,6 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
 
         return this.dropNodeToolItemProvider;
     }
-
-    /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription} instances. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected SelectionDialogTreeDescriptionItemProvider selectionDialogTreeDescriptionItemProvider;
 
     /**
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription}.
@@ -1076,8 +1122,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.insideLabelStyleItemProvider.dispose();
         if (this.outsideLabelStyleItemProvider != null)
             this.outsideLabelStyleItemProvider.dispose();
+        if (this.diagramStyleDescriptionItemProvider != null)
+            this.diagramStyleDescriptionItemProvider.dispose();
         if (this.conditionalNodeStyleItemProvider != null)
             this.conditionalNodeStyleItemProvider.dispose();
+        if (this.conditionalDiagramStyleItemProvider != null)
+            this.conditionalDiagramStyleItemProvider.dispose();
         if (this.conditionalInsideLabelStyleItemProvider != null)
             this.conditionalInsideLabelStyleItemProvider.dispose();
         if (this.conditionalOutsideLabelStyleItemProvider != null)
@@ -1202,6 +1252,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
                 DiagramDescription newDiagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
                 newDiagramDescription.setName("New Diagram Description");
                 newDiagramDescription.setPalette(new DefaultToolsFactory().createDefaultDiagramPalette());
+                newDiagramDescription.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
                 this.newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newDiagramDescription));
 
                 return null;

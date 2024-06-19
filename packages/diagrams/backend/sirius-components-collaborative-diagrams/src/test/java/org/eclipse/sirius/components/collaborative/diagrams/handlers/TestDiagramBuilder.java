@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.UUID;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
@@ -57,7 +58,12 @@ public class TestDiagramBuilder {
                 .targetObjectId("diagramTargetObjectId")
                 .nodes(List.of())
                 .edges(List.of())
+                .style(this.getDiagramStyle())
                 .build();
+    }
+
+    public DiagramStyle getDiagramStyle() {
+        return DiagramStyle.newDiagramStyle().build();
     }
 
     public RectangularNodeStyle getRectangularNodeStyle() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.diagrams.DiagramLabelProvider;
 import org.eclipse.sirius.components.compatibility.services.diagrams.api.IDiagramDescriptionConverter;
 import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription.Builder;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -40,6 +41,8 @@ import org.springframework.stereotype.Service;
 public class DiagramDescriptionConverter implements IDiagramDescriptionConverter {
 
     private static final String FORCE_AUTO_LAYOUT = "FORCE_AUTO_LAYOUT";
+
+    private static final String DEFAULT_BACKGROUND_COLOR = "transparent";
 
     private final List<IDiagramDescriptionPopulator> diagramDescriptionPopulators;
 
@@ -68,7 +71,8 @@ public class DiagramDescriptionConverter implements IDiagramDescriptionConverter
                 .labelProvider(labelProvider)
                 .iconURLsProvider(variableManager -> List.of())
                 .autoLayout(this.isAutoLayoutMode(siriusDiagramDescription))
-                .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED);
+                .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
+                .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().background(DEFAULT_BACKGROUND_COLOR).build());
 
         for (IDiagramDescriptionPopulator diagramDescriptionPopulator : this.diagramDescriptionPopulators) {
             diagramDescriptionPopulator.populate(builder, siriusDiagramDescription, interpreter);

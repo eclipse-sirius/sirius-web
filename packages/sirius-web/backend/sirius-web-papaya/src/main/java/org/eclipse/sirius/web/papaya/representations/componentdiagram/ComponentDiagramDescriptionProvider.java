@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.sirius.web.papaya.representations.componentdiagram.edgedescri
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.nodedescriptions.ComponentNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.tools.ComponentDiagramDropToolProvider;
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.tools.CreateComponentNodeToolProvider;
+import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
  * Used to provide the view model used to create component diagrams.
@@ -48,6 +49,17 @@ public class ComponentDiagramDescriptionProvider implements IRepresentationDescr
         componentDiagramDescription.setAutoLayout(false);
         componentDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.DOWN);
         componentDiagramDescription.setIconExpression("aql:'/papaya-representations/component-diagram.svg'");
+        componentDiagramDescription.setStyle(new DiagramBuilders().newDiagramStyleDescription()
+                .background(colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
+                .build());
+
+        var emptyDiagramStyle = new DiagramBuilders().newConditionalDiagramStyle()
+                .condition("aql:diagramContext.isDiagramEmpty()")
+                .style(new DiagramBuilders().newDiagramStyleDescription()
+                        .background(colorProvider.getColor(PapayaColorPaletteProvider.EMPTY_DIAGRAM_BACKGROUND))
+                        .build())
+                .build();
+        componentDiagramDescription.getConditionalStyles().add(emptyDiagramStyle);
 
         var cache = new DefaultViewDiagramElementFinder();
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,9 +55,13 @@ public final class MigrationIdentifiers {
 
     public static final UUID MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO = UUID.fromString("590949b9-5d48-46ba-b206-29ad2473e5a5");
 
+    public static final UUID MIGRATION_DIAGRAM_STYLE_DESCRIPTION = UUID.fromString("14df1eb9-0915-4a62-ba83-b26ce5e2cfe1");
+
     public static final String MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_DIAGRAM = "InsideLabelStyle#displayHeaderSeparator migration";
-    
+
     public static final String MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_NODE_1 = "migration Node 1";
+
+    public static final String MIGRATION_DIAGRAM_STYLE_DESCRIPTION_DIAGRAM = "NodeStyleDescription#color migration";
 
     public static final UUID MIGRATION_WIDGET_DESCRIPTION_STYLE_LAYOUT_PROPERTIES_MIGRATION_PARTICIPANT_STUDIO = UUID.fromString("01234836-0902-418a-900a-4c0afd20323e");
 
