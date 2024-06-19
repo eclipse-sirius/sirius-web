@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.services;
 
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -26,7 +26,6 @@ import org.eclipse.sirius.web.papaya.factories.ReactorProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.SiriusWebProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.SpringProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.services.EObjectIndexer;
-import org.eclipse.sirius.web.papaya.factories.services.EObjectInitializer;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,7 +38,7 @@ public class PapayaProjectTemplateInitializer implements IProjectTemplateInitial
 
     @Override
     public boolean canHandle(String projectTemplateId) {
-        return List.of(PapayaProjectTemplateProvider.SIRIUS_WEB_PROJECT_TEMPLATE_ID).contains(projectTemplateId);
+        return Objects.equals(PapayaProjectTemplateProvider.SIRIUS_WEB_PROJECT_TEMPLATE_ID, projectTemplateId);
     }
 
     @Override
@@ -62,8 +61,6 @@ public class PapayaProjectTemplateInitializer implements IProjectTemplateInitial
             new EMFProjectFactory().link(eObjectIndexer);
             new SiriusWebProjectFactory().link(eObjectIndexer);
 
-            var eObjectInitializer = new EObjectInitializer(eObjectIndexer);
-            eObjectInitializer.initialize(emfEditingContext.getDomain().getResourceSet());
         }
         return Optional.empty();
     }

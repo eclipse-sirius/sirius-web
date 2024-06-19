@@ -23,6 +23,9 @@ fragment diagramFragment on Diagram {
     kind
     label
   }
+  style {
+    background
+  }
   layoutData {
     nodeLayoutData {
       id

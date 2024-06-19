@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.LabelEditToolBuilder;
@@ -132,6 +133,8 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription()
+                        .build())
                 .build();
 
         return this.diagramDescription;

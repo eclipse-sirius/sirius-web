@@ -55,12 +55,12 @@ public class DiagramComponent implements IComponent {
 
         String diagramId = optionalPreviousDiagram.map(Diagram::getId).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = diagramDescription.getTargetObjectIdProvider().apply(variableManager);
+        var style = diagramDescription.getStyleProvider().apply(variableManager);
 
         DiagramRenderingCache cache = new DiagramRenderingCache();
 
         IDiagramElementRequestor diagramElementRequestor = new DiagramElementRequestor();
         INodeDescriptionRequestor nodeDescriptionRequestor = new NodeDescriptionRequestor(allDiagramDescriptions);
-        // @formatter:off
         var nodes = diagramDescription.getNodeDescriptions().stream()
                 .map(nodeDescription -> {
                     var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
@@ -94,13 +94,11 @@ public class DiagramComponent implements IComponent {
                     return new Element(EdgeComponent.class, edgeComponentProps);
                 })
                 .toList();
-        // @formatter:on
 
         List<Element> children = new ArrayList<>();
         children.addAll(nodes);
         children.addAll(edges);
 
-        // @formatter:off
         Position position = optionalPreviousDiagram.map(Diagram::getPosition)
                 .orElse(Position.UNDEFINED);
 
@@ -115,8 +113,9 @@ public class DiagramComponent implements IComponent {
                 .position(position)
                 .size(size)
                 .children(children)
+                .style(style)
                 .build();
-        // @formatter:on
+
         return new Element(DiagramElementProps.TYPE, diagramElementProps);
     }
 

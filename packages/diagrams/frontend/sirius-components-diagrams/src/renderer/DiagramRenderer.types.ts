@@ -26,6 +26,7 @@ export interface Diagram {
   metadata: DiagramMetadata;
   nodes: Node<NodeData, DiagramNodeType>[];
   edges: Edge<MultiLabelEdgeData>[];
+  style: React.CSSProperties;
 }
 
 export interface DiagramMetadata {

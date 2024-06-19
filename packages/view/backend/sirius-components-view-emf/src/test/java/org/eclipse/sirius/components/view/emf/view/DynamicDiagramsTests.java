@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -88,11 +89,18 @@ public class DynamicDiagramsTests {
 
     @Test
     void testRenderSynchronizedEcoreDiagram() throws Exception {
+        var diagramBackgroundColor = ViewFactory.eINSTANCE.createFixedColor();
+        diagramBackgroundColor.setName("color");
+        diagramBackgroundColor.setValue("#FFFFFF");
+        DiagramStyleDescription diagramStyle = DiagramFactory.eINSTANCE.createDiagramStyleDescription();
+        diagramStyle.setBackground(diagramBackgroundColor);
+
         DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("Simple Ecore Diagram");
         diagramDescription.setTitleExpression(NAME_EXPRESSION);
         diagramDescription.setAutoLayout(false);
         diagramDescription.setDomainType("ecore::EPackage");
+        diagramDescription.setStyle(diagramStyle);
 
         InsideLabelDescription insideLabelDescription = DiagramFactory.eINSTANCE.createInsideLabelDescription();
         insideLabelDescription.setLabelExpression(NAME_EXPRESSION);
@@ -124,6 +132,7 @@ public class DynamicDiagramsTests {
         diagramDescription.setTitleExpression(NAME_EXPRESSION);
         diagramDescription.setAutoLayout(false);
         diagramDescription.setDomainType("ecore::EPackage");
+        diagramDescription.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
 
         NodeDescription eClassNode = DiagramFactory.eINSTANCE.createNodeDescription();
         eClassNode.setName("EClass Node");

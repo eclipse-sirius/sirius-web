@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptio
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.InterfaceNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.RecordNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.ClassDiagramDropToolProvider;
+import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
  * Used to provide the view model used to create class diagrams.
@@ -52,6 +53,18 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
         classDiagramDescription.setTitleExpression("aql:self.name + ' class diagram'");
         classDiagramDescription.setAutoLayout(false);
         classDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.UP);
+        classDiagramDescription.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
+        classDiagramDescription.setStyle(new DiagramBuilders().newDiagramStyleDescription()
+                .background(colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
+                .build());
+
+        var emptyDiagramStyle = new DiagramBuilders().newConditionalDiagramStyle()
+                .condition("aql:diagramServices.isDiagramEmpty()")
+                .style(new DiagramBuilders().newDiagramStyleDescription()
+                        .background(colorProvider.getColor(PapayaColorPaletteProvider.EMPTY_DIAGRAM_BACKGROUND))
+                        .build())
+                .build();
+        classDiagramDescription.getConditionalStyles().add(emptyDiagramStyle);
 
         var cache = new DefaultViewDiagramElementFinder();
 
