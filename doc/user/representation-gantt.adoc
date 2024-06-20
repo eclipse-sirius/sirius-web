@@ -64,7 +64,7 @@ When selecting a `Task` in Gantt or in the Table, the associated semantic elemen
 Using handlers on the task, it is possible to change the start/end dates and the progress.
 Clicking on the task and moving it left or right, allows to shift the date keeping the same duration.
 
-image:images/gantt-task-handlers.png[Show/Hide Cards]
+image:images/gantt-task-handlers.png[Task handlers]
 
 When changing a date, the date is rounded accordingly to the `Date Rounding Expression` define in the `GanttDescription`.
 Holiday is set as Saturday and Sunday. If the rounded date is part of the holiday, it is moved to the next or previous working date.
@@ -77,6 +77,21 @@ Using the round handler next the task allows to create a dependency relation.
 image:images/gantt-task-dependency-tool.png[Task Dependency Tool]
 image:images/gantt-task-dependency.png[Task Dependency]
 
+
+### Contextual tool palettes
+
+Clicking on a task displays a contextual menu.
+
+* `Create Task`: It will invoke `Create Task Tool`
+* `Delete Task`: It will invoke `Delete Task Tool`
+
+image:images/gantt-task-palette.png[Task Contextual Palette]
+
+Clicking on a task dependency displays a contextual menu.
+
+* `Delete Task Dependency`: It will invoke `Create Task Dependency Tool`
+
+image:images/gantt-task-dependency-palette.png[Task Dependency Contextual Palette]
 
 ### Task reordering
 

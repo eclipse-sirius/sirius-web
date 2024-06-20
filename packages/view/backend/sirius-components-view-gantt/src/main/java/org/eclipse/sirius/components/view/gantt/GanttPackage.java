@@ -161,13 +161,22 @@ public interface GanttPackage extends EPackage {
     int GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>Delete Task Dependency Tool</b></em>' containment reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GANTT_DESCRIPTION__DELETE_TASK_DEPENDENCY_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
      * The feature id for the '<em><b>Date Rounding Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
+    int GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -176,7 +185,7 @@ public interface GanttPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GANTT_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 7;
+    int GANTT_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -584,6 +593,51 @@ public interface GanttPackage extends EPackage {
     int CREATE_TASK_DEPENDENCY_TOOL_OPERATION_COUNT = TASK_TOOL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.gantt.impl.DeleteTaskDependencyToolImpl
+     * <em>Delete Task Dependency Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.gantt.impl.DeleteTaskDependencyToolImpl
+     * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getDeleteTaskDependencyTool()
+     * @generated
+     */
+    int DELETE_TASK_DEPENDENCY_TOOL = 8;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_TASK_DEPENDENCY_TOOL__NAME = TASK_TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_TASK_DEPENDENCY_TOOL__BODY = TASK_TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Delete Task Dependency Tool</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_TASK_DEPENDENCY_TOOL_FEATURE_COUNT = TASK_TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Delete Task Dependency Tool</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_TASK_DEPENDENCY_TOOL_OPERATION_COUNT = TASK_TOOL_OPERATION_COUNT + 0;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.GanttDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -664,6 +718,18 @@ public interface GanttPackage extends EPackage {
      * @generated
      */
     EReference getGanttDescription_CreateTaskDependencyTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDeleteTaskDependencyTool <em>Delete Task
+     * Dependency Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Delete Task Dependency Tool</em>'.
+     * @see org.eclipse.sirius.components.view.gantt.GanttDescription#getDeleteTaskDependencyTool()
+     * @see #getGanttDescription()
+     * @generated
+     */
+    EReference getGanttDescription_DeleteTaskDependencyTool();
 
     /**
      * Returns the meta object for the attribute
@@ -915,6 +981,16 @@ public interface GanttPackage extends EPackage {
     EClass getCreateTaskDependencyTool();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool
+     * <em>Delete Task Dependency Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Delete Task Dependency Tool</em>'.
+     * @see org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool
+     * @generated
+     */
+    EClass getDeleteTaskDependencyTool();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -993,6 +1069,14 @@ public interface GanttPackage extends EPackage {
          * @generated
          */
         EReference GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL = eINSTANCE.getGanttDescription_CreateTaskDependencyTool();
+
+        /**
+         * The meta object literal for the '<em><b>Delete Task Dependency Tool</b></em>' containment reference feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference GANTT_DESCRIPTION__DELETE_TASK_DEPENDENCY_TOOL = eINSTANCE.getGanttDescription_DeleteTaskDependencyTool();
 
         /**
          * The meta object literal for the '<em><b>Date Rounding Expression</b></em>' attribute feature. <!--
@@ -1184,6 +1268,17 @@ public interface GanttPackage extends EPackage {
          * @generated
          */
         EClass CREATE_TASK_DEPENDENCY_TOOL = eINSTANCE.getCreateTaskDependencyTool();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.gantt.impl.DeleteTaskDependencyToolImpl <em>Delete Task Dependency
+         * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.gantt.impl.DeleteTaskDependencyToolImpl
+         * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getDeleteTaskDependencyTool()
+         * @generated
+         */
+        EClass DELETE_TASK_DEPENDENCY_TOOL = eINSTANCE.getDeleteTaskDependencyTool();
 
     }
 

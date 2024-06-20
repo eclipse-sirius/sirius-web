@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.DropTaskTool;
 import org.eclipse.sirius.components.view.gantt.EditTaskTool;
@@ -145,6 +146,15 @@ public class GanttSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case GanttPackage.DELETE_TASK_DEPENDENCY_TOOL: {
+                DeleteTaskDependencyTool deleteTaskDependencyTool = (DeleteTaskDependencyTool) theEObject;
+                T result = this.caseDeleteTaskDependencyTool(deleteTaskDependencyTool);
+                if (result == null)
+                    result = this.caseTaskTool(deleteTaskDependencyTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -265,6 +275,21 @@ public class GanttSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseCreateTaskDependencyTool(CreateTaskDependencyTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Delete Task Dependency Tool</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Delete Task Dependency Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDeleteTaskDependencyTool(DeleteTaskDependencyTool object) {
         return null;
     }
 

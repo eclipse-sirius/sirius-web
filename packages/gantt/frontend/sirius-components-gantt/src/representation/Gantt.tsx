@@ -37,7 +37,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useEffect, useRef, useState } from 'react';
 import { GQLGanttDateRoundingTimeUnit, SelectableTask } from '../graphql/subscription/GanttSubscription.types';
 import { checkIsHoliday, getDisplayedColumns, getSelectedColumns, roundDate } from '../helper/helper';
-import { getContextalPalette } from '../palette/ContextualPalette';
+import { getTaskContextualPalette, getTaskDependencyContextualPalette } from '../palette/ContextualPalette';
 import { Toolbar } from '../toolbar/Toolbar';
 import { GanttProps, GanttState, TaskListColumnEnum } from './Gantt.types';
 
@@ -69,6 +69,7 @@ export const Gantt = ({
   onDeleteTask,
   onDropTask,
   onCreateTaskDependency,
+  onDeleteTaskDependency,
   onChangeTaskCollapseState,
   onChangeColumn,
 }: GanttProps) => {
@@ -127,10 +128,6 @@ export const Gantt = ({
     setState((prevState) => {
       return { ...prevState, zoomLevel: zoomLevel };
     });
-  };
-
-  const handleDeleteTaskOnContextualPalette = (task: Task) => {
-    onDeleteTask([task]);
   };
 
   const handleMoveTaskAfter: OnMoveTaskBeforeAfter = (task, taskForMove) => {
@@ -285,10 +282,13 @@ export const Gantt = ({
         checkIsHoliday={checkIsHoliday}
         dateMoveStep={dateRounding}
         onWheel={onwheel}
-        ContextualPalette={getContextalPalette({
+        ContextualPalette={getTaskContextualPalette({
           onCreateTask,
-          onDeleteTask: handleDeleteTaskOnContextualPalette,
+          onDeleteTask: (task: Task) => onDeleteTask([task]),
           onEditTask,
+        })}
+        TaskDependencyContextualPalette={getTaskDependencyContextualPalette({
+          onDeleteTaskDependency,
         })}
         isMoveChildsWithParent={false}
         onMoveTaskBefore={handleMoveTaskBefore}

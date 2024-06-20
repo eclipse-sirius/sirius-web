@@ -59,6 +59,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/startDate"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/endDate"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/done"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Task/dependencies"/>
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//Contribution">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Contribution/relatedTasks"/>

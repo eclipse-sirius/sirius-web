@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.DropTaskTool;
 import org.eclipse.sirius.components.view.gantt.EditTaskTool;
@@ -81,6 +82,8 @@ public class GanttFactoryImpl extends EFactoryImpl implements GanttFactory {
                 return this.createDropTaskTool();
             case GanttPackage.CREATE_TASK_DEPENDENCY_TOOL:
                 return this.createCreateTaskDependencyTool();
+            case GanttPackage.DELETE_TASK_DEPENDENCY_TOOL:
+                return this.createDeleteTaskDependencyTool();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -161,6 +164,17 @@ public class GanttFactoryImpl extends EFactoryImpl implements GanttFactory {
     public CreateTaskDependencyTool createCreateTaskDependencyTool() {
         CreateTaskDependencyToolImpl createTaskDependencyTool = new CreateTaskDependencyToolImpl();
         return createTaskDependencyTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DeleteTaskDependencyTool createDeleteTaskDependencyTool() {
+        DeleteTaskDependencyToolImpl deleteTaskDependencyTool = new DeleteTaskDependencyToolImpl();
+        return deleteTaskDependencyTool;
     }
 
     /**

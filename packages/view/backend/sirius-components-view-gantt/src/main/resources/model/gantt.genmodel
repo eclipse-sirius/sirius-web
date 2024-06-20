@@ -21,6 +21,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/deleteTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/dropTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/createTaskDependencyTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/deleteTaskDependencyTool"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//GanttDescription/dateRoundingExpression"/>
     </genClasses>
     <genClasses ecoreClass="gantt.ecore#//TaskDescription">
@@ -46,5 +47,6 @@
     <genClasses ecoreClass="gantt.ecore#//DeleteTaskTool"/>
     <genClasses ecoreClass="gantt.ecore#//DropTaskTool"/>
     <genClasses ecoreClass="gantt.ecore#//CreateTaskDependencyTool"/>
+    <genClasses ecoreClass="gantt.ecore#//DeleteTaskDependencyTool"/>
   </genPackages>
 </genmodel:GenModel>

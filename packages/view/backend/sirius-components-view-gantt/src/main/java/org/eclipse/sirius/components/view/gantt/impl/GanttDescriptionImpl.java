@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.DropTaskTool;
 import org.eclipse.sirius.components.view.gantt.EditTaskTool;
@@ -47,6 +48,8 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getDropTool <em>Drop Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getCreateTaskDependencyTool <em>Create
+ * Task Dependency Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getDeleteTaskDependencyTool <em>Delete
  * Task Dependency Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getDateRoundingExpression <em>Date
  * Rounding Expression</em>}</li>
@@ -114,6 +117,16 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @ordered
      */
     protected CreateTaskDependencyTool createTaskDependencyTool;
+
+    /**
+     * The cached value of the '{@link #getDeleteTaskDependencyTool() <em>Delete Task Dependency Tool</em>}' containment
+     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDeleteTaskDependencyTool()
+     * @generated
+     * @ordered
+     */
+    protected DeleteTaskDependencyTool deleteTaskDependencyTool;
 
     /**
      * The default value of the '{@link #getDateRoundingExpression() <em>Date Rounding Expression</em>}' attribute. <!--
@@ -414,6 +427,55 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @generated
      */
     @Override
+    public DeleteTaskDependencyTool getDeleteTaskDependencyTool() {
+        return this.deleteTaskDependencyTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetDeleteTaskDependencyTool(DeleteTaskDependencyTool newDeleteTaskDependencyTool, NotificationChain msgs) {
+        DeleteTaskDependencyTool oldDeleteTaskDependencyTool = this.deleteTaskDependencyTool;
+        this.deleteTaskDependencyTool = newDeleteTaskDependencyTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__DELETE_TASK_DEPENDENCY_TOOL, oldDeleteTaskDependencyTool,
+                    newDeleteTaskDependencyTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDeleteTaskDependencyTool(DeleteTaskDependencyTool newDeleteTaskDependencyTool) {
+        if (newDeleteTaskDependencyTool != this.deleteTaskDependencyTool) {
+            NotificationChain msgs = null;
+            if (this.deleteTaskDependencyTool != null)
+                msgs = ((InternalEObject) this.deleteTaskDependencyTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__DELETE_TASK_DEPENDENCY_TOOL, null, msgs);
+            if (newDeleteTaskDependencyTool != null)
+                msgs = ((InternalEObject) newDeleteTaskDependencyTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__DELETE_TASK_DEPENDENCY_TOOL, null, msgs);
+            msgs = this.basicSetDeleteTaskDependencyTool(newDeleteTaskDependencyTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__DELETE_TASK_DEPENDENCY_TOOL, newDeleteTaskDependencyTool, newDeleteTaskDependencyTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public String getDateRoundingExpression() {
         return this.dateRoundingExpression;
     }
@@ -451,6 +513,8 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.basicSetDropTool(null, msgs);
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
                 return this.basicSetCreateTaskDependencyTool(null, msgs);
+            case GanttPackage.GANTT_DESCRIPTION__DELETE_TASK_DEPENDENCY_TOOL:
+                return this.basicSetDeleteTaskDependencyTool(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -475,6 +539,8 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.getDropTool();
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
                 return this.getCreateTaskDependencyTool();
+            case GanttPackage.GANTT_DESCRIPTION__DELETE_TASK_DEPENDENCY_TOOL:
+                return this.getDeleteTaskDependencyTool();
             case GanttPackage.GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION:
                 return this.getDateRoundingExpression();
         }
@@ -509,6 +575,9 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
                 this.setCreateTaskDependencyTool((CreateTaskDependencyTool) newValue);
                 return;
+            case GanttPackage.GANTT_DESCRIPTION__DELETE_TASK_DEPENDENCY_TOOL:
+                this.setDeleteTaskDependencyTool((DeleteTaskDependencyTool) newValue);
+                return;
             case GanttPackage.GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION:
                 this.setDateRoundingExpression((String) newValue);
                 return;
@@ -542,6 +611,9 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
                 this.setCreateTaskDependencyTool((CreateTaskDependencyTool) null);
                 return;
+            case GanttPackage.GANTT_DESCRIPTION__DELETE_TASK_DEPENDENCY_TOOL:
+                this.setDeleteTaskDependencyTool((DeleteTaskDependencyTool) null);
+                return;
             case GanttPackage.GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION:
                 this.setDateRoundingExpression(DATE_ROUNDING_EXPRESSION_EDEFAULT);
                 return;
@@ -569,6 +641,8 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.dropTool != null;
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TASK_DEPENDENCY_TOOL:
                 return this.createTaskDependencyTool != null;
+            case GanttPackage.GANTT_DESCRIPTION__DELETE_TASK_DEPENDENCY_TOOL:
+                return this.deleteTaskDependencyTool != null;
             case GanttPackage.GANTT_DESCRIPTION__DATE_ROUNDING_EXPRESSION:
                 return DATE_ROUNDING_EXPRESSION_EDEFAULT == null ? this.dateRoundingExpression != null : !DATE_ROUNDING_EXPRESSION_EDEFAULT.equals(this.dateRoundingExpression);
         }

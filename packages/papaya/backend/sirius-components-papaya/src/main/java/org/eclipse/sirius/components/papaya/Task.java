@@ -30,6 +30,7 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.components.papaya.Task#getStartDate <em>Start Date</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Task#getEndDate <em>End Date</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Task#isDone <em>Done</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Task#getDependencies <em>Dependencies</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTask()
@@ -171,5 +172,16 @@ public interface Task extends NamedElement {
      * @generated
      */
     void setDone(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Dependencies</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.Task}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Dependencies</em>' reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTask_Dependencies()
+     * @model
+     * @generated
+     */
+    EList<Task> getDependencies();
 
 } // Task

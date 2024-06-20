@@ -30,6 +30,8 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDropTool <em>Drop Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getCreateTaskDependencyTool <em>Create Task
  * Dependency Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDeleteTaskDependencyTool <em>Delete Task
+ * Dependency Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDateRoundingExpression <em>Date Rounding
  * Expression</em>}</li>
  * </ul>
@@ -166,6 +168,30 @@ public interface GanttDescription extends RepresentationDescription {
      * @generated
      */
     void setCreateTaskDependencyTool(CreateTaskDependencyTool value);
+
+    /**
+     * Returns the value of the '<em><b>Delete Task Dependency Tool</b></em>' containment reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Delete Task Dependency Tool</em>' containment reference.
+     * @see #setDeleteTaskDependencyTool(DeleteTaskDependencyTool)
+     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription_DeleteTaskDependencyTool()
+     * @model containment="true"
+     * @generated
+     */
+    DeleteTaskDependencyTool getDeleteTaskDependencyTool();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDeleteTaskDependencyTool <em>Delete Task
+     * Dependency Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Delete Task Dependency Tool</em>' containment reference.
+     * @see #getDeleteTaskDependencyTool()
+     * @generated
+     */
+    void setDeleteTaskDependencyTool(DeleteTaskDependencyTool value);
 
     /**
      * Returns the value of the '<em><b>Date Rounding Expression</b></em>' attribute. The default value is

@@ -485,12 +485,21 @@ public interface PapayaPackage extends EPackage {
     int TASK__DONE = NAMED_ELEMENT_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TASK__DEPENDENCIES = NAMED_ELEMENT_FEATURE_COUNT + 7;
+
+    /**
      * The number of structural features of the '<em>Task</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TASK_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 7;
+    int TASK_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Task</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3077,6 +3086,17 @@ public interface PapayaPackage extends EPackage {
     EAttribute getTask_Done();
 
     /**
+     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Task#getDependencies
+     * <em>Dependencies</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Dependencies</em>'.
+     * @see org.eclipse.sirius.components.papaya.Task#getDependencies()
+     * @see #getTask()
+     * @generated
+     */
+    EReference getTask_Dependencies();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Contribution
      * <em>Contribution</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4305,6 +4325,14 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EAttribute TASK__DONE = eINSTANCE.getTask_Done();
+
+        /**
+         * The meta object literal for the '<em><b>Dependencies</b></em>' reference list feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference TASK__DEPENDENCIES = eINSTANCE.getTask_Dependencies();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.ContributionImpl

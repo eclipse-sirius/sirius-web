@@ -85,6 +85,7 @@ extend type Mutation {
   editGanttTask(input: EditGanttTaskInput!): EditGanttTaskPayload
   dropGanttTask(input: DropGanttTaskInput!): DropGanttTaskPayload
   createGanttTaskDependency(input: CreateGanttTaskDependencyInput!): CreateGanttTaskDependencyPayload
+  deleteGanttTaskDependency(input: DeleteGanttTaskDependencyInput!): DeleteGanttTaskDependencyPayload
   changeGanttTaskCollapseState(input: ChangeGanttTaskCollapseStateInput!): ChangeGanttTaskCollapseStatePayload
   changeGanttColumn(input: ChangeGanttColumnInput!): ChangeGanttColumnPayload
 }
@@ -142,6 +143,15 @@ input CreateGanttTaskDependencyInput {
   targetTaskId: ID!
 }
 union CreateGanttTaskDependencyPayload = SuccessPayload | ErrorPayload
+
+input DeleteGanttTaskDependencyInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  sourceTaskId: ID!
+  targetTaskId: ID!
+}
+union DeleteGanttTaskDependencyPayload = SuccessPayload | ErrorPayload
 
 input ChangeGanttTaskCollapseStateInput {
   id: ID!

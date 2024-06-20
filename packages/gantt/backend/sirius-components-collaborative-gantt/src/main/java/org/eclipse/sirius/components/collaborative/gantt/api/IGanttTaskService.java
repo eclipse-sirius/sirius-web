@@ -16,6 +16,7 @@ import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeGanttCo
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeTaskCollapseStateInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DropGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTaskInput;
@@ -56,6 +57,11 @@ public interface IGanttTaskService {
     IPayload createTaskDependency(CreateGanttTaskDependencyInput createTaskDependencyInput, IEditingContext editingContext, Gantt gantt);
 
     /**
+     * Delete a dependency between two tasks.
+     */
+    IPayload deleteTaskDependency(DeleteGanttTaskDependencyInput createTaskDependencyInput, IEditingContext editingContext, Gantt gantt);
+
+    /**
      * Change the state collapse of a task.
      */
     IPayload changeTaskCollapseState(ChangeTaskCollapseStateInput changeTaskCollapseStateInput, IEditingContext editingContext, IGanttContext ganttContext);
@@ -94,6 +100,11 @@ public interface IGanttTaskService {
 
         @Override
         public IPayload createTaskDependency(CreateGanttTaskDependencyInput createTaskDependencyInput, IEditingContext editingContext, Gantt gantt) {
+            return null;
+        }
+
+        @Override
+        public IPayload deleteTaskDependency(DeleteGanttTaskDependencyInput createTaskDependencyInput, IEditingContext editingContext, Gantt gantt) {
             return null;
         }
 

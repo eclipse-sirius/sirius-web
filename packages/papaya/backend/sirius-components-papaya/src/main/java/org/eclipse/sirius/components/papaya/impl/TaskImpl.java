@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.papaya.Task;
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getStartDate <em>Start Date</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getEndDate <em>End Date</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#isDone <em>Done</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getDependencies <em>Dependencies</em>}</li>
  * </ul>
  *
  * @generated
@@ -166,6 +167,16 @@ public class TaskImpl extends NamedElementImpl implements Task {
      * @ordered
      */
     protected boolean done = DONE_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getDependencies()
+     * @generated
+     * @ordered
+     */
+    protected EList<Task> dependencies;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -333,6 +344,19 @@ public class TaskImpl extends NamedElementImpl implements Task {
      * @generated
      */
     @Override
+    public EList<Task> getDependencies() {
+        if (this.dependencies == null) {
+            this.dependencies = new EObjectResolvingEList<>(Task.class, this, PapayaPackage.TASK__DEPENDENCIES);
+        }
+        return this.dependencies;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case PapayaPackage.TASK__TASKS:
@@ -363,6 +387,8 @@ public class TaskImpl extends NamedElementImpl implements Task {
                 return this.getEndDate();
             case PapayaPackage.TASK__DONE:
                 return this.isDone();
+            case PapayaPackage.TASK__DEPENDENCIES:
+                return this.getDependencies();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -399,6 +425,10 @@ public class TaskImpl extends NamedElementImpl implements Task {
             case PapayaPackage.TASK__DONE:
                 this.setDone((Boolean) newValue);
                 return;
+            case PapayaPackage.TASK__DEPENDENCIES:
+                this.getDependencies().clear();
+                this.getDependencies().addAll((Collection<? extends Task>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -432,6 +462,9 @@ public class TaskImpl extends NamedElementImpl implements Task {
             case PapayaPackage.TASK__DONE:
                 this.setDone(DONE_EDEFAULT);
                 return;
+            case PapayaPackage.TASK__DEPENDENCIES:
+                this.getDependencies().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -458,6 +491,8 @@ public class TaskImpl extends NamedElementImpl implements Task {
                 return END_DATE_EDEFAULT == null ? this.endDate != null : !END_DATE_EDEFAULT.equals(this.endDate);
             case PapayaPackage.TASK__DONE:
                 return this.done != DONE_EDEFAULT;
+            case PapayaPackage.TASK__DEPENDENCIES:
+                return this.dependencies != null && !this.dependencies.isEmpty();
         }
         return super.eIsSet(featureID);
     }

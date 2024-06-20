@@ -139,6 +139,16 @@ public class GanttDescriptionBuilder {
     }
 
     /**
+     * Setter for DeleteTaskDependencyTool.
+     *
+     * @generated
+     */
+    public GanttDescriptionBuilder deleteTaskDependencyTool(org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool value) {
+        this.getGanttDescription().setDeleteTaskDependencyTool(value);
+        return this;
+    }
+
+    /**
      * Setter for DateRoundingExpression.
      *
      * @generated

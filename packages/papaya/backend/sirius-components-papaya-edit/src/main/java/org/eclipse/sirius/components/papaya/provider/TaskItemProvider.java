@@ -58,6 +58,7 @@ public class TaskItemProvider extends NamedElementItemProvider {
             this.addStartDatePropertyDescriptor(object);
             this.addEndDatePropertyDescriptor(object);
             this.addDonePropertyDescriptor(object);
+            this.addDependenciesPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -126,6 +127,17 @@ public class TaskItemProvider extends NamedElementItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Task_done_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Task_done_feature", "_UI_Task_type"), PapayaPackage.Literals.TASK__DONE, true, false,
                 false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Dependencies feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDependenciesPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Task_dependencies_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Task_dependencies_feature", "_UI_Task_type"),
+                PapayaPackage.Literals.TASK__DEPENDENCIES, true, false, true, null, null, null));
     }
 
     /**

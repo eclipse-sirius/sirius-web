@@ -27,13 +27,17 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.gantt.dto.GanttRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeGanttColumnInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeTaskCollapseStateInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.tests.graphql.ChangeColumnMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.ChangeTaskCollapseStateMutationRunner;
+import org.eclipse.sirius.components.gantt.tests.graphql.CreateTaskDependencyMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.CreateTaskMutationRunner;
+import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskDependencyMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.navigation.GanttNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -85,6 +89,11 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     @Autowired
     private ChangeColumnMutationRunner changeColumnMutationRunner;
 
+    @Autowired
+    private CreateTaskDependencyMutationRunner createTaskDependencyMutationRunner;
+
+    @Autowired
+    private DeleteTaskDependencyMutationRunner deleteTaskDependencyMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -315,6 +324,78 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .consumeNextWith(initialGanttContentConsumer)
                 .then(changeColumn)
                 .consumeNextWith(changeColumnConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a gantt representation, when the task dependency creation and deletion mutations are invoked, then it succeeds")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenGanttWhenCreateAndDeleteTaskDependencyMutationArePerformedThenItSucceeds() {
+
+        var flux = this.givenSubscriptionToGantt();
+
+        var ganttRef = new AtomicReference<Gantt>();
+        var sourceTaskId = new AtomicReference<String>();
+        var targetTaskId = new AtomicReference<String>();
+        String taskName1 = "Improve some features of the deck";
+        String taskName2 = "Improve some features of the gantt";
+        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    ganttRef.set(gantt);
+                    var task = new GanttNavigator(gantt).findTaskByName(taskName1);
+                    sourceTaskId.set(task.id());
+                    task = new GanttNavigator(gantt).findTaskByName(taskName2);
+                    assertThat(task.taskDependencyIds()).isEmpty();
+                    targetTaskId.set(task.id());
+                }, () -> fail(MISSING_GANTT));
+
+
+        Runnable createDependencyRunnable = () -> {
+            var createGanttTaskDependencyInput = new CreateGanttTaskDependencyInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get());
+            var result = this.createTaskDependencyMutationRunner.run(createGanttTaskDependencyInput);
+
+            String typename = JsonPath.read(result, "$.data.createGanttTaskDependency.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<GanttRefreshedEventPayload> checkDependencyConsumer = payload -> Optional.of(payload)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    var task = new GanttNavigator(gantt).findTaskByName(taskName2);
+                    assertThat(task.taskDependencyIds()).contains(sourceTaskId.get());
+                }, () -> fail(MISSING_GANTT));
+        
+        Runnable deleteDependencyRunnable = () -> {
+            var deleteGanttTaskDependencyInput = new DeleteGanttTaskDependencyInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get());
+            var result = this.deleteTaskDependencyMutationRunner.run(deleteGanttTaskDependencyInput);
+
+            String typename = JsonPath.read(result, "$.data.deleteGanttTaskDependency.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<GanttRefreshedEventPayload> checkDependencyAfterDeleteConsumer = payload -> Optional.of(payload)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    var task = new GanttNavigator(gantt).findTaskByName(taskName2);
+                    assertThat(task.taskDependencyIds()).isEmpty();
+                }, () -> fail(MISSING_GANTT));
+
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialGanttContentConsumer)
+                .then(createDependencyRunnable)
+                .consumeNextWith(checkDependencyConsumer)
+                .then(deleteDependencyRunnable)
+                .consumeNextWith(checkDependencyAfterDeleteConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
