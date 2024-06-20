@@ -123,8 +123,14 @@ public class NavigatorCache {
         this.idToNode.put(node.getId(), node);
         List<Node> nodesWithDescription = this.nodeDescriptionIdToNodes.computeIfAbsent(node.getDescriptionId(), k -> new ArrayList<>());
         nodesWithDescription.add(node);
-        List<Node> nodesWithLabel = this.labelToNodes.computeIfAbsent(node.getInsideLabel().getText(), k -> new ArrayList<>());
-        nodesWithLabel.add(node);
+        if (node.getInsideLabel() != null) {
+            List<Node> nodesWithLabel = this.labelToNodes.computeIfAbsent(node.getInsideLabel().getText(), k -> new ArrayList<>());
+            nodesWithLabel.add(node);
+        }
+        node.getOutsideLabels().forEach(outsideLabel -> {
+            List<Node> nodesWithLabel = this.labelToNodes.computeIfAbsent(outsideLabel.text(), k -> new ArrayList<>());
+            nodesWithLabel.add(node);
+        });
         List<Node> nodesWithTargetObjectLabel = this.targetObjectLabelToNodes.computeIfAbsent(node.getTargetObjectLabel(), k -> new ArrayList<>());
         nodesWithTargetObjectLabel.add(node);
         List<Node> nodesWithTargetObjectId = this.targetObjectIdToNodes.computeIfAbsent(node.getTargetObjectId(), k -> new ArrayList<>());
@@ -150,9 +156,10 @@ public class NavigatorCache {
         edgesWithTargetObjectLabel.add(edge);
         List<Edge> edgesWithTargetObjectId = this.targetObjectIdToEdges.computeIfAbsent(edge.getTargetObjectId(), k -> new ArrayList<>());
         edgesWithTargetObjectId.add(edge);
-
-        List<Edge> edgesWithLabel = this.labelToEdges.computeIfAbsent(edge.getCenterLabel().getText(), k -> new ArrayList<>());
-        edgesWithLabel.add(edge);
+        if (edge.getCenterLabel() != null) {
+            List<Edge> edgesWithLabel = this.labelToEdges.computeIfAbsent(edge.getCenterLabel().getText(), k -> new ArrayList<>());
+            edgesWithLabel.add(edge);
+        }
     }
 
 }

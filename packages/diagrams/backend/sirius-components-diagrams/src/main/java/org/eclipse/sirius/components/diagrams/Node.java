@@ -190,9 +190,13 @@ public final class Node implements IDiagramElement {
 
     @Override
     public String toString() {
+        String insideLabelText = "";
+        if (this.insideLabel != null) {
+            insideLabelText = this.insideLabel.getText();
+        }
         String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, state: {6}, label: {7}, styleType: {8}, borderNodeCount: {9}, childNodeCount: {10}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.state,
-                this.insideLabel.getText(), this.style.getClass().getSimpleName(), this.borderNodes.size(), this.childNodes.size());
+                insideLabelText, this.style.getClass().getSimpleName(), this.borderNodes.size(), this.childNodes.size());
     }
 
     /**
