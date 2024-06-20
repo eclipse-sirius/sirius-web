@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.diagrams.tests.navigation;
 
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -103,6 +104,10 @@ public class DiagramNavigator {
             throw new IllegalArgumentException(MessageFormat.format("No edge found with description id \"{0}\"", edgeDescriptionId));
         }
         return new EdgeNavigator(edges.get(0), this.cache);
+    }
+
+    public Collection<Node> findAllNodes() {
+        return this.cache.getIdToNode().values();
     }
 
     public int findDiagramNodeCount() {
