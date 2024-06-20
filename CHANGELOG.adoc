@@ -5,6 +5,7 @@
 === Shapes
 
 - Add support for text alignment on labels
+- Add support for gantt representation
 
 === Architectural decision records
 
@@ -102,6 +103,7 @@ image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3606[#3606] [test] Improve error handling in ExecuteEditingContextFunctionRunner and ExecuteEditingContextFunctionEventHandler
 - https://github.com/eclipse-sirius/sirius-web/issues/3561[#3561] [diagram] Add support for background and border on diagram labels
 - https://github.com/eclipse-sirius/sirius-web/issues/3604[#3604] [diagram] Make node overlap resolution faster during "Arrange All"
+- https://github.com/eclipse-sirius/sirius-web/issues/3653[#3653] [gantt] Add documentation for gantt representation
 
 == v2024.5.0
 
