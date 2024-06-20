@@ -52,7 +52,7 @@ export const useConnector = (): UseConnectorValue => {
   } = useContext<ConnectorContextValue>(ConnectorContext);
 
   const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
-  const { getNodes, getNode, setEdges } = reactFlowInstance;
+  const { getNode, setEdges } = reactFlowInstance;
 
   const theme = useTheme();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
@@ -110,7 +110,7 @@ export const useConnector = (): UseConnectorValue => {
       const { targetPosition, sourcePosition } = getEdgeParameters(
         sourceNode,
         targetNode,
-        getNodes(),
+        store.getState().nodeInternals,
         diagramDescription.arrangeLayoutDirection
       );
 

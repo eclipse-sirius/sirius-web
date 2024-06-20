@@ -15,6 +15,7 @@ import { HandleElement, Position, XYPosition, internalsSymbol } from 'reactflow'
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
+import { horizontalLayoutDirectionGap, verticalLayoutDirectionGap } from '../layout/layoutParams';
 import {
   GetEdgeParameters,
   GetEdgeParametersWhileMoving,
@@ -24,7 +25,6 @@ import {
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
 } from './EdgeLayout.types';
-import { verticalLayoutDirectionGap, horizontalLayoutDirectionGap } from '../layout/layoutParams';
 
 export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters = (
   sourceNode,
@@ -62,11 +62,11 @@ export const getEdgeParametersWhileMoving: GetEdgeParametersWhileMoving = (
   movingNode,
   source,
   target,
-  visiblesNodes,
+  nodeInternals,
   layoutDirection
 ) => {
-  const { position: sourcePosition } = getParameters(movingNode, source, target, visiblesNodes, layoutDirection);
-  const { position: targetPosition } = getParameters(movingNode, target, source, visiblesNodes, layoutDirection);
+  const { position: sourcePosition } = getParameters(movingNode, source, target, nodeInternals, layoutDirection);
+  const { position: targetPosition } = getParameters(movingNode, target, source, nodeInternals, layoutDirection);
 
   return {
     sourcePosition,
@@ -74,9 +74,9 @@ export const getEdgeParametersWhileMoving: GetEdgeParametersWhileMoving = (
   };
 };
 
-export const getEdgeParameters: GetEdgeParameters = (source, target, visiblesNodes, layoutDirection) => {
-  const { position: sourcePosition } = getParameters(null, source, target, visiblesNodes, layoutDirection);
-  const { position: targetPosition } = getParameters(null, target, source, visiblesNodes, layoutDirection);
+export const getEdgeParameters: GetEdgeParameters = (source, target, nodeInternals, layoutDirection) => {
+  const { position: sourcePosition } = getParameters(null, source, target, nodeInternals, layoutDirection);
+  const { position: targetPosition } = getParameters(null, target, source, nodeInternals, layoutDirection);
 
   return {
     sourcePosition,
@@ -107,11 +107,9 @@ const computeBorderNodeHandlePosition = (
   }
 };
 
-const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes, layoutDirection) => {
+const getParameters: GetParameters = (movingNode, nodeA, nodeB, nodeInternals, layoutDirection) => {
   if (nodeA.data.isBorderNode) {
-    const isInside = isSiblingOrDescendantOf(nodeA, nodeB, (nodeId) =>
-      visiblesNodes.find((node) => node.id === nodeId)
-    );
+    const isInside = isSiblingOrDescendantOf(nodeA, nodeB, nodeInternals);
     return {
       position: computeBorderNodeHandlePosition(nodeA.data.borderNodePosition, isInside),
     };
@@ -123,7 +121,7 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes, l
       y: (movingNode.positionAbsolute?.y ?? 0) + (nodeA.height ?? 0) / 2,
     };
   } else {
-    centerA = getNodeCenter(nodeA, visiblesNodes);
+    centerA = getNodeCenter(nodeA, nodeInternals);
   }
 
   let centerB: NodeCenter;
@@ -133,11 +131,11 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes, l
       y: (movingNode.positionAbsolute?.y ?? 0) + (nodeB.height ?? 0) / 2,
     };
   } else {
-    centerB = getNodeCenter(nodeB, visiblesNodes);
+    centerB = getNodeCenter(nodeB, nodeInternals);
   }
   const horizontalDifference = Math.abs(centerA.x - centerB.x);
   const verticalDifference = Math.abs(centerA.y - centerB.y);
-  const isDescendant = isDescendantOf(nodeB, nodeA, (nodeId) => visiblesNodes.find((node) => node.id === nodeId));
+  const isDescendant = isDescendantOf(nodeB, nodeA, nodeInternals);
   let position: Position;
   if (isVerticalLayoutDirection(layoutDirection)) {
     if (Math.abs(centerA.y - centerB.y) < verticalLayoutDirectionGap) {
@@ -175,25 +173,28 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes, l
   };
 };
 
-export const getNodeCenter: GetNodeCenter = (node, visiblesNodes) => {
+export const getNodeCenter: GetNodeCenter = (node, nodeInternals) => {
   if (node.positionAbsolute?.x && node.positionAbsolute?.y) {
     return {
       x: (node.positionAbsolute?.x ?? 0) + (node.width ?? 0) / 2,
       y: (node.positionAbsolute?.y ?? 0) + (node.height ?? 0) / 2,
     };
   } else {
-    let parentNode = visiblesNodes.find((nodeParent) => nodeParent.id === node.parentNode);
     let position = {
       x: (node.position?.x ?? 0) + (node.width ?? 0) / 2,
       y: (node.position?.y ?? 0) + (node.height ?? 0) / 2,
     };
-    while (parentNode) {
-      position = {
-        x: position.x + (parentNode.position?.x ?? 0),
-        y: position.y + (parentNode.position?.y ?? 0),
-      };
-      let parentNodeId = parentNode.parentNode ?? '';
-      parentNode = visiblesNodes.find((nodeParent) => nodeParent.id === parentNodeId);
+
+    if (node.parentNode) {
+      let parentNode = nodeInternals.get(node.parentNode);
+      while (parentNode) {
+        position = {
+          x: position.x + (parentNode.position?.x ?? 0),
+          y: position.y + (parentNode.position?.y ?? 0),
+        };
+        let parentNodeId = parentNode.parentNode ?? '';
+        parentNode = nodeInternals.get(parentNodeId);
+      }
     }
     return position;
   }

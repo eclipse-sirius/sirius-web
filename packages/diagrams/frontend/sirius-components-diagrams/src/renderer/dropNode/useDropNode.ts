@@ -13,7 +13,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useContext, useEffect } from 'react';
-import { Node, NodeDragHandler, XYPosition, useReactFlow } from 'reactflow';
+import { Node, NodeDragHandler, XYPosition, useReactFlow, useStoreApi } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
@@ -133,13 +133,16 @@ export const useDropNode = (): UseDropNodeValue => {
   const onDropNode = useDropNodeMutation();
   const { getNodes, getIntersectingNodes, screenToFlowPosition } = useReactFlow<NodeData, EdgeData>();
   const { setNodes } = useStore();
+  const storeApi = useStoreApi();
 
-  const getNodeById: (string) => Node | undefined = (id: string) => getNodes().find((n) => n.id === id);
+  const getNodeById = (id: string) => storeApi.getState().nodeInternals.get(id);
 
   const getDraggableNode = (node: Node<NodeData>): Node<NodeData> => {
-    const parentNode = getNodeById(node.parentNode);
-    if (parentNode && isListData(parentNode) && !parentNode.data.areChildNodesDraggable) {
-      return getDraggableNode(parentNode);
+    if (node.parentNode) {
+      const parentNode = getNodeById(node.parentNode);
+      if (parentNode && isListData(parentNode) && !parentNode.data.areChildNodesDraggable) {
+        return getDraggableNode(parentNode);
+      }
     }
     return node;
   };
@@ -156,7 +159,10 @@ export const useDropNode = (): UseDropNodeValue => {
         (entry) => entry.droppedNodeDescriptionId === (computedNode as Node<NodeData>).data.descriptionId
       );
       const compatibleNodes = getNodes()
-        .filter((candidate) => !candidate.hidden && !isDescendantOf(computedNode, candidate, getNodeById))
+        .filter(
+          (candidate) =>
+            !candidate.hidden && !isDescendantOf(computedNode, candidate, storeApi.getState().nodeInternals)
+        )
         .filter((candidate) =>
           dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
         )
@@ -197,7 +203,9 @@ export const useDropNode = (): UseDropNodeValue => {
         const intersections = getIntersectingNodes(draggedNode).filter((intersectingNode) => !intersectingNode.hidden);
         const newParentId =
           [...intersections]
-            .filter((intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, getNodeById))
+            .filter(
+              (intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, storeApi.getState().nodeInternals)
+            )
             .sort((n1, n2) => getNodeDepth(n2, intersections) - getNodeDepth(n1, intersections))[0]?.id || null;
 
         const targetNode = getNodes().find((node) => node.data.isDropNodeTarget) || null;

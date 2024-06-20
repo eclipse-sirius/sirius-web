@@ -208,9 +208,15 @@ export const convertDiagram = (
     nodes,
     edges,
   };
+
+  const nodeInternals = new Map();
+  nodes.forEach((node) => {
+    nodeInternals.set(node.id, node);
+  });
+
   computeBorderNodeExtents(rawDiagram.nodes);
   computeBorderNodePositions(rawDiagram.nodes);
-  layoutHandles(rawDiagram, diagramDescription);
+  layoutHandles(rawDiagram, diagramDescription, nodeInternals);
 
   return {
     metadata: {

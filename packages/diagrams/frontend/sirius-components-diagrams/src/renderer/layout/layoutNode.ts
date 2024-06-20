@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Box, Dimensions, Node, Rect, XYPosition, boxToRect, rectToBox } from 'reactflow';
-import { NodeData, InsideLabel } from '../DiagramRenderer.types';
+import { Box, Dimensions, Node, NodeInternals, Rect, XYPosition, boxToRect, rectToBox } from 'reactflow';
+import { InsideLabel, NodeData } from '../DiagramRenderer.types';
+import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
 import {
   getBorderNodeExtent,
@@ -28,7 +29,6 @@ import {
   gap,
   rectangularNodePadding,
 } from './layoutParams';
-import { computePreviousPosition } from './bounds';
 
 /**
  * It requires that nodes are already positioned
@@ -512,28 +512,26 @@ export const applyRatioOnNewNodeSizeValue = (node: Node<NodeData>) => {
   }
 };
 
-export const isDescendantOf = (
-  parent: Node,
-  candidate: Node,
-  nodeById: (nodeId: string | undefined) => Node | undefined
-): boolean => {
+export const isDescendantOf = (parent: Node, candidate: Node, nodeInternals: NodeInternals): boolean => {
   if (parent.id === candidate.id) {
     return true;
   } else {
-    const candidateParent: Node | undefined = nodeById(candidate.parentNode);
-    return candidateParent !== undefined && isDescendantOf(parent, candidateParent, nodeById);
+    if (candidate.parentNode) {
+      const candidateParent: Node | undefined = nodeInternals.get(candidate.parentNode);
+      return !!candidateParent && isDescendantOf(parent, candidateParent, nodeInternals);
+    }
+    return false;
   }
 };
 
-export const isSiblingOrDescendantOf = (
-  sibling: Node,
-  candidate: Node,
-  nodeById: (nodeId: string | undefined) => Node | undefined
-): boolean => {
+export const isSiblingOrDescendantOf = (sibling: Node, candidate: Node, nodeInternals: NodeInternals): boolean => {
   if (sibling.parentNode === candidate.id) {
     return true;
   } else {
-    const candidateParent: Node | undefined = nodeById(candidate.parentNode);
-    return candidateParent !== undefined && isSiblingOrDescendantOf(sibling, candidateParent, nodeById);
+    if (candidate.parentNode) {
+      const candidateParent: Node | undefined = nodeInternals.get(candidate.parentNode);
+      return !!candidateParent && isSiblingOrDescendantOf(sibling, candidateParent, nodeInternals);
+    }
+    return false;
   }
 };

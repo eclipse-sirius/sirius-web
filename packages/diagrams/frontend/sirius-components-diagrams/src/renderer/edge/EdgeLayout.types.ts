@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { HandleElement, Node, NodePositionChange, Position, XYPosition } from 'reactflow';
+import { HandleElement, Node, NodeInternals, NodePositionChange, Position, XYPosition } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 
@@ -38,14 +38,14 @@ export type GetEdgeParametersWhileMoving = (
   movingNode: NodePositionChange,
   source: Node<NodeData>,
   target: Node<NodeData>,
-  visiblesNodes: Node<NodeData>[],
+  nodeInternals: NodeInternals,
   layoutDirection: string
 ) => EdgeParameters;
 
 export type GetEdgeParameters = (
   source: Node<NodeData>,
   target: Node<NodeData>,
-  visiblesNodes: Node<NodeData>[],
+  nodeInternals: NodeInternals,
   layoutDirection: string
 ) => EdgeParameters;
 
@@ -58,7 +58,7 @@ export type GetParameters = (
   movingNode: NodePositionChange | null,
   nodeA: Node<NodeData>,
   nodeB: Node<NodeData>,
-  visiblesNodes: Node<NodeData>[],
+  nodeInternals: NodeInternals,
   layoutDirection: string
 ) => Parameters;
 
@@ -66,7 +66,7 @@ export interface Parameters {
   position: Position;
 }
 
-export type GetNodeCenter = (node: Node<NodeData>, visiblesNodes: Node<NodeData>[]) => NodeCenter;
+export type GetNodeCenter = (node: Node<NodeData>, nodeInternals: NodeInternals) => NodeCenter;
 
 export interface NodeCenter {
   x: number;

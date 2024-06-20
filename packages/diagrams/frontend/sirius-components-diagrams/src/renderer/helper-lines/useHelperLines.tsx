@@ -11,11 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useCallback, useState } from 'react';
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange, useReactFlow } from 'reactflow';
+import {
+  Node,
+  NodeChange,
+  NodeDimensionChange,
+  NodeInternals,
+  NodePositionChange,
+  useReactFlow,
+  useStoreApi,
+} from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { isDescendantOf } from '../layout/layoutNode';
-import { HelperLines, UseHelperLinesState, UseHelperLinesValue } from './useHelperLines.types';
 import { horizontalHelperLinesSnapGap, verticalHelperLinesSnapGap } from '../layout/layoutParams';
+import { HelperLines, UseHelperLinesState, UseHelperLinesValue } from './useHelperLines.types';
 
 const isMove = (change: NodeChange, dragging: boolean): change is NodePositionChange =>
   change.type === 'position' && (!dragging || (typeof change.dragging === 'boolean' && change.dragging));
@@ -26,11 +34,11 @@ const isResize = (change: NodeChange): change is NodeDimensionChange =>
 const getHelperLinesForMove = (
   change: NodePositionChange,
   movingNode: Node<NodeData>,
-  nodes: Node<NodeData>[]
+  nodes: Node<NodeData>[],
+  nodeInternal: NodeInternals
 ): HelperLines => {
   const noHelperLines: HelperLines = { horizontal: null, vertical: null, snapX: 0, snapY: 0 };
   if (change.positionAbsolute) {
-    const getNodeById = (id: string | undefined) => nodes.find((n) => n.id === id);
     let verticalSnapGap: number = verticalHelperLinesSnapGap;
     let horizontalSnapGap: number = horizontalHelperLinesSnapGap;
     const movingNodeBounds: { x1: number; x2: number; y1: number; y2: number } = {
@@ -41,7 +49,7 @@ const getHelperLinesForMove = (
     };
     return nodes
       .filter((node) => node.id != movingNode.id)
-      .filter((node) => !isDescendantOf(movingNode, node, getNodeById))
+      .filter((node) => !isDescendantOf(movingNode, node, nodeInternal))
       .reduce<HelperLines>((helperLines, otherNode) => {
         if (otherNode.positionAbsolute) {
           const otherNodeBounds = {
@@ -132,11 +140,11 @@ const getHelperLinesForMove = (
 const getHelperLinesForResize = (
   change: NodeDimensionChange,
   resizingNode: Node<NodeData>,
-  nodes: Node<NodeData>[]
+  nodes: Node<NodeData>[],
+  nodeInternal: NodeInternals
 ): HelperLines => {
   const noHelperLines: HelperLines = { horizontal: null, vertical: null, snapX: 0, snapY: 0 };
   if (resizingNode.positionAbsolute && change.dimensions) {
-    const getNodeById = (id: string | undefined) => nodes.find((n) => n.id === id);
     let verticalSnapGap: number = verticalHelperLinesSnapGap;
     let horizontalSnapGap: number = horizontalHelperLinesSnapGap;
     const resizingNodeBounds: { x1: number; x2: number; y1: number; y2: number } = {
@@ -147,7 +155,7 @@ const getHelperLinesForResize = (
     };
     return nodes
       .filter((node) => node.id != resizingNode.id)
-      .filter((node) => !isDescendantOf(resizingNode, node, getNodeById))
+      .filter((node) => !isDescendantOf(resizingNode, node, nodeInternal))
       .reduce<HelperLines>((helperLines, otherNode) => {
         if (otherNode.positionAbsolute) {
           const otherNodeBounds = {
@@ -195,11 +203,11 @@ const getHelperLinesForResizeAndMove = (
   resizingChange: NodeDimensionChange,
   movingChange: NodePositionChange,
   resizingNode: Node<NodeData>,
-  nodes: Node<NodeData>[]
+  nodes: Node<NodeData>[],
+  nodeInternal: NodeInternals
 ): HelperLines => {
   const noHelperLines: HelperLines = { horizontal: null, vertical: null, snapX: 0, snapY: 0 };
   if (resizingNode.positionAbsolute && resizingChange.dimensions && movingChange.position) {
-    const getNodeById = (id: string | undefined) => nodes.find((n) => n.id === id);
     let verticalSnapGap: number = verticalHelperLinesSnapGap;
     let horizontalSnapGap: number = horizontalHelperLinesSnapGap;
     const nodeBounds: { x1: number; x2: number; y1: number; y2: number } = {
@@ -218,7 +226,7 @@ const getHelperLinesForResizeAndMove = (
     };
     return nodes
       .filter((node) => node.id != resizingNode.id)
-      .filter((node) => !isDescendantOf(resizingNode, node, getNodeById))
+      .filter((node) => !isDescendantOf(resizingNode, node, nodeInternal))
       .reduce<HelperLines>((helperLines, otherNode) => {
         if (otherNode.positionAbsolute) {
           const otherNodeBounds = {
@@ -266,24 +274,25 @@ export const useHelperLines = (): UseHelperLinesValue => {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [state, setState] = useState<UseHelperLinesState>({ vertical: null, horizontal: null });
   //Here we need the nodes in the ReactFlow store to get positionAbsolute
+  const storeApi = useStoreApi();
   const { getNodes } = useReactFlow<NodeData, EdgeData>();
-
   const applyHelperLines = useCallback(
     (changes: NodeChange[]): NodeChange[] => {
+      const nodeInternal: NodeInternals = storeApi.getState().nodeInternals;
       if (enabled && changes.length === 1 && changes[0]) {
         const change = changes[0];
         if (isMove(change, true)) {
-          const movingNode = getNodes().find((node) => node.id === change.id);
+          const movingNode = nodeInternal.get(change.id);
           if (movingNode && !movingNode.data.pinned) {
-            const helperLines: HelperLines = getHelperLinesForMove(change, movingNode, getNodes());
+            const helperLines: HelperLines = getHelperLinesForMove(change, movingNode, getNodes(), nodeInternal);
             setState({ vertical: helperLines.vertical, horizontal: helperLines.horizontal });
             let snapOffsetX: number = 0;
             let snapOffsetY: number = 0;
-            let parentNode = getNodes().find((node) => node.id === movingNode.parentNode);
+            let parentNode = nodeInternal.get(movingNode.parentNode || '');
             while (parentNode) {
               snapOffsetX -= parentNode.position.x;
               snapOffsetY -= parentNode.position.y;
-              parentNode = getNodes().find((node) => node.id === (parentNode?.parentNode ?? ''));
+              parentNode = nodeInternal.get(parentNode?.parentNode ?? '');
             }
             if (helperLines.snapX && change.position) {
               change.position.x = helperLines.snapX + snapOffsetX;
@@ -293,9 +302,9 @@ export const useHelperLines = (): UseHelperLinesValue => {
             }
           }
         } else if (isResize(change)) {
-          const resizingNode = getNodes().find((node) => node.id === change.id);
+          const resizingNode = nodeInternal.get(change.id);
           if (resizingNode) {
-            const helperLines: HelperLines = getHelperLinesForResize(change, resizingNode, getNodes());
+            const helperLines: HelperLines = getHelperLinesForResize(change, resizingNode, getNodes(), nodeInternal);
             setState({ vertical: helperLines.vertical, horizontal: helperLines.horizontal });
             if (helperLines.snapX && change.dimensions && resizingNode.positionAbsolute) {
               change.dimensions.width = Math.abs(resizingNode.positionAbsolute.x - helperLines.snapX);
@@ -309,22 +318,23 @@ export const useHelperLines = (): UseHelperLinesValue => {
         const movingChange = changes[0];
         const resizingChange = changes[1];
         if (isMove(movingChange, false) && isResize(resizingChange)) {
-          const resizingNode = getNodes().find((node) => node.id === movingChange.id);
+          const resizingNode = nodeInternal.get(movingChange.id);
           if (resizingNode) {
             const helperLines: HelperLines = getHelperLinesForResizeAndMove(
               resizingChange,
               movingChange,
               resizingNode,
-              getNodes()
+              getNodes(),
+              nodeInternal
             );
             setState({ vertical: helperLines.vertical, horizontal: helperLines.horizontal });
             let snapOffsetX: number = 0;
             let snapOffsetY: number = 0;
-            let parentNode = getNodes().find((node) => node.id === resizingNode.parentNode);
+            let parentNode = nodeInternal.get(resizingNode.parentNode || '');
             while (parentNode) {
               snapOffsetX -= parentNode.position.x;
               snapOffsetY -= parentNode.position.y;
-              parentNode = getNodes().find((node) => node.id === (parentNode?.parentNode ?? ''));
+              parentNode = nodeInternal.get(parentNode?.parentNode ?? '');
             }
             if (
               helperLines.snapX &&
