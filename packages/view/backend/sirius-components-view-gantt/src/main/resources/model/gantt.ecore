@@ -14,6 +14,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="createTaskDependencyTool"
         eType="#//CreateTaskDependencyTool" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTaskDependencyTool"
+        eType="#//DeleteTaskDependencyTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="dateRoundingExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="12H"/>
@@ -58,4 +60,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="DeleteTaskTool" eSuperTypes="#//TaskTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="DropTaskTool" eSuperTypes="#//TaskTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="CreateTaskDependencyTool" eSuperTypes="#//TaskTool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DeleteTaskDependencyTool" eSuperTypes="#//TaskTool"/>
 </ecore:EPackage>

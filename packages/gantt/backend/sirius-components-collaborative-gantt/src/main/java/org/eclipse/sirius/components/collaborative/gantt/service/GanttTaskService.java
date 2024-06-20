@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeGanttCo
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeTaskCollapseStateInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DropGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTaskInput;
@@ -223,6 +224,34 @@ public class GanttTaskService implements IGanttTaskService {
             }
 
             payload = this.getPayload(createTaskDependencyInput.id());
+        }
+
+        return payload;
+    }
+
+    @Override
+    public IPayload deleteTaskDependency(DeleteGanttTaskDependencyInput deleteTaskDependencyInput, IEditingContext editingContext, Gantt gantt) {
+        IPayload payload = new ErrorPayload(deleteTaskDependencyInput.id(), "Delete task dependency failed");
+
+        Optional<GanttDescription> ganttDescriptionOpt = this.findGanttDescription(gantt.descriptionId(), editingContext);
+
+        if (ganttDescriptionOpt.isPresent()) {
+            VariableManager variableManager = new VariableManager();
+            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+
+            Optional<Object> sourceObjectOpt = Optional.of(deleteTaskDependencyInput.sourceTaskId())
+                    .flatMap(taskId -> this.getTaskSemanticObject(taskId, gantt, editingContext));
+
+            Optional<Object> targetObjectOpt = Optional.of(deleteTaskDependencyInput.targetTaskId())
+                    .flatMap(taskId -> this.getTaskSemanticObject(taskId, gantt, editingContext));
+
+            if (sourceObjectOpt.isPresent() && targetObjectOpt.isPresent()) {
+                variableManager.put(GanttDescription.SOURCE_OBJECT, sourceObjectOpt.get());
+                variableManager.put(GanttDescription.TARGET_OBJECT, targetObjectOpt.get());
+                ganttDescriptionOpt.get().deleteTaskDependencyProvider().accept(variableManager);
+            }
+
+            payload = this.getPayload(deleteTaskDependencyInput.id());
         }
 
         return payload;

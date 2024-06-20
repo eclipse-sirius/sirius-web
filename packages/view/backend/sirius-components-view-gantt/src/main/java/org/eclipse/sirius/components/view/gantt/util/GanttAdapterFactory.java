@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.DropTaskTool;
 import org.eclipse.sirius.components.view.gantt.EditTaskTool;
@@ -116,6 +117,11 @@ public class GanttAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseCreateTaskDependencyTool(CreateTaskDependencyTool object) {
             return GanttAdapterFactory.this.createCreateTaskDependencyToolAdapter();
+        }
+
+        @Override
+        public Adapter caseDeleteTaskDependencyTool(DeleteTaskDependencyTool object) {
+            return GanttAdapterFactory.this.createDeleteTaskDependencyToolAdapter();
         }
 
         @Override
@@ -250,6 +256,20 @@ public class GanttAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createCreateTaskDependencyToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool <em>Delete Task Dependency Tool</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool
+     * @generated
+     */
+    public Adapter createDeleteTaskDependencyToolAdapter() {
         return null;
     }
 

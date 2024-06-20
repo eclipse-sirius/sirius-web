@@ -17,8 +17,10 @@ import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder
 import org.eclipse.sirius.components.view.builder.generated.DeleteElementBuilder;
 import org.eclipse.sirius.components.view.builder.generated.GanttBuilders;
 import org.eclipse.sirius.components.view.builder.generated.SetValueBuilder;
+import org.eclipse.sirius.components.view.builder.generated.UnsetValueBuilder;
 import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.DropTaskTool;
 import org.eclipse.sirius.components.view.gantt.EditTaskTool;
@@ -54,6 +56,7 @@ public class ViewGanttDescriptionBuilder {
         DeleteTaskTool deleteTaskTool = this.createDeleteTaskTool();
         DropTaskTool dropTaskTool = this.createDropTaskTool();
         CreateTaskDependencyTool createTaskDependencyTool = this.createTaskDependencyTool();
+        DeleteTaskDependencyTool deleteTaskDependencyTool = this.createDeleteTaskDependencyTool();
 
         GanttDescription ganttDescription = new GanttBuilders().newGanttDescription()
                 .name(GANTT_REP_DESC_NAME)
@@ -65,6 +68,7 @@ public class ViewGanttDescriptionBuilder {
                 .deleteTool(deleteTaskTool)
                 .dropTool(dropTaskTool)
                 .createTaskDependencyTool(createTaskDependencyTool)
+                .deleteTaskDependencyTool(deleteTaskDependencyTool)
                 .build();
 
         return ganttDescription;
@@ -115,6 +119,19 @@ public class ViewGanttDescriptionBuilder {
                         .valueExpression("aql:sourceObject")
                         .build())
                     .build())
+                .build();
+    }
+
+    private DeleteTaskDependencyTool createDeleteTaskDependencyTool() {
+        return new GanttBuilders().newDeleteTaskDependencyTool()
+                .name("Delete Task Dependency")
+                .body(new ChangeContextBuilder()
+                        .expression("aql:targetObject")
+                        .children(new UnsetValueBuilder()
+                                .featureName("dependencies")
+                                .elementExpression("aql:sourceObject")
+                                .build())
+                        .build())
                 .build();
     }
 

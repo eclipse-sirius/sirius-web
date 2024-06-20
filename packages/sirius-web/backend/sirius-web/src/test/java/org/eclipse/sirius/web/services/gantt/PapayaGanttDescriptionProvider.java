@@ -24,14 +24,19 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.CreateInstanceBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DeleteElementBuilder;
 import org.eclipse.sirius.components.view.builder.generated.GanttBuilders;
 import org.eclipse.sirius.components.view.builder.generated.GanttDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.SetValueBuilder;
+import org.eclipse.sirius.components.view.builder.generated.UnsetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.emf.gantt.IGanttIdProvider;
+import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
@@ -92,6 +97,8 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
     private GanttDescription createGanttDescription() {
         CreateTaskTool createTaskTool = this.createCreateTaskTool();
         DeleteTaskTool deleteTaskTool = this.createDeleteTaskTool();
+        CreateTaskDependencyTool createTaskDependencyTool = this.createCreateTaskDependencyTool();
+        DeleteTaskDependencyTool deleteTaskDependencyTool = this.createDeleteTaskDependencyTool();
 
         this.ganttDescription = new GanttDescriptionBuilder()
                 .name("Gantt")
@@ -100,6 +107,8 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
                 .taskElementDescriptions(this.createTaskDescriptionInProject())
                 .createTool(createTaskTool)
                 .deleteTool(deleteTaskTool)
+                .createTaskDependencyTool(createTaskDependencyTool)
+                .deleteTaskDependencyTool(deleteTaskDependencyTool)
                 .build();
 
         return this.ganttDescription;
@@ -129,6 +138,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
                 .startTimeExpression("aql:self.startTime")
                 .endTimeExpression("aql:self.endTime")
                 .progressExpression("aql:self.progress")
+                .taskDependenciesExpression("aql:self.dependencies")
                 .build();
 
         taskDescription.getReusedTaskElementDescriptions().add(taskDescription);
@@ -163,6 +173,32 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
                         .typeName("papaya::Task")
                         .referenceName("tasks")
                         .children(newInstanceChangeContext)
+                        .build())
+                .build();
+    }
+
+    private CreateTaskDependencyTool createCreateTaskDependencyTool() {
+        return new GanttBuilders().newCreateTaskDependencyTool()
+                .name("Create Task Dependency")
+                .body(new ChangeContextBuilder()
+                        .expression("aql:targetObject")
+                        .children(new SetValueBuilder()
+                                .featureName("dependencies")
+                                .valueExpression("aql:sourceObject")
+                                .build())
+                        .build())
+                .build();
+    }
+
+    private DeleteTaskDependencyTool createDeleteTaskDependencyTool() {
+        return new GanttBuilders().newDeleteTaskDependencyTool()
+                .name("Delete Task Dependency")
+                .body(new ChangeContextBuilder()
+                        .expression("aql:targetObject")
+                        .children(new UnsetValueBuilder()
+                                .featureName("dependencies")
+                                .elementExpression("aql:sourceObject")
+                                .build())
                         .build())
                 .build();
     }

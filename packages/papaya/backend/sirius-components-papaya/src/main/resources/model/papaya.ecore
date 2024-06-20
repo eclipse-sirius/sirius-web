@@ -48,6 +48,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startDate" eType="#//Instant"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endDate" eType="#//Instant"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="done" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
+        eType="#//Task"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="Priority">
     <eLiterals name="P1" value="1"/>

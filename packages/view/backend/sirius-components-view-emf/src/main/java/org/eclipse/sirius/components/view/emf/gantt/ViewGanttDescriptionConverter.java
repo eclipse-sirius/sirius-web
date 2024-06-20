@@ -108,6 +108,9 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .createTaskDependencyProvider(Optional.ofNullable(viewGanttDescription.getCreateTaskDependencyTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
                         .orElse(variable -> {
                         }))
+                .deleteTaskDependencyProvider(Optional.ofNullable(viewGanttDescription.getDeleteTaskDependencyTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
+                        .orElse(variable -> {
+                        }))
                 .taskDescriptions(taskDescriptions)
                 .dateRoundingProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewGanttDescription.getDateRoundingExpression()))
                 .build();

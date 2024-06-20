@@ -30,6 +30,9 @@ import {
   GQLCreateTaskVariables,
   GQLDeleteGanttTaskInput,
   GQLDeleteTaskData,
+  GQLDeleteTaskDependencyData,
+  GQLDeleteTaskDependencyInput,
+  GQLDeleteTaskDependencyVariables,
   GQLDeleteTaskVariables,
   GQLDropGanttTaskInput,
   GQLDropTaskData,
@@ -44,6 +47,7 @@ import {
   changeTaskCollapseStateMutation,
   createTaskDependencyMutation,
   createTaskMutation,
+  deleteTaskDependencyMutation,
   deleteTaskMutation,
   dropTaskMutation,
   editTaskMutation,
@@ -149,6 +153,27 @@ export const useGanttMutations = (editingContextId: string, representationId: st
     mutationCreateTaskDependency({ variables: { input } });
   };
 
+  const [mutationDeleteTaskDependency, mutationDeleteTaskDependencyResult] = useMutation<
+    GQLDeleteTaskDependencyData,
+    GQLDeleteTaskDependencyVariables
+  >(deleteTaskDependencyMutation);
+  useReporting(
+    mutationDeleteTaskDependencyResult,
+    (data: GQLDeleteTaskDependencyData) => data.deleteGanttTaskDependency
+  );
+
+  const deleteTaskDependency = (sourceTaskId: string, targetTaskId: string) => {
+    const input: GQLDeleteTaskDependencyInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      sourceTaskId,
+      targetTaskId,
+    };
+
+    mutationDeleteTaskDependency({ variables: { input } });
+  };
+
   const [mutationChangeTaskCollapseState, mutationChangeTaskCollapseStateResult] = useMutation<
     GQLChangeTaskCollapseStateData,
     GQLChangeTaskCollapseStateVariables
@@ -194,6 +219,7 @@ export const useGanttMutations = (editingContextId: string, representationId: st
     editTask,
     dropTask,
     createTaskDependency,
+    deleteTaskDependency,
     changeTaskCollapseState,
     changeColumn,
   };

@@ -10,14 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Task } from '@ObeoNetwork/gantt-task-react';
+package org.eclipse.sirius.components.view.gantt;
 
-export interface TaskContextualPaletteProps {
-  onCreateTask: (task: Task) => void;
-  onEditTask: (task: Task) => void;
-  onDeleteTask: (task: Task) => void;
-}
-
-export interface TaskDependencyContextualPaletteProps {
-  onDeleteTaskDependency: (sourceTaskId: string, targetTaskId: string) => void;
-}
+/**
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Delete Task Dependency Tool</b></em>'. <!--
+ * end-user-doc -->
+ *
+ *
+ * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getDeleteTaskDependencyTool()
+ * @model
+ * @generated
+ */
+public interface DeleteTaskDependencyTool extends TaskTool {
+} // DeleteTaskDependencyTool

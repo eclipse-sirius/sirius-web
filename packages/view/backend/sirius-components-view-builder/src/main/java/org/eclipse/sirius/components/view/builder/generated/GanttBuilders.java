@@ -89,5 +89,15 @@ public class GanttBuilders {
         return new CreateTaskDependencyToolBuilder();
     }
 
+    /**
+     * Instantiate a DeleteTaskDependencyToolBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public DeleteTaskDependencyToolBuilder newDeleteTaskDependencyTool() {
+        return new DeleteTaskDependencyToolBuilder();
+    }
+
 
 }

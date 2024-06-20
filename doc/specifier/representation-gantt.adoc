@@ -99,7 +99,7 @@ Available variables:
 ** `newStartTime`: The new value of the start time.  
 ** `newEndTime`: The new value of the end time.  
 ** `newDescription`: The new value of the description.  
-** `newProgress`: The new value of the progress.  
+** `newProgress`: The new value of the progress.
 
 image::images/gantt-task-handlers.png[Task handlers]
 
@@ -121,7 +121,14 @@ index=0 means first position.
 This tool defines the behavior when creating a task dependency by dragging the dependency handler from one task to another.
 Available variables:
 ** `sourceObject`: The semantic element associated with the task from which the dependency link is initiated.
-** `targetObject`: The semantic element associated with the target task where the dependency finishes.
+** `targetObject`: The semantic element associated with the dependant task where the dependency finishes.
 
 image::images/gantt-task-relation-tool.png[Create Task Dependency Tool]
+* `Delete Task Dependency Tool`:
+This tool defines the behavior when deleting a task dependency using the button in the task dependency contextual palette in Gantt.
+Available variables:
+** `sourceObject`: The semantic element associated with the task from which the dependency link is initiated.
+** `targetObject`: The semantic element associated with the dependant task where the dependency finishes.
+
+image:images/gantt-task-dependency-palette.png[Task Dependency Contextual Palette]
 

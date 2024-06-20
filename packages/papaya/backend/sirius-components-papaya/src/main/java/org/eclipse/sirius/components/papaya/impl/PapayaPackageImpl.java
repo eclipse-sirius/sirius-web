@@ -672,6 +672,16 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
+    public EReference getTask_Dependencies() {
+        return (EReference) this.taskEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getContribution() {
         return this.contributionEClass;
     }
@@ -1599,6 +1609,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.createEAttribute(this.taskEClass, TASK__START_DATE);
         this.createEAttribute(this.taskEClass, TASK__END_DATE);
         this.createEAttribute(this.taskEClass, TASK__DONE);
+        this.createEReference(this.taskEClass, TASK__DEPENDENCIES);
 
         this.contributionEClass = this.createEClass(CONTRIBUTION);
         this.createEReference(this.contributionEClass, CONTRIBUTION__RELATED_TASKS);
@@ -1842,6 +1853,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
                 IS_ORDERED);
         this.initEAttribute(this.getTask_Done(), this.ecorePackage.getEBoolean(), "done", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTask_Dependencies(), this.getTask(), null, "dependencies", null, 0, -1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.contributionEClass, Contribution.class, "Contribution", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getContribution_RelatedTasks(), this.getTask(), null, "relatedTasks", null, 0, -1, Contribution.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,

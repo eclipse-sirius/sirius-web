@@ -112,6 +112,26 @@ export const createTaskDependencyMutation = gql`
   }
 `;
 
+export const deleteTaskDependencyMutation = gql`
+  mutation deleteTaskDependency($input: DeleteGanttTaskDependencyInput!) {
+    deleteGanttTaskDependency(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
 export const changeTaskCollapseStateMutation = gql`
   mutation changeGanttTaskCollapseState($input: ChangeGanttTaskCollapseStateInput!) {
     changeGanttTaskCollapseState(input: $input) {

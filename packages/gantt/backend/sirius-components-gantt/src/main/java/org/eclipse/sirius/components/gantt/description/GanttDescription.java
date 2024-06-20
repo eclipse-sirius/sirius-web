@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public record GanttDescription(String id, String label, Function<VariableManager, String> idProvider, Function<VariableManager, String> labelProvider,
         Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<TaskDescription> taskDescriptions, Consumer<VariableManager> createTaskProvider,
         Consumer<VariableManager> editTaskProvider, Consumer<VariableManager> deleteTaskProvider, Consumer<VariableManager> dropTaskProvider, Consumer<VariableManager> createTaskDependencyProvider,
-        Function<VariableManager, String> dateRoundingProvider) implements IRepresentationDescription {
+        Consumer<VariableManager> deleteTaskDependencyProvider, Function<VariableManager, String> dateRoundingProvider) implements IRepresentationDescription {
 
     public static final String LABEL = "label";
 
@@ -122,6 +122,8 @@ public record GanttDescription(String id, String label, Function<VariableManager
 
         private Consumer<VariableManager> createTaskDependencyProvider;
 
+        private Consumer<VariableManager> deleteTaskDependencyProvider;
+
         private List<TaskDescription> taskDescriptions;
 
         private Function<VariableManager, String> dateRoundingProvider;
@@ -175,6 +177,11 @@ public record GanttDescription(String id, String label, Function<VariableManager
             return this;
         }
 
+        public Builder deleteTaskDependencyProvider(Consumer<VariableManager> deleteTaskDependencyProvider) {
+            this.deleteTaskDependencyProvider = deleteTaskDependencyProvider;
+            return this;
+        }
+
         public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
             this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
             return this;
@@ -192,7 +199,8 @@ public record GanttDescription(String id, String label, Function<VariableManager
 
         public GanttDescription build() {
             GanttDescription ganttDescription = new GanttDescription(this.id, this.label, this.idProvider, this.labelProvider, this.targetObjectIdProvider, this.canCreatePredicate,
-                    this.taskDescriptions, this.createTaskProvider, this.editTaskProvider, this.deleteTaskProvider, this.dropTaskProvider, this.createTaskDependencyProvider, this.dateRoundingProvider);
+                    this.taskDescriptions, this.createTaskProvider, this.editTaskProvider, this.deleteTaskProvider, this.dropTaskProvider, this.createTaskDependencyProvider,
+                    this.deleteTaskDependencyProvider, this.dateRoundingProvider);
             return ganttDescription;
         }
     }

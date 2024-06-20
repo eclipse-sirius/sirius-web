@@ -20,6 +20,7 @@ export interface UseGanttMutations {
   deleteTask: (tasks: readonly TaskOrEmpty[]) => void;
   dropTask: (droppedTask: TaskOrEmpty, targetTask: TaskOrEmpty | undefined, dropIndex: number) => void;
   createTaskDependency: (sourceTaskId: string, targetTaskId: string) => void;
+  deleteTaskDependency: (sourceTaskId: string, targetTaskId: string) => void;
   changeTaskCollapseState: (taskId: string, collapsed: boolean) => void;
   changeColumn: (columnId: string, displayed: boolean, width: number) => void;
 }
@@ -110,6 +111,22 @@ export interface GQLCreateTaskDependencyData {
 }
 
 export type GQLCreateGanttTaskDependencyPayload = GQLErrorPayload | GQLSuccessPayload;
+
+export interface GQLDeleteTaskDependencyVariables {
+  input: GQLDeleteTaskDependencyInput;
+}
+export interface GQLDeleteTaskDependencyInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  sourceTaskId: string;
+  targetTaskId: string;
+}
+export interface GQLDeleteTaskDependencyData {
+  deleteGanttTaskDependency: GQLDeleteTaskDependencyPayload;
+}
+
+export type GQLDeleteTaskDependencyPayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLChangeTaskCollapseStateVariables {
   input: GQLChangeTaskCollapseStateInput;
