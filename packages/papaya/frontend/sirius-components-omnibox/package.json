@@ -1,0 +1,55 @@
+{
+  "name": "@eclipse-sirius/sirius-components-omnibox",
+  "author": "Eclipse Sirius",
+  "version": "2024.5.4",
+  "license": "EPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-sirius/sirius-web"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "main": "./dist/sirius-components-omnibox.umd.js",
+  "module": "./dist/sirius-components-omnibox.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/sirius-components-omnibox.umd.js",
+      "import": "./dist/sirius-components-omnibox.es.js"
+    }
+  },
+  "scripts": {
+    "start": "vite build --mode 'development' && tsc",
+    "build": "vite build && tsc",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
+    "publish:local": "yalc push"
+  },
+  "peerDependencies": {
+    "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "4.11.3",
+    "@types/react": "17.0.37",
+    "@types/react-router-dom": "5.3.3",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-router-dom": "5.2.0"
+  },
+  "devDependencies": {
+    "@eclipse-sirius/sirius-components-tsconfig": "*",
+    "@types/node": "20.12.12",
+    "@types/react": "17.0.37",
+    "@vitejs/plugin-react": "4.3.0",
+    "jest-junit-reporter": "1.1.0",
+    "prettier": "2.7.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-router-dom": "5.2.0",
+    "rollup-plugin-peer-deps-external": "2.2.4",
+    "typescript": "5.4.5",
+    "vite": "5.2.11"
+  }
+}

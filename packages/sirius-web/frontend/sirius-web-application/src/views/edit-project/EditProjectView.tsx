@@ -24,6 +24,7 @@ import {
   DiagramPaletteToolContribution,
   NodeData,
 } from '@eclipse-sirius/sirius-components-diagrams';
+import { OmniboxContextEntry, OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
 import {
   GQLTreeItem,
   TreeItemContextMenuContext,
@@ -140,22 +141,29 @@ export const EditProjectView = () => {
           ]
         : [],
     };
+
+    const initialContextEntries: OmniboxContextEntry[] = [
+      { id: context.project.currentEditingContext.id, label: context.project.name, kind: 'EditingContext' },
+    ];
+
     content = (
       <ProjectContext.Provider value={{ project: context.project }}>
         <SelectionContextProvider initialSelection={initialSelection}>
-          <EditProjectNavbar />
-          <TreeItemContextMenuProvider>
-            <TreeToolBarProvider>
-              <DiagramPaletteToolProvider>
-                <Workbench
-                  editingContextId={context.project.currentEditingContext.id}
-                  initialRepresentationSelected={context.representation}
-                  onRepresentationSelected={onRepresentationSelected}
-                  readOnly={false}
-                />
-              </DiagramPaletteToolProvider>
-            </TreeToolBarProvider>
-          </TreeItemContextMenuProvider>
+          <OmniboxProvider initialContextEntries={initialContextEntries}>
+            <EditProjectNavbar />
+            <TreeItemContextMenuProvider>
+              <TreeToolBarProvider>
+                <DiagramPaletteToolProvider>
+                  <Workbench
+                    editingContextId={context.project.currentEditingContext.id}
+                    initialRepresentationSelected={context.representation}
+                    onRepresentationSelected={onRepresentationSelected}
+                    readOnly={false}
+                  />
+                </DiagramPaletteToolProvider>
+              </TreeToolBarProvider>
+            </TreeItemContextMenuProvider>
+          </OmniboxProvider>
         </SelectionContextProvider>
       </ProjectContext.Provider>
     );

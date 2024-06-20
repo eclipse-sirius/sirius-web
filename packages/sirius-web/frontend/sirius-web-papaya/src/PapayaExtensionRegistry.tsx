@@ -16,9 +16,12 @@ import {
   ReactFlowPropsCustomizer,
   diagramRendererReactFlowPropsCustomizerExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
+import { OmniboxButton } from '@eclipse-sirius/sirius-components-omnibox';
 import {
   EditProjectNavbarSubtitleProps,
+  NavigationBarRightContributionProps,
   editProjectNavbarSubtitleExtensionPoint,
+  navigationBarRightContributionExtensionPoint,
   useCurrentProject,
 } from '@eclipse-sirius/sirius-web-application';
 import Typography from '@material-ui/core/Typography';
@@ -63,5 +66,14 @@ const papayaDiagramPanelExtension: DataExtension<Array<ReactFlowPropsCustomizer>
   data: [reactFlowPropsCustomizer],
 };
 papayaExtensionRegistry.putData(diagramRendererReactFlowPropsCustomizerExtensionPoint, papayaDiagramPanelExtension);
+
+const OmniboxButtonContribution = ({}: NavigationBarRightContributionProps) => {
+  return <OmniboxButton />;
+};
+
+papayaExtensionRegistry.addComponent(navigationBarRightContributionExtensionPoint, {
+  identifier: `papaya_${navigationBarRightContributionExtensionPoint.identifier}`,
+  Component: OmniboxButtonContribution,
+});
 
 export { papayaExtensionRegistry };
