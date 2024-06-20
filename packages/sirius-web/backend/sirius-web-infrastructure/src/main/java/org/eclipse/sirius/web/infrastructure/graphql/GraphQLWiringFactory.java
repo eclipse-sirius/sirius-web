@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.infrastructure.graphql;
 
+import java.util.List;
+import java.util.Objects;
+
+import org.eclipse.sirius.components.graphql.api.ITypeResolverDelegate;
 import org.eclipse.sirius.components.graphql.api.ReflectiveTypeResolver;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +32,12 @@ import graphql.schema.idl.WiringFactory;
 @Service
 public class GraphQLWiringFactory implements WiringFactory {
 
+    private final List<ITypeResolverDelegate> typeResolverDelegates;
+
+    public GraphQLWiringFactory(List<ITypeResolverDelegate> typeResolverDelegates) {
+        this.typeResolverDelegates = Objects.requireNonNull(typeResolverDelegates);
+    }
+
     @Override
     public boolean providesTypeResolver(InterfaceWiringEnvironment environment) {
         return true;
@@ -35,7 +45,7 @@ public class GraphQLWiringFactory implements WiringFactory {
 
     @Override
     public TypeResolver getTypeResolver(InterfaceWiringEnvironment environment) {
-        return new ReflectiveTypeResolver();
+        return new ReflectiveTypeResolver(this.typeResolverDelegates);
     }
 
     @Override
@@ -45,6 +55,6 @@ public class GraphQLWiringFactory implements WiringFactory {
 
     @Override
     public TypeResolver getTypeResolver(UnionWiringEnvironment environment) {
-        return new ReflectiveTypeResolver();
+        return new ReflectiveTypeResolver(this.typeResolverDelegates);
     }
 }

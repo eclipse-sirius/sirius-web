@@ -109,6 +109,8 @@ image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3604[#3604] [diagram] Make node overlap resolution faster during "Arrange All"
 - https://github.com/eclipse-sirius/sirius-web/issues/3653[#3653] [gantt] Add documentation for gantt representation
 - https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] [sirius-web] Simplifying the contribution to the GraphQL subscription of the diagram for custom nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/3656[#3656] [core] Add the ability to customize the GraphQL type resolver
+
 
 == v2024.5.0
 
