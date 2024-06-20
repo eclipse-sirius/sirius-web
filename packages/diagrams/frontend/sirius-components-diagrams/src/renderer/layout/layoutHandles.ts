@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, Position, XYPosition } from 'reactflow';
+import { Node, NodeInternals, Position, XYPosition } from 'reactflow';
 import { GQLDiagramDescription } from '../../representation/DiagramRepresentation.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters, getNodeCenter, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
@@ -91,13 +91,13 @@ const populateHandleIdToOtherEndNode: PopulateHandleIdToOtherHandNode = (
   });
 };
 
-const layoutHandleIndex = (diagram: RawDiagram) => {
+const layoutHandleIndex = (diagram: RawDiagram, nodeInternals: NodeInternals) => {
   const handleIdToOtherEndNode: Map<string, Node<NodeData>> = new Map<string, Node<NodeData>>();
   const nodeIdToNodeCenter: Map<string, XYPosition> = new Map<string, XYPosition>();
   diagram.nodes.forEach((node) => {
     const handlesId = getHandlesIdsFromNode(node);
     populateHandleIdToOtherEndNode(diagram.edges, diagram.nodes, handlesId, handleIdToOtherEndNode);
-    nodeIdToNodeCenter.set(node.id, getNodeCenter(node, diagram.nodes));
+    nodeIdToNodeCenter.set(node.id, getNodeCenter(node, nodeInternals));
   });
 
   const nodeIdToConnectionHandle: Map<string, ConnectionHandle[]> = new Map<string, ConnectionHandle[]>();
@@ -128,7 +128,11 @@ const layoutHandleIndex = (diagram: RawDiagram) => {
   });
 };
 
-const layoutHandlePosition = (diagram: RawDiagram, diagramDescription: GQLDiagramDescription) => {
+const layoutHandlePosition = (
+  diagram: RawDiagram,
+  diagramDescription: GQLDiagramDescription,
+  nodeInternals: NodeInternals
+) => {
   diagram.edges.forEach((edge) => {
     const { sourceNode: sourceEdgeNode, targetNode: targetEdgeNode, sourceHandle, targetHandle } = edge;
     const sourceNode = diagram.nodes.find((node) => node.id === sourceEdgeNode?.id);
@@ -137,7 +141,7 @@ const layoutHandlePosition = (diagram: RawDiagram, diagramDescription: GQLDiagra
       const { sourcePosition, targetPosition } = getEdgeParameters(
         sourceNode,
         targetNode,
-        diagram.nodes,
+        nodeInternals,
         diagramDescription.arrangeLayoutDirection
       );
 
@@ -177,7 +181,11 @@ const layoutHandlePosition = (diagram: RawDiagram, diagramDescription: GQLDiagra
   });
 };
 
-export const layoutHandles = (diagram: RawDiagram, diagramDescription: GQLDiagramDescription) => {
-  layoutHandlePosition(diagram, diagramDescription);
-  layoutHandleIndex(diagram);
+export const layoutHandles = (
+  diagram: RawDiagram,
+  diagramDescription: GQLDiagramDescription,
+  nodeInternals: NodeInternals
+) => {
+  layoutHandlePosition(diagram, diagramDescription, nodeInternals);
+  layoutHandleIndex(diagram, nodeInternals);
 };

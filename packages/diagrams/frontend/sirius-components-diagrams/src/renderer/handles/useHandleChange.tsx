@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useCallback } from 'react';
-import { Node, NodeChange, NodePositionChange, getConnectedEdges } from 'reactflow';
+import { Node, NodeChange, NodePositionChange, getConnectedEdges, useStoreApi } from 'reactflow';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { getEdgeParametersWhileMoving, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
 import { UseHandleChangeValue } from './useHandleChange.types';
-import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 
 const isNodePositionChange = (change: NodeChange): change is NodePositionChange =>
   change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
@@ -26,6 +26,7 @@ const isNodePositionChange = (change: NodeChange): change is NodePositionChange 
 export const useHandleChange = (): UseHandleChangeValue => {
   const { getEdges } = useStore();
   const { diagramDescription } = useDiagramDescription();
+  const storeApi = useStoreApi();
 
   const applyHandleChange = useCallback(
     (changes: NodeChange[], nodes: Node<NodeData, DiagramNodeType>[]): Node<NodeData, DiagramNodeType>[] => {
@@ -44,7 +45,7 @@ export const useHandleChange = (): UseHandleChangeValue => {
                 nodeDraggingChange,
                 sourceNode,
                 targetNode,
-                nodes,
+                storeApi.getState().nodeInternals,
                 diagramDescription.arrangeLayoutDirection
               );
               const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(
