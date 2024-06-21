@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -85,6 +86,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean existsById(String editingContextId) {
         return new UUIDParser().parse(editingContextId)
                 .map(AggregateReference::<Project, UUID>to)
@@ -93,6 +95,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<IEditingContext> findById(String editingContextId) {
         return new UUIDParser().parse(editingContextId)
                 .flatMap(this.projectSearchService::findById)
