@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-builder</artifactId>
-	<version>2024.5.1</version>
+	<version>2024.5.2</version>
 	<name>sirius-components-view-builder</name>
 	<description>Sirius View Builder</description>
 	
@@ -68,37 +68,37 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram</artifactId>
-			<version>2024.5.1</version>
+			<version>2024.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram-customnodes</artifactId>
-			<version>2024.5.1</version>
+			<version>2024.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>2024.5.1</version>
+			<version>2024.5.2</version>
 		</dependency>		
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt</artifactId>
-			<version>2024.5.1</version>
+			<version>2024.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-deck</artifactId>
-			<version>2024.5.1</version>
+			<version>2024.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-view</artifactId>
-			<version>2024.5.1</version>
+			<version>2024.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.5.1</version>
+			<version>2024.5.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
