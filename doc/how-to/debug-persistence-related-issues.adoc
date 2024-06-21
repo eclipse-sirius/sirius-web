@@ -1,0 +1,144 @@
+= How to debug persistence related issues
+
+Let's consider that you are trying to debug an issue related to the persistence of the data.
+There are multiple tools that can be used to have an overview of the situation, monitor the application and detect potential issues.
+
+== How to see what is in the database?
+
+If you want to see the data in the database, you can use a tool like DBeaver:"https://dbeaver.io" or pgAdmin:"https://www.pgadmin.org".
+Using such tool, you can open a connection with the database and send SQL queries to see your data.
+
+You can also do it using various command line tools but we recommend a tool with a user interface since they tend to be more user friendly.
+
+You can easily see the list of all projects, representation data or semantic data using a couple of SQL queries such as:
+
+- `SELECT * FROM project`
+- `SELECT * FROM semantic_data`
+- `SELECT * FROM representation_data`
+
+You can also have a look at the Liquibase changelog using `SELECT * FROM databasechangelog`.
+
+
+== How much data do we have in the database?
+
+If you want to see the volume of data contained in the database, you can ask for the size of every tables using this query:
+
+```
+SELECT table_schema, table_name, pg_total_relation_size('"'||table_schema||'"."'||table_name||'"')
+FROM information_schema.tables
+WHERE table_schema = 'public'
+ORDER BY 3 DESC
+```
+
+== How to monitor the activity of the database?
+
+If you are trying to debug issues with database transactions or locks, start by executing `SELECT * FROM pg_stat_activity`.
+Look for all the activity from applications with the name `PostgreSQL JDBC Driver` since it's the default name of the driver used to connect Spring Boot with PostgreSQL.
+Using this query, you will see the last activity of all the clients of the PostgreSQL database.
+
+If you see multiple clients with `SET application_name = 'PostgreSQL JDBC Driver'` as their last query and in an `idle` state, do not worry.
+These are the threads of the Hikari thread pool used to connect Spring Boot to PostgreSQL.
+By default, you should have 10 of them.
+
+If you see a couple of clients with `COMMIT` as their last query, those are Hikaru clients which have at least been used once and which have completed their job.
+Their last visible activity was commiting a transaction.
+
+On the other hand, if you see in the activity a client with an `idle` state and a meaningful query from Sirius Web as their last activity, you may have found a transaction which is not properly commited.
+If you see a client with an `active` state which stay this way a bit loo long, you may have discover an performance issue with a query which is taking too long to run.
+
+== How to log what is going on with the database?
+
+In order to log the interactions between Sirius Web and the database, you have multiple options.
+
+=== JDBC logging
+
+You can first activate the log of the JDBC layer using `logging.level.org.springframework.jdbc=debug` as an environment variable of your launch configuration.
+With this setting, you will have a lot of details on the lifecycle and interactions with the database like this:
+
+```
+2024-06-21T15:57:44.867+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.support.JdbcTransactionManager  : Creating new transaction with name [org.eclipse.sirius.web.application.project.services.ProjectApplicationService.findAll]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT,readOnly
+2024-06-21T15:57:44.872+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.support.JdbcTransactionManager  : Acquired Connection [HikariProxyConnection [HikariProxyConnection@1326502956 wrapping org.postgresql.jdbc.PgConnection@ace2408]] for JDBC transaction
+2024-06-21T15:57:44.878+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.datasource.DataSourceUtils      : Setting JDBC Connection [HikariProxyConnection [HikariProxyConnection@1326502956 wrapping org.postgresql.jdbc.PgConnection@ace2408]] read-only
+2024-06-21T15:57:44.879+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.support.JdbcTransactionManager  : Switching JDBC Connection [HikariProxyConnection [HikariProxyConnection@1326502956 wrapping org.postgresql.jdbc.PgConnection@ace2408]] to manual commit
+2024-06-21T15:57:44.881+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.support.JdbcTransactionManager  : Participating in existing transaction
+2024-06-21T15:57:45.035+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL query
+2024-06-21T15:57:45.036+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL statement [SELECT "project"."id" AS "id", "project"."name" AS "name", "project"."created_on" AS "created_on", "project"."last_modified_on" AS "last_modified_on" FROM "project" LIMIT 20 OFFSET 0]
+2024-06-21T15:57:45.123+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL query
+2024-06-21T15:57:45.123+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL statement [SELECT "nature"."name" AS "name" FROM "nature" WHERE "nature"."project_id" = ?]
+2024-06-21T15:57:45.159+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.support.JdbcTransactionManager  : Initiating transaction commit
+2024-06-21T15:57:45.160+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.support.JdbcTransactionManager  : Committing JDBC transaction on Connection [HikariProxyConnection [HikariProxyConnection@1326502956 wrapping org.postgresql.jdbc.PgConnection@ace2408]]
+2024-06-21T15:57:45.161+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.datasource.DataSourceUtils      : Resetting read-only flag of JDBC Connection [HikariProxyConnection [HikariProxyConnection@1326502956 wrapping org.postgresql.jdbc.PgConnection@ace2408]]
+2024-06-21T15:57:45.162+02:00 DEBUG 13542 --- [nio-8080-exec-2] o.s.jdbc.support.JdbcTransactionManager  : Releasing JDBC Connection [HikariProxyConnection [HikariProxyConnection@1326502956 wrapping org.postgresql.jdbc.PgConnection@ace2408]] after transaction
+```
+
+As a result, it will be easier for you to understand when a transaction is opened, which part of the code triggered it and what queries have been executed by the transaction.
+
+=== DataSource logging
+
+The JDBC logging support is very easy to activate but it does not list the parameters given the SQL queries.
+If you want to have a bit more details, you can add a temporary dependency in `sirius-web` to:
+
+```
+		<dependency>
+			<groupId>com.github.gavlyukovskiy</groupId>
+			<artifactId>datasource-proxy-spring-boot-starter</artifactId>
+
+      <!-- A new version may have been released, don't just copy this version number as is -->
+			<version>1.9.0</version>
+		</dependency>
+```
+
+On top of that, you will need to add `logging.level.net.ttddyy.dsproxy.listener=debug`.
+Thanks to this dependency and this log level, you will be able to see all the queries sent to the database, like this:
+
+```
+2024-06-21T15:57:45.046+02:00 DEBUG 13542 --- [nio-8080-exec-2] n.t.d.l.l.SLF4JQueryLoggingListener      : 
+Name:dataSource, Connection:3, Time:2, Success:True
+Type:Prepared, Batch:False, QuerySize:1, BatchSize:0
+Query:["SELECT "project"."id" AS "id", "project"."name" AS "name", "project"."created_on" AS "created_on", "project"."last_modified_on" AS "last_modified_on" FROM "project" LIMIT 20 OFFSET 0"]
+Params:[()]
+```
+
+Most of the time, this level of details may not be relevant but it's nice to know that this option is available.
+
+
+== How to figure out if a query is too complex
+
+If you need to know why your query is taking too much time, you can ask PostgreSQL to explain what will happen when it will execute it.
+Here is a simple example:
+
+```
+EXPLAIN (analyze, buffers, format text)
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '250cabc0-a211-438c-8015-2d2aa136eb81',
+  'Empty Studio',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+```
+
+As a result, PostgreSQL will indicate what will be done and how much time each step will take:
+
+```
+"Insert on project  (cost=0.00..0.01 rows=0 width=0) (actual time=0.349..0.349 rows=0 loops=1)"
+"  Buffers: shared hit=12 dirtied=2"
+"  ->  Result  (cost=0.00..0.01 rows=1 width=64) (actual time=0.002..0.002 rows=1 loops=1)"
+"Planning Time: 0.020 ms"
+"Execution Time: 0.406 ms"
+```
+
+== How to view PostgreSQL internal log?
+
+If you want to see as much log from PostgreSQL as possible, you can configure the PostgreSQL inside the Docker container to log every single details with the following command:
+
+```
+docker run -p 5438:5432 --name sirius-web-postgresql -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=dbpwd -e POSTGRES_DB=sirius-web-db -itd postgres -c logging_collector=on -d 5
+```
+
+With those settings, PostgreSQL will log a massive amount of details (probably way to much for a regular use case) but you can change the value of `-d 5` to a lower number like `-d 1` to select the level that matches your needs.
+After that, you can look inside the Docker container to find the logs of the PostgreSQL instance, for example in `/var/lib/postgresql/data/log`.
