@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-task</artifactId>
-	<version>2024.5.1</version>
+	<version>2024.5.2</version>
 	<name>sirius-components-task</name>
 	<description>Sirius Components Task Meta-model</description>
 
