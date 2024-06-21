@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.infrastructure.persistence;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Spring Data JDBC configuration.
@@ -21,6 +22,7 @@ import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
  * @author sbegaudeau
  */
 @Configuration
+@EnableTransactionManagement
 @EnableJdbcRepositories(basePackages = { "org.eclipse.sirius.web.domain" })
 public class JDBCConfiguration {
 }

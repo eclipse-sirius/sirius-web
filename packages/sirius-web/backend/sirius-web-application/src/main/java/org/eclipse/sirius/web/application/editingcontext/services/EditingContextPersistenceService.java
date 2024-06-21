@@ -31,6 +31,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -61,6 +62,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
     }
 
     @Override
+    @Transactional
     public void persist(IEditingContext editingContext) {
         long start = System.currentTimeMillis();
 
