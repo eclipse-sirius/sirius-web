@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="8 8 16 16">
-    <g fill="none" stroke="#b71c1c" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16.88 21.121L19 19m2.122-2.121L19 19m0 0l-2.12-2.121M19 19l2.122 2.121" />
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+    <g fill="#f44336">
+        <polygon points="8 16, 16 16, 12 8"/>
     </g>
 </svg>
