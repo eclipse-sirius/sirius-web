@@ -109,7 +109,7 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenTheURLOfAnImageWhichExistsWhenItsContentIsRequestedThenTheImageIsReturned() {
         this.givenCommittedTransaction.commit();
 
-        var uri = "http://localhost:" + port + "/api/images/icons/svg/Resource.svg";
+        var uri = "http://localhost:" + port + "/api/images/explorer/Resource.svg";
 
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
         var response = new TestRestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);

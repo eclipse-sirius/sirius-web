@@ -56,9 +56,9 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
 
     private static final String TITLE = "Outgoing";
 
-    private static final String WIDGET_ICON_URL = "/icons/svg/east_black_24dp.svg";
+    private static final String WIDGET_ICON_URL = "/related-elements/east_black_24dp.svg";
 
-    private static final String OUTGOING_REFERENCE_ICON_URL = "/icons/svg/east_black_24dp.svg";
+    private static final String OUTGOING_REFERENCE_ICON_URL = "/related-elements/east_black_24dp.svg";
 
     private static final String OUTGOING_REFERENCE_KIND = "siriusWeb://category/outgoing-references";
 
