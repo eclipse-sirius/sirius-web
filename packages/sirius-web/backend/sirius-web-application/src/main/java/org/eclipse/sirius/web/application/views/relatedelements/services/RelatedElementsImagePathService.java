@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.images.services;
+package org.eclipse.sirius.web.application.views.relatedelements.services;
 
 import java.util.List;
 
@@ -18,14 +18,14 @@ import org.eclipse.sirius.components.core.api.IImagePathService;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to allow the access to explorer images.
+ * Used to allow access to the images of the related elements view.
  *
  * @author sbegaudeau
  */
 @Service
-public class ExplorerImagePathService implements IImagePathService {
+public class RelatedElementsImagePathService implements IImagePathService {
     @Override
     public List<String> getPaths() {
-        return List.of("/icons/svg");
+        return List.of("/related-elements");
     }
 }

@@ -63,11 +63,11 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
 
     private static final String TITLE = "Current";
 
-    private static final String WIDGET_ICON_URL = "/icons/svg/arrow_downward_black_24dp.svg";
+    private static final String WIDGET_ICON_URL = "/related-elements/arrow_downward_black_24dp.svg";
 
-    private static final String FOLDER_ICON_URL = "/icons/svg/folder_black_24dp.svg";
+    private static final String FOLDER_ICON_URL = "/related-elements/folder_black_24dp.svg";
 
-    private static final String CHILDREN_CATEGORY_ICON_URL = "/icons/svg/subdirectory_arrow_right_black_24dp.svg";
+    private static final String CHILDREN_CATEGORY_ICON_URL = "/related-elements/subdirectory_arrow_right_black_24dp.svg";
 
     private static final String CATEGORY_KIND = "siriusWeb://category";
 

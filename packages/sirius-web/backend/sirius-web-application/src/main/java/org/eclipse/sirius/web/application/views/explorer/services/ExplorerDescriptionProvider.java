@@ -37,7 +37,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
-import org.eclipse.sirius.web.application.images.ImageConstants;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
@@ -222,7 +221,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                     .flatMap(Optional::stream)
                     .toList();
         } else if (self instanceof Resource) {
-            imageURL = List.of(ImageConstants.RESOURCE_SVG);
+            imageURL = List.of("/explorer/Resource.svg");
         }
         return imageURL;
     }

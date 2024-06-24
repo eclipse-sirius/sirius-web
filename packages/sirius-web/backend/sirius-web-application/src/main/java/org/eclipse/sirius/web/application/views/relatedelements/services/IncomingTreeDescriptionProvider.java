@@ -53,9 +53,9 @@ public class IncomingTreeDescriptionProvider implements IIncomingTreeDescription
 
     private static final String TITLE = "Incoming";
 
-    private static final String WIDGET_ICON_URL = "/images/west_black_24dp.svg";
+    private static final String WIDGET_ICON_URL = "/related-elements/west_black_24dp.svg";
 
-    private static final String INCOMING_REFERENCE_ICON_URL = "/images/west_black_24dp.svg";
+    private static final String INCOMING_REFERENCE_ICON_URL = "/related-elements/west_black_24dp.svg";
 
     private static final String INCOMING_REFERENCES_KIND = "siriusWeb://category/incoming-references";
 
