@@ -65,7 +65,9 @@ public class PaletteQueryRunner implements IQueryRunner {
                   id
                 }
                 appliesToDiagramRoot
-                dialogDescriptionId
+                dialog {
+                  dialogDescriptionId
+                }
               }
             }
             """;

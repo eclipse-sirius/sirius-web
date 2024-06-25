@@ -49,7 +49,7 @@ import { NewProjectCard } from '../views/project-browser/create-projects-area/Ne
 import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
 import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
 
-import { SELECTION_DIALOG_ID, SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
+import { SELECTION_DIALOG_TYPE, SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
   const params = new URLSearchParams(query);
@@ -181,8 +181,8 @@ defaultExtensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
  *******************************************************************************/
 const diagramDialogContributions: DiagramDialogContribution[] = [
   {
-    canHandle: (dialogKindId: string) => {
-      return SELECTION_DIALOG_ID === dialogKindId;
+    canHandle: (dialogTypeId: string) => {
+      return SELECTION_DIALOG_TYPE === dialogTypeId;
     },
     component: SelectionDialog,
   },

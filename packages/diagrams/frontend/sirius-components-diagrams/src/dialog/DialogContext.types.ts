@@ -15,7 +15,7 @@ import { GQLToolVariable } from '../renderer/palette/Palette.types';
 
 export interface DialogContextValue {
   showDialog: (
-    dialogKindId: string,
+    dialogTypeId: string,
     editingContextId: string,
     dialogDescriptionId: string,
     targetObjectId: string,
@@ -25,7 +25,7 @@ export interface DialogContextValue {
 
 export interface DialogContextProviderState {
   open: boolean;
-  dialogKindId: string | undefined;
+  dialogTypeId: string | undefined;
   editingContextId: string | undefined;
   dialogDescriptionId: string | undefined;
   targetObjectId: string | undefined;

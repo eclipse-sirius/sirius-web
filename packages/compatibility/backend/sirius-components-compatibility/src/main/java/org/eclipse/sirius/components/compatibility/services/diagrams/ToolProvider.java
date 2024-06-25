@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.tools.Dialog;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
@@ -45,6 +46,7 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.selection.description.SelectionDescription;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.AdditionalLayer;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
@@ -234,10 +236,9 @@ public class ToolProvider implements IToolProvider {
         List<String> imagePath = this.toolImageProvider.getIcon(nodeCreationTool);
         List<IDiagramElementDescription> targetDescriptions = this.getParentNodeDescriptions(nodeCreationTool.getNodeMappings(), id2NodeDescriptions);
         var selectModelElementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(nodeCreationTool.getVariable());
-        String dialogDescriptionId = null;
-        if (selectModelElementVariableOpt.isPresent()) {
-            dialogDescriptionId = this.identifierProvider.getIdentifier(selectModelElementVariableOpt.get());
-        }
+        Dialog dialog = selectModelElementVariableOpt
+                .map(selectModelElementVariable -> new Dialog(this.identifierProvider.getIdentifier(selectModelElementVariable), SelectionDescription.TYPE))
+                .orElse(null);
         // @formatter:off
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
@@ -245,7 +246,7 @@ public class ToolProvider implements IToolProvider {
                 .handler(this.createNodeCreationHandler(interpreter, nodeCreationTool))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(this.atLeastOneRootMapping(nodeCreationTool.getNodeMappings()))
-                .dialogDescriptionId(dialogDescriptionId)
+                .dialog(dialog)
                 .build();
         // @formatter:on
     }
@@ -257,10 +258,9 @@ public class ToolProvider implements IToolProvider {
         List<String> imagePath = this.toolImageProvider.getIcon(containerCreationDescription);
         List<IDiagramElementDescription> targetDescriptions = this.getParentNodeDescriptions(containerCreationDescription.getContainerMappings(), id2NodeDescriptions);
         var selectModelElementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(containerCreationDescription.getVariable());
-        String dialogDescriptionId = null;
-        if (selectModelElementVariableOpt.isPresent()) {
-            dialogDescriptionId = this.identifierProvider.getIdentifier(selectModelElementVariableOpt.get());
-        }
+        Dialog dialog = selectModelElementVariableOpt
+                .map(selectModelElementVariable -> new Dialog(this.identifierProvider.getIdentifier(selectModelElementVariable), SelectionDescription.TYPE))
+                .orElse(null);
         // @formatter:off
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
@@ -268,7 +268,7 @@ public class ToolProvider implements IToolProvider {
                 .handler(this.createContainerCreationHandler(interpreter, containerCreationDescription))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(this.atLeastOneRootMapping(containerCreationDescription.getContainerMappings()))
-                .dialogDescriptionId(dialogDescriptionId)
+                .dialog(dialog)
                 .build();
         // @formatter:on
     }

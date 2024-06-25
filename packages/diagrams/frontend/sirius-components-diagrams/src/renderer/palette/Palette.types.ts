@@ -97,7 +97,12 @@ export interface GQLTool {
 
 export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   appliesToDiagramRoot: boolean;
+  dialog: GQLDialog;
+}
+
+export interface GQLDialog {
   dialogDescriptionId: string;
+  dialogDescriptionType: string;
 }
 
 export interface GQLGetToolSectionsVariables {

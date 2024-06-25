@@ -133,7 +133,7 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
         if (tool instanceof org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool singleClickOnDiagramElementTool) {
             convertedTool = new SingleClickOnDiagramElementTool(singleClickOnDiagramElementTool.getId(), singleClickOnDiagramElementTool.getLabel(),
                     singleClickOnDiagramElementTool.getIconURL(), singleClickOnDiagramElementTool.getTargetDescriptions(),
-                    singleClickOnDiagramElementTool.getDialogDescriptionId(), singleClickOnDiagramElementTool.isAppliesToDiagramRoot());
+                    singleClickOnDiagramElementTool.getDialog(), singleClickOnDiagramElementTool.isAppliesToDiagramRoot());
         }
         if (tool instanceof org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool singleClickOnTwoDiagramElementsTool) {
             List<SingleClickOnTwoDiagramElementsCandidate> candidates = new ArrayList<>();
@@ -314,20 +314,20 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
         // Graphical Delete Tool for unsynchronized mapping only (the handler is never called)
         if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
             // Edit Tool (the handler is never called)
-            SingleClickOnDiagramElementTool editTool = new SingleClickOnDiagramElementTool("edit", "Edit", List.of(DiagramImageConstants.EDIT_SVG), targetDescriptions, "", false);
+            SingleClickOnDiagramElementTool editTool = new SingleClickOnDiagramElementTool("edit", "Edit", List.of(DiagramImageConstants.EDIT_SVG), targetDescriptions, null, false);
             var editToolSection = new ToolSection("edit-section", "", List.of(), List.of(editTool));
             extraToolSections.add(editToolSection);
 
             if (unsynchronizedMapping) {
                 SingleClickOnDiagramElementTool graphicalDeleteTool = new SingleClickOnDiagramElementTool("graphical-delete", "Delete from diagram",
-                        List.of(DiagramImageConstants.GRAPHICAL_DELETE_SVG), targetDescriptions, "", false);
+                        List.of(DiagramImageConstants.GRAPHICAL_DELETE_SVG), targetDescriptions, null, false);
                 var graphicalDeleteToolSection = new ToolSection("graphical-delete-section", "", List.of(), List.of(graphicalDeleteTool));
                 extraToolSections.add(graphicalDeleteToolSection);
             }
 
             // Semantic Delete Tool (the handler is never called)
             SingleClickOnDiagramElementTool semanticDeleteTool = new SingleClickOnDiagramElementTool("semantic-delete", "Delete from model",
-                    List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG), targetDescriptions, "", false);
+                    List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG), targetDescriptions, null, false);
             var graphicalDeleteToolSection = new ToolSection("semantic-delete-section", "", List.of(), List.of(semanticDeleteTool));
             extraToolSections.add(graphicalDeleteToolSection);
         }

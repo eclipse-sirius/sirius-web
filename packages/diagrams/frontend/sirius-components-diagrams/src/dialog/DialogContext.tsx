@@ -27,7 +27,7 @@ export const DialogContext = React.createContext<DialogContextValue>(defaultValu
 export const DialogContextProvider = ({ children }) => {
   const [state, setState] = useState<DialogContextProviderState>({
     dialogDescriptionId: undefined,
-    dialogKindId: undefined,
+    dialogTypeId: undefined,
     editingContextId: undefined,
     targetObjectId: undefined,
     onConfirm: () => {},
@@ -36,22 +36,22 @@ export const DialogContextProvider = ({ children }) => {
 
   const { data: dialogContributions } = useData<DiagramDialogContribution[]>(diagramDialogContributionExtensionPoint);
   const showDialog = (
-    dialogKindId: string,
+    dialogTypeId: string,
     editingContextId: string,
     dialogDescriptionId,
     targetObjectId,
     onConfirm: (variables: GQLToolVariable[]) => void
   ) => {
-    setState({ open: true, dialogKindId, editingContextId, dialogDescriptionId, targetObjectId, onConfirm });
+    setState({ open: true, dialogTypeId, editingContextId, dialogDescriptionId, targetObjectId, onConfirm });
   };
 
   const onFinish = (toolVariables: GQLToolVariable[]) => {
     state.onConfirm(toolVariables);
-    setState((prevState) => ({ ...prevState, open: false, dialogKindId: undefined }));
+    setState((prevState) => ({ ...prevState, open: false, dialogTypeId: undefined }));
   };
 
   const onClose = () => {
-    setState((prevState) => ({ ...prevState, open: false, dialogKindId: undefined }));
+    setState((prevState) => ({ ...prevState, open: false, dialogTypeId: undefined }));
   };
 
   let DialogComponent: React.ComponentType<DialogComponentProps> | undefined;
@@ -62,9 +62,9 @@ export const DialogContextProvider = ({ children }) => {
     onFinish,
     onClose,
   };
-  if (state.open && state.dialogKindId) {
+  if (state.open && state.dialogTypeId) {
     const dialogContribution: DiagramDialogContribution | undefined = dialogContributions.find((dialogContribution) =>
-      dialogContribution.canHandle(state.dialogKindId as string)
+      dialogContribution.canHandle(state.dialogTypeId as string)
     );
     if (dialogContribution) {
       DialogComponent = dialogContribution.component;

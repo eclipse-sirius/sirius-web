@@ -71,7 +71,7 @@ const useSelectionObjectModalStyles = makeStyles((_theme) =>
   })
 );
 
-export const SELECTION_DIALOG_ID: string = 'SELECTION_DIALOG_ID';
+export const SELECTION_DIALOG_TYPE: string = 'SELECTION_DIALOG_TYPE';
 
 export const SelectionDialog = ({
   editingContextId,

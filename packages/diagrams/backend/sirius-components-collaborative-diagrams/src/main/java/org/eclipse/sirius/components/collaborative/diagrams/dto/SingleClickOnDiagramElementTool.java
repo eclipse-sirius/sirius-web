@@ -16,13 +16,14 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
+import org.eclipse.sirius.components.diagrams.tools.Dialog;
 
 /**
  * A tool triggered by a single click in the palette on a diagram element.
  *
  * @author mcharfadi
  */
-public record SingleClickOnDiagramElementTool(String id, String label, List<String> iconURL, List<IDiagramElementDescription> targetDescriptions, String dialogDescriptionId,
+public record SingleClickOnDiagramElementTool(String id, String label, List<String> iconURL, List<IDiagramElementDescription> targetDescriptions, Dialog dialog,
                                               boolean appliesToDiagramRoot) implements ITool {
 
     public SingleClickOnDiagramElementTool {
@@ -53,7 +54,7 @@ public record SingleClickOnDiagramElementTool(String id, String label, List<Stri
 
         private List<IDiagramElementDescription> targetDescriptions;
 
-        private String dialogDescriptionId;
+        private Dialog dialog;
 
         private boolean appliesToDiagramRoot;
 
@@ -81,13 +82,13 @@ public record SingleClickOnDiagramElementTool(String id, String label, List<Stri
             return this;
         }
 
-        public Builder dialogDescriptionId(String dialogDescriptionId) {
-            this.dialogDescriptionId = dialogDescriptionId;
+        public Builder dialog(Dialog dialog) {
+            this.dialog = dialog;
             return this;
         }
 
         public SingleClickOnDiagramElementTool build() {
-            return new SingleClickOnDiagramElementTool(this.id, this.label, this.iconURL, this.targetDescriptions, this.dialogDescriptionId, this.appliesToDiagramRoot);
+            return new SingleClickOnDiagramElementTool(this.id, this.label, this.iconURL, this.targetDescriptions, this.dialog, this.appliesToDiagramRoot);
         }
     }
 

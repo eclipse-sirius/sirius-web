@@ -33,6 +33,35 @@ More existing APIs will be migrated to this new common pattern.
  - https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] [sirius-web] Remove `GraphQLNodeStyleFragment` from `NodeTypeRegistry`, you can specify additional fields to be retreived by the subscription using the `DocumentTransform` GraphQL API and the `apolloClientOptionsConfigurersExtensionPoint` extension point
  - https://github.com/eclipse-sirius/sirius-web/issues/3641[#3641] [core] `IRepresentationMetadataProvider` now defined a single method `Optional<RepresentationMetadata> getMetadata(String representationId)` instead of separate `canHandle` and `handle` methods.
 
+ - https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Update the diagram GraphQL API. 
+
+ * The `InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by a `variables: [ToolVariable!]!` to make it possible to provide any kind of variable to the backend context.
+
+```
+ input InvokeSingleClickOnDiagramElementToolInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  variables: [ToolVariable!]!
+  diagramElementId: ID!
+  startingPositionX: Float!
+  startingPositionY: Float!
+  toolId: ID!
+}
+```
+
+ * The `SingleClickOnDiagramElementTool#dialogDescriptionId` has been replaced by a `dialog: Dialog` field to provide the information about the dialog that the frontend needs to retrieve in the extension point.
+```
+type SingleClickOnDiagramElementTool implements Tool {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  appliesToDiagramRoot: Boolean!
+  dialog: Dialog
+  targetDescriptions: [DiagramElementDescription!]!
+}
+```
+
 === Dependency update
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3510[#3510] [releng] Switch to Spring Boot 3.2.5

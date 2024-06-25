@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo and others.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLToolVariable } from '../renderer/palette/Palette.types';
-export interface UseDialogValue {
-  showDialog: (
-    dialogTypeId: string,
-    editingContextID: string,
-    dialogDescriptionId: string,
-    targetObjectId: string,
-    onConfirm: (variables: GQLToolVariable[]) => void
-  ) => void;
+package org.eclipse.sirius.components.diagrams.tools;
+
+import java.util.Objects;
+
+/**
+ * Represents the Dialog type of the SingleClickOnDiagramElementTool#dialog attribute.
+ *
+ * @author fbarbin
+ */
+public record Dialog(String dialogDescriptionId, String dialogDescriptionType) {
+
+    public Dialog {
+        Objects.requireNonNull(dialogDescriptionId);
+        Objects.requireNonNull(dialogDescriptionType);
+    }
 }

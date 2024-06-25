@@ -97,7 +97,10 @@ const ToolFields = gql`
         id
       }
       appliesToDiagramRoot
-      dialogDescriptionId
+      dialog {
+        dialogDescriptionId
+        dialogDescriptionType
+      }
     }
   }
 `;
@@ -421,9 +424,9 @@ export const Palette = ({
       invokeSingleClickTool(tool, variables);
     };
     showDialog(
-      'SELECTION_DIALOG_ID',
+      tool.dialog.dialogDescriptionType,
       editingContextId,
-      tool.dialogDescriptionId,
+      tool.dialog.dialogDescriptionId,
       diagramElementTargetObjectId,
       onConfirm
     );
@@ -450,7 +453,7 @@ export const Palette = ({
         break;
       default:
         if (isSingleClickOnDiagramElementTool(tool)) {
-          if (tool.dialogDescriptionId && diagramElementTargetObjectId) {
+          if (tool.dialog && diagramElementTargetObjectId) {
             handleDialogDescription(tool, diagramElementTargetObjectId);
           } else {
             invokeSingleClickTool(tool, []);

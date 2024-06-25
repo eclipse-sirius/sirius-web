@@ -13,7 +13,7 @@
 
 import { GQLToolVariable } from '../renderer/palette/Palette.types';
 export interface DiagramDialogContribution {
-  canHandle: (dialogKindId: string) => boolean;
+  canHandle: (dialogTypeId: string) => boolean;
   component: React.ComponentType<DialogComponentProps>;
 }
 

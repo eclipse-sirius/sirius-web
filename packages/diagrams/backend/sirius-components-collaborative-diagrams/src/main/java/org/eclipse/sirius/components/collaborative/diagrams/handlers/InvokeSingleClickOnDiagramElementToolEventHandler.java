@@ -35,7 +35,6 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -78,11 +77,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
 
     private final Counter counter;
 
-    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
-
-
     public InvokeSingleClickOnDiagramElementToolEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService,
-            ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+            ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.toolService = Objects.requireNonNull(toolService);
@@ -93,8 +89,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
         // @formatter:on
-
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
     }
 
     @Override
@@ -154,13 +148,13 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
 
         if (self.isPresent()) {
             VariableManager variableManager = this.populateVariableManager(editingContext, diagramContext, node, edge, self);
-            String dialogDescriptionId = tool.getDialogDescriptionId();
-            if (dialogDescriptionId != null && !variables.isEmpty()) {
+            var dialog = tool.getDialog();
+            if (dialog != null && !variables.isEmpty()) {
                 this.handleDialogVariables(editingContext, variableManager, variables);
             }
 
             //We do not apply the tool if a dialog is defined but no variables have been provided
-            if (dialogDescriptionId == null || !variables.isEmpty()) {
+            if (dialog == null || !variables.isEmpty()) {
                 result = tool.getHandler().apply(variableManager);
                 Position newPosition = Position.at(startingPositionX, startingPositionY);
                 diagramContext.getDiagramEvents().add(new SinglePositionEvent(diagramElementId, newPosition));

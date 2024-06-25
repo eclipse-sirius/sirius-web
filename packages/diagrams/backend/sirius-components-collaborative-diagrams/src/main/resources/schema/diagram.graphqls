@@ -284,8 +284,13 @@ type SingleClickOnDiagramElementTool implements Tool {
   label: String!
   iconURL: [String!]!
   appliesToDiagramRoot: Boolean!
-  dialogDescriptionId: String
+  dialog: Dialog
   targetDescriptions: [DiagramElementDescription!]!
+}
+
+type Dialog {
+  dialogDescriptionId: String!
+  dialogDescriptionType: String!
 }
 
 type SingleClickOnTwoDiagramElementsTool implements Tool {

@@ -45,7 +45,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
 
     private boolean appliesToDiagramRoot;
 
-    private String dialogDescriptionId;
+    private Dialog dialog;
 
     private SingleClickOnDiagramElementTool() {
         // Prevent instantiation
@@ -78,8 +78,8 @@ public final class SingleClickOnDiagramElementTool implements ITool {
         return this.label;
     }
 
-    public String getDialogDescriptionId() {
-        return this.dialogDescriptionId;
+    public Dialog getDialog() {
+        return this.dialog;
     }
 
     @Override
@@ -113,7 +113,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
 
         private boolean appliesToDiagramRoot;
 
-        private String dialogDescriptionId;
+        private Dialog dialog;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -144,8 +144,8 @@ public final class SingleClickOnDiagramElementTool implements ITool {
             return this;
         }
 
-        public Builder dialogDescriptionId(String dialogDescriptionId) {
-            this.dialogDescriptionId = dialogDescriptionId;
+        public Builder dialog(Dialog dialog) {
+            this.dialog = dialog;
             return this;
         }
 
@@ -157,7 +157,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
             tool.handler = Objects.requireNonNull(this.handler);
             tool.targetDescriptions = Objects.requireNonNull(this.targetDescriptions);
             tool.appliesToDiagramRoot = this.appliesToDiagramRoot;
-            tool.dialogDescriptionId = this.dialogDescriptionId;
+            tool.dialog = this.dialog;
             return tool;
         }
     }
