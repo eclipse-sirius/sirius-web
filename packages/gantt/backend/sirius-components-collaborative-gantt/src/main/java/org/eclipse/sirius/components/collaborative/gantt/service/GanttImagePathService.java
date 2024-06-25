@@ -12,26 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.gantt.service;
 
-import java.util.Optional;
+import java.util.List;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
-import org.eclipse.sirius.components.gantt.Gantt;
+import org.eclipse.sirius.components.core.api.IImagePathService;
 import org.springframework.stereotype.Service;
 
 /**
- * Provide the image representing a gantt.
+ * Register the gantt images folder.
  *
- * @author lfasani
+ * @author sbegaudeau
  */
 @Service
-public class GanttImageProvider implements IRepresentationImageProvider {
-
+public class GanttImagePathService implements IImagePathService {
     @Override
-    public Optional<String> getImageURL(String kind) {
-        if (Gantt.KIND.equals(kind)) {
-            return Optional.of("/gantt-images/gantt.svg");
-        }
-        return Optional.empty();
+    public List<String> getPaths() {
+        return List.of("/gantt-images/");
     }
-
 }
