@@ -120,7 +120,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
         var event = this.domainEventCollector.getDomainEvents().get(0);
         assertThat(event).isInstanceOf(RepresentationDataCreatedEvent.class);
 
-        assertThat(this.representationDataSearchService.findById(UUID.fromString(representationId))).isPresent();
+        assertThat(this.representationDataSearchService.existsById(UUID.fromString(representationId))).isTrue();
     }
 
     @Test
@@ -159,7 +159,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
     public void givenRepresentationToDeleteWhenMutationIsPerformedThenTheRepresentationHasBeenDeleted() {
         this.givenCommittedTransaction.commit();
 
-        assertThat(this.representationDataSearchService.findById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isPresent();
+        assertThat(this.representationDataSearchService.existsById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isTrue();
 
         var input = new DeleteRepresentationInput(UUID.randomUUID(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var result = this.deleteRepresentationMutationRunner.run(input);
@@ -170,7 +170,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
         String typename = JsonPath.read(result, "$.data.deleteRepresentation.__typename");
         assertThat(typename).isEqualTo(DeleteRepresentationSuccessPayload.class.getSimpleName());
 
-        assertThat(this.representationDataSearchService.findById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isEmpty();
+        assertThat(this.representationDataSearchService.existsById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isFalse();
 
         assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
         var event = this.domainEventCollector.getDomainEvents().get(0);

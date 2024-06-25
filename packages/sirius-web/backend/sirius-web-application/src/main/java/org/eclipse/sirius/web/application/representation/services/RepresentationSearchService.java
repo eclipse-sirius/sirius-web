@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.collaborative.representations.migration.Rep
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataContentOnly;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataUpdateService;
 import org.slf4j.Logger;
@@ -60,7 +60,7 @@ public class RepresentationSearchService implements IRepresentationSearchService
     @Override
     public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
         return new UUIDParser().parse(representationId)
-                .flatMap(this.representationDataSearchService::findById)
+                .flatMap(this.representationDataSearchService::findContentById)
                 .map(this::migratedContent)
                 .flatMap(this::toRepresentation)
                 .filter(representationClass::isInstance)
@@ -80,11 +80,11 @@ public class RepresentationSearchService implements IRepresentationSearchService
         return optionalRepresentation;
     }
 
-    private String migratedContent(RepresentationData representationData) {
+    private String migratedContent(RepresentationDataContentOnly representationData) {
         List<IRepresentationMigrationParticipant> applicableParticipants = this.getApplicableMigrationParticipants(representationData);
         if (!applicableParticipants.isEmpty()) {
             try {
-                JsonNode rootJsonNode = this.objectMapper.readTree(representationData.getContent());
+                JsonNode rootJsonNode = this.objectMapper.readTree(representationData.content());
                 ObjectNode rootObjectNode = (ObjectNode) rootJsonNode;
                 var migrationService = new RepresentationMigrationService(applicableParticipants, rootObjectNode);
                 migrationService.parseProperties(rootObjectNode, this.objectMapper);
@@ -93,13 +93,13 @@ public class RepresentationSearchService implements IRepresentationSearchService
                 this.logger.warn(exception.getMessage());
             }
         }
-        return representationData.getContent();
+        return representationData.content();
     }
 
 
-    private List<IRepresentationMigrationParticipant> getApplicableMigrationParticipants(RepresentationData representationData) {
-        var migrationVersion = representationData.getMigrationVersion();
-        var kind = representationData.getKind();
+    private List<IRepresentationMigrationParticipant> getApplicableMigrationParticipants(RepresentationDataContentOnly representationData) {
+        var migrationVersion = representationData.migrationVersion();
+        var kind = representationData.kind();
 
         return this.migrationParticipants.stream()
                 .filter(migrationParticipant -> Objects.equals(migrationParticipant.getKind(), kind))

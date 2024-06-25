@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataContentOnly;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
@@ -31,18 +32,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IRepresentationDataRepository extends ListPagingAndSortingRepository<RepresentationData, UUID>, ListCrudRepository<RepresentationData, UUID> {
     @Query("""
-            SELECT id, label, kind, target_object_id, description_id
-            FROM representation_data representationData
-            WHERE representationData.id = :id
-            """)
-    Optional<RepresentationDataMetadataOnly> findMetadataById(UUID id);
-
-    @Query("""
-        SELECT *
+        SELECT id, label, kind, target_object_id, description_id
         FROM representation_data representationData
-        WHERE representationData.project_id = :projectId
+        WHERE representationData.id = :id
         """)
-    List<RepresentationData> findAllByProjectId(UUID projectId);
+    Optional<RepresentationDataMetadataOnly> findMetadataById(UUID id);
 
     @Query("""
         SELECT id, label, kind, target_object_id, description_id
@@ -50,6 +44,20 @@ public interface IRepresentationDataRepository extends ListPagingAndSortingRepos
         WHERE representationData.project_id = :projectId
         """)
     List<RepresentationDataMetadataOnly> findAllMetadataByProjectId(UUID projectId);
+
+    @Query("""
+        SELECT id, label, kind, target_object_id, description_id
+        FROM representation_data representationData
+        WHERE representationData.target_object_id = :targetObjectId
+        """)
+    List<RepresentationDataMetadataOnly> findAllMetadataByTargetObjectId(String targetObjectId);
+
+    @Query("""
+        SELECT kind, content, last_migration_performed, migration_version
+        FROM representation_data representationData
+        WHERE representationData.id = :id
+        """)
+    Optional<RepresentationDataContentOnly> findContentById(UUID id);
 
     @Query("""
         SELECT representationData.project_id
@@ -64,11 +72,4 @@ public interface IRepresentationDataRepository extends ListPagingAndSortingRepos
         WHERE representationData.target_object_id = :targetObjectId
         """)
     boolean existAnyRepresentationForTargetObjectId(String targetObjectId);
-
-    @Query("""
-        SELECT *
-        FROM representation_data representationData
-        WHERE representationData.target_object_id = :targetObjectId
-        """)
-    List<RepresentationData> findAllByTargetObjectId(String targetObjectId);
 }

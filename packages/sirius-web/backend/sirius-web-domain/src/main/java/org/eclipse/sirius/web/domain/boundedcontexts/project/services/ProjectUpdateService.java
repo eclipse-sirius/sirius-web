@@ -62,7 +62,41 @@ public class ProjectUpdateService implements IProjectUpdateService {
             result = new Success<>(null);
         }
 
+        return result;
+    }
 
+    @Override
+    public IResult<Void> addNature(UUID projectId, String natureName) {
+        IResult<Void> result = null;
+
+        var optionalProject = this.projectRepository.findById(projectId);
+        if (optionalProject.isEmpty()) {
+            result = new Failure<>(this.messageService.notFound());
+        } else {
+            var project = optionalProject.get();
+            project.addNature(natureName);
+
+            this.projectRepository.save(project);
+            result = new Success<>(null);
+        }
+
+        return result;
+    }
+
+    @Override
+    public IResult<Void> removeNature(UUID projectId, String natureName) {
+        IResult<Void> result = null;
+
+        var optionalProject = this.projectRepository.findById(projectId);
+        if (optionalProject.isEmpty()) {
+            result = new Failure<>(this.messageService.notFound());
+        } else {
+            var project = optionalProject.get();
+            project.removeNature(natureName);
+
+            this.projectRepository.save(project);
+            result = new Success<>(null);
+        }
 
         return result;
     }

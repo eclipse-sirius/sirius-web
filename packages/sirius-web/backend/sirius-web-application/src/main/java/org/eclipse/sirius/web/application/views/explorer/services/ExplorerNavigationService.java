@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerNavigationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.springframework.stereotype.Service;
 
@@ -52,13 +52,13 @@ public class ExplorerNavigationService implements IExplorerNavigationService {
     public List<String> getAncestors(IEditingContext editingContext, String treeItemId) {
         List<String> ancestorsIds = new ArrayList<>();
 
-        var optionalRepresentation = new UUIDParser().parse(treeItemId).flatMap(this.representationDataSearchService::findById);
+        var optionalRepresentationMetadata = new UUIDParser().parse(treeItemId).flatMap(this.representationDataSearchService::findMetadataById);
         var optionalSemanticObject = this.objectSearchService.getObject(editingContext, treeItemId);
 
         Optional<Object> optionalObject = Optional.empty();
-        if (optionalRepresentation.isPresent()) {
+        if (optionalRepresentationMetadata.isPresent()) {
             // The first parent of a representation item is the item for its targetObject.
-            optionalObject = optionalRepresentation.map(RepresentationData::getTargetObjectId)
+            optionalObject = optionalRepresentationMetadata.map(RepresentationDataMetadataOnly::targetObjectId)
                     .flatMap(objectId -> this.objectSearchService.getObject(editingContext, objectId));
         } else if (optionalSemanticObject.isPresent()) {
             // The first parent of a semantic object item is the item for its actual container
