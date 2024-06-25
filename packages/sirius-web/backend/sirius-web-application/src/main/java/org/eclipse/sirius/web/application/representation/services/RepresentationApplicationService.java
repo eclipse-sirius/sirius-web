@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationApplicationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -49,10 +49,10 @@ public class RepresentationApplicationService implements IRepresentationApplicat
     public Page<RepresentationMetadata> findAllByEditingContextId(String editingContextId, Pageable pageable) {
         var representationData =  new UUIDParser().parse(editingContextId)
                 .map(AggregateReference::<Project, UUID>to)
-                .map(this.representationDataSearchService::findAllByProject)
+                .map(this.representationDataSearchService::findAllMetadataByProject)
                 .orElse(List.of())
                 .stream()
-                .sorted(Comparator.comparing(RepresentationData::getLabel))
+                .sorted(Comparator.comparing(RepresentationDataMetadataOnly::label))
                 .toList();
 
         int startIndex = (int) pageable.getOffset() * pageable.getPageSize();
@@ -63,8 +63,8 @@ public class RepresentationApplicationService implements IRepresentationApplicat
         return new PageImpl<>(representationMetadata, pageable, representationData.size());
     }
 
-    private RepresentationMetadata toRepresentationMetadata(RepresentationData representationData) {
-        return new RepresentationMetadata(representationData.getId().toString(), representationData.getKind(), representationData.getLabel(), representationData.getDescriptionId());
+    private RepresentationMetadata toRepresentationMetadata(RepresentationDataMetadataOnly representationData) {
+        return new RepresentationMetadata(representationData.id().toString(), representationData.kind(), representationData.label(), representationData.descriptionId());
     }
 
     @Override

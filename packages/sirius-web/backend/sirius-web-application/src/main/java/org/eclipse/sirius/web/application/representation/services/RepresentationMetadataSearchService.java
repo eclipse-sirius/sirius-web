@@ -55,9 +55,9 @@ public class RepresentationMetadataSearchService implements IRepresentationMetad
 
     @Override
     public List<RepresentationMetadata> findAllByTargetObjectId(IEditingContext editingContext, String targetObjectId) {
-        return this.representationDataSearchService.findAllByTargetObjectId(targetObjectId)
+        return this.representationDataSearchService.findAllMetadataByTargetObjectId(targetObjectId)
                 .stream()
-                .map(representation -> new RepresentationMetadata(representation.getId().toString(), representation.getKind(), representation.getLabel(), representation.getDescriptionId()))
+                .map(representation -> new RepresentationMetadata(representation.id().toString(), representation.kind(), representation.label(), representation.descriptionId()))
                 .toList();
     }
 }

@@ -14,15 +14,12 @@ package org.eclipse.sirius.web.services.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Optional;
-
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.MigrationIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,13 +66,13 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
 
         this.representationPersistenceService.save(optionalEditingContext.get(), optionalRepresentation.get());
 
-        Optional<RepresentationData> optionalUpdatedRepresentationData = this.representationDataSearchService.findById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
+        var optionalUpdatedRepresentationData = this.representationDataSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
         assertThat(optionalUpdatedRepresentationData).isPresent();
 
         var updatedRepresentationData = optionalUpdatedRepresentationData.get();
 
-        assertThat(updatedRepresentationData.getMigrationVersion()).isEqualTo("2024.4.3-202405130907");
-        assertThat(updatedRepresentationData.getLastMigrationPerformed()).isEqualTo("HierarchyChildrenAttributeMigration");
+        assertThat(updatedRepresentationData.migrationVersion()).isEqualTo("2024.4.3-202405130907");
+        assertThat(updatedRepresentationData.lastMigrationPerformed()).isEqualTo("HierarchyChildrenAttributeMigration");
 
     }
 }

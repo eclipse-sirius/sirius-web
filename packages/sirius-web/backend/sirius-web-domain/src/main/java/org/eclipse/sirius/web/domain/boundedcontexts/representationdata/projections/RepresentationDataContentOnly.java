@@ -10,21 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
-
-import java.util.UUID;
-
-import org.eclipse.sirius.web.domain.services.IResult;
+package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections;
 
 /**
- * Used to update projects.
+ * Projection used to retrieve only the content and its associated data from the representation data.
  *
  * @author sbegaudeau
  */
-public interface IProjectUpdateService {
-    IResult<Void> renameProject(UUID projectId, String newName);
-
-    IResult<Void> addNature(UUID projectId, String natureName);
-
-    IResult<Void> removeNature(UUID projectId, String natureName);
+public record RepresentationDataContentOnly(
+        String kind,
+        String content,
+        String lastMigrationPerformed,
+        String migrationVersion) {
 }

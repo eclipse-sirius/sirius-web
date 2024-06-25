@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataContentOnly;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
@@ -30,17 +30,15 @@ public interface IRepresentationDataSearchService {
 
     boolean existsById(UUID id);
 
-    Optional<RepresentationData> findById(UUID id);
+    Optional<RepresentationDataContentOnly> findContentById(UUID id);
 
     Optional<RepresentationDataMetadataOnly> findMetadataById(UUID id);
 
-    List<RepresentationData> findAllByProject(AggregateReference<Project, UUID> project);
-
     List<RepresentationDataMetadataOnly> findAllMetadataByProject(AggregateReference<Project, UUID> project);
 
-    boolean existAnyRepresentationForTargetObjectId(String targetObjectId);
+    List<RepresentationDataMetadataOnly> findAllMetadataByTargetObjectId(String targetObjectId);
 
-    List<RepresentationData> findAllByTargetObjectId(String targetObjectId);
+    boolean existAnyRepresentationForTargetObjectId(String targetObjectId);
 
     Optional<AggregateReference<Project, UUID>> findProjectByRepresentationId(UUID representationId);
 }

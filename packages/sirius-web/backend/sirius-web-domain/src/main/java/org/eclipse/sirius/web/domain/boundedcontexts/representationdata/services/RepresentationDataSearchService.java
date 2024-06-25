@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataContentOnly;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
@@ -45,8 +45,8 @@ public class RepresentationDataSearchService implements IRepresentationDataSearc
     }
 
     @Override
-    public Optional<RepresentationData> findById(UUID id) {
-        return this.representationDataRepository.findById(id);
+    public Optional<RepresentationDataContentOnly> findContentById(UUID id) {
+        return this.representationDataRepository.findContentById(id);
     }
 
     @Override
@@ -55,23 +55,18 @@ public class RepresentationDataSearchService implements IRepresentationDataSearc
     }
 
     @Override
-    public List<RepresentationData> findAllByProject(AggregateReference<Project, UUID> project) {
-        return this.representationDataRepository.findAllByProjectId(project.getId());
-    }
-
-    @Override
     public List<RepresentationDataMetadataOnly> findAllMetadataByProject(AggregateReference<Project, UUID> project) {
         return this.representationDataRepository.findAllMetadataByProjectId(project.getId());
     }
 
     @Override
-    public boolean existAnyRepresentationForTargetObjectId(String targetObjectId) {
-        return this.representationDataRepository.existAnyRepresentationForTargetObjectId(targetObjectId);
+    public List<RepresentationDataMetadataOnly> findAllMetadataByTargetObjectId(String targetObjectId) {
+        return this.representationDataRepository.findAllMetadataByTargetObjectId(targetObjectId);
     }
 
     @Override
-    public List<RepresentationData> findAllByTargetObjectId(String targetObjectId) {
-        return this.representationDataRepository.findAllByTargetObjectId(targetObjectId);
+    public boolean existAnyRepresentationForTargetObjectId(String targetObjectId) {
+        return this.representationDataRepository.existAnyRepresentationForTargetObjectId(targetObjectId);
     }
 
     @Override

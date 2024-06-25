@@ -202,14 +202,15 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRepresentationWhenContentModifiedDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        var optionalRepresentationData = this.representationDataSearchService.findById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+        var optionalRepresentationData = this.representationDataSearchService.findContentById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
         assertThat(optionalRepresentationData).isPresent();
 
         var representationData = optionalRepresentationData.get();
 
-        var originalContent = representationData.getContent();
+        var originalContent = representationData.content();
         var newContent = originalContent + "modified";
-        this.representationDataUpdateService.updateContent(representationData.getId(), newContent);
+
+        this.representationDataUpdateService.updateContent(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -224,13 +225,13 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRepresentationWhenContentNotModifiedNoDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        var optionalRepresentationData = this.representationDataSearchService.findById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+        var optionalRepresentationData = this.representationDataSearchService.findContentById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
         assertThat(optionalRepresentationData).isPresent();
 
         var representationData = optionalRepresentationData.get();
 
-        var newContent = representationData.getContent();
-        this.representationDataUpdateService.updateContent(representationData.getId(), newContent);
+        var newContent = representationData.content();
+        this.representationDataUpdateService.updateContent(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
