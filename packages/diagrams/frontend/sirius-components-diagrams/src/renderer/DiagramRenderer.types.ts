@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node } from 'reactflow';
+import { Edge, Node, ReactFlowProps } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
@@ -113,3 +113,5 @@ export interface OutsideLabel {
   contentStyle: React.CSSProperties;
   overflowStrategy: LabelOverflowStrategy;
 }
+
+export type ReactFlowPropsCustomizer = (options: ReactFlowProps) => ReactFlowProps;
