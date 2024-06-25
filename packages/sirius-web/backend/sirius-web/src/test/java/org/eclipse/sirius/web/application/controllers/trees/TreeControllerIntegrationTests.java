@@ -52,8 +52,6 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
@@ -145,8 +143,6 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IIdentityService identityService;
-
-    private final Logger logger = LoggerFactory.getLogger(TreeControllerIntegrationTests.class);
 
     @BeforeEach
     public void beforeEach() {
@@ -240,8 +236,6 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
 
         Predicate<Object> portalRefreshedEventPayloadMatcher = object -> {
-            this.logger.info("portal refreshed event payload matcher");
-            this.logger.info(object.toString());
             return Optional.of(object)
                     .filter(DataFetcherResult.class::isInstance)
                     .map(DataFetcherResult.class::cast)
@@ -298,8 +292,6 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         });
 
         return object -> {
-            this.logger.info("tree refreshed event payload matcher");
-            this.logger.info(object.toString());
             return Optional.of(object)
                     .filter(DataFetcherResult.class::isInstance)
                     .map(DataFetcherResult.class::cast)

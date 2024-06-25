@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
@@ -35,6 +36,13 @@ public interface IRepresentationDataRepository extends ListPagingAndSortingRepos
         WHERE representationData.project_id = :projectId
         """)
     List<RepresentationData> findAllByProjectId(UUID projectId);
+
+    @Query("""
+        SELECT id, label, kind, target_object_id, description_id
+        FROM representation_data representationData
+        WHERE representationData.project_id = :projectId
+        """)
+    List<RepresentationDataMetadataOnly> findAllMetadataByProjectId(UUID projectId);
 
     @Query("""
         SELECT representationData.project_id
