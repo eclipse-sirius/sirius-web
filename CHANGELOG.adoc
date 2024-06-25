@@ -68,6 +68,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3649[#3649] [sirius-web] Restore support for Related elements view icons
 - https://github.com/eclipse-sirius/sirius-web/issues/3630[#3630] [sirius-web] Restore support for the deletion of dangling representations
 - https://github.com/eclipse-sirius/sirius-web/issues/3666[#3666] [core] Enable EMF's intrinsicIDToEObjectMap for JSON resources to support languages which use modeled identifiers (e.g. SysMLv2).
+- https://github.com/eclipse-sirius/sirius-web/issues/3664[#3664] [core] The Default.svg image is no longer displayed with the new architecture.
 
 === New Features
 
