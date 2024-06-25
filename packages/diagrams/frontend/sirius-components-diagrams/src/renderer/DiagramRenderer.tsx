@@ -81,6 +81,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
   const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
+  const { setRefreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
   const nodes = getNodes();
   const edges = getEdges();
 
@@ -133,6 +134,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
       setNodes(convertedDiagram.nodes);
       setEdges(convertedDiagram.edges);
+      setRefreshEventPayloadId(diagramRefreshedEventPayload.id);
       fitToScreen();
     } else if (cause === 'refresh') {
       const previousDiagram: RawDiagram = {
@@ -146,6 +148,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
         setNodes(laidOutDiagram.nodes);
         setEdges(laidOutDiagram.edges);
+        setRefreshEventPayloadId(diagramRefreshedEventPayload.id);
         closeAllPalettes();
 
         synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
@@ -288,81 +291,86 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodesDraggable } = useNodesDraggable();
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      nodeTypes={nodeTypes}
-      onNodesChange={handleNodesChange}
-      edges={edges}
-      edgeTypes={edgeTypes}
-      edgesUpdatable={!readOnly}
-      onKeyDown={onKeyDown}
-      onConnect={onConnect}
-      onConnectStart={onConnectStart}
-      onConnectEnd={onConnectEnd}
-      connectionLineComponent={ConnectionLine}
-      onEdgesChange={handleEdgesChange}
-      onEdgeUpdate={reconnectEdge}
-      onPaneClick={handlePaneClick}
-      onEdgeClick={handleDiagramElementCLick}
-      onNodeClick={handleDiagramElementCLick}
-      onMove={handleMove}
-      nodeDragThreshold={1}
-      onDrop={onDrop}
-      onDragOver={onDragOver}
-      onNodeDrag={handleNodeDrag}
-      onNodeDragStart={onNodeDragStart}
-      onNodeDragStop={onNodeDragStop}
-      onNodeMouseEnter={onNodeMouseEnter}
-      onNodeMouseLeave={onNodeMouseLeave}
-      onSelectionStart={handleSelectionStart}
-      onSelectionEnd={handleSelectionEnd}
-      maxZoom={40}
-      minZoom={0.1}
-      snapToGrid={snapToGrid}
-      snapGrid={useMemo(() => [GRID_STEP, GRID_STEP], [])}
-      connectionMode={ConnectionMode.Loose}
-      zoomOnDoubleClick={false}
-      connectionLineType={ConnectionLineType.SmoothStep}
-      nodesDraggable={nodesDraggable}
-      ref={ref}>
-      {snapToGrid ? (
-        <>
-          <Background
-            id="small-grid"
-            style={{ backgroundColor }}
-            variant={BackgroundVariant.Lines}
-            gap={GRID_STEP}
-            color={smallGridColor}
-          />
-          <Background
-            id="large-grid"
-            variant={BackgroundVariant.Lines}
-            gap={10 * GRID_STEP}
-            offset={1}
-            color={largeGridColor}
-          />
-        </>
-      ) : (
-        <Background style={{ backgroundColor }} color={backgroundColor} />
-      )}
-      <DiagramPanel
+    <div
+      style={{ display: 'inline-block', position: 'relative' }}
+      data-representation-kind="diagram"
+      data-representation-label={diagramRefreshedEventPayload.diagram.metadata.label}>
+      <ReactFlow
+        nodes={nodes}
+        nodeTypes={nodeTypes}
+        onNodesChange={handleNodesChange}
+        edges={edges}
+        edgeTypes={edgeTypes}
+        edgesUpdatable={!readOnly}
+        onKeyDown={onKeyDown}
+        onConnect={onConnect}
+        onConnectStart={onConnectStart}
+        onConnectEnd={onConnectEnd}
+        connectionLineComponent={ConnectionLine}
+        onEdgesChange={handleEdgesChange}
+        onEdgeUpdate={reconnectEdge}
+        onPaneClick={handlePaneClick}
+        onEdgeClick={handleDiagramElementCLick}
+        onNodeClick={handleDiagramElementCLick}
+        onMove={handleMove}
+        nodeDragThreshold={1}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        onNodeDrag={handleNodeDrag}
+        onNodeDragStart={onNodeDragStart}
+        onNodeDragStop={onNodeDragStop}
+        onNodeMouseEnter={onNodeMouseEnter}
+        onNodeMouseLeave={onNodeMouseLeave}
+        onSelectionStart={handleSelectionStart}
+        onSelectionEnd={handleSelectionEnd}
+        maxZoom={40}
+        minZoom={0.1}
         snapToGrid={snapToGrid}
-        onSnapToGrid={onSnapToGrid}
-        helperLines={helperLinesEnabled}
-        onHelperLines={setHelperLinesEnabled}
-        reactFlowWrapper={ref}
-      />
-      <GroupPalette
-        x={groupPalettePosition?.x}
-        y={groupPalettePosition?.y}
-        isOpened={isGroupPaletteOpened}
-        refElementId={groupPaletteRefElementId}
-        hidePalette={hideGroupPalette}
-      />
-      <DiagramPalette diagramElementId={diagramRefreshedEventPayload.diagram.id} />
-      {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
-      <ConnectorContextualMenu />
-      {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
-    </ReactFlow>
+        snapGrid={useMemo(() => [GRID_STEP, GRID_STEP], [])}
+        connectionMode={ConnectionMode.Loose}
+        zoomOnDoubleClick={false}
+        connectionLineType={ConnectionLineType.SmoothStep}
+        nodesDraggable={nodesDraggable}
+        ref={ref}>
+        {snapToGrid ? (
+          <>
+            <Background
+              id="small-grid"
+              style={{ backgroundColor }}
+              variant={BackgroundVariant.Lines}
+              gap={GRID_STEP}
+              color={smallGridColor}
+            />
+            <Background
+              id="large-grid"
+              variant={BackgroundVariant.Lines}
+              gap={10 * GRID_STEP}
+              offset={1}
+              color={largeGridColor}
+            />
+          </>
+        ) : (
+          <Background style={{ backgroundColor }} color={backgroundColor} />
+        )}
+        <DiagramPanel
+          snapToGrid={snapToGrid}
+          onSnapToGrid={onSnapToGrid}
+          helperLines={helperLinesEnabled}
+          onHelperLines={setHelperLinesEnabled}
+          reactFlowWrapper={ref}
+        />
+        <GroupPalette
+          x={groupPalettePosition?.x}
+          y={groupPalettePosition?.y}
+          isOpened={isGroupPaletteOpened}
+          refElementId={groupPaletteRefElementId}
+          hidePalette={hideGroupPalette}
+        />
+        <DiagramPalette diagramElementId={diagramRefreshedEventPayload.diagram.id} />
+        {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
+        <ConnectorContextualMenu />
+        {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
+      </ReactFlow>
+    </div>
   );
 });

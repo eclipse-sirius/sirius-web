@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 
-import { Dispatch, SetStateAction } from 'react';
-
-export interface DiagramContextValue {
-  editingContextId: string;
-  diagramId: string;
-  readOnly: boolean;
+export type DiagramSubscriptionContextValue = {
+  diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload | null;
   refreshEventPayloadId: string;
-  setRefreshEventPayloadId: Dispatch<SetStateAction<string>>;
-}
+};
 
-export interface DiagramContextProviderProps {
+export type DiagramSubscriptionState = {
+  id: string;
+  diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload | null;
+  complete: boolean;
+  message: string;
+};
+
+export interface DiagramSubscriptionProviderProps {
   editingContextId: string;
   diagramId: string;
-  readOnly: boolean;
-  children: React.ReactNode;
 }

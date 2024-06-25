@@ -10,14 +10,37 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import { DiagramContextValue } from './DiagramContext.types';
+import React, { useState } from 'react';
+import { DiagramContextProviderProps, DiagramContextValue } from './DiagramContext.types';
 
 const value: DiagramContextValue = {
   editingContextId: '',
   diagramId: '',
-  refreshEventPayloadId: '',
   readOnly: false,
+  refreshEventPayloadId: '',
+  setRefreshEventPayloadId: () => {},
 };
 
 export const DiagramContext = React.createContext<DiagramContextValue>(value);
+
+export const DiagramContextProvider = ({
+  diagramId,
+  editingContextId,
+  readOnly,
+  children,
+}: DiagramContextProviderProps) => {
+  const [refreshEventPayloadId, setRefreshEventPayloadId] = useState<string>('');
+
+  return (
+    <DiagramContext.Provider
+      value={{
+        diagramId,
+        editingContextId,
+        readOnly,
+        refreshEventPayloadId,
+        setRefreshEventPayloadId,
+      }}>
+      {children}
+    </DiagramContext.Provider>
+  );
+};

@@ -116,6 +116,7 @@ image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3656[#3656] [core] Add the ability to customize the GraphQL type resolver
 - https://github.com/eclipse-sirius/sirius-web/issues/3645[#3645] [core] Revert earlier change made in #3595 which caused regressions
 - https://github.com/eclipse-sirius/sirius-web/issues/3651[#3651] [diagram] Improve performances when interacting with the diagram, especially when dragging a node
+- https://github.com/eclipse-sirius/sirius-web/issues/3533[#3553] [diagram] Add a dedicated component to handle diagram subscription
 
 
 == v2024.5.0

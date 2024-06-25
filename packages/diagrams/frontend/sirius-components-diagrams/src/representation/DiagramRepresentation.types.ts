@@ -12,15 +12,10 @@
  *******************************************************************************/
 
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
-import {
-  GQLDiagramEventPayload,
-  GQLDiagramRefreshedEventPayload,
-} from '../graphql/subscription/diagramEventSubscription.types';
+import { GQLDiagramEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 
 export interface DiagramRepresentationState {
   id: string;
-  diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload | null;
-  complete: boolean;
   message: string | null;
 }
 
