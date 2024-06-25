@@ -65,6 +65,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3531[#3531] [diagram] Fix unnecessary edges label re render
 - https://github.com/eclipse-sirius/sirius-web/issues/3650[#3650] [diagram] Fix potential NPE in DiagramNavigator and Node toString method 
 - https://github.com/eclipse-sirius/sirius-web/issues/3649[#3649] [sirius-web] Restore support for Related elements view icons
+- https://github.com/eclipse-sirius/sirius-web/issues/3630[#3630] [sirius-web] Restore support for the deletion of dangling representations
 
 === New Features
 

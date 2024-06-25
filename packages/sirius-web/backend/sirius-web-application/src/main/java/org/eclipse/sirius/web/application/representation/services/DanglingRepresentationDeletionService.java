@@ -19,7 +19,13 @@ import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDe
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.representations.IRepresentation;
+import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataDeletionService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Used to delete dangling representations.
@@ -31,8 +37,14 @@ public class DanglingRepresentationDeletionService implements IDanglingRepresent
 
     private final IObjectSearchService objectSearchService;
 
-    public DanglingRepresentationDeletionService(IObjectSearchService objectSearchService) {
+    private final IRepresentationDataSearchService representationDataSearchService;
+
+    private final IRepresentationDataDeletionService representationDataDeletionService;
+
+    public DanglingRepresentationDeletionService(IObjectSearchService objectSearchService, IRepresentationDataSearchService representationDataSearchService, IRepresentationDataDeletionService representationDataDeletionService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
+        this.representationDataDeletionService = Objects.requireNonNull(representationDataDeletionService);
     }
 
     @Override
@@ -43,7 +55,13 @@ public class DanglingRepresentationDeletionService implements IDanglingRepresent
     }
 
     @Override
-    public void deleteDanglingRepresentations(String editingContextId) {
-        // Do nothing for now
+    @Transactional
+    public void deleteDanglingRepresentations(IEditingContext editingContext) {
+        new UUIDParser().parse(editingContext.getId()).ifPresent(projectId -> {
+            this.representationDataSearchService.findAllMetadataByProject(AggregateReference.to(projectId)).stream()
+                    .filter(representationMetadata -> this.objectSearchService.getObject(editingContext, representationMetadata.targetObjectId()).isEmpty())
+                    .map(RepresentationDataMetadataOnly::id)
+                    .forEach(this.representationDataDeletionService::delete);
+        });
     }
 }

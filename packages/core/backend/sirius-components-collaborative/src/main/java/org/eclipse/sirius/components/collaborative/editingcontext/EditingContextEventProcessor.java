@@ -174,7 +174,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             if (this.shouldPersistTheEditingContext(changeDescription)) {
                 this.editingContextPersistenceService.persist(this.editingContext);
             }
-            this.danglingRepresentationDeletionService.deleteDanglingRepresentations(this.editingContext.getId());
+            this.danglingRepresentationDeletionService.deleteDanglingRepresentations(this.editingContext);
 
             var timer = this.meterRegistry.timer(Monitoring.TIMER_REFRESH_REPRESENTATION, "changeDescription", changeDescription.getSourceId());
             refreshRepresentationSample.stop(timer);

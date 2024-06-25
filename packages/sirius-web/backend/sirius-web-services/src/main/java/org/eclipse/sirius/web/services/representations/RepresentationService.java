@@ -171,8 +171,8 @@ public class RepresentationService implements IRepresentationService, IRepresent
     }
 
     @Override
-    public void deleteDanglingRepresentations(String editingContextId) {
-        new IDParser().parse(editingContextId).ifPresent(this.representationRepository::deleteDanglingRepresentations);
+    public void deleteDanglingRepresentations(IEditingContext editingContext) {
+        new IDParser().parse(editingContext.getId()).ifPresent(this.representationRepository::deleteDanglingRepresentations);
     }
 
     @Override
