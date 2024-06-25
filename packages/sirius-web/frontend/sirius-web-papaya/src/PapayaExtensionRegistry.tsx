@@ -11,13 +11,20 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ComponentExtension, ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
+import { ComponentExtension, DataExtension, ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
+import {
+  ReactFlowPropsCustomizer,
+  diagramRendererReactFlowPropsCustomizerExtensionPoint,
+} from '@eclipse-sirius/sirius-components-diagrams';
 import {
   EditProjectNavbarSubtitleProps,
   editProjectNavbarSubtitleExtensionPoint,
   useCurrentProject,
 } from '@eclipse-sirius/sirius-web-application';
 import Typography from '@material-ui/core/Typography';
+import { ReactFlowProps } from 'reactflow';
+import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
+import { PapayaDiagramLegendPanel } from './diagrams/PapayaDiagramLegendPanel';
 
 const papayaExtensionRegistry = new ExtensionRegistry();
 
@@ -39,5 +46,22 @@ const editProjectNavbarSubtitleExtension: ComponentExtension<EditProjectNavbarSu
   Component: PapayaProjectNavbarSubtitle,
 };
 papayaExtensionRegistry.addComponent(editProjectNavbarSubtitleExtensionPoint, editProjectNavbarSubtitleExtension);
+
+const reactFlowPropsCustomizer: ReactFlowPropsCustomizer = ({ children, ...props }: ReactFlowProps) => {
+  const newChildren = (
+    <>
+      {children}
+      <PapayaDiagramLegendPanel />
+      <PapayaDiagramInformationPanel />
+    </>
+  );
+  return { children: newChildren, ...props };
+};
+
+const papayaDiagramPanelExtension: DataExtension<Array<ReactFlowPropsCustomizer>> = {
+  identifier: `papaya_${diagramRendererReactFlowPropsCustomizerExtensionPoint.identifier}`,
+  data: [reactFlowPropsCustomizer],
+};
+papayaExtensionRegistry.putData(diagramRendererReactFlowPropsCustomizerExtensionPoint, papayaDiagramPanelExtension);
 
 export { papayaExtensionRegistry };
