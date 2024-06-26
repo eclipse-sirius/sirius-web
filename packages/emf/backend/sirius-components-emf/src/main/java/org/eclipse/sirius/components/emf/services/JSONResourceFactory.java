@@ -34,20 +34,20 @@ public class JSONResourceFactory extends ResourceFactoryImpl {
 
     @Override
     public JsonResource createResource(URI uri) {
-        // @formatter:off
         Optional.ofNullable(uri)
             .map(URI::scheme)
             .filter(Objects::nonNull)
             .filter(Predicate.not(String::isEmpty))
             .orElseThrow(() -> new IllegalArgumentException(String.format("Missing scheme for URI %s", uri)));
-        // @formatter:on
 
         Map<String, Object> options = new HashMap<>();
 
         options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
         options.put(JsonResource.OPTION_DISPLAY_DYNAMIC_INSTANCES, true);
 
-        return new JsonResourceImpl(uri, options);
+        var resource = new JsonResourceImpl(uri, options);
+        resource.setIntrinsicIDToEObjectMap(new HashMap<>());
+        return resource;
     }
 
     /**
