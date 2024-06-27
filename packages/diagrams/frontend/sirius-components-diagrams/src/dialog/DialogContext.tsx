@@ -63,8 +63,9 @@ export const DialogContextProvider = ({ children }) => {
     onClose,
   };
   if (state.open && state.dialogTypeId) {
+    const dialogTypeId: string = state.dialogTypeId;
     const dialogContribution: DiagramDialogContribution | undefined = dialogContributions.find((dialogContribution) =>
-      dialogContribution.canHandle(state.dialogTypeId as string)
+      dialogContribution.canHandle(dialogTypeId)
     );
     if (dialogContribution) {
       DialogComponent = dialogContribution.component;

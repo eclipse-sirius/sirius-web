@@ -84,11 +84,9 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         this.toolService = Objects.requireNonNull(toolService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -106,11 +104,9 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
 
         if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
             Diagram diagram = diagramContext.getDiagram();
-            // @formatter:off
             var optionalTool = this.toolService.findToolById(editingContext, diagram, input.toolId())
                     .filter(SingleClickOnDiagramElementTool.class::isInstance)
                     .map(SingleClickOnDiagramElementTool.class::cast);
-            // @formatter:on
             if (optionalTool.isPresent()) {
                 IStatus status = this.executeTool(editingContext, diagramContext, input.diagramElementId(), optionalTool.get(), input.startingPositionX(), input.startingPositionY(),
                         input.variables());

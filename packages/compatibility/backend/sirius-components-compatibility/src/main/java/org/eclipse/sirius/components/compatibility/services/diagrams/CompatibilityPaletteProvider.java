@@ -78,7 +78,6 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
         this.odesignRegistry = Objects.requireNonNull(odesignRegistry);
         this.interpreterFactory = Objects.requireNonNull(interpreterFactory);
     }
-
     @Override
     public boolean canHandle(DiagramDescription diagramDescription) {
         return this.identifierProvider.findVsmElementId(diagramDescription.getId()).isPresent();
@@ -149,7 +148,6 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
 
     private ToolSection filteredTools(Object targetElement, Object diagramElement, ToolSection toolSection, org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription,
             Object diagramElementDescription) {
-        // @formatter:off
         List<ITool> tools = toolSection.tools().stream()
                 .filter(tool -> {
                     boolean keepTool = false;
@@ -177,7 +175,6 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
                     return keepTool;
                 })
                 .toList();
-        // @formatter:on
         return new ToolSection(toolSection.id(), toolSection.label(), toolSection.iconURL(), tools);
     }
 
@@ -201,12 +198,10 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
         String descriptionId = this.getDescriptionId(diagramElementDescription);
         var optionalVsmElementId = this.identifierProvider.findVsmElementId(descriptionId);
         if (optionalVsmElementId.isPresent()) {
-            // @formatter:off
             return this.odesignRegistry.getODesigns().stream()
                     .map(EObject::eResource).map(r -> r.getResourceSet().getEObject(URI.createURI(optionalVsmElementId.get()), false))
                     .filter(Objects::nonNull)
                     .findFirst();
-            // @formatter:on
         }
         return Optional.empty();
     }
@@ -233,21 +228,17 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
     }
 
     private List<DiagramElementMapping> getParentMappings(List<DiagramElementMapping> mappings) {
-        //@formatter:off
         return mappings.stream()
                 .map(DiagramElementMapping::eContainer)
                 .filter(DiagramElementMapping.class::isInstance)
                 .map(DiagramElementMapping.class::cast)
                 .toList();
-        //@formatter:on
     }
 
     private boolean atLeastOneRootMapping(List<DiagramElementMapping> mappings) {
-        //@formatter:off
         return mappings.stream()
                 .map(DiagramElementMapping::eContainer)
                 .anyMatch(Layer.class::isInstance);
-        //@formatter:on
     }
 
     private String getDescriptionId(Object diagramElementDescription) {
@@ -293,7 +284,6 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
 
         List<IDiagramElementDescription> targetDescriptions = new ArrayList<>();
         boolean unsynchronizedMapping = false;
-        //@formatter:off
         if (diagramElementDescription instanceof NodeDescription nodeDescription) {
             targetDescriptions.add(nodeDescription);
             unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(nodeDescription.getSynchronizationPolicy());
@@ -332,6 +322,5 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
             extraToolSections.add(graphicalDeleteToolSection);
         }
         return extraToolSections;
-        //@formatter:on
     }
 }

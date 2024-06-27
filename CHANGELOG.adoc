@@ -33,8 +33,10 @@ More existing APIs will be migrated to this new common pattern.
  - https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] [sirius-web] Remove `GraphQLNodeStyleFragment` from `NodeTypeRegistry`, you can specify additional fields to be retreived by the subscription using the `DocumentTransform` GraphQL API and the `apolloClientOptionsConfigurersExtensionPoint` extension point
  - https://github.com/eclipse-sirius/sirius-web/issues/3641[#3641] [core] `IRepresentationMetadataProvider` now defined a single method `Optional<RepresentationMetadata> getMetadata(String representationId)` instead of separate `canHandle` and `handle` methods.
 
- - https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Update the diagram GraphQL API. 
+ - https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Update some API relative to the diagram:
 
+ * The `NodeTool#selectionDescription` attribute of type `SelectionDescription` has been renamed into `dialogDescription` and is now of type `DialogDescription`.
+ * The `SelectionDescription` type has been renamed into `SelectionDialogDescription` and inherit from `DialogDescription`.
  * The `InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by a `variables: [ToolVariable!]!` to make it possible to provide any kind of variable to the backend context.
 
 ```
@@ -61,6 +63,11 @@ type SingleClickOnDiagramElementTool implements Tool {
   targetDescriptions: [DiagramElementDescription!]!
 }
 ```
+* The `String` attribute `org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by the attribute `variables` of type `List<ToolVariable>`
+* The `String` attribute `org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool#selectionDescriptionId` has been replaced by the attribute `dialog` of type `Dialog`
+* The `String` attribute `org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool` has been replaced by the attribute `dialog` of type `Dialog`
+* The `Palette` component in `sirius-components-diagrams` has a new property `diagramElementTargetObjectId` that represents the id of the diagram element target object.
+* The `DiagramPalette` component in `sirius-components-diagrams` has a new property `diagramTargetObjectId: string` that represents the diagram target object.
 
 === Dependency update
 
