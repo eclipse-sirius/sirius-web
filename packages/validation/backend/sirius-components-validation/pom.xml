@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-validation</artifactId>
-	<version>2024.5.2</version>
+	<version>2024.5.3</version>
 	<name>sirius-components-validation</name>
 	<description>Sirius Components Validation</description>
 
@@ -48,12 +48,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-starter-parent</artifactId>
-	<version>2024.5.2</version>
+	<version>2024.5.3</version>
 
 	<name>sirius-components-starter-parent</name>
 	<description>Sirius Components Starter Parent</description>

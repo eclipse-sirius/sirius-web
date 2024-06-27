@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-tests-parent</artifactId>
-	<version>2024.5.2</version>
+	<version>2024.5.3</version>
 
 	<name>sirius-components-tests-parent</name>
 	<description>Sirius Components Tests Parent</description>

@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-frontend</artifactId>
-	<version>2024.5.2</version>
+	<version>2024.5.3</version>
 	<name>sirius-web-frontend</name>
 	<description>Sirius Web Frontend</description>
 

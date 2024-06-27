@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative-forms</artifactId>
-	<version>2024.5.2</version>
+	<version>2024.5.3</version>
 	<name>sirius-components-collaborative-forms</name>
 	<description>Sirius Components Collaborative Forms</description>
 
@@ -51,28 +51,28 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-charts</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

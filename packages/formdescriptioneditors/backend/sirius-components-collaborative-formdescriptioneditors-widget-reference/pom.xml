@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative-formdescriptioneditors-widget-reference</artifactId>
-	<version>2024.5.2</version>
+	<version>2024.5.3</version>
 	<name>sirius-components-collaborative-formdescriptioneditors-widget-reference</name>
 	<description>Sirius Components Collaborative FormDescriptionEditors Widget Reference</description>
 
@@ -43,22 +43,22 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-formdescriptioneditors</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-view</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf-widget-reference</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -68,7 +68,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.5.2</version>
+			<version>2024.5.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
