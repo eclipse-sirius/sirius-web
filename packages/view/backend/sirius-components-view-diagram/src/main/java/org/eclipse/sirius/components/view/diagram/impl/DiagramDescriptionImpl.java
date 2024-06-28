@@ -55,11 +55,52 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * The default value of the '{@link #isAutoLayout() <em>Auto Layout</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #isAutoLayout()
      * @generated
      * @ordered
-     * @see #isAutoLayout()
      */
     protected static final boolean AUTO_LAYOUT_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isAutoLayout() <em>Auto Layout</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isAutoLayout()
+     * @generated
+     * @ordered
+     */
+    protected boolean autoLayout = AUTO_LAYOUT_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getPalette()
+     * @generated
+     * @ordered
+     */
+    protected DiagramPalette palette;
+
+    /**
+     * The cached value of the '{@link #getNodeDescriptions() <em>Node Descriptions</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getNodeDescriptions()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeDescription> nodeDescriptions;
+
+    /**
+     * The cached value of the '{@link #getEdgeDescriptions() <em>Edge Descriptions</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEdgeDescriptions()
+     * @generated
+     * @ordered
+     */
+    protected EList<EdgeDescription> edgeDescriptions;
+
     /**
      * The default value of the '{@link #getArrangeLayoutDirection() <em>Arrange Layout Direction</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -69,42 +110,7 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @see #getArrangeLayoutDirection()
      */
     protected static final ArrangeLayoutDirection ARRANGE_LAYOUT_DIRECTION_EDEFAULT = ArrangeLayoutDirection.UNDEFINED;
-    /**
-     * The cached value of the '{@link #isAutoLayout() <em>Auto Layout</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isAutoLayout()
-     */
-    protected boolean autoLayout = AUTO_LAYOUT_EDEFAULT;
-    /**
-     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getPalette()
-     */
-    protected DiagramPalette palette;
-    /**
-     * The cached value of the '{@link #getNodeDescriptions() <em>Node Descriptions</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getNodeDescriptions()
-     */
-    protected EList<NodeDescription> nodeDescriptions;
-    /**
-     * The cached value of the '{@link #getEdgeDescriptions() <em>Edge Descriptions</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getEdgeDescriptions()
-     */
-    protected EList<EdgeDescription> edgeDescriptions;
+
     /**
      * The cached value of the '{@link #getArrangeLayoutDirection() <em>Arrange Layout Direction</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -336,7 +342,7 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 this.setAutoLayout(AUTO_LAYOUT_EDEFAULT);
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
-                this.setPalette(null);
+                this.setPalette((DiagramPalette) null);
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 this.getNodeDescriptions().clear();
@@ -383,12 +389,13 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (autoLayout: " +
-                this.autoLayout +
-                ", arrangeLayoutDirection: " +
-                this.arrangeLayoutDirection +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (autoLayout: ");
+        result.append(this.autoLayout);
+        result.append(", arrangeLayoutDirection: ");
+        result.append(this.arrangeLayoutDirection);
+        result.append(')');
+        return result.toString();
     }
 
 } // DiagramDescriptionImpl

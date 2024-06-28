@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,7 +81,7 @@ public class NodeToolItemProvider extends ToolItemProvider {
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_TOOL__SELECTION_DESCRIPTION);
+            this.childrenFeatures.add(DiagramPackage.Literals.NODE_TOOL__DIALOG_DESCRIPTION);
         }
         return this.childrenFeatures;
     }
@@ -145,7 +145,7 @@ public class NodeToolItemProvider extends ToolItemProvider {
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
-            case DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION:
+            case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -162,7 +162,7 @@ public class NodeToolItemProvider extends ToolItemProvider {
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_TOOL__SELECTION_DESCRIPTION, DiagramFactory.eINSTANCE.createSelectionDescription()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_TOOL__DIALOG_DESCRIPTION, DiagramFactory.eINSTANCE.createSelectionDialogDescription()));
     }
 
 }

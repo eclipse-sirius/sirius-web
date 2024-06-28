@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -26,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.tools.Dialog;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
@@ -36,6 +38,7 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -172,6 +175,7 @@ public class ToolConverter {
     private ITool createNodeTool(NodeTool nodeTool, ViewDiagramDescriptionConverterContext converterContext, boolean appliesToDiagramRoot) {
         var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
         String toolId = this.idProvider.apply(nodeTool).toString();
+        Dialog dialog = this.createDialog(nodeTool);
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(nodeTool.getName())
                 .iconURL(this.toolIconURLProvider(nodeTool.getIconURLsExpression(), ViewToolImageProvider.NODE_CREATION_TOOL_ICON, converterContext.getInterpreter()))
@@ -181,9 +185,27 @@ public class ToolConverter {
                     return this.execute(converterContext, convertedNodes, nodeTool, child);
                 })
                 .targetDescriptions(List.of())
-                .selectionDescriptionId(this.objectService.getId(nodeTool.getSelectionDescription()))
+                .dialog(dialog)
                 .appliesToDiagramRoot(appliesToDiagramRoot)
                 .build();
+    }
+
+    private Dialog createDialog(NodeTool nodeTool) {
+        return Optional.ofNullable(nodeTool.getDialogDescription())
+                .map(this::convertToDialog)
+                .orElse(null);
+    }
+
+    private String getDialogType(DialogDescription dialogDescription) {
+        return new DialogDescriptionTypeSwitch().doSwitch(dialogDescription);
+    }
+
+    private Dialog convertToDialog(DialogDescription dialogDescription) {
+        String dialogType = this.getDialogType(dialogDescription);
+        if (dialogType != null) {
+            return new Dialog(this.objectService.getId(dialogDescription), dialogType);
+        }
+        return null;
     }
 
     private ITool createEdgeTool(EdgeTool edgeTool, NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {

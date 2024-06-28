@@ -20,7 +20,12 @@ import {
   workbenchViewContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-core';
 import { DeckRepresentation } from '@eclipse-sirius/sirius-components-deck';
-import { DiagramRepresentation, diagramPanelActionExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
+import {
+  DiagramDialogContribution,
+  DiagramRepresentation,
+  diagramDialogContributionExtensionPoint,
+  diagramPanelActionExtensionPoint,
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import {
   DetailsView,
@@ -44,6 +49,7 @@ import { NewProjectCard } from '../views/project-browser/create-projects-area/Ne
 import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
 import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
 
+import { SELECTION_DIALOG_TYPE, SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
   const params = new URLSearchParams(query);
@@ -164,6 +170,27 @@ defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
 defaultExtensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
   identifier: `siriusweb_${diagramPanelActionExtensionPoint.identifier}_filter`,
   Component: DiagramFilter,
+});
+
+/*******************************************************************************
+ *
+ * Diagram dialog
+ *
+ * Used to register new components in the diagram dialog
+ *
+ *******************************************************************************/
+const diagramDialogContributions: DiagramDialogContribution[] = [
+  {
+    canHandle: (dialogTypeId: string) => {
+      return SELECTION_DIALOG_TYPE === dialogTypeId;
+    },
+    component: SelectionDialog,
+  },
+];
+
+defaultExtensionRegistry.putData<DiagramDialogContribution[]>(diagramDialogContributionExtensionPoint, {
+  identifier: `siriusweb_${diagramDialogContributionExtensionPoint.identifier}`,
+  data: diagramDialogContributions,
 });
 
 export { defaultExtensionRegistry };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,13 +16,14 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
+import org.eclipse.sirius.components.diagrams.tools.Dialog;
 
 /**
  * A tool triggered by a single click in the palette on a diagram element.
  *
  * @author mcharfadi
  */
-public record SingleClickOnDiagramElementTool(String id, String label, List<String> iconURL, List<IDiagramElementDescription> targetDescriptions, String selectionDescriptionId,
+public record SingleClickOnDiagramElementTool(String id, String label, List<String> iconURL, List<IDiagramElementDescription> targetDescriptions, Dialog dialog,
                                               boolean appliesToDiagramRoot) implements ITool {
 
     public SingleClickOnDiagramElementTool {
@@ -53,7 +54,7 @@ public record SingleClickOnDiagramElementTool(String id, String label, List<Stri
 
         private List<IDiagramElementDescription> targetDescriptions;
 
-        private String selectionDescriptionId;
+        private Dialog dialog;
 
         private boolean appliesToDiagramRoot;
 
@@ -81,13 +82,13 @@ public record SingleClickOnDiagramElementTool(String id, String label, List<Stri
             return this;
         }
 
-        public Builder selectionDescriptionId(String selectionDescriptionId) {
-            this.selectionDescriptionId = selectionDescriptionId;
+        public Builder dialog(Dialog dialog) {
+            this.dialog = dialog;
             return this;
         }
 
         public SingleClickOnDiagramElementTool build() {
-            return new SingleClickOnDiagramElementTool(this.id, this.label, this.iconURL, this.targetDescriptions, this.selectionDescriptionId, this.appliesToDiagramRoot);
+            return new SingleClickOnDiagramElementTool(this.id, this.label, this.iconURL, this.targetDescriptions, this.dialog, this.appliesToDiagramRoot);
         }
     }
 

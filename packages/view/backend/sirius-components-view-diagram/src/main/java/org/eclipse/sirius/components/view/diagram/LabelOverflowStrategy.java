@@ -22,65 +22,65 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Label Overflow
  * Strategy</b></em>', and utility methods for working with them. <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelOverflowStrategy()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelOverflowStrategy()
  */
 public enum LabelOverflowStrategy implements Enumerator {
     /**
      * The '<em><b>NONE</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #NONE_VALUE
      * @generated
      * @ordered
-     * @see #NONE_VALUE
      */
     NONE(0, "NONE", "NONE"),
 
     /**
      * The '<em><b>WRAP</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #WRAP_VALUE
      * @generated
      * @ordered
-     * @see #WRAP_VALUE
      */
     WRAP(1, "WRAP", "WRAP"),
 
     /**
      * The '<em><b>ELLIPSIS</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #ELLIPSIS_VALUE
      * @generated
      * @ordered
-     * @see #ELLIPSIS_VALUE
      */
     ELLIPSIS(2, "ELLIPSIS", "ELLIPSIS");
 
     /**
      * The '<em><b>NONE</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #NONE
      * @model
      * @generated
      * @ordered
-     * @see #NONE
      */
     public static final int NONE_VALUE = 0;
 
     /**
      * The '<em><b>WRAP</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #WRAP
      * @model
      * @generated
      * @ordered
-     * @see #WRAP
      */
     public static final int WRAP_VALUE = 1;
 
     /**
      * The '<em><b>ELLIPSIS</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #ELLIPSIS
      * @model
      * @generated
      * @ordered
-     * @see #ELLIPSIS
      */
     public static final int ELLIPSIS_VALUE = 2;
 
@@ -126,7 +126,7 @@ public enum LabelOverflowStrategy implements Enumerator {
      *
      * @generated
      */
-    LabelOverflowStrategy(int value, String name, String literal) {
+    private LabelOverflowStrategy(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -137,7 +137,7 @@ public enum LabelOverflowStrategy implements Enumerator {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @param literal
-     *         the literal.
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -156,7 +156,7 @@ public enum LabelOverflowStrategy implements Enumerator {
      * <!-- end-user-doc -->
      *
      * @param name
-     *         the name.
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -175,7 +175,7 @@ public enum LabelOverflowStrategy implements Enumerator {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the integer value.
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */

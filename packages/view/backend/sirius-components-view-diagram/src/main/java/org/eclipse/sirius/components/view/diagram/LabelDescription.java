@@ -40,10 +40,10 @@ public interface LabelDescription extends EObject {
      * <code>"aql:self.name"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Label Expression</em>' attribute.
-     * @model default="aql:self.name" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setLabelExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_LabelExpression()
+     * @model default="aql:self.name" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getLabelExpression();
 
@@ -52,9 +52,9 @@ public interface LabelDescription extends EObject {
      * <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Label Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Label Expression</em>' attribute.
      * @see #getLabelExpression()
+     * @generated
      */
     void setLabelExpression(String value);
 
@@ -64,11 +64,11 @@ public interface LabelDescription extends EObject {
      * end-user-doc -->
      *
      * @return the value of the '<em>Overflow Strategy</em>' attribute.
-     * @model required="true"
-     * @generated
      * @see org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
      * @see #setOverflowStrategy(LabelOverflowStrategy)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_OverflowStrategy()
+     * @model required="true"
+     * @generated
      */
     LabelOverflowStrategy getOverflowStrategy();
 
@@ -77,10 +77,10 @@ public interface LabelDescription extends EObject {
      * <em>Overflow Strategy</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Overflow Strategy</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Overflow Strategy</em>' attribute.
      * @see org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
      * @see #getOverflowStrategy()
+     * @generated
      */
     void setOverflowStrategy(LabelOverflowStrategy value);
 
@@ -89,11 +89,11 @@ public interface LabelDescription extends EObject {
      * {@link org.eclipse.sirius.components.view.diagram.LabelTextAlign}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Text Align</em>' attribute.
-     * @model required="true"
-     * @generated
      * @see org.eclipse.sirius.components.view.diagram.LabelTextAlign
      * @see #setTextAlign(LabelTextAlign)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_TextAlign()
+     * @model required="true"
+     * @generated
      */
     LabelTextAlign getTextAlign();
 
@@ -102,10 +102,10 @@ public interface LabelDescription extends EObject {
      * Align</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Text Align</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Text Align</em>' attribute.
      * @see org.eclipse.sirius.components.view.diagram.LabelTextAlign
      * @see #getTextAlign()
+     * @generated
      */
     void setTextAlign(LabelTextAlign value);
 

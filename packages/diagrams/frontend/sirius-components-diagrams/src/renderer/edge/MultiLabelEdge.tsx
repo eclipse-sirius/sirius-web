@@ -79,7 +79,7 @@ export const MultiLabelEdge = memo(
     sourceHandleId,
     targetHandleId,
   }: EdgeProps<MultiLabelEdgeData>) => {
-    const { beginLabel, endLabel, label, faded } = data || {};
+    const { beginLabel, endLabel, label, faded, targetObjectId } = data || {};
     const theme = useTheme();
     const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
@@ -169,7 +169,13 @@ export const MultiLabelEdge = memo(
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 1)}--selected)` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 1)}--selected)` : markerStart}
         />
-        {selected ? <DiagramElementPalette diagramElementId={id} labelId={label ? label.id : null} /> : null}
+        {selected ? (
+          <DiagramElementPalette
+            targetObjectId={targetObjectId}
+            diagramElementId={id}
+            labelId={label ? label.id : null}
+          />
+        ) : null}
         <EdgeLabelRenderer>
           {beginLabel && (
             <div style={labelContainerStyle(`${sourceLabelTranslation} translate(${sourceX}px,${sourceY}px)`)}>

@@ -139,7 +139,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     public void givenDiagramAndDiagramFilterWhenToolCollapsingNodeIsInvokedOnDiagramThenDiagramFilterIsUpdated() {
         BiFunction<Diagram, String, Void> collapseNodes = (diagram, nodeId) -> {
             String collapseToolId = this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagram.getId(), nodeId, collapseToolId, 0, 0, null);
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagram.getId(), nodeId, collapseToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -416,14 +416,14 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
         StepVerifier.create(diagramAndPropertiesFlux)
                 .expectNextMatches(DiagramRefreshedEventPayload.class::isInstance)
                 .expectNextMatches(initialFormContentMatcher)
-                .then(() -> checkTreeNode(formId.get(), treeId.get(), treeNodeToCheckId.get()))
+                .then(() -> this.checkTreeNode(formId.get(), treeId.get(), treeNodeToCheckId.get()))
                 .expectNextMatches(updatedFormContentMatcher)
                 .expectNextMatches(DiagramRefreshedEventPayload.class::isInstance)
-                .then(() -> performAction(formId.get(), actionId.get()))
+                .then(() -> this.performAction(formId.get(), actionId.get()))
                 // Skip the potential FormRefreshedEventPayload that may be sent before the DiagramRefreshedEventPayload
                 .thenConsumeWhile(payload -> !(payload instanceof DiagramRefreshedEventPayload))
                 .expectNextMatches(updatedDiagramContentMatcher)
-                .then(() -> performAction(formId.get(), revertActionId.get()))
+                .then(() -> this.performAction(formId.get(), revertActionId.get()))
                 .thenConsumeWhile(payload -> !(payload instanceof DiagramRefreshedEventPayload))
                 // The first diagram refreshed event payload will be triggered by the semantic change since we have pressed the button
                 .expectNextMatches(DiagramRefreshedEventPayload.class::isInstance)

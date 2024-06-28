@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.tools.Dialog;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
@@ -45,6 +46,7 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.selection.description.SelectionDescription;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.AdditionalLayer;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
@@ -162,13 +164,11 @@ public class ToolProvider implements IToolProvider {
 
     private ToolSection convertToolSection(org.eclipse.sirius.diagram.description.tool.ToolSection siriusToolSection, List<ITool> tools) {
         String toolSectionLabel = Optional.ofNullable(siriusToolSection.getLabel()).orElse(siriusToolSection.getName());
-        // @formatter:off
         return ToolSection.newToolSection(toolSectionLabel)
                 .tools(tools)
                 .label(toolSectionLabel)
                 .iconURL(this.getImagePathFromIconPath(siriusToolSection))
                 .build();
-        // @formatter:on
     }
 
     private List<AbstractToolDescription> getToolDescriptions(org.eclipse.sirius.diagram.description.tool.ToolSection toolSection) {
@@ -185,7 +185,6 @@ public class ToolProvider implements IToolProvider {
     }
 
     private List<IDiagramElementDescription> getParentNodeDescriptions(List<? extends AbstractNodeMapping> nodeMappings, Map<String, NodeDescription> id2NodeDescriptions) {
-        //@formatter:off
         return nodeMappings.stream()
                 .map(AbstractNodeMapping::eContainer)
                 .filter(AbstractNodeMapping.class::isInstance)
@@ -197,15 +196,12 @@ public class ToolProvider implements IToolProvider {
                 .filter(IDiagramElementDescription.class::isInstance)
                 .map(IDiagramElementDescription.class::cast)
                 .toList();
-        //@formatter:on
     }
 
     private boolean atLeastOneRootMapping(List<? extends AbstractNodeMapping> nodeMappings) {
-        //@formatter:off
         return nodeMappings.stream()
                 .map(AbstractNodeMapping::eContainer)
                 .anyMatch(Layer.class::isInstance);
-        //@formatter:on
     }
 
     private Optional<ITool> convertTool(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions,
@@ -234,20 +230,17 @@ public class ToolProvider implements IToolProvider {
         List<String> imagePath = this.toolImageProvider.getIcon(nodeCreationTool);
         List<IDiagramElementDescription> targetDescriptions = this.getParentNodeDescriptions(nodeCreationTool.getNodeMappings(), id2NodeDescriptions);
         var selectModelElementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(nodeCreationTool.getVariable());
-        String selectionDescriptionId = null;
-        if (selectModelElementVariableOpt.isPresent()) {
-            selectionDescriptionId = this.identifierProvider.getIdentifier(selectModelElementVariableOpt.get());
-        }
-        // @formatter:off
+        Dialog dialog = selectModelElementVariableOpt
+                .map(selectModelElementVariable -> new Dialog(this.identifierProvider.getIdentifier(selectModelElementVariable), SelectionDescription.TYPE))
+                .orElse(null);
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
                 .iconURL(imagePath)
                 .handler(this.createNodeCreationHandler(interpreter, nodeCreationTool))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(this.atLeastOneRootMapping(nodeCreationTool.getNodeMappings()))
-                .selectionDescriptionId(selectionDescriptionId)
+                .dialog(dialog)
                 .build();
-        // @formatter:on
     }
 
     private SingleClickOnDiagramElementTool convertContainerCreationDescription(Map<String, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter,
@@ -257,20 +250,17 @@ public class ToolProvider implements IToolProvider {
         List<String> imagePath = this.toolImageProvider.getIcon(containerCreationDescription);
         List<IDiagramElementDescription> targetDescriptions = this.getParentNodeDescriptions(containerCreationDescription.getContainerMappings(), id2NodeDescriptions);
         var selectModelElementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(containerCreationDescription.getVariable());
-        String selectionDescriptionId = null;
-        if (selectModelElementVariableOpt.isPresent()) {
-            selectionDescriptionId = this.identifierProvider.getIdentifier(selectModelElementVariableOpt.get());
-        }
-        // @formatter:off
+        Dialog dialog = selectModelElementVariableOpt
+                .map(selectModelElementVariable -> new Dialog(this.identifierProvider.getIdentifier(selectModelElementVariable), SelectionDescription.TYPE))
+                .orElse(null);
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
                 .iconURL(imagePath)
                 .handler(this.createContainerCreationHandler(interpreter, containerCreationDescription))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(this.atLeastOneRootMapping(containerCreationDescription.getContainerMappings()))
-                .selectionDescriptionId(selectionDescriptionId)
+                .dialog(dialog)
                 .build();
-        // @formatter:on
     }
 
     private SingleClickOnDiagramElementTool convertToolDescription(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, AQLInterpreter interpreter,
@@ -281,7 +271,6 @@ public class ToolProvider implements IToolProvider {
 
         List<DiagramElementMapping> mappings = this.getAllDiagramElementMappings(siriusDiagramDescription);
 
-        // @formatter:off
         List<String> targetDescriptionIds = mappings.stream()
                 .map(this.identifierProvider::getIdentifier)
                 .toList();
@@ -313,7 +302,6 @@ public class ToolProvider implements IToolProvider {
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(true)
                 .build();
-        // @formatter:on
     }
 
     private SingleClickOnDiagramElementTool convertOperationAction(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, AQLInterpreter interpreter,
@@ -324,7 +312,6 @@ public class ToolProvider implements IToolProvider {
 
         List<DiagramElementMapping> mappings = this.getAllDiagramElementMappings(siriusDiagramDescription);
 
-        // @formatter:off
         List<String> targetDescriptionIds = mappings.stream()
                 .map(this.identifierProvider::getIdentifier)
                 .toList();
@@ -354,7 +341,6 @@ public class ToolProvider implements IToolProvider {
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(true)
                 .build();
-        // @formatter:on
     }
 
     private List<DiagramElementMapping> getAllDiagramElementMappings(DiagramDescription siriusDiagramDescription) {
@@ -592,13 +578,11 @@ public class ToolProvider implements IToolProvider {
             if (nodes.contains(node)) {
                 parentNode = diagram;
             } else {
-                // @formatter:off
                 parentNode = nodes.stream()
                         .map(subNode -> this.getParentNode(node, subNode))
                         .filter(Objects::nonNull)
                         .findFirst()
                         .orElse(null);
-                // @formatter:on
             }
         }
         return parentNode;
@@ -609,13 +593,11 @@ public class ToolProvider implements IToolProvider {
         if (nodes.contains(node)) {
             return nodeContainer;
         }
-        // @formatter:off
         return nodes.stream()
                 .map(subNode -> this.getParentNode(node, subNode))
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
-        // @formatter:on
     }
 
     private List<String> getImagePathFromIconPath(org.eclipse.sirius.diagram.description.tool.ToolSection toolSection) {

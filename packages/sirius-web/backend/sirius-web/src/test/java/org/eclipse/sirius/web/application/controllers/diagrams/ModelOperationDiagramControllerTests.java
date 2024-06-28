@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,8 +27,9 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DiagramEventSubscriptionRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -64,9 +66,6 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
 
     @Autowired
     private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
-
-    @Autowired
-    private DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
 
     @Autowired
     private ModelOperationDiagramDescriptionProvider modelOperationDiagramDescriptionProvider;
@@ -107,7 +106,7 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable createNode = () -> {
             var createNodeToolId = this.modelOperationDiagramDescriptionProvider.getCreateNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), diagramId.get(), createNodeToolId, 0, 0, null);
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), diagramId.get(), createNodeToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -121,6 +120,50 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
                             .anyMatch(node -> node.getInsideLabel().getText().equals("a"))
                             .noneMatch(node -> node.getInsideLabel().getText().equals("b"))
                             .anyMatch(node -> node.getInsideLabel().getText().equals("c"));
+                }, () -> fail("Missing diagram"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNode)
+                .consumeNextWith(updatedDiagramContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a diagram, when a tool with a selection dialog is executed, then it works as expected")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenDiagramWhenToolWithSelectionDialogIsExecutedThenItWorksAsExpected() {
+        var flux = this.givenSubscriptionToModelOperationDiagram();
+
+        var diagramId = new AtomicReference<String>();
+
+        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+                    assertThat(diagram.getNodes())
+                        .anyMatch(node -> node.getInsideLabel().getText().equals("sirius-web-domain"))
+                        .noneMatch(node -> node.getInsideLabel().getText().equals("componentRenamedAfterSelectedElement"));
+                }, () -> fail("Missing diagram"));
+
+        Runnable createNode = () -> {
+            var renameElementNodeToolId = this.modelOperationDiagramDescriptionProvider.getRenameElementToolId();
+            var toolVariable = new ToolVariable("selectedObject", PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString(), ToolVariableType.OBJECT_ID);
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), diagramId.get(), renameElementNodeToolId, 0, 0, List.of(toolVariable));
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    assertThat(diagram.getNodes())
+                        .noneMatch(node -> node.getInsideLabel().getText().equals("sirius-web-domain"))
+                        .anyMatch(node -> node.getInsideLabel().getText().equals("componentRenamedAfterSelectedElement"));
                 }, () -> fail("Missing diagram"));
 
         StepVerifier.create(flux)

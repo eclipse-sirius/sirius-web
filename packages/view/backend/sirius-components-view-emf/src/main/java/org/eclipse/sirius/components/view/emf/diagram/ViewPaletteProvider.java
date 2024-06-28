@@ -42,12 +42,14 @@ import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
+import org.eclipse.sirius.components.diagrams.tools.Dialog;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -175,18 +177,32 @@ public class ViewPaletteProvider implements IPaletteProvider {
     private ITool createNodeTool(NodeTool viewNodeTool, boolean appliesToDiagramRoot, VariableManager variableManager, AQLInterpreter interpreter) {
         String toolId = this.idProvider.apply(viewNodeTool).toString();
         List<String> iconURLProvider = this.nodeToolIconURLProvider(viewNodeTool, interpreter, variableManager);
-        String selectionDescriptionId = "";
-        if (viewNodeTool.getSelectionDescription() != null) {
-            selectionDescriptionId = this.objectService.getId(viewNodeTool.getSelectionDescription());
-        }
-
+        Dialog dialog = this.createDialog(viewNodeTool);
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(viewNodeTool.getName())
                 .iconURL(iconURLProvider)
-                .selectionDescriptionId(selectionDescriptionId)
+                .dialog(dialog)
                 .targetDescriptions(List.of())
                 .appliesToDiagramRoot(appliesToDiagramRoot)
                 .build();
+    }
+
+    private Dialog createDialog(NodeTool nodeTool) {
+        return Optional.ofNullable(nodeTool.getDialogDescription())
+                .map(this::convertToDialog)
+                .orElse(null);
+    }
+
+    private Dialog convertToDialog(DialogDescription dialogDescription) {
+        String dialogType = this.getDialogType(dialogDescription);
+        if (dialogType != null) {
+            return new Dialog(this.objectService.getId(dialogDescription), dialogType);
+        }
+        return null;
+    }
+
+    private String getDialogType(DialogDescription dialogDescription) {
+        return new DialogDescriptionTypeSwitch().doSwitch(dialogDescription);
     }
 
     private Palette getNodePalette(IEditingContext editingContext, DiagramDescription diagramDescription, NodeDescription nodeDescription, List<ToolSection> extraToolSections, VariableManager variableManager, AQLInterpreter interpreter) {
