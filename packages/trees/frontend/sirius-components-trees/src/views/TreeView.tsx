@@ -11,21 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useSubscription } from '@apollo/client';
-import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { DataExtension, Toast, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { Tree } from '../trees/Tree';
-import { TreeConverter } from './TreeConverter.types';
 import {
   GQLGetExpandAllTreePathData,
   GQLGetExpandAllTreePathVariables,
   GQLGetTreePathData,
   GQLGetTreePathVariables,
+  GQLTree,
   GQLTreeEventData,
   GQLTreeEventVariables,
   GQLTreeItem,
+  TreeConverter,
   TreeViewComponentProps,
 } from './TreeView.types';
+import { treeViewTreeConverterExtensionPoint } from './TreeViewExtensionPoints';
 import {
   AutoExpandToRevealSelectionEvent,
   HandleCompleteEvent,
@@ -80,7 +82,6 @@ export const TreeView = ({
   textToHighlight,
   textToFilter,
   markedItemIds = [],
-  converter,
 }: TreeViewComponentProps) => {
   const [{ value, context }, dispatch] = useMachine<TreeViewContext, TreeViewEvent>(treeViewMachine, {
     context: {
@@ -218,7 +219,12 @@ export const TreeView = ({
     dispatch(handleOnExpandAllEvent);
   };
 
-  const treeConverter: TreeConverter = converter ? converter : { convert: (gqlTree) => gqlTree };
+  const { data: treeConverters }: DataExtension<TreeConverter[]> = useData(treeViewTreeConverterExtensionPoint);
+
+  let convertedTree: GQLTree = tree;
+  treeConverters.forEach((treeConverter) => {
+    convertedTree = treeConverter.convert(editingContextId, convertedTree);
+  });
 
   return (
     <>
@@ -226,7 +232,7 @@ export const TreeView = ({
         {tree ? (
           <Tree
             editingContextId={editingContextId}
-            tree={treeConverter.convert(tree)}
+            tree={convertedTree}
             onExpand={onExpand}
             onExpandAll={onExpandAll}
             readOnly={readOnly}

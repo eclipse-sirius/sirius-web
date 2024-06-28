@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { TreeConverter } from './TreeConverter.types';
+import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { FormConverter } from './FormBasedView.types';
 
-export interface ExplorerViewContextValue {
-  converter: TreeConverter;
-}
+export const formBasedViewFormConverterExtensionPoint: DataExtensionPoint<FormConverter[]> = {
+  identifier: 'formBasedView#formConverter',
+  fallback: [],
+};
