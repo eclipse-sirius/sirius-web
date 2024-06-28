@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { DataExtension, Toast, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
@@ -22,11 +22,13 @@ import { PropertySectionContext } from '../form/FormContext';
 import { PropertySectionContextValue } from '../form/FormContext.types';
 import { formRefreshedEventPayloadFragment } from '../form/FormEventFragments';
 import {
+  GQLForm,
   GQLPropertiesEventInput,
   GQLPropertiesEventSubscription,
   GQLPropertiesEventVariables,
 } from '../form/FormEventFragments.types';
-import { FormBasedViewProps } from './FormBasedView.types';
+import { FormBasedViewProps, FormConverter } from './FormBasedView.types';
+import { formBasedViewFormConverterExtensionPoint } from './FormBasedViewExtensionPoints';
 import {
   FormBasedViewContext,
   FormBasedViewEvent,
@@ -38,7 +40,6 @@ import {
   SwitchSelectionEvent,
   formBasedViewMachine,
 } from './FormBasedViewMachine';
-import { FormConverter } from './FormConverter.types';
 
 export const getFormEventSubscription = (subscriptionName: string, contributions: Array<WidgetContribution>) => {
   return `
@@ -63,13 +64,7 @@ const useFormBasedViewStyles = makeStyles((theme) => ({
 /**
  * Used to define workbench views based on a form.
  */
-export const FormBasedView = ({
-  editingContextId,
-  readOnly,
-  subscriptionName,
-  converter,
-  postProcessor,
-}: FormBasedViewProps) => {
+export const FormBasedView = ({ editingContextId, readOnly, subscriptionName, postProcessor }: FormBasedViewProps) => {
   const classes = useFormBasedViewStyles();
   const [{ value, context }, dispatch] = useMachine<FormBasedViewContext, FormBasedViewEvent>(formBasedViewMachine);
   const { toast, formBasedView } = value as SchemaValue;
@@ -142,7 +137,7 @@ export const FormBasedView = ({
     }
   }, [error, dispatch]);
 
-  const formConverter: FormConverter = converter ? converter : { convert: (gqlForm) => gqlForm };
+  const { data: formConverters }: DataExtension<FormConverter[]> = useData(formBasedViewFormConverterExtensionPoint);
 
   let content: JSX.Element | null = null;
   if (formBasedView === 'empty' || formBasedView === 'unsupportedSelection' || formBasedView === 'complete') {
@@ -153,10 +148,15 @@ export const FormBasedView = ({
     );
   }
   if ((formBasedView === 'idle' && form) || formBasedView === 'ready') {
+    let convertedForm: GQLForm = form;
+    formConverters.forEach((formConverter) => {
+      convertedForm = formConverter.convert(editingContextId, convertedForm);
+    });
+
     if (postProcessor) {
-      content = postProcessor({ editingContextId, readOnly }, formConverter.convert(form));
+      content = postProcessor({ editingContextId, readOnly }, convertedForm);
     } else {
-      content = <Form editingContextId={editingContextId} form={formConverter.convert(form)} readOnly={readOnly} />;
+      content = <Form editingContextId={editingContextId} form={convertedForm} readOnly={readOnly} />;
     }
   }
   return (

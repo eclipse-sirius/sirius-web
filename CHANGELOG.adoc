@@ -31,6 +31,7 @@ More existing APIs will be migrated to this new common pattern.
  - https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove `IWidgetSubscriptionManagerFactory`
  - https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] [sirius-web] Remove `GraphQLNodeStyleFragment` from `NodeTypeRegistry`, you can specify additional fields to be retreived by the subscription using the `DocumentTransform` GraphQL API and the `apolloClientOptionsConfigurersExtensionPoint` extension point
  - https://github.com/eclipse-sirius/sirius-web/issues/3641[#3641] [core] `IRepresentationMetadataProvider` now defined a single method `Optional<RepresentationMetadata> getMetadata(String representationId)` instead of separate `canHandle` and `handle` methods.
+ - https://github.com/eclipse-sirius/sirius-web/issues/3684[#3684] [form, tree] Remove the existing mechanisms used to contribute instances of `FormConverter` and `TreeConverter`
 
 === Dependency update
 
@@ -136,6 +137,7 @@ The error messages displayed in case of an error while uploading a file have bee
 We cannot rely on the error message recaived from the backend since Cross Origin Resource Sharing may prevent us from seeing both the message and the 413 status code.
 - https://github.com/eclipse-sirius/sirius-web/issues/3697[#3697] [diagram] Improve arrange-all performance by reducing overlap management complexity
 - https://github.com/eclipse-sirius/sirius-web/issues/3669[#3669] [diagram] Add migration participant to hide label borders by default
+- https://github.com/eclipse-sirius/sirius-web/issues/3684[#3684] [form, tree] Replace form & tree converters configurations with dedicated extension points
 
 == v2024.5.0
 

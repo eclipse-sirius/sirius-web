@@ -12,12 +12,14 @@
  *******************************************************************************/
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import { GQLForm } from '../form/FormEventFragments.types';
-import { FormConverter } from './FormConverter.types';
 
 export interface FormBasedViewProps extends WorkbenchViewComponentProps {
   editingContextId: string;
   readOnly: boolean;
   subscriptionName: string;
-  converter?: FormConverter;
   postProcessor?: (props: WorkbenchViewComponentProps, form: GQLForm) => JSX.Element;
+}
+
+export interface FormConverter {
+  convert(editingContextId: string, form: GQLForm): GQLForm;
 }
