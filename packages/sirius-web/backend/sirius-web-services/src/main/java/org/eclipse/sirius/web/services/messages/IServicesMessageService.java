@@ -48,4 +48,16 @@ public interface IServicesMessageService {
     String stereotypeNotFound(UUID stereotypeId);
 
     String unpinSelectedElements();
+
+    String representations();
+
+    String incoming();
+
+    String current();
+
+    String outgoing();
+
+    String parent();
+
+    String children();
 }

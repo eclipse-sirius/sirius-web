@@ -108,7 +108,7 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
 
     cy.getByTestId('suggested').click({ force: true });
     cy.getByTestId('type').click();
-    cy.get('[data-value="Entity"]').click();
+    cy.get('[data-value="types-Entity"]').click();
 
     cy.getByTestId('create-object').click();
 

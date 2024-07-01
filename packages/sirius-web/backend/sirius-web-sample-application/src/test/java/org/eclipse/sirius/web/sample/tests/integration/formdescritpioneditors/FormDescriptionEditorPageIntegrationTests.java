@@ -252,7 +252,7 @@ public class FormDescriptionEditorPageIntegrationTests extends AbstractIntegrati
                 }
                 """;
 
-        var createChildInput = new CreateChildInput(UUID.randomUUID(), this.projectId.toString(), this.rootObjectId.toString(), "Form Description");
+        var createChildInput = new CreateChildInput(UUID.randomUUID(), this.projectId.toString(), this.rootObjectId.toString(), "descriptions-FormDescription");
 
         var createChildExecutionInput = ExecutionInput.newExecutionInput()
                 .query(createChildQuery)

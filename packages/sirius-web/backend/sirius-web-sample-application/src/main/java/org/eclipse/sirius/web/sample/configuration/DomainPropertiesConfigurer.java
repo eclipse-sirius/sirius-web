@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.view.form.TextfieldDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.web.sample.messages.DomainPropertiesMessageService;
 import org.eclipse.sirius.web.sample.services.DomainAttributeServices;
 import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
 import org.springframework.context.annotation.Configuration;
@@ -65,10 +66,13 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
 
     private final IInMemoryViewRegistry viewRegistry;
 
-    public DomainPropertiesConfigurer(ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService, IInMemoryViewRegistry viewRegistry) {
+    private final DomainPropertiesMessageService messageService;
+
+    public DomainPropertiesConfigurer(ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService, IInMemoryViewRegistry viewRegistry, DomainPropertiesMessageService messageService) {
         this.viewRegistry = Objects.requireNonNull(viewRegistry);
         this.converter = Objects.requireNonNull(converter);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -101,7 +105,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
         FormDescription form = FormFactory.eINSTANCE.createFormDescription();
         form.setName("Attribute Details");
         form.setDomainType("domain::Attribute");
-        form.setTitleExpression("Attribute Details");
+        form.setTitleExpression(this.messageService.getMessage("ATTRIBUTE_DETAILS"));
 
         PageDescription page = FormFactory.eINSTANCE.createPageDescription();
         page.setDomainType("domain::Attribute");
@@ -123,13 +127,13 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(CORE_PROPERTIES);
-        group.setLabelExpression(CORE_PROPERTIES);
+        group.setLabelExpression(this.messageService.getMessage("CORE_PROPERTIES"));
         group.setSemanticCandidatesExpression("aql:self");
-        group.getChildren().add(this.createStringAttributeEditWidget("Name", DomainPackage.Literals.NAMED_ELEMENT__NAME.getName()));
-        group.getChildren().add(this.createReferenceWidget("Super Type", DomainPackage.Literals.ENTITY__SUPER_TYPES.getName()));
-        group.getChildren().add(this.createReferenceWidget("Attributes", DomainPackage.Literals.ENTITY__ATTRIBUTES.getName()));
-        group.getChildren().add(this.createReferenceWidget("Relations", DomainPackage.Literals.ENTITY__RELATIONS.getName()));
-        group.getChildren().add(this.createBooleanAttributeEditWidget("Abstract", DomainPackage.Literals.ENTITY__ABSTRACT.getName()));
+        group.getChildren().add(this.createStringAttributeEditWidget("Name", "NAME", DomainPackage.Literals.NAMED_ELEMENT__NAME.getName()));
+        group.getChildren().add(this.createReferenceWidget("Super Types", "SUPER_TYPES", DomainPackage.Literals.ENTITY__SUPER_TYPES.getName()));
+        group.getChildren().add(this.createReferenceWidget("Attributes", "ATTRIBUTES", DomainPackage.Literals.ENTITY__ATTRIBUTES.getName()));
+        group.getChildren().add(this.createReferenceWidget("Relations", "RELATIONS", DomainPackage.Literals.ENTITY__RELATIONS.getName()));
+        group.getChildren().add(this.createBooleanAttributeEditWidget("Abstract", "ABSTRACT", DomainPackage.Literals.ENTITY__ABSTRACT.getName()));
         return group;
     }
 
@@ -137,20 +141,20 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(CORE_PROPERTIES);
-        group.setLabelExpression(CORE_PROPERTIES);
+        group.setLabelExpression(this.messageService.getMessage("CORE_PROPERTIES"));
         group.setSemanticCandidatesExpression("aql:self");
-        group.getChildren().add(this.createStringAttributeEditWidget("Name", DomainPackage.Literals.NAMED_ELEMENT__NAME.getName()));
+        group.getChildren().add(this.createStringAttributeEditWidget("Name", "NAME", DomainPackage.Literals.NAMED_ELEMENT__NAME.getName()));
         group.getChildren().add(this.createTypeSelectorWidget());
-        group.getChildren().add(this.createBooleanAttributeEditWidget("Optional", DomainPackage.Literals.FEATURE__OPTIONAL.getName()));
-        group.getChildren().add(this.createBooleanAttributeEditWidget("Many", DomainPackage.Literals.FEATURE__MANY.getName()));
+        group.getChildren().add(this.createBooleanAttributeEditWidget("Optional", "OPTIONAL", DomainPackage.Literals.FEATURE__OPTIONAL.getName()));
+        group.getChildren().add(this.createBooleanAttributeEditWidget("Many", "MANY", DomainPackage.Literals.FEATURE__MANY.getName()));
         group.getChildren().add(this.createCardinalityLabel());
         return group;
     }
 
-    private WidgetDescription createStringAttributeEditWidget(String title, String attributeName) {
+    private WidgetDescription createStringAttributeEditWidget(String name, String label, String attributeName) {
         TextfieldDescription textfield = FormFactory.eINSTANCE.createTextfieldDescription();
-        textfield.setName(title);
-        textfield.setLabelExpression(title);
+        textfield.setName(name);
+        textfield.setLabelExpression(this.messageService.getMessage(label));
         textfield.setValueExpression("aql:self.%s".formatted(attributeName));
         SetValue setValueOperation = ViewFactory.eINSTANCE.createSetValue();
         setValueOperation.setFeatureName(attributeName);
@@ -159,10 +163,10 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
         return textfield;
     }
 
-    private WidgetDescription createBooleanAttributeEditWidget(String title, String attributeName) {
+    private WidgetDescription createBooleanAttributeEditWidget(String name, String label, String attributeName) {
         CheckboxDescription checkbox = FormFactory.eINSTANCE.createCheckboxDescription();
-        checkbox.setName(title);
-        checkbox.setLabelExpression(title);
+        checkbox.setName(name);
+        checkbox.setLabelExpression(this.messageService.getMessage(label));
         checkbox.setValueExpression("aql:self.%s".formatted(attributeName));
         SetValue setValueOperation = ViewFactory.eINSTANCE.createSetValue();
         setValueOperation.setFeatureName(attributeName);
@@ -174,7 +178,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
     private WidgetDescription createTypeSelectorWidget() {
         SelectDescription selectWidget = FormFactory.eINSTANCE.createSelectDescription();
         selectWidget.setName("Type");
-        selectWidget.setLabelExpression("Type");
+        selectWidget.setLabelExpression(this.messageService.getMessage("TYPE"));
         selectWidget.setCandidatesExpression("aql:self.getAvailableDataTypes()");
         selectWidget.setValueExpression("aql:self.getDataType()");
         selectWidget.setCandidateLabelExpression("aql:candidate.capitalize()");
@@ -184,10 +188,10 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
         return selectWidget;
     }
 
-    private WidgetDescription createReferenceWidget(String name, String referenceName) {
+    private WidgetDescription createReferenceWidget(String name, String label, String referenceName) {
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         refWidget.setName(name);
-        refWidget.setLabelExpression(name);
+        refWidget.setLabelExpression(this.messageService.getMessage(label));
         refWidget.setReferenceNameExpression(referenceName);
         return refWidget;
     }
@@ -195,7 +199,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
     private WidgetDescription createCardinalityLabel() {
         LabelDescription cardinalityLabel = FormFactory.eINSTANCE.createLabelDescription();
         cardinalityLabel.setName("Cardinality");
-        cardinalityLabel.setLabelExpression("Cardinality");
+        cardinalityLabel.setLabelExpression(this.messageService.getMessage("CARDINALITY"));
         cardinalityLabel.setValueExpression("aql:(if self.optional then '0' else '1' endif) + '..' + (if self.many then '*' else '1' endif)");
         return cardinalityLabel;
     }

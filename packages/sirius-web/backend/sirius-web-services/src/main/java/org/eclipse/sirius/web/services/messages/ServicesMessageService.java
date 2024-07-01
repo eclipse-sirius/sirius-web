@@ -102,4 +102,34 @@ public class ServicesMessageService implements IServicesMessageService {
     public String unpinSelectedElements() {
         return this.messageSourceAccessor.getMessage("UNPIN_SELECTED_ELEMENTS");
     }
+
+    @Override
+    public String representations() {
+        return this.messageSourceAccessor.getMessage("REPRESENTATIONS");
+    }
+
+    @Override
+    public String incoming() {
+        return this.messageSourceAccessor.getMessage("INCOMING");
+    }
+
+    @Override
+    public String current() {
+        return this.messageSourceAccessor.getMessage("CURRENT");
+    }
+
+    @Override
+    public String outgoing() {
+        return this.messageSourceAccessor.getMessage("OUTGOING");
+    }
+
+    @Override
+    public String parent() {
+        return this.messageSourceAccessor.getMessage("PARENT");
+    }
+
+    @Override
+    public String children() {
+        return this.messageSourceAccessor.getMessage("CHILDREN");
+    }
 }
