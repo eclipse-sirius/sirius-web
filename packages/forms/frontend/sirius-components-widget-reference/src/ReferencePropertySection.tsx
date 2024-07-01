@@ -224,12 +224,12 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
   >(moveReferenceValueMutation);
 
   const onReferenceValueSimpleClick = (item: GQLReferenceValue) => {
-    const { id, label, kind } = item;
-    setSelection({ entries: [{ id, label, kind }] });
+    const { id, kind } = item;
+    setSelection({ entries: [{ id, kind }] });
   };
   const onReferenceValueDoubleClick = (item: GQLReferenceValue) => {
-    const { id, label, kind } = item;
-    setSelection({ entries: [{ id, label, kind }] });
+    const { id, kind } = item;
+    setSelection({ entries: [{ id, kind }] });
   };
 
   const clickHandler = useClickHandler<GQLReferenceValue>(onReferenceValueSimpleClick, onReferenceValueDoubleClick);

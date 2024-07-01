@@ -115,7 +115,6 @@ export const Gantt = ({
       entries: [
         {
           id: selectableTask.targetObjectId,
-          label: selectableTask.targetObjectLabel,
           kind: selectableTask.targetObjectKind,
         },
       ],

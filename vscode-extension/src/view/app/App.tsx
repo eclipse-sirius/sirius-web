@@ -132,7 +132,7 @@ export const App = ({
     );
   } else {
     selection = {
-      entries: [{ id: state.representationId, label: state.representationLabel, kind: representationKind }],
+      entries: [{ id: state.representationId, kind: representationKind }],
     };
     component = <DetailsView editingContextId={state.editingContextId} readOnly={false} />;
   }

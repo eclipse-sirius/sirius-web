@@ -36,7 +36,6 @@ export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActio
       entries: [
         {
           id: diagramId,
-          label: '',
           kind: '',
         },
       ],

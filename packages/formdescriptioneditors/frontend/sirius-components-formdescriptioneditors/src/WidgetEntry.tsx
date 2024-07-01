@@ -213,7 +213,6 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
       entries: [
         {
           id: widget.id,
-          label: widget.label,
           kind: `siriusComponents://semantic?domain=view&entity=${widget.__typename}Description`,
         },
       ],

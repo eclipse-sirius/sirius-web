@@ -134,7 +134,6 @@ export const EditProjectView = () => {
         ? [
             {
               id: context.representation.id,
-              label: context.representation.label,
               kind: context.representation.kind,
             },
           ]

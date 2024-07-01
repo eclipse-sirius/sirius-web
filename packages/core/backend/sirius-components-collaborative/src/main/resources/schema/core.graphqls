@@ -13,7 +13,7 @@ type EditingContext {
   id: ID!
   domains(rootDomainsOnly: Boolean!): [Domain!]!
   representation(representationId: ID!): RepresentationMetadata
-  representations: EditingContextRepresentationConnection!
+  representations(representationIds: [ID!]): EditingContextRepresentationConnection!
   representationDescriptions(objectId: ID!): EditingContextRepresentationDescriptionConnection!
   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!, referenceKind: String): [ChildCreationDescription!]!
   childCreationDescriptions(kind: ID!, referenceKind: String): [ChildCreationDescription!]!

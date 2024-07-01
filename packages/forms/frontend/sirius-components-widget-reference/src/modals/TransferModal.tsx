@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import React, { useEffect, useState } from 'react';
 import { FilterableSortableList } from '../components/FilterableSortableList';
+import { FilterableSortableListItem } from '../components/FilterableSortableList.types';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import {
   GQLFormDescription,
@@ -200,11 +201,11 @@ export const TransferModal = ({
     }
   };
 
-  const onClick = (event: React.MouseEvent<Element, MouseEvent>, item: SelectionEntry) => {
+  const onClick = (event: React.MouseEvent<Element, MouseEvent>, item: FilterableSortableListItem) => {
     if (event.ctrlKey || event.metaKey) {
       event.stopPropagation();
       const isItemInSelection = state.rightSelection.find((entry) => entry.id === item.id);
-      const newSelection: SelectionEntry[] = isItemInSelection
+      const newSelection: FilterableSortableListItem[] = isItemInSelection
         ? state.rightSelection.filter((entry) => entry.id !== item.id)
         : [...state.rightSelection, item];
       setState((prevState) => {
@@ -290,7 +291,7 @@ export const TransferModal = ({
                 <FilterableSortableList
                   items={state.right}
                   options={[...state.options, ...widget.referenceValues]}
-                  setItems={(items: SelectionEntry[]) =>
+                  setItems={(items: FilterableSortableListItem[]) =>
                     setState((prevState) => {
                       return {
                         ...prevState,

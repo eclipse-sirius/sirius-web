@@ -16,6 +16,7 @@ import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { useComponent } from '../extension/useComponent';
 import { useData } from '../extension/useData';
+import { useRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata';
 import { useSelection } from '../selection/useSelection';
 import { Toast } from '../toast/Toast';
 import { Panels } from './Panels';
@@ -87,6 +88,8 @@ export const Workbench = ({
   const { toast } = value as SchemaValue;
   const { id, representations, displayedRepresentation, message } = context;
   const { selection, setSelection } = useSelection();
+  const { data } = useRepresentationMetadata(editingContextId, selection);
+
   const { data: representationFactories } = useData(representationFactoryExtensionPoint);
 
   const { error } = useSubscription<GQLEditingContextEventSubscription>(editingContextEventSubscription, {
@@ -119,18 +122,15 @@ export const Workbench = ({
   }, [error, dispatch]);
 
   useEffect(() => {
-    const representations: RepresentationMetadata[] = selection.entries.filter((entry) =>
-      entry.kind.startsWith('siriusComponents://representation')
-    );
     const updateSelectedRepresentation: UpdateSelectedRepresentationEvent = {
       type: 'UPDATE_SELECTED_REPRESENTATION',
-      representations,
+      representations: data?.viewer.editingContext.representations.edges.map((edge) => edge.node) ?? [],
     };
     dispatch(updateSelectedRepresentation);
-  }, [selection, dispatch]);
+  }, [data, dispatch]);
 
   const onRepresentationClick = (representation: RepresentationMetadata) => {
-    setSelection({ entries: [{ id: representation.id, label: representation.label, kind: representation.kind }] });
+    setSelection({ entries: [{ id: representation.id, kind: representation.kind }] });
   };
 
   const onClose = (representation: RepresentationMetadata) => {
