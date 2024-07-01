@@ -315,6 +315,7 @@ INSERT INTO representation_data (
   '0'
 );
 
+
 INSERT INTO project (
   id,
   name,
@@ -455,6 +456,7 @@ INSERT INTO document (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO representation_data (
   id,
   project_id,
@@ -584,4 +586,186 @@ INSERT INTO representation_data (
   '2024-07-04 9:42:0.000',
   'none',
   '0'
+);
+
+
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '8ce6147e-1f5b-426f-b1be-dfeabd37a50a',
+  'Migration DiagramLabelStyle#borderSize Studio',
+  '2024-07-01 15:00:0.000',
+  '2024-07-01 15:00:0.000'
+);
+INSERT INTO nature (
+  project_id,
+  name
+) VALUES (
+  '8ce6147e-1f5b-426f-b1be-dfeabd37a50a',
+  'siriusComponents://nature?kind=studio'
+);
+INSERT INTO semantic_data (
+  id,
+  project_id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '65edc1f2-989c-4001-971b-29981179ebfa',
+  '8ce6147e-1f5b-426f-b1be-dfeabd37a50a',
+  '2024-07-01 15:00:0.000',
+  '2024-07-01 15:00:0.000'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '65edc1f2-989c-4001-971b-29981179ebfa',
+  'http://www.eclipse.org/sirius-web/view'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '65edc1f2-989c-4001-971b-29981179ebfa',
+  'http://www.eclipse.org/sirius-web/diagram'
+);
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  'fa110225-6b86-4bc1-b707-54c7c995cebf',
+  '65edc1f2-989c-4001-971b-29981179ebfa',
+  'NodeDescription#labelBorderStyle migration',
+  '{
+     "json": { "version": "1.0", "encoding": "utf-8" },
+     "ns": {
+       "diagram": "http://www.eclipse.org/sirius-web/diagram",
+       "view": "http://www.eclipse.org/sirius-web/view"
+     },
+     "content": [
+       {
+         "id": "567668c6-f841-4330-af9c-1a17ef28492b",
+         "eClass": "view:View",
+         "data": {
+           "colorPalettes": [
+             {
+               "data": {
+                 "colors": [
+                   {
+                     "data": {
+                       "name": "color_empty",
+                       "value": ""
+                     },
+                     "eClass": "view:FixedColor",
+                     "id": "19e41e76-e016-4f15-abef-e762956f5275"
+                   }
+                 ]
+               },
+               "eClass": "view:ColorPalette",
+               "id": "8c4140a3-a696-4016-a862-da474028fc2c"
+             }
+           ],
+           "descriptions": [
+             {
+               "id": "c1a0ae1c-8420-4aa7-b443-1a05044076e2",
+               "eClass": "diagram:DiagramDescription",
+               "data": {
+                 "name": "DiagramLabelStyle#borderSize migration",
+                 "domainType": "flow::System",
+                 "edgeDescriptions": [
+                   {
+                     "data": {
+                       "centerLabelExpression": "",
+                       "name": "LabelBorderSize Edge",
+                       "semanticCandidatesExpression": "",
+                       "sourceNodeDescriptions": [
+                         "//@descriptions.0/@nodeDescriptions.0"
+                       ],
+                       "sourceNodesExpression": "aql:self",
+                       "style": {
+                         "data": {
+                           "color": "//@colorPalettes.0/@colors.0"
+                         },
+                         "eClass": "diagram:EdgeStyle",
+                         "id": "748824cb-cd5f-42fe-95a8-4f21172ba2ce"
+                       },
+                       "targetNodeDescriptions": [
+                         "//@descriptions.0/@nodeDescriptions.1"
+                       ],
+                       "targetNodesExpression": "aql:self.linkedTo"
+                     },
+                     "eClass": "diagram:EdgeDescription",
+                     "id": "c1077629-a4ec-4232-8eb5-5209b58c7464"
+                   }
+                 ],
+                 "nodeDescriptions": [
+                   {
+                     "id": "4d1ec4d1-dd2c-4cb2-bbed-df02f0babbd8",
+                     "eClass": "diagram:NodeDescription",
+                     "data": {
+                       "name": "LabelBorderSize migration",
+                       "domainType": "flow::CompositeProcessor",
+                       "insideLabel": {
+                         "data": {
+                           "style": {
+                             "eClass": "diagram:InsideLabelStyle",
+                             "id": "d70178c4-d36f-40d7-a3ab-ef8568e4ee2b"
+                           }
+                         },
+                         "eClass": "diagram:InsideLabelDescription",
+                         "id": "046b48ee-4554-4d8a-a457-5391b690d2a9"
+                       },
+                       "outsideLabels": [
+                         {
+                           "data": {
+                             "style": {
+                               "eClass": "diagram:OutsideLabelStyle",
+                               "id": "c69b0853-26ab-40b0-979d-f0a4974ad865"
+                             }
+                           },
+                           "eClass": "diagram:OutsideLabelDescription",
+                           "id": "fd8638cc-8ebb-48e6-bf3f-2c09206f6a09"
+                         },
+                         {
+                           "data": {
+                             "style": {
+                               "eClass": "diagram:OutsideLabelStyle",
+                               "id": "601e5a1d-3d8a-49bc-96b9-f0c47ee594ee"
+                             }
+                           },
+                           "eClass": "diagram:OutsideLabelDescription",
+                           "id": "a8a2bf4c-82b7-4050-b4e7-09fd26a2f7c0"
+                         }
+                       ],
+                       "childrenLayoutStrategy": {
+                         "id": "558f8558-bee6-4ae9-8dc7-4344efe2b83e",
+                         "eClass": "diagram:FreeFormLayoutStrategyDescription"
+                       },
+                       "style": {
+                         "data": {
+                            "background": "//@colorPalettes.0/@colors.0",
+                            "borderColor": "//@colorPalettes.0/@colors.0"
+                         },
+                         "eClass": "diagram:RectangularNodeStyleDescription",
+                         "id": "dacddb12-7c2c-4463-bf71-a7c3e68e2132"
+                       }
+                     }
+                   }
+                 ]
+               }
+             }
+           ]
+         }
+       }
+     ]
+   }',
+  '2024-07-01 15:00:0.000',
+  '2024-07-01 15:00:0.000'
 );
