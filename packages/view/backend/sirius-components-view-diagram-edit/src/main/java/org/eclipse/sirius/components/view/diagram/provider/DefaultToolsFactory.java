@@ -22,11 +22,13 @@ import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 
@@ -132,13 +134,17 @@ public class DefaultToolsFactory {
 
     public InsideLabelDescription createDefaultInsideLabelDescription() {
         InsideLabelDescription insideLabelDescription = DiagramFactory.eINSTANCE.createInsideLabelDescription();
-        insideLabelDescription.setStyle(DiagramFactory.eINSTANCE.createInsideLabelStyle());
+        InsideLabelStyle style = DiagramFactory.eINSTANCE.createInsideLabelStyle();
+        style.setBorderSize(0);
+        insideLabelDescription.setStyle(style);
         return insideLabelDescription;
     }
 
     public OutsideLabelDescription createDefaultOutsideLabelDescription() {
         OutsideLabelDescription outsideLabelDescription = DiagramFactory.eINSTANCE.createOutsideLabelDescription();
-        outsideLabelDescription.setStyle(DiagramFactory.eINSTANCE.createOutsideLabelStyle());
+        OutsideLabelStyle outsideLabelStyle = DiagramFactory.eINSTANCE.createOutsideLabelStyle();
+        outsideLabelStyle.setBorderSize(0);
+        outsideLabelDescription.setStyle(outsideLabelStyle);
         return outsideLabelDescription;
     }
 
