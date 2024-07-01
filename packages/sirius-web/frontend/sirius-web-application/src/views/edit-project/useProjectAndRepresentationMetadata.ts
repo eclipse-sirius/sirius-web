@@ -21,7 +21,7 @@ import {
 } from './useProjectAndRepresentationMetadata.types';
 
 const getProjectQuery = gql`
-  query getRepresentation($projectId: ID!, $representationId: ID!, $includeRepresentation: Boolean!) {
+  query getProjectAndRepresentation($projectId: ID!, $representationId: ID!, $includeRepresentation: Boolean!) {
     viewer {
       project(projectId: $projectId) {
         id

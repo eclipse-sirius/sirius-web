@@ -20,6 +20,7 @@
  For those who want to entirely replace the appearance of the navigation bar menu icon, it has been replaced by `navigationBarMenuIconExtensionPoint`.
  On the other hand, those who want to only change the URL of the help can now use the new extension point `navigationBarMenuHelpURLExtensionPoint`.
  Finally, those who want to add new menu entries to the menu can do so using the extension point `navigationBarMenuEntryExtensionPoint`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3675[#3675] [core] Since the label is removed from the selection, the label of a representation cannot be retrieved from the selection
 
 
 === Dependency update
@@ -40,6 +41,9 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3770[#3770] [diagram] Enable helper lines by default
 - https://github.com/eclipse-sirius/sirius-web/issues/3756[#3756] [sirius-web] Add an extension point to contribute custom footer
 - https://github.com/eclipse-sirius/sirius-web/issues/3702[#3702] [sirius-web] Improve the extensibility of the navigation bar menu by giving consumers of Sirius Web the ability to add new menu entries
+- https://github.com/eclipse-sirius/sirius-web/issues/3675[#3675] [core] Remove the label from the selection entry.
++ It also introduces a new hook to retrieve representation metadata
+
 
 == v2024.7.0
 

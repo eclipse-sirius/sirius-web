@@ -227,7 +227,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       const {
         diagram: {
           id,
-          metadata: { kind, label },
+          metadata: { kind },
         },
       } = diagramRefreshedEventPayload;
       const selection: Selection = {
@@ -235,7 +235,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           {
             id,
             kind,
-            label,
           },
         ],
       };

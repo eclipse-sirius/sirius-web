@@ -87,6 +87,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('name').clear();
     cy.getByTestId('name').type('Topography2');
     cy.getByTestId('create-representation').click();
+    cy.getByTestId('representation-area').should('exist');
 
     cy.getByTestId('Topography1').click();
 

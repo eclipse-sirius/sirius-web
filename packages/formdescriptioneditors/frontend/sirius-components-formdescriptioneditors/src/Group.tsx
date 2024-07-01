@@ -298,7 +298,6 @@ export const Group = ({ page, group }: GroupProps) => {
       entries: [
         {
           id: group.id,
-          label: group.label,
           kind: `siriusComponents://semantic?domain=view&entity=GroupDescription`,
         },
       ],

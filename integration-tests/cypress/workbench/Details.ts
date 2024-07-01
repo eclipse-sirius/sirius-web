@@ -20,6 +20,10 @@ export class Details {
     return this.getDetailsView().find(`[data-testid="input-${label}"]`);
   }
 
+  public getDateTime(label: string): Cypress.Chainable<JQuery<HTMLInputElement | HTMLTextAreaElement>> {
+    return this.getDetailsView().find(`[data-testid="datetime-${label}"]`);
+  }
+
   public getCheckBox(label: string): Cypress.Chainable<JQuery<HTMLInputElement>> {
     return this.getDetailsView().findByTestId(label).find('input');
   }

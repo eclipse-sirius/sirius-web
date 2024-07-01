@@ -92,8 +92,8 @@ export const NewRepresentationArea = ({
       if (data) {
         const { createRepresentation } = data;
         if (createRepresentation.representation) {
-          const { id, label, kind } = createRepresentation.representation;
-          setSelection({ entries: [{ id, label, kind }] });
+          const { id, kind } = createRepresentation.representation;
+          setSelection({ entries: [{ id, kind }] });
         }
         if (isErrorPayload(createRepresentation)) {
           setState({ message: createRepresentation.message });
@@ -117,7 +117,7 @@ export const NewRepresentationArea = ({
 
   const subtitle =
     selectedItem && representationDescriptions.length > 0
-      ? 'Select the representation to create on ' + selectedItem.label
+      ? 'Select the representation to create'
       : 'There are no representations available for the current selection';
 
   return (

@@ -68,6 +68,7 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
     cy.getByTestId('representationDescription').click();
     cy.get('[data-testid$=" Diagram Description"]').should('exist').click();
     cy.getByTestId('create-representation').click();
+    cy.getByTestId('representation-area').should('exist');
 
     cy.getByTestId('Root-more').click();
     cy.getByTestId('new-object').click();

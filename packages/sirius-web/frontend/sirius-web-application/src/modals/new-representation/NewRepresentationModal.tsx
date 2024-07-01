@@ -215,7 +215,6 @@ export const NewRepresentationModal = ({
         entries: [
           {
             id: createdRepresentationId,
-            label: createdRepresentationLabel,
             kind: createdRepresentationKind,
           },
         ],
