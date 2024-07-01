@@ -137,7 +137,6 @@ const TreeItem = ({ node, nodes, readOnly, editingContextId, formId, widgetId }:
     if (node.selectable) {
       const newSelection: SelectionEntry = {
         id: node.id,
-        label: node.label,
         kind: node.kind,
       };
       setSelection({ entries: [newSelection] });

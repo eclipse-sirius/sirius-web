@@ -242,7 +242,6 @@ export const PageList = () => {
         entries: [
           {
             id: currentPage.id,
-            label: currentPage.label,
             kind: `siriusComponents://semantic?domain=view&entity=PageDescription`,
           },
         ],
