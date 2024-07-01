@@ -22,6 +22,7 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
@@ -103,6 +104,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
+            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__STYLE);
+            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.childrenFeatures;
     }
@@ -170,6 +173,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
+            case DiagramPackage.DIAGRAM_DESCRIPTION__STYLE:
+            case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -203,6 +208,12 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         edgeChild.setStyle(newEdgeStyle);
         edgeChild.setPalette(defaultToolsFactory.createDefaultEdgePalette());
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, edgeChild));
+
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__STYLE, DiagramFactory.eINSTANCE.createDiagramStyleDescription()));
+
+        ConditionalDiagramStyle conditionalDiagramStyle = DiagramFactory.eINSTANCE.createConditionalDiagramStyle();
+        conditionalDiagramStyle.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES, conditionalDiagramStyle));
     }
 
 }

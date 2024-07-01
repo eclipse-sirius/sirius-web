@@ -30,6 +30,9 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange Layout
  * Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getConditionalStyles <em>Conditional
+ * Styles</em>}</li>
  * </ul>
  *
  * @model
@@ -134,5 +137,40 @@ public interface DiagramDescription extends RepresentationDescription {
      * @see #getArrangeLayoutDirection()
      */
     void setArrangeLayoutDirection(ArrangeLayoutDirection value);
+
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @model containment="true"
+     * @generated
+     * @see #setStyle(DiagramStyleDescription)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Style()
+     */
+    DiagramStyleDescription getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle
+     * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Style</em>' containment reference.
+     * @generated
+     * @see #getStyle()
+     */
+    void setStyle(DiagramStyleDescription value);
+
+    /**
+     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @model containment="true"
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_ConditionalStyles()
+     */
+    EList<ConditionalDiagramStyle> getConditionalStyles();
 
 } // DiagramDescription

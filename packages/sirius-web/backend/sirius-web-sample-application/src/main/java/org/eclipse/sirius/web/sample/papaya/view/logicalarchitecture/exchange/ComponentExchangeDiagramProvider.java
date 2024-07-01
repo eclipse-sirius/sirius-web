@@ -38,6 +38,7 @@ public class ComponentExchangeDiagramProvider implements IRepresentationDescript
         componentExchangeDiagramDescription.setName("Component Exchange Diagram");
         componentExchangeDiagramDescription.setTitleExpression("aql:'Component Exchange Diagram'");
         componentExchangeDiagramDescription.setAutoLayout(false);
+        componentExchangeDiagramDescription.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
 
         var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders = List.of(

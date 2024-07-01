@@ -52,6 +52,7 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
         classDiagramDescription.setTitleExpression("aql:self.name + ' class diagram'");
         classDiagramDescription.setAutoLayout(false);
         classDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.DOWN);
+        classDiagramDescription.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
 
         var cache = new DefaultViewDiagramElementFinder();
 
