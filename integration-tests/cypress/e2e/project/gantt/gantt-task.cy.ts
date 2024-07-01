@@ -78,7 +78,7 @@ describe('Verify the Gantt Task actions', () => {
     ganttHelper.getTask('New Task').should('not.exist');
   });
 
-  it.only('can create a task dependency', () => {
+  it('can create a task dependency', () => {
     const ganttHelper = new GanttTestHelper();
     ganttHelper.getTask('Front').click();
     ganttHelper

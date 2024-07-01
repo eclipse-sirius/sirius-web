@@ -201,8 +201,8 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
     }
   }, [clickLoading, clickError, clickData]);
   const onSimpleClick = (item: GQLListItem) => {
-    const { id, label, kind } = item;
-    setSelection({ entries: [{ id, label, kind }] });
+    const { id, kind } = item;
+    setSelection({ entries: [{ id, kind }] });
     const variables: GQLClickListItemMutationVariables = {
       input: {
         id: crypto.randomUUID(),
@@ -217,8 +217,8 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
     clickListItem({ variables });
   };
   const onDoubleClick = (item: GQLListItem) => {
-    const { id, label, kind } = item;
-    setSelection({ entries: [{ id, label, kind }] });
+    const { id, kind } = item;
+    setSelection({ entries: [{ id, kind }] });
     const variables: GQLClickListItemMutationVariables = {
       input: {
         id: crypto.randomUUID(),
