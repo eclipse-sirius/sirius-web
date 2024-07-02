@@ -24,7 +24,8 @@ export const convertInsideLabel = (
   gqlInsideLabel: GQLInsideLabel | undefined,
   data: NodeData,
   borderStyle: string,
-  hasVisibleChild: boolean = true
+  hasVisibleChild: boolean = true,
+  padding: string = '8px 16px'
 ): InsideLabel | null => {
   if (!gqlInsideLabel) {
     return null;
@@ -40,7 +41,7 @@ export const convertInsideLabel = (
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '8px 16px',
+      padding,
       textAlign: convertLabelTextAlign(gqlInsideLabel.textAlign),
       ...convertLabelStyle(labelStyle),
     },

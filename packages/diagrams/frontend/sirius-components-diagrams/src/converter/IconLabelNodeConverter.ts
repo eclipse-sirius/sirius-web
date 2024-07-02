@@ -26,7 +26,7 @@ import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { isListLayoutStrategy } from './convertDiagram';
-import { convertLabelStyle, convertOutsideLabels, convertContentStyle } from './convertLabel';
+import { convertOutsideLabels, convertInsideLabel } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -86,26 +86,7 @@ const toIconLabelNode = (
     isHovered: false,
   };
 
-  if (insideLabel) {
-    const labelStyle = insideLabel.style;
-
-    data.insideLabel = {
-      id: insideLabel.id,
-      text: insideLabel.text,
-      style: {
-        ...convertLabelStyle(labelStyle),
-      },
-      contentStyle: {
-        ...convertContentStyle(labelStyle),
-      },
-      iconURL: labelStyle.iconURL,
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
-      overflowStrategy: insideLabel.overflowStrategy,
-      headerSeparatorStyle: {},
-      headerPosition: undefined,
-    };
-  }
+  data.insideLabel = convertInsideLabel(insideLabel, data, '', false, '0 8px 0 8px');
 
   const node: Node<IconLabelNodeData> = {
     id,
