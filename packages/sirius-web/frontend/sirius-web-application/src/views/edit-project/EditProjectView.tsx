@@ -61,7 +61,7 @@ import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocu
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
 
 const getProjectQuery = gql`
-  query getRepresentation($projectId: ID!, $representationId: ID!, $includeRepresentation: Boolean!) {
+  query getProject($projectId: ID!, $representationId: ID!, $includeRepresentation: Boolean!) {
     viewer {
       project(projectId: $projectId) {
         id
@@ -139,7 +139,6 @@ export const EditProjectView = () => {
       entries: [
         {
           id: representation?.id,
-          label: representation?.label,
           kind: representation?.kind,
         },
       ],

@@ -286,7 +286,7 @@ test('should change the selection when a selectable node is clicked', () => {
     diagnostics: [],
   };
 
-  let selection: SelectionEntry = { id: 'undefined', kind: '', label: '' };
+  let selection: SelectionEntry = { id: 'undefined', kind: '' };
 
   const mocks = [];
   const { container } = render(
@@ -322,14 +322,12 @@ test('should change the selection when a selectable node is clicked', () => {
   screen.getByText('Node-1.2').click();
   expect(selection).toEqual({
     id: 'undefined',
-    label: '',
     kind: '',
   });
   // 1.1 is selectable => should be the new selection
   screen.getByText('Node-1.1').click();
   expect(selection).toEqual({
     id: '1.1',
-    label: 'Node-1.1',
     kind: 'siriusComponents://testNode',
   });
 });
@@ -346,7 +344,7 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     expandedNodesIds: ['1', '1.1'],
     diagnostics: [],
   };
-  let selection: SelectionEntry = { id: 'undefined', kind: '', label: '' };
+  let selection: SelectionEntry = { id: 'undefined', kind: '' };
 
   const mocks = [];
   const { container } = render(
@@ -379,7 +377,6 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
   ]);
   expect(selection).toEqual({
     id: 'undefined',
-    label: '',
     kind: '',
   });
   expect(screen.getByText('Node-1.1.1')).toBeDefined();
@@ -392,7 +389,6 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     await waitFor(() => {
       expect(selection).toEqual({
         id: 'undefined',
-        label: '',
         kind: '',
       });
       expect(screen.queryByText('Node-1.1.1')).toBeNull();
@@ -407,7 +403,6 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     await waitFor(() => {
       expect(selection).toEqual({
         id: 'undefined',
-        label: '',
         kind: '',
       });
       expect(screen.getByText('Node-1.1.1')).toBeDefined();

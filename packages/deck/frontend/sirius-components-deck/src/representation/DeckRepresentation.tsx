@@ -169,7 +169,6 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
             {
               id: lane.targetObjectId,
               kind: 'lane',
-              label: lane.label,
             },
           ],
         });
