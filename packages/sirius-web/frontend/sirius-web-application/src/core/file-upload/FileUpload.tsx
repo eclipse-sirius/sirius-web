@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
 import { FileUploadProps, FileUploadState } from './FileUpload.types';
 
-const useFileUploadViewStyles = makeStyles((theme) => ({
+const useFileUploadViewStyles = makeStyles()((theme) => ({
   fileUpload: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -48,7 +48,7 @@ const initialState: FileUploadState = {
   message: DEFAULT_MESSAGE,
 };
 export const FileUpload = ({ onFileSelected, 'data-testid': dataTestId }: FileUploadProps) => {
-  const styles = useFileUploadViewStyles();
+  const { classes: styles } = useFileUploadViewStyles();
   const fileInput = React.createRef<HTMLInputElement>();
 
   const [state, setState] = useState<FileUploadState>(initialState);

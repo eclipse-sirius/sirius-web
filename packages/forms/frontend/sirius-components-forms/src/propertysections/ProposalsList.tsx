@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import Popover from '@material-ui/core/Popover';
-import Tooltip from '@material-ui/core/Tooltip';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import Popover from '@mui/material/Popover';
+import Tooltip from '@mui/material/Tooltip';
 import { ProposalsListProps } from './ProposalsList.types';
 
 export const ProposalsList = ({ anchorEl, proposals, onProposalSelected, onClose }: ProposalsListProps) => {
@@ -39,7 +39,7 @@ export const ProposalsList = ({ anchorEl, proposals, onProposalSelected, onClose
             key={index}
             title={proposal.description}
             placement="right">
-            <MenuItem button onClick={() => onProposalSelected(proposal)}>
+            <MenuItem onClick={() => onProposalSelected(proposal)}>
               <ListItemText primary={proposal.textToInsert} />
             </MenuItem>
           </Tooltip>

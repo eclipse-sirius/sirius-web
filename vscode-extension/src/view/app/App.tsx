@@ -18,7 +18,7 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { DetailsView, FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
-import { Theme, ThemeProvider } from '@material-ui/core';
+import { Theme, ThemeProvider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import './reset.css';
 import { siriusWebTheme as defaultTheme } from './theme/siriusWebTheme';

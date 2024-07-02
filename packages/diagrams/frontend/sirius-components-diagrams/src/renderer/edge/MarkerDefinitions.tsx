@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
-import { Theme, useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@mui/material/styles';
 import { useCallback } from 'react';
 import { Edge, EdgeMarkerType, ReactFlowState, useStore } from 'reactflow';
 import { MarkerProps } from './MarkerDefinitions.types';

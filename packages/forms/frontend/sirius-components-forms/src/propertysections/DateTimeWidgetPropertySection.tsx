@@ -12,9 +12,9 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { getCSSColor, useReporting } from '@eclipse-sirius/sirius-components-core';
-import TextField from '@material-ui/core/TextField';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import TextField from '@mui/material/TextField';
 import { FocusEvent, useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLDateTime } from '../form/FormEventFragments.types';
 import {
@@ -26,17 +26,18 @@ import {
 } from './DateTimeWidgetPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useStyle = makeStyles<Theme, DateTimeStyleProps>((theme) => ({
+const useStyle = makeStyles<DateTimeStyleProps>()((theme, { backgroundColor, foregroundColor, italic, bold }) => ({
   style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : null),
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
+    backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+    color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+    fontStyle: italic ? 'italic' : null,
+    fontWeight: bold ? 'bold' : null,
   },
   textfield: {
     marginTop: theme.spacing(0.5),
     marginBottom: theme.spacing(0.5),
   },
+  input: {},
 }));
 
 export const editDateTimeMutation = gql`
@@ -71,7 +72,7 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
     italic: widget.style?.italic ?? null,
     bold: widget.style?.bold ?? null,
   };
-  const classes = useStyle(props);
+  const { classes } = useStyle(props);
 
   const [state, setState] = useState<DataTimeWidgetPropertySectionState>({
     editedValue: widget.stringValue,

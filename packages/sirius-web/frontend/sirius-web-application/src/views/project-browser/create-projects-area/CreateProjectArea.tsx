@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import { useComponents } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { CreateProjectAreaProps, CreateProjectAreaState } from './CreateProjectArea.types';
@@ -24,7 +24,7 @@ import { useCreateProjectFromTemplate } from './useCreateProjectFromTemplate';
 import { useProjectTemplates } from './useProjectTemplates';
 import { GQLProjectTemplate } from './useProjectTemplates.types';
 
-const useCreateProjectAreaStyles = makeStyles((theme) => ({
+const useCreateProjectAreaStyles = makeStyles()((theme) => ({
   createProjectArea: {
     display: 'flex',
     flexDirection: 'column',
@@ -44,7 +44,7 @@ const useCreateProjectAreaStyles = makeStyles((theme) => ({
 }));
 
 export const CreateProjectArea = ({}: CreateProjectAreaProps) => {
-  const classes = useCreateProjectAreaStyles();
+  const { classes } = useCreateProjectAreaStyles();
 
   const createProjectAreaCards = useComponents(createProjectAreaCardExtensionPoint);
 

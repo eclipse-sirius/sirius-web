@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { styled } from '@material-ui/core/styles';
-import { CSSProperties } from '@material-ui/core/styles/withStyles';
+import { styled } from '@mui/material/styles';
+import { CSSProperties } from 'react';
 import { DeckTitleProps } from './DeckStyledComponents.types';
 
 export const titleFontStyle: CSSProperties = {
@@ -26,9 +26,9 @@ export const Title = styled('span')(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-export const DeckTitle = styled(Title)({
-  cursor: (props: DeckTitleProps) => (props.draggable ? 'grab' : `auto`),
-});
+export const DeckTitle = styled(Title)((props: DeckTitleProps) => ({
+  cursor: props.draggable ? 'grab' : `auto`,
+}));
 
 export const RightContent = styled('span')({
   width: '38%',

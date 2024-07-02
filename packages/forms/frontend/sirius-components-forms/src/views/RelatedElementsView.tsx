@@ -11,19 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 import { GQLForm } from '../form/FormEventFragments.types';
 import { Group } from '../groups/Group';
 import { FormBasedView } from './FormBasedView';
 
-const useRelatedElementsViewStyles = makeStyles((theme) => ({
+const useRelatedElementsViewStyles = makeStyles()((theme) => ({
   content: {
     padding: theme.spacing(1),
   },
 }));
 
 export const RelatedElementsView = (props: WorkbenchViewComponentProps) => {
-  const classes = useRelatedElementsViewStyles();
+  const { classes } = useRelatedElementsViewStyles();
 
   const extractFirstGroup = (props: WorkbenchViewComponentProps, form: GQLForm): JSX.Element => {
     const group = form.pages[0]?.groups[0];

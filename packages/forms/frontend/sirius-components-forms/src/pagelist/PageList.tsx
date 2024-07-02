@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { PageListProps } from './PageList.types';
 
-const usePageListStyles = makeStyles((theme) => ({
+const usePageListStyles = makeStyles()((theme) => ({
   pageList: {
     display: 'flex',
     flexDirection: 'column',
@@ -24,7 +24,7 @@ const usePageListStyles = makeStyles((theme) => ({
 }));
 
 export const PageList = ({ pages }: PageListProps) => {
-  const styles = usePageListStyles();
+  const { classes: styles } = usePageListStyles();
   return (
     <div className={styles.pageList}>
       {pages.map((page) => {

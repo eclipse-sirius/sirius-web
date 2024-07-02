@@ -19,17 +19,18 @@ import {
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import {
+  GQLContainerBorderStyle,
   GQLWidget,
   PropertySectionContext,
   PropertySectionContextValue,
 } from '@eclipse-sirius/sirius-components-forms';
-import { GroupStyleProps } from '@eclipse-sirius/sirius-components-forms/src/groups/Group.types';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { Theme } from '@mui/material/styles';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import {
   addGroupMutation,
   addWidgetMutation,
@@ -65,23 +66,26 @@ import { WidgetEntry } from './WidgetEntry';
 import { isKind } from './WidgetOperations';
 import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
-const useGroupEntryStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
+const useGroupEntryStyles = makeStyles<
+  { borderStyle: GQLContainerBorderStyle },
+  'verticalSections' | 'adaptableSections'
+>()((theme, { borderStyle }, classes) => ({
   group: {
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    borderWidth: ({ borderStyle }) => (borderStyle ? borderStyle.size : 1),
-    borderColor: ({ borderStyle }) => (borderStyle ? getCSSColor(borderStyle?.color, theme) || 'transparent' : 'gray'),
-    borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
-    borderRadius: ({ borderStyle }) => (borderStyle ? borderStyle.radius : 10),
+    borderWidth: borderStyle ? borderStyle.size : 1,
+    borderColor: borderStyle ? getCSSColor(borderStyle?.color, theme) || 'transparent' : 'gray',
+    borderStyle: borderStyle?.lineStyle || 'solid',
+    borderRadius: borderStyle ? borderStyle.radius : 10,
     paddingTop: '1px',
     '&:hover': {
       borderColor: theme.palette.primary.main,
     },
-    '&:has($verticalSections:hover)': {
+    [`&:has(.${classes.verticalSections}:hover)`]: {
       borderStyle: 'dashed',
     },
-    '&:has($adaptableSections:hover)': {
+    [`&:has(.${classes.adaptableSections}:hover)`]: {
       borderStyle: 'dashed',
     },
   },
@@ -138,13 +142,13 @@ const useGroupEntryStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
   },
 }));
 
-const GroupTooltip = withStyles((theme: Theme) => ({
+const GroupTooltip = withStyles(Tooltip, (theme: Theme) => ({
   tooltip: {
     backgroundColor: theme.palette.primary.main,
     margin: '0px',
     borderRadius: '0px',
   },
-}))(Tooltip);
+}));
 
 const isErrorPayload = (
   payload: GQLAddWidgetPayload | GQLDeleteGroupPayload | GQLMoveGroupPayload | GQLMoveWidgetPayload
@@ -153,7 +157,7 @@ const isErrorPayload = (
 export const Group = ({ page, group }: GroupProps) => {
   const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
   const noop = () => {};
-  const classes = useGroupEntryStyles({
+  const { classes } = useGroupEntryStyles({
     borderStyle: group.borderStyle,
   });
 

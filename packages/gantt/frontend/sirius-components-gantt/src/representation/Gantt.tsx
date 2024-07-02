@@ -31,17 +31,18 @@ import {
 } from '@ObeoNetwork/gantt-task-react';
 import '@ObeoNetwork/gantt-task-react/dist/style.css';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Theme, useTheme } from '@mui/material/styles';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { GQLGanttDateRoundingTimeUnit, SelectableTask } from '../graphql/subscription/GanttSubscription.types';
 import { checkIsHoliday, getDisplayedColumns, getSelectedColumns, roundDate } from '../helper/helper';
 import { getTaskContextualPalette, getTaskDependencyContextualPalette } from '../palette/ContextualPalette';
 import { Toolbar } from '../toolbar/Toolbar';
 import { GanttProps, GanttState, TaskListColumnEnum } from './Gantt.types';
 
-const useGanttStyle = makeStyles((theme) => ({
+const useGanttStyle = makeStyles()((theme) => ({
   ganttContainer: {
     backgroundColor: theme.palette.background.default,
     overflowX: 'hidden',
@@ -82,7 +83,7 @@ export const Gantt = ({
   });
   const ganttContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const ganttClasses = useGanttStyle();
+  const { classes: ganttClasses } = useGanttStyle();
   const theme: Theme = useTheme();
 
   const onwheel = (wheelEvent: WheelEvent) => {

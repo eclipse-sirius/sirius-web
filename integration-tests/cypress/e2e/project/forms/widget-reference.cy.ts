@@ -165,7 +165,7 @@ describe('Forms Widget-reference', () => {
         cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('not.exist');
         cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
         cy.getByTestId('childCreationDescription')
-          .children('[role="button"]')
+          .children('[role="combobox"]')
           .invoke('text')
           .should('have.length.gt', 1);
         cy.getByTestId('childCreationDescription').click();
@@ -197,7 +197,7 @@ describe('Forms Widget-reference', () => {
         cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('not.exist');
         cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
         cy.getByTestId('childCreationDescription')
-          .children('[role="button"]')
+          .children('[role="combobox"]')
           .invoke('text')
           .should('have.length.gt', 1);
         cy.getByTestId('childCreationDescription').click();
@@ -251,7 +251,7 @@ describe('Forms Widget-reference', () => {
         cy.getByTestId('create-modal').findByTestId('standard').should('not.exist');
         cy.getByTestId('create-modal').findByTestId('CompositeProcessor1').click();
         cy.getByTestId('childCreationDescription')
-          .children('[role="button"]')
+          .children('[role="combobox"]')
           .invoke('text')
           .should('have.length.gt', 1);
         cy.getByTestId('childCreationDescription').click();
@@ -341,7 +341,10 @@ describe('Forms Widget-reference', () => {
       cy.getByTestId('create-modal').should('exist');
       cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('not.exist');
       cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value]').should('have.length', 1);
       cy.getByTestId('childCreationDescription')
@@ -361,7 +364,10 @@ describe('Forms Widget-reference', () => {
       cy.getByTestId('create-modal').should('exist');
       cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('not.exist');
       cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
-      cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+      cy.getByTestId('childCreationDescription')
+        .children('[role="combobox"]')
+        .invoke('text')
+        .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value]').should('have.length', 1);
       cy.getByTestId('childCreationDescription')

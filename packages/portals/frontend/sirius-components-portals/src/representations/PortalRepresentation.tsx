@@ -18,13 +18,14 @@ import {
   useMultiToast,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@mui/icons-material/Add';
+import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import GridLayout, { Layout, LayoutItem, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+import { makeStyles } from 'tss-react/mui';
 import { usePortal } from '../hooks/usePortal';
 import { GQLPortalView } from '../hooks/usePortal.types';
 import { usePortalMutations } from '../hooks/usePortalMutations';
@@ -33,7 +34,7 @@ import { PortalRepresentationMode } from './PortalRepresentation.types';
 import { PortalToolbar } from './PortalToolbar';
 import { RepresentationFrame } from './RepresentationFrame';
 
-const usePortalRepresentationStyles = makeStyles((theme) => ({
+const usePortalRepresentationStyles = makeStyles()((theme) => ({
   portalRepresentationArea: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -74,7 +75,7 @@ export const PortalRepresentation = ({
   readOnly,
 }: RepresentationComponentProps) => {
   const theme = useTheme();
-  const classes = usePortalRepresentationStyles();
+  const { classes } = usePortalRepresentationStyles();
   const domNode = useRef<HTMLDivElement>(null);
   const { addErrorMessage } = useMultiToast();
   const { selection, setSelection } = useSelection();
@@ -214,7 +215,7 @@ export const PortalRepresentation = ({
     return <div></div>;
   }
 
-  const cellSize: number = theme.spacing(3);
+  const cellSize: number = parseInt(theme.spacing(3));
   return (
     <div className={classes.portalRepresentationArea} ref={domNode} data-representation-kind="portal">
       <PortalToolbar
@@ -230,7 +231,7 @@ export const PortalRepresentation = ({
           className="layout"
           rowHeight={cellSize}
           autoSize={true}
-          margin={[theme.spacing(1), theme.spacing(1)]}
+          margin={[parseInt(theme.spacing(1)), parseInt(theme.spacing(1))]}
           compactType={portalHasViews ? 'vertical' : null}
           draggableHandle=".draggable"
           isDraggable={mode === 'edit'}

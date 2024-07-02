@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import TextField from '@material-ui/core/TextField';
-import { styled } from '@material-ui/core/styles';
+import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { DeckCardInputProps } from './DeckInput.types';
 

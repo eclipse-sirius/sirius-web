@@ -25,7 +25,7 @@ import {
   useDropNodeStyle,
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Theme, useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@mui/material/styles';
 import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
 import { EllipseNodeData } from './EllipseNode.types';

@@ -13,14 +13,14 @@
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
-import Tooltip from '@material-ui/core/Tooltip';
-import { makeStyles } from '@material-ui/core/styles';
-import AdjustIcon from '@material-ui/icons/Adjust';
-import TonalityIcon from '@material-ui/icons/Tonality';
+import AdjustIcon from '@mui/icons-material/Adjust';
+import TonalityIcon from '@mui/icons-material/Tonality';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useReactFlow, useViewport } from 'reactflow';
+import { makeStyles } from 'tss-react/mui';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { PinIcon } from '../../icons/PinIcon';
@@ -63,7 +63,7 @@ import {
 } from './Palette.types';
 import { ToolSection } from './tool-section/ToolSection';
 
-const usePaletteStyle = makeStyles((theme) => ({
+const usePaletteStyle = makeStyles<ContextualPaletteStyleProps>()((theme, { toolCount }) => ({
   palette: {
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: '2px',
@@ -74,7 +74,7 @@ const usePaletteStyle = makeStyles((theme) => ({
   },
   paletteContent: {
     display: 'grid',
-    gridTemplateColumns: ({ toolCount }: ContextualPaletteStyleProps) => `repeat(${Math.min(toolCount, 10)}, 36px)`,
+    gridTemplateColumns: `repeat(${Math.min(toolCount, 10)}, 36px)`,
     gridTemplateRows: '28px',
     gridAutoRows: '28px',
     placeItems: 'center',
@@ -255,7 +255,7 @@ export const Palette = ({
       : 0) +
     (hideableDiagramElement ? (node ? 3 : 1) : 0) +
     diagramPaletteToolComponents.length;
-  const classes = usePaletteStyle({ toolCount });
+  const { classes } = usePaletteStyle({ toolCount });
 
   let pinUnpinTool: JSX.Element | undefined;
   let adjustSizeTool: JSX.Element | undefined;

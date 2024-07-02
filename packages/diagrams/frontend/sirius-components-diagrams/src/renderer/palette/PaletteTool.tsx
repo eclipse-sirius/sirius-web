@@ -10,19 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import { makeStyles } from '@material-ui/core/styles';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { makeStyles } from 'tss-react/mui';
 import { PaletteToolProps } from './PaletteTool.types';
 
-const usePaletteToolStyle = makeStyles((theme) => ({
+const usePaletteToolStyle = makeStyles()((theme) => ({
   toolIcon: {
     color: theme.palette.text.primary,
   },
 }));
 
 export const PaletteTool = ({ toolName, onClick, children }: PaletteToolProps) => {
-  const classes = usePaletteToolStyle();
+  const { classes } = usePaletteToolStyle();
 
   return (
     <Tooltip title={toolName}>

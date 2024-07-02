@@ -12,27 +12,27 @@
  *******************************************************************************/
 import { Task, TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
 import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
-import IconButton from '@material-ui/core/IconButton';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Tooltip from '@material-ui/core/Tooltip/Tooltip';
-import { makeStyles } from '@material-ui/core/styles';
-import { ViewColumn } from '@material-ui/icons';
-import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
-import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
-import ShareIcon from '@material-ui/icons/Share';
-import ZoomInIcon from '@material-ui/icons/ZoomIn';
-import ZoomOutIcon from '@material-ui/icons/ZoomOut';
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import ShareIcon from '@mui/icons-material/Share';
+import ViewColumn from '@mui/icons-material/ViewColumn';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Tooltip from '@mui/material/Tooltip';
 import React, { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { TaskListColumnEnum } from '../representation/Gantt.types';
 import { ToolbarProps, ToolbarState } from './Toolbar.types';
 import { useFullscreen } from './useFullScreen';
 
-const useToolbarStyles = makeStyles((theme) => ({
+const useToolbarStyles = makeStyles()((theme) => ({
   toolbar: {
     display: 'flex',
     flexDirection: 'row',
@@ -66,7 +66,7 @@ export const Toolbar = ({
   const [state, setState] = useState<ToolbarState>({ modal: null });
   const { fullscreen, setFullscreen } = useFullscreen(fullscreenNode);
 
-  const classes = useToolbarStyles();
+  const { classes } = useToolbarStyles();
 
   const onShare = () => setState((prevState) => ({ ...prevState, modal: 'share' }));
   const closeModal = () => setState((prevState) => ({ ...prevState, modal: null }));

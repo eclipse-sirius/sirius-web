@@ -96,7 +96,7 @@ public class GeneralPurposeTests {
 
     private static final String ECLIPSE_PDE = "org.eclipse.pde";
 
-    private static final String INVALID_MATERIALUI_IMPORT = "from '@material-ui/core';";
+    private static final String INVALID_MATERIALUI_IMPORT = "from '@mui/material';";
 
     private static final List<Pattern> COPYRIGHT_HEADER = List.of(
             Pattern.compile(Pattern.quote("/*******************************************************************************")),

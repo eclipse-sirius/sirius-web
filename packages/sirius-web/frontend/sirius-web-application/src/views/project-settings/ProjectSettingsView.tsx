@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import { makeStyles } from 'tss-react/mui';
 import { Footer } from '../../footer/Footer';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { ProjectImagesSettings } from './images/ProjectImagesSettings';
 
-const useProjectSettingsViewStyles = makeStyles((theme) => ({
+const useProjectSettingsViewStyles = makeStyles()((theme) => ({
   projectSettingsView: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -31,7 +31,7 @@ const useProjectSettingsViewStyles = makeStyles((theme) => ({
 }));
 
 export const ProjectSettingsView = () => {
-  const classes = useProjectSettingsViewStyles();
+  const { classes } = useProjectSettingsViewStyles();
 
   return (
     <div className={classes.projectSettingsView}>

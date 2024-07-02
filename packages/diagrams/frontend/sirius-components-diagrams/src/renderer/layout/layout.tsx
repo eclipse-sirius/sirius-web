@@ -14,7 +14,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { ApolloProvider } from '@apollo/client/react';
 import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
 import { Node, ReactFlowProvider } from 'reactflow';
@@ -31,7 +31,7 @@ import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
-import { isEastBorderNode, isWestBorderNode, getNewlyAddedBorderNodePosition } from './layoutBorderNodes';
+import { getNewlyAddedBorderNodePosition, isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { getChildren } from './layoutNode';
 
 const emptyNodeProps = {

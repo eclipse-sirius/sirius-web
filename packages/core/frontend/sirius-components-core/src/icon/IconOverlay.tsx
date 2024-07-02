@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '@mui/material/Tooltip';
 import { memo, useContext } from 'react';
 import { ServerContext } from '../contexts/ServerContext';
 import { ServerContextValue } from '../contexts/ServerContext.types';

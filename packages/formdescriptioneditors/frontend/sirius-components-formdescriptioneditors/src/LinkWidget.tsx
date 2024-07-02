@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,30 +11,32 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { getTextDecorationLineValue, LinkStyleProps } from '@eclipse-sirius/sirius-components-forms';
-import Link from '@material-ui/core/Link';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import { LinkStyleProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import Link from '@mui/material/Link';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { LinkWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles<Theme, LinkStyleProps>((theme) => ({
-  style: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-  },
-  selected: {
-    color: theme.palette.primary.main,
-  },
-  propertySectionLabel: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-}));
+const useStyles = makeStyles<LinkStyleProps>()(
+  (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
+    style: {
+      color: color ? getCSSColor(color, theme) : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+    },
+    selected: {
+      color: theme.palette.primary.main,
+    },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+  })
+);
 
 export const LinkWidget = ({ widget }: LinkWidgetProps) => {
   const props: LinkStyleProps = {
@@ -45,12 +47,12 @@ export const LinkWidget = ({ widget }: LinkWidgetProps) => {
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
   const { selection } = useSelection();
 
-  const ref = useRef<HTMLInputElement | null>(null);
+  const ref = useRef<HTMLAnchorElement | null>(null);
 
   useEffect(() => {
     if (ref.current && selection.entries.find((entry) => entry.id === widget.id)) {

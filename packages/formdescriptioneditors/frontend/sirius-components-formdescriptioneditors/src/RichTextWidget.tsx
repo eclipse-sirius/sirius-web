@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,25 +11,25 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
-import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import CodeIcon from '@material-ui/icons/Code';
-import FormatBoldIcon from '@material-ui/icons/FormatBold';
-import FormatItalicIcon from '@material-ui/icons/FormatItalic';
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
-import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
-import SubjectIcon from '@material-ui/icons/Subject';
-import TitleIcon from '@material-ui/icons/Title';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import CodeIcon from '@mui/icons-material/Code';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
+import SubjectIcon from '@mui/icons-material/Subject';
+import TitleIcon from '@mui/icons-material/Title';
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Typography from '@mui/material/Typography';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import { useEffect, useRef, useState } from 'react';
 import { RichTextWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   selected: {
     color: theme.palette.primary.main,
   },
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StyledToggleButtonGroup = withStyles((theme) => ({
+const StyledToggleButtonGroup = withStyles(ToggleButtonGroup, (theme) => ({
   grouped: {
     margin: theme.spacing(0.5),
     border: 'none',
@@ -77,10 +77,10 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
       borderRadius: theme.shape.borderRadius,
     },
   },
-}))(ToggleButtonGroup);
+}));
 
 export const RichTextWidget = ({ widget }: RichTextWidgetProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [selected, setSelected] = useState<boolean>(false);
   const { selection } = useSelection();
   const ref = useRef<HTMLInputElement | null>(null);

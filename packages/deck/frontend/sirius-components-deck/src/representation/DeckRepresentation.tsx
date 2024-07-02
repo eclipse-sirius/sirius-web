@@ -18,8 +18,9 @@ import {
   useMultiToast,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { Theme, useTheme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
 import { Deck } from '../Deck';
 import { Card, CardMetadata, Lane } from '../Deck.types';
@@ -43,7 +44,7 @@ import {
 
 import { useDeckMutations } from './useDeckMutations';
 
-const useDeckRepresentationStyles = makeStyles(() => ({
+const useDeckRepresentationStyles = makeStyles()(() => ({
   complete: {
     display: 'flex',
     alignItems: 'center',
@@ -58,7 +59,7 @@ const isErrorPayload = (payload: GQLDeckEventPayload): payload is GQLErrorPayloa
 
 export const DeckRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
   const theme: Theme = useTheme();
-  const classes = useDeckRepresentationStyles();
+  const { classes } = useDeckRepresentationStyles();
   const { selection, setSelection }: UseSelectionValue = useSelection();
   const { addErrorMessage, addMessages } = useMultiToast();
   const [{ id, deck, complete }, setState] = useState<DeckRepresentationState>({

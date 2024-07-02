@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
-import { Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
 import { Card, DeckData, Lane } from '../Deck.types';
 import { GQLCard, GQLDeck, GQLDeckElementStyle, GQLLane } from '../representation/deckSubscription.types';
 

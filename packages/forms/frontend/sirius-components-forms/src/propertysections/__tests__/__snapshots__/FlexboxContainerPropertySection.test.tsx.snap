@@ -3,20 +3,20 @@
 exports[`should render the flexbox container with border style 1`] = `
 <div>
   <div
-    class="makeStyles-containerAndLabel-1 makeStyles-containerAndLabel-11"
+    class="makeStyles-containerAndLabel"
     data-testid="flexbox-label"
   >
     <div
-      class="makeStyles-propertySectionLabel-7"
+      class="makeStyles-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-10 MuiTypography-subtitle2"
+        class="MuiTypography-root MuiTypography-subtitle2 makeStyles-typography makeStyles-MuiTypography-root"
       >
         label
       </h6>
     </div>
     <div
-      class="makeStyles-container-2 makeStyles-container-12"
+      class="makeStyles-container"
     />
   </div>
 </div>
@@ -25,20 +25,20 @@ exports[`should render the flexbox container with border style 1`] = `
 exports[`should render the flexbox container without style 1`] = `
 <div>
   <div
-    class="makeStyles-containerAndLabel-1 makeStyles-containerAndLabel-4"
+    class="makeStyles-containerAndLabel"
     data-testid="flexbox-label"
   >
     <div
-      class="makeStyles-propertySectionLabel-7"
+      class="makeStyles-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-10 MuiTypography-subtitle2"
+        class="MuiTypography-root MuiTypography-subtitle2 makeStyles-typography makeStyles-MuiTypography-root"
       >
         label
       </h6>
     </div>
     <div
-      class="makeStyles-container-2 makeStyles-container-5"
+      class="makeStyles-container"
     />
   </div>
 </div>

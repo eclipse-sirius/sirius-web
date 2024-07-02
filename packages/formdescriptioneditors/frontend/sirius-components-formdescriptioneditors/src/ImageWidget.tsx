@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,44 +12,46 @@
  *******************************************************************************/
 import { ServerContext, ServerContextValue, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { ImageStyleProps } from '@eclipse-sirius/sirius-components-forms';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
-import ImageIcon from '@material-ui/icons/Image';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import ImageIcon from '@mui/icons-material/Image';
+import Typography from '@mui/material/Typography';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { ImageWidgetState } from './ImageWidget.types';
 import { ImageWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles<Theme, ImageStyleProps>((theme) => ({
-  container: {
-    display: 'grid',
-    gridTemplateColumns: ({ maxWidth }) => {
-      if (maxWidth) {
-        let max = maxWidth;
-        if (maxWidth.match(/[0-9]$/)) {
-          max = maxWidth + 'px';
-        }
-        return `minmax(auto, ${max})`;
-      } else {
-        return '1fr';
-      }
+const useStyles = makeStyles<ImageStyleProps>()((theme, { maxWidth }) => {
+  let gridTemplateColumns: string;
+  if (maxWidth) {
+    let max = maxWidth;
+    if (maxWidth.match(/[0-9]$/)) {
+      max = maxWidth + 'px';
+    }
+    gridTemplateColumns = `minmax(auto, ${max})`;
+  } else {
+    gridTemplateColumns = '1fr';
+  }
+  return {
+    container: {
+      display: 'grid',
+      gridTemplateColumns,
     },
-  },
-  selected: {
-    color: theme.palette.primary.main,
-  },
-  propertySectionLabel: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-}));
+    selected: {
+      color: theme.palette.primary.main,
+    },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+  };
+});
 
 export const ImageWidget = ({ widget }: ImageWidgetProps) => {
   const props: ImageStyleProps = {
     maxWidth: widget.maxWidth,
   };
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const initialState: ImageWidgetState = { imageURL: widget.url, validImage: false, selected: false };
   const [state, setState] = useState<ImageWidgetState>(initialState);

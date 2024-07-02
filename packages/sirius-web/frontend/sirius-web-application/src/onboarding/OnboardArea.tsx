@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useLazyQuery } from '@apollo/client';
 import { MainAreaComponentProps, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
 import { NewDocumentArea } from './NewDocumentArea';
 import { NewRepresentationArea } from './NewRepresentationArea';
@@ -60,7 +60,7 @@ const INITIAL_STATE: OnboardAreaState = {
   representations: [],
 };
 
-const useOnboardAreaStyles = makeStyles((theme) => ({
+const useOnboardAreaStyles = makeStyles()((theme) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -78,7 +78,7 @@ const useOnboardAreaStyles = makeStyles((theme) => ({
 }));
 
 export const OnboardArea = ({ editingContextId, readOnly }: MainAreaComponentProps) => {
-  const classes = useOnboardAreaStyles();
+  const { classes } = useOnboardAreaStyles();
   const [state, setState] = useState<OnboardAreaState>(INITIAL_STATE);
   const { editingContextActions, representationDescriptions, representations } = state;
   const { selection } = useSelection();

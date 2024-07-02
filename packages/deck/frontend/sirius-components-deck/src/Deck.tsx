@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import Board from '@ObeoNetwork/react-trello';
-import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { CSSProperties, useEffect, useRef } from 'react';
 import { DeckProps } from './Deck.types';
 import { DeckCard } from './card/DeckCard';
@@ -21,7 +22,7 @@ import { DeckLaneHeader } from './laneHeader/DeckLaneHeader';
 import { DeckContext } from './representation/DeckContext';
 import { DeckToolbar } from './toolbar/DeckToolbar';
 
-const useDeckStyle = makeStyles((theme) => ({
+const useDeckStyle = makeStyles()((theme) => ({
   boardContainer: {
     //We need to make the board display flex to fit to screen when the deck is smaller than the representation container.
     //Without that, the board div occupies the whole representation container width.
@@ -53,7 +54,7 @@ export const Deck = ({
   const boardRef = useRef<HTMLDivElement | null>(null);
   const { zoom, zoomIn, zoomOut, fitToScreen, resetZoom }: UseZoomValue = useZoom(boardRef, representationContainerRef);
 
-  const deckClasses = useDeckStyle();
+  const { classes: deckClasses } = useDeckStyle();
 
   useEffect(() => {
     const representationContainer = deckContainerRef.current?.parentElement;

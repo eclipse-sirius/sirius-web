@@ -12,15 +12,15 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { Toast } from '@eclipse-sirius/sirius-components-core';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import List from '@material-ui/core/List/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import { NoteAdd } from '@material-ui/icons';
+import NoteAdd from '@mui/icons-material/NoteAdd';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
 import {
   GQLErrorPayload,
@@ -31,7 +31,7 @@ import {
   NewDocumentAreaState,
 } from './NewDocumentArea.types';
 
-const useNewDocumentAreaStyles = makeStyles((theme) => ({
+const useNewDocumentAreaStyles = makeStyles()((theme) => ({
   cardContent: {
     overflowY: 'auto',
     maxHeight: theme.spacing(50),
@@ -55,7 +55,7 @@ const invokeEditingContextActionMutation = gql`
 const isErrorPayload = (payload): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 
 export const NewDocumentArea = ({ editingContextId, editingContextActions, readOnly }: NewDocumentAreaProps) => {
-  const classes = useNewDocumentAreaStyles();
+  const { classes } = useNewDocumentAreaStyles();
   const [state, setState] = useState<NewDocumentAreaState>({
     message: null,
   });

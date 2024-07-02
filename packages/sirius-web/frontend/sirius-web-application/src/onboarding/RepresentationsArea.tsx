@@ -11,18 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import { Collections } from '@material-ui/icons';
+import Collections from '@mui/icons-material/Collections';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { RepresentationAreaProps } from './RepresentationsArea.types';
 
-const useRepresentationAreaStyles = makeStyles((theme) => ({
+const useRepresentationAreaStyles = makeStyles()((theme) => ({
   cardContent: {
     overflowY: 'auto',
     maxHeight: theme.spacing(50),
@@ -35,7 +35,7 @@ const useRepresentationAreaStyles = makeStyles((theme) => ({
 export const RepresentationsArea = ({ representations }: RepresentationAreaProps) => {
   const { setSelection } = useSelection();
 
-  const classes = useRepresentationAreaStyles();
+  const { classes } = useRepresentationAreaStyles();
 
   return (
     <Card>

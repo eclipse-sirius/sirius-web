@@ -11,30 +11,31 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
 import { useContext, useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLImage } from '../form/FormEventFragments.types';
-import { ImageStyleProps } from './ImagePropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useImageStyles = makeStyles<Theme, ImageStyleProps>(() => ({
-  container: {
-    display: 'grid',
-    gridTemplateColumns: ({ maxWidth }) => {
-      if (maxWidth) {
-        let max = maxWidth;
-        if (maxWidth.match(/[0-9]$/)) {
-          max = maxWidth + 'px';
-        }
-        return `minmax(auto, ${max})`;
-      } else {
-        return '1fr';
-      }
+const useImageStyles = makeStyles<{ maxWidth: string }>()((_theme, { maxWidth }) => {
+  let gridTemplateColumns: string;
+  if (maxWidth) {
+    let max = maxWidth;
+    if (maxWidth.match(/[0-9]$/)) {
+      max = maxWidth + 'px';
+    }
+    gridTemplateColumns = `minmax(auto, ${max})`;
+  } else {
+    gridTemplateColumns = '1fr';
+  }
+  return {
+    container: {
+      display: 'grid',
+      gridTemplateColumns,
     },
-  },
-}));
+  };
+});
 
 /**
  * Defines the content of a Image property section.
@@ -61,7 +62,7 @@ export const ImagePropertySection: PropertySectionComponent<GQLImage> = ({
   } else {
     imageURL = httpOrigin + widget.url;
   }
-  const classes = useImageStyles({
+  const { classes } = useImageStyles({
     maxWidth: widget.maxWidth,
   });
   return (

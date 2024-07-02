@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { getCSSColor, IconOverlay } from '@eclipse-sirius/sirius-components-core';
-import { Theme, useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@mui/material/styles';
 import { memo, useContext } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';

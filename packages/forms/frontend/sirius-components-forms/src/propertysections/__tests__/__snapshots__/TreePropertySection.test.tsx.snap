@@ -4,50 +4,54 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-29"
+      class="makeStyles-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-32 MuiTypography-subtitle2"
+        class="MuiTypography-root MuiTypography-subtitle2 makeStyles-typography makeStyles-MuiTypography-root"
       >
         Tree
       </h6>
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiTreeView-root"
+      class="MuiSimpleTreeView-root makeStyles-MuiSimpleTreeView-root"
+      id="mui-5"
       role="tree"
+      style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root Mui-expanded"
+        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+        id="mui-5-1"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="MuiTreeItem-content"
+          class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+              data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
             >
               <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
               />
             </svg>
           </div>
           <div
-            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+            class="MuiTreeItem-label"
           >
             <div
-              class="makeStyles-label-33"
+              class="makeStyles-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1"
+                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
               >
                 Node-1
               </p>
@@ -55,35 +59,36 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
             >
               <li
-                class="MuiTreeItem-root"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-5-1.1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   />
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-33"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.1
                       </p>
@@ -92,24 +97,25 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
                 </div>
               </li>
               <li
-                class="MuiTreeItem-root"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-5-1.2"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   />
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-33"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.2
                       </p>
@@ -122,24 +128,25 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
         </ul>
       </li>
       <li
-        class="MuiTreeItem-root Mui-expanded"
+        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+        id="mui-5-2"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="MuiTreeItem-content"
+          class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
           />
           <div
-            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+            class="MuiTreeItem-label"
           >
             <div
-              class="makeStyles-label-33"
+              class="makeStyles-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1"
+                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
               >
                 Node-2
               </p>
@@ -147,15 +154,15 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
             />
           </div>
         </ul>
@@ -169,50 +176,54 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-36"
+      class="makeStyles-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-39 MuiTypography-subtitle2"
+        class="MuiTypography-root MuiTypography-subtitle2 makeStyles-typography makeStyles-MuiTypography-root"
       >
         Tree
       </h6>
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiTreeView-root"
+      class="MuiSimpleTreeView-root makeStyles-MuiSimpleTreeView-root"
+      id="mui-6"
       role="tree"
+      style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root Mui-expanded"
+        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+        id="mui-6-1"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="MuiTreeItem-content"
+          class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+              data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
             >
               <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
               />
             </svg>
           </div>
           <div
-            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+            class="MuiTreeItem-label"
           >
             <div
-              class="makeStyles-label-40"
+              class="makeStyles-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1"
+                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
               >
                 Node-1
               </p>
@@ -220,47 +231,49 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
             >
               <li
                 aria-expanded="true"
-                class="MuiTreeItem-root Mui-expanded"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-6-1.1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+                      data-testid="ExpandMoreIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                        d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
                       />
                     </svg>
                   </div>
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-40"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.1
                       </p>
@@ -268,35 +281,36 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
                   </div>
                 </div>
                 <ul
-                  class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
                   role="group"
                   style="min-height: 0px;"
                 >
                   <div
-                    class="MuiCollapse-wrapper"
+                    class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
                   >
                     <div
-                      class="MuiCollapse-wrapperInner"
+                      class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
                     >
                       <li
-                        class="MuiTreeItem-root"
+                        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                        id="mui-6-1.1.1"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="MuiTreeItem-content"
+                          class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
                           />
                           <div
-                            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                            class="MuiTreeItem-label"
                           >
                             <div
-                              class="makeStyles-label-40"
+                              class="makeStyles-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1"
+                                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                               >
                                 Node-1.1.1
                               </p>
@@ -321,50 +335,54 @@ exports[`should correctly interpret the order of nodes with the same parent in t
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-15"
+      class="makeStyles-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-18 MuiTypography-subtitle2"
+        class="MuiTypography-root MuiTypography-subtitle2 makeStyles-typography makeStyles-MuiTypography-root"
       >
         Deep Tree
       </h6>
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiTreeView-root"
+      class="MuiSimpleTreeView-root makeStyles-MuiSimpleTreeView-root"
+      id="mui-3"
       role="tree"
+      style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root Mui-expanded"
+        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+        id="mui-3-2"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="MuiTreeItem-content"
+          class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+              data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
             >
               <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
               />
             </svg>
           </div>
           <div
-            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+            class="MuiTreeItem-label"
           >
             <div
-              class="makeStyles-label-19"
+              class="makeStyles-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1"
+                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
               >
                 Node-2
               </p>
@@ -372,35 +390,36 @@ exports[`should correctly interpret the order of nodes with the same parent in t
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
             >
               <li
-                class="MuiTreeItem-root"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-3-2.1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   />
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-19"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-2.1
                       </p>
@@ -414,35 +433,37 @@ exports[`should correctly interpret the order of nodes with the same parent in t
       </li>
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root Mui-expanded"
+        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+        id="mui-3-1"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="MuiTreeItem-content"
+          class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+              data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
             >
               <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
               />
             </svg>
           </div>
           <div
-            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+            class="MuiTreeItem-label"
           >
             <div
-              class="makeStyles-label-19"
+              class="makeStyles-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1"
+                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
               >
                 Node-1
               </p>
@@ -450,47 +471,49 @@ exports[`should correctly interpret the order of nodes with the same parent in t
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
             >
               <li
                 aria-expanded="true"
-                class="MuiTreeItem-root Mui-expanded"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-3-1.1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+                      data-testid="ExpandMoreIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                        d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
                       />
                     </svg>
                   </div>
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-19"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.1
                       </p>
@@ -498,35 +521,36 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                   </div>
                 </div>
                 <ul
-                  class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
                   role="group"
                   style="min-height: 0px;"
                 >
                   <div
-                    class="MuiCollapse-wrapper"
+                    class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
                   >
                     <div
-                      class="MuiCollapse-wrapperInner"
+                      class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
                     >
                       <li
-                        class="MuiTreeItem-root"
+                        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                        id="mui-3-1.1.2"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="MuiTreeItem-content"
+                          class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
                           />
                           <div
-                            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                            class="MuiTreeItem-label"
                           >
                             <div
-                              class="makeStyles-label-19"
+                              class="makeStyles-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1"
+                                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                               >
                                 Node-1.1.2
                               </p>
@@ -535,24 +559,25 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                         </div>
                       </li>
                       <li
-                        class="MuiTreeItem-root"
+                        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                        id="mui-3-1.1.1"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="MuiTreeItem-content"
+                          class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
                           />
                           <div
-                            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                            class="MuiTreeItem-label"
                           >
                             <div
-                              class="makeStyles-label-19"
+                              class="makeStyles-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1"
+                                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                               >
                                 Node-1.1.1
                               </p>
@@ -566,35 +591,37 @@ exports[`should correctly interpret the order of nodes with the same parent in t
               </li>
               <li
                 aria-expanded="true"
-                class="MuiTreeItem-root Mui-expanded"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-3-1.3"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+                      data-testid="ExpandMoreIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                        d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
                       />
                     </svg>
                   </div>
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-19"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.3
                       </p>
@@ -602,47 +629,49 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                   </div>
                 </div>
                 <ul
-                  class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
                   role="group"
                   style="min-height: 0px;"
                 >
                   <div
-                    class="MuiCollapse-wrapper"
+                    class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
                   >
                     <div
-                      class="MuiCollapse-wrapperInner"
+                      class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
                     >
                       <li
                         aria-expanded="true"
-                        class="MuiTreeItem-root Mui-expanded"
+                        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                        id="mui-3-1.3.1"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="MuiTreeItem-content"
+                          class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
                           >
                             <svg
                               aria-hidden="true"
-                              class="MuiSvgIcon-root"
+                              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+                              data-testid="ExpandMoreIcon"
                               focusable="false"
                               viewBox="0 0 24 24"
                             >
                               <path
-                                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                                d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
                               />
                             </svg>
                           </div>
                           <div
-                            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                            class="MuiTreeItem-label"
                           >
                             <div
-                              class="makeStyles-label-19"
+                              class="makeStyles-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1"
+                                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                               >
                                 Node-1.3.1
                               </p>
@@ -650,35 +679,36 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                           </div>
                         </div>
                         <ul
-                          class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+                          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
                           role="group"
                           style="min-height: 0px;"
                         >
                           <div
-                            class="MuiCollapse-wrapper"
+                            class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
                           >
                             <div
-                              class="MuiCollapse-wrapperInner"
+                              class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
                             >
                               <li
-                                class="MuiTreeItem-root"
+                                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                                id="mui-3-1.3.1.1"
                                 role="treeitem"
                                 tabindex="-1"
                               >
                                 <div
-                                  class="MuiTreeItem-content"
+                                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                                 >
                                   <div
                                     class="MuiTreeItem-iconContainer"
                                   />
                                   <div
-                                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                                    class="MuiTreeItem-label"
                                   >
                                     <div
-                                      class="makeStyles-label-19"
+                                      class="makeStyles-label"
                                     >
                                       <p
-                                        class="MuiTypography-root MuiTypography-body1"
+                                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                                       >
                                         Node-1.3.1.1
                                       </p>
@@ -687,24 +717,25 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                                 </div>
                               </li>
                               <li
-                                class="MuiTreeItem-root"
+                                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                                id="mui-3-1.3.1.2"
                                 role="treeitem"
                                 tabindex="-1"
                               >
                                 <div
-                                  class="MuiTreeItem-content"
+                                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                                 >
                                   <div
                                     class="MuiTreeItem-iconContainer"
                                   />
                                   <div
-                                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                                    class="MuiTreeItem-label"
                                   >
                                     <div
-                                      class="makeStyles-label-19"
+                                      class="makeStyles-label"
                                     >
                                       <p
-                                        class="MuiTypography-root MuiTypography-body1"
+                                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                                       >
                                         Node-1.3.1.2
                                       </p>
@@ -721,24 +752,25 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                 </ul>
               </li>
               <li
-                class="MuiTreeItem-root"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-3-1.2"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   />
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-19"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.2
                       </p>
@@ -759,50 +791,54 @@ exports[`should only expand the specified nodes on initial render 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-22"
+      class="makeStyles-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-25 MuiTypography-subtitle2"
+        class="MuiTypography-root MuiTypography-subtitle2 makeStyles-typography makeStyles-MuiTypography-root"
       >
         Deep Tree
       </h6>
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiTreeView-root"
+      class="MuiSimpleTreeView-root makeStyles-MuiSimpleTreeView-root"
+      id="mui-4"
       role="tree"
+      style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root Mui-expanded"
+        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+        id="mui-4-1"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="MuiTreeItem-content"
+          class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+              data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
             >
               <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
               />
             </svg>
           </div>
           <div
-            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+            class="MuiTreeItem-label"
           >
             <div
-              class="makeStyles-label-26"
+              class="makeStyles-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1"
+                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
               >
                 Node-1
               </p>
@@ -810,47 +846,49 @@ exports[`should only expand the specified nodes on initial render 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
             >
               <li
                 aria-expanded="false"
-                class="MuiTreeItem-root"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-4-1.1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+                      data-testid="ChevronRightIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+                        d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
                       />
                     </svg>
                   </div>
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-26"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.1
                       </p>
@@ -859,24 +897,25 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                 </div>
               </li>
               <li
-                class="MuiTreeItem-root"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-4-1.2"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   />
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-26"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.2
                       </p>
@@ -886,35 +925,37 @@ exports[`should only expand the specified nodes on initial render 1`] = `
               </li>
               <li
                 aria-expanded="false"
-                class="MuiTreeItem-root"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-4-1.3"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+                      data-testid="ChevronRightIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+                        d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
                       />
                     </svg>
                   </div>
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-26"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.3
                       </p>
@@ -928,35 +969,37 @@ exports[`should only expand the specified nodes on initial render 1`] = `
       </li>
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root Mui-expanded"
+        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+        id="mui-4-2"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="MuiTreeItem-content"
+          class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+              data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
             >
               <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
               />
             </svg>
           </div>
           <div
-            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+            class="MuiTreeItem-label"
           >
             <div
-              class="makeStyles-label-26"
+              class="makeStyles-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1"
+                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
               >
                 Node-2
               </p>
@@ -964,35 +1007,36 @@ exports[`should only expand the specified nodes on initial render 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
             >
               <li
-                class="MuiTreeItem-root"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-4-2.1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   />
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-26"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-2.1
                       </p>
@@ -1013,50 +1057,54 @@ exports[`should render a multi-level tree correctly 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-8"
+      class="makeStyles-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-11 MuiTypography-subtitle2"
+        class="MuiTypography-root MuiTypography-subtitle2 makeStyles-typography makeStyles-MuiTypography-root"
       >
         Deep Tree
       </h6>
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiTreeView-root"
+      class="MuiSimpleTreeView-root makeStyles-MuiSimpleTreeView-root"
+      id="mui-2"
       role="tree"
+      style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root Mui-expanded"
+        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+        id="mui-2-1"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="MuiTreeItem-content"
+          class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+              data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
             >
               <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
               />
             </svg>
           </div>
           <div
-            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+            class="MuiTreeItem-label"
           >
             <div
-              class="makeStyles-label-12"
+              class="makeStyles-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1"
+                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
               >
                 Node-1
               </p>
@@ -1064,47 +1112,49 @@ exports[`should render a multi-level tree correctly 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
             >
               <li
                 aria-expanded="true"
-                class="MuiTreeItem-root Mui-expanded"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-2-1.1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+                      data-testid="ExpandMoreIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                        d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
                       />
                     </svg>
                   </div>
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-12"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.1
                       </p>
@@ -1112,35 +1162,36 @@ exports[`should render a multi-level tree correctly 1`] = `
                   </div>
                 </div>
                 <ul
-                  class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
                   role="group"
                   style="min-height: 0px;"
                 >
                   <div
-                    class="MuiCollapse-wrapper"
+                    class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
                   >
                     <div
-                      class="MuiCollapse-wrapperInner"
+                      class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
                     >
                       <li
-                        class="MuiTreeItem-root"
+                        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                        id="mui-2-1.1.1"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="MuiTreeItem-content"
+                          class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
                           />
                           <div
-                            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                            class="MuiTreeItem-label"
                           >
                             <div
-                              class="makeStyles-label-12"
+                              class="makeStyles-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1"
+                                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                               >
                                 Node-1.1.1
                               </p>
@@ -1149,24 +1200,25 @@ exports[`should render a multi-level tree correctly 1`] = `
                         </div>
                       </li>
                       <li
-                        class="MuiTreeItem-root"
+                        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                        id="mui-2-1.1.2"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="MuiTreeItem-content"
+                          class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
                           />
                           <div
-                            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                            class="MuiTreeItem-label"
                           >
                             <div
-                              class="makeStyles-label-12"
+                              class="makeStyles-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1"
+                                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                               >
                                 Node-1.1.2
                               </p>
@@ -1179,24 +1231,25 @@ exports[`should render a multi-level tree correctly 1`] = `
                 </ul>
               </li>
               <li
-                class="MuiTreeItem-root"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-2-1.2"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   />
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-12"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.2
                       </p>
@@ -1206,35 +1259,37 @@ exports[`should render a multi-level tree correctly 1`] = `
               </li>
               <li
                 aria-expanded="true"
-                class="MuiTreeItem-root Mui-expanded"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-2-1.3"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+                      data-testid="ExpandMoreIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                        d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
                       />
                     </svg>
                   </div>
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-12"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-1.3
                       </p>
@@ -1242,47 +1297,49 @@ exports[`should render a multi-level tree correctly 1`] = `
                   </div>
                 </div>
                 <ul
-                  class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
                   role="group"
                   style="min-height: 0px;"
                 >
                   <div
-                    class="MuiCollapse-wrapper"
+                    class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
                   >
                     <div
-                      class="MuiCollapse-wrapperInner"
+                      class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
                     >
                       <li
                         aria-expanded="true"
-                        class="MuiTreeItem-root Mui-expanded"
+                        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                        id="mui-2-1.3.1"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="MuiTreeItem-content"
+                          class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
                           >
                             <svg
                               aria-hidden="true"
-                              class="MuiSvgIcon-root"
+                              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+                              data-testid="ExpandMoreIcon"
                               focusable="false"
                               viewBox="0 0 24 24"
                             >
                               <path
-                                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                                d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
                               />
                             </svg>
                           </div>
                           <div
-                            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                            class="MuiTreeItem-label"
                           >
                             <div
-                              class="makeStyles-label-12"
+                              class="makeStyles-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1"
+                                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                               >
                                 Node-1.3.1
                               </p>
@@ -1290,35 +1347,36 @@ exports[`should render a multi-level tree correctly 1`] = `
                           </div>
                         </div>
                         <ul
-                          class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+                          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
                           role="group"
                           style="min-height: 0px;"
                         >
                           <div
-                            class="MuiCollapse-wrapper"
+                            class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
                           >
                             <div
-                              class="MuiCollapse-wrapperInner"
+                              class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
                             >
                               <li
-                                class="MuiTreeItem-root"
+                                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                                id="mui-2-1.3.1.1"
                                 role="treeitem"
                                 tabindex="-1"
                               >
                                 <div
-                                  class="MuiTreeItem-content"
+                                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                                 >
                                   <div
                                     class="MuiTreeItem-iconContainer"
                                   />
                                   <div
-                                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                                    class="MuiTreeItem-label"
                                   >
                                     <div
-                                      class="makeStyles-label-12"
+                                      class="makeStyles-label"
                                     >
                                       <p
-                                        class="MuiTypography-root MuiTypography-body1"
+                                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                                       >
                                         Node-1.3.1.1
                                       </p>
@@ -1327,24 +1385,25 @@ exports[`should render a multi-level tree correctly 1`] = `
                                 </div>
                               </li>
                               <li
-                                class="MuiTreeItem-root"
+                                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                                id="mui-2-1.3.1.2"
                                 role="treeitem"
                                 tabindex="-1"
                               >
                                 <div
-                                  class="MuiTreeItem-content"
+                                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                                 >
                                   <div
                                     class="MuiTreeItem-iconContainer"
                                   />
                                   <div
-                                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                                    class="MuiTreeItem-label"
                                   >
                                     <div
-                                      class="makeStyles-label-12"
+                                      class="makeStyles-label"
                                     >
                                       <p
-                                        class="MuiTypography-root MuiTypography-body1"
+                                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                                       >
                                         Node-1.3.1.2
                                       </p>
@@ -1366,35 +1425,37 @@ exports[`should render a multi-level tree correctly 1`] = `
       </li>
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root Mui-expanded"
+        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+        id="mui-2-2"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="MuiTreeItem-content"
+          class="makeStyles-MuiTreeItem-content MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+              data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
             >
               <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
               />
             </svg>
           </div>
           <div
-            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+            class="MuiTreeItem-label"
           >
             <div
-              class="makeStyles-label-12"
+              class="makeStyles-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1"
+                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
               >
                 Node-2
               </p>
@@ -1402,35 +1463,36 @@ exports[`should render a multi-level tree correctly 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiTreeItem-group MuiCollapse-entered"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered makeStyles-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical makeStyles-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical makeStyles-MuiCollapse-wrapperInner"
             >
               <li
-                class="MuiTreeItem-root"
+                class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+                id="mui-2-2.1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="MuiTreeItem-content"
+                  class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
                   />
                   <div
-                    class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+                    class="MuiTreeItem-label"
                   >
                     <div
-                      class="makeStyles-label-12"
+                      class="makeStyles-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
                       >
                         Node-2.1
                       </p>
@@ -1451,38 +1513,41 @@ exports[`should render the tree 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-1"
+      class="makeStyles-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-4 MuiTypography-subtitle2"
+        class="MuiTypography-root MuiTypography-subtitle2 makeStyles-typography makeStyles-MuiTypography-root"
       >
         Default Tree
       </h6>
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiTreeView-root"
+      class="MuiSimpleTreeView-root makeStyles-MuiSimpleTreeView-root"
+      id="mui-1"
       role="tree"
+      style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
-        class="MuiTreeItem-root"
+        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+        id="mui-1-root1"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="MuiTreeItem-content"
+          class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
         >
           <div
             class="MuiTreeItem-iconContainer"
           />
           <div
-            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+            class="MuiTreeItem-label"
           >
             <div
-              class="makeStyles-label-5"
+              class="makeStyles-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1"
+                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
               >
                 Node-root1
               </p>
@@ -1499,50 +1564,55 @@ exports[`should render the tree with a help hint 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-43"
+      class="makeStyles-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-46 MuiTypography-subtitle2"
+        class="MuiTypography-root MuiTypography-subtitle2 makeStyles-typography makeStyles-MuiTypography-root"
       >
         Default Tree
       </h6>
       <svg
         aria-hidden="true"
-        class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
+        aria-label=""
+        class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium makeStyles-MuiSvgIcon-root"
+        data-mui-internal-clone-element="true"
+        data-testid="HelpOutlineOutlinedIcon"
         focusable="false"
         style="margin-left: 8px; font-size: 16px;"
-        title=""
         viewBox="0 0 24 24"
       >
         <path
-          d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
+          d="M11 18h2v-2h-2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4"
         />
       </svg>
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiTreeView-root"
+      class="MuiSimpleTreeView-root makeStyles-MuiSimpleTreeView-root"
+      id="mui-8"
       role="tree"
+      style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
-        class="MuiTreeItem-root"
+        class="MuiTreeItem-root makeStyles-MuiTreeItem-root"
+        id="mui-8-root1"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="MuiTreeItem-content"
+          class="makeStyles-MuiTreeItem-content MuiTreeItem-content"
         >
           <div
             class="MuiTreeItem-iconContainer"
           />
           <div
-            class="MuiTypography-root MuiTreeItem-label MuiTypography-body1"
+            class="MuiTreeItem-label"
           >
             <div
-              class="makeStyles-label-47"
+              class="makeStyles-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1"
+                class="MuiTypography-root MuiTypography-body1 makeStyles-MuiTypography-root"
               >
                 Node-root1
               </p>

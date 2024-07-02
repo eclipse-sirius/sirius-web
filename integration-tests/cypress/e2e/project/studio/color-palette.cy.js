@@ -33,7 +33,7 @@ describe('/projects/:projectId/edit - Color Palette', () => {
     cy.getByTestId('View-toggle').click();
     cy.getByTestId('ColorPalette-more').click();
     cy.getByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click().get('[data-value="Fixed Color"]').should('exist').click();
     cy.getByTestId('create-object').click();
     cy.getByTestId('FixedColor').should('exist').click();
@@ -47,14 +47,14 @@ describe('/projects/:projectId/edit - Color Palette', () => {
     cy.getByTestId('View-toggle').click();
     cy.getByTestId('View-more').click();
     cy.getByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click().get('[data-value="Color Palette"]').should('exist').click();
     cy.getByTestId('create-object').click();
     cy.getByTestId('New Color Palette').should('exist').click();
     cy.getByTestId('Name').clear().type('OtherColorPalette{enter}');
     cy.getByTestId('OtherColorPalette-more').click();
     cy.getByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click().get('[data-value="Fixed Color"]').should('exist');
   });
 

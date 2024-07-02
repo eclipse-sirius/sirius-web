@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@mui/icons-material/Close';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import { makeStyles } from 'tss-react/mui';
 import { RepresentationNavigationProps } from './RepresentationNavigation.types';
 import { RepresentationMetadata } from './Workbench.types';
 
-const useRepresentationNavigationStyles = makeStyles((theme) => ({
+const useRepresentationNavigationStyles = makeStyles()((theme) => ({
   tabsRoot: {
     minHeight: theme.spacing(4),
     borderBottomColor: theme.palette.divider,
@@ -32,15 +32,15 @@ const useRepresentationNavigationStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    '& > *:nth-child(2)': {
-      marginLeft: theme.spacing(1),
-    },
     width: 'inherit',
   },
   tabLabelText: {
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
+  },
+  tabCloseIcon: {
+    marginLeft: theme.spacing(1),
   },
 }));
 
@@ -57,7 +57,7 @@ export const RepresentationNavigation = ({
   onRepresentationClick,
   onClose,
 }: RepresentationNavigationProps) => {
-  const classes = useRepresentationNavigationStyles();
+  const { classes } = useRepresentationNavigationStyles();
 
   const onChange = (_event: React.ChangeEvent<{}>, value: string) => {
     const representationSelected = representations.find((representation) => representation.id === value);
@@ -83,7 +83,7 @@ export const RepresentationNavigation = ({
       value={displayedRepresentation.id}
       onChange={onChange}
       variant="scrollable"
-      scrollButtons="on"
+      scrollButtons
       textColor="primary"
       indicatorColor="primary">
       {representations.map((representation) => {
@@ -96,6 +96,7 @@ export const RepresentationNavigation = ({
               <div className={classes.tabLabel}>
                 <div className={classes.tabLabelText}>{representation.label}</div>
                 <CloseIcon
+                  className={classes.tabCloseIcon}
                   fontSize="small"
                   onClick={(event) => onRepresentationClose(event, representation)}
                   data-testid={`close-representation-tab-${representation.label}`}

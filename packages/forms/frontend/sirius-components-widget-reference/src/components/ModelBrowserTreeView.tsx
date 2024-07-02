@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { TreeView } from '@eclipse-sirius/sirius-components-trees';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
 import { ModelBrowserFilterBar } from './ModelBrowserFilterBar';
 import { ModelBrowserTreeViewProps, ModelBrowserTreeViewState } from './ModelBrowserTreeView.types';
 
-const useTreeStyle = makeStyles((theme) => ({
+const useTreeStyle = makeStyles()((theme) => ({
   title: {
     opacity: 0.6,
     fontSize: theme.typography.caption.fontSize,
@@ -38,7 +38,7 @@ export const ModelBrowserTreeView = ({
   leafType,
   ownerKind,
 }: ModelBrowserTreeViewProps) => {
-  const classes = useTreeStyle();
+  const { classes } = useTreeStyle();
 
   const [state, setState] = useState<ModelBrowserTreeViewState>({ filterBarText: '' });
 
