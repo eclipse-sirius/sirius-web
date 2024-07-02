@@ -154,15 +154,15 @@ const adaptChildrenBorderNodes = (nodes: Node[], gqlChildrenNodes: GQLNode<GQLNo
     // Hide children node borders to prevent a 'bold' aspect.
     child.data.style = {
       ...child.data.style,
-      borderTopColor: 'transparent',
-      borderLeftColor: 'transparent',
-      borderRightColor: 'transparent',
+      borderTopWidth: '0',
+      borderLeftWidth: '0',
+      borderRightWidth: '0',
     };
 
     if (index === visibleChildrenNodes.length - 1) {
       child.data.style = {
         ...child.data.style,
-        borderBottomColor: 'transparent',
+        borderBottomWidth: '0',
       };
     }
   });

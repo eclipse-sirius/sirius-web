@@ -47,8 +47,11 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const nodeElement = document.getElementById(`${node.id}-listNode-${nodeIndex}`)?.children[0];
-    const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
+    const nodeElement = document.getElementById(`${node.id}-listNode-${nodeIndex}`);
+    const nodeElementChild =
+      nodeElement?.children &&
+      Array.from(nodeElement.children).filter((child) => !child.classList.contains('react-flow__resize-control'))[0];
+    const borderWidth = nodeElementChild ? parseFloat(window.getComputedStyle(nodeElementChild).borderLeftWidth) : 0;
 
     if (directChildren.length > 0) {
       this.handleParentNode(
