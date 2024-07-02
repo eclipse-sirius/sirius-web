@@ -16,6 +16,7 @@ import Button from '@material-ui/core/Button';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import gql from 'graphql-tag';
 import { useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GQLButton } from '../form/FormEventFragments.types';
 import { HelpTooltip } from '../propertysections/HelpTooltip';
 import { getTextDecorationLineValue } from './../propertysections/getTextDecorationLineValue';
@@ -98,6 +99,7 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
     iconOnly: widget.buttonLabel ? false : true,
   };
   const classes = useStyle(props);
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
@@ -110,7 +112,7 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
   useEffect(() => {
     if (!loading) {
       if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (data) {
         const { pushButton } = data;
@@ -119,7 +121,7 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
         }
       }
     }
-  }, [loading, error, data]);
+  }, [loading, error, data, coreT]);
 
   const onClick = () => {
     const input: GQLPushButtonInput = {

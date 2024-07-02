@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import { BrowseModalProps } from './BrowseModal.types';
 
@@ -30,6 +31,7 @@ const useBrowserModalStyles = makeStyles((_) => ({
 
 export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalProps) => {
   const styles = useBrowserModalStyles();
+  const { t } = useTranslation('siriusComponentsWidgetReference', { keyPrefix: 'select' });
   const [browserSelection, setBrowserSelection] = useState<Selection>({ entries: widget.referenceValues });
 
   return (
@@ -44,14 +46,14 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
         aria-labelledby="dialog-title"
         fullWidth
         data-testid="browse-modal">
-        <DialogTitle id="dialog-title">Select an object</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent className={styles.content}>
           <ModelBrowserTreeView
             editingContextId={editingContextId}
             widget={widget}
             markedItemIds={[]}
             enableMultiSelection={widget.reference.manyValued}
-            title={'Choices'}
+            title={t('choices')}
             leafType={'reference'}
             ownerKind={widget.reference.ownerKind}
           />
@@ -68,7 +70,7 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
                 onClose(selectedElement.id);
               }
             }}>
-            Select
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

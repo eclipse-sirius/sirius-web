@@ -24,6 +24,7 @@ import { Theme, makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import gql from 'graphql-tag';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GQLButton } from '../form/FormEventFragments.types';
 import {
   ButtonStyleProps,
@@ -148,6 +149,7 @@ export const SplitButtonPropertySection = ({
   });
 
   const containerClasses = useContainerStyle();
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const [pushButton, { loading, data, error }] = useMutation<GQLPushButtonMutationData, GQLPushButtonMutationVariables>(
     pushButtonMutation
@@ -156,7 +158,7 @@ export const SplitButtonPropertySection = ({
   useEffect(() => {
     if (!loading) {
       if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (data) {
         const { pushButton } = data;

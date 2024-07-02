@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo and others.
+ * Copyright (c) 2022, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export { default as siriusComponentsTreesEn } from './locales/en.json';
+export { default as siriusComponentsTreesRu } from './locales/ru.json';
 export * from './toolbar/TreeToolBarContext';
 export * from './toolbar/TreeToolBarContext.types';
 export * from './toolbar/TreeToolBarContribution';

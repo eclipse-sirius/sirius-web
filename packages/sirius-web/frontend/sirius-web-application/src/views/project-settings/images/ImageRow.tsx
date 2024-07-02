@@ -24,6 +24,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
 import { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ImageRowProps, ImageRowState } from './ImageRow.types';
 import { DeleteImageModal } from './delete-image/DeleteImageModal';
 import { RenameImageModal } from './rename-image/RenameImageModal';
@@ -39,6 +40,7 @@ const ImagePreviewTooltip = withStyles(() => ({
 
 export const ImageRow = ({ image, onImageUpdated }: ImageRowProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'image.list' });
   const [state, setState] = useState<ImageRowState>({
     modal: null,
     showEditIcon: false,
@@ -66,7 +68,7 @@ export const ImageRow = ({ image, onImageUpdated }: ImageRowProps) => {
           <Typography component="div">
             <Box fontFamily="Monospace" fontSize="small">
               {image.id}{' '}
-              <Tooltip title="Copy ID to clipboard">
+              <Tooltip title={t('copyId')}>
                 <IconButton onClick={() => navigator.clipboard.writeText(image.id)}>
                   <FileCopyOutlinedIcon fontSize="small" />
                 </IconButton>

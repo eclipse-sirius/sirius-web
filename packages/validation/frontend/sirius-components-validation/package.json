@@ -37,6 +37,7 @@
     "@xstate/react": "1.6.3",
     "graphql": "16.8.1",
     "react": "17.0.2",
+    "react-i18next": "14.1.1",
     "xstate": "4.32.1"
   },
   "devDependencies": {
@@ -51,6 +52,7 @@
     "graphql": "16.8.1",
     "prettier": "2.7.1",
     "react": "17.0.2",
+    "react-i18next": "14.1.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "xstate": "4.32.1",
     "typescript": "5.4.5",

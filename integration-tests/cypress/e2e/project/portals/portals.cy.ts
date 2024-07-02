@@ -221,7 +221,7 @@ describe('/projects/:projectId/edit - Portal', () => {
           portal.addRepresentationFromExplorer('Portal', diagramTitle);
           // Open the diagram's share modal from inside the portal and compare
           explorer.getTreeItemByLabel('Portal').click();
-          new Diagram().getDiagram(diagramTitle).find('[aria-label="share diagram"]').click();
+          new Diagram().getDiagram(diagramTitle).find('[data-testid="share"]').click();
           cy.window().then((win) => {
             win.navigator.clipboard.readText().then((text) => {
               expect(text).to.eq(diagramURL);

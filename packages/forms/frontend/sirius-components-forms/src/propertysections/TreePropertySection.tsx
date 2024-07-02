@@ -27,6 +27,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { TreeItem as MuiTreeItem } from '@material-ui/lab';
 import TreeView from '@material-ui/lab/TreeView';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLTree } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
@@ -96,6 +97,7 @@ export const editTreeCheckboxMutation = gql`
 
 const TreeItem = ({ node, nodes, readOnly, editingContextId, formId, widgetId }: TreeItemProps) => {
   const classes = useTreeItemWidgetStyles();
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { setSelection } = useSelection();
 
   const [editTreeCheckbox, { loading, error, data }] =
@@ -122,7 +124,7 @@ const TreeItem = ({ node, nodes, readOnly, editingContextId, formId, widgetId }:
   useEffect(() => {
     if (!loading) {
       if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (data) {
         const { editTreeCheckbox } = data;
@@ -131,7 +133,7 @@ const TreeItem = ({ node, nodes, readOnly, editingContextId, formId, widgetId }:
         }
       }
     }
-  }, [loading, error, data]);
+  }, [loading, error, data, coreT]);
 
   const handleClick: React.MouseEventHandler<HTMLDivElement> = () => {
     if (node.selectable) {
@@ -195,6 +197,7 @@ export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
   readOnly,
 }: PropertySectionComponentProps<GQLTree>) => {
   let { nodes, expandedNodesIds } = widget;
+  const { t } = useTranslation('siriusComponentsForms');
 
   if (widget.nodes.length === 0) {
     expandedNodesIds = [];
@@ -202,7 +205,7 @@ export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
       {
         id: 'none',
         parentId: null,
-        label: 'None',
+        label: t('none'),
         kind: 'siriusComponents://unknown',
         iconURL: [],
         endIconsURL: [],

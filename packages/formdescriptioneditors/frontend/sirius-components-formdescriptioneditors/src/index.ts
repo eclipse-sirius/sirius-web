@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo and others.
+ * Copyright (c) 2022, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,3 +12,5 @@
  *******************************************************************************/
 export * from './FormDescriptionEditorRepresentation';
 export * from './WidgetEntry.types';
+export { default as siriusComponentsFormDescriptionEditorsEn } from './locales/en.json';
+export { default as siriusComponentsFormDescriptionEditorsRu } from './locales/ru.json';

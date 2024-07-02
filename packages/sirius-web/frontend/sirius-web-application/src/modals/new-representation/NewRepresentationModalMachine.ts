@@ -45,7 +45,6 @@ export type SchemaValue = {
 
 export interface NewRepresentationModalContext {
   name: string;
-  nameMessage: string;
   nameIsInvalid: boolean;
   nameHasBeenModified: boolean;
   selectedRepresentationDescriptionId: string;
@@ -89,7 +88,6 @@ export const newRepresentationModalMachine = Machine<
     type: 'parallel',
     context: {
       name: '',
-      nameMessage: 'The name cannot be empty',
       nameIsInvalid: false,
       nameHasBeenModified: false,
       selectedRepresentationDescriptionId: '',

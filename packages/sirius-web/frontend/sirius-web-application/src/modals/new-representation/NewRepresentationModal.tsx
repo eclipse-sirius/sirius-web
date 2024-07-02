@@ -25,6 +25,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLCreateRepresentationMutationData,
   GQLCreateRepresentationPayload,
@@ -110,13 +111,14 @@ export const NewRepresentationModal = ({
   onClose,
 }: NewRepresentationModalProps) => {
   const classes = useNewRepresentationModalStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'representation.create' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const [{ value, context }, dispatch] = useMachine<NewRepresentationModalContext, NewRepresentationModalEvent>(
     newRepresentationModalMachine
   );
   const { newRepresentationModal, toast } = value as SchemaValue;
   const {
     name,
-    nameMessage,
     nameIsInvalid,
     selectedRepresentationDescriptionId,
     representationDescriptions,
@@ -140,7 +142,7 @@ export const NewRepresentationModal = ({
       if (representationDescriptionsError) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
+          message: coreT('errors.unexpected'),
         };
         dispatch(showToastEvent);
       }
@@ -152,7 +154,13 @@ export const NewRepresentationModal = ({
         dispatch(fetchRepresentationDescriptionsEvent);
       }
     }
-  }, [representationDescriptionsLoading, representationDescriptionsData, representationDescriptionsError, dispatch]);
+  }, [
+    representationDescriptionsLoading,
+    representationDescriptionsData,
+    representationDescriptionsError,
+    dispatch,
+    coreT,
+  ]);
 
   const onNameChange = (event) => {
     const value = event.target.value;
@@ -178,7 +186,7 @@ export const NewRepresentationModal = ({
       if (createRepresentationError) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
+          message: coreT('errors.unexpected'),
         };
         dispatch(showToastEvent);
       }
@@ -194,7 +202,7 @@ export const NewRepresentationModal = ({
         }
       }
     }
-  }, [createRepresentationLoading, createRepresentationData, createRepresentationError, dispatch]);
+  }, [createRepresentationLoading, createRepresentationData, createRepresentationError, dispatch, coreT]);
 
   const onCreateRepresentation = () => {
     dispatch({ type: 'CREATE_REPRESENTATION' } as CreateRepresentationEvent);
@@ -232,22 +240,22 @@ export const NewRepresentationModal = ({
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-        <DialogTitle id="dialog-title">Create a new representation</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
             <TextField
               error={nameIsInvalid}
-              helperText={nameMessage}
-              label="Name"
+              helperText={t('name.helperText')}
+              label={t('name.label')}
               name="name"
               value={name}
-              placeholder="Enter the name of the representation"
+              placeholder={t('name.placeholder')}
               inputProps={{ 'data-testid': 'name' }}
               autoFocus={true}
               onChange={onNameChange}
               disabled={newRepresentationModal === 'loading' || newRepresentationModal === 'creatingRepresentation'}
             />
-            <InputLabel id="newRepresentationModalRepresentationDescriptionLabel">Representation type</InputLabel>
+            <InputLabel id="newRepresentationModalRepresentationDescriptionLabel">{t('type.label')}</InputLabel>
             <Select
               value={selectedRepresentationDescriptionId}
               onChange={onRepresentationDescriptionChange}
@@ -276,7 +284,7 @@ export const NewRepresentationModal = ({
             data-testid="create-representation"
             color="primary"
             onClick={onCreateRepresentation}>
-            Create
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

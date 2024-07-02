@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import AddIcon from '@material-ui/icons/Add';
 import { Fragment, forwardRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NewObjectModal } from '../../modals/new-object/NewObjectModal';
 import { NewRepresentationModal } from '../../modals/new-representation/NewRepresentationModal';
 
@@ -27,6 +28,7 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
     { editingContextId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
+    const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
     const [modal, setModal] = useState<Modal>(null);
     const { setSelection } = useSelection();
 
@@ -69,7 +71,7 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="New object" />
+          <ListItemText primary={t('newObject')} />
         </MenuItem>
         <MenuItem
           key="new-representation"
@@ -80,7 +82,7 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="New representation" />
+          <ListItemText primary={t('newRepresentation')} />
         </MenuItem>
         {modalElement}
       </Fragment>

@@ -1,0 +1,11 @@
+{
+  "siriusComponentsTrees": {
+    "delete": "Удалить",
+    "disableSynchronization": "Отключить синхронизацию с представлением",
+    "enableSynchronization": "Включить синхронизацию с представлением",
+    "enterNewValue": "Укажите новое значение",
+    "expandAll": "Развернуть всё",
+    "filters": "Фильтры",
+    "rename": "Переименовать"
+  }
+}

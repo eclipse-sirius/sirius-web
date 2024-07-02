@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLCreateRootObjectMutationData,
   GQLGetRootDomainsQueryData,
@@ -115,6 +116,8 @@ const useNewRootObjectModalStyles = makeStyles((theme) => ({
 
 export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewRootObjectModalProps) => {
   const classes = useNewRootObjectModalStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'object.newRoot' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const [{ value, context }, dispatch] = useMachine<NewRootObjectModalContext, NewRootObjectModalEvent>(
     newRootObjectModalMachine
   );
@@ -142,7 +145,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
       if (domainsError) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
+          message: coreT('errors.unexpected'),
         };
         dispatch(showToastEvent);
       }
@@ -154,7 +157,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
         dispatch(fetchDomainsEvent);
       }
     }
-  }, [domainsLoading, domainsData, domainsError, dispatch]);
+  }, [domainsLoading, domainsData, domainsError, dispatch, coreT]);
 
   // Fetch the corresponding object creation description whenever the user selects a new domain or toggles the checkbox
   const [
@@ -168,7 +171,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
       if (descriptionError) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
+          message: coreT('errors.unexpected'),
         };
         dispatch(showToastEvent);
       }
@@ -180,7 +183,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
         dispatch(fetchDescriptionsEvent);
       }
     }
-  }, [descriptionsLoading, descriptionsData, descriptionError, dispatch]);
+  }, [descriptionsLoading, descriptionsData, descriptionError, dispatch, coreT]);
 
   useEffect(() => {
     if (newRootObjectModal === 'loadingRootObjectCreationDescriptions' && selectedDomainId) {
@@ -200,7 +203,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
       if (createRootObjectError) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
+          message: coreT('errors.unexpected'),
         };
         dispatch(showToastEvent);
       }
@@ -209,7 +212,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
         dispatch(handleResponseEvent);
       }
     }
-  }, [createRootObjectLoading, createRootObjectError, createRootObjectData, dispatch]);
+  }, [createRootObjectLoading, createRootObjectError, createRootObjectData, dispatch, coreT]);
 
   const onCreateRootObject = () => {
     dispatch({ type: 'CREATE_ROOT_OBJECT' } as CreateRootObjectEvent);
@@ -253,10 +256,10 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-        <DialogTitle id="dialog-title">Create a new root object</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
-            <InputLabel id="domainsLabel">Domain</InputLabel>
+            <InputLabel id="domainsLabel">{t('domain.label')}</InputLabel>
             <Select
               value={selectedDomainId}
               onChange={onDomainChange}
@@ -270,7 +273,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
                 </MenuItem>
               ))}
             </Select>
-            <InputLabel id="rootObjectCreationDescriptionsLabel">Object type</InputLabel>
+            <InputLabel id="rootObjectCreationDescriptionsLabel">{t('type.label')}</InputLabel>
             <Select
               classes={{ select: classes.select }}
               value={selectedRootObjectCreationDescriptionId}
@@ -303,7 +306,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
                   data-testid="suggested"
                 />
               }
-              label="Show only suggested root type"
+              label={t('suggestedType.label')}
             />
           </div>
         </DialogContent>
@@ -314,7 +317,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
             data-testid="create-object"
             color="primary"
             onClick={onCreateRootObject}>
-            Create
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

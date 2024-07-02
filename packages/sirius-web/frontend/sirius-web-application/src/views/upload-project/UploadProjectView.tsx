@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 import { FileUpload } from '../../core/file-upload/FileUpload';
 import { sendFile } from '../../core/sendFile';
@@ -86,6 +87,8 @@ const useUploadProjectViewStyles = makeStyles((theme) => ({
 
 export const UploadProjectView = () => {
   const classes = useUploadProjectViewStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.upload' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const [{ value, context }, dispatch] = useMachine<UploadProjectViewContext, UploadProjectEvent>(uploadProjectMachine);
   const { uploadProjectView, toast } = value as SchemaValue;
   const { file, newProjectId, message } = context;
@@ -106,7 +109,7 @@ export const UploadProjectView = () => {
       const response = await sendFile(httpOrigin, uploadProjectMutation, variables, file);
       const { data, error } = response as any;
       if (error) {
-        dispatch({ type: 'SHOW_TOAST', message: 'An unexpected error has occurred, please refresh the page' });
+        dispatch({ type: 'SHOW_TOAST', message: coreT('errors.unexpected') });
       }
       if (data) {
         const typename = data.uploadProject.__typename;
@@ -117,7 +120,7 @@ export const UploadProjectView = () => {
         }
       }
     } catch (exception) {
-      dispatch({ type: 'SHOW_TOAST', message: 'An unexpected error has occurred, please refresh the page' });
+      dispatch({ type: 'SHOW_TOAST', message: coreT('errors.unexpected') });
     }
   };
 
@@ -136,10 +139,10 @@ export const UploadProjectView = () => {
           <div className={classes.uploadProjectViewContainer}>
             <div className={classes.titleContainer}>
               <Typography variant="h2" align="center" gutterBottom>
-                Upload a project
+                {t('title')}
               </Typography>
               <Typography variant="h4" align="center" gutterBottom>
-                Start with an existing project
+                {t('description')}
               </Typography>
             </div>
             <Paper>
@@ -152,7 +155,7 @@ export const UploadProjectView = () => {
                     color="primary"
                     disabled={uploadProjectView !== 'fileSelected'}
                     data-testid="upload-project">
-                    Upload
+                    {t('submit')}
                   </Button>
                 </div>
               </form>

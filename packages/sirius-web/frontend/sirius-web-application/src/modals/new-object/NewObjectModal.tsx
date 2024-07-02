@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLCreateChildMutationData,
   GQLCreateChildPayload,
@@ -108,7 +109,9 @@ const isSuccessPayload = (payload: GQLCreateChildPayload): payload is GQLCreateC
 
 export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewObjectModalProps) => {
   const classes = useNewObjectModalStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'object.create' });
   const { addErrorMessage, addMessages } = useMultiToast();
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const [{ value, context }, dispatch] = useMachine<NewObjectModalContext, NewObjectModalEvent>(newObjectModalMachine);
   const { newObjectModal } = value as SchemaValue;
   const { selectedChildCreationDescriptionId, childCreationDescriptions, objectToSelect } = context;
@@ -124,7 +127,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
   useEffect(() => {
     if (!childCreationDescriptionsLoading) {
       if (childCreationDescriptionsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (childCreationDescriptionsData) {
         const fetchChildCreationDescriptionsEvent: FetchedChildCreationDescriptionsEvent = {
@@ -134,7 +137,13 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
         dispatch(fetchChildCreationDescriptionsEvent);
       }
     }
-  }, [childCreationDescriptionsLoading, childCreationDescriptionsData, childCreationDescriptionsError, dispatch]);
+  }, [
+    childCreationDescriptionsLoading,
+    childCreationDescriptionsData,
+    childCreationDescriptionsError,
+    coreT,
+    dispatch,
+  ]);
 
   const onChildCreationDescriptionChange = (event) => {
     const value = event.target.value;
@@ -150,7 +159,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
   useEffect(() => {
     if (!createChildLoading) {
       if (createChildError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (createChildData) {
         const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: createChildData };
@@ -163,7 +172,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
         }
       }
     }
-  }, [createChildLoading, createChildData, createChildError, dispatch]);
+  }, [coreT, createChildLoading, createChildData, createChildError, dispatch]);
 
   const onCreateObject = () => {
     dispatch({ type: 'CREATE_CHILD' } as CreateChildEvent);
@@ -190,10 +199,10 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
         maxWidth="xs"
         fullWidth
         data-testid={'new-object-modal'}>
-        <DialogTitle id="dialog-title">Create a new object</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
-            <InputLabel id="newObjectModalChildCreationDescriptionLabel">Object type</InputLabel>
+            <InputLabel id="newObjectModalChildCreationDescriptionLabel">{t('type.label')}</InputLabel>
             <Select
               classes={{ select: classes.select }}
               value={selectedChildCreationDescriptionId}
@@ -222,7 +231,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
             data-testid="create-object"
             color="primary"
             onClick={onCreateObject}>
-            Create
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -20,6 +20,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLErrorPayload,
   GQLRenameImageMutationData,
@@ -54,6 +55,8 @@ const isErrorPayload = (payload: GQLRenameImagePayload): payload is GQLErrorPayl
   payload.__typename === 'ErrorPayload';
 
 export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, onClose }: RenameImageModalProps) => {
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'image.rename' });
+
   const [{ value, context }, dispatch] = useMachine<RenameImageModalContext, RenameImageModalEvent>(
     renameImageModalMachine,
     {
@@ -64,7 +67,7 @@ export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, on
     }
   );
   const { toast, renameImageModal } = value as SchemaValue;
-  const { name, nameIsInvalid, nameMessage, message } = context;
+  const { name, nameIsInvalid, message } = context;
 
   const onNewName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -120,15 +123,15 @@ export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, on
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-        <DialogTitle id="dialog-title">Rename the image</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <TextField
             value={name}
             onChange={onNewName}
             error={nameIsInvalid}
-            helperText={nameMessage}
-            label="Name"
-            placeholder="Enter the new image name"
+            helperText={t('name.helperText')}
+            label={t('name.label')}
+            placeholder={t('name.placeholder')}
             data-testid="name"
             autoFocus
             fullWidth
@@ -141,7 +144,7 @@ export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, on
             onClick={onRenameImage}
             color="primary"
             data-testid="rename-image">
-            Rename
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

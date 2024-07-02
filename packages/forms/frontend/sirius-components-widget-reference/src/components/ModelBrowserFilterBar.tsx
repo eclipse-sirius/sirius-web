@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
+import { useTranslation } from 'react-i18next';
 import { ModelBrowserFilterBarProps } from './ModelBrowserFilterBar.types';
 
 const useFilterBarStyles = makeStyles((theme: Theme) => ({
@@ -35,6 +36,7 @@ const useFilterBarStyles = makeStyles((theme: Theme) => ({
 }));
 export const ModelBrowserFilterBar = ({ onTextChange, onTextClear, text }: ModelBrowserFilterBarProps) => {
   const classes = useFilterBarStyles();
+  const { t } = useTranslation('siriusComponentsWidgetReference', { keyPrefix: 'filter' });
 
   return (
     <div className={classes.filterbar}>
@@ -42,7 +44,7 @@ export const ModelBrowserFilterBar = ({ onTextChange, onTextClear, text }: Model
         id="filterbar-textfield"
         data-testid="filterbar-textfield"
         name="filterbar-textfield"
-        placeholder="Type to filter"
+        placeholder={t('typeToFilter')}
         spellCheck={false}
         size="small"
         margin="none"

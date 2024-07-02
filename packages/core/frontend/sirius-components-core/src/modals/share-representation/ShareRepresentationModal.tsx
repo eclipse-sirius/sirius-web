@@ -16,6 +16,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RepresentationPathContext } from '../../contexts/RepresentationPathContext';
 import { RepresentationPathContextValue } from '../../contexts/RepresentationPathContext.types';
 import { ShareRepresentationModalProps } from './ShareRepresentationModal.types';
@@ -25,6 +26,8 @@ export const ShareRepresentationModal = ({
   representationId,
   onClose,
 }: ShareRepresentationModalProps) => {
+  const { t } = useTranslation('siriusComponentsCore', { keyPrefix: 'share' });
+
   const refCallback = (node: HTMLElement) => {
     if (node !== null) {
       var range = document.createRange();
@@ -40,10 +43,10 @@ export const ShareRepresentationModal = ({
   const { getRepresentationPath } = useContext<RepresentationPathContextValue>(RepresentationPathContext);
   const path: string = window.location.origin + getRepresentationPath(editingContextId, representationId);
 
-  let title = 'Shareable link';
+  let title = t('link');
   if (navigator.clipboard && document.hasFocus()) {
     navigator.clipboard.writeText(path);
-    title += ' (copied into the clipboard)';
+    title += ' ' + t('copied');
   }
 
   return (

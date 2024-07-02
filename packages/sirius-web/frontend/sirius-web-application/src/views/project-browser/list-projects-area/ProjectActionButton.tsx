@@ -23,6 +23,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { ComponentType, useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import {
@@ -36,6 +37,8 @@ import {
 import { projectActionButtonMenuItemExtensionPoint } from './ProjectActionButtonExtensionPoints';
 
 export const ProjectActionButton = ({ project, onChange }: ProjectActionButtonProps) => {
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
+
   const [state, setState] = useState<ProjectActionButtonState>({
     contextMenuAnchorElement: null,
   });
@@ -47,7 +50,7 @@ export const ProjectActionButton = ({ project, onChange }: ProjectActionButtonPr
 
   return (
     <>
-      <Tooltip title="More">
+      <Tooltip title={t('more')}>
         <IconButton aria-label="more" onClick={onClick} size="small" data-testid="more">
           <MoreHorizIcon fontSize="small" />
         </IconButton>
@@ -70,6 +73,8 @@ const modals: Record<ProjectContextMenuModal, ComponentType<ProjectContextMenuMo
 };
 
 const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectContextMenuProps) => {
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
+
   const [state, setState] = useState<ProjectContextMenuState>({
     modalToDisplay: null,
   });
@@ -100,19 +105,19 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
           <ListItemIcon>
             <EditIcon />
           </ListItemIcon>
-          <ListItemText primary="Rename" />
+          <ListItemText primary={t('rename')} />
         </MenuItem>
         <MenuItem component="a" href={`${httpOrigin}/api/projects/${project.id}`} type="application/octet-stream">
           <ListItemIcon>
             <GetAppIcon />
           </ListItemIcon>
-          <ListItemText primary="Download" />
+          <ListItemText primary={t('download')} />
         </MenuItem>
         <MenuItem onClick={onDelete} data-testid="delete">
           <ListItemIcon>
             <DeleteIcon />
           </ListItemIcon>
-          <ListItemText primary="Delete" />
+          <ListItemText primary={t('delete')} />
         </MenuItem>
         {menuItemProps.map((props, index) => (
           <MenuItem {...props} key={index} />

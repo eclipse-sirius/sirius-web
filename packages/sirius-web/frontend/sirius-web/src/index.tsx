@@ -22,6 +22,7 @@ import {
 } from '@eclipse-sirius/sirius-web-application';
 import ReactDOM from 'react-dom';
 import { httpOrigin, wsOrigin } from './core/URL';
+import './i18n';
 import { ellipseNodeStyleDocumentTransform } from './nodes/ElipseNodeDocumentTransform';
 import { EllipseNode } from './nodes/EllipseNode';
 import { EllipseNodeConverter } from './nodes/EllipseNodeConverter';

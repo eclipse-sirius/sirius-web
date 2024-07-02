@@ -38,6 +38,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { useNodes } from 'reactflow';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
@@ -94,6 +95,7 @@ export const EditProjectView = () => {
   const routeMatch = useRouteMatch();
   const { projectId, representationId } = useParams<EditProjectViewParams>();
   const classes = useEditProjectViewStyles();
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const [{ value, context }, dispatch] = useMachine<EditProjectViewContext, EditProjectViewEvent>(
     editProjectViewMachine
   );
@@ -112,7 +114,7 @@ export const EditProjectView = () => {
       if (error) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
+          message: coreT('errors.unexpected'),
         };
         dispatch(showToastEvent);
       }
@@ -121,7 +123,7 @@ export const EditProjectView = () => {
         dispatch(fetchProjectEvent);
       }
     }
-  }, [loading, data, error, dispatch]);
+  }, [loading, data, error, dispatch, coreT]);
 
   useEffect(() => {
     if (representation && representation.id !== representationId) {

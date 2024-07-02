@@ -16,6 +16,7 @@ import TextField from '@material-ui/core/TextField';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import React, { FocusEvent, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLTextarea, GQLTextfield, GQLWidget } from '../form/FormEventFragments.types';
 import { GQLSuccessPayload } from './ListPropertySection.types';
@@ -139,6 +140,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyle(props);
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const [{ value: schemaValue, context }, dispatch] = useMachine<
     TextfieldPropertySectionContext,
@@ -180,7 +182,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
     if (!updateTextfieldLoading) {
       let hasError = false;
       if (updateTextfieldError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
 
         hasError = true;
       }
@@ -200,7 +202,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
         dispatch(initializeEvent);
       }
     }
-  }, [updateTextfieldLoading, updateTextfieldData, updateTextfieldError, dispatch]);
+  }, [coreT, updateTextfieldLoading, updateTextfieldData, updateTextfieldError, dispatch]);
 
   const onBlur = () => {
     sendEditedValue();

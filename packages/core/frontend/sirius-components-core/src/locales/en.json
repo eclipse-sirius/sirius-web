@@ -1,0 +1,14 @@
+{
+  "siriusComponentsCore": {
+    "messages": {
+      "loading": "Loading..."
+    },
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    },
+    "share": {
+      "link": "Shareable link",
+      "copied": "(copied into the clipboard)"
+    }
+  }
+}
