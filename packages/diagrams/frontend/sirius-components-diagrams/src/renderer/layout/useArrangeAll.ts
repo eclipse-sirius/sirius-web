@@ -243,7 +243,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
       const layoutPromise = new Promise<void>((resolve) => {
         layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
           const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
-            laidOutDiagram.nodes,
+            laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
             'horizontal'
           ) as Node<NodeData, DiagramNodeType>[];
           laidOutNodesWithElk.map((node) => {
