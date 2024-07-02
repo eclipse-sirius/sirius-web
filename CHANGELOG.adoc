@@ -88,6 +88,7 @@ image:doc/screenshots/diagramFilterView.png[Diagram Filter View, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3523[#3523] [gantt] Support rounding dates when changing dates from gantt
 - https://github.com/eclipse-sirius/sirius-web/issues/3655[#3655] [gantt] Support "Delete Task Dependency" tool in gantt
 - https://github.com/eclipse-sirius/sirius-web/issues/3591[#3591] [sirius-web] Add EditProject subtitle extension point
+- https://github.com/eclipse-sirius/sirius-web/issues/3662[#3662] [sirius-web] Add an extension point to contribute props to ReactFlow diagram renderer, contributed props must be memoized
 
 === Improvements
 
