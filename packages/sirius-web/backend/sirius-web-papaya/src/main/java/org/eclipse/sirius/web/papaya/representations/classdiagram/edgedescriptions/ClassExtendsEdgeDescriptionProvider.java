@@ -48,6 +48,7 @@ public class ClassExtendsEdgeDescriptionProvider implements IEdgeDescriptionProv
                 .targetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW)
                 .lineStyle(LineStyle.SOLID)
                 .edgeWidth(1)
+                .borderSize(0)
                 .build();
 
         return new DiagramBuilders().newEdgeDescription()
