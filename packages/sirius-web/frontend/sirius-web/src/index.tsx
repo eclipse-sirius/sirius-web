@@ -15,11 +15,13 @@ import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   ApolloClientOptionsConfigurer,
+  DefaultExtensionRegistryMergeStrategy,
   DiagramRepresentationConfiguration,
   NodeTypeRegistry,
   SiriusWebApplication,
   apolloClientOptionsConfigurersExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
+import { papayaExtensionRegistry } from '@eclipse-sirius/sirius-web-papaya';
 import ReactDOM from 'react-dom';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { ellipseNodeStyleDocumentTransform } from './nodes/ElipseNodeDocumentTransform';
@@ -39,6 +41,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const registry = new ExtensionRegistry();
+registry.addAll(papayaExtensionRegistry, new DefaultExtensionRegistryMergeStrategy());
 
 const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
   const { documentTransform } = currentOptions;

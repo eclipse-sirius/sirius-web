@@ -1,0 +1,86 @@
+{
+  "name": "@eclipse-sirius/sirius-web-papaya",
+  "version": "2024.5.3",
+  "author": "Eclipse Sirius",
+  "license": "EPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-sirius/sirius-web"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "main": "./dist/sirius-web-papaya.umd.js",
+  "module": "./dist/sirius-web-papaya.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/sirius-web-papaya.umd.js",
+      "import": "./dist/sirius-web-papaya.es.js"
+    }
+  },
+  "scripts": {
+    "start": "vite build --mode 'development' && tsc",
+    "build": "vite build && tsc",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
+    "publish:local": "yalc push"
+  },
+  "peerDependencies": {
+    "@apollo/client": "3.10.4",
+    "@eclipse-sirius/sirius-components-core": "*",
+    "@eclipse-sirius/sirius-components-diagrams": "*",
+    "@eclipse-sirius/sirius-components-formdescriptioneditors": "*",
+    "@eclipse-sirius/sirius-components-forms": "*",
+    "@eclipse-sirius/sirius-components-gantt": "*",
+    "@eclipse-sirius/sirius-components-deck": "*",
+    "@eclipse-sirius/sirius-components-portals": "*",
+    "@eclipse-sirius/sirius-components-trees": "*",
+    "@eclipse-sirius/sirius-components-widget-reference": "*",
+    "@eclipse-sirius/sirius-web-application": "*",
+    "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "4.11.3",
+    "@material-ui/lab": "4.0.0-alpha.61",
+    "@types/react": "17.0.37",
+    "@types/react-router-dom": "5.3.3",
+    "@xstate/react": "1.6.3",
+    "graphql": "16.8.1",
+    "notistack": "3.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-router-dom": "5.2.0",
+    "reactflow": "11.10.1",
+    "xstate": "4.32.1"
+  },
+  "devDependencies": {
+    "@apollo/client": "3.10.4",
+    "@eclipse-sirius/sirius-components-core": "*",
+    "@eclipse-sirius/sirius-components-diagrams": "*",
+    "@eclipse-sirius/sirius-components-formdescriptioneditors": "*",
+    "@eclipse-sirius/sirius-components-widget-reference": "*",
+    "@eclipse-sirius/sirius-components-forms": "*",
+    "@eclipse-sirius/sirius-components-gantt": "*",
+    "@eclipse-sirius/sirius-components-deck": "*",
+    "@eclipse-sirius/sirius-components-portals": "*",
+    "@eclipse-sirius/sirius-components-trees": "*",
+    "@eclipse-sirius/sirius-components-tsconfig": "*",
+    "@eclipse-sirius/sirius-web-application": "*",
+    "@types/node": "20.12.12",
+    "@types/react": "17.0.37",
+    "@vitejs/plugin-react": "4.3.0",
+    "@xstate/react": "1.6.3",
+    "jest-junit-reporter": "1.1.0",
+    "graphql": "16.8.1",
+    "prettier": "2.7.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-router-dom": "5.2.0",
+    "rollup-plugin-peer-deps-external": "2.2.4",
+    "xstate": "4.32.1",
+    "typescript": "5.4.5",
+    "vite": "5.2.11"
+  }
+}
