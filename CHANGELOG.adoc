@@ -80,6 +80,8 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3711[#3711] [diagram] Fix an issue that prevent filter elements button to be in read-only mode
 - https://github.com/eclipse-sirius/sirius-web/issues/3710[#3710] [portal] Fix an error raised by switching mode on portal
 - https://github.com/eclipse-sirius/sirius-web/issues/3700[#3700] [diagram] Prevent edge selection from being lost after a diagram refresh
+- https://github.com/eclipse-sirius/sirius-web/issues/3690[#3690] [diagram] Prevent node overlap check from being triggered on border nodes during arrange-all
+- https://github.com/eclipse-sirius/sirius-web/issues/3691[#3691] [diagram] Prevent border nodes from overlapping after the first layout
 
 === New Features
 
