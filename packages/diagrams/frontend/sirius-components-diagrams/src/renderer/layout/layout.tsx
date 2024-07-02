@@ -88,7 +88,11 @@ export const prepareLayoutArea = (
         id: `${node.id}-label-${index}`,
         key: `${node.id}-label-${index}`,
         role: 'button', // role applied by react flow
-        style: node.data.insideLabel?.overflowStrategy === 'NONE' ? undefined : { maxWidth: node.width },
+        style: {
+          maxWidth: node.data.insideLabel?.overflowStrategy === 'NONE' ? undefined : node.width,
+          borderWidth: node.data.style.borderWidth,
+          borderStyle: node.data.style.borderStyle,
+        },
         children,
       });
       labelElements.push(element);

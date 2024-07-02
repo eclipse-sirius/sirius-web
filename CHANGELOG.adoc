@@ -73,6 +73,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3716[#3716] [forms] Fix an issue causing some icons of the reference widget to be missing
 - https://github.com/eclipse-sirius/sirius-web/issues/3672[#3672] [forms] Fix an issue preventing the deletion of a list item
 - https://github.com/eclipse-sirius/sirius-web/issues/3589[#3589] [diagram] Add missing migration participant for diagram representation
+- https://github.com/eclipse-sirius/sirius-web/issues/3668[#3668] [diagram] Fix an issue that would cause wrapped label to overflow its container
 
 === New Features
 
