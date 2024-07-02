@@ -33,6 +33,8 @@ public class RecordNodeDescriptionProvider implements INodeDescriptionProvider {
 
     public static final String NAME = "Record";
 
+    public static final String RECORD_COMPONENT_NAME = "Record Component";
+
     private final IColorProvider colorProvider;
 
     public RecordNodeDescriptionProvider(IColorProvider colorProvider) {
@@ -43,7 +45,10 @@ public class RecordNodeDescriptionProvider implements INodeDescriptionProvider {
     public NodeDescription create() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
                 .showIcon(true)
+                .displayHeaderSeparator(true)
+                .withHeader(true)
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .borderSize(0)
                 .build();
 
         var insideLabel = new DiagramBuilders().newInsideLabelDescription()
@@ -59,6 +64,7 @@ public class RecordNodeDescriptionProvider implements INodeDescriptionProvider {
                 .borderLineStyle(LineStyle.SOLID)
                 .build();
 
+        var recordComponentNodeDescription = this.recordComponentNodeDescription();
 
         var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
                 .areChildNodesDraggableExpression("aql:false")
@@ -72,7 +78,37 @@ public class RecordNodeDescriptionProvider implements INodeDescriptionProvider {
                 .style(recordNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .childrenLayoutStrategy(childrenLayoutStrategy)
-                .childrenDescriptions()
+                .childrenDescriptions(recordComponentNodeDescription)
+                .build();
+    }
+
+    private NodeDescription recordComponentNodeDescription() {
+        var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
+                .showIcon(true)
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .borderSize(0)
+                .build();
+
+        var insideLabel = new DiagramBuilders().newInsideLabelDescription()
+                .labelExpression("aql:self.label()")
+                .style(insideLabelStyle)
+                .build();
+
+        var recordComponentNodeStyle = new DiagramBuilders().newIconLabelNodeStyleDescription()
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .borderSize(0)
+                .borderRadius(0)
+                .borderLineStyle(LineStyle.SOLID)
+                .build();
+
+        return new DiagramBuilders().newNodeDescription()
+                .name(RECORD_COMPONENT_NAME)
+                .domainType("papaya:RecordComponent")
+                .semanticCandidatesExpression("aql:self.components")
+                .insideLabel(insideLabel)
+                .style(recordComponentNodeStyle)
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }
 

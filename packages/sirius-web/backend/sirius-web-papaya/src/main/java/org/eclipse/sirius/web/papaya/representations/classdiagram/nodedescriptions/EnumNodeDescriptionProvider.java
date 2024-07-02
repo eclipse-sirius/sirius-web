@@ -33,6 +33,8 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
 
     public static final String NAME = "Enum";
 
+    public static final String ENUM_LITERAL_NAME = "Enum Literal";
+
     private final IColorProvider colorProvider;
 
     public EnumNodeDescriptionProvider(IColorProvider colorProvider) {
@@ -43,7 +45,10 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
     public NodeDescription create() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
                 .showIcon(true)
+                .displayHeaderSeparator(true)
+                .withHeader(true)
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .borderSize(0)
                 .build();
 
         var insideLabel = new DiagramBuilders().newInsideLabelDescription()
@@ -59,6 +64,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
                 .borderLineStyle(LineStyle.SOLID)
                 .build();
 
+        var enumLiteralNodeDescription = this.enumLiteralNodeDescription();
 
         var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
                 .areChildNodesDraggableExpression("aql:false")
@@ -72,7 +78,37 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
                 .style(enumNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .childrenLayoutStrategy(childrenLayoutStrategy)
-                .childrenDescriptions()
+                .childrenDescriptions(enumLiteralNodeDescription)
+                .build();
+    }
+
+    private NodeDescription enumLiteralNodeDescription() {
+        var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
+                .showIcon(true)
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .borderSize(0)
+                .build();
+
+        var insideLabel = new DiagramBuilders().newInsideLabelDescription()
+                .labelExpression("aql:self.label()")
+                .style(insideLabelStyle)
+                .build();
+
+        var enumLiteralNodeStyle = new DiagramBuilders().newIconLabelNodeStyleDescription()
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .borderSize(0)
+                .borderRadius(0)
+                .borderLineStyle(LineStyle.SOLID)
+                .build();
+
+        return new DiagramBuilders().newNodeDescription()
+                .name(ENUM_LITERAL_NAME)
+                .domainType("papaya:EnumLiteral")
+                .semanticCandidatesExpression("aql:self.literals")
+                .insideLabel(insideLabel)
+                .style(enumLiteralNodeStyle)
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }
 

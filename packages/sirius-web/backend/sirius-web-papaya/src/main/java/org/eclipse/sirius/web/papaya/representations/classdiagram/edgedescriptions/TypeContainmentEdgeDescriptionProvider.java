@@ -52,6 +52,7 @@ public class TypeContainmentEdgeDescriptionProvider implements IEdgeDescriptionP
                 .targetArrowStyle(ArrowStyle.NONE)
                 .lineStyle(LineStyle.SOLID)
                 .edgeWidth(1)
+                .borderSize(0)
                 .build();
 
         return new DiagramBuilders().newEdgeDescription()
