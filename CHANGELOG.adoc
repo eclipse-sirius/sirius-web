@@ -15,6 +15,11 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3702[#3702] [sirius-web] The extension point `navigationBarMenuExtensionPoint` has been removed.
+ For those who want to entirely replace the appearance of the navigation bar menu icon, it has been replaced by `navigationBarMenuIconExtensionPoint`.
+ On the other hand, those who want to only change the URL of the help can now use the new extension point `navigationBarMenuHelpURLExtensionPoint`.
+ Finally, those who want to add new menu entries to the menu can do so using the extension point `navigationBarMenuEntryExtensionPoint`.
+
 
 === Dependency update
 
@@ -33,7 +38,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3744[#3744] [diagram] Add support for helper lines during multi selection move
 - https://github.com/eclipse-sirius/sirius-web/issues/3770[#3770] [diagram] Enable helper lines by default
 - https://github.com/eclipse-sirius/sirius-web/issues/3756[#3756] [sirius-web] Add an extension point to contribute custom footer
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3702[#3702] [sirius-web] Improve the extensibility of the navigation bar menu by giving consumers of Sirius Web the ability to add new menu entries
 
 == v2024.7.0
 
@@ -178,6 +183,7 @@ We cannot rely on the error message recaived from the backend since Cross Origin
 - https://github.com/eclipse-sirius/sirius-web/issues/3669[#3669] [diagram] Add migration participant to hide label borders by default
 - https://github.com/eclipse-sirius/sirius-web/issues/3684[#3684] [form, tree] Replace form & tree converters configurations with dedicated extension points
 - https://github.com/eclipse-sirius/sirius-web/issues/3701[#3701] [domain] Add edge and node tools to domain diagram including creation tools as well as delete and direct edit tools.
+
 
 == v2024.5.0
 

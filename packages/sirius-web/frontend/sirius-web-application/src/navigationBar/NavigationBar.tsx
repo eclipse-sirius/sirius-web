@@ -22,9 +22,9 @@ import { NavigationBarProps } from './NavigationBar.types';
 import {
   navigationBarIconExtensionPoint,
   navigationBarLeftContributionExtensionPoint,
-  navigationBarMenuExtensionPoint,
   navigationBarRightContributionExtensionPoint,
 } from './NavigationBarExtensionPoints';
+import { NavigationBarMenu } from './NavigationBarMenu';
 
 const useNavigationBarStyles = makeStyles((theme) => ({
   navbar: {
@@ -69,7 +69,7 @@ export const NavigationBar = ({ children }: NavigationBarProps) => {
   const classes = useNavigationBarStyles();
 
   const { Component: Icon } = useComponent(navigationBarIconExtensionPoint);
-  const { Component: Menu } = useComponent(navigationBarMenuExtensionPoint);
+
   const leftContributions = useComponents(navigationBarLeftContributionExtensionPoint);
   const rightContributions = useComponents(navigationBarRightContributionExtensionPoint);
 
@@ -95,7 +95,7 @@ export const NavigationBar = ({ children }: NavigationBarProps) => {
             {rightContributions.map(({ Component: RightContribution }, index) => (
               <RightContribution key={index} />
             ))}
-            <Menu />
+            <NavigationBarMenu />
           </div>
         </Toolbar>
       </AppBar>

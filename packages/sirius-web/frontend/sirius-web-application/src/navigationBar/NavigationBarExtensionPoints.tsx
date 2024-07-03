@@ -13,25 +13,17 @@
 
 import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
 import { SiriusIcon } from '../core/SiriusIcon';
-import { Help } from './Help';
 import {
   NavigationBarIconProps,
   NavigationBarLeftContributionProps,
-  NavigationBarMenuProps,
   NavigationBarRightContributionProps,
 } from './NavigationBar.types';
 
 const NavigationBarIcon = ({}: NavigationBarIconProps) => <SiriusIcon fontSize="large" />;
-const NavigationBarMenu = ({}: NavigationBarMenuProps) => <Help />;
 
 export const navigationBarIconExtensionPoint: ComponentExtensionPoint<NavigationBarIconProps> = {
   identifier: 'navigationBar#icon',
   FallbackComponent: NavigationBarIcon,
-};
-
-export const navigationBarMenuExtensionPoint: ComponentExtensionPoint<NavigationBarMenuProps> = {
-  identifier: 'navigationBar#menu',
-  FallbackComponent: NavigationBarMenu,
 };
 
 export const navigationBarLeftContributionExtensionPoint: ComponentExtensionPoint<NavigationBarLeftContributionProps> =

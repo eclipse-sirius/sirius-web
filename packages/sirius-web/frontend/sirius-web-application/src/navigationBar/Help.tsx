@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
 import { emphasize, makeStyles } from '@material-ui/core/styles';
 import HelpIcon from '@material-ui/icons/Help';
+import { NavigationBarMenuIconProps } from './NavigationBarMenu.types';
 
 const useHelpStyle = makeStyles((theme) => ({
   onDarkBackground: {
@@ -23,13 +23,11 @@ const useHelpStyle = makeStyles((theme) => ({
   },
 }));
 
-export const Help = () => {
+export const Help = ({ onClick }: NavigationBarMenuIconProps) => {
   const classes = useHelpStyle();
   return (
-    <Link href="https://www.eclipse.org/sirius" rel="noopener noreferrer" target="_blank" color="inherit">
-      <IconButton className={classes.onDarkBackground} color="inherit">
-        <HelpIcon />
-      </IconButton>
-    </Link>
+    <IconButton className={classes.onDarkBackground} color="inherit" onClick={onClick}>
+      <HelpIcon />
+    </IconButton>
   );
 };
