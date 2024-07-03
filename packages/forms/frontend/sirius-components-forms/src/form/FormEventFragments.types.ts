@@ -57,20 +57,12 @@ export interface GQLFormRefreshedEventPayload
   form: GQLForm;
 }
 
-export interface GQLRepresentationMetadata {
-  id: string;
-  label: string;
-  kind: string;
-  description: GQLRepresentationDescription;
-}
-
 export interface GQLRepresentationDescription {
   id: string;
 }
 
 export interface GQLForm {
   id: string;
-  metadata: GQLRepresentationMetadata;
   pages: GQLPage[];
 }
 
@@ -282,14 +274,15 @@ export interface GQLChartWidget extends GQLWidget {
   chart: GQLChart;
 }
 
-interface GQLRepresentation {
-  metadata: GQLRepresentationMetadata;
-}
-
 export type GQLChart = GQLBarChart | GQLPieChart;
 
-export interface GQLBarChart extends GQLRepresentation {
+export interface GQLChartMetadata {
   label: string;
+}
+
+export interface GQLBarChart {
+  __typename: string;
+  metadata: GQLChartMetadata;
   entries: GQLBarChartEntry[];
   style: GQLBarChartStyle | null;
   width: number;
@@ -313,8 +306,9 @@ export interface GQLBarChartEntry {
   value: number;
 }
 
-export interface GQLPieChart extends GQLRepresentation {
-  label: string;
+export interface GQLPieChart {
+  __typename: string;
+  metadata: GQLChartMetadata;
   entries: GQLPieChartEntry[];
   style: GQLPieChartStyle | null;
 }
@@ -360,7 +354,6 @@ export type GQLFlexDirection = 'row' | 'row-reverse' | 'column' | 'column-revers
 export type GQLFlexWrap = 'nowrap' | 'wrap' | 'wrap-reverse';
 
 export interface GQLTree extends GQLWidget {
-  label: string;
   nodes: GQLTreeNode[];
   expandedNodesIds: string[];
 }
@@ -383,12 +376,10 @@ export interface GQLImage extends GQLWidget {
 }
 
 export interface GQLRichText extends GQLWidget {
-  label: string;
   stringValue: string;
 }
 
 export interface GQLSlider extends GQLWidget {
-  label: string;
   minValue: number;
   maxValue: number;
   currentValue: number;

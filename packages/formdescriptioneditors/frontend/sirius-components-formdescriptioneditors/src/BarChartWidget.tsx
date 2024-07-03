@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@ export const BarChartWidget = ({ widget }: BarChartWidgetProps) => {
   const barChartWidget = widget.chart as GQLBarChart;
 
   const chart: BarChartRepresentation = {
-    label: 'Frequency',
+    metadata: {
+      label: 'Frequency',
+    },
     entries: [
       { key: 'A', value: 0.08167 },
       { key: 'B', value: 0.01492 },
@@ -87,7 +89,7 @@ export const BarChartWidget = ({ widget }: BarChartWidgetProps) => {
 
   return (
     <div
-      data-testid={barChartWidget.label}
+      data-testid={barChartWidget.metadata.label}
       onFocus={() => setSelected(true)}
       onBlur={() => setSelected(false)}
       ref={ref}

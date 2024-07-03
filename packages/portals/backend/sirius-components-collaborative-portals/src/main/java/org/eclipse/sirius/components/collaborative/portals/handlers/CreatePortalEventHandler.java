@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.portals.services.ICollaborativePortalMessageService;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -96,8 +97,8 @@ public class CreatePortalEventHandler implements IEditingContextEventHandler {
                     variableManager.put("name", createRepresentationInput.representationName());
                     Portal portal = new PortalRenderer(variableManager, portalDescription).render();
                     this.representationPersistenceService.save(editingContext, portal);
-
-                    payload = new CreateRepresentationSuccessPayload(input.id(), portal);
+                    var representationMetadata = new RepresentationMetadata(portal.getId(), portal.getKind(), portal.getLabel(), portal.getDescriptionId());
+                    payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
                     changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
                 }
             }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,10 +20,11 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.deck.api.IDeckCreationService;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
-import org.eclipse.sirius.components.collaborative.deck.api.IDeckCreationService;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -104,7 +105,8 @@ public class CreateDeckEventHandler implements IEditingContextEventHandler {
 
                 this.representationPersistenceService.save(editingContext, deckDiagram);
 
-                payload = new CreateRepresentationSuccessPayload(input.id(), deckDiagram);
+                var representationMetadata = new RepresentationMetadata(deckDiagram.id(), deckDiagram.getKind(), deckDiagram.label(), deckDiagram.descriptionId());
+                payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }
         }

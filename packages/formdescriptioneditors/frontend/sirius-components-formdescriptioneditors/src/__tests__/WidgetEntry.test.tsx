@@ -297,10 +297,8 @@ test('should delete the Textfield from the drop area', async () => {
 
 test('should delete the PieChart from the drop area', async () => {
   const pieChart: GQLPieChart = {
+    __typename: 'PieChart',
     metadata: {
-      description: { id: 'PieChartDescription' },
-      id: 'PieChart1',
-      kind: 'PieChart',
       label: 'PieChart1',
     },
     label: 'PieChart1',

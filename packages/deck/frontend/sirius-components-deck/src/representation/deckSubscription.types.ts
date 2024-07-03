@@ -29,15 +29,8 @@ export interface GQLErrorPayload extends GQLDeckEventPayload {
   messages: GQLMessage[];
 }
 
-export interface GQLRepresentationMetadata {
-  id: string;
-  label: string;
-  kind: string;
-}
-
 export interface GQLDeck {
   id: string;
-  metadata: GQLRepresentationMetadata;
   targetObjectId: string;
   lanes: GQLLane[];
   style?: GQLDeckStyle;

@@ -25,6 +25,9 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3675[#3675] [core] Since the label is removed from the selection, the label of a representation cannot be retrieved from the selection
 - https://github.com/eclipse-sirius/sirius-web/issues/3742[#3742] [sirius-web] Remove the code of the legacy Sirius Web architecture.
 As a result, the following maven modules have been deleted: `sirius-web-sample-application`, `sirius-web-spring`, `sirius-web-graphql`, `sirius-web-services-api`, `sirius-web-services`, `sirius-web-persistence`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3676[#3676] [representation] Remove the label from representation subscriptions and from graphql types.
++ Also remove the label from representation metadata (and sometimes the whole metadata) when the label or metadata were not needed.
+
 
 === Dependency update
 

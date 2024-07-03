@@ -52,7 +52,6 @@ export interface NewRepresentationModalContext {
   representationDescriptions: GQLRepresentationDescriptionMetadata[];
   message: string | null;
   createdRepresentationId: string | null;
-  createdRepresentationLabel: string | null;
   createdRepresentationKind: string | null;
 }
 
@@ -96,7 +95,6 @@ export const newRepresentationModalMachine = Machine<
       representationDescriptions: [],
       message: null,
       createdRepresentationId: null,
-      createdRepresentationLabel: null,
       createdRepresentationKind: null,
     },
     states: {
@@ -255,7 +253,6 @@ export const newRepresentationModalMachine = Machine<
         );
         return {
           createdRepresentationId: createRepresentation.representation.id,
-          createdRepresentationLabel: createRepresentation.representation.label,
           createdRepresentationKind: createRepresentation.representation.kind,
         };
       }),

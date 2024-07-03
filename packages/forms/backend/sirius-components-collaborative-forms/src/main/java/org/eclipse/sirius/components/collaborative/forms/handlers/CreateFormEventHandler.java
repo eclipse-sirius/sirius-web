@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -66,22 +67,17 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
         this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, IInput input) {
-        if (input instanceof CreateRepresentationInput) {
-            CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
-            // @formatter:off
+        if (input instanceof CreateRepresentationInput createRepresentationInput) {
             return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(FormDescription.class::isInstance)
                     .isPresent();
-            // @formatter:on
         }
         return false;
     }
@@ -94,8 +90,7 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
         IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
-        if (input instanceof CreateRepresentationInput) {
-            CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
+        if (input instanceof CreateRepresentationInput createRepresentationInput) {
 
             Optional<IRepresentationDescription> optionalRepresentationDescription = this.representationDescriptionSearchService.findById(editingContext,
                     createRepresentationInput.representationDescriptionId());
@@ -105,18 +100,17 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
                 IRepresentationDescription representationDescription = optionalRepresentationDescription.get();
                 String targetObjectId = this.objectService.getId(optionalObject.get());
                 if (representationDescription instanceof FormDescription) {
-                    // @formatter:off
                     Form form = Form.newForm(UUID.randomUUID().toString())
                             .label(createRepresentationInput.representationName())
                             .targetObjectId(targetObjectId)
                             .descriptionId(representationDescription.getId())
                             .pages(List.of()) // We don't store form pages, it will be re-render by the FormProcessor.
                             .build();
-                    // @formatter:on
 
                     this.representationPersistenceService.save(editingContext, form);
 
-                    payload = new CreateRepresentationSuccessPayload(input.id(), form);
+                    var representationMetadata = new RepresentationMetadata(form.getId(), form.getKind(), form.getLabel(), form.getDescriptionId());
+                    payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
                     changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
                 }
             }

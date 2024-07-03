@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.charts.messages.ICollaborativeChartsMessageService;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -66,23 +67,17 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
         this.messageService = Objects.requireNonNull(messageService);
         this.hierarchyCreationService = Objects.requireNonNull(hierarchyCreationService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
-
     }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, IInput input) {
-        if (input instanceof CreateRepresentationInput) {
-            CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
-            // @formatter:off
+        if (input instanceof CreateRepresentationInput createRepresentationInput) {
             return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(HierarchyDescription.class::isInstance)
                     .isPresent();
-            // @formatter:on
         }
         return false;
     }
@@ -95,14 +90,11 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
         IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
-        if (input instanceof CreateRepresentationInput) {
-            CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
+        if (input instanceof CreateRepresentationInput createRepresentationInput) {
 
-            // @formatter:off
             Optional<HierarchyDescription> optionalHierarchyDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(HierarchyDescription.class::isInstance)
                     .map(HierarchyDescription.class::cast);
-            // @formatter:on
 
             Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.objectId());
 
@@ -110,14 +102,13 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
                 Object object = optionalObject.get();
                 HierarchyDescription representationDescription = optionalHierarchyDescription.get();
 
-                if (representationDescription instanceof HierarchyDescription) {
-                    Hierarchy hierarchy = this.hierarchyCreationService.create(createRepresentationInput.representationName(), object, representationDescription, editingContext);
+                Hierarchy hierarchy = this.hierarchyCreationService.create(createRepresentationInput.representationName(), object, representationDescription, editingContext);
 
-                    this.representationPersistenceService.save(editingContext, hierarchy);
+                this.representationPersistenceService.save(editingContext, hierarchy);
 
-                    changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
-                    payload = new CreateRepresentationSuccessPayload(input.id(), hierarchy);
-                }
+                var representationMetadata = new RepresentationMetadata(hierarchy.getId(), hierarchy.getKind(), hierarchy.getLabel(), hierarchy.getDescriptionId());
+                payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
+                changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }
         }
 

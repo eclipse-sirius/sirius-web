@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,14 +72,14 @@ export const PieChartWidget = ({ widget }: PieChartWidgetProps) => {
 
   return (
     <div
-      data-testid={pieChartWidget.label}
+      data-testid={pieChartWidget.metadata.label}
       onFocus={() => setSelected(true)}
       onBlur={() => setSelected(false)}
       ref={ref}
       tabIndex={0}>
       <div className={classes.propertySectionLabel}>
         <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-          {pieChartWidget.label}
+          {pieChartWidget.metadata.label}
         </Typography>
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>

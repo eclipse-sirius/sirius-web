@@ -219,12 +219,6 @@ export const convertDiagram = (
   layoutHandles(rawDiagram, diagramDescription, nodeInternals);
 
   return {
-    metadata: {
-      id: gqlDiagram.id,
-      label: gqlDiagram.metadata.label,
-      kind: gqlDiagram.metadata.kind,
-      targetObjectId: gqlDiagram.targetObjectId,
-    },
     nodes: rawDiagram.nodes,
     edges: rawDiagram.edges,
   };
