@@ -33,15 +33,19 @@ export {
 export {
   type NavigationBarIconProps,
   type NavigationBarLeftContributionProps,
-  type NavigationBarMenuProps,
   type NavigationBarRightContributionProps,
 } from './navigationBar/NavigationBar.types';
 export {
   navigationBarIconExtensionPoint,
   navigationBarLeftContributionExtensionPoint,
-  navigationBarMenuExtensionPoint,
   navigationBarRightContributionExtensionPoint,
 } from './navigationBar/NavigationBarExtensionPoints';
+export { type NavigationBarMenuIconProps } from './navigationBar/NavigationBarMenu.types';
+export {
+  navigationBarMenuEntryExtensionPoint,
+  navigationBarMenuHelpURLExtensionPoint,
+  navigationBarMenuIconExtensionPoint,
+} from './navigationBar/NavigationBarMenuExtensionPoints';
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
 export { type EditProjectNavbarSubtitleProps } from './views/edit-project/EditProjectNavbar/EditProjectNavbar.types';
 export { editProjectNavbarSubtitleExtensionPoint } from './views/edit-project/EditProjectNavbar/EditProjectNavbarExtensionPoints';

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ReactNode } from 'react';
+export interface NavigationBarMenuProps {}
 
-export interface NavigationBarProps {
-  children?: ReactNode;
+export interface NavigationBarMenuState {
+  menuAnchor: HTMLElement | null;
 }
 
-export interface NavigationBarIconProps {}
-
-export interface NavigationBarLeftContributionProps {}
-
-export interface NavigationBarRightContributionProps {}
+export interface NavigationBarMenuIconProps {
+  onClick: (event: React.MouseEvent<HTMLElement>) => void;
+}
