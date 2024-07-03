@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-forms-parent</artifactId>
-	<version>2024.5.3</version>
+	<version>2024.5.4</version>
 
 	<name>sirius-components-forms-parent</name>
 	<description>Sirius Components Forms Parent</description>

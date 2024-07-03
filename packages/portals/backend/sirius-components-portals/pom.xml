@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-portals</artifactId>
-	<version>2024.5.3</version>
+	<version>2024.5.4</version>
 	<name>sirius-components-portals</name>
 	<description>Sirius Components Portals</description>
 
@@ -43,17 +43,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-annotations</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
