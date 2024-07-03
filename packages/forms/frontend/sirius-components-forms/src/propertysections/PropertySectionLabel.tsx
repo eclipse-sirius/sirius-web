@@ -10,52 +10,61 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { ComponentExtension, useComponents } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { HelpTooltip } from './HelpTooltip';
-import { PropertySectionLabelProps } from './PropertySectionLabel.types';
+import { PropertySectionLabelDecoratorProps, PropertySectionLabelProps } from './PropertySectionLabel.types';
+import { propertySectionLabelDecoratorExtensionPoint } from './PropertySectionLabelExtensionPoints';
 
 const usePropertySectionLabelStyles = makeStyles((theme) => ({
   propertySectionLabel: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  subscribers: {
-    marginLeft: 'auto',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    '& > *': {
-      marginLeft: theme.spacing(0.5),
-      marginRight: theme.spacing(0.5),
-    },
-  },
-  avatar: {
-    fontSize: '0.875rem',
-    width: theme.spacing(2),
-    height: theme.spacing(2),
+    gap: theme.spacing(1),
   },
   typography: {
     lineHeight: '1.5',
+  },
+  decorators: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing(1),
   },
 }));
 
 export const PropertySectionLabel = ({ editingContextId, formId, widget }: PropertySectionLabelProps) => {
   const classes = usePropertySectionLabelStyles();
 
-  if (!widget.label && !widget.hasHelpText) {
-    return null;
-  } else {
-    return (
-      <div className={classes.propertySectionLabel}>
+  const propertySectionPanelDecorators: ComponentExtension<PropertySectionLabelDecoratorProps>[] = useComponents(
+    propertySectionLabelDecoratorExtensionPoint
+  );
+  const decorators = (
+    <div className={classes.decorators}>
+      {widget.hasHelpText ? (
+        <HelpTooltip editingContextId={editingContextId} formId={formId} widgetId={widget.id} />
+      ) : null}
+      {propertySectionPanelDecorators.map(({ Component: PropertySectionPanelDecorator }, index) => (
+        <PropertySectionPanelDecorator
+          editingContextId={editingContextId}
+          formId={formId}
+          widget={widget}
+          key={index}
+        />
+      ))}
+    </div>
+  );
+
+  return (
+    <div className={classes.propertySectionLabel}>
+      {!!widget.label ? (
         <Typography className={classes.typography} variant="subtitle2">
           {widget.label}
         </Typography>
-        {widget.hasHelpText ? (
-          <HelpTooltip editingContextId={editingContextId} formId={formId} widgetId={widget.id} />
-        ) : null}
-      </div>
-    );
-  }
+      ) : null}
+      {decorators}
+    </div>
+  );
 };

@@ -4,25 +4,28 @@ exports[`should display the edited value 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-21"
+      class="makeStyles-propertySectionLabel-19"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-24 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-20 MuiTypography-subtitle2"
       >
         Name:
       </h6>
+      <div
+        class="makeStyles-decorators-21"
+      />
     </div>
     <div
-      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-19 MuiFormControl-marginDense MuiFormControl-fullWidth"
+      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-17 MuiFormControl-marginDense MuiFormControl-fullWidth"
       data-testid="Name:"
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-17 makeStyles-style-20 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-15 makeStyles-style-18 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input makeStyles-input-18 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          class="MuiInputBase-input MuiInput-input makeStyles-input-16 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
           data-testid="input-Name:"
           name="Name:"
           placeholder="Name:"
@@ -39,25 +42,28 @@ exports[`should display the edited value 2`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-21"
+      class="makeStyles-propertySectionLabel-19"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-24 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-20 MuiTypography-subtitle2"
       >
         Name:
       </h6>
+      <div
+        class="makeStyles-decorators-21"
+      />
     </div>
     <div
-      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-19 MuiFormControl-marginDense MuiFormControl-fullWidth"
+      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-17 MuiFormControl-marginDense MuiFormControl-fullWidth"
       data-testid="Name:"
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-17 makeStyles-style-20 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-15 makeStyles-style-18 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input makeStyles-input-18 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          class="MuiInputBase-input MuiInput-input makeStyles-input-16 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
           data-testid="input-Name:"
           name="Name:"
           placeholder="Name:"
@@ -74,25 +80,28 @@ exports[`should display the edited value 3`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-21"
+      class="makeStyles-propertySectionLabel-19"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-24 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-20 MuiTypography-subtitle2"
       >
         Name:
       </h6>
+      <div
+        class="makeStyles-decorators-21"
+      />
     </div>
     <div
-      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-19 MuiFormControl-marginDense MuiFormControl-fullWidth"
+      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-17 MuiFormControl-marginDense MuiFormControl-fullWidth"
       data-testid="Name:"
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-17 makeStyles-style-20 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-15 makeStyles-style-18 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input makeStyles-input-18 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          class="MuiInputBase-input MuiInput-input makeStyles-input-16 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
           data-testid="input-Name:"
           name="Name:"
           placeholder="Name:"
@@ -112,25 +121,28 @@ exports[`should not trigger completion request if not configured 1`] = `
   <div>
     <div>
       <div
-        class="makeStyles-propertySectionLabel-61"
+        class="makeStyles-propertySectionLabel-54"
       >
         <h6
-          class="MuiTypography-root makeStyles-typography-64 MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-55 MuiTypography-subtitle2"
         >
           Text:
         </h6>
+        <div
+          class="makeStyles-decorators-56"
+        />
       </div>
       <div
-        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-59 MuiFormControl-marginDense MuiFormControl-fullWidth"
+        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-52 MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Text:"
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-57 makeStyles-style-60 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-50 makeStyles-style-53 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input makeStyles-input-58 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            class="MuiInputBase-input MuiInput-input makeStyles-input-51 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
             data-testid="input-Text:"
             name="Text:"
             placeholder="Text:"
@@ -151,25 +163,28 @@ exports[`should not trigger completion request if not configured 2`] = `
   <div>
     <div>
       <div
-        class="makeStyles-propertySectionLabel-61"
+        class="makeStyles-propertySectionLabel-54"
       >
         <h6
-          class="MuiTypography-root makeStyles-typography-64 MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-55 MuiTypography-subtitle2"
         >
           Text:
         </h6>
+        <div
+          class="makeStyles-decorators-56"
+        />
       </div>
       <div
-        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-59 MuiFormControl-marginDense MuiFormControl-fullWidth"
+        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-52 MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Text:"
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-57 makeStyles-style-60 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-50 makeStyles-style-53 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input makeStyles-input-58 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            class="MuiInputBase-input MuiInput-input makeStyles-input-51 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
             data-testid="input-Text:"
             name="Text:"
             placeholder="Text:"
@@ -190,25 +205,28 @@ exports[`should not trigger completion request if not configured 3`] = `
   <div>
     <div>
       <div
-        class="makeStyles-propertySectionLabel-61"
+        class="makeStyles-propertySectionLabel-54"
       >
         <h6
-          class="MuiTypography-root makeStyles-typography-64 MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-55 MuiTypography-subtitle2"
         >
           Text:
         </h6>
+        <div
+          class="makeStyles-decorators-56"
+        />
       </div>
       <div
-        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-59 MuiFormControl-marginDense MuiFormControl-fullWidth"
+        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-52 MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Text:"
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-57 makeStyles-style-60 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-50 makeStyles-style-53 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input makeStyles-input-58 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            class="MuiInputBase-input MuiInput-input makeStyles-input-51 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
             data-testid="input-Text:"
             name="Text:"
             placeholder="Text:"
@@ -226,25 +244,28 @@ exports[`should render a readOnly textfield 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-13"
+      class="makeStyles-propertySectionLabel-12"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-16 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-13 MuiTypography-subtitle2"
       >
         Name:
       </h6>
+      <div
+        class="makeStyles-decorators-14"
+      />
     </div>
     <div
-      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-11 MuiFormControl-marginDense MuiFormControl-fullWidth"
+      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-10 MuiFormControl-marginDense MuiFormControl-fullWidth"
       data-testid="Name:"
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-9 makeStyles-style-12 Mui-disabled Mui-disabled MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-8 makeStyles-style-11 Mui-disabled Mui-disabled MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input makeStyles-input-10 Mui-disabled Mui-disabled MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          class="MuiInputBase-input MuiInput-input makeStyles-input-9 Mui-disabled Mui-disabled MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
           data-testid="input-Name:"
           disabled=""
           name="Name:"
@@ -262,25 +283,28 @@ exports[`should render a readOnly textfield from widget properties 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-77"
+      class="makeStyles-propertySectionLabel-68"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-80 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-69 MuiTypography-subtitle2"
       >
         Name:
       </h6>
+      <div
+        class="makeStyles-decorators-70"
+      />
     </div>
     <div
-      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-75 MuiFormControl-marginDense MuiFormControl-fullWidth"
+      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-66 MuiFormControl-marginDense MuiFormControl-fullWidth"
       data-testid="Name:"
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-73 makeStyles-style-76 Mui-disabled Mui-disabled MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-64 makeStyles-style-67 Mui-disabled Mui-disabled MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input makeStyles-input-74 Mui-disabled Mui-disabled MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          class="MuiInputBase-input MuiInput-input makeStyles-input-65 Mui-disabled Mui-disabled MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
           data-testid="input-Name:"
           disabled=""
           name="Name:"
@@ -301,10 +325,13 @@ exports[`should render the textfield 1`] = `
       class="makeStyles-propertySectionLabel-5"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-8 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-6 MuiTypography-subtitle2"
       >
         Name:
       </h6>
+      <div
+        class="makeStyles-decorators-7"
+      />
     </div>
     <div
       class="MuiFormControl-root MuiTextField-root makeStyles-textfield-3 MuiFormControl-marginDense MuiFormControl-fullWidth"
@@ -334,25 +361,28 @@ exports[`should render the textfield with empty style 1`] = `
   <div>
     <div>
       <div
-        class="makeStyles-propertySectionLabel-45"
+        class="makeStyles-propertySectionLabel-40"
       >
         <h6
-          class="MuiTypography-root makeStyles-typography-48 MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-41 MuiTypography-subtitle2"
         >
           Name:
         </h6>
+        <div
+          class="makeStyles-decorators-42"
+        />
       </div>
       <div
-        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-43 MuiFormControl-marginDense MuiFormControl-fullWidth"
+        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-38 MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Name:"
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-41 makeStyles-style-44 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-36 makeStyles-style-39 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input makeStyles-input-42 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            class="MuiInputBase-input MuiInput-input makeStyles-input-37 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
             data-testid="input-Name:"
             name="Name:"
             placeholder="Name:"
@@ -370,37 +400,41 @@ exports[`should render the textfield with help hint 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-69"
+      class="makeStyles-propertySectionLabel-61"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-72 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-62 MuiTypography-subtitle2"
       >
         Name:
       </h6>
-      <svg
-        aria-hidden="true"
-        class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
-        focusable="false"
-        style="margin-left: 8px; font-size: 16px;"
-        title=""
-        viewBox="0 0 24 24"
+      <div
+        class="makeStyles-decorators-63"
       >
-        <path
-          d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
-        />
-      </svg>
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
+          focusable="false"
+          style="margin-left: 8px; font-size: 16px;"
+          title=""
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
+          />
+        </svg>
+      </div>
     </div>
     <div
-      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-67 MuiFormControl-marginDense MuiFormControl-fullWidth"
+      class="MuiFormControl-root MuiTextField-root makeStyles-textfield-59 MuiFormControl-marginDense MuiFormControl-fullWidth"
       data-testid="Name:"
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-65 makeStyles-style-68 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-57 makeStyles-style-60 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input makeStyles-input-66 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          class="MuiInputBase-input MuiInput-input makeStyles-input-58 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
           data-testid="input-Name:"
           name="Name:"
           placeholder="Name:"
@@ -418,25 +452,28 @@ exports[`should render the textfield with style 1`] = `
   <div>
     <div>
       <div
-        class="makeStyles-propertySectionLabel-37"
+        class="makeStyles-propertySectionLabel-33"
       >
         <h6
-          class="MuiTypography-root makeStyles-typography-40 MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-34 MuiTypography-subtitle2"
         >
           Name:
         </h6>
+        <div
+          class="makeStyles-decorators-35"
+        />
       </div>
       <div
-        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-35 MuiFormControl-marginDense MuiFormControl-fullWidth"
+        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-31 MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Name:"
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-33 makeStyles-style-36 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-29 makeStyles-style-32 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input makeStyles-input-34 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            class="MuiInputBase-input MuiInput-input makeStyles-input-30 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
             data-testid="input-Name:"
             name="Name:"
             placeholder="Name:"
@@ -455,25 +492,28 @@ exports[`should render the textfield without style 1`] = `
   <div>
     <div>
       <div
-        class="makeStyles-propertySectionLabel-29"
+        class="makeStyles-propertySectionLabel-26"
       >
         <h6
-          class="MuiTypography-root makeStyles-typography-32 MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-27 MuiTypography-subtitle2"
         >
           Name:
         </h6>
+        <div
+          class="makeStyles-decorators-28"
+        />
       </div>
       <div
-        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-27 MuiFormControl-marginDense MuiFormControl-fullWidth"
+        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-24 MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Name:"
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-25 makeStyles-style-28 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-22 makeStyles-style-25 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input makeStyles-input-26 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            class="MuiInputBase-input MuiInput-input makeStyles-input-23 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
             data-testid="input-Name:"
             name="Name:"
             placeholder="Name:"
@@ -492,25 +532,28 @@ exports[`should support completion if configured 1`] = `
   <div>
     <div>
       <div
-        class="makeStyles-propertySectionLabel-53"
+        class="makeStyles-propertySectionLabel-47"
       >
         <h6
-          class="MuiTypography-root makeStyles-typography-56 MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-48 MuiTypography-subtitle2"
         >
           Text:
         </h6>
+        <div
+          class="makeStyles-decorators-49"
+        />
       </div>
       <div
-        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-51 MuiFormControl-marginDense MuiFormControl-fullWidth"
+        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-45 MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Text:"
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-49 makeStyles-style-52 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-43 makeStyles-style-46 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input makeStyles-input-50 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            class="MuiInputBase-input MuiInput-input makeStyles-input-44 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
             data-testid="input-Text:"
             name="Text:"
             placeholder="Text:"
@@ -529,25 +572,28 @@ exports[`should support completion if configured 2`] = `
   <div>
     <div>
       <div
-        class="makeStyles-propertySectionLabel-53"
+        class="makeStyles-propertySectionLabel-47"
       >
         <h6
-          class="MuiTypography-root makeStyles-typography-56 MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-48 MuiTypography-subtitle2"
         >
           Text:
         </h6>
+        <div
+          class="makeStyles-decorators-49"
+        />
       </div>
       <div
-        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-51 MuiFormControl-marginDense MuiFormControl-fullWidth"
+        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-45 MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Text:"
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-49 makeStyles-style-52 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-43 makeStyles-style-46 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input makeStyles-input-50 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            class="MuiInputBase-input MuiInput-input makeStyles-input-44 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
             data-testid="input-Text:"
             name="Text:"
             placeholder="Text:"
@@ -566,25 +612,28 @@ exports[`should support completion if configured 3`] = `
   <div>
     <div>
       <div
-        class="makeStyles-propertySectionLabel-53"
+        class="makeStyles-propertySectionLabel-47"
       >
         <h6
-          class="MuiTypography-root makeStyles-typography-56 MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-48 MuiTypography-subtitle2"
         >
           Text:
         </h6>
+        <div
+          class="makeStyles-decorators-49"
+        />
       </div>
       <div
-        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-51 MuiFormControl-marginDense MuiFormControl-fullWidth"
+        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-45 MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Text:"
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-49 makeStyles-style-52 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-43 makeStyles-style-46 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input makeStyles-input-50 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            class="MuiInputBase-input MuiInput-input makeStyles-input-44 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
             data-testid="input-Text:"
             name="Text:"
             placeholder="Text:"
@@ -607,25 +656,28 @@ exports[`should support completion if configured 4`] = `
   >
     <div>
       <div
-        class="makeStyles-propertySectionLabel-53"
+        class="makeStyles-propertySectionLabel-47"
       >
         <h6
-          class="MuiTypography-root makeStyles-typography-56 MuiTypography-subtitle2"
+          class="MuiTypography-root makeStyles-typography-48 MuiTypography-subtitle2"
         >
           Text:
         </h6>
+        <div
+          class="makeStyles-decorators-49"
+        />
       </div>
       <div
-        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-51 MuiFormControl-marginDense MuiFormControl-fullWidth"
+        class="MuiFormControl-root MuiTextField-root makeStyles-textfield-45 MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Text:"
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-49 makeStyles-style-52 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-43 makeStyles-style-46 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input makeStyles-input-50 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            class="MuiInputBase-input MuiInput-input makeStyles-input-44 MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
             data-testid="input-Text:"
             name="Text:"
             placeholder="Text:"

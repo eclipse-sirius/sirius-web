@@ -26,6 +26,7 @@ export type { LinkStyleProps } from './propertysections/LinkPropertySection.type
 export type { ListStyleProps } from './propertysections/ListPropertySection.types';
 export type { MultiSelectStyleProps } from './propertysections/MultiSelectPropertySection.types';
 export * from './propertysections/PropertySectionLabel';
+export * from './propertysections/PropertySectionLabelExtensionPoints';
 export type { RadioStyleProps } from './propertysections/RadioPropertySection.types';
 export type { SelectStyleProps } from './propertysections/SelectPropertySection.types';
 export type { TextfieldStyleProps } from './propertysections/TextfieldPropertySection.types';

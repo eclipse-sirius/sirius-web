@@ -7,10 +7,13 @@ exports[`render pie-chart widget 1`] = `
       class="makeStyles-propertySectionLabel-2"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-5 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-3 MuiTypography-subtitle2"
       >
         myPieChart
       </h6>
+      <div
+        class="makeStyles-decorators-4"
+      />
     </div>
     <svg
       height="300"
@@ -147,13 +150,16 @@ exports[`render pie-chart widget with empty style 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-12"
+      class="makeStyles-propertySectionLabel-10"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-15 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-11 MuiTypography-subtitle2"
       >
         myPieChart
       </h6>
+      <div
+        class="makeStyles-decorators-12"
+      />
     </div>
     <svg
       height="300"
@@ -290,25 +296,29 @@ exports[`render pie-chart widget with help hint 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-32"
+      class="makeStyles-propertySectionLabel-26"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-35 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-27 MuiTypography-subtitle2"
       >
         myPieChart
       </h6>
-      <svg
-        aria-hidden="true"
-        class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
-        focusable="false"
-        style="margin-left: 8px; font-size: 16px;"
-        title=""
-        viewBox="0 0 24 24"
+      <div
+        class="makeStyles-decorators-28"
       >
-        <path
-          d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
-        />
-      </svg>
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
+          focusable="false"
+          style="margin-left: 8px; font-size: 16px;"
+          title=""
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
+          />
+        </svg>
+      </div>
     </div>
     <svg
       height="300"
@@ -445,13 +455,16 @@ exports[`render pie-chart widget with style 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-7"
+      class="makeStyles-propertySectionLabel-6"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-10 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-7 MuiTypography-subtitle2"
       >
         myPieChart
       </h6>
+      <div
+        class="makeStyles-decorators-8"
+      />
     </div>
     <svg
       height="300"
@@ -588,16 +601,19 @@ exports[`render the bar-chart widget 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-17"
+      class="makeStyles-propertySectionLabel-14"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-20 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-15 MuiTypography-subtitle2"
       >
         myBarChart
       </h6>
+      <div
+        class="makeStyles-decorators-16"
+      />
     </div>
     <div
-      class="makeStyles-chart-16"
+      class="makeStyles-chart-13"
     >
       <svg
         height="250"
@@ -873,16 +889,19 @@ exports[`render the bar-chart widget with empty style 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-27"
+      class="makeStyles-propertySectionLabel-22"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-30 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-23 MuiTypography-subtitle2"
       >
         myBarChart
       </h6>
+      <div
+        class="makeStyles-decorators-24"
+      />
     </div>
     <div
-      class="makeStyles-chart-26"
+      class="makeStyles-chart-21"
     >
       <svg
         height="250"
@@ -1158,28 +1177,32 @@ exports[`render the bar-chart widget with help hint 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-37"
+      class="makeStyles-propertySectionLabel-30"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-40 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-31 MuiTypography-subtitle2"
       >
         myBarChart
       </h6>
-      <svg
-        aria-hidden="true"
-        class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
-        focusable="false"
-        style="margin-left: 8px; font-size: 16px;"
-        title=""
-        viewBox="0 0 24 24"
+      <div
+        class="makeStyles-decorators-32"
       >
-        <path
-          d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
-        />
-      </svg>
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
+          focusable="false"
+          style="margin-left: 8px; font-size: 16px;"
+          title=""
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
+          />
+        </svg>
+      </div>
     </div>
     <div
-      class="makeStyles-chart-36"
+      class="makeStyles-chart-29"
     >
       <svg
         height="250"
@@ -1455,16 +1478,19 @@ exports[`render the bar-chart widget with style 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-22"
+      class="makeStyles-propertySectionLabel-18"
     >
       <h6
-        class="MuiTypography-root makeStyles-typography-25 MuiTypography-subtitle2"
+        class="MuiTypography-root makeStyles-typography-19 MuiTypography-subtitle2"
       >
         myBarChart
       </h6>
+      <div
+        class="makeStyles-decorators-20"
+      />
     </div>
     <div
-      class="makeStyles-chart-21"
+      class="makeStyles-chart-17"
     >
       <svg
         height="250"

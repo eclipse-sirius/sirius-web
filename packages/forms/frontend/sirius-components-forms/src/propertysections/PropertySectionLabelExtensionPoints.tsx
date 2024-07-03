@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLWidget } from '../form/FormEventFragments.types';
 
-export interface PropertySectionLabelProps {
-  editingContextId: string;
-  formId: string;
-  widget: GQLWidget;
-}
+import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { PropertySectionLabelDecoratorProps } from './PropertySectionLabel.types';
 
-export type PropertySectionLabelDecoratorProps = {
-  editingContextId: string;
-  formId: string;
-  widget: GQLWidget;
-};
+export const propertySectionLabelDecoratorExtensionPoint: ComponentExtensionPoint<PropertySectionLabelDecoratorProps> =
+  {
+    identifier: 'propertySectionLabel#decorator',
+    FallbackComponent: () => null,
+  };

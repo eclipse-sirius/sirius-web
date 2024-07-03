@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { MockedProvider } from '@apollo/client/testing';
 import { cleanup, render } from '@testing-library/react';
+import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLImage } from '../../form/FormEventFragments.types';
 import { ImagePropertySection } from '../ImagePropertySection';
@@ -29,27 +30,34 @@ const imageWithMaxWidth: GQLImage = {
   __typename: 'Image',
   diagnostics: [],
   id: 'imageId',
+  readOnly: false,
 };
 
 const imageWithNoMaxWidth: GQLImage = {
   label: 'myImage',
   url: 'https://www.eclipse.org/sirius/common_assets/images/logos/logo_sirius.png',
-  maxWidth: null,
+  maxWidth: '',
   iconURL: [],
   hasHelpText: false,
   __typename: 'Image',
   diagnostics: [],
   id: 'imageId',
+  readOnly: false,
 };
 
 test('render image widget with maxWidth', () => {
   const { container } = render(
     <MockedProvider>
-      <ImagePropertySection editingContextId="editingContextId" formId="formId" widget={imageWithMaxWidth} />
+      <ImagePropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={imageWithMaxWidth}
+        readOnly={false}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
-  const containerStyle = window.getComputedStyle(container.getElementsByClassName('makeStyles-container-2')[0]);
+  const containerStyle = window.getComputedStyle(document.querySelectorAll('div')[4]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('minmax(auto, 42px)');
 });
@@ -57,11 +65,16 @@ test('render image widget with maxWidth', () => {
 test('render image widget without maxWidth', () => {
   const { container } = render(
     <MockedProvider>
-      <ImagePropertySection editingContextId="editingContextId" formId="formId" widget={imageWithNoMaxWidth} />
+      <ImagePropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={imageWithNoMaxWidth}
+        readOnly={false}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
-  const containerStyle = window.getComputedStyle(container.getElementsByClassName('makeStyles-container-8')[0]);
+  const containerStyle = window.getComputedStyle(document.querySelectorAll('div')[4]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('1fr');
 });
@@ -73,11 +86,12 @@ test('render image widget with help hint', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={{ ...imageWithMaxWidth, hasHelpText: true }}
+        readOnly={false}
       />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
-  const containerStyle = window.getComputedStyle(container.getElementsByClassName('makeStyles-container-14')[0]);
+  const containerStyle = window.getComputedStyle(document.querySelectorAll('div')[4]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('minmax(auto, 42px)');
 });
