@@ -72,7 +72,7 @@ public class EditingContextPersistenceServiceTests {
         var editingContextPersistenceService = new EditingContextPersistenceService(documentRepository, projectRepository, new NoOpApplicationEventPublisher(), new SimpleMeterRegistry());
         assertThat(entities).hasSize(0);
 
-        var editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
+        var editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), Map.of());
 
         editingContextPersistenceService.persist(editingContext);
         assertThat(entities).hasSize(1);
@@ -121,7 +121,7 @@ public class EditingContextPersistenceServiceTests {
 
         assertThat(entities).hasSize(0);
 
-        var editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
+        var editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), Map.of());
 
         editingContextPersistenceService.persist(editingContext);
         assertThat(entities).hasSize(1);

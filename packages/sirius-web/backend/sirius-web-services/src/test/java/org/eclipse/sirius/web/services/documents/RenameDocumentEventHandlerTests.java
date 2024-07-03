@@ -29,11 +29,11 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.projects.Project;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
 import org.junit.jupiter.api.Test;
 
@@ -75,7 +75,7 @@ public class RenameDocumentEventHandlerTests {
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
         assertThat(adapter.getName()).isEqualTo(OLD_NAME);
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), Map.of());
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
