@@ -51,11 +51,11 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
-import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
-import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.util.ReferenceSwitch;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -201,24 +201,22 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<O
     }
 
     private List<?> getReferenceOptions(ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
-        var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
         EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
         String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
-        if (optionalEObject.isPresent() && owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference eReference) {
-            EObject eObject = optionalEObject.get();
-            Object adapter = this.adapterFactory.adapt(eObject, IItemPropertySource.class);
+        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference eReference) {
+            Object adapter = this.adapterFactory.adapt(owner, IItemPropertySource.class);
             if (adapter instanceof IItemPropertySource itemPropertySource) {
-                IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eReference);
+                IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(owner, eReference);
                 List<?> referenceOptions;
                 if (descriptor != null) {
-                    referenceOptions = descriptor.getChoiceOfValues(eObject).stream()
+                    referenceOptions = descriptor.getChoiceOfValues(owner).stream()
                             .filter(Objects::nonNull)
                             .toList();
                 } else {
-                    referenceOptions = Arrays.asList(ItemPropertyDescriptor.getReachableObjectsOfType(eObject, eReference.getEReferenceType()).toArray());
+                    referenceOptions = Arrays.asList(ItemPropertyDescriptor.getReachableObjectsOfType(owner, eReference.getEReferenceType()).toArray());
                 }
                 return referenceOptions.stream()
-                        .filter(option -> !this.isOptionAncestorAndContainmentReference((EObject) option, eObject, eReference))
+                        .filter(option -> !this.isOptionAncestorAndContainmentReference((EObject) option, owner, eReference))
                         .toList();
             }
         }
