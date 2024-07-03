@@ -128,6 +128,7 @@ image:doc/screenshots/insideLabelPositions.png[Inside label positions, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3706[#3706] [sirius-web] Add some documentation explaining how to change the maximum size allowed for uploaded files.
 The error messages displayed in case of an error while uploading a file have been uploaded to mention that the file may be too large since it can be a common error.
 We cannot rely on the error message recaived from the backend since Cross Origin Resource Sharing may prevent us from seeing both the message and the 413 status code.
+- https://github.com/eclipse-sirius/sirius-web/issues/3697[#3697] [diagram] Improve arrange-all performance by reducing overlap management complexity
 
 == v2024.5.0
 
