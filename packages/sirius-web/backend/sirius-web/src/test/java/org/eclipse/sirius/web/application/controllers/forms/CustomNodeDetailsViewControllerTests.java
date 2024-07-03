@@ -29,12 +29,14 @@ import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.assertions.FormAssertions;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
 import org.eclipse.sirius.components.forms.tests.graphql.PropertiesEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
+import org.eclipse.sirius.components.view.diagram.provider.DiagramEditPlugin;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -70,6 +72,9 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
     @Autowired
     private EditTextfieldMutationRunner editTextfieldMutationRunner;
 
+    @Autowired
+    private IEMFMessageService emfMessageService;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -84,9 +89,9 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
         var flux = this.propertiesEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
-            var groupNavigator = new FormNavigator(form).page("").group("Core Properties");
+            var groupNavigator = new FormNavigator(form).page(0).group(this.emfMessageService.coreProperties());
 
-            var borderSizeTextField = groupNavigator.findWidget("Border Size", Textfield.class);
+            var borderSizeTextField = groupNavigator.findWidget(DiagramEditPlugin.INSTANCE.getString("_UI_BorderStyle_borderSize_feature"), Textfield.class);
             FormAssertions.assertThat(borderSizeTextField)
                     .hasValue("1");
 
@@ -130,8 +135,8 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
                 .ifPresentOrElse(form -> {
                     formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("").group("Core Properties");
-                    var textfield = groupNavigator.findWidget("Border Size", Textfield.class);
+                    var groupNavigator = new FormNavigator(form).page(0).group(this.emfMessageService.coreProperties());
+                    var textfield = groupNavigator.findWidget(DiagramEditPlugin.INSTANCE.getString("_UI_BorderStyle_borderSize_feature"), Textfield.class);
 
                     textfieldId.set(textfield.getId());
                 }, () -> fail("Missing form"));
@@ -147,8 +152,8 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
         Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("").group("Core Properties");
-                    var textfield = groupNavigator.findWidget("Border Size", Textfield.class);
+                    var groupNavigator = new FormNavigator(form).page(0).group(this.emfMessageService.coreProperties());
+                    var textfield = groupNavigator.findWidget(DiagramEditPlugin.INSTANCE.getString("_UI_BorderStyle_borderSize_feature"), Textfield.class);
 
                     FormAssertions.assertThat(textfield)
                             .hasValue("3");

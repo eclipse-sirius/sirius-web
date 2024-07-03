@@ -64,6 +64,12 @@ public class DefaultLabelService implements IDefaultLabelService {
                     .map(eObject::eGet)
                     .map(Object::toString)
                     .orElse("");
+            if (label.isBlank()) {
+                Adapter adapter = this.composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
+                if (adapter instanceof IItemLabelProvider labelProvider && !(adapter instanceof ReflectiveItemProvider)) {
+                    label = labelProvider.getText(eObject);
+                }
+            }
         } else if (object instanceof IRepresentation representation) {
             label = representation.getLabel();
         }

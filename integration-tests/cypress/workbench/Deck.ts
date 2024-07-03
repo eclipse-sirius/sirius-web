@@ -140,7 +140,9 @@ export class Deck {
     { condition, backgroundColor, color, italic, bold, underline, strikeThrough, fontSize }: ElementStyleProps
   ) {
     const details = new Details();
-    const objectName = `${condition ? 'Conditional Style' : 'Style'} Description`;
+    const objectName = condition
+      ? 'conditionalStyles-ConditionalDeckElementDescriptionStyle'
+      : 'style-DeckElementDescriptionStyle';
     cy.createChildObject(elementName, objectName);
     details.openReferenceWidgetOptions('Background Color');
     details.selectReferenceWidgetOption(backgroundColor);
@@ -162,7 +164,7 @@ export class Deck {
 
   public createDeckRepresentationtyle(elementName: string, backgroundColor: string, condition?: string) {
     const details = new Details();
-    const objectName = `${condition ? 'Conditional Style' : 'Style'} Description`;
+    const objectName = condition ? 'conditionalStyles-ConditionalDeckDescriptionStyle' : 'style-DeckDescriptionStyle';
     cy.createChildObject(elementName, objectName);
     details.openReferenceWidgetOptions('Background Color');
     details.selectReferenceWidgetOption(backgroundColor);

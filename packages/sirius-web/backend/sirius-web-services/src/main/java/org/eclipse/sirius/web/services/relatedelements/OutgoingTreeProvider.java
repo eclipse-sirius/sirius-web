@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.forms.components.TreeComponent;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 
 /**
  * Provides the definition of the tree widget for the "Outgoing" panel in the "Related Elements" view. It has two
@@ -52,8 +53,6 @@ public class OutgoingTreeProvider {
 
     private static final String WIDGET_ID = "related/outgoing";
 
-    private static final String TITLE = "Outgoing";
-
     private static final String WIDGET_ICON_URL = "/images/east_black_24dp.svg";
 
     private static final String OUTGOING_REFERENCE_ICON_URL = "/images/east_black_24dp.svg";
@@ -62,12 +61,15 @@ public class OutgoingTreeProvider {
 
     private final IObjectService objectService;
 
+    private final IServicesMessageService messageService;
+
     private final AdapterFactory adapterFactory;
 
     private final IPropertiesValidationProvider propertiesValidationProvider = new IPropertiesValidationProvider.NoOp();
 
-    public OutgoingTreeProvider(IObjectService objectService, AdapterFactory adapterFactory) {
+    public OutgoingTreeProvider(IObjectService objectService, IServicesMessageService messageService, AdapterFactory adapterFactory) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.messageService = Objects.requireNonNull(messageService);
         this.adapterFactory = Objects.requireNonNull(adapterFactory);
     }
 
@@ -79,7 +81,7 @@ public class OutgoingTreeProvider {
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
-                .labelProvider(variableManager -> TITLE)
+                .labelProvider(variableManager -> this.messageService.outgoing())
                 .iconURLProvider(variableManager -> List.of(WIDGET_ICON_URL))
                 .nodeIdProvider(this::getNodeId)
                 .nodeLabelProvider(this::getNodeLabel)

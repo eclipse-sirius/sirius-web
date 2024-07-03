@@ -22,21 +22,21 @@ describe('/projects/:projectId/edit - Color Palette', () => {
   it('check the default color palette exist and populated', () => {
     cy.getByTestId('ViewNewModel-toggle').click();
     cy.getByTestId('View-toggle').click();
-    cy.getByTestId('ColorPalette').should('exist');
-    cy.getByTestId('ColorPalette-toggle').click();
-    cy.getByTestId('ColorPalette').should('exist');
+    cy.getByTestId('Color Palette').should('exist');
+    cy.getByTestId('Color Palette-toggle').click();
+    cy.getByTestId('Color Palette').should('exist');
     cy.getByTestId('color_dark').should('exist');
   });
 
   it('can add new fixed color to palette color', () => {
     cy.getByTestId('ViewNewModel-toggle').click();
     cy.getByTestId('View-toggle').click();
-    cy.getByTestId('ColorPalette-more').click();
+    cy.getByTestId('Color Palette-more').click();
     cy.getByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('childCreationDescription').click().get('[data-value="Fixed Color"]').should('exist').click();
+    cy.getByTestId('childCreationDescription').click().get('[data-value="colors-FixedColor"]').should('exist').click();
     cy.getByTestId('create-object').click();
-    cy.getByTestId('FixedColor').should('exist').click();
+    cy.getByTestId('Fixed Color').should('exist').click();
     cy.getByTestId('Name').type('color_test{enter}');
     cy.getByTestId('Value').type('#e5f5f8{enter}');
     cy.getByTestId('color_test').should('exist');
@@ -48,14 +48,18 @@ describe('/projects/:projectId/edit - Color Palette', () => {
     cy.getByTestId('View-more').click();
     cy.getByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('childCreationDescription').click().get('[data-value="Color Palette"]').should('exist').click();
+    cy.getByTestId('childCreationDescription')
+      .click()
+      .get('[data-value="colorPalettes-ColorPalette"]')
+      .should('exist')
+      .click();
     cy.getByTestId('create-object').click();
     cy.getByTestId('New Color Palette').should('exist').click();
     cy.getByTestId('Name').clear().type('OtherColorPalette{enter}');
     cy.getByTestId('OtherColorPalette-more').click();
     cy.getByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('childCreationDescription').click().get('[data-value="Fixed Color"]').should('exist');
+    cy.getByTestId('childCreationDescription').click().get('[data-value="colors-FixedColor"]').should('exist');
   });
 
   it('can select color from color palette in node style properties', () => {

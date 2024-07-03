@@ -29,14 +29,14 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
     cy.get('[data-testid$=" Diagram Description"]').dblclick();
     cy.getByTestId('Entity1 Node').dblclick();
 
-    cy.getByTestId('RectangularNodeStyleDescription-more').click();
+    cy.getByTestId('Rectangular Node Style Description 3-more').click();
     cy.getByTestId('delete').click();
     cy.getByTestId('Entity1 Node-more').click();
     cy.getByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription')
-      .get('[data-value="Ellipse Node Style Description"]')
+      .get('[data-value="style-EllipseNodeStyleDescription"]')
       .should('exist')
       .click();
     cy.getByTestId('create-object').click();
@@ -73,7 +73,7 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
     cy.getByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
-    cy.getByTestId('childCreationDescription').get('[data-value="Entity1s Entity1"]').should('exist').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="entity1s-Entity1"]').should('exist').click();
     cy.getByTestId('create-object').click();
 
     cy.getByTestId('Ellipse - ').should('have.css', 'border-radius', '50%');
