@@ -205,12 +205,11 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
   fragment chartWidgetFields on ChartWidget {
     label
     chart {
+      __typename
       ... on BarChart {
         metadata {
           label
-          kind
         }
-        label
         entries {
           key
           value
@@ -229,9 +228,7 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
       ... on PieChart {
         metadata {
           label
-          kind
         }
-        label
         entries {
           key
           value
@@ -451,9 +448,6 @@ export const formRefreshedEventPayloadFragment = (contributions: Array<WidgetCon
     id
     form {
       id
-      metadata {
-        label
-      }
       pages {
         id
         label

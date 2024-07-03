@@ -27,10 +27,6 @@ export const deckEventSubscription = gql`
         id
         deck {
           id
-          metadata {
-            kind
-            label
-          }
           style {
             backgroundColor
           }

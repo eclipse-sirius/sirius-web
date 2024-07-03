@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttCreationService;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -103,8 +104,8 @@ public class CreateGanttEventHandler implements IEditingContextEventHandler {
                 Gantt gantt = this.ganttCreationService.create(createRepresentationInput.representationName(), object, ganttDescription, editingContext);
 
                 this.representationPersistenceService.save(editingContext, gantt);
-
-                payload = new CreateRepresentationSuccessPayload(input.id(), gantt);
+                var representationMetadata = new RepresentationMetadata(gantt.getId(), gantt.getKind(), gantt.getLabel(), gantt.descriptionId());
+                payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }
         }

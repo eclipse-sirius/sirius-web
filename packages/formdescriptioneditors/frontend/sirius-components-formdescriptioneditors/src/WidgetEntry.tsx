@@ -452,7 +452,7 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
     widgetElement = <TreeWidget data-testid={widget.id} widget={widget as GQLTree} onDropBefore={onDropBefore} />;
   } else if (widget.__typename === 'ChartWidget') {
     const chartWidget: GQLChartWidget = widget as GQLChartWidget;
-    if (chartWidget.chart.metadata.kind === 'BarChart') {
+    if (chartWidget.chart.__typename === 'BarChart') {
       widgetElement = (
         <BarChartWidget
           data-testid={widget.id}
@@ -460,7 +460,7 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
           onDropBefore={readOnly ? noop : onDropBefore}
         />
       );
-    } else if (chartWidget.chart.metadata.kind === 'PieChart') {
+    } else if (chartWidget.chart.__typename === 'PieChart') {
       widgetElement = (
         <PieChartWidget
           data-testid={widget.id}

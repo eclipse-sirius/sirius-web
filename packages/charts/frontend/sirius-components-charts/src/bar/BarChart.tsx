@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,11 @@ export const BarChart = ({ chart }: BarChartProps) => {
     const yRange = [height - marginBottom, marginTop]; // [bottom, top]
 
     if (d3Container.current && chart) {
-      const { entries: data, label: yLabel, style } = chart;
+      const {
+        entries: data,
+        metadata: { label: yLabel },
+        style,
+      } = chart;
       const fontSize = getFontSize(style);
       const fontStyle = getFontStyle(style);
       const fontWeight = getFontWeight(style);

@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandl
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -52,7 +53,8 @@ public class TestCreateRepresentationEventHandler implements IEditingContextEven
 
         this.representationPersistenceService.save(editingContext, test);
 
-        payloadSink.tryEmitValue(new CreateRepresentationSuccessPayload(input.id(), test));
+        var representationMetadata = new RepresentationMetadata(test.getId(), test.getKind(), test.getLabel(), test.getDescriptionId());
+        payloadSink.tryEmitValue(new CreateRepresentationSuccessPayload(input.id(), representationMetadata));
         changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input));
     }
 }

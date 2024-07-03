@@ -23,16 +23,8 @@ export interface DiagramRendererProps {
 }
 
 export interface Diagram {
-  metadata: DiagramMetadata;
   nodes: Node<NodeData, DiagramNodeType>[];
   edges: Edge<MultiLabelEdgeData>[];
-}
-
-export interface DiagramMetadata {
-  id: string;
-  kind: string;
-  label: string;
-  targetObjectId: string;
 }
 
 export type OutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_END';

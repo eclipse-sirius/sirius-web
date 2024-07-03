@@ -57,9 +57,9 @@ export const ChartWidgetPropertySection: PropertySectionComponent<GQLChartWidget
 };
 
 const isBarChart = (chart: GQLChart): chart is GQLBarChart => {
-  return chart.metadata.kind === 'BarChart';
+  return chart.__typename === 'BarChart';
 };
 
 const isPieChart = (chart: GQLChart): chart is GQLPieChart => {
-  return chart.metadata.kind === 'PieChart';
+  return chart.__typename === 'PieChart';
 };

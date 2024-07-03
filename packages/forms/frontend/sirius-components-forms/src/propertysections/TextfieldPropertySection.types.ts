@@ -63,10 +63,10 @@ export interface GQLViewer {
   editingContext: GQLEditingContext;
 }
 export interface GQLEditingContext {
-  representation: GQLRepresentation;
+  representation: GQLRepresentationMetadata;
 }
 
-export interface GQLRepresentation {
+export interface GQLRepresentationMetadata {
   description: GQLRepresentationDescription;
 }
 

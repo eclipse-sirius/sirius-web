@@ -34,15 +34,8 @@ export interface GQLErrorPayload extends GQLGanttEventPayload {
   messages: GQLMessage[];
 }
 
-export interface GQLRepresentationMetadata {
-  id: string;
-  label: string;
-  kind: string;
-}
-
 export interface GQLGantt {
   id: string;
-  metadata: GQLRepresentationMetadata;
   targetObjectId: string;
   displayedDays: GQLDay[];
   backgroundColor: string;

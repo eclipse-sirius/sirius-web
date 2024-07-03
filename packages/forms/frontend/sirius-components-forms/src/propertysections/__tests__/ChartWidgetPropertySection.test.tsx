@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,10 +17,10 @@ import { afterEach, expect, test } from 'vitest';
 import {
   GQLBarChart,
   GQLBarChartEntry,
+  GQLChartMetadata,
   GQLChartWidget,
   GQLPieChart,
   GQLPieChartEntry,
-  GQLRepresentationMetadata,
 } from '../../form/FormEventFragments.types';
 import { ChartWidgetPropertySection } from '../ChartWidgetPropertySection';
 
@@ -32,24 +32,19 @@ const pieChartentries: GQLPieChartEntry[] = [
   { key: 'd', value: 20 },
 ];
 
-const pieChartMetadata: GQLRepresentationMetadata = {
-  id: 'pieChartId',
+const pieChartMetadata: GQLChartMetadata = {
   label: 'PieChartLabel',
-  kind: 'PieChart',
-  description: {
-    id: 'descriptionId',
-  },
 };
 
 const defaultPieChart: GQLPieChart = {
-  label: 'PieChartLabel',
+  __typename: 'PieChart',
   metadata: pieChartMetadata,
   entries: pieChartentries,
   style: null,
 };
 
 const defaultPieChartWithStyle: GQLPieChart = {
-  label: 'PieChartLabel',
+  __typename: 'PieChart',
   metadata: pieChartMetadata,
   entries: pieChartentries,
   style: {
@@ -65,7 +60,7 @@ const defaultPieChartWithStyle: GQLPieChart = {
 };
 
 const defaultPieChartWithEmptyStyle: GQLPieChart = {
-  label: 'PieChartLabel',
+  __typename: 'PieChart',
   metadata: pieChartMetadata,
   entries: pieChartentries,
   style: {
@@ -86,16 +81,11 @@ const barChartentries: GQLBarChartEntry[] = [
   { key: 'c', value: 5 },
   { key: 'd', value: 20 },
 ];
-const barChartMetadata: GQLRepresentationMetadata = {
-  id: 'BarChartId',
-  label: 'barChartLabel',
-  kind: 'BarChart',
-  description: {
-    id: 'descriptionId',
-  },
+const barChartMetadata: GQLChartMetadata = {
+  label: 'values',
 };
 const defaultBarChart: GQLBarChart = {
-  label: 'values',
+  __typename: 'BarChart',
   metadata: barChartMetadata,
   entries: barChartentries,
   style: null,
@@ -103,7 +93,7 @@ const defaultBarChart: GQLBarChart = {
   height: 250,
 };
 const defaultBarChartWithStyle: GQLBarChart = {
-  label: 'values',
+  __typename: 'BarChart',
   metadata: barChartMetadata,
   entries: barChartentries,
   style: {
@@ -119,7 +109,7 @@ const defaultBarChartWithStyle: GQLBarChart = {
 };
 
 const defaultBarChartWithEmptyStyle: GQLBarChart = {
-  label: 'values',
+  __typename: 'BarChart',
   metadata: barChartMetadata,
   entries: barChartentries,
   style: {
@@ -204,7 +194,7 @@ test('render pie-chart widget', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={defaultPieChartWidget}
-        subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -218,7 +208,7 @@ test('render pie-chart widget with style', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={defaultPieChartWidgetWithStyle}
-        subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -232,7 +222,7 @@ test('render pie-chart widget with empty style', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={defaultPieChartWidgetWithEmptyStyle}
-        subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -246,7 +236,7 @@ test('render the bar-chart widget', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={defaultBarChartWidget}
-        subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -260,7 +250,7 @@ test('render the bar-chart widget with style', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={defaultBarChartWidgetWithStyle}
-        subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -274,7 +264,7 @@ test('render the bar-chart widget with empty style', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={defaultBarChartWidgetWithEmptyStyle}
-        subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -288,7 +278,7 @@ test('render pie-chart widget with help hint', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={{ ...defaultPieChartWidgetWithEmptyStyle, hasHelpText: true }}
-        subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
@@ -301,7 +291,7 @@ test('render the bar-chart widget with help hint', () => {
         editingContextId="editingContextId"
         formId="formId"
         widget={{ ...defaultBarChartWidgetWithEmptyStyle, hasHelpText: true }}
-        subscribers={[]}
+        readOnly={false}
       />
     </MockedProvider>
   );
