@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-services</artifactId>
-	<version>2024.5.3</version>
+	<version>2024.5.4</version>
 	<name>sirius-web-services</name>
 	<description>Sirius Web Services</description>
 
@@ -47,62 +47,62 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-services-api</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-trees</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-portals</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-validation</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-compatibility</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-compatibility-emf</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain-emf</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-persistence</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
