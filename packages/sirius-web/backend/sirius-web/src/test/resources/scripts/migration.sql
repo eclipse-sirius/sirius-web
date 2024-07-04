@@ -10,162 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
 -- Sample migration project
 INSERT INTO project (
   id,
@@ -610,4 +454,134 @@ INSERT INTO document (
    }',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
+);
+INSERT INTO representation_data (
+  id,
+  project_id,
+  target_object_id,
+  description_id,
+  label,
+  kind,
+  content,
+  created_on,
+  last_modified_on,
+  last_migration_performed,
+  migration_version
+) VALUES (
+  '9698833e-ffd4-435a-9aec-765622ce524e',
+  'a5441b64-83a5-4754-8794-57227bf8a322',
+  '79752a18-c7d8-41c0-8a27-a79ea9de09d8',
+  'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93',
+  'Diagram UserResizable Migration',
+  'siriusComponents://representation?type=Diagram',
+  '{
+    "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93",
+    "edges": [
+    ],
+    "id": "9698833e-ffd4-435a-9aec-765622ce524e",
+    "kind": "siriusComponents://representation?type=Diagram",
+    "label": "Domain",
+    "layoutData": {
+        "edgeLayoutData": {
+        },
+        "labelLayoutData": {
+        },
+        "nodeLayoutData": {
+            "9aab01cf-d990-3756-b487-a3e6a7420abd": {
+                "id": "9aab01cf-d990-3756-b487-a3e6a7420abd",
+                "position": {
+                    "x": 72.0,
+                    "y": 12.0
+                },
+                "resizedByUser": false,
+                "size": {
+                    "height": 70.0,
+                    "width": 150.0
+                }
+            }
+        }
+    },
+    "nodes": [
+        {
+            "borderNode": false,
+            "borderNodes": [
+            ],
+            "childNodes": [
+            ],
+            "childrenLayoutStrategy": {
+                "areChildNodesDraggable": true,
+                "bottomGap": 0,
+                "growableNodeIds": [
+                ],
+                "kind": "List",
+                "topGap": 0
+            },
+            "collapsingState": "EXPANDED",
+            "customizedProperties": [
+            ],
+            "userResizable": true,
+            "defaultHeight": null,
+            "defaultWidth": null,
+            "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=fe82e80e-7308-35a9-986d-f010401063ee",
+            "id": "9aab01cf-d990-3756-b487-a3e6a7420abd",
+            "insideLabel": {
+                "displayHeaderSeparator": true,
+                "id": "a6bfa3c8-9cbb-3bd4-af78-314b83aadb21",
+                "insideLabelLocation": "TOP_CENTER",
+                "isHeader": true,
+                "overflowStrategy": "NONE",
+                "style": {
+                    "background": "transparent",
+                    "bold": false,
+                    "borderColor": "black",
+                    "borderRadius": 3,
+                    "borderSize": 0,
+                    "borderStyle": "Solid",
+                    "color": "rgb(0, 0, 0)",
+                    "fontSize": 14,
+                    "iconURL": [
+                        "/icons/full/obj16/Entity.svg"
+                    ],
+                    "italic": false,
+                    "strikeThrough": false,
+                    "underline": false
+                },
+                "text": "Root",
+                "textAlign": "LEFT"
+            },
+            "labelEditable": false,
+            "modifiers": [
+            ],
+            "outsideLabels": [
+            ],
+            "pinned": false,
+            "position": {
+                "x": -1.0,
+                "y": -1.0
+            },
+            "size": {
+                "height": -1.0,
+                "width": -1.0
+            },
+            "state": "Normal",
+            "targetObjectId": "47c3d0e1-099c-4cbe-aee9-5d6d4ad4e4be",
+            "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Entity",
+            "targetObjectLabel": "Root",
+            "type": "node:rectangle"
+        }
+    ],
+    "position": {
+        "x": -1.0,
+        "y": -1.0
+    },
+    "size": {
+        "height": -1.0,
+        "width": -1.0
+    },
+    "targetObjectId": "79752a18-c7d8-41c0-8a27-a79ea9de09d8"
+  }',
+  '2024-07-04 9:42:0.000',
+  '2024-07-04 9:42:0.000',
+  'none',
+  '0'
 );

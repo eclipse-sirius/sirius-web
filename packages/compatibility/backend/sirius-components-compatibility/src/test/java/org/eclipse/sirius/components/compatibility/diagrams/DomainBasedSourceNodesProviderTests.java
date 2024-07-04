@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
-import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
@@ -96,7 +95,6 @@ public class DomainBasedSourceNodesProviderTests {
                 .state(ViewModifier.Normal)
                 .modifiers(Set.of())
                 .collapsingState(CollapsingState.EXPANDED)
-                .userResizable(UserResizableDirection.NONE)
                 .build();
         // @formatter:on
         return new Element(NodeElementProps.TYPE, nodeElementProps);

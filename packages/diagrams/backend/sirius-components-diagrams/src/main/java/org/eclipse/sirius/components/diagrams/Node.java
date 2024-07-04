@@ -62,8 +62,6 @@ public final class Node implements IDiagramElement {
 
     private Size size;
 
-    private UserResizableDirection userResizable;
-
     private List<Node> borderNodes;
 
     private List<Node> childNodes;
@@ -156,10 +154,6 @@ public final class Node implements IDiagramElement {
         return this.size;
     }
 
-    public UserResizableDirection getUserResizable() {
-        return this.userResizable;
-    }
-
     public List<Node> getBorderNodes() {
         return this.borderNodes;
     }
@@ -239,8 +233,6 @@ public final class Node implements IDiagramElement {
 
         private Size size;
 
-        private UserResizableDirection userResizable = UserResizableDirection.NONE;
-
         private List<Node> borderNodes;
 
         private List<Node> childNodes;
@@ -276,7 +268,6 @@ public final class Node implements IDiagramElement {
             this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
             this.position = node.getPosition();
             this.size = node.getSize();
-            this.userResizable = node.userResizable;
             this.borderNodes = node.getBorderNodes();
             this.childNodes = node.getChildNodes();
             this.customizedProperties = node.getCustomizedProperties();
@@ -361,11 +352,6 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
-        public Builder userResizable(UserResizableDirection userResizable) {
-            this.userResizable = Objects.requireNonNull(userResizable);
-            return this;
-        }
-
         public Builder borderNodes(List<Node> borderNodes) {
             this.borderNodes = Objects.requireNonNull(borderNodes);
             return this;
@@ -419,7 +405,6 @@ public final class Node implements IDiagramElement {
             node.childrenLayoutStrategy = this.childrenLayoutStrategy;
             node.position = Objects.requireNonNull(this.position);
             node.size = Objects.requireNonNull(this.size);
-            node.userResizable = Objects.requireNonNull(this.userResizable);
             node.borderNodes = Objects.requireNonNull(this.borderNodes);
             node.childNodes = Objects.requireNonNull(this.childNodes);
             node.customizedProperties = this.customizedProperties;

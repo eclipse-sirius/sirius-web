@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
-import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
@@ -56,8 +55,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
     private Position position;
 
     private Size size;
-
-    private UserResizableDirection userResizable = UserResizableDirection.BOTH;
 
     private CollapsingState collapsingState = CollapsingState.EXPANDED;
 
@@ -91,11 +88,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     public RectangleNodeBuilder<T> collapsingState(CollapsingState collapsingState) {
         this.collapsingState = collapsingState;
-        return this;
-    }
-
-    public RectangleNodeBuilder<T> userResizable(UserResizableDirection userResizable) {
-        this.userResizable = userResizable;
         return this;
     }
 
@@ -157,7 +149,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                 .style(Objects.requireNonNull(style))
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
-                .userResizable(this.userResizable)
                 .collapsingState(this.collapsingState);
 
         if (this.childrenLayoutStrategy != null) {

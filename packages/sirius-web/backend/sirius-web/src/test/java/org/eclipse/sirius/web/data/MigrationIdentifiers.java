@@ -35,6 +35,8 @@ public final class MigrationIdentifiers {
 
     public static final UUID MIGRATION_STUDIO_DIAGRAM_HIERARCHY = UUID.fromString("35f1cd7b-e5bb-443d-95ef-bab372a92b0f");
 
+    public static final UUID MIGRATION_STUDIO_DIAGRAM = UUID.fromString("9698833e-ffd4-435a-9aec-765622ce524e");
+
     private MigrationIdentifiers() {
         // Prevent instantiation
     }

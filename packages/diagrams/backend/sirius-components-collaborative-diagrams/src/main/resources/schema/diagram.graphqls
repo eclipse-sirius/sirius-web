@@ -74,7 +74,6 @@ type Node {
   targetObjectKind: String!
   targetObjectLabel: String!
   size: Size!
-  userResizable: UserResizableDirection!
   position: Position!
   state: ViewModifier!
   pinned: Boolean!
