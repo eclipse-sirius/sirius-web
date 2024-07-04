@@ -70,6 +70,7 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
             this.addShowIconPropertyDescriptor(object);
             this.addLabelIconPropertyDescriptor(object);
             this.addBackgroundPropertyDescriptor(object);
+            this.addMaxWidthExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -262,6 +263,18 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the Max Width Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addMaxWidthExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeStyle_maxWidthExpression_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_maxWidthExpression_feature", "_UI_EdgeStyle_type"),
+                DiagramPackage.Literals.EDGE_STYLE__MAX_WIDTH_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns ConditionalEdgeStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -320,6 +333,7 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

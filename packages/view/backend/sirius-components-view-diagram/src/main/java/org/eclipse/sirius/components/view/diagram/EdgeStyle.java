@@ -29,6 +29,8 @@ import org.eclipse.sirius.components.view.UserColor;
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#isShowIcon <em>Show Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getLabelIcon <em>Label Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getBackground <em>Background</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getMaxWidthExpression <em>Max Width
+ * Expression</em>}</li>
  * </ul>
  *
  * @model
@@ -204,5 +206,28 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * @see #getBackground()
      */
     void setBackground(UserColor value);
+
+    /**
+     * Returns the value of the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Max Width Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setMaxWidthExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_MaxWidthExpression()
+     */
+    String getMaxWidthExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getMaxWidthExpression <em>Max
+     * Width Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Max Width Expression</em>' attribute.
+     * @generated
+     * @see #getMaxWidthExpression()
+     */
+    void setMaxWidthExpression(String value);
 
 } // EdgeStyle

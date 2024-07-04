@@ -47,6 +47,8 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#isShowIcon <em>Show Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getLabelIcon <em>Label
  * Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getMaxWidthExpression <em>Max Width
+ * Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -98,6 +100,15 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      * @see #getLabelIcon()
      */
     protected static final String LABEL_ICON_EDEFAULT = null;
+    /**
+     * The default value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getMaxWidthExpression()
+     */
+    protected static final String MAX_WIDTH_EXPRESSION_EDEFAULT = null;
     /**
      * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -170,6 +181,15 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      * @see #getLabelIcon()
      */
     protected String labelIcon = LABEL_ICON_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getMaxWidthExpression()
+     */
+    protected String maxWidthExpression = MAX_WIDTH_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -391,6 +411,29 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      * @generated
      */
     @Override
+    public String getMaxWidthExpression() {
+        return this.maxWidthExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMaxWidthExpression(String newMaxWidthExpression) {
+        String oldMaxWidthExpression = this.maxWidthExpression;
+        this.maxWidthExpression = newMaxWidthExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION, oldMaxWidthExpression, this.maxWidthExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public UserColor getBackground() {
         if (this.background != null && this.background.eIsProxy()) {
             InternalEObject oldBackground = (InternalEObject) this.background;
@@ -455,6 +498,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
                 return this.isShowIcon();
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 return this.getLabelIcon();
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                return this.getMaxWidthExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -490,6 +535,9 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 this.setLabelIcon((String) newValue);
+                return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                this.setMaxWidthExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -527,6 +575,9 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 this.setLabelIcon(LABEL_ICON_EDEFAULT);
                 return;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                this.setMaxWidthExpression(MAX_WIDTH_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -555,6 +606,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
                 return this.showIcon != SHOW_ICON_EDEFAULT;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 return !Objects.equals(LABEL_ICON_EDEFAULT, this.labelIcon);
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
+                return !Objects.equals(MAX_WIDTH_EXPRESSION_EDEFAULT, this.maxWidthExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -627,6 +680,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
                 this.showIcon +
                 ", labelIcon: " +
                 this.labelIcon +
+                ", maxWidthExpression: " +
+                this.maxWidthExpression +
                 ')';
         return result;
     }

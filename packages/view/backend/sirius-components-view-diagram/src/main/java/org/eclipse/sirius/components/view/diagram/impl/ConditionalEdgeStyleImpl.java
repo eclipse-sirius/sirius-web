@@ -68,6 +68,8 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
  * Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalEdgeStyleImpl#getBackground
  * <em>Background</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalEdgeStyleImpl#getMaxWidthExpression <em>Max
+ * Width Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -200,6 +202,15 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @see #getLabelIcon()
      */
     protected static final String LABEL_ICON_EDEFAULT = null;
+    /**
+     * The default value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getMaxWidthExpression()
+     */
+    protected static final String MAX_WIDTH_EXPRESSION_EDEFAULT = null;
     /**
      * The cached value of the '{@link #getColor() <em>Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -344,7 +355,6 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @see #getLabelIcon()
      */
     protected String labelIcon = LABEL_ICON_EDEFAULT;
-
     /**
      * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -354,6 +364,15 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @see #getBackground()
      */
     protected UserColor background;
+    /**
+     * The cached value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getMaxWidthExpression()
+     */
+    protected String maxWidthExpression = MAX_WIDTH_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -812,6 +831,29 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      *
      * @generated
      */
+    @Override
+    public String getMaxWidthExpression() {
+        return this.maxWidthExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMaxWidthExpression(String newMaxWidthExpression) {
+        String oldMaxWidthExpression = this.maxWidthExpression;
+        this.maxWidthExpression = newMaxWidthExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION, oldMaxWidthExpression, this.maxWidthExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public UserColor basicGetBackground() {
         return this.background;
     }
@@ -864,6 +906,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 if (resolve)
                     return this.getBackground();
                 return this.basicGetBackground();
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                return this.getMaxWidthExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -926,6 +970,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return;
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__BACKGROUND:
                 this.setBackground((UserColor) newValue);
+                return;
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                this.setMaxWidthExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -990,6 +1037,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__BACKGROUND:
                 this.setBackground(null);
                 return;
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                this.setMaxWidthExpression(MAX_WIDTH_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -1036,6 +1086,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return !Objects.equals(LABEL_ICON_EDEFAULT, this.labelIcon);
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__BACKGROUND:
                 return this.background != null;
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                return !Objects.equals(MAX_WIDTH_EXPRESSION_EDEFAULT, this.maxWidthExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -1101,6 +1153,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                     return DiagramPackage.EDGE_STYLE__LABEL_ICON;
                 case DiagramPackage.CONDITIONAL_EDGE_STYLE__BACKGROUND:
                     return DiagramPackage.EDGE_STYLE__BACKGROUND;
+                case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                    return DiagramPackage.EDGE_STYLE__MAX_WIDTH_EXPRESSION;
                 default:
                     return -1;
             }
@@ -1169,6 +1223,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                     return DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON;
                 case DiagramPackage.EDGE_STYLE__BACKGROUND:
                     return DiagramPackage.CONDITIONAL_EDGE_STYLE__BACKGROUND;
+                case DiagramPackage.EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+                    return DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION;
                 default:
                     return -1;
             }
@@ -1214,6 +1270,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 this.showIcon +
                 ", labelIcon: " +
                 this.labelIcon +
+                ", maxWidthExpression: " +
+                this.maxWidthExpression +
                 ')';
         return result;
     }
