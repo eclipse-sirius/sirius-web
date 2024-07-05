@@ -103,7 +103,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
       if (error) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: error.message,
+          message: 'An unexpected error has occurred, the file uploaded may be too large',
         };
         dispatch(showToastEvent);
       }
@@ -119,8 +119,10 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
         }
       }
     } catch (exception) {
-      // Handle other errors like max file size error send by the backend...
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message: exception.toString() };
+      const showToastEvent: ShowToastEvent = {
+        type: 'SHOW_TOAST',
+        message: 'An unexpected error has occurred, the file uploaded may be too large',
+      };
       dispatch(showToastEvent);
     }
   };

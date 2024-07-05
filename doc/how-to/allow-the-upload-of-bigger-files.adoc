@@ -1,0 +1,10 @@
+= How to allow the upload of bigger files
+
+By default, files upload to Sirius Web are limited to `1048576 bytes` since this is the default configuration of Spring Boot and Tomcat.
+You can change this by using the following Spring configuration properties:
+
+- `spring.servlet.multipart.max-file-size=10MB`
+- `spring.servlet.multipart.max-request-size=10MB`
+
+As a result, you will now be able to support larger files.
+You do not have to modify the Sirius Web jar to change this value, you can simply update your environment variables and restart the server.

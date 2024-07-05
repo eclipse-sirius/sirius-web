@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -106,7 +106,10 @@ export const UploadProjectView = () => {
       const response = await sendFile(httpOrigin, uploadProjectMutation, variables, file);
       const { data, error } = response as any;
       if (error) {
-        dispatch({ type: 'SHOW_TOAST', message: 'An unexpected error has occurred, please refresh the page' });
+        dispatch({
+          type: 'SHOW_TOAST',
+          message: 'An unexpected error has occurred, the file uploaded may be too large',
+        });
       }
       if (data) {
         const typename = data.uploadProject.__typename;
@@ -117,7 +120,7 @@ export const UploadProjectView = () => {
         }
       }
     } catch (exception) {
-      dispatch({ type: 'SHOW_TOAST', message: 'An unexpected error has occurred, please refresh the page' });
+      dispatch({ type: 'SHOW_TOAST', message: 'An unexpected error has occurred, the file uploaded may be too large' });
     }
   };
 
