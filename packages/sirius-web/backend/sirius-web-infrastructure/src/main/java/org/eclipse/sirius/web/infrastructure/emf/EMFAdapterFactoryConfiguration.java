@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.infrastructure.emf;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.sirius.components.domain.provider.DomainItemProviderAdapterFactory;
-import org.eclipse.sirius.components.view.deck.util.DeckAdapterFactory;
+import org.eclipse.sirius.components.view.deck.provider.DeckItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.diagram.customnodes.provider.CustomnodesItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.diagram.provider.DiagramItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.form.provider.FormItemProviderAdapterFactory;
@@ -58,7 +58,7 @@ public class EMFAdapterFactoryConfiguration {
 
     @Bean
     public AdapterFactory deckAdapterFactory() {
-        return new DeckAdapterFactory();
+        return new DeckItemProviderAdapterFactory();
     }
 
     @Bean
