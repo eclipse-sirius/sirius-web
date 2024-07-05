@@ -27,8 +27,8 @@ import org.eclipse.sirius.components.view.builder.generated.FormBuilders;
 import org.eclipse.sirius.components.view.builder.generated.FormDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.GroupDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.PageDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -38,21 +38,22 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to provide a view based form description to test checkboxes.
+ * Used to provide a view based form description to test lists.
  *
  * @author sbegaudeau
  */
 @Service
 @Conditional(OnStudioTests.class)
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-public class FormWithCheckboxDescriptionProvider implements IEditingContextProcessor {
+public class FormWithListDescriptionProvider implements IEditingContextProcessor {
+
     private final IFormIdProvider formIdProvider;
 
     private final View view;
 
     private FormDescription formDescription;
 
-    public FormWithCheckboxDescriptionProvider(IFormIdProvider formIdProvider) {
+    public FormWithListDescriptionProvider(IFormIdProvider formIdProvider) {
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
         this.view = this.createView();
     }
@@ -70,49 +71,49 @@ public class FormWithCheckboxDescriptionProvider implements IEditingContextProce
 
     private View createView() {
         ViewBuilder viewBuilder = new ViewBuilder();
-        View textfieldFormView = viewBuilder.build();
-        textfieldFormView.getDescriptions().add(this.createFormDescription());
+        View listFormView = viewBuilder.build();
+        listFormView.getDescriptions().add(this.createFormDescription());
 
-        textfieldFormView.eAllContents().forEachRemaining(eObject -> {
+        listFormView.eAllContents().forEachRemaining(eObject -> {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
 
-        String resourcePath = UUID.nameUUIDFromBytes("FormWithCheckboxDescription".getBytes()).toString();
+        String resourcePath = UUID.nameUUIDFromBytes("FormWithListDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
-        resource.eAdapters().add(new ResourceMetadataAdapter("FormWithCheckboxDescription"));
-        resource.getContents().add(textfieldFormView);
+        resource.eAdapters().add(new ResourceMetadataAdapter("FormWithListDescription"));
+        resource.getContents().add(listFormView);
 
-        return textfieldFormView;
+        return listFormView;
     }
 
     private FormDescription createFormDescription() {
-        var defaultStyle = new FormBuilders().newCheckboxDescriptionStyle()
+        var defaultStyle = new FormBuilders().newListDescriptionStyle()
                 .build();
 
-        var editCheckbox = new ChangeContextBuilder()
+        var deleteListItem = new ChangeContextBuilder()
                 .expression("aql:self")
                 .children(
-                        new SetValueBuilder()
-                                .featureName("name")
-                                .valueExpression("aql:''")
+                        new ViewBuilders().newDeleteElement()
                                 .build()
                 )
                 .build();
 
-        var checkboxDescription = new FormBuilders().newCheckboxDescription()
-                .name("Checkbox")
-                .labelExpression("aql:'Name'")
-                .helpExpression("Does the object have a name?")
-                .valueExpression("aql:self.name.size() > 0")
+        var listDescription = new FormBuilders().newListDescription()
+                .name("List")
+                .labelExpression("aql:'Entities'")
+                .helpExpression("All the entities of the domain")
+                .valueExpression("aql:self.types")
+                .displayExpression("aql:candidate.name")
+                .isDeletableExpression("aql:true")
                 .style(defaultStyle)
-                .body(editCheckbox)
+                .body(deleteListItem)
                 .build();
 
         var groupDescription = new GroupDescriptionBuilder()
                 .name("Group")
                 .labelExpression("Group")
                 .semanticCandidatesExpression("aql:self")
-                .children(checkboxDescription)
+                .children(listDescription)
                 .build();
 
         var pageDescription = new PageDescriptionBuilder()
