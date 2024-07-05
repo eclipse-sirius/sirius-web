@@ -15,6 +15,7 @@
 - [ADR-153] Restore the Selection Dialog support in diagrams
 - [ADR-154] Add support for finding parent in tree representation
 - [ADR-155] Add max-width expression for diagram labels
+- [ADR-156] Make it possible to display the semantic elements as a tree in the Selection Dialog
 
 === Deprecation warning
 
