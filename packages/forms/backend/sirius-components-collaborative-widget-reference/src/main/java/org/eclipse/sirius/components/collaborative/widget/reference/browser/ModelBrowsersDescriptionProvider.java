@@ -297,7 +297,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
         if (self instanceof EObject) {
             imageURL = this.objectService.getImagePath(self);
         } else if (self instanceof Resource) {
-            imageURL = List.of("/icons/svg/Resource.svg");
+            imageURL = List.of("/reference-widget-images/Resource.svg");
         }
         return imageURL;
     }
