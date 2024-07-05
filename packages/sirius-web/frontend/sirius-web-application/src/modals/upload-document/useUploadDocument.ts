@@ -67,7 +67,7 @@ export const useUploadDocument = (): UseUploadDocumentValue => {
       sendFile(httpOrigin, uploadDocumentMutationFile.loc?.source.body ?? '', variables, file).then((result) => {
         const { data, error } = result;
         if (error) {
-          addErrorMessage(error.message);
+          addErrorMessage('An unexpected error has occurred, the file uploaded may be too large');
         }
         if (data) {
           const { uploadDocument } = data;
@@ -82,7 +82,7 @@ export const useUploadDocument = (): UseUploadDocumentValue => {
       });
     } catch (exception) {
       // Handle other errors like max file size error send by the backend...
-      addErrorMessage(exception.toString());
+      addErrorMessage('An unexpected error has occurred, the file uploaded may be too large');
       setState((prevState) => ({ ...prevState, loading: false, uploadedDocument: null }));
     }
   };
