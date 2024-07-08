@@ -18,9 +18,13 @@ import Popper from '@material-ui/core/Popper';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { DiagramPanelActionProps } from '@eclipse-sirius/sirius-components-diagrams';
+import {
+  DiagramPanelActionProps,
+  DiagramContextValue,
+  DiagramContext,
+} from '@eclipse-sirius/sirius-components-diagrams';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { DiagramFilterForm } from './DiagramFilterForm';
 
 export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActionProps) => {
@@ -42,6 +46,7 @@ export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActio
   };
 
   const anchorRef = useRef<HTMLButtonElement | null>(null);
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
   return (
     <>
@@ -51,7 +56,7 @@ export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActio
           aria-label="Filter elements"
           onClick={handlePanel}
           data-testid="Filter elements"
-          disabled={false}>
+          disabled={readOnly}>
           <FilterListIcon />
         </IconButton>
       </Tooltip>

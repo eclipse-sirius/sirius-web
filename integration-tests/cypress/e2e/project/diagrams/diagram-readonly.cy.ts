@@ -67,6 +67,7 @@ describe('Diagram read-only', () => {
         cy.getByTestId('reveal-hidden-elements').should('exist').should('be.disabled');
         cy.getByTestId('reveal-faded-elements').should('exist').should('be.disabled');
         cy.getByTestId('unpin-all-elements').should('exist').should('be.disabled');
+        cy.getByTestId('Filter elements').should('exist').should('be.disabled');
         diagram.getPalette().should('not.exist');
         diagram.getNodes('diagram', 'Motion_Engine').should('exist').click('bottom');
         diagram.getSelectedNodes('diagram', 'Motion_Engine').should('exist');
