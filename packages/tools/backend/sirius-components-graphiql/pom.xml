@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-graphiql</artifactId>
-	<version>2024.5.4</version>
+	<version>2024.5.5</version>
 	<name>sirius-components-graphiql</name>
 	<description>Sirius Components Graphiql support. This project contribute a GraphQL query tool on the /graphiql/index.html URI.</description>
 

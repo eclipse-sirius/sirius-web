@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative-portals</artifactId>
-	<version>2024.5.4</version>
+	<version>2024.5.5</version>
 	<name>sirius-components-collaborative-portals</name>
 	<description>Sirius Components Collaborative Portals</description>
 
@@ -43,12 +43,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>2024.5.4</version>
+			<version>2024.5.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-portals</artifactId>
-			<version>2024.5.4</version>
+			<version>2024.5.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -65,13 +65,13 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.5.4</version>
+			<version>2024.5.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2024.5.4</version>
+			<version>2024.5.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

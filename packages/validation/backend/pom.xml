@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-validation-parent</artifactId>
-	<version>2024.5.4</version>
+	<version>2024.5.5</version>
 
 	<name>sirius-components-validation-parent</name>
 	<description>Sirius Components Validation Parent</description>

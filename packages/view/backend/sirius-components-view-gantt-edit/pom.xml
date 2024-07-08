@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-gantt-edit</artifactId>
-	<version>2024.5.4</version>
+	<version>2024.5.5</version>
 	<name>sirius-components-view-gantt-edit</name>
 	<description>Sirius Components Gantt View Definition DSL - Edit Support</description>
 	<properties>
@@ -49,12 +49,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt</artifactId>
-			<version>2024.5.4</version>
+			<version>2024.5.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-edit</artifactId>
-			<version>2024.5.4</version>
+			<version>2024.5.5</version>
 		</dependency>
 	</dependencies>
 

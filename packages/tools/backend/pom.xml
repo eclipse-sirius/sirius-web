@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-tools-parent</artifactId>
-	<version>2024.5.4</version>
+	<version>2024.5.5</version>
 
 	<name>sirius-components-tools-parent</name>
 	<description>Sirius Components Tools Parent</description>
