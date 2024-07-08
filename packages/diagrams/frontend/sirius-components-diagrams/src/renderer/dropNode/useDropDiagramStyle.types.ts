@@ -12,7 +12,8 @@
  *******************************************************************************/
 
 export interface useDropDiagramStyleValue {
-  backgroundColor: string;
+  background: string;
   smallGridColor: string;
   largeGridColor: string;
+  setBackground: (background: string) => void;
 }

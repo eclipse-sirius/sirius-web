@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -55,6 +56,7 @@ public class TestDiagramDescriptionBuilder {
                 .edgeDescriptions(edgeDescriptions)
                 .palettes(palettes)
                 .dropHandler(variableManager -> new Failure(""))
+                .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .build();
     }
 

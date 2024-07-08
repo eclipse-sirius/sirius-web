@@ -225,6 +225,9 @@ export const convertDiagram = (
       kind: gqlDiagram.metadata.kind,
       targetObjectId: gqlDiagram.targetObjectId,
     },
+    style: {
+      background: gqlDiagram.style.background,
+    },
     nodes: rawDiagram.nodes,
     edges: rawDiagram.edges,
   };

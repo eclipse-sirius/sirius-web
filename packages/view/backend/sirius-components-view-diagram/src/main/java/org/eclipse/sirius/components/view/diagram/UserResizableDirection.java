@@ -118,18 +118,21 @@ public enum UserResizableDirection implements Enumerator {
      * @generated
      */
     public static final List<UserResizableDirection> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final int value;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final String name;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *

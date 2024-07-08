@@ -23,9 +23,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
+import org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramStyleDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
@@ -45,6 +47,9 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getArrangeLayoutDirection
  * <em>Arrange Layout Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getConditionalStyles
+ * <em>Conditional Styles</em>}</li>
  * </ul>
  *
  * @generated
@@ -114,6 +119,26 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @see #getArrangeLayoutDirection()
      */
     protected ArrangeLayoutDirection arrangeLayoutDirection = ARRANGE_LAYOUT_DIRECTION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getStyle()
+     */
+    protected DiagramStyleDescription style;
+
+    /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getConditionalStyles()
+     */
+    protected EList<ConditionalDiagramStyle> conditionalStyles;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -260,6 +285,67 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
+    public DiagramStyleDescription getStyle() {
+        return this.style;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStyle(DiagramStyleDescription newStyle) {
+        if (newStyle != this.style) {
+            NotificationChain msgs = null;
+            if (this.style != null)
+                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.DIAGRAM_DESCRIPTION__STYLE, null, msgs);
+            if (newStyle != null)
+                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.DIAGRAM_DESCRIPTION__STYLE, null, msgs);
+            msgs = this.basicSetStyle(newStyle, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__STYLE, newStyle, newStyle));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<ConditionalDiagramStyle> getConditionalStyles() {
+        if (this.conditionalStyles == null) {
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalDiagramStyle.class, this, DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES);
+        }
+        return this.conditionalStyles;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetStyle(DiagramStyleDescription newStyle, NotificationChain msgs) {
+        DiagramStyleDescription oldStyle = this.style;
+        this.style = newStyle;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__STYLE, oldStyle, newStyle);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
@@ -268,6 +354,10 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return ((InternalEList<?>) this.getNodeDescriptions()).basicRemove(otherEnd, msgs);
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getEdgeDescriptions()).basicRemove(otherEnd, msgs);
+            case DiagramPackage.DIAGRAM_DESCRIPTION__STYLE:
+                return this.basicSetStyle(null, msgs);
+            case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
+                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -290,6 +380,10 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.getEdgeDescriptions();
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 return this.getArrangeLayoutDirection();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__STYLE:
+                return this.getStyle();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -320,6 +414,13 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.setArrangeLayoutDirection((ArrangeLayoutDirection) newValue);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__STYLE:
+                this.setStyle((DiagramStyleDescription) newValue);
+                return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                this.getConditionalStyles().addAll((Collection<? extends ConditionalDiagramStyle>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -347,6 +448,12 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.setArrangeLayoutDirection(ARRANGE_LAYOUT_DIRECTION_EDEFAULT);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__STYLE:
+                this.setStyle(null);
+                return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -369,6 +476,10 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.edgeDescriptions != null && !this.edgeDescriptions.isEmpty();
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 return this.arrangeLayoutDirection != ARRANGE_LAYOUT_DIRECTION_EDEFAULT;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__STYLE:
+                return this.style != null;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

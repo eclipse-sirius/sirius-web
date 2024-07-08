@@ -389,7 +389,30 @@ INSERT INTO document (
                "data":{
                  "name":"Root Diagram",
                  "domainType":"buck::Root",
-                 "nodeDescriptions":[
+                 "conditionalStyles": [
+                   {
+                     "data": {
+                       "condition": "aql:self.eAllContents()->size()>2",
+                       "style": {
+                         "data": {
+                           "background": "//@colorPalettes.0/@colors.0"
+                         },
+                         "eClass": "diagram:DiagramStyleDescription",
+                         "id": "7994fbc6-2600-41f9-b409-a1ba104a01d3"
+                       }
+                     },
+                     "eClass": "diagram:ConditionalDiagramStyle",
+                     "id": "6d3674d2-c51f-4317-8b2b-b4395246ab9f"
+                  }
+                ],
+                 "style": {
+                   "data": {
+                     "background": "//@colorPalettes.0/@colors.1"
+                   },
+                   "eClass": "diagram:DiagramStyleDescription",
+                   "id": "82dd8017-a782-4d48-8926-019c1a88db53"
+                  },
+                  "nodeDescriptions":[
                    {
                      "id":"e91e6e23-1440-4fbf-b31c-3a21bf25d85b",
                      "eClass":"diagram:NodeDescription",
@@ -588,19 +611,6 @@ INSERT INTO project_image (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
-
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
 
 -- Studio instance project
 INSERT INTO project (

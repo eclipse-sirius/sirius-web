@@ -28,7 +28,14 @@ public class PapayaColorPaletteProvider {
 
     public static final String DEFAULT_BACKGROUND = "default.background";
 
+    public static final String EMPTY_DIAGRAM_BACKGROUND = "empty-diagram-background";
+
     public ColorPalette getColorPalette() {
+        var emptyDiagramBackground = new ViewBuilders().newFixedColor()
+                .name(EMPTY_DIAGRAM_BACKGROUND)
+                .value("url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"200px\" width=\"200px\"> <text fill=\"rgb(38, 30, 88)\" x=\"100px\" y=\"100px\" alignment-baseline=\"middle\" text-anchor=\"middle\" font-size=\"12\"> Drag and drop elements to get started </text> </svg>') no-repeat center center / contain")
+                .build();
+
         var paletteTextPrimary = new ViewBuilders().newFixedColor()
                 .name(PALETTE_TEXT_PRIMARY)
                 .value(PALETTE_TEXT_PRIMARY)
@@ -47,6 +54,7 @@ public class PapayaColorPaletteProvider {
         return new ViewBuilders().newColorPalette()
                 .name("Papaya Color Palette")
                 .colors(
+                        emptyDiagramBackground,
                         paletteTextPrimary,
                         paletteErrorMain,
                         defaultBackground

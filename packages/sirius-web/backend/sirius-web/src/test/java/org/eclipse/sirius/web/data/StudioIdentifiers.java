@@ -53,6 +53,8 @@ public final class StudioIdentifiers {
 
     public static final UUID HUMAN_INSIDE_LABEL_STYLE_OBJECT = UUID.fromString("c8338087-e98e-43bd-ae1a-879b64308a7d");
 
+    public static final UUID DIAGRAM_STYLE_DESCRIPTION_OBJECT = UUID.fromString("82dd8017-a782-4d48-8926-019c1a88db53");
+
     private StudioIdentifiers() {
         // Prevent instantiation
     }

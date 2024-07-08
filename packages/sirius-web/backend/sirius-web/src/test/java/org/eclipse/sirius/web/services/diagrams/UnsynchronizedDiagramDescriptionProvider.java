@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.CreateInstanceBuilder;
 import org.eclipse.sirius.components.view.builder.generated.CreateViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramPaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DropToolBuilder;
@@ -188,6 +189,8 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 .edgeDescriptions()
                 .palette(diagramPalette)
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription()
+                        .build())
                 .build();
 
         return this.diagramDescription;

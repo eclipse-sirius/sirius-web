@@ -265,6 +265,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         viewDiagramDescription.setDomainType(domainName + "::Root");
         viewDiagramDescription.setTitleExpression(domainName + " diagram");
         viewDiagramDescription.setPalette(defaultToolsFactory.createDefaultDiagramPalette());
+        viewDiagramDescription.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
         view.getDescriptions().add(viewDiagramDescription);
 
         view.getColorPalettes().add(this.createColorPalette());
