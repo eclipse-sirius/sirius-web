@@ -26,6 +26,13 @@ export const DiagramElementPalette = memo(({ diagramElementId, labelId }: Diagra
   const { isOpened, x, y, hideDiagramElementPalette } = useDiagramElementPalette();
   const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
 
+  const escapePressed = useKeyPress('Escape');
+  useEffect(() => {
+    if (escapePressed) {
+      hideDiagramElementPalette();
+    }
+  }, [escapePressed, hideDiagramElementPalette]);
+
   if (readOnly) {
     return null;
   }
@@ -35,13 +42,6 @@ export const DiagramElementPalette = memo(({ diagramElementId, labelId }: Diagra
       setCurrentlyEditedLabelId('palette', labelId, null);
     }
   };
-
-  const escapePressed = useKeyPress('Escape');
-  useEffect(() => {
-    if (escapePressed) {
-      hideDiagramElementPalette();
-    }
-  }, [escapePressed, hideDiagramElementPalette]);
 
   return isOpened && x && y && !currentlyEditedLabelId ? (
     <PalettePortal>
