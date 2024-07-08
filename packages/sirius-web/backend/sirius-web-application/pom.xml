@@ -161,6 +161,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-widget-reference-view</artifactId>
+			<version>2024.5.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-widget-reference-view-edit</artifactId>
+			<version>2024.5.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt</artifactId>
 			<version>2024.5.5</version>
 		</dependency>

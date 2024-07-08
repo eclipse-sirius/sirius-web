@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.diagram.provider.DiagramItemProviderAd
 import org.eclipse.sirius.components.view.form.provider.FormItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.gantt.provider.GanttItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.provider.ViewItemProviderAdapterFactory;
+import org.eclipse.sirius.components.widgets.reference.provider.ReferenceItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -49,6 +50,11 @@ public class EMFAdapterFactoryConfiguration {
     @Bean
     public AdapterFactory customNodesAdapterFactory() {
         return new CustomnodesItemProviderAdapterFactory();
+    }
+
+    @Bean
+    public AdapterFactory referenceWidgetAdapterFactory() {
+        return new ReferenceItemProviderAdapterFactory();
     }
 
     @Bean

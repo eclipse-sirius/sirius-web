@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.customnodes.CustomnodesPackage
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.adapters.FormColorAdapter;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioColorPalettesLoader;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,7 @@ public class StudioEditingContextInitializer implements IEditingContextProcessor
             packageRegistry.put(CustomnodesPackage.eNS_URI, CustomnodesPackage.eINSTANCE);
             packageRegistry.put(FormPackage.eNS_URI, FormPackage.eINSTANCE);
             packageRegistry.put(GanttPackage.eNS_URI, GanttPackage.eINSTANCE);
+            packageRegistry.put(ReferencePackage.eNS_URI, ReferencePackage.eINSTANCE);
 
             var resourceSet = emfEditingContext.getDomain().getResourceSet();
             this.studioColorPalettesLoader.loadStudioColorPalettes(resourceSet).ifPresent(view -> {

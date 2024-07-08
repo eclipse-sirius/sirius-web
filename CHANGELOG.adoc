@@ -75,6 +75,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3589[#3589] [diagram] Add missing migration participant for diagram representation
 - https://github.com/eclipse-sirius/sirius-web/issues/3668[#3668] [diagram] Fix an issue that would cause wrapped label to overflow its container
 - https://github.com/eclipse-sirius/sirius-web/issues/3709[#3709] [domain] Add a conditional edge style for containment references
+- https://github.com/eclipse-sirius/sirius-web/issues/3722[#3722] [sirius-web] Fix reference widget registration
 
 === New Features
 
