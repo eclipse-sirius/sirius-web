@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
@@ -52,14 +53,25 @@ public class RelationEdgeDescriptionProvider implements IEdgeDescriptionProvider
                 .semanticCandidatesExpression("aql:self.eResource().getContents().eAllContents()")
                 .sourceNodesExpression("aql:self.eContainer()")
                 .targetNodesExpression("aql:self.targetType")
-                .style(this.relationEdgeStyle())
+                .style(this.defaultRelationEdgeStyle())
+                .conditionalStyles(this.containmentRelationEdgeStyle())
                 .palette(palette)
                 .build();
     }
 
-    private EdgeStyle relationEdgeStyle() {
+    private EdgeStyle defaultRelationEdgeStyle() {
         return new DiagramBuilders()
                 .newEdgeStyle()
+                .sourceArrowStyle(ArrowStyle.NONE)
+                .color(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BLACK_COLOR))
+                .borderSize(0)
+                .build();
+    }
+
+    private ConditionalEdgeStyle containmentRelationEdgeStyle() {
+        return new DiagramBuilders()
+                .newConditionalEdgeStyle()
+                .condition("aql:self.containment")
                 .sourceArrowStyle(ArrowStyle.FILL_DIAMOND)
                 .color(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BLACK_COLOR))
                 .borderSize(0)
