@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-domain</artifactId>
-	<version>2024.5.4</version>
+	<version>2024.5.5</version>
 	<name>sirius-web-domain</name>
 	<description>Sirius Web Domain</description>
 
