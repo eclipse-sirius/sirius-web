@@ -23,9 +23,6 @@ import { useDiagramPalette } from './useDiagramPalette';
 export const DiagramPalette = memo(({ diagramElementId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { isOpened, x, y, hideDiagramPalette } = useDiagramPalette();
-  if (readOnly) {
-    return null;
-  }
 
   const escapePressed = useKeyPress('Escape');
   useEffect(() => {
@@ -33,6 +30,10 @@ export const DiagramPalette = memo(({ diagramElementId }: DiagramPaletteProps) =
       hideDiagramPalette();
     }
   }, [escapePressed, hideDiagramPalette]);
+
+  if (readOnly) {
+    return null;
+  }
 
   return isOpened && x && y ? (
     <PalettePortal>
