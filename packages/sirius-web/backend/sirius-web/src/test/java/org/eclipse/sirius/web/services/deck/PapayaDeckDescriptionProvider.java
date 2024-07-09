@@ -90,10 +90,24 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
     }
 
     private DeckDescription createDeckDescription() {
+        var deleteCardTool = new DeckBuilders().newDeleteCardTool()
+                .name("Delete card")
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:self")
+                                .children(
+                                        new ViewBuilders().newDeleteElement()
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
+
         var toDoCardDescription = new DeckBuilders().newCardDescription()
                 .name("To do Card")
                 .titleExpression("aql:self.name")
                 .semanticCandidatesExpression("aql:self.tasks->select(task | not task.done)")
+                .deleteTool(deleteCardTool)
                 .build();
 
         this.createToDoCardTool = new DeckBuilders()
