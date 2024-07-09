@@ -49,6 +49,7 @@ type NodeLayoutData {
   position: Position!
   size: Size!
   resizedByUser: Boolean!
+  minimumWidth: Int!
 }
 
 enum ViewModifier {
@@ -632,6 +633,7 @@ input NodeLayoutDataInput {
   position: PositionInput!
   size: SizeInput!
   resizedByUser: Boolean!
+  minimumWidth: Int!
 }
 
 input SizeInput {

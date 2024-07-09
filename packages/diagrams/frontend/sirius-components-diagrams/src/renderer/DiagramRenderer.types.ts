@@ -62,6 +62,7 @@ export interface NodeData {
   isDropNodeTarget: boolean;
   isDropNodeCandidate: boolean;
   isHovered: boolean;
+  minimumWidth: number;
 }
 
 export enum BorderNodePosition {

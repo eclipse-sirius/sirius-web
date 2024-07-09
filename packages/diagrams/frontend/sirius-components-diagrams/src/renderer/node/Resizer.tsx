@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
-import { NodeResizer, NodeResizeControl, ResizeControlVariant } from 'reactflow';
+import { NodeResizeControl, NodeResizer, ResizeControlVariant } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { ResizerProps } from './Resizer.types';
@@ -41,6 +41,7 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
     if (data.isListChild) {
       return (
         <NodeResizeControl
+          minWidth={data.minimumWidth}
           variant={ResizeControlVariant.Line}
           position={'bottom'}
           shouldResize={() => !data.isBorderNode}
@@ -50,6 +51,7 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
     } else if (data.nodeDescription?.userResizable === 'BOTH') {
       return (
         <NodeResizer
+          minWidth={data.minimumWidth}
           handleStyle={{ ...resizeHandleStyle(theme) }}
           lineStyle={{ ...resizeLineStyle(theme) }}
           color={theme.palette.selected}
@@ -62,6 +64,7 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
       return (
         <>
           <NodeResizeControl
+            minWidth={data.minimumWidth}
             variant={ResizeControlVariant.Line}
             position={'left'}
             shouldResize={() => !data.isBorderNode}
@@ -69,6 +72,7 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
             keepAspectRatio={data.nodeDescription?.keepAspectRatio}
           />
           <NodeResizeControl
+            minWidth={data.minimumWidth}
             variant={ResizeControlVariant.Line}
             position={'right'}
             shouldResize={() => !data.isBorderNode}
