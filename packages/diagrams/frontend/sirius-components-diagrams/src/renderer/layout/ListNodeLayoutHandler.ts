@@ -17,7 +17,7 @@ import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousSize } from './bounds';
-import { RawDiagram, ForcedDimensions } from './layout.types';
+import { ForcedDimensions, RawDiagram } from './layout.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
   applyRatioOnNewNodeSizeValue,
@@ -30,6 +30,7 @@ import {
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
+  updateListNodeMinimumWidth,
 } from './layoutNode';
 
 export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
@@ -229,5 +230,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
     setBorderNodesPosition(borderNodes, node, previousDiagram);
+
+    updateListNodeMinimumWidth(node, directChildren, visibleNodes);
   }
 }

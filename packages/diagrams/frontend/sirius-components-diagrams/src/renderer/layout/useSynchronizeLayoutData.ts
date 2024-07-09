@@ -86,7 +86,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
         width,
         position: { x, y },
       } = node;
-      const { resizedByUser } = node.data;
+      const { resizedByUser, minimumWidth } = node.data;
       if (height && width) {
         nodeLayoutData.push({
           id,
@@ -99,6 +99,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             width,
           },
           resizedByUser,
+          minimumWidth,
         });
       }
     });

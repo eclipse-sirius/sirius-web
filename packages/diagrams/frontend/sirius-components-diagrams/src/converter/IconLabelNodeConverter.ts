@@ -84,6 +84,7 @@ const toIconLabelNode = (
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
+    minimumWidth: gqlNodeLayoutData?.minimumWidth ?? 0,
   };
 
   data.insideLabel = convertInsideLabel(insideLabel, data, '', false, '0 8px 0 8px');

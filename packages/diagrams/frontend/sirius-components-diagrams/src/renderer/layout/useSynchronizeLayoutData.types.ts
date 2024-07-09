@@ -27,6 +27,7 @@ export interface GQLNodeLayoutData {
   position: GQLPosition;
   size: GQLSize;
   resizedByUser: boolean;
+  minimumWidth: number;
 }
 
 export interface GQLSize {

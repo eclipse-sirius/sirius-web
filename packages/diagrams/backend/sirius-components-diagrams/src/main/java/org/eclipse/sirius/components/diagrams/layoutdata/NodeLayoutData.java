@@ -21,6 +21,7 @@ public record NodeLayoutData(
         String id,
         Position position,
         Size size,
-        boolean resizedByUser
+        boolean resizedByUser,
+        int minimumWidth
 ) {
 }

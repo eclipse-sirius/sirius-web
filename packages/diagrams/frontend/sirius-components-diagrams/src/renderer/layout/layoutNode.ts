@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Box, Dimensions, Node, NodeInternals, Rect, XYPosition, boxToRect, rectToBox } from 'reactflow';
 import { InsideLabel, NodeData } from '../DiagramRenderer.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
 import {
@@ -27,6 +28,7 @@ import {
   defaultNodeMargin,
   defaultWidth,
   gap,
+  labelVerticalPadding,
   rectangularNodePadding,
 } from './layoutParams';
 
@@ -534,4 +536,27 @@ export const isSiblingOrDescendantOf = (sibling: Node, candidate: Node, nodeInte
     }
     return false;
   }
+};
+
+export const updateListNodeMinimumWidth = (
+  node: Node,
+  directChildren: Node<NodeData, DiagramNodeType>[],
+  visibleNodes: Node<NodeData, DiagramNodeType>[]
+) => {
+  //Update the minimum size a node can have
+  //This take into account the sub nodes that have a fixed label size, limiting the minimum size of the parent
+  let minimumWidth = 0;
+  directChildren
+    .filter((child) => child.data.insideLabel?.overflowStrategy === 'NONE')
+    .forEach((child) => {
+      if (child.width && child.width > minimumWidth) {
+        const childIndex = findNodeIndex(visibleNodes, child.id);
+        const childLabel = document.getElementById(`${child.id}-label-${childIndex}`);
+        if (childLabel) {
+          minimumWidth = Math.round(childLabel.getBoundingClientRect().width) + labelVerticalPadding * 2;
+        }
+      }
+    });
+
+  node.data.minimumWidth = minimumWidth;
 };

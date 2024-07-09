@@ -92,6 +92,7 @@ const toRectangularNode = (
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
+    minimumWidth: gqlNodeLayoutData?.minimumWidth ?? 0,
   };
 
   data.insideLabel = convertInsideLabel(
