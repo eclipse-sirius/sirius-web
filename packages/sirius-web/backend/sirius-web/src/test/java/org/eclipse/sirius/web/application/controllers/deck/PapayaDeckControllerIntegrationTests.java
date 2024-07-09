@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.deck.dto.DeckRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.CreateDeckCardInput;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.DeleteDeckCardInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.web.services.deck.PapayaDeckDescriptionProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDeckSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.deck.CreateDeckCardMutationRunner;
+import org.eclipse.sirius.web.tests.services.deck.DeleteDeckCardMutationRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,6 +68,9 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
 
     @Autowired
     private CreateDeckCardMutationRunner createDeckCardMutationRunner;
+
+    @Autowired
+    private DeleteDeckCardMutationRunner deleteDeckCardMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -148,6 +153,57 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
         StepVerifier.create(flux)
                 .consumeNextWith(initialDeckContentConsumer)
                 .then(createNewCard)
+                .consumeNextWith(updatedDeckContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a deck representation, when we delete an existing card, then the representation data are updated")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenDeckRepresentationWhenWeDeleteAnExistingCardThenTheRepresentationDataAreUpdated() {
+        var flux = this.givenSubscriptionToDeck();
+
+        var deckId = new AtomicReference<String>();
+        var laneId = new AtomicReference<String>();
+        var cardId = new AtomicReference<String>();
+
+        Consumer<DeckRefreshedEventPayload> initialDeckContentConsumer = payload -> Optional.of(payload)
+                .map(DeckRefreshedEventPayload::deck)
+                .ifPresentOrElse(deck -> {
+                    deckId.set(deck.getId());
+                    assertThat(deck.lanes()).isNotEmpty();
+
+                    var lane = deck.lanes().get(0);
+                    laneId.set(lane.id());
+                    assertThat(lane.cards()).hasSize(5);
+
+                    cardId.set(lane.cards().get(0).id());
+                }, () -> fail("Missing deck"));
+
+        Runnable deleteCard = () -> {
+            var deleteDeckCardInput = new DeleteDeckCardInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    deckId.get(),
+                    cardId.get()
+            );
+            var result = this.deleteDeckCardMutationRunner.run(deleteDeckCardInput);
+            String typename = JsonPath.read(result, "$.data.deleteDeckCard.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<DeckRefreshedEventPayload> updatedDeckContentConsumer = payload -> Optional.of(payload)
+                .map(DeckRefreshedEventPayload::deck)
+                .ifPresentOrElse(deck -> {
+                    assertThat(deck.lanes()).isNotEmpty();
+                    assertThat(deck.lanes().get(0).cards()).hasSize(4);
+                }, () -> fail("Missing deck"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDeckContentConsumer)
+                .then(deleteCard)
                 .consumeNextWith(updatedDeckContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
