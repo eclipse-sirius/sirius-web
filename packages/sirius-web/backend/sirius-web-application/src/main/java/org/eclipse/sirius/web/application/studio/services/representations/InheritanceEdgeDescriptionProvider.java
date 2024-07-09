@@ -15,13 +15,19 @@ package org.eclipse.sirius.web.application.studio.services.representations;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.DeleteToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.LabelEditToolBuilder;
+import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
@@ -39,17 +45,48 @@ public class InheritanceEdgeDescriptionProvider implements IEdgeDescriptionProvi
 
     @Override
     public EdgeDescription create() {
-        var palette = new DiagramBuilders()
-                .newEdgePalette()
-                .toolSections(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection())
-                .build();
+        var palette = this.inheritanceEdgePalette();
 
         return new DiagramBuilders()
                 .newEdgeDescription()
                 .name("Inheritance")
+                .centerLabelExpression("")
                 .targetNodesExpression("aql:self.superTypes")
                 .style(this.inheritanceEdgeStyle())
                 .palette(palette)
+                .build();
+    }
+
+    private EdgePalette inheritanceEdgePalette() {
+        var labelEditTool = this.labelEditTool();
+        var deleteTool = this.deleteTool();
+
+        return new DiagramBuilders().newEdgePalette()
+                .centerLabelEditTool(labelEditTool)
+                .deleteTool(deleteTool)
+                .toolSections(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection())
+                .build();
+    }
+
+    private LabelEditTool labelEditTool() {
+        return new LabelEditToolBuilder()
+                .name("Edit Label")
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:self.defaultEditLabel(newLabel)")
+                                .build()
+                )
+                .build();
+    }
+
+    private DeleteTool deleteTool() {
+        return new DeleteToolBuilder()
+                .name("Edit Label")
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:self.defaultDelete()")
+                                .build()
+                )
                 .build();
     }
 
