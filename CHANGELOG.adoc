@@ -140,6 +140,7 @@ We cannot rely on the error message recaived from the backend since Cross Origin
 - https://github.com/eclipse-sirius/sirius-web/issues/3697[#3697] [diagram] Improve arrange-all performance by reducing overlap management complexity
 - https://github.com/eclipse-sirius/sirius-web/issues/3669[#3669] [diagram] Add migration participant to hide label borders by default
 - https://github.com/eclipse-sirius/sirius-web/issues/3684[#3684] [form, tree] Replace form & tree converters configurations with dedicated extension points
+- https://github.com/eclipse-sirius/sirius-web/issues/3701[#3701] [domain] Add edge and node tools to domain diagram including creation tools as well as delete and direct edit tools.
 
 == v2024.5.0
 
