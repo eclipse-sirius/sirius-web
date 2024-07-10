@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-portals-parent</artifactId>
-	<version>2024.5.5</version>
+	<version>2024.5.6</version>
 
 	<name>sirius-components-portals-parent</name>
 	<description>Sirius Components Portals Parent</description>
