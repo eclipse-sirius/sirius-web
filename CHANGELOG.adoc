@@ -5,6 +5,7 @@
 === Shapes
 
 - Add tree representation in the view DSL
+- Add support for object duplication from Explorer
 
 === Architectural decision records
 
