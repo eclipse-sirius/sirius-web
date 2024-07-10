@@ -16,6 +16,7 @@ import { Flow } from '../../../usecases/Flow';
 import { Details } from '../../../workbench/Details';
 import { Diagram } from '../../../workbench/Diagram';
 import { Explorer } from '../../../workbench/Explorer';
+import { Studio } from '../../../usecases/Studio';
 
 const projectName = 'Cypress - diagram selection';
 
@@ -115,6 +116,39 @@ describe('Diagram selection', () => {
 
         explorer.select('Wifi');
         details.getTextField('Name').should('have.value', 'Wifi');
+      });
+    });
+  });
+  context('Given a studio with a domain diagram open', () => {
+    let projectId: string = '';
+    beforeEach(() => {
+      new Studio().createStudioProject().then((createdProjectData) => {
+        projectId = createdProjectData.projectId;
+        new Project().visit(projectId);
+      });
+      const explorer = new Explorer();
+      explorer.expand('DomainNewModel');
+      cy.get('[title="domain::Domain"]').then(($div) => {
+        explorer.expand($div.data().testid);
+      });
+      explorer.select('Domain');
+    });
+
+    afterEach(() => cy.deleteProject(projectId));
+
+    context('When we interact with the details view for an edge', () => {
+      it('Then edge selection is preserved', () => {
+        const explorer = new Explorer();
+        const diagram = new Diagram();
+
+        explorer.expand('Root');
+        diagram.getSelectedEdges('Domain').should('not.exist');
+        explorer.select('entity1s');
+        diagram.getSelectedEdges('Domain').should('exist');
+
+        const details = new Details();
+        details.getCheckBox('Containment').click();
+        diagram.getSelectedEdges('Domain').should('exist');
       });
     });
   });

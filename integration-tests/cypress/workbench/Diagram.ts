@@ -41,6 +41,10 @@ export class Diagram {
     return this.getDiagram(diagramLabel).get('div.react-flow__node.selected').contains('.react-flow__node', nodeLabel);
   }
 
+  public getSelectedEdges(diagramLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getDiagram(diagramLabel).get('.react-flow__edge.selected');
+  }
+
   public getPalette(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('Palette');
   }

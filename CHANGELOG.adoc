@@ -79,6 +79,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3722[#3722] [sirius-web] Fix reference widget registration
 - https://github.com/eclipse-sirius/sirius-web/issues/3711[#3711] [diagram] Fix an issue that prevent filter elements button to be in read-only mode
 - https://github.com/eclipse-sirius/sirius-web/issues/3710[#3710] [portal] Fix an error raised by switching mode on portal
+- https://github.com/eclipse-sirius/sirius-web/issues/3700[#3700] [diagram] Prevent edge selection from being lost after a diagram refresh
 
 === New Features
 

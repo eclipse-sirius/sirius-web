@@ -128,10 +128,14 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription);
 
     const selectedNodeIds = nodes.filter((node) => node.selected).map((node) => node.id);
+    const selectedEdgeIds = edges.filter((edge) => edge.selected).map((edge) => edge.id);
     if (cause === 'layout') {
       convertedDiagram.nodes
         .filter((node) => selectedNodeIds.includes(node.id))
         .forEach((node) => (node.selected = true));
+      convertedDiagram.edges
+        .filter((edge) => selectedEdgeIds.includes(edge.id))
+        .forEach((edge) => (edge.selected = true));
 
       setNodes(convertedDiagram.nodes);
       setEdges(convertedDiagram.edges);
@@ -145,6 +149,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         laidOutDiagram.nodes
           .filter((node) => selectedNodeIds.includes(node.id))
           .forEach((node) => (node.selected = true));
+        laidOutDiagram.edges
+          .filter((edge) => selectedEdgeIds.includes(edge.id))
+          .forEach((edge) => (edge.selected = true));
 
         setNodes(laidOutDiagram.nodes);
         setEdges(laidOutDiagram.edges);
