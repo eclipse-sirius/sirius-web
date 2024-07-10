@@ -137,7 +137,7 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
         variableManager.put(IEditingContext.EDITING_CONTEXT, this.editingContext);
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.id);
 
-        Selection selection = new SelectionRenderer(variableManager, this.selectionDescription).render();
+        Selection selection = new SelectionRenderer(variableManager, this.selectionDescription, this.objectService).render();
 
         this.logger.trace("Selection refreshed: {}", selection.getId());
 

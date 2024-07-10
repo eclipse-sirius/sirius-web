@@ -28,6 +28,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IURLParser;
+import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -66,7 +68,9 @@ public class ViewConverter implements IViewConverter {
 
     private final IDiagramIdProvider diagramIdProvider;
 
-    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext, IObjectService objectService, IDiagramIdProvider diagramIdProvider) {
+    private final IURLParser urlParser;
+
+    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext, IObjectService objectService, IDiagramIdProvider diagramIdProvider, IURLParser urlParser) {
         this.javaServiceProviders = new ArrayList<>();
         this.javaServiceProviders.addAll(Objects.requireNonNull(javaServiceProviders));
         IServiceProvider nodeServiceProvider = (IReadOnlyQueryEnvironment queryEnvironment) -> ServiceUtils.getReceiverServices(null, Node.class).stream().toList();
@@ -75,6 +79,7 @@ public class ViewConverter implements IViewConverter {
         this.applicationContext = Objects.requireNonNull(applicationContext);
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     /**
@@ -130,13 +135,26 @@ public class ViewConverter implements IViewConverter {
                     return message;
                 })
                 .idProvider(variableManager -> Selection.PREFIX)
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null))
+                .labelProvider(this::getLabel)
                 .iconURLProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(null))
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .selectionObjectsIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .label("Selection Description")
                 .canCreatePredicate(variableManager -> false)
+                .displayedAsTree(selectionDescription.isDisplayedAsTree())
+                .expandedAtOpening(selectionDescription.isExpandedAtOpening())
                 .build();
+    }
+
+    private String getLabel(VariableManager variableManager) {
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        String label = "";
+        label = this.objectService.getLabel(self);
+        if (label.isBlank()) {
+            var kind = this.objectService.getKind(self);
+            label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
+        }
+        return label;
     }
 
     private Stream<EObject> getAllContent(EObject representationDescription) {

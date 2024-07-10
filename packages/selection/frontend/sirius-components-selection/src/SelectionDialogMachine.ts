@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { SubscriptionResult } from '@apollo/client';
 import { assign, Machine } from 'xstate';
-import { Selection } from './Selection.types';
 import {
+  GQLSelection,
   GQLSelectionEventPayload,
   GQLSelectionEventSubscription,
   GQLSelectionRefreshedEventPayload,
@@ -44,7 +44,7 @@ export type SchemaValue = {
 
 export interface SelectionDialogContext {
   id: string;
-  selection: Selection | null;
+  selection: GQLSelection | null;
   message: string | null;
   selectedObjectId: string | null;
 }

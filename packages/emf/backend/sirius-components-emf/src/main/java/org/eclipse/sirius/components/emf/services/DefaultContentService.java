@@ -12,17 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.services;
 
-import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.components.core.api.IDefaultContentService;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import org.springframework.stereotype.Service;
 
 /**
  * Default implementation of {@link IDefaultContentService}.
@@ -49,5 +48,18 @@ public class DefaultContentService implements IDefaultContentService {
             }
         }
         return contents;
+    }
+    @Override
+    public Object getParent(Object object) {
+        Object parent = null;
+        if (object instanceof EObject eObject) {
+            Adapter adapter = this.composedAdapterFactory.adapt(eObject, IEditingDomainItemProvider.class);
+            if (adapter instanceof IEditingDomainItemProvider contentProvider) {
+                parent = contentProvider.getParent(eObject);
+            } else {
+                parent = eObject.eContainer();
+            }
+        }
+        return parent;
     }
 }

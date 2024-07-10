@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,10 @@ public final class SelectionObject {
 
     private List<String> iconURL;
 
+    private String parentId;
+
+    private boolean isSelectable;
+
     private SelectionObject() {
         // Prevent instantiation
     }
@@ -52,6 +56,14 @@ public final class SelectionObject {
 
     public List<String> getIconURL() {
         return this.iconURL;
+    }
+
+    public String getParentId() {
+        return this.parentId;
+    }
+
+    public boolean isIsSelectable() {
+        return this.isSelectable;
     }
 
     @Override
@@ -74,6 +86,10 @@ public final class SelectionObject {
 
         private List<String> iconURL;
 
+        private String parentId;
+
+        private boolean isSelectable;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -88,11 +104,23 @@ public final class SelectionObject {
             return this;
         }
 
+        public Builder parentId(String parentId) {
+            this.parentId = Objects.requireNonNull(parentId);
+            return this;
+        }
+
+        public Builder isSelectable(boolean isSelectable) {
+            this.isSelectable = isSelectable;
+            return this;
+        }
+
         public SelectionObject build() {
             SelectionObject selectionObject = new SelectionObject();
             selectionObject.id = Objects.requireNonNull(this.id);
             selectionObject.label = Objects.requireNonNull(this.label);
             selectionObject.iconURL = Objects.requireNonNull(this.iconURL);
+            selectionObject.parentId = this.parentId; // The parentId can be null (flat layout vs tree layout)
+            selectionObject.isSelectable = this.isSelectable;
             return selectionObject;
         }
     }

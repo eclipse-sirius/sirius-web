@@ -13,6 +13,7 @@
 import { gql, useSubscription } from '@apollo/client';
 import { IconOverlay, Toast } from '@eclipse-sirius/sirius-components-core';
 import { DiagramDialogComponentProps } from '@eclipse-sirius/sirius-components-diagrams';
+import CropDinIcon from '@mui/icons-material/CropDin';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -23,10 +24,12 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { makeStyles } from 'tss-react/mui';
-import CropDinIcon from '@mui/icons-material/CropDin';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
+
+import { TreeItemProps } from './SelectionDialog.types';
+
 import {
   HandleCompleteEvent,
   HandleSelectionUpdatedEvent,
@@ -40,6 +43,57 @@ import {
 } from './SelectionDialogMachine';
 import { GQLSelectionEventSubscription } from './SelectionEvent.types';
 
+const useTreeItemWidgetStyles = makeStyles((theme) => ({
+  label: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: theme.spacing(1),
+  },
+  disabled: {},
+}));
+
+const treeItemLabelStyle = (theme: Theme, isSelectable: boolean): React.CSSProperties => {
+  const treeItemLabelStyle: React.CSSProperties = {};
+  if (!isSelectable) {
+    treeItemLabelStyle.color = theme.palette.text.disabled;
+  }
+  return treeItemLabelStyle;
+};
+
+const TreeItem = ({ selectionObject, handleListItemClick, selectionObjects }: TreeItemProps) => {
+  const classes = useTreeItemWidgetStyles();
+
+  const handleClick: React.MouseEventHandler<HTMLDivElement> = () => {
+    if (selectionObject.isSelectable) {
+      handleListItemClick(selectionObject.id);
+    }
+  };
+
+  const label = (
+    <div className={classes.label} onClick={handleClick}>
+      <IconOverlay iconURL={selectionObject.iconURL} alt={selectionObject.label} />
+      <Typography style={treeItemLabelStyle(theme, selectionObject.isSelectable)}>{selectionObject.label}</Typography>
+    </div>
+  );
+
+  const childObjects = selectionObjects.filter(
+    (currentSelectionObject) => currentSelectionObject.parentId === selectionObject.id
+  );
+  return (
+    <MuiTreeItem nodeId={selectionObject.id} label={label}>
+      {childObjects.map((object) => (
+        <TreeItem
+          handleListItemClick={handleListItemClick}
+          selectionObject={object}
+          selectionObjects={selectionObjects}
+          key={object.id}
+        />
+      ))}
+    </MuiTreeItem>
+  );
+};
+
 const selectionEventSubscription = gql`
   subscription selectionEvent($input: SelectionEventInput!) {
     selectionEvent(input: $input) {
@@ -49,10 +103,14 @@ const selectionEventSubscription = gql`
           id
           targetObjectId
           message
+          displayedAsTree
+          expendedAtOpening
           objects {
             id
             label
             iconURL
+            isSelectable
+            parentId
           }
         }
       }
@@ -128,6 +186,54 @@ export const SelectionDialog = ({
     dispatch({ type: 'HANDLE_SELECTION_UPDATED', selectedObjectId } as HandleSelectionUpdatedEvent);
   };
 
+  let content: JSX.Element;
+
+  if (selection?.displayedAsTree) {
+    const expandedNodesIds = selection?.expendedAtOpening ? selection?.objects.map((object) => object.id) : [];
+    const rootSelectionObjects = selection?.objects.filter((object) => !object.parentId);
+    content = (
+      <TreeView
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpanded={expandedNodesIds}
+        defaultExpandIcon={<ChevronRightIcon />}>
+        {rootSelectionObjects.map((object) => (
+          <TreeItem
+            handleListItemClick={handleListItemClick}
+            selectionObject={object}
+            selectionObjects={selection.objects}
+            key={object.id}
+          />
+        ))}
+      </TreeView>
+    );
+  } else {
+    content = (
+      <List className={classes.root}>
+        {selection?.objects.map((selectionObject) => (
+          <ListItem
+            button
+            key={`item-${selectionObject.id}`}
+            selected={selectedObjectId === selectionObject.id}
+            onClick={() => handleListItemClick(selectionObject.id)}
+            data-testid={selectionObject.label}>
+            <ListItemIcon>
+              {selectionObject.iconURL.length > 0 ? (
+                <IconOverlay
+                  iconURL={selectionObject.iconURL}
+                  alt={selectionObject.label}
+                  customIconHeight={24}
+                  customIconWidth={24}
+                />
+              ) : (
+                <CropDinIcon style={{ fontSize: 24 }} />
+              )}
+            </ListItemIcon>
+            <ListItemText primary={selectionObject.label} />
+          </ListItem>
+        ))}
+      </List>
+    );
+  }
   return (
     <>
       <Dialog
@@ -140,30 +246,7 @@ export const SelectionDialog = ({
         <DialogTitle id="selection-dialog-title">Selection Dialog</DialogTitle>
         <DialogContent>
           <DialogContentText data-testid="selection-dialog-message">{selection?.message}</DialogContentText>
-          <List className={classes.root}>
-            {selection?.objects.map((selectionObject) => (
-              <ListItem
-                button
-                key={`item-${selectionObject.id}`}
-                selected={selectedObjectId === selectionObject.id}
-                onClick={() => handleListItemClick(selectionObject.id)}
-                data-testid={selectionObject.label}>
-                <ListItemIcon>
-                  {selectionObject.iconURL.length > 0 ? (
-                    <IconOverlay
-                      iconURL={selectionObject.iconURL}
-                      alt={selectionObject.label}
-                      customIconHeight={24}
-                      customIconWidth={24}
-                    />
-                  ) : (
-                    <CropDinIcon style={{ fontSize: 24 }} />
-                  )}
-                </ListItemIcon>
-                <ListItemText primary={selectionObject.label} />
-              </ListItem>
-            ))}
-          </List>
+          {content}
         </DialogContent>
         <DialogActions>
           <Button

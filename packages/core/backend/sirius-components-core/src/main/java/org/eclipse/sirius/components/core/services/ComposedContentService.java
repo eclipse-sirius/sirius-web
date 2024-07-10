@@ -12,15 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.core.services;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IContentServiceDelegate;
 import org.eclipse.sirius.components.core.api.IDefaultContentService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
-
-import java.util.List;
-import java.util.Objects;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of {@link IIdentityService} which delegates to {@link IContentServiceDelegate} or fallback to
@@ -49,5 +48,16 @@ public class ComposedContentService implements IContentService {
             return optionalDelegate.get().getContents(object);
         }
         return this.defaultContentService.getContents(object);
+    }
+
+    @Override
+    public Object getParent(Object object) {
+        var optionalDelegate = this.contentServiceDelegate.stream()
+                .filter(delegate -> delegate.canHandle(object))
+                .findFirst();
+        if (optionalDelegate.isPresent()) {
+            return optionalDelegate.get().getParent(object);
+        }
+        return this.defaultContentService.getParent(object);
     }
 }

@@ -61,5 +61,25 @@ public class SelectionDialogDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for DisplayedAsTree.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder displayedAsTree(java.lang.Boolean value) {
+        this.getSelectionDialogDescription().setDisplayedAsTree(value);
+        return this;
+    }
+
+    /**
+     * Setter for ExpandedAtOpening.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder expandedAtOpening(java.lang.Boolean value) {
+        this.getSelectionDialogDescription().setExpandedAtOpening(value);
+        return this;
+    }
+
 }
 

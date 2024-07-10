@@ -24,6 +24,10 @@ package org.eclipse.sirius.components.view.diagram;
  * <em>Selection Candidates Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionMessage <em>Selection
  * Message</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isDisplayedAsTree <em>Displayed As
+ * Tree</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isExpandedAtOpening <em>Expanded At
+ * Opening</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription()
@@ -78,5 +82,53 @@ public interface SelectionDialogDescription extends DialogDescription {
      * @generated
      */
     void setSelectionMessage(String value);
+
+    /**
+     * Returns the value of the '<em><b>Displayed As Tree</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Displayed As Tree</em>' attribute.
+     * @see #setDisplayedAsTree(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_DisplayedAsTree()
+     * @model
+     * @generated
+     */
+    boolean isDisplayedAsTree();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isDisplayedAsTree <em>Displayed As
+     * Tree</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Displayed As Tree</em>' attribute.
+     * @see #isDisplayedAsTree()
+     * @generated
+     */
+    void setDisplayedAsTree(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Expanded At Opening</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Expanded At Opening</em>' attribute.
+     * @see #setExpandedAtOpening(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_ExpandedAtOpening()
+     * @model
+     * @generated
+     */
+    boolean isExpandedAtOpening();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isExpandedAtOpening <em>Expanded At
+     * Opening</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Expanded At Opening</em>' attribute.
+     * @see #isExpandedAtOpening()
+     * @generated
+     */
+    void setExpandedAtOpening(boolean value);
 
 } // SelectionDialogDescription

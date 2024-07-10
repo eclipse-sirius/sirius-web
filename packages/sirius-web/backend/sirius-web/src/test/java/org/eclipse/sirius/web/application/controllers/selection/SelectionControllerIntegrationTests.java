@@ -74,10 +74,14 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 __typename
                 ... on SelectionRefreshedEventPayload {
                   selection {
+                    displayedAsTree
+                    expendedAtOpening
                     objects {
                       id
                       label
                       iconURL
+                      parentId
+                      isSelectable
                     }
                   }
                 }
@@ -125,6 +129,46 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 .map(SelectionRefreshedEventPayload::selection)
                 .ifPresentOrElse(selection -> {
                     assertThat(selection.getObjects()).hasSizeGreaterThanOrEqualTo(5);
+                }, () -> fail("Missing selection"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(selectionContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a semantic object, when we subscribe to its selection events, then the selection is sent as tree")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSemanticObjectWhenWeSubscribeToItsSelectionEventsThenTheSelectionIsSentAsATree() {
+        var input = new SelectionEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_AS_TREE_ID, PapayaIdentifiers.PROJECT_OBJECT.toString());
+        var flux = this.graphQLRequestor.subscribe(GET_SELECTION_EVENT_SUBSCRIPTION, input)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(SelectionRefreshedEventPayload.class::isInstance)
+                .map(SelectionRefreshedEventPayload.class::cast);
+
+        Consumer<SelectionRefreshedEventPayload> selectionContentConsumer = payload -> Optional.of(payload)
+                .map(SelectionRefreshedEventPayload::selection)
+                .ifPresentOrElse(selection -> {
+                    assertThat(selection.getObjects()).hasSizeGreaterThanOrEqualTo(5);
+                    assertThat(selection.getObjects()).anyMatch(selectionObject -> {
+                        return selectionObject.getLabel().equals("Component sirius-web-starter") && selectionObject.isIsSelectable()
+                                && selectionObject.getParentId().equals(PapayaIdentifiers.PROJECT_OBJECT.toString());
+                    });
+                    assertThat(selection.getObjects()).anyMatch(selectionObject -> {
+                        return selectionObject.getLabel().equals("Component sirius-web-application") && selectionObject.isIsSelectable()
+                                && selectionObject.getParentId().equals(PapayaIdentifiers.PROJECT_OBJECT.toString());
+                    });
+                    assertThat(selection.getObjects()).anyMatch(selectionObject -> {
+                        return selectionObject.getLabel().equals("Project") && !selectionObject.isIsSelectable()
+                                && selectionObject.getParentId().equals(PapayaIdentifiers.PAPAYA_SIRIUS_WEB_ARCHITECTURE_DOCUMENT.toString());
+                    });
+                    assertThat(selection.getObjects()).anyMatch(selectionObject -> {
+                        return selectionObject.getLabel().equals("Sirius Web Architecture") && !selectionObject.isIsSelectable() && selectionObject.getParentId() == null;
+                    });
                 }, () -> fail("Missing selection"));
 
         StepVerifier.create(flux)

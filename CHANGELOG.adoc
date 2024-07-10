@@ -51,6 +51,12 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 * The `String` attribute `org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by the attribute `variables` of type `List<ToolVariable>`
 - https://github.com/eclipse-sirius/sirius-web/issues/3437[#3437] [core] Migrate frontend to MUI 5, if you contributed React componenent that use MUI, you should upgrade them to use MUI 5.
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3763[#3695] [selection] Selection Dialog: Make it possible to display semantic candidates in a tree viewer
+
+ * `org.eclipse.sirius.components.core.api.IContentService#getParent(Object object)` has been added to allow retrieving the parent element of an object.
+ * `org.eclipse.sirius.components.core.api.IObjectService#getParent(Object object)` has been added to allow retrieving the parent element of an object.
+ * `org.eclipse.sirius.components.view.emf.ViewConverter` requires a new service of type `IURLParser`.
+
 === Dependency update
 
 - [releng] Switch to `maven-checkstyle-plugin` 3.4.0
@@ -75,6 +81,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3758[#3578] [form] Store property and form payload in a context
 - https://github.com/eclipse-sirius/sirius-web/issues/3821[#3821] [sirius-web] Allow to filter resources in `RewriteProxiesEventHandler`.
 Introduce new `IRewriteProxiesResourceFilter` interface, to register resource filter for `RewriteProxiesEventHandler`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3763[#3695] [selection] Selection Dialog: Make it possible to display semantic candidates in a tree viewer
 
 === Improvements
 
