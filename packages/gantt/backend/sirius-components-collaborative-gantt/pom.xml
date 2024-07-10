@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative-gantt</artifactId>
-	<version>2024.5.5</version>
+	<version>2024.5.6</version>
 	<name>sirius-components-collaborative-gantt</name>
 	<description>Sirius Components Collaborative gantt</description>
 
@@ -51,23 +51,23 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-gantt</artifactId>
-			<version>2024.5.5</version>
+			<version>2024.5.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>2024.5.5</version>
+			<version>2024.5.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.5.5</version>
+			<version>2024.5.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2024.5.5</version>
+			<version>2024.5.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
