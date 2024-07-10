@@ -1,0 +1,33 @@
+= [ADR-152] Allow only coherents resizes on diagram
+
+== Context
+
+When resizing a node on a diagram it's possible for the user to set the dimension too low, this results in the end of the user interaction visually different than the actual final visual. 
+
+Also, there are issues on the layout algorithm that happen when the node is resized below his minimal size.
+
+For example a list nodes that contains 2 `iconLabel` nodes with 2 different `overflow strategy` : `None and Wrap`. Here the minimum size of the parent node cannot be inferior to the size of the sub node with a label strategy of None.
+
+By no allowing the user to interact with the nodes in a way that would cause an invalid layout (even if we try to ajust it to a correct one after), we can improve the user experience.
+
+It should also be easier to avoid invalids interactions with the diagram in the first place rather than correct them during the layout phase afterwards.
+
+== Decision
+
+We will use the props `minWidth` and `minHeigth` that are available on ReactFlow component's `NodeResizer` and `NodeResizeControl`.
+
+To get the correct value of theses properties we need to calculate them during the layout. As a remeinder, during the `layout` we render a `hidden div` and put a div per labels on the diagram inside. We then, calcultate the `BoundingClientRect` of theses div to have the `minimum size of each label`. For a label with an overflow strategy of None, we just have to add some constant like `labelVerticalPadding` to get the minimum size of the node containing the label.
+
+Doing this calcultation elsewhere (like during the conversion of a diagram) would add more complexity as we would have to redo most of the logic that is already done during the layout. Also since the temporaly div used for the calcultation is gone, we would have to wait for a first render of the nodes and then with a useffect redo some of the calculations and set the minWidth and minHeigth to the nodes, that would cause an additional rerender.
+
+To set the calculated values that we get during the layout of the diagram, we will send these when sending the `NodeLayoutData` to the backend and retreive them during the conversion of the diagram along with the whole diagram payload.
+
+== Status
+
+Work in progress
+
+== Consequences
+
+The user experience will change.
+
+We increase the size of the datas that are exchanged between the frontend and the backend.
