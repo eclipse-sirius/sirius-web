@@ -24,7 +24,8 @@ import org.eclipse.sirius.components.task.Project;
 import org.eclipse.sirius.components.task.Task;
 import org.eclipse.sirius.components.task.TaskFactory;
 import org.eclipse.sirius.components.task.TaskTag;
-import org.eclipse.sirius.components.task.starter.configuration.TaskExampleBuilder;
+import org.eclipse.sirius.components.task.starter.services.TaskExampleBuilder;
+import org.eclipse.sirius.components.task.starter.services.view.TaskJavaService;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,13 +33,13 @@ import org.junit.jupiter.api.Test;
  *
  * @author frouene
  */
-class TaskJavaServiceTests {
+public class TaskJavaServiceTests {
 
     private static final String NEW_NAME = "newName";
     private static final String NEW_DESCRIPTION = "newDescription";
 
     @Test
-    void editTask() {
+    public void editTask() {
         AbstractTask task = TaskFactory.eINSTANCE.createTask();
         var service = new TaskJavaService(new IFeedbackMessageService.NoOp());
         service.editTask(task, NEW_NAME, NEW_DESCRIPTION, Instant.ofEpochSecond(1704067200), Instant.ofEpochSecond(1704070800), 10);
@@ -50,7 +51,7 @@ class TaskJavaServiceTests {
     }
 
     @Test
-    void computeTaskDurationDays() {
+    public void computeTaskDurationDays() {
         Task task = TaskFactory.eINSTANCE.createTask();
         task.setStartTime(Instant.ofEpochSecond(1704067200));
         task.setEndTime(Instant.ofEpochSecond(1704157260));
@@ -61,7 +62,7 @@ class TaskJavaServiceTests {
     }
 
     @Test
-    void editCard() {
+    public void editCard() {
         AbstractTask card = TaskFactory.eINSTANCE.createTask();
         var service = new TaskJavaService(new IFeedbackMessageService.NoOp());
         service.editCard(card, NEW_NAME, NEW_DESCRIPTION, null);
@@ -70,7 +71,7 @@ class TaskJavaServiceTests {
     }
 
     @Test
-    void createCard() {
+    public void createCard() {
         TaskTag tag = TaskFactory.eINSTANCE.createTaskTag();
         Project project = TaskFactory.eINSTANCE.createProject();
         project.getOwnedTags().add(tag);
@@ -83,7 +84,7 @@ class TaskJavaServiceTests {
     }
 
     @Test
-    void createTask() {
+    public void createTask() {
         Task task11 = TaskFactory.eINSTANCE.createTask();
         task11.setStartTime(Instant.ofEpochSecond(1704067200));
         task11.setEndTime(Instant.ofEpochSecond(1704157260));
@@ -113,7 +114,7 @@ class TaskJavaServiceTests {
 
 
     @Test
-    void checkTags() {
+    public void checkTags() {
         Company company = new TaskExampleBuilder().getContent();
         Project projectDaily = company.getOwnedProjects().get(1);
         TaskTag tagDailyMonday = projectDaily.getOwnedTags().get(0);

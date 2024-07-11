@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.tests.graphql;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.collaborative.diagrams.dto.PinDiagramElementInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
@@ -36,7 +38,7 @@ public class PinDiagramElementMutationRunner implements IMutationRunner<PinDiagr
     private final IGraphQLRequestor graphQLRequestor;
 
     public PinDiagramElementMutationRunner(IGraphQLRequestor graphQLRequestor) {
-        this.graphQLRequestor = graphQLRequestor;
+        this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override

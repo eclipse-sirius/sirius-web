@@ -1,3 +1,0 @@
-extend type Subscription {
-  diagramFilterEvent(input : PropertiesEventInput!): PropertiesEventPayload!
-}

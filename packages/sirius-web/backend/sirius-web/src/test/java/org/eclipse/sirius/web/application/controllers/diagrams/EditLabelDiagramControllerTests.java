@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,7 +29,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshed
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeEditLabelOnDiagramElementToolMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InitialDirectEditElementLabelQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -36,6 +38,7 @@ import org.eclipse.sirius.web.services.diagrams.EditableLabelDiagramDescriptionP
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -62,7 +65,10 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
     private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
-    private InvokeEditLabelOnDiagramElementToolMutationRunner invokeDiagramElementToolMutationRunner;
+    private EditLabelMutationRunner editLabelMutationRunner;
+
+    @Autowired
+    private InitialDirectEditElementLabelQueryRunner initialDirectEditElementLabelQueryRunner;
 
     @Autowired
     private EditableLabelDiagramDescriptionProvider editableLabelDiagramDescriptionProvider;
@@ -84,9 +90,48 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given a diagram with a node using a computed label, when its initial label is requested, then the raw label is returned")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenDiagramWithLabelEditableNodeWhenLabelEditedThenLabelUpdated() {
+    public void givenDiagramWithNodeUsingComputedLabelWhenItsInitialLabelIsRequestedThenTheRawLabelIsReturned() {
+        var flux = this.givenSubscriptionToLabelEditableDiagramDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var labelId = new AtomicReference<String>();
+
+        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+
+                    var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain-suffix").getNode();
+                    labelId.set(node.getInsideLabel().getId());
+                }, () -> fail("Missing diagram"));
+
+        Runnable requestInitialLabel = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    "diagramId", diagramId.get(),
+                    "labelId", labelId.get()
+            );
+            var initialDirectEditElementLabelResult = this.initialDirectEditElementLabelQueryRunner.run(variables);
+
+            String initialDirectEditElementLabel = JsonPath.read(initialDirectEditElementLabelResult, "$.data.viewer.editingContext.representation.description.initialDirectEditElementLabel");
+            assertThat(initialDirectEditElementLabel).isEqualTo("sirius-web-domain");
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(requestInitialLabel)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a diagram with a node, when its label is edited, then the label is updated")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenDiagramWithNodeWhenItsLabelIsEditedThenTheLabelIsUpdated() {
         var flux = this.givenSubscriptionToLabelEditableDiagramDiagram();
 
         var diagramId = new AtomicReference<String>();
@@ -97,14 +142,14 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
-                    var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+                    var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain-suffix").getNode();
                     nodeId.set(node.getId());
                     labelId.set(node.getInsideLabel().getId());
                 }, () -> fail("Missing diagram"));
 
         Runnable editLabel = () -> {
             var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), labelId.get(), "new label");
-            var invokeSingleClickOnDiagramElementToolResult = this.invokeDiagramElementToolMutationRunner.run(input);
+            var invokeSingleClickOnDiagramElementToolResult = this.editLabelMutationRunner.run(input);
 
             String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.editLabel.__typename");
             assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
@@ -115,7 +160,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
                 .filter(diagram -> {
                     return diagram.getNodes().stream()
                         .filter(node -> node.getId().equals(nodeId.get()))
-                        .map(node -> node.getInsideLabel().getText().equals("new label"))
+                        .map(node -> node.getInsideLabel().getText().equals("new label-suffix"))
                         .findFirst()
                         .orElse(false);
                 })

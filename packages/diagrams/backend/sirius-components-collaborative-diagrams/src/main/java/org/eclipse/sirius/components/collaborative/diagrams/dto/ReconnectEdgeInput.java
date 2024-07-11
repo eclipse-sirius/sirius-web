@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,12 @@ import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
  *
  * @author gcoutable
  */
-public record ReconnectEdgeInput(UUID id, String editingContextId, String representationId, String edgeId, String newEdgeEndId, ReconnectEdgeKind reconnectEdgeKind, Position newEdgeEndPosition)
-        implements IDiagramInput {
+public record ReconnectEdgeInput(
+        UUID id,
+        String editingContextId,
+        String representationId,
+        String edgeId,
+        String newEdgeEndId,
+        ReconnectEdgeKind reconnectEdgeKind,
+        Position newEdgeEndPosition) implements IDiagramInput {
 }

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.tests.graphql;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
@@ -61,7 +63,7 @@ public class InvokeSingleClickOnDiagramElementToolMutationRunner implements IMut
     private final IGraphQLRequestor graphQLRequestor;
 
     public InvokeSingleClickOnDiagramElementToolMutationRunner(IGraphQLRequestor graphQLRequestor) {
-        this.graphQLRequestor = graphQLRequestor;
+        this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override

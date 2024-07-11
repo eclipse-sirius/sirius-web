@@ -36,7 +36,7 @@ import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescri
 import org.springframework.stereotype.Service;
 
 /**
- * Used to create documents form a stereotype.
+ * Used to create documents from a stereotype.
  *
  * @author sbegaudeau
  */

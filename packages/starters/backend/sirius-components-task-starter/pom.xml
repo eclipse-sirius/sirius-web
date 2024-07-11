@@ -57,48 +57,11 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-autoconfigure</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.common</artifactId>
-			<version>2.21.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.ecore</artifactId>
-			<version>2.23.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.edit</artifactId>
-			<version>2.16.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.ecore.edit</artifactId>
-			<version>2.13.0</version>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-deck</artifactId>
+			<artifactId>sirius-web-application</artifactId>
 			<version>2024.7.0</version>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-emf</artifactId>
-			<version>2024.7.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-gantt</artifactId>
-			<version>2024.7.0</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-task</artifactId>
@@ -107,26 +70,6 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-task-edit</artifactId>
-			<version>2024.7.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-builder</artifactId>
-			<version>2024.7.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-emf</artifactId>
-			<version>2024.7.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-services-api</artifactId>
-			<version>2024.7.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-persistence</artifactId>
 			<version>2024.7.0</version>
 		</dependency>
 		<dependency>
