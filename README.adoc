@@ -24,10 +24,10 @@ If you want a quick overview of how Sirius Web looks and feels like without buil
 
 Then, download the latest pre-built JAR:
 
-. Go to the link:../../packages?tab=packages&q=+org.eclipse.sirius.sirius-web-sample-application[packages tab of the github project] and look for `sirius-web-sample-application`.
+. Go to the link:../../packages?tab=packages&q=+org.eclipse.sirius.sirius-web[packages tab of the github project] and look for `sirius-web`.
 . Download the latest jar available
 
-This is a single "fat JAR" named `sirius-web-sample-application.jar` which contains the complete sample application with all its dependencies.
+This is a single "fat JAR" named `sirius-web.jar` which contains the complete sample application with all its dependencies.
 
 To actually run the application:
 
@@ -49,11 +49,10 @@ If you do not have Docker or want to use an existing PostgreSQL installation, ad
 +
 [source,sh]
 ----
-java -jar sirius-web-sample-application.jar \
+java -jar sirius-web.jar \
           --spring.datasource.url=jdbc:postgresql://localhost:5433/sirius-web-db \
           --spring.datasource.username=dbuser \
-          --spring.datasource.password=dbpwd \
-          --spring.liquibase.change-log=classpath:db/changelog/sirius-web.db.changelog.xml
+          --spring.datasource.password=dbpwd
 ----
 +
 WARNING: If you encounter an error similar to `org.postgresql.util.PSQLException: FATAL: authentification`, check if your 5433 port is already used by another application. If so, change the command lines for docker and the application java launcher with 5434 or any other free port.
@@ -190,7 +189,7 @@ If Docker is not present, you can still build the backend by skipping the tests 
 You could publish those to your maven or npm repository to consume them in other applications.
 We are already publishing those components in the NPM and maven repositories of our Github organization.
 +
-Using these instructions, we can find a Spring Boot "fat JAR" in `packages/sirius-web/backend/sirius-web-sample-application/target/sirius-web-sample-application-{YEAR.MONTH.COUNT-SNAPSHOT}.jar`.
+Using these instructions, we can find a Spring Boot "fat JAR" in `packages/sirius-web/backend/sirius-web/target/sirius-web-{YEAR.MONTH.COUNT-SNAPSHOT}.jar`.
 Refer to the instructions in the "Quick Start" section above to launch it.
 
 == License

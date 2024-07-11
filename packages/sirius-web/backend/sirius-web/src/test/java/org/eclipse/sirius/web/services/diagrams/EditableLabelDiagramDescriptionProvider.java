@@ -76,18 +76,18 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
 
     private View createView() {
         ViewBuilder viewBuilder = new ViewBuilder();
-        View visibilityView = viewBuilder.build();
-        visibilityView.getDescriptions().add(this.createDiagramDescription());
-        visibilityView.eAllContents().forEachRemaining(eObject -> {
+        View directEditLabelView = viewBuilder.build();
+        directEditLabelView.getDescriptions().add(this.createDiagramDescription());
+        directEditLabelView.eAllContents().forEachRemaining(eObject -> {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
 
         String resourcePath = UUID.nameUUIDFromBytes("EditableLabelDiagramDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
         resource.eAdapters().add(new ResourceMetadataAdapter("EditableLabelDiagramDescription"));
-        resource.getContents().add(visibilityView);
+        resource.getContents().add(directEditLabelView);
 
-        return visibilityView;
+        return directEditLabelView;
     }
 
     private DiagramDescription createDiagramDescription() {
@@ -95,13 +95,14 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
                 .build();
 
         var insideLabel = new InsideLabelDescriptionBuilder()
-                .labelExpression("aql:self.name")
+                .labelExpression("aql:self.name + '-suffix'")
                 .style(DiagramFactory.eINSTANCE.createInsideLabelStyle())
                 .position(InsideLabelPosition.TOP_CENTER)
                 .build();
 
         this.labelEditTool = new LabelEditToolBuilder()
                 .name("Edit Label")
+                .initialDirectEditLabelExpression("aql:self.name")
                 .body(
                         new SetValueBuilder()
                             .featureName("name")

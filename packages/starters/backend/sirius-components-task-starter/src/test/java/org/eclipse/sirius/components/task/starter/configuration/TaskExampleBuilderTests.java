@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.sirius.components.task.Company;
 import org.eclipse.sirius.components.task.TaskPackage;
+import org.eclipse.sirius.components.task.starter.services.TaskExampleBuilder;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -24,7 +25,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author frouene
  */
-class TaskExampleBuilderTests {
+public class TaskExampleBuilderTests {
 
     @Test
     public void testExampleContent() {

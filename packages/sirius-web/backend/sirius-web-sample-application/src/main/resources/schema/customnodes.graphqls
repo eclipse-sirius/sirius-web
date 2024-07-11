@@ -1,8 +1,0 @@
-extend union INodeStyle = EllipseNodeStyle
-
-type EllipseNodeStyle {
-  borderColor: String!
-  borderSize: Int!
-  borderStyle: LineStyle!
-  background: String!
-}

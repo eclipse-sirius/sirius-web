@@ -71,7 +71,10 @@ INSERT INTO document (
                "id":"13e0b82e-3d24-403a-bfc1-4bda81846e55",
                "eClass":"papaya:Component",
                "data":{
-                 "name":"sirius-web-application"
+                 "name":"sirius-web-application",
+                 "dependencies":[
+                   "//@components.0"
+                 ]
                }
              },
              {

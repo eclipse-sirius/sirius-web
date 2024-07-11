@@ -32,21 +32,15 @@
 	</distributionManagement>
 
 	<modules>
-		<module>sirius-web-frontend</module>
-		<module>sirius-web-persistence</module>
-		<module>sirius-web-services-api</module>
-		<module>sirius-web-services</module>
-		<module>sirius-web-graphql</module>
-		<module>sirius-web-spring</module>
-		<module>sirius-web-sample-application</module>
-
-		<module>sirius-web-papaya</module>
-
 		<module>sirius-web-domain</module>
 		<module>sirius-web-application</module>
 		<module>sirius-web-infrastructure</module>
 		<module>sirius-web-starter</module>
+
+		<module>sirius-web-frontend</module>
+		<module>sirius-web-papaya</module>
 		<module>sirius-web</module>
+
 		<module>sirius-web-tests</module>
 	</modules>
 </project>

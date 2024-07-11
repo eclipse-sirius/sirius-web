@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.task.starter.configuration.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.eclipse.sirius.components.task.starter.services.view.ViewGanttDescriptionBuilder;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author frouene
  */
-class ViewGanttDescriptionBuilderTests {
+public class ViewGanttDescriptionBuilderTests {
 
     @Test
     public void testRepresentationDescriptions() {
