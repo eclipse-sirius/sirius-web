@@ -10,10 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useComponent } from '@eclipse-sirius/sirius-components-core';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { Footer } from '../../footer/Footer';
+import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { CreateProjectArea } from './create-projects-area/CreateProjectArea';
 import { ListProjectsArea } from './list-projects-area/ListProjectsArea';
@@ -36,6 +37,8 @@ const useProjectsViewStyles = makeStyles((theme) => ({
 
 export const ProjectBrowser = () => {
   const classes = useProjectsViewStyles();
+  const { Component: Footer } = useComponent(footerExtensionPoint);
+
   return (
     <div className={classes.projectsView}>
       <NavigationBar />

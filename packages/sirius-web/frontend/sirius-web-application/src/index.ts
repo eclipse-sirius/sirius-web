@@ -15,6 +15,8 @@ export { SiriusWebApplication } from './application/SiriusWebApplication';
 export type { SiriusWebApplicationProps } from './application/SiriusWebApplication.types';
 export { DiagramRepresentationConfiguration } from './diagrams/DiagramRepresentationConfiguration';
 export type { NodeTypeRegistry } from './diagrams/DiagramRepresentationConfiguration.types';
+export type { FooterProps } from './footer/Footer.types';
+export { footerExtensionPoint } from './footer/FooterExtensionPoints';
 export { DefaultExtensionRegistryMergeStrategy } from './extension/DefaultExtensionRegistryMergeStrategy';
 export {
   type ApolloClientOptionsConfigurer,

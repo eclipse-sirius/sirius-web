@@ -30,8 +30,9 @@
 
 === Improvements
 
-- https://github.com/eclipse-sirius/sirius-web/issues/3744[#3744] [diagram] Add support for helper lines during multi selection move.
-- https://github.com/eclipse-sirius/sirius-web/issues/3770[#3770] [diagram] Enable helper lines by default.
+- https://github.com/eclipse-sirius/sirius-web/issues/3744[#3744] [diagram] Add support for helper lines during multi selection move
+- https://github.com/eclipse-sirius/sirius-web/issues/3770[#3770] [diagram] Enable helper lines by default
+- https://github.com/eclipse-sirius/sirius-web/issues/3756[#3756] [sirius-web] Add an extension point to contribute custom footer
 
 
 == v2024.7.0
