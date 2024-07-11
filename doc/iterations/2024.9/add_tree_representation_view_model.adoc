@@ -1,0 +1,46 @@
+= Add tree representation in the view DSL
+
+== Problem
+
+Sirius Web doesn't provide a way for specifiers to specify a tree representation using the view DSL.
+
+== Key Result
+
+* Specifiers must be able to create a new tree representation to describe how elements should be displayed and how they are organized in a tree structure.
+* Tree elements should be able to represent:
+** EMF based semantic elements
+** Other kind of elements (e.g. EMF Resources, Sirius Web representations or any kind of Java based objects)
+
+== Solution
+
+Define a Tree representation that will manage _all elements_ of the tree using the following specified AQL expressions:
+
+* a way to compute a *label*: `labelExpression` (`self` is the object associated to a tree element),
+* a way to compute an *icon* on both side of the label with possibly *overlays*: `beginIconExpression` and `endIconExpression` (`self` is a object associated to the tree element),
+* a way to compute *top level objects* of the tree representation: `elementsExpression` (using `editingContext` for the explorer or providing `self` in case the tree representation is created on a specific semantic element)
+* a way to compute an *id* : `idExpression` (`self` is the object associated to a tree element),
+* a way to compute an *object* associated to a tree element: `objectExpression` (`id` is the identifier of the element computed by the `idExpression`)
+* a way to compute the direct descendant *children*: `childrenExpression` (`self` is the object associated to a tree element),
+* a way to compute the *parent* object: `parentExpression` (`self` is the object associated to a tree element)
+
+The specifier is in charge of providing services for the expressions above that can handle all tree elements.
+
+== Scenario
+
+Using such definition, it should be possible for a specifier to:
+
+- Create a persisted tree representation like a regular representation on a semantic element
+- Contribute a definition of the explorer using a tree description based on the view DSL
+- Create a tree widget in a form using the tree description
+
+=== Cutting backs
+
+Nothing identified for now
+
+== Rabbit holes
+
+Nothing identified for now
+
+== No-gos
+
+Nothing identified for now
