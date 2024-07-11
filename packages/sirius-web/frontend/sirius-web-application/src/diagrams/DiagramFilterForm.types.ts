@@ -13,5 +13,6 @@
 
 export interface DiagramFilterFormProps {
   editingContextId: string;
+  diagramId: string;
   readOnly: boolean;
 }

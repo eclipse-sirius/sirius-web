@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
+import org.eclipse.sirius.web.application.diagram.dto.DiagramFilterEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
@@ -56,7 +56,7 @@ public class SubscriptionDiagramFilterEventDataFetcher implements IDataFetcherWi
     @Override
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
-        var input = this.objectMapper.convertValue(argument, PropertiesEventInput.class);
+        var input = this.objectMapper.convertValue(argument, DiagramFilterEventInput.class);
         var diagramFilterConfiguration = new DiagramFilterConfiguration(input.id().toString(), input.objectIds());
 
         Map<String, Object> localContext = new HashMap<>();

@@ -19,8 +19,8 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
-import org.eclipse.sirius.components.forms.tests.graphql.PropertiesEventSubscriptionRunner;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -50,7 +50,7 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private PropertiesEventSubscriptionRunner propertiesEventSubscriptionRunner;
+    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -62,8 +62,8 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSemanticObjectWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
-        var input = new PropertiesEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
-        var flux = this.propertiesEventSubscriptionRunner.run(input);
+        var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
+        var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)
                 .filter(DataFetcherResult.class::isInstance)

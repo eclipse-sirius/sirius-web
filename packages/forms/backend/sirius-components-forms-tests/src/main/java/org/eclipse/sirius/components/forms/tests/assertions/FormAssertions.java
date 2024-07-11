@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.Link;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.Page;
+import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.Slider;
@@ -48,6 +49,10 @@ public class FormAssertions extends Assertions {
 
     public static CheckboxAssert assertThat(Checkbox checkbox) {
         return new CheckboxAssert(checkbox);
+    }
+
+    public static RadioAssert assertThat(Radio radio) {
+        return new RadioAssert(radio);
     }
 
     public static LinkAssert assertThat(Link link) {

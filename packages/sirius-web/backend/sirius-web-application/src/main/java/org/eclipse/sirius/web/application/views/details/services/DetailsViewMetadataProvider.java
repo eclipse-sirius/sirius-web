@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.application.views.details.services;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.forms.PropertiesEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.forms.api.PropertiesConfiguration;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;

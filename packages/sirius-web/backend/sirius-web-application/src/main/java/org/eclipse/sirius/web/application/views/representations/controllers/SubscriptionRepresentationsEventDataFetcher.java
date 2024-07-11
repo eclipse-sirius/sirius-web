@@ -10,33 +10,34 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.forms.graphql.datafetchers.subscription;
+package org.eclipse.sirius.web.application.views.representations.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.forms.api.PropertiesConfiguration;
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
+import org.eclipse.sirius.components.collaborative.forms.api.RepresentationsConfiguration;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
+import org.eclipse.sirius.web.application.views.representations.dto.RepresentationsEventInput;
 import org.reactivestreams.Publisher;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to send the refreshed properties to a subscription.
+ * The data fetcher used to send the content of the representations view subscription.
  *
- * @author hmarchadour
+ * @author gcoutable
  */
-@SubscriptionDataFetcher(type = "Subscription", field = "propertiesEvent")
-public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
+@SubscriptionDataFetcher(type = "Subscription", field = "representationsEvent")
+public class SubscriptionRepresentationsEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
 
     private static final String INPUT_ARGUMENT = "input";
 
@@ -46,7 +47,7 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
 
     private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
-    public SubscriptionPropertiesEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
+    public SubscriptionRepresentationsEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
         this.eventProcessorSubscriptionProvider = Objects.requireNonNull(eventProcessorSubscriptionProvider);
@@ -55,14 +56,14 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
     @Override
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
-        var input = this.objectMapper.convertValue(argument, PropertiesEventInput.class);
-        var propertiesConfiguration = new PropertiesConfiguration(input.objectIds());
+        var input = this.objectMapper.convertValue(argument, RepresentationsEventInput.class);
+        var representationsConfiguration = new RepresentationsConfiguration(input.objectIds());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
-        localContext.put(LocalContextConstants.REPRESENTATION_ID, propertiesConfiguration.getId());
+        localContext.put(LocalContextConstants.REPRESENTATION_ID, representationsConfiguration.getId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), propertiesConfiguration, input), input)
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), representationsConfiguration, input), input)
                 .map(payload ->  DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)

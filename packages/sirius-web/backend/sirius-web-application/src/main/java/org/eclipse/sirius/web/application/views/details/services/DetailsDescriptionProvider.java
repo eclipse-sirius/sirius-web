@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.application.views.details.services;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.forms.PropertiesEventProcessorFactory;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormDescriptionProvider;

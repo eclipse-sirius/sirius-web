@@ -22,12 +22,7 @@ import {
 import { DeckRepresentation } from '@eclipse-sirius/sirius-components-deck';
 import { DiagramRepresentation, diagramPanelActionExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
-import {
-  DetailsView,
-  FormRepresentation,
-  RelatedElementsView,
-  RepresentationsView,
-} from '@eclipse-sirius/sirius-components-forms';
+import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { ExplorerView } from '@eclipse-sirius/sirius-components-trees';
@@ -39,6 +34,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import WarningIcon from '@material-ui/icons/Warning';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { OnboardArea } from '../onboarding/OnboardArea';
+import { DetailsView } from '../views/edit-project/workbench-views/DetailsView';
+import { RelatedElementsView } from '../views/edit-project/workbench-views/RelatedElementsView';
+import { RepresentationsView } from '../views/edit-project/workbench-views/RepresentationsView';
 import { createProjectAreaCardExtensionPoint } from '../views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
 import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.forms;
+package org.eclipse.sirius.web.application.views.relatedelements.services;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,11 +23,12 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPol
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
+import org.eclipse.sirius.components.collaborative.forms.FormEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
-import org.eclipse.sirius.components.collaborative.forms.api.IRepresentationsDescriptionProvider;
-import org.eclipse.sirius.components.collaborative.forms.api.RepresentationsConfiguration;
+import org.eclipse.sirius.components.collaborative.forms.api.IRelatedElementsDescriptionProvider;
+import org.eclipse.sirius.components.collaborative.forms.api.RelatedElementsConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -37,14 +38,14 @@ import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to create the representations event processors.
+ * Used to create the related elements event processors.
  *
- * @author gcoutable
+ * @author pcdavid
  */
 @Service
-public class RepresentationsEventProcessorFactory implements IRepresentationEventProcessorFactory {
+public class RelatedElementsEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
-    private final IRepresentationsDescriptionProvider representationsDescriptionProvider;
+    private final IRelatedElementsDescriptionProvider relatedElementsDescriptionProvider;
 
     private final IObjectService objectService;
 
@@ -60,34 +61,35 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
 
     private final IFormPostProcessor formPostProcessor;
 
-    public RepresentationsEventProcessorFactory(IRepresentationsDescriptionProvider representationsDescriptionProvider, ISubscriptionManagerFactory subscriptionManagerFactory,
-            RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration) {
-        this.representationsDescriptionProvider = Objects.requireNonNull(representationsDescriptionProvider);
+    public RelatedElementsEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRelatedElementsDescriptionProvider relatedElementsDescriptionProvider,
+            List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration) {
+        this.relatedElementsDescriptionProvider = Objects.requireNonNull(relatedElementsDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
-        this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+        this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
     }
 
     @Override
     public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof RepresentationsConfiguration;
+        return configuration instanceof RelatedElementsConfiguration;
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
-        if (configuration instanceof RepresentationsConfiguration representationsConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration,
+            IEditingContext editingContext) {
+        if (configuration instanceof RelatedElementsConfiguration relatedElementsConfiguration) {
 
-            var objects = representationsConfiguration.getObjectIds().stream()
+            var objects = relatedElementsConfiguration.getObjectIds().stream()
                     .map(objectId -> this.objectService.getObject(editingContext, objectId))
                     .flatMap(Optional::stream)
                     .toList();
             if (!objects.isEmpty()) {
-                FormDescription formDescription = this.representationsDescriptionProvider.getRepresentationsDescription();
-                FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationsConfiguration.getId())
+                FormDescription formDescription = this.relatedElementsDescriptionProvider.getFormDescription();
+                FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(relatedElementsConfiguration.getId())
                         .editingContext(editingContext)
                         .formDescription(formDescription)
                         .object(objects.get(0))
@@ -106,4 +108,5 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
         }
         return Optional.empty();
     }
+
 }

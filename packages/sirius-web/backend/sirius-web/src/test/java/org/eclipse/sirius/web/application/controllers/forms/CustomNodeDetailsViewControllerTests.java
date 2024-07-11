@@ -27,13 +27,13 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.assertions.FormAssertions;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
-import org.eclipse.sirius.components.forms.tests.graphql.PropertiesEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
@@ -65,7 +65,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private PropertiesEventSubscriptionRunner propertiesEventSubscriptionRunner;
+    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
 
     @Autowired
     private EditTextfieldMutationRunner editTextfieldMutationRunner;
@@ -80,8 +80,8 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
     @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenEllipseNodeStyleDescriptionWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
-        var input = new PropertiesEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
-        var flux = this.propertiesEventSubscriptionRunner.run(input);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
+        var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
             var groupNavigator = new FormNavigator(form).page("").group("Core Properties");
@@ -114,8 +114,8 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
     @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenEllipseNodeStyleDescriptionWhenBorderSizeIsEditedThenItsValueIsUpdated() {
-        var input = new PropertiesEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
-        var flux = this.propertiesEventSubscriptionRunner.run(input)
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
+        var flux = this.detailsEventSubscriptionRunner.run(input)
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData)

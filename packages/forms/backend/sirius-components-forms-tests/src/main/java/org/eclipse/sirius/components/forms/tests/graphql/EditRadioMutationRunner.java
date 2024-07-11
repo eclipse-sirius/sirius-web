@@ -14,24 +14,22 @@ package org.eclipse.sirius.components.forms.tests.graphql;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.EditRadioInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
-import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
+import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
 
-import reactor.core.publisher.Flux;
-
 /**
- * Used to get the related elements event subscription with the GraphQL API.
+ * Used to edit a radio with the GraphQL API.
  *
- * @author gdaniel
+ * @author sbegaudeau
  */
 @Service
-public class RelatedElementsEventSubscriptionRunner implements ISubscriptionRunner<PropertiesEventInput> {
+public class EditRadioMutationRunner implements IMutationRunner<EditRadioInput> {
 
-    private static final String RELATED_ELEMENTS_EVENT_SUBSCRIPTION = """
-            subscription relatedElementsEvent($input: PropertiesEventInput!) {
-              relatedElementsEvent(input: $input) {
+    private static final String EDIT_RADIO_MUTATION = """
+            mutation editRadio($input: EditRadioInput!) {
+              editRadio(input: $input) {
                 __typename
               }
             }
@@ -39,14 +37,12 @@ public class RelatedElementsEventSubscriptionRunner implements ISubscriptionRunn
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public RelatedElementsEventSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
+    public EditRadioMutationRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public Flux<Object> run(PropertiesEventInput input) {
-        return this.graphQLRequestor.subscribe(RELATED_ELEMENTS_EVENT_SUBSCRIPTION, input);
+    public String run(EditRadioInput input) {
+        return this.graphQLRequestor.execute(EDIT_RADIO_MUTATION, input);
     }
-
-
 }

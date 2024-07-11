@@ -14,9 +14,9 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
+import org.eclipse.sirius.web.application.views.representations.dto.RepresentationsEventInput;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
@@ -27,10 +27,10 @@ import reactor.core.publisher.Flux;
  * @author sbegaudeau
  */
 @Service
-public class RepresentationsEventSubscriptionRunner implements ISubscriptionRunner<PropertiesEventInput> {
+public class RepresentationsEventSubscriptionRunner implements ISubscriptionRunner<RepresentationsEventInput> {
 
     private static final String REPRESENTATIONS_EVENT_SUBSCRIPTION = """
-            subscription representationsEvent($input: PropertiesEventInput!) {
+            subscription representationsEvent($input: RepresentationsEventInput!) {
               representationsEvent(input: $input) {
                 __typename
               }
@@ -44,7 +44,7 @@ public class RepresentationsEventSubscriptionRunner implements ISubscriptionRunn
     }
 
     @Override
-    public Flux<Object> run(PropertiesEventInput input) {
+    public Flux<Object> run(RepresentationsEventInput input) {
         return this.graphQLRequestor.subscribe(REPRESENTATIONS_EVENT_SUBSCRIPTION, input);
     }
 }

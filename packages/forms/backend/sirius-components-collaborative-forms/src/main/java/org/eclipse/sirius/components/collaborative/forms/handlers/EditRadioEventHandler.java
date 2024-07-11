@@ -76,7 +76,6 @@ public class EditRadioEventHandler implements IFormEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
         if (formInput instanceof EditRadioInput input) {
-
             var optionalRadio = this.formQueryService.findWidget(form, input.radioId())
                     .filter(Radio.class::isInstance)
                     .map(Radio.class::cast);

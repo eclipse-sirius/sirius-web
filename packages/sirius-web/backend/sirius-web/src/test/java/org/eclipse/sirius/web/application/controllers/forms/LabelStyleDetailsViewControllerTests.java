@@ -19,11 +19,11 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.assertions.FormAssertions;
-import org.eclipse.sirius.components.forms.tests.graphql.PropertiesEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -56,7 +56,7 @@ public class LabelStyleDetailsViewControllerTests extends AbstractIntegrationTes
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private PropertiesEventSubscriptionRunner propertiesEventSubscriptionRunner;
+    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -68,8 +68,8 @@ public class LabelStyleDetailsViewControllerTests extends AbstractIntegrationTes
     @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenInsideLabelStyleDescriptionWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
-        var input = new PropertiesEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.HUMAN_INSIDE_LABEL_STYLE_OBJECT.toString()));
-        var flux = this.propertiesEventSubscriptionRunner.run(input);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.HUMAN_INSIDE_LABEL_STYLE_OBJECT.toString()));
+        var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
             var groupNavigator = new FormNavigator(form).page("").group("Core Properties");

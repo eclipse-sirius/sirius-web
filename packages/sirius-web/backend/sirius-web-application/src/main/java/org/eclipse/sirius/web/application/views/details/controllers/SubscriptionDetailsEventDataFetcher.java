@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.forms.graphql.datafetchers.subscription;
+package org.eclipse.sirius.web.application.views.details.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.forms.api.RelatedElementsConfiguration;
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
+import org.eclipse.sirius.components.collaborative.forms.api.PropertiesConfiguration;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
@@ -31,12 +31,12 @@ import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to send the refreshed properties to a subscription.
+ * The data fetcher used to send the content of the details view subscription.
  *
- * @author pcdavid
+ * @author hmarchadour
  */
-@SubscriptionDataFetcher(type = "Subscription", field = "relatedElementsEvent")
-public class SubscriptionRelatedElementsEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
+@SubscriptionDataFetcher(type = "Subscription", field = "detailsEvent")
+public class SubscriptionDetailsEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
 
     private static final String INPUT_ARGUMENT = "input";
 
@@ -46,7 +46,7 @@ public class SubscriptionRelatedElementsEventDataFetcher implements IDataFetcher
 
     private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
-    public SubscriptionRelatedElementsEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
+    public SubscriptionDetailsEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
         this.eventProcessorSubscriptionProvider = Objects.requireNonNull(eventProcessorSubscriptionProvider);
@@ -55,8 +55,8 @@ public class SubscriptionRelatedElementsEventDataFetcher implements IDataFetcher
     @Override
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
-        var input = this.objectMapper.convertValue(argument, PropertiesEventInput.class);
-        var propertiesConfiguration = new RelatedElementsConfiguration(input.objectIds());
+        var input = this.objectMapper.convertValue(argument, DetailsEventInput.class);
+        var propertiesConfiguration = new PropertiesConfiguration(input.objectIds());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());

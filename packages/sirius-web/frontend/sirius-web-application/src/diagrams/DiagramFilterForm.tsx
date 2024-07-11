@@ -15,14 +15,20 @@ import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-c
 import { FormBasedView, GQLForm, Group } from '@eclipse-sirius/sirius-components-forms';
 import { makeStyles } from '@material-ui/core/styles';
 import { DiagramFilterFormProps } from './DiagramFilterForm.types';
+import { useDiagramFilterSubscription } from './useDiagramFilterSubscription';
 
 const useDiagramFilterViewStyles = makeStyles((theme) => ({
+  idle: {
+    padding: theme.spacing(1),
+  },
   content: {
     padding: theme.spacing(1),
   },
 }));
 
-export const DiagramFilterForm = (props: DiagramFilterFormProps) => {
+export const DiagramFilterForm = ({ editingContextId, diagramId, readOnly }: DiagramFilterFormProps) => {
+  const { form } = useDiagramFilterSubscription(editingContextId, [diagramId]);
+
   const classes = useDiagramFilterViewStyles();
 
   const extractFirstGroup = (props: WorkbenchViewComponentProps, form: GQLForm): JSX.Element => {
@@ -38,5 +44,15 @@ export const DiagramFilterForm = (props: DiagramFilterFormProps) => {
     }
   };
 
-  return <FormBasedView {...props} subscriptionName="diagramFilterEvent" postProcessor={extractFirstGroup} />;
+  if (!form) {
+    return null;
+  }
+  return (
+    <FormBasedView
+      editingContextId={editingContextId}
+      form={form}
+      readOnly={readOnly}
+      postProcessor={extractFirstGroup}
+    />
+  );
 };
