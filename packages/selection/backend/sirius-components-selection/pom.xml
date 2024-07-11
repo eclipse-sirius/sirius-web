@@ -42,11 +42,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-annotations</artifactId>
-			<version>2024.7.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
 			<version>2024.7.0</version>
 		</dependency>
