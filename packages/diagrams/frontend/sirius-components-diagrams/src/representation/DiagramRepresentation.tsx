@@ -86,6 +86,7 @@ export const DiagramRepresentation = ({
   const [state, setState] = useState<DiagramRepresentationState>({
     id: crypto.randomUUID(),
     diagramRefreshedEventPayload: null,
+    payload: null,
     complete: false,
     message: null,
   });
@@ -105,6 +106,7 @@ export const DiagramRepresentation = ({
       if (isDiagramRefreshedEventPayload(diagramEvent)) {
         setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: diagramEvent }));
       }
+      setState((prevState) => ({ ...prevState, payload: diagramEvent }));
     }
   };
 
@@ -167,6 +169,7 @@ export const DiagramRepresentation = ({
           editingContextId,
           diagramId: representationId,
           refreshEventPayloadId: state.diagramRefreshedEventPayload.id,
+          payload: state.payload,
           readOnly,
         }}>
         <DiagramDescriptionContext.Provider value={{ diagramDescription }}>

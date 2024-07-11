@@ -17,6 +17,7 @@ const value: DiagramContextValue = {
   editingContextId: '',
   diagramId: '',
   refreshEventPayloadId: '',
+  payload: null,
   readOnly: false,
 };
 

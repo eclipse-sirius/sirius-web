@@ -11,9 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLDiagramEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
+
 export interface DiagramContextValue {
   editingContextId: string;
   diagramId: string;
   refreshEventPayloadId: string;
+  payload: GQLDiagramEventPayload | null;
   readOnly: boolean;
 }
