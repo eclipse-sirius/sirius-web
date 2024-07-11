@@ -13,6 +13,7 @@
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { FooterProps } from './Footer.types';
 
 const useFooterStyles = makeStyles((theme) => ({
   footer: {
@@ -26,7 +27,7 @@ const useFooterStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Footer = () => {
+export const SiriusWebFooter = ({}: FooterProps) => {
   const classes = useFooterStyles();
   return (
     <footer className={classes.footer}>
