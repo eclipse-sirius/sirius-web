@@ -28,9 +28,9 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3744[#3744] [diagram] Add support for helper lines during multi selection move.
 
-
-== v2024.7.0
+== v2024.7.0 (work in progress)
 
 === Shapes
 
