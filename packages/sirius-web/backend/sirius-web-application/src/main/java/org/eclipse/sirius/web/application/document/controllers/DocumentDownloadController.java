@@ -73,12 +73,12 @@ public class DocumentDownloadController {
             Optional<IDocumentExporter> optionalDocumentExporter = Optional.empty();
 
             var iterator = requestHeaders.getAccept().iterator();
-            while (iterator.hasNext() && optionalAcceptHeaderValue.isEmpty() && optionalDocumentExporter.isEmpty()) {
+            while (iterator.hasNext() && optionalDocumentExporter.isEmpty()) {
                 var acceptHeaderValue = iterator.next();
 
                 optionalAcceptHeaderValue = Optional.of(acceptHeaderValue);
                 optionalDocumentExporter = this.documentExporters.stream()
-                        .filter(documentExporter -> documentExporter.canHandle(resource, acceptHeaderValue.toString()))
+                        .filter(documentExporter -> documentExporter.canHandle(resource, acceptHeaderValue.removeQualityValue().toString()))
                         .findFirst();
             }
 
