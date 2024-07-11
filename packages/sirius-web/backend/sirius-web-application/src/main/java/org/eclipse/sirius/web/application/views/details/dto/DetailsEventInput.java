@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,22 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.forms.dto;
+package org.eclipse.sirius.web.application.views.details.dto;
 
-import java.util.Objects;
+import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * Payload used to indicate that the properties has been refreshed.
+ * The input of the details view event subscription.
  *
  * @author hmarchadour
  */
-public record PropertiesRefreshedEventPayload(UUID id, Form form) implements IPayload {
-    public PropertiesRefreshedEventPayload {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(form);
-    }
+public record DetailsEventInput(UUID id, String editingContextId, List<String> objectIds) implements IInput {
 }

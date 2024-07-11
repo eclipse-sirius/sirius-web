@@ -37,7 +37,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.PinDiagramElemen
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTreeCheckboxInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.PushButtonInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
@@ -58,6 +57,7 @@ import org.eclipse.sirius.components.forms.tests.graphql.EditTreeCheckboxMutatio
 import org.eclipse.sirius.components.forms.tests.graphql.PushButtonMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.diagram.dto.DiagramFilterEventInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.graphql.DiagramFilterEventSubscriptionRunner;
@@ -227,8 +227,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        var propertiesInput = new PropertiesEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(diagramReference.get().getId()));
-        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(propertiesInput);
+        var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(diagramReference.get().getId()));
+        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput);
 
         Predicate<Object> formContentMatcher = object -> this.refreshedForm(object)
                 .filter(form -> {
@@ -354,8 +354,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        var propertiesInput = new PropertiesEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(diagramReference.get().getId()));
-        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(propertiesInput);
+        var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(diagramReference.get().getId()));
+        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput);
 
         AtomicReference<String> formId = new AtomicReference<>();
         AtomicReference<String> treeId = new AtomicReference<>();

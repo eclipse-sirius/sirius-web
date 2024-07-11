@@ -55,6 +55,8 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 The ID of description was previously computed using the URI of the view description, which included its index in its containment reference, meaning that the ID wasn't stable if the view was updated.
 The new implementation still uses URIs, but URIs now have the following pattern: `//@descriptions[name='Form']`, which doesn't rely on the index anymore.
 - https://github.com/eclipse-sirius/sirius-web/issues/3778[#3778] [diagram] Export `EdgeData` in `sirius-components-diagrams/src/index.ts`
+- https://github.com/eclipse-sirius/sirius-web/issues/3755[#3755] [sirius-web] Move code related to Sirius Web form based views out of Sirius Components.
+Thanks to this change, the various form based representations (details, related elements, representations, etc) can now have dedicated features such as specific inputs or additional payloads for their subscriptions.
 
 
 == v2024.7.0

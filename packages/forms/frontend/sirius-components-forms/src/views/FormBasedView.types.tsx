@@ -15,8 +15,8 @@ import { GQLForm } from '../form/FormEventFragments.types';
 
 export interface FormBasedViewProps extends WorkbenchViewComponentProps {
   editingContextId: string;
+  form: GQLForm;
   readOnly: boolean;
-  subscriptionName: string;
   postProcessor?: (props: WorkbenchViewComponentProps, form: GQLForm) => JSX.Element;
 }
 

@@ -10,13 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.forms.tests.graphql;
+package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
@@ -27,11 +27,11 @@ import reactor.core.publisher.Flux;
  * @author gdaniel
  */
 @Service
-public class PropertiesEventSubscriptionRunner implements ISubscriptionRunner<PropertiesEventInput> {
+public class DetailsEventSubscriptionRunner implements ISubscriptionRunner<DetailsEventInput> {
 
-    private static final String PROPERTIES_EVENT_SUBSCRIPTION = """
-            subscription propertiesEvent($input: PropertiesEventInput!) {
-              propertiesEvent(input: $input) {
+    private static final String DETAILS_EVENT_SUBSCRIPTION = """
+            subscription detailsEvent($input: DetailsEventInput!) {
+              detailsEvent(input: $input) {
                 __typename
               }
             }
@@ -39,13 +39,13 @@ public class PropertiesEventSubscriptionRunner implements ISubscriptionRunner<Pr
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public PropertiesEventSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
+    public DetailsEventSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public Flux<Object> run(PropertiesEventInput input) {
-        return this.graphQLRequestor.subscribe(PROPERTIES_EVENT_SUBSCRIPTION, input);
+    public Flux<Object> run(DetailsEventInput input) {
+        return this.graphQLRequestor.subscribe(DETAILS_EVENT_SUBSCRIPTION, input);
     }
 
 }

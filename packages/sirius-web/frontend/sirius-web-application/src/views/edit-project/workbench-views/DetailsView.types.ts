@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.forms.dto;
 
-import java.util.List;
-import java.util.UUID;
+import { Selection } from '@eclipse-sirius/sirius-components-core';
 
-import org.eclipse.sirius.components.core.api.IInput;
-
-/**
- * The input of the properties event subscription.
- *
- * @author hmarchadour
- */
-public record PropertiesEventInput(UUID id, String editingContextId, List<String> objectIds) implements IInput {
+export interface DetailsViewState {
+  currentSelection: Selection;
 }

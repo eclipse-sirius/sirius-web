@@ -27,13 +27,13 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationEventInput;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
-import org.eclipse.sirius.components.forms.tests.graphql.PropertiesEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -77,7 +77,7 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private PropertiesEventSubscriptionRunner propertiesEventSubscriptionRunner;
+    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
 
     @Autowired
     private EditTextfieldMutationRunner editTextfieldMutationRunner;
@@ -120,8 +120,8 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
         var validationEventInput = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
         var validationFlux = this.graphQLRequestor.subscribe(GET_VALIDATION_EVENT_SUBSCRIPTION, validationEventInput);
 
-        var detailsEventInput = new PropertiesEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()));
-        var detailsFlux = this.propertiesEventSubscriptionRunner.run(detailsEventInput);
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()));
+        var detailsFlux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
 
         var formId = new AtomicReference<String>();
         var textareaId = new AtomicReference<String>();

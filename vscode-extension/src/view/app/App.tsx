@@ -17,7 +17,8 @@ import {
   SelectionContextProvider,
 } from '@eclipse-sirius/sirius-components-core';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
-import { DetailsView, FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
+import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
+import { DetailsView } from '@eclipse-sirius/sirius-web-application';
 import { Theme, ThemeProvider } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import './reset.css';

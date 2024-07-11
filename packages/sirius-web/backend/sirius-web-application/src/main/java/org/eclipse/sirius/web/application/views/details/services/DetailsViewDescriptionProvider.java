@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.application.views.details.services;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.forms.PropertiesEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormDescriptionProvider;
 import org.eclipse.sirius.components.forms.description.FormDescription;

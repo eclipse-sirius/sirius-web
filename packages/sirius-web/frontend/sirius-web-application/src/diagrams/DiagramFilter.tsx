@@ -17,11 +17,10 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
-  DiagramPanelActionProps,
-  DiagramContextValue,
   DiagramContext,
+  DiagramContextValue,
+  DiagramPanelActionProps,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { useContext, useRef, useState } from 'react';
@@ -29,20 +28,8 @@ import { DiagramFilterForm } from './DiagramFilterForm';
 
 export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActionProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { setSelection } = useSelection();
 
-  const handlePanel = () => {
-    const newSelection: Selection = {
-      entries: [
-        {
-          id: diagramId,
-          kind: '',
-        },
-      ],
-    };
-    setSelection(newSelection);
-    setIsOpen(() => true);
-  };
+  const handlePanel = () => setIsOpen(() => true);
 
   const anchorRef = useRef<HTMLButtonElement | null>(null);
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -69,7 +56,7 @@ export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActio
         <Paper style={{ maxHeight: '50vh', overflow: 'auto' }}>
           <ClickAwayListener onClickAway={() => setIsOpen(false)}>
             <div>
-              <DiagramFilterForm editingContextId={editingContextId} readOnly={false} />
+              <DiagramFilterForm editingContextId={editingContextId} diagramId={diagramId} readOnly={false} />
             </div>
           </ClickAwayListener>
         </Paper>

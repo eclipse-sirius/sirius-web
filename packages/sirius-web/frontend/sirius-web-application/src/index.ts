@@ -15,9 +15,9 @@ export { SiriusWebApplication } from './application/SiriusWebApplication';
 export type { SiriusWebApplicationProps } from './application/SiriusWebApplication.types';
 export { DiagramRepresentationConfiguration } from './diagrams/DiagramRepresentationConfiguration';
 export type { NodeTypeRegistry } from './diagrams/DiagramRepresentationConfiguration.types';
+export { DefaultExtensionRegistryMergeStrategy } from './extension/DefaultExtensionRegistryMergeStrategy';
 export type { FooterProps } from './footer/Footer.types';
 export { footerExtensionPoint } from './footer/FooterExtensionPoints';
-export { DefaultExtensionRegistryMergeStrategy } from './extension/DefaultExtensionRegistryMergeStrategy';
 export {
   type ApolloClientOptionsConfigurer,
   type CacheOptionsConfigurer,
@@ -52,6 +52,7 @@ export { editProjectNavbarSubtitleExtensionPoint } from './views/edit-project/Ed
 export { useCurrentProject } from './views/edit-project/useCurrentProject';
 export type { UseCurrentProjectValue } from './views/edit-project/useCurrentProject.types';
 export type { GQLProject } from './views/edit-project/useProjectAndRepresentationMetadata.types';
+export { DetailsView } from './views/edit-project/workbench-views/DetailsView';
 export { type CreateProjectAreaCardProps } from './views/project-browser/create-projects-area/CreateProjectArea.types';
 export { createProjectAreaCardExtensionPoint } from './views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 export { projectActionButtonMenuItemExtensionPoint } from './views/project-browser/list-projects-area/ProjectActionButtonExtensionPoints';

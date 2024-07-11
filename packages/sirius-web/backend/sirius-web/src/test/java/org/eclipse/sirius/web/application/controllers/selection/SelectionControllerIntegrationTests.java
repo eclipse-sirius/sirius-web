@@ -27,13 +27,13 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionEventInput;
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
-import org.eclipse.sirius.components.forms.tests.graphql.PropertiesEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
@@ -88,7 +88,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private PropertiesEventSubscriptionRunner propertiesEventSubscriptionRunner;
+    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
 
     @Autowired
     private EditTextfieldMutationRunner editTextfieldMutationRunner;
@@ -131,8 +131,8 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         var selectionEventInput = new SelectionEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, PapayaIdentifiers.PROJECT_OBJECT.toString());
         var selectionFlux = this.graphQLRequestor.subscribe(GET_SELECTION_EVENT_SUBSCRIPTION, selectionEventInput);
 
-        var detailsEventInput = new PropertiesEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString()));
-        var detailsFlux = this.propertiesEventSubscriptionRunner.run(detailsEventInput);
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString()));
+        var detailsFlux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
 
         var formId = new AtomicReference<String>();
         var textareaId = new AtomicReference<String>();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.forms;
+package org.eclipse.sirius.web.application.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,14 +24,15 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
+import org.eclipse.sirius.web.application.views.details.services.DetailsViewFormDescriptionAggregator;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test Cases for the {@link FormDescriptionAggregator}.
+ * Test Cases for the {@link DetailsViewFormDescriptionAggregator}.
  *
  * @author fbarbin
  */
-public class FormDescriptionAggregatorTests {
+public class DetailsViewFormDescriptionAggregatorTests {
 
     private static final String LABEL = "Label";
 
@@ -46,7 +47,7 @@ public class FormDescriptionAggregatorTests {
         pageDescriptions.addAll(formDescription.getPageDescriptions());
         pageDescriptions.addAll(formDescription2.getPageDescriptions());
 
-        FormDescriptionAggregator aggregator = new FormDescriptionAggregator();
+        DetailsViewFormDescriptionAggregator aggregator = new DetailsViewFormDescriptionAggregator();
         Optional<FormDescription> optional = aggregator.aggregate(pageDescriptions, List.of(object), new IObjectService.NoOp());
 
         assertThat(optional).isPresent();
@@ -64,7 +65,7 @@ public class FormDescriptionAggregatorTests {
         pageDescriptions.addAll(formDescription.getPageDescriptions());
         pageDescriptions.addAll(formDescription2.getPageDescriptions());
 
-        FormDescriptionAggregator aggregator = new FormDescriptionAggregator();
+        DetailsViewFormDescriptionAggregator aggregator = new DetailsViewFormDescriptionAggregator();
         Optional<FormDescription> optional = aggregator.aggregate(pageDescriptions, List.of(object), new IObjectService.NoOp());
 
         assertThat(optional).isEmpty();

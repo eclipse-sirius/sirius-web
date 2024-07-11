@@ -33,6 +33,11 @@ public class FormEventSubscriptionRunner implements ISubscriptionRunner<FormEven
             subscription formEvent($input: FormEventInput!) {
               formEvent(input: $input) {
                 __typename
+                ... on FormRefreshedEventPayload {
+                  form {
+                    id
+                  }
+                }
               }
             }
             """;
