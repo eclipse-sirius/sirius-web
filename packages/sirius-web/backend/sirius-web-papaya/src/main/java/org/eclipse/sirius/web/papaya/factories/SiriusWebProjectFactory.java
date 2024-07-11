@@ -595,7 +595,6 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         siriusComponentsRepresentations.getDependencies().add(siriusComponentsAnnotations);
 
         siriusComponentsCore.getDependencies().addAll(List.of(
-                siriusComponentsAnnotations,
                 siriusComponentsRepresentations
         ));
 
@@ -624,11 +623,9 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         ));
 
         var siriusComponentsGraphQLApi = eObjectIndexer.getComponent("sirius-components-graphql-api");
-        var siriusComponentsAnnotationsSpring = eObjectIndexer.getComponent("sirius-components-annotations-spring");
         var siriusComponentsDeckGraphQL = eObjectIndexer.getComponent("sirius-components-deck-graphql");
         siriusComponentsDeckGraphQL.getDependencies().addAll(List.of(
                 siriusComponentsGraphQLApi,
-                siriusComponentsAnnotationsSpring,
                 siriusComponentsCollaborativeDeck
         ));
 
@@ -647,11 +644,9 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         ));
 
         var siriusComponentsGraphQLApi = eObjectIndexer.getComponent("sirius-components-graphql-api");
-        var siriusComponentsAnnotationsSpring = eObjectIndexer.getComponent("sirius-components-annotations-spring");
         var siriusComponentsDiagramsGraphQL = eObjectIndexer.getComponent("sirius-components-diagrams-graphql");
         siriusComponentsDiagramsGraphQL.getDependencies().addAll(List.of(
                 siriusComponentsGraphQLApi,
-                siriusComponentsAnnotationsSpring,
                 siriusComponentsCollaborativeDiagrams
         ));
     }
@@ -690,14 +685,12 @@ public class SiriusWebProjectFactory implements IObjectFactory {
     }
 
     private void linkFormDescriptionEditors(IEObjectIndexer eObjectIndexer) {
-        var siriusComponentsAnnotations = eObjectIndexer.getComponent("sirius-components-annotations");
         var siriusComponentsCore = eObjectIndexer.getComponent("sirius-components-core");
         var siriusComponentsRepresentations = eObjectIndexer.getComponent("sirius-components-representations");
         var siriusComponentsForms = eObjectIndexer.getComponent("sirius-components-forms");
         var siriusComponentsViewForm = eObjectIndexer.getComponent("sirius-components-view-form");
         var siriusComponentsFormDescriptionEditors = eObjectIndexer.getComponent("sirius-components-formdescriptioneditors");
         siriusComponentsFormDescriptionEditors.getDependencies().addAll(List.of(
-                siriusComponentsAnnotations,
                 siriusComponentsCore,
                 siriusComponentsRepresentations,
                 siriusComponentsForms,
@@ -712,11 +705,9 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         ));
 
         var siriusComponentsGraphQLApi = eObjectIndexer.getComponent("sirius-components-graphql-api");
-        var siriusComponentsAnnotationsSpring = eObjectIndexer.getComponent("sirius-components-annotations-spring");
         var siriusComponentsFormDescriptionEditorsGraphQL = eObjectIndexer.getComponent("sirius-components-formdescriptioneditors-graphql");
         siriusComponentsFormDescriptionEditorsGraphQL.getDependencies().addAll(List.of(
                 siriusComponentsGraphQLApi,
-                siriusComponentsAnnotationsSpring,
                 siriusComponentsCollaborativeFormDescriptionEditors
         ));
 
@@ -729,12 +720,10 @@ public class SiriusWebProjectFactory implements IObjectFactory {
     }
 
     private void linkForms(IEObjectIndexer eObjectIndexer) {
-        var siriusComponentsAnnotations = eObjectIndexer.getComponent("sirius-components-annotations");
         var siriusComponentsRepresentations = eObjectIndexer.getComponent("sirius-components-representations");
         var siriusComponentsCharts = eObjectIndexer.getComponent("sirius-components-charts");
         var siriusComponentsForms = eObjectIndexer.getComponent("sirius-components-forms");
         siriusComponentsForms.getDependencies().addAll(List.of(
-                siriusComponentsAnnotations,
                 siriusComponentsRepresentations,
                 siriusComponentsCharts
         ));
@@ -749,11 +738,9 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         ));
 
         var siriusComponentsGraphQLApi = eObjectIndexer.getComponent("sirius-components-graphql-api");
-        var siriusComponentsAnnotationsSpring = eObjectIndexer.getComponent("sirius-components-annotations-spring");
         var siriusComponentsFormsGraphQL = eObjectIndexer.getComponent("sirius-components-forms-graphql");
         siriusComponentsFormsGraphQL.getDependencies().addAll(List.of(
                 siriusComponentsGraphQLApi,
-                siriusComponentsAnnotationsSpring,
                 siriusComponentsForms,
                 siriusComponentsCollaborativeForms
         ));
@@ -776,7 +763,6 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         var siriusComponentsWidgetReferenceGraphQL = eObjectIndexer.getComponent("sirius-components-widget-reference-graphql");
         siriusComponentsWidgetReferenceGraphQL.getDependencies().addAll(List.of(
                 siriusComponentsGraphQLApi,
-                siriusComponentsAnnotationsSpring,
                 siriusComponentsCollaborativeWidgetReference
         ));
     }
@@ -794,11 +780,9 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         ));
 
         var siriusComponentsGraphQLApi = eObjectIndexer.getComponent("sirius-components-graphql-api");
-        var siriusComponentsAnnotationsSpring = eObjectIndexer.getComponent("sirius-components-annotations-spring");
         var siriusComponentsGanttGraphQL = eObjectIndexer.getComponent("sirius-components-gantt-graphql");
         siriusComponentsGanttGraphQL.getDependencies().addAll(List.of(
                 siriusComponentsGraphQLApi,
-                siriusComponentsAnnotationsSpring,
                 siriusComponentsCollaborativeGantt
         ));
     }
@@ -810,11 +794,9 @@ public class SiriusWebProjectFactory implements IObjectFactory {
     }
 
     private void linkPortals(IEObjectIndexer eObjectIndexer) {
-        var siriusComponentsAnnotations = eObjectIndexer.getComponent("sirius-components-annotations");
         var siriusComponentsRepresentations = eObjectIndexer.getComponent("sirius-components-representations");
         var siriusComponentsPortals = eObjectIndexer.getComponent("sirius-components-portals");
         siriusComponentsPortals.getDependencies().addAll(List.of(
-                siriusComponentsAnnotations,
                 siriusComponentsRepresentations
         ));
 
@@ -826,21 +808,17 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         ));
 
         var siriusComponentsGraphQLApi = eObjectIndexer.getComponent("sirius-components-graphql-api");
-        var siriusComponentsAnnotationsSpring = eObjectIndexer.getComponent("sirius-components-annotations-spring");
         var siriusComponentsPortalsGraphQL = eObjectIndexer.getComponent("sirius-components-portals-graphql");
         siriusComponentsPortalsGraphQL.getDependencies().addAll(List.of(
                 siriusComponentsGraphQLApi,
-                siriusComponentsAnnotationsSpring,
                 siriusComponentsCollaborativePortals
         ));
     }
 
     private void linkSelection(IEObjectIndexer eObjectIndexer) {
-        var siriusComponentsAnnotations = eObjectIndexer.getComponent("sirius-components-annotations");
         var siriusComponentsRepresentations = eObjectIndexer.getComponent("sirius-components-representations");
         var siriusComponentsSelection = eObjectIndexer.getComponent("sirius-components-selection");
         siriusComponentsSelection.getDependencies().addAll(List.of(
-                siriusComponentsAnnotations,
                 siriusComponentsRepresentations
         ));
 
@@ -852,11 +830,9 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         ));
 
         var siriusComponentsGraphQLApi = eObjectIndexer.getComponent("sirius-components-graphql-api");
-        var siriusComponentsAnnotationsSpring = eObjectIndexer.getComponent("sirius-components-annotations-spring");
         var siriusComponentsSelectionGraphQL = eObjectIndexer.getComponent("sirius-components-selection-graphql");
         siriusComponentsSelectionGraphQL.getDependencies().addAll(List.of(
                 siriusComponentsGraphQLApi,
-                siriusComponentsAnnotationsSpring,
                 siriusComponentsCollaborativeSelection
         ));
     }
@@ -954,11 +930,9 @@ public class SiriusWebProjectFactory implements IObjectFactory {
     }
 
     private void linkTrees(IEObjectIndexer eObjectIndexer) {
-        var siriusComponentsAnnotations = eObjectIndexer.getComponent("sirius-components-annotations");
         var siriusComponentsRepresentations = eObjectIndexer.getComponent("sirius-components-representations");
         var siriusComponentsTrees = eObjectIndexer.getComponent("sirius-components-trees");
         siriusComponentsTrees.getDependencies().addAll(List.of(
-                siriusComponentsAnnotations,
                 siriusComponentsRepresentations
         ));
 
@@ -971,11 +945,9 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
 
         var siriusComponentsGraphQLApi = eObjectIndexer.getComponent("sirius-components-graphql-api");
-        var siriusComponentsAnnotationsSpring = eObjectIndexer.getComponent("sirius-components-annotations-spring");
         var siriusComponentsTreesGraphQL = eObjectIndexer.getComponent("sirius-components-trees-graphql");
         siriusComponentsTreesGraphQL.getDependencies().addAll(List.of(
                 siriusComponentsGraphQLApi,
-                siriusComponentsAnnotationsSpring,
                 siriusComponentsCollaborativeTrees
         ));
     }
@@ -995,11 +967,9 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         ));
 
         var siriusComponentsGraphQLApi = eObjectIndexer.getComponent("sirius-components-graphql-api");
-        var siriusComponentsAnnotationsSpring = eObjectIndexer.getComponent("sirius-components-annotations-spring");
         var siriusComponentsValidationGraphQL = eObjectIndexer.getComponent("sirius-components-validation-graphql");
         siriusComponentsValidationGraphQL.getDependencies().addAll(List.of(
                 siriusComponentsGraphQLApi,
-                siriusComponentsAnnotationsSpring,
                 siriusComponentsCollaborativeValidation
         ));
     }
@@ -1059,11 +1029,9 @@ public class SiriusWebProjectFactory implements IObjectFactory {
     }
 
     private void linkWeb(IEObjectIndexer eObjectIndexer) {
-        var siriusComponentsAnnotations = eObjectIndexer.getComponent("sirius-components-annotations");
         var siriusComponentsGraphQLApi = eObjectIndexer.getComponent("sirius-components-graphql-api");
         var siriusComponentsGraphQL = eObjectIndexer.getComponent("sirius-components-graphql");
         siriusComponentsGraphQL.getDependencies().addAll(List.of(
-                siriusComponentsAnnotations,
                 siriusComponentsGraphQLApi
         ));
 
