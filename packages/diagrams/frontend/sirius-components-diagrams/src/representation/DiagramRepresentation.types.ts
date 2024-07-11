@@ -20,6 +20,7 @@ import {
 export interface DiagramRepresentationState {
   id: string;
   diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload | null;
+  payload: GQLDiagramEventPayload | null;
   complete: boolean;
   message: string | null;
 }
