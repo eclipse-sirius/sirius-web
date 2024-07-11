@@ -1,0 +1,67 @@
+= Add support for diagram tool shortcuts
+
+== Problem
+
+Diagram tools are accessible only from the contextual palette of the diagram, a node or an edge
+
+== Key Result
+
+- Specifiers is able to define the shortcut associated to a node tool in the View model.
+- Users is able to execute the tool by clicking on a diagram/node/edge and using the shortcut
+
+== Solution
+
+*Specifier*
+
+In the view model, there is two new attributes on the edge and node tools.
+* `Tool.shortcutModifiers` This is a multi-valued attribute of `ShortcutModifier`enum.
+Values are `CTRL`, `ALT` and `SHIFT`
+* `Tool.shortcutValue` This is an alphanumeric character
+
+The shortcut is the combinaison of the modifiers and the value.
+A modifier will be required, otherwise it will create conflicts with the direct edit support.
+In details view, a dedicated widget is used to display the shortcut, in a group, with a `MultiSelectWidget` and a `TextfieldWidget`.
+
+*User*
+
+For the user, there will be pretty much no UI changes.
+Shortcuts will just be displayed after the label of a tool in the palette.
+When clicking on a diagram, node or edge, the user is able to execute the tool using the shortcut.
+
+The shortcut are available *only when the focus is on the diagram editor*.
+Selecting the diagram in the Explorer will not activate the shortcuts.
+
+=== Scenario
+
+1. The specifier is able to define a shortcut associated to a tool
+- Open a sudio project assuming there a NodeDescription an EdgeDescription with a tool
+- Select the delete tool 
+Expected: the `Details` view displays a grop widget that displays the modifiers and the key
+- Check `CTRL` + `SHIFT` for the modifiers
+- Write `D`
+Expected: This shortcut is displayed.
+
+2. The user is able to use a shortcut to execute the tool
+- Open the diagram
+- Select a node or en edge for which a tool has been defined with a shortcut
+- Press the shortcut
+Expected: The tool is executed
+
+=== Cutting backs
+
+If more than one object is selected, the shortcuts are deactivated.
+This is coherent with standard tool execution using the palette.
+
+Another solution to define the shorcut could have been to:
+* define a specific DataType for shortcut
+* have a dedicated widget fot this DataType to define the shortcut.
+For example a label displayed the shortcut and a button that listen to the shorcut.
+
+
+== Rabbit holes
+
+We should take car to have the shortcut working only if the focus is set on the diagram.
+
+== No-gos
+
+Nothing identified
