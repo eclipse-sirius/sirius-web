@@ -1,4 +1,4 @@
-= [ADR-151] Improve Diagram Subscription Lifecycle
+= ADR-151 Improve Diagram Subscription Lifecycle
 
 == Context
 

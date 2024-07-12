@@ -1,4 +1,4 @@
-= [ADR-146] Add support for contributing representation metadata for transient representations
+= ADR-146 Add support for contributing representation metadata for transient representations
 
 == Context
 

@@ -1,4 +1,4 @@
-= [ADR-138] Allow consumers to reuse smaller parts of the Sirius Web backend
+= ADR-138 Allow consumers to reuse smaller parts of the Sirius Web backend
 
 == Context
 

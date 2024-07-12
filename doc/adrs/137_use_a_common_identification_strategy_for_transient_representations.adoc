@@ -1,4 +1,4 @@
-= [ADR-137] Use a common identification strategy for transient representations
+= ADR-137 Use a common identification strategy for transient representations
 
 == Context
 

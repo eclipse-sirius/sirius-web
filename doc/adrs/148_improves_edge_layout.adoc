@@ -1,4 +1,4 @@
-= [ADR-148] Improve edge layout
+= ADR-148 Improve edge layout
 
 == Context
 

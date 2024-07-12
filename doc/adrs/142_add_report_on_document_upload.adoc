@@ -1,4 +1,4 @@
-= [ADR-142] Add report on document upload
+= ADR-142 Add report on document upload
 
 == Context
 

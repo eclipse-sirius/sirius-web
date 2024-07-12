@@ -1,0 +1,24 @@
+= ADR-152 Add support for any kind of object as semantic element in the tree representation
+
+== Context
+
+Sirius Web doesn't provide in its Tree description API a way to retrieve the model element associated to a TreeItem.
+At the moment Sirius Web Explorer relies on `IObjectSearchService.getObject()` to retrieve the object associated to a given TreeItem node using its `id`.
+While it works, it is restricted to objects that have been considered as semantic elements by the server.
+
+In order to extend the tree capabilities to handle any kind of object, we need to be able to extend this behavior.
+For that, we will provide a mechanism to find an object associated to a TreeItem using its id.
+
+== Decision
+
+We will add a new field `Function<VariableManager, Object> treeItemObjectProvider` in `org.eclipse.sirius.components.trees.description.TreeDescription` and in its builder.
+Existing usages of `org.eclipse.sirius.components.trees.description.TreeDescription` should be completed by providing a default object retrieval mechanism which can delegate its behavior to `IObjectSearchService.getObject()`.
+
+`o.e.s.w.a.v.explorer.services.DeleteObjectTreeItemEventHandler` and `o.e.s.w.a.v.explorer.services.RenameObjectTreeItemEventHandler` should be updated, because they rely on the `IObjectSearchService.getObject()` service to retrieve the object before performing the deletion or renaming operations.
+`o.e.s.w.a.v.explorer.services.ExplorerNavigationService` and `o.e.s.w.a.v.explorer.services.ExpandAllTreePathProvider` are also retrieving the object associated to a TreeItem using `IObjectSearchService.getObject()` service.
+
+They should instead get the object by calling `treeItemObjectProvider` specified on the tree description of the Sirius Web Explorer in our case.
+
+== Status
+
+Work in progress

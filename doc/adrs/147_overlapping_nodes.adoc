@@ -1,4 +1,4 @@
-= [ADR-147] Add support for overlapping nodes
+= ADR-147 Add support for overlapping nodes
 
 == Context
 
