@@ -1,4 +1,4 @@
-= [ADR-143] Handle documents upload with other formats than JSON and XMI
+= ADR-143 Handle documents upload with other formats than JSON and XMI
 
 == Context
 

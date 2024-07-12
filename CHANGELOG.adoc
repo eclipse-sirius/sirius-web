@@ -8,6 +8,7 @@
 
 === Architectural decision records
 
+- [ADR-152] Add support for any kind of object as semantic element in the tree representation
 
 === Deprecation warning
 
@@ -42,7 +43,7 @@
 
 === Architectural decision records
 
-[ADR-151] Improve Diagram Subscription Lifecycle
+- [ADR-151] Improve Diagram Subscription Lifecycle
 
 === Deprecation warning
 

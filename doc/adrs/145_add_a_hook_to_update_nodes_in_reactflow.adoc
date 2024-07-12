@@ -1,4 +1,4 @@
-= [ADR-145] Add a hook to update nodes in ReactFlow
+= ADR-145 Add a hook to update nodes in ReactFlow
 
 == Context
 

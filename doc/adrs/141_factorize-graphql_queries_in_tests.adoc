@@ -1,4 +1,4 @@
-= [ADR-141] Factorize GraphQL queries in tests
+= ADR-141 Factorize GraphQL queries in tests
 
 == Context
 
