@@ -40,6 +40,7 @@
 === Architectural decision records
 
 [ADR-151] Improve Diagram Subscription Lifecycle
+[ADR-152] Allow only coherents resizes on diagram
 
 === Deprecation warning
 
