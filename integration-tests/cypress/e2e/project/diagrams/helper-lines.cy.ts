@@ -32,12 +32,11 @@ describe('helper lines - Diagram', () => {
     afterEach(() => cy.deleteProject(projectId));
 
     it('Check helper lines are enabled from diagram panel', () => {
+      cy.getByTestId('hide-helper-lines').should('exist');
+      cy.getByTestId('show-helper-lines').should('not.exist');
+      cy.getByTestId('hide-helper-lines').click();
       cy.getByTestId('show-helper-lines').should('exist');
       cy.getByTestId('hide-helper-lines').should('not.exist');
-      cy.getByTestId('show-helper-lines').click();
-      cy.getByTestId('show-helper-lines').should('not.exist');
-      cy.getByTestId('hide-helper-lines').should('exist');
     });
-
   });
 });
