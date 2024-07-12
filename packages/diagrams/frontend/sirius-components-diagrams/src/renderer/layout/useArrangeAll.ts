@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { useContext } from 'react';
@@ -36,7 +37,7 @@ function reverseOrdreMap<K, V>(map: Map<K, V>): Map<K, V> {
 
 const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData, string>[]> => {
   const subNodes: Map<string, Node<NodeData, string>[]> = new Map<string, Node<NodeData, string>[]>();
-  for (const node of nodes) {
+  for (const node of nodes.filter((n) => !n.hidden)) {
     const parentNodeId: string = node.parentNode ?? 'root';
     if (!subNodes.has(parentNodeId)) {
       subNodes.set(parentNodeId, []);
@@ -123,6 +124,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
   const { diagramDescription } = useDiagramDescription();
   const { refreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
   const { resolveNodeOverlap } = useOverlap();
+  const { addErrorMessage } = useMultiToast();
 
   const elk = new ELK();
 
@@ -160,7 +162,8 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
         layoutReturn: layoutedGraph,
       };
     } catch (message) {
-      return console.error(message);
+      addErrorMessage('An error occurred during the arrange all elements ');
+      return [];
     }
   };
 
@@ -210,17 +213,21 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
         headerVerticalFootprint
       ).then(({ nodes: layoutedSubNodes, layoutReturn }) => {
         const parentNode = allNodes.find((node) => node.id === parentNodeId);
-        if (parentNode) {
-          parentNode.width = layoutReturn.width;
-          parentNode.height = layoutReturn.height + headerVerticalFootprint;
-          parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
-          parentNodeWithNewSize.push(parentNode);
+        if (layoutReturn) {
+          if (parentNode) {
+            parentNode.width = layoutReturn.width;
+            parentNode.height = layoutReturn.height + headerVerticalFootprint;
+            parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
+            parentNodeWithNewSize.push(parentNode);
+          }
+          layoutedAllNodes = [
+            ...layoutedAllNodes,
+            ...layoutedSubNodes,
+            ...nodes.filter((node) => node.data.isBorderNode),
+          ];
+        } else {
+          layoutedAllNodes = nodes;
         }
-        layoutedAllNodes = [
-          ...layoutedAllNodes,
-          ...layoutedSubNodes,
-          ...nodes.filter((node) => node.data.isBorderNode),
-        ];
       });
     }
     return layoutedAllNodes;
