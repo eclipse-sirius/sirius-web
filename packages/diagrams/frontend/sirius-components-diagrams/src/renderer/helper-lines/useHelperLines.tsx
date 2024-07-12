@@ -297,7 +297,7 @@ const getHelperLinesForResizeAndMove = (
 };
 
 export const useHelperLines = (): UseHelperLinesValue => {
-  const [enabled, setEnabled] = useState<boolean>(false);
+  const [enabled, setEnabled] = useState<boolean>(true);
   const [state, setState] = useState<UseHelperLinesState>({ vertical: null, horizontal: null });
   //Here we need the nodes in the ReactFlow store to get positionAbsolute
   const storeApi = useStoreApi();
