@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import { DiagramPaletteToolContextValue } from './DiagramPalette.types';
+import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { DiagramPaletteToolComponentProps } from './DiagramPaletteTool.types';
 
-export const DiagramPaletteToolContext = React.createContext<DiagramPaletteToolContextValue>([]);
+export const diagramPaletteToolExtensionPoint: ComponentExtensionPoint<DiagramPaletteToolComponentProps> = {
+  identifier: 'diagramPalette#tool',
+  FallbackComponent: () => null,
+};

@@ -15,6 +15,7 @@ import { ComponentExtension, DataExtension, ExtensionRegistry } from '@eclipse-s
 import {
   ReactFlowPropsCustomizer,
   diagramRendererReactFlowPropsCustomizerExtensionPoint,
+  diagramPaletteToolExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   EditProjectNavbarSubtitleProps,
@@ -25,6 +26,7 @@ import Typography from '@material-ui/core/Typography';
 import { ReactFlowProps } from 'reactflow';
 import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
 import { PapayaDiagramLegendPanel } from './diagrams/PapayaDiagramLegendPanel';
+import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaComponentLabelDetailToolContribution';
 
 const papayaExtensionRegistry = new ExtensionRegistry();
 
@@ -63,5 +65,10 @@ const papayaDiagramPanelExtension: DataExtension<Array<ReactFlowPropsCustomizer>
   data: [reactFlowPropsCustomizer],
 };
 papayaExtensionRegistry.putData(diagramRendererReactFlowPropsCustomizerExtensionPoint, papayaDiagramPanelExtension);
+
+papayaExtensionRegistry.addComponent(diagramPaletteToolExtensionPoint, {
+  identifier: `papaya_${diagramPaletteToolExtensionPoint.identifier}`,
+  Component: PapayaComponentLabelDetailToolContribution,
+});
 
 export { papayaExtensionRegistry };

@@ -29,7 +29,8 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3676[#3676] [representation] Remove the label from representation subscriptions and from graphql types.
 + Also remove the label from representation metadata (and sometimes the whole metadata) when the label or metadata were not needed.
 - https://github.com/eclipse-sirius/sirius-web/issues/1470[#1470] [view] Since the computation of converted description ID has changed, the identifier of existing representations is not valid anymore, and these representations cannot be opened. 
- - https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Update some API relative to the diagram:
+- https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Update some API relative to the diagram:
+- https://github.com/eclipse-sirius/sirius-web/issues/1470[#1470] [view] Since the computation of converted description ID has changed, the identifier of existing representations is not valid anymore, and these representations cannot be opened.
 
  * The `NodeTool#selectionDescription` attribute of type `SelectionDescription` has been renamed into `dialogDescription` and is now of type `DialogDescription`.
  * The `SelectionDescription` type has been renamed into `SelectionDialogDescription` and inherit from `DialogDescription`.
@@ -81,7 +82,7 @@ The new implementation still uses URIs, but URIs now have the following pattern:
 Thanks to this change, the various form based representations (details, related elements, representations, etc) can now have dedicated features such as specific inputs or additional payloads for their subscriptions.
 - https://github.com/eclipse-sirius/sirius-web/issues/3794[#3794] [view] In diagram view DSL, _NodeLabelStyle#showIcon_ has been change to _NodeLabelStyle#showIconExpression_, allowing to dynamically change this style option depending on a condition evaluated at runtime.
 A migration participant has been added to automatically keep compatible all diagram descriptions created before 2024.9.0.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3774[#3774] [sirius-web] Add an extension point to contribute custom tools to the diagram palette
 
 == v2024.7.0
 
