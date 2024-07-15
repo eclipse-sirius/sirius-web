@@ -17,6 +17,7 @@ import { PaletteToolProps } from './PaletteTool.types';
 
 const usePaletteToolStyle = makeStyles((theme) => ({
   toolIcon: {
+    width: theme.spacing(4.5),
     color: theme.palette.text.primary,
   },
 }));

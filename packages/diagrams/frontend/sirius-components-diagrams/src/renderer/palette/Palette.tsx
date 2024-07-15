@@ -12,14 +12,19 @@
  *******************************************************************************/
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import {
+  useDeletionConfirmationDialog,
+  useMultiToast,
+  useComponents,
+  ComponentExtension,
+} from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import AdjustIcon from '@material-ui/icons/Adjust';
 import TonalityIcon from '@material-ui/icons/Tonality';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useReactFlow, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -30,11 +35,7 @@ import { Tool } from '../Tool';
 import { useAdjustSize } from '../adjust-size/useAdjustSize';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
-import { DiagramPaletteToolContextValue } from './DiagramPalette.types';
-import { DiagramPaletteToolContext } from './DiagramPaletteToolContext';
-import { DiagramPaletteToolContributionComponentProps } from './DiagramPaletteToolContribution.types';
 import {
-  ContextualPaletteStyleProps,
   GQLCollapsingState,
   GQLDeleteFromDiagramData,
   GQLDeleteFromDiagramInput,
@@ -62,24 +63,24 @@ import {
   PaletteState,
 } from './Palette.types';
 import { ToolSection } from './tool-section/ToolSection';
+import { paletteToolExtensionPoint } from './tool/PaletteToolExtensionPoints';
+import { PaletteToolComponentProps } from './tool/PaletteTool.types';
 
 const usePaletteStyle = makeStyles((theme) => ({
   palette: {
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: '2px',
-    zIndex: 2,
+    zIndex: 5,
     position: 'fixed',
     display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-  },
-  paletteContent: {
-    display: 'grid',
-    gridTemplateColumns: ({ toolCount }: ContextualPaletteStyleProps) => `repeat(${Math.min(toolCount, 10)}, 36px)`,
-    gridTemplateRows: '28px',
-    gridAutoRows: '28px',
-    placeItems: 'center',
+    maxWidth: theme.spacing(45.25),
   },
   toolIcon: {
+    width: theme.spacing(4.5),
     color: theme.palette.text.primary,
   },
 }));
@@ -226,9 +227,8 @@ export const Palette = ({
   const { addErrorMessage, addMessages } = useMultiToast();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
-  const diagramPaletteToolComponents = useContext<DiagramPaletteToolContextValue>(DiagramPaletteToolContext)
-    .filter((contribution) => contribution.props.canHandle(diagramId, diagramElementId))
-    .map((contribution) => contribution.props.component);
+  const paletteToolComponents: ComponentExtension<PaletteToolComponentProps>[] =
+    useComponents(paletteToolExtensionPoint);
 
   const { data: paletteData, error: paletteError } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(
     getPaletteQuery,
@@ -254,8 +254,8 @@ export const Palette = ({
         ).length
       : 0) +
     (hideableDiagramElement ? (node ? 3 : 1) : 0) +
-    diagramPaletteToolComponents.length;
-  const classes = usePaletteStyle({ toolCount });
+    paletteToolComponents.length;
+  const classes = usePaletteStyle();
 
   let pinUnpinTool: JSX.Element | undefined;
   let adjustSizeTool: JSX.Element | undefined;
@@ -451,45 +451,37 @@ export const Palette = ({
       className={classes.palette}
       style={{ position: 'absolute', left: paletteX, top: paletteY }}
       data-testid="Palette">
-      <div className={classes.paletteContent}>
-        {palette?.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
-          <Tool tool={tool} onClick={handleToolClick} thumbnail key={tool.id} />
-        ))}
-        {palette?.toolSections.map((toolSection) => (
-          <ToolSection
-            toolSection={toolSection}
-            onToolClick={handleToolClick}
-            key={toolSection.id}
-            onExpand={handleToolSectionExpand}
-            toolSectionExpandId={state.expandedToolSectionId}
-          />
-        ))}
-        {diagramPaletteToolComponents.map((component, index) => {
-          const props: DiagramPaletteToolContributionComponentProps = {
-            x,
-            y,
-            diagramElementId,
-            key: index.toString(),
-          };
-          return React.createElement(component, props);
-        })}
-        {hideableDiagramElement ? (
-          <>
-            <Tooltip title="Fade element">
-              <IconButton
-                className={classes.toolIcon}
-                size="small"
-                aria-label="Fade element"
-                onClick={invokeFadeDiagramElementTool}
-                data-testid="Fade-element">
-                <TonalityIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-            {pinUnpinTool}
-            {adjustSizeTool}
-          </>
-        ) : null}
-      </div>
+      {palette?.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
+        <Tool tool={tool} onClick={handleToolClick} thumbnail key={tool.id} />
+      ))}
+      {palette?.toolSections.map((toolSection) => (
+        <ToolSection
+          toolSection={toolSection}
+          onToolClick={handleToolClick}
+          key={toolSection.id}
+          onExpand={handleToolSectionExpand}
+          toolSectionExpandId={state.expandedToolSectionId}
+        />
+      ))}
+      {paletteToolComponents.map(({ Component: PaletteToolComponent }, index) => (
+        <PaletteToolComponent x={x} y={y} diagramElementId={diagramElementId} key={index} />
+      ))}
+      {hideableDiagramElement ? (
+        <>
+          <Tooltip title="Fade element">
+            <IconButton
+              className={classes.toolIcon}
+              size="small"
+              aria-label="Fade element"
+              onClick={invokeFadeDiagramElementTool}
+              data-testid="Fade-element">
+              <TonalityIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          {pinUnpinTool}
+          {adjustSizeTool}
+        </>
+      ) : null}
     </Paper>
   );
 };

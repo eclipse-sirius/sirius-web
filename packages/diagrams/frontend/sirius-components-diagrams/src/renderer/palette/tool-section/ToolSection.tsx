@@ -27,7 +27,7 @@ const useToolSectionStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: '8px',
+    width: theme.spacing(4.5),
   },
   toolList: {
     padding: '4px',
