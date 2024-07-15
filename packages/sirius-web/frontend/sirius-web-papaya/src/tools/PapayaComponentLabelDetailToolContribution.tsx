@@ -10,23 +10,34 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DiagramPaletteToolContributionComponentProps, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramPaletteToolComponentProps, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
 import { Slideshow } from '@material-ui/icons';
 import { Fragment, useState } from 'react';
 import { useNodes } from 'reactflow';
 
-type Modal = 'dialog';
-export const PapayaOperationActivityLabelDetailToolContribution = ({
-  diagramElementId,
-}: DiagramPaletteToolContributionComponentProps) => {
-  const [modal, setModal] = useState<Modal | null>(null);
+const useToolStyle = makeStyles(() => ({
+  tool: {
+    width: '36px',
+  },
+}));
 
+type Modal = 'dialog';
+export const PapayaComponentLabelDetailToolContribution = ({ diagramElementId }: DiagramPaletteToolComponentProps) => {
+  const [modal, setModal] = useState<Modal | null>(null);
+  const classes = useToolStyle();
   const nodes = useNodes<NodeData>();
   const targetedNode = nodes.find((node) => node.id === diagramElementId);
+  if (
+    !targetedNode ||
+    targetedNode.data.targetObjectKind !== 'siriusComponents://semantic?domain=papaya&entity=Component'
+  ) {
+    return null;
+  }
 
   const onClose = () => {
     setModal(null);
@@ -38,7 +49,7 @@ export const PapayaOperationActivityLabelDetailToolContribution = ({
       <>
         <Dialog open={true} onClose={onClose} fullWidth>
           <DialogContent>
-            <DialogContentText>{targetedNode.data.insideLabel.text}</DialogContentText>
+            <DialogContentText>{targetedNode.data.insideLabel?.text}</DialogContentText>
           </DialogContent>
         </Dialog>
       </>
@@ -48,6 +59,7 @@ export const PapayaOperationActivityLabelDetailToolContribution = ({
   return (
     <Fragment key="label-detail-modal-contribution">
       <IconButton
+        className={classes.tool}
         size="small"
         color="inherit"
         aria-label="Label detail"

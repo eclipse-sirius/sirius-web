@@ -17,13 +17,6 @@ import {
   Workbench,
 } from '@eclipse-sirius/sirius-components-core';
 import { useMachine } from '@xstate/react';
-
-import {
-  DiagramPaletteToolContext,
-  DiagramPaletteToolContextValue,
-  DiagramPaletteToolContribution,
-  NodeData,
-} from '@eclipse-sirius/sirius-components-diagrams';
 import {
   GQLTreeItem,
   TreeItemContextMenuContext,
@@ -38,13 +31,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
-import { useNodes } from 'reactflow';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from './DocumentTreeItemContextMenuContribution';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
 import {
-  DiagramPaletteToolProviderProps,
   EditProjectViewParams,
   TreeItemContextMenuProviderProps,
   TreeToolBarProviderProps,
@@ -58,7 +49,6 @@ import {
 } from './EditProjectViewMachine';
 import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
 import { ProjectContext } from './ProjectContext';
-import { PapayaOperationActivityLabelDetailToolContribution } from './ToolContributions/PapayaOperationActivityLabelDetailToolContribution';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
 import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
@@ -145,14 +135,12 @@ export const EditProjectView = () => {
           <EditProjectNavbar />
           <TreeItemContextMenuProvider>
             <TreeToolBarProvider>
-              <DiagramPaletteToolProvider>
-                <Workbench
-                  editingContextId={context.project.currentEditingContext.id}
-                  initialRepresentationSelected={context.representation}
-                  onRepresentationSelected={onRepresentationSelected}
-                  readOnly={false}
-                />
-              </DiagramPaletteToolProvider>
+              <Workbench
+                editingContextId={context.project.currentEditingContext.id}
+                initialRepresentationSelected={context.representation}
+                onRepresentationSelected={onRepresentationSelected}
+                readOnly={false}
+              />
             </TreeToolBarProvider>
           </TreeItemContextMenuProvider>
         </SelectionContextProvider>
@@ -199,28 +187,4 @@ const TreeToolBarProvider = ({ children }: TreeToolBarProviderProps) => {
   ];
 
   return <TreeToolBarContext.Provider value={treeToolBarContributions}>{children}</TreeToolBarContext.Provider>;
-};
-
-const DiagramPaletteToolProvider = ({ children }: DiagramPaletteToolProviderProps) => {
-  const diagramPaletteToolContributions: DiagramPaletteToolContextValue = [
-    <DiagramPaletteToolContribution
-      canHandle={(_diagramId, diagramElementId) => {
-        const nodes = useNodes<NodeData>();
-        const targetedNode = nodes.find((node) => node.id === diagramElementId);
-        if (targetedNode) {
-          return (
-            targetedNode.data.targetObjectKind ===
-            'siriusComponents://semantic?domain=papaya_operational_analysis&entity=OperationalActivity'
-          );
-        }
-        return false;
-      }}
-      component={PapayaOperationActivityLabelDetailToolContribution}
-    />,
-  ];
-  return (
-    <DiagramPaletteToolContext.Provider value={diagramPaletteToolContributions}>
-      {children}
-    </DiagramPaletteToolContext.Provider>
-  );
 };

@@ -1,13 +1,15 @@
-= How to contribute custom tool to a Diagram palette
+= How to use the extension points to extend the frontend
 
-This document shows the steps needed for an application to contribute its own custom tools.
+Sirius-web is an example of an application using the various sirius-component modules.
+A user may want to configure certain parts of this application.
+Several extension points have been provided to enable a sirius-web-based application to customize its frontend.
 
-An example of a simple tool is available on _Papaya::OperationalActivity_ node to illustrate (see _PapayaOperationActivityLabelDetailToolContribution.tsx_ and _EditProjectView.tsx_).
+== How to use the tool extension point
 
-== The tool component
+=== The tool component
 
 By contributing a new custom tool, you add a React component to the palette.
-This component must use as props `DiagramPaletteToolContributionComponentProps`.
+This component must use as props `PaletteToolComponentProps`.
 To avoid inconsistency palette representation, we encourage the use of a simple icon, but by definition, you can contribute what you want as a React component.
 If needed, this icon can open a modal with more complex UI.
 
@@ -19,16 +21,25 @@ To retrieve the _editingContextId_ and the _representationId_, you can use the f
 const { projectId: editingContextId, representationId } = useParams<EditProjectViewParams>();
 ----
 
-== Contribution
+=== Add the extension point to the registry
 
-Once the component has been developed, we need to contribute it to the `DiagramPaletteToolContext.Provider`.
-To do this, you need to add a `DiagramPaletteToolContribution` to the `DiagramPaletteToolContextValue` array pasted to the provider.
-The `DiagramPaletteToolContribution` need two props, the _component_ and a _canHandle_ function, this function will be called each time we create a palette on the diagram.
-It must return true only for the palette where the custom tool needs to be added.
-To compute that, this function has two parameters the _diagramId_ and the _diagramElementId_, note that for the diagram palette _diagramId_ = _diagramElementId_.
-To retrieve the node metadata, you can use the hook `useNodes` and filter all the node by the _diagramElementId_.
+To add your custom tool to the application, you have to use `ExtensionRegistry#addComponent` function with `paletteToolExtensionPoint` as `ComponentExtensionPoint`.
+By doing so, your component will be added to each diagram palette, most of the time you would like to declare your tool only on certain types of diagrams or nodes.
+To do this, it's up to your component to only return something according to the props data.
+Only return null in other cases.
 
-== Specify a reference position
+For example, to add our papaya tool, we declare the following extension point:
+
+[source,typescript]
+----
+const papayaExtensionRegistry = new ExtensionRegistry();
+papayaExtensionRegistry.addComponent(paletteToolExtensionPoint, {
+  identifier: 'papaya_customtool',
+  Component: PapayaOperationActivityLabelDetailToolContribution,
+});
+----
+
+=== Specify a reference position
 
 Depending on the tool purpose, the click coordinates may be necessary for the result action.
 For example, when the tool creates a new element on the diagram.
@@ -49,4 +60,3 @@ For the generic tool used in sirius-component, the provider is specified in the 
 
 The basic case is to use the position of the pallet as a reference position.
 These coordinates are available in the props `DiagramPaletteToolContributionComponentProps`.
-

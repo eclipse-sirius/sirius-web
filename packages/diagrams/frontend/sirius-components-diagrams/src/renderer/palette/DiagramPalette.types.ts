@@ -11,10 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { DiagramPaletteToolContributionProps } from './DiagramPaletteToolContribution.types';
-
-export type DiagramPaletteToolContextValue = React.ReactElement<DiagramPaletteToolContributionProps>[];
-
 export interface DiagramPaletteProps {
   diagramElementId: string;
   targetObjectId: string;

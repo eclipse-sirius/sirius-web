@@ -18,7 +18,6 @@ import { PalettePortalProps } from './PalettePortal.types';
 //The sibling dom element .react-flow__renderer have a zIndex of 4, so we set it here to 5 to have the palette in front of the diagram.
 const palettePortalStyle: React.CSSProperties = {
   zIndex: 5,
-  position: 'absolute',
 };
 
 export const PalettePortal = ({ children }: PalettePortalProps) => {
