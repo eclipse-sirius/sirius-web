@@ -35,6 +35,7 @@
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3781[#3781] [diagram] Allow the use of custom variables in the `VariableManager` initialized by the DiagramDescription.
 
 === Improvements
 

@@ -22,84 +22,84 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Label Text Align</b></em>', and
  * utility methods for working with them. <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelTextAlign()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelTextAlign()
  */
 public enum LabelTextAlign implements Enumerator {
     /**
      * The '<em><b>LEFT</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #LEFT_VALUE
      * @generated
      * @ordered
-     * @see #LEFT_VALUE
      */
     LEFT(0, "LEFT", "LEFT"),
 
     /**
      * The '<em><b>RIGHT</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #RIGHT_VALUE
      * @generated
      * @ordered
-     * @see #RIGHT_VALUE
      */
     RIGHT(1, "RIGHT", "RIGHT"),
 
     /**
      * The '<em><b>CENTER</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #CENTER_VALUE
      * @generated
      * @ordered
-     * @see #CENTER_VALUE
      */
     CENTER(2, "CENTER", "CENTER"),
 
     /**
      * The '<em><b>JUSTIFY</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #JUSTIFY_VALUE
      * @generated
      * @ordered
-     * @see #JUSTIFY_VALUE
      */
     JUSTIFY(3, "JUSTIFY", "JUSTIFY");
 
     /**
      * The '<em><b>LEFT</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #LEFT
      * @model
      * @generated
      * @ordered
-     * @see #LEFT
      */
     public static final int LEFT_VALUE = 0;
 
     /**
      * The '<em><b>RIGHT</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #RIGHT
      * @model
      * @generated
      * @ordered
-     * @see #RIGHT
      */
     public static final int RIGHT_VALUE = 1;
 
     /**
      * The '<em><b>CENTER</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #CENTER
      * @model
      * @generated
      * @ordered
-     * @see #CENTER
      */
     public static final int CENTER_VALUE = 2;
 
     /**
      * The '<em><b>JUSTIFY</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #JUSTIFY
      * @model
      * @generated
      * @ordered
-     * @see #JUSTIFY
      */
     public static final int JUSTIFY_VALUE = 3;
 
@@ -144,7 +144,7 @@ public enum LabelTextAlign implements Enumerator {
      *
      * @generated
      */
-    LabelTextAlign(int value, String name, String literal) {
+    private LabelTextAlign(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -155,7 +155,7 @@ public enum LabelTextAlign implements Enumerator {
      * <!-- end-user-doc -->
      *
      * @param literal
-     *         the literal.
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -174,7 +174,7 @@ public enum LabelTextAlign implements Enumerator {
      * end-user-doc -->
      *
      * @param name
-     *         the name.
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -193,7 +193,7 @@ public enum LabelTextAlign implements Enumerator {
      * <!-- end-user-doc -->
      *
      * @param value
-     *         the integer value.
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */

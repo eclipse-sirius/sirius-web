@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -74,6 +75,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.DiagramVariable;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
@@ -143,6 +145,16 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, converterContext)).toList();
         var toolConverter = new ToolConverter(this.objectService, this.editService, this.viewToolImageProvider, this.feedbackMessageService);
 
+        UnaryOperator<VariableManager> variableManagerInitializer = variableManager -> {
+            for (DiagramVariable diagramVariable : viewDiagramDescription.getDiagramVariables()) {
+                Result result = interpreter.evaluateExpression(variableManager.getVariables(), diagramVariable.getDefaultValueExpression());
+                if (result.asObject().isPresent()) {
+                    variableManager.put(diagramVariable.getName(), result.asObject().get());
+                }
+            }
+            return variableManager;
+        };
+
         var builder = DiagramDescription.newDiagramDescription(this.diagramIdProvider.getId(viewDiagramDescription))
                 .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
                 .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
@@ -163,7 +175,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .palettes(toolConverter.createPaletteBasedToolSections(viewDiagramDescription, converterContext))
-                .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext));
+                .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext))
+                .variableManagerInitializer(variableManagerInitializer);
 
         new ToolFinder().findDropNodeTool(viewDiagramDescription).ifPresent(dropNoteTool -> {
             builder.dropNodeHandler(this.createDropNodeHandler(dropNoteTool, converterContext));

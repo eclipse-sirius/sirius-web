@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.representations.Failure;
@@ -83,11 +84,9 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         this.toolService = Objects.requireNonNull(toolService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
 
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
     }
@@ -107,11 +106,9 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
 
         if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
             Diagram diagram = diagramContext.getDiagram();
-            // @formatter:off
             var optionalTool = this.toolService.findToolById(editingContext, diagram, input.toolId())
                     .filter(SingleClickOnDiagramElementTool.class::isInstance)
                     .map(SingleClickOnDiagramElementTool.class::cast);
-            // @formatter:on
             if (optionalTool.isPresent()) {
                 IStatus status = this.executeTool(editingContext, diagramContext, input.diagramElementId(), optionalTool.get(), input.startingPositionX(), input.startingPositionY(),
                         input.selectedObjectId());
@@ -144,11 +141,17 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
             edge = this.diagramQueryService.findEdgeById(diagram, diagramElementId);
         }
         Optional<Object> self = this.getCurrentContext(editingContext, diagramElementId, tool, diagram, node, edge);
+        var diagramDescription = this.representationDescriptionSearchService
+                .findById(editingContext, diagram.getDescriptionId())
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast)
+                .orElse(null);
 
         // Else, cannot find the node with the given optionalDiagramElementId
 
-        if (self.isPresent()) {
-            VariableManager variableManager = this.populateVariableManager(editingContext, diagramContext, node, edge, self);
+        if (self.isPresent() && diagramDescription != null) {
+
+            VariableManager variableManager = this.populateVariableManager(editingContext, diagramContext, diagramDescription, node, edge, self);
             String selectionDescriptionId = tool.getSelectionDescriptionId();
             if (selectionDescriptionId != null && selectedObjectId != null) {
                 var selectionDescriptionOpt = this.representationDescriptionSearchService.findById(editingContext, selectionDescriptionId);
@@ -182,7 +185,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         return self;
     }
 
-    private VariableManager populateVariableManager(IEditingContext editingContext, IDiagramContext diagramContext, Optional<Node> node, Optional<Edge> edge, Optional<Object> self) {
+    private VariableManager populateVariableManager(IEditingContext editingContext, IDiagramContext diagramContext, DiagramDescription diagramDescription, Optional<Node> node, Optional<Edge> edge, Optional<Object> self) {
         VariableManager variableManager = new VariableManager();
         variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
@@ -191,6 +194,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         variableManager.put(VariableManager.SELF, self.get());
         variableManager.put(Node.SELECTED_NODE, node.orElse(null));
         variableManager.put(Edge.SELECTED_EDGE, edge.orElse(null));
-        return variableManager;
+
+        var initializer = diagramDescription.getVariableManagerInitializer();
+        return initializer.apply(variableManager);
     }
 }

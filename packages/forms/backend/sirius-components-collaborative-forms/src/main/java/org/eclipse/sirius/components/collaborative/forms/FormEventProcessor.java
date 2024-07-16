@@ -95,7 +95,8 @@ public class FormEventProcessor implements IFormEventProcessor {
     public FormEventProcessor(FormEventProcessorConfiguration configuration,
             ISubscriptionManager subscriptionManager,
             IRepresentationSearchService representationSearchService,
-            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, IFormPostProcessor formPostProcessor) {
+            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
+            IFormPostProcessor formPostProcessor) {
         this.logger.trace("Creating the form event processor {}", configuration.formCreationParameters().getId());
         this.editingContext = Objects.requireNonNull(configuration.editingContext());
         this.objectService = Objects.requireNonNull(configuration.objectService());

@@ -139,6 +139,18 @@ public class DiagramDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for DiagramVariables.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder diagramVariables(org.eclipse.sirius.components.view.diagram.DiagramVariable ... values) {
+        for (org.eclipse.sirius.components.view.diagram.DiagramVariable value : values) {
+            this.getDiagramDescription().getDiagramVariables().add(value);
+        }
+        return this;
+    }
+
 
 }
 

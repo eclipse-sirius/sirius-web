@@ -31,6 +31,16 @@ public class DiagramBuilders {
     }
 
     /**
+     * Instantiate a DiagramVariableBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public DiagramVariableBuilder newDiagramVariable() {
+        return new DiagramVariableBuilder();
+    }
+
+    /**
      * Instantiate a NodeDescriptionBuilder .
      *
      * @author BuilderGenerator

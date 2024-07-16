@@ -30,11 +30,13 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange Layout
  * Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getDiagramVariables <em>Diagram
+ * Variables</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
  */
 public interface DiagramDescription extends RepresentationDescription {
 
@@ -42,10 +44,10 @@ public interface DiagramDescription extends RepresentationDescription {
      * Returns the value of the '<em><b>Auto Layout</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Auto Layout</em>' attribute.
-     * @model required="true"
-     * @generated
      * @see #setAutoLayout(boolean)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_AutoLayout()
+     * @model required="true"
+     * @generated
      */
     boolean isAutoLayout();
 
@@ -54,9 +56,9 @@ public interface DiagramDescription extends RepresentationDescription {
      * Layout</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Auto Layout</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Auto Layout</em>' attribute.
      * @see #isAutoLayout()
+     * @generated
      */
     void setAutoLayout(boolean value);
 
@@ -65,10 +67,10 @@ public interface DiagramDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Palette</em>' containment reference.
-     * @model containment="true"
-     * @generated
      * @see #setPalette(DiagramPalette)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Palette()
+     * @model containment="true"
+     * @generated
      */
     DiagramPalette getPalette();
 
@@ -77,9 +79,9 @@ public interface DiagramDescription extends RepresentationDescription {
      * <em>Palette</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Palette</em>' containment reference.
-     * @generated
+     *            the new value of the '<em>Palette</em>' containment reference.
      * @see #getPalette()
+     * @generated
      */
     void setPalette(DiagramPalette value);
 
@@ -89,9 +91,9 @@ public interface DiagramDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Node Descriptions</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_NodeDescriptions()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_NodeDescriptions()
      */
     EList<NodeDescription> getNodeDescriptions();
 
@@ -101,9 +103,9 @@ public interface DiagramDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Edge Descriptions</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_EdgeDescriptions()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_EdgeDescriptions()
      */
     EList<EdgeDescription> getEdgeDescriptions();
 
@@ -114,11 +116,11 @@ public interface DiagramDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Arrange Layout Direction</em>' attribute.
-     * @model default="UNDEFINED" required="true"
-     * @generated
      * @see org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection
      * @see #setArrangeLayoutDirection(ArrangeLayoutDirection)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_ArrangeLayoutDirection()
+     * @model default="UNDEFINED" required="true"
+     * @generated
      */
     ArrangeLayoutDirection getArrangeLayoutDirection();
 
@@ -128,11 +130,23 @@ public interface DiagramDescription extends RepresentationDescription {
      * Layout Direction</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Arrange Layout Direction</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Arrange Layout Direction</em>' attribute.
      * @see org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection
      * @see #getArrangeLayoutDirection()
+     * @generated
      */
     void setArrangeLayoutDirection(ArrangeLayoutDirection value);
+
+    /**
+     * Returns the value of the '<em><b>Diagram Variables</b></em>' containment reference list. The list contents are of
+     * type {@link org.eclipse.sirius.components.view.diagram.DiagramVariable}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Diagram Variables</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_DiagramVariables()
+     * @model containment="true"
+     * @generated
+     */
+    EList<DiagramVariable> getDiagramVariables();
 
 } // DiagramDescription

@@ -140,6 +140,7 @@ public final class FormDescription implements IRepresentationDescription {
             this.targetObjectIdProvider = formDescription.getTargetObjectIdProvider();
             this.canCreatePredicate = formDescription.getCanCreatePredicate();
             this.pageDescriptions = formDescription.getPageDescriptions();
+            this.variableManagerInitializer = formDescription.getVariableManagerInitializer();
         }
 
         public Builder id(String id) {

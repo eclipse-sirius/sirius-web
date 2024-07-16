@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DiagramVariable;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
@@ -102,8 +103,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @deprecated
+     * @generated
      */
     @Deprecated
     public static DiagramPackage getPackage() {
@@ -120,6 +121,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
         switch (eClass.getClassifierID()) {
             case DiagramPackage.DIAGRAM_DESCRIPTION:
                 return this.createDiagramDescription();
+            case DiagramPackage.DIAGRAM_VARIABLE:
+                return this.createDiagramVariable();
             case DiagramPackage.NODE_DESCRIPTION:
                 return this.createNodeDescription();
             case DiagramPackage.EDGE_DESCRIPTION:
@@ -270,6 +273,17 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     public DiagramDescription createDiagramDescription() {
         DiagramDescriptionImpl diagramDescription = new DiagramDescriptionImpl();
         return diagramDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DiagramVariable createDiagramVariable() {
+        DiagramVariableImpl diagramVariable = new DiagramVariableImpl();
+        return diagramVariable;
     }
 
     /**
