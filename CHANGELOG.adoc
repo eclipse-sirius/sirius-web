@@ -53,7 +53,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/1470[#1470] [view] Add EKeys to containment references in view metamodels.
 The ID of description was previously computed using the URI of the view description, which included its index in its containment reference, meaning that the ID wasn't stable if the view was updated.
 The new implementation still uses URIs, but URIs now have the following pattern: `//@descriptions[name='Form']`, which doesn't rely on the index anymore.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3778[#3778] [diagram] Export `EdgeData` in `sirius-components-diagrams/src/index.ts`
 
 
 == v2024.7.0
