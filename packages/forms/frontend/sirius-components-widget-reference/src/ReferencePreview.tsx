@@ -11,12 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { IconOverlay, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
-import {
-  GQLWidget,
-  PreviewWidgetComponent,
-  PreviewWidgetProps,
-  getTextDecorationLineValue,
-} from '@eclipse-sirius/sirius-components-forms';
+import { GQLWidget, PreviewWidgetProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import { GQLReferenceWidget } from '@eclipse-sirius/sirius-components-widget-reference';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
@@ -56,7 +51,7 @@ const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
   },
 }));
 
-export const ReferencePreview: PreviewWidgetComponent = ({ widget }: PreviewWidgetProps) => {
+export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
   let style: GQLReferenceWidgetStyle | null = null;
   if (isReferenceWidget(widget)) {
     const referenceWidget: GQLReferenceWidget = widget;

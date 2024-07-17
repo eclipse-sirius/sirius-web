@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
-import { WidgetContribution, widgetFields } from '@eclipse-sirius/sirius-components-forms';
+import { widgetFields } from '@eclipse-sirius/sirius-components-forms';
 
 const widgetContainerContent = (depth: number) => {
   if (depth === 0) {
@@ -42,9 +42,8 @@ const widgetContainerContent = (depth: number) => {
   }
 };
 
-export const formDescriptionEditorEventSubscription = (contributions: WidgetContribution[]) => {
-  return `
-  ${widgetFields(contributions)}
+export const formDescriptionEditorEventSubscription = `
+  ${widgetFields}
 
   fragment ifProperFields on FormDescriptionEditorIf {
     ...commonFields
@@ -112,7 +111,6 @@ export const formDescriptionEditorEventSubscription = (contributions: WidgetCont
     }
   }
 `;
-};
 
 export const addGroupMutation = gql`
   mutation addGroup($input: AddGroupInput!) {

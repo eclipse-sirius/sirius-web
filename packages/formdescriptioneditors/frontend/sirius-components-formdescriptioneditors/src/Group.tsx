@@ -17,19 +17,16 @@ import {
   getCSSColor,
   useDeletionConfirmationDialog,
   useSelection,
+  useData,
 } from '@eclipse-sirius/sirius-components-core';
-import {
-  GQLWidget,
-  PropertySectionContext,
-  PropertySectionContextValue,
-} from '@eclipse-sirius/sirius-components-forms';
+import { GQLWidget, widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import { GroupStyleProps } from '@eclipse-sirius/sirius-components-forms/src/groups/Group.types';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   addGroupMutation,
   addWidgetMutation,
@@ -339,7 +336,7 @@ export const Group = ({ page, group }: GroupProps) => {
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
   };
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
+  const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
@@ -399,7 +396,7 @@ export const Group = ({ page, group }: GroupProps) => {
 
     let widgetIndex = group.widgets.length;
 
-    if (isKind(id) || propertySectionsRegistry.getWidgetContributions().find((contrib) => contrib.name === id)) {
+    if (isKind(id) || widgetContributions.find((widgetContribution) => widgetContribution.name === id)) {
       const addWidgetInput: GQLAddWidgetInput = {
         id: crypto.randomUUID(),
         editingContextId,

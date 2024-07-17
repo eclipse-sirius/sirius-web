@@ -15,11 +15,8 @@ import { RepresentationComponentProps, Toast } from '@eclipse-sirius/sirius-comp
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Form } from '../form/Form';
-import { WidgetContribution } from '../form/Form.types';
-import { PropertySectionContext } from '../form/FormContext';
-import { PropertySectionContextValue } from '../form/FormContext.types';
 import { formRefreshedEventPayloadFragment } from '../form/FormEventFragments';
 import { GQLFormEventSubscription } from '../form/FormEventFragments.types';
 import { Page } from '../pages/Page';
@@ -36,8 +33,7 @@ import {
   formRepresentationMachine,
 } from './FormRepresentationMachine';
 
-const formEventSubscription = (contributions: Array<WidgetContribution>) =>
-  gql(`
+const formEventSubscription = gql(`
   subscription formEvent($input: FormEventInput!) {
     formEvent(input: $input) {
       __typename
@@ -46,7 +42,7 @@ const formEventSubscription = (contributions: Array<WidgetContribution>) =>
       }
     }
   }
-  ${formRefreshedEventPayloadFragment(contributions)}
+  ${formRefreshedEventPayloadFragment}
 `);
 
 const useFormRepresentationStyles = makeStyles((theme) => ({
@@ -104,32 +100,27 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
     }
   }, [representationId, formId, dispatch]);
 
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
-
-  const { error } = useSubscription<GQLFormEventSubscription>(
-    formEventSubscription(propertySectionsRegistry.getWidgetContributions()),
-    {
-      variables: {
-        input: {
-          id,
-          editingContextId,
-          formId: representationId,
-        },
+  const { error } = useSubscription<GQLFormEventSubscription>(formEventSubscription, {
+    variables: {
+      input: {
+        id,
+        editingContextId,
+        formId: representationId,
       },
-      fetchPolicy: 'no-cache',
-      onData: ({ data }) => {
-        const handleDataEvent: HandleSubscriptionResultEvent = {
-          type: 'HANDLE_SUBSCRIPTION_RESULT',
-          result: data,
-        };
-        dispatch(handleDataEvent);
-      },
-      onComplete: () => {
-        const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-        dispatch(completeEvent);
-      },
-    }
-  );
+    },
+    fetchPolicy: 'no-cache',
+    onData: ({ data }) => {
+      const handleDataEvent: HandleSubscriptionResultEvent = {
+        type: 'HANDLE_SUBSCRIPTION_RESULT',
+        result: data,
+      };
+      dispatch(handleDataEvent);
+    },
+    onComplete: () => {
+      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
+      dispatch(completeEvent);
+    },
+  });
 
   useEffect(() => {
     if (error) {

@@ -25,7 +25,7 @@ const shouldTransform = (document: DocumentNode) => {
 const isNodeStyleFragment = (field: FieldNode) => {
   if (field.name.value === 'style') {
     const inLinesFragment = field.selectionSet.selections
-      .filter((selection) => selection.kind === Kind.INLINE_FRAGMENT)
+      .filter((selection): selection is InlineFragmentNode => selection.kind === Kind.INLINE_FRAGMENT)
       .map((inlineFragment: InlineFragmentNode) => inlineFragment.typeCondition.name.value);
     if (inLinesFragment.includes('RectangularNodeStyle') && inLinesFragment.includes('ImageNodeStyle')) {
       return true;

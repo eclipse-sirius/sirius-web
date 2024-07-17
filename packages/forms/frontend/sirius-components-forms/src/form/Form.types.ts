@@ -33,9 +33,3 @@ export type PropertySectionComponentProps<W extends GQLWidget> = {
 export type PropertySectionComponent<W extends GQLWidget> = (
   props: PropertySectionComponentProps<W>
 ) => JSX.Element | null;
-
-export interface WidgetContribution {
-  name: string;
-  fields: string;
-  icon: JSX.Element;
-}

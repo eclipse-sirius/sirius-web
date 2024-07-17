@@ -13,13 +13,8 @@
 
 import { gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import {
-  formRefreshedEventPayloadFragment,
-  PropertySectionContext,
-  PropertySectionContextValue,
-  WidgetContribution,
-} from '@eclipse-sirius/sirius-components-forms';
-import { useContext, useEffect, useState } from 'react';
+import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
+import { useEffect, useState } from 'react';
 import {
   GQLDetailsEventInput,
   GQLDetailsEventPayload,
@@ -33,8 +28,7 @@ import {
 const isFormRefreshedEventPayload = (payload: GQLDetailsEventPayload): payload is GQLFormRefreshedEventPayload =>
   payload.__typename === 'FormRefreshedEventPayload';
 
-export const getDetailsViewEventSubscription = (contributions: WidgetContribution[]) => {
-  return `
+export const getDetailsViewEventSubscription = `
   subscription detailsEvent($input: DetailsEventInput!) {
     detailsEvent(input: $input) {
       __typename
@@ -43,9 +37,8 @@ export const getDetailsViewEventSubscription = (contributions: WidgetContributio
       }
     }
   }
-  ${formRefreshedEventPayloadFragment(contributions)}
+  ${formRefreshedEventPayloadFragment}
   `;
-};
 
 export const useDetailsViewSubscription = (
   editingContextId: string,
@@ -66,9 +59,6 @@ export const useDetailsViewSubscription = (
 
   const variables: GQLDetailsEventVariables = { input };
 
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
-  const formSubscription = getDetailsViewEventSubscription(propertySectionsRegistry.getWidgetContributions());
-
   const onData = ({ data }: OnDataOptions<GQLDetailsEventSubscription>) => {
     const { data: gqlDetailsEventSubscription } = data;
     if (gqlDetailsEventSubscription) {
@@ -83,7 +73,7 @@ export const useDetailsViewSubscription = (
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
   const { error, loading } = useSubscription<GQLDetailsEventSubscription, GQLDetailsEventVariables>(
-    gql(formSubscription),
+    gql(getDetailsViewEventSubscription),
     {
       variables,
       fetchPolicy: 'no-cache',
