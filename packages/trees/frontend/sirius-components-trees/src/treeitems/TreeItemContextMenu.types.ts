@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLTreeItem } from '../views/TreeView.types';
-import {
-  TreeItemContextMenuComponentProps,
-  TreeItemContextMenuContributionProps,
-} from './TreeItemContextMenuContribution.types';
-
-export type TreeItemContextMenuContextValue = React.ReactElement<TreeItemContextMenuContributionProps>[];
 
 export interface TreeItemContextMenuProps {
   menuAnchor: Element;
@@ -24,7 +18,6 @@ export interface TreeItemContextMenuProps {
   editingContextId: string;
   treeId: string;
   readOnly: boolean;
-  treeItemMenuContributionComponents: ((props: TreeItemContextMenuComponentProps) => JSX.Element)[];
   depth: number;
   onExpand: (id: string, depth: number) => void;
   onExpandAll: (treeItem: GQLTreeItem) => void;
@@ -35,6 +28,7 @@ export interface TreeItemContextMenuProps {
 export interface GQLDeleteTreeItemData {
   deleteTreeItem: GQLDeleteTreeItemPayload;
 }
+
 export interface GQLDeleteTreeItemPayload {
   __typename: string;
 }

@@ -25,10 +25,6 @@ import {
   NodeData,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
-  GQLTreeItem,
-  TreeItemContextMenuContext,
-  TreeItemContextMenuContextValue,
-  TreeItemContextMenuContribution,
   TreeToolBarContext,
   TreeToolBarContextValue,
   TreeToolBarContribution,
@@ -40,13 +36,10 @@ import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { useNodes } from 'reactflow';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
-import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
-import { DocumentTreeItemContextMenuContribution } from './DocumentTreeItemContextMenuContribution';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
 import {
   DiagramPaletteToolProviderProps,
   EditProjectViewParams,
-  TreeItemContextMenuProviderProps,
   TreeToolBarProviderProps,
 } from './EditProjectView.types';
 import {
@@ -56,7 +49,6 @@ import {
   SelectRepresentationEvent,
   editProjectViewMachine,
 } from './EditProjectViewMachine';
-import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
 import { ProjectContext } from './ProjectContext';
 import { PapayaOperationActivityLabelDetailToolContribution } from './ToolContributions/PapayaOperationActivityLabelDetailToolContribution';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
@@ -143,53 +135,22 @@ export const EditProjectView = () => {
       <ProjectContext.Provider value={{ project: context.project }}>
         <SelectionContextProvider initialSelection={initialSelection}>
           <EditProjectNavbar />
-          <TreeItemContextMenuProvider>
-            <TreeToolBarProvider>
-              <DiagramPaletteToolProvider>
-                <Workbench
-                  editingContextId={context.project.currentEditingContext.id}
-                  initialRepresentationSelected={context.representation}
-                  onRepresentationSelected={onRepresentationSelected}
-                  readOnly={false}
-                />
-              </DiagramPaletteToolProvider>
-            </TreeToolBarProvider>
-          </TreeItemContextMenuProvider>
+          <TreeToolBarProvider>
+            <DiagramPaletteToolProvider>
+              <Workbench
+                editingContextId={context.project.currentEditingContext.id}
+                initialRepresentationSelected={context.representation}
+                onRepresentationSelected={onRepresentationSelected}
+                readOnly={false}
+              />
+            </DiagramPaletteToolProvider>
+          </TreeToolBarProvider>
         </SelectionContextProvider>
       </ProjectContext.Provider>
     );
   }
 
   return <div className={classes.editProjectView}>{content}</div>;
-};
-
-const TreeItemContextMenuProvider = ({ children }: TreeItemContextMenuProviderProps) => {
-  const treeItemContextMenuContributions: TreeItemContextMenuContextValue = [
-    <TreeItemContextMenuContribution
-      canHandle={(treeId: string, item: GQLTreeItem) =>
-        treeId.startsWith('explorer://') && item.kind.startsWith('siriusWeb://document')
-      }
-      component={DocumentTreeItemContextMenuContribution}
-    />,
-    <TreeItemContextMenuContribution
-      canHandle={(treeId: string, item: GQLTreeItem) =>
-        treeId.startsWith('explorer://') && item.kind.startsWith('siriusComponents://semantic')
-      }
-      component={ObjectTreeItemContextMenuContribution}
-    />,
-    <TreeItemContextMenuContribution
-      canHandle={(treeId: string, item: GQLTreeItem) =>
-        treeId.startsWith('explorer://') && item.kind === 'siriusComponents://representation?type=Diagram'
-      }
-      component={DiagramTreeItemContextMenuContribution}
-    />,
-  ];
-
-  return (
-    <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
-      {children}
-    </TreeItemContextMenuContext.Provider>
-  );
 };
 
 const TreeToolBarProvider = ({ children }: TreeToolBarProviderProps) => {

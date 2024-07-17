@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,12 +24,16 @@ type Modal = 'CreateNewRootObject';
 
 export const DocumentTreeItemContextMenuContribution = forwardRef(
   (
-    { editingContextId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
+    { editingContextId, treeId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
     const [modal, setModal] = useState<Modal | null>(null);
     const { setSelection } = useSelection();
+
+    if (!treeId.startsWith('explorer://') || !item.kind.startsWith('siriusWeb://document')) {
+      return null;
+    }
 
     const onObjectCreated = (selection: Selection) => {
       setSelection(selection);
@@ -82,11 +86,3 @@ export const DocumentTreeItemContextMenuContribution = forwardRef(
     );
   }
 );
-
-/*
-if (!item.expanded && item.hasChildren) {
-      onExpand(item.id, depth);
-    }
-    const { id, label, kind } = object;
-    setSelection({ id, label, kind });
-*/

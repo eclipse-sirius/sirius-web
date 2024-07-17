@@ -30,7 +30,7 @@ import {
 } from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
-import { ExplorerView } from '@eclipse-sirius/sirius-components-trees';
+import { ExplorerView, treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import Filter from '@material-ui/icons/Filter';
@@ -43,6 +43,9 @@ import { createProjectAreaCardExtensionPoint } from '../views/project-browser/cr
 import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
 import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
 import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
+import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/DocumentTreeItemContextMenuContribution';
+import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/ObjectTreeItemContextMenuContribution';
+import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/DiagramTreeItemContextMenuContribution';
 
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
@@ -164,6 +167,26 @@ defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
 defaultExtensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
   identifier: `siriusweb_${diagramPanelActionExtensionPoint.identifier}_filter`,
   Component: DiagramFilter,
+});
+
+/*******************************************************************************
+ *
+ * Tree item context menu
+ *
+ * Used to register new components in the tree item context menu
+ *
+ *******************************************************************************/
+defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
+  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_document`,
+  Component: DocumentTreeItemContextMenuContribution,
+});
+defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
+  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_object`,
+  Component: ObjectTreeItemContextMenuContribution,
+});
+defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
+  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_diagram`,
+  Component: DiagramTreeItemContextMenuContribution,
 });
 
 export { defaultExtensionRegistry };

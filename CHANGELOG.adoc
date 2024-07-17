@@ -50,6 +50,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3702[#3702] [sirius-web] Improve the extensibility of the navigation bar menu by giving consumers of Sirius Web the ability to add new menu entries
 - https://github.com/eclipse-sirius/sirius-web/issues/3675[#3675] [core] Remove the label from the selection entry.
 + It also introduces a new hook to retrieve representation metadata
+- https://github.com/eclipse-sirius/sirius-web/issues/3785[#3785] [sirius-web] Add an extension point to contribute custom tree item menu entry
 - https://github.com/eclipse-sirius/sirius-web/issues/3774[#3774] [sirius-web] Add an extension point to contribute custom tools
 - https://github.com/eclipse-sirius/sirius-web/issues/3782[#3782] [sirius-web] Add an extension point to contribute custom widgets
 - https://github.com/eclipse-sirius/sirius-web/issues/1470[#1470] [view] Add EKeys to containment references in view metamodels.

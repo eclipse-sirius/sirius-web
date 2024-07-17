@@ -23,11 +23,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TreeItemProps, TreeItemState } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
-import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
-import { TreeItemContextMenuContextValue } from './TreeItemContextMenu.types';
+import { TreeItemContextMenu } from './TreeItemContextMenu';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { isFilterCandidate, splitText } from './filterTreeItem';
 
@@ -128,10 +127,6 @@ export const TreeItem = ({
 }: TreeItemProps) => {
   const classes = useTreeItemStyle();
 
-  const treeItemMenuContributionComponents = useContext<TreeItemContextMenuContextValue>(TreeItemContextMenuContext)
-    .filter((contribution) => contribution.props.canHandle(treeId, item))
-    .map((contribution) => contribution.props.component);
-
   const initialState: TreeItemState = {
     showContextMenu: false,
     menuAnchor: null,
@@ -216,7 +211,6 @@ export const TreeItem = ({
         treeId={treeId}
         item={item}
         readOnly={readOnly}
-        treeItemMenuContributionComponents={treeItemMenuContributionComponents}
         depth={depth}
         onExpand={onExpand}
         onExpandAll={onExpandAll}
@@ -409,7 +403,7 @@ export const TreeItem = ({
     }
   }
 
-  const shouldDisplayMoreButton = item.deletable || item.editable || treeItemMenuContributionComponents.length > 0;
+  const shouldDisplayMoreButton = true;
 
   let currentTreeItem: JSX.Element | null;
   if (textToFilter && isFilterCandidate(item, textToFilter)) {
