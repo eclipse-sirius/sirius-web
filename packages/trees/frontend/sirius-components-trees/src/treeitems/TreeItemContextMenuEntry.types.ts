@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TreeItemContextMenuContributionProps } from './TreeItemContextMenuContribution.types';
+import { GQLTreeItem } from '../views/TreeView.types';
 
-export const TreeItemContextMenuContribution = ({}: TreeItemContextMenuContributionProps) => {
-  return null; // Do nothing on purpose for now
-};
+export interface TreeItemContextMenuComponentProps {
+  editingContextId: string;
+  treeId: string;
+  item: GQLTreeItem;
+  readOnly: boolean;
+  expandItem: () => void;
+  onClose: () => void;
+  key: string;
+}

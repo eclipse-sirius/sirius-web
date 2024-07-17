@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { TreeItemActionProps } from '../treeitems/TreeItemAction.types';
 
 export interface TreeViewComponentProps extends WorkbenchViewComponentProps {
   treeId: string;
@@ -21,6 +22,7 @@ export interface TreeViewComponentProps extends WorkbenchViewComponentProps {
   textToHighlight: string | null;
   textToFilter: string | null;
   markedItemIds?: string[];
+  treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
 }
 
 export interface TreeConverter {

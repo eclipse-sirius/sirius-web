@@ -11,7 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { Toast, useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
+import {
+  Toast,
+  useDeletionConfirmationDialog,
+  useComponents,
+  ComponentExtension,
+} from '@eclipse-sirius/sirius-components-core';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
@@ -19,18 +24,18 @@ import MenuItem from '@material-ui/core/MenuItem';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import UnfoldMore from '@material-ui/icons/UnfoldMore';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   GQLDeleteTreeItemData,
   GQLDeleteTreeItemInput,
   GQLDeleteTreeItemPayload,
   GQLDeleteTreeItemVariables,
   GQLErrorPayload,
-  TreeItemContextMenuContextValue,
   TreeItemContextMenuProps,
   TreeItemContextMenuState,
 } from './TreeItemContextMenu.types';
-import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuContribution.types';
+import { treeItemContextMenuEntryExtensionPoint } from './TreeItemContextMenuEntryExtensionPoints';
+import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuEntry.types';
 
 const deleteTreeItemMutation = gql`
   mutation deleteTreeItem($input: DeleteTreeItemInput!) {
@@ -46,15 +51,12 @@ const deleteTreeItemMutation = gql`
 const isErrorPayload = (payload: GQLDeleteTreeItemPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-export const TreeItemContextMenuContext = React.createContext<TreeItemContextMenuContextValue>([]);
-
 export const TreeItemContextMenu = ({
   menuAnchor,
   editingContextId,
   treeId,
   item,
   readOnly,
-  treeItemMenuContributionComponents,
   depth,
   onExpand,
   onExpandAll,
@@ -64,6 +66,10 @@ export const TreeItemContextMenu = ({
   const [state, setState] = useState<TreeItemContextMenuState>({ message: null });
 
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+
+  const treeItemMenuContextComponents: ComponentExtension<TreeItemContextMenuComponentProps>[] = useComponents(
+    treeItemContextMenuEntryExtensionPoint
+  );
 
   const expandItem = () => {
     if (!item.expanded && item.hasChildren) {
@@ -119,19 +125,17 @@ export const TreeItemContextMenu = ({
           vertical: 'bottom',
           horizontal: 'right',
         }}>
-        {treeItemMenuContributionComponents.map((component, index) => {
-          const props: TreeItemContextMenuComponentProps = {
-            editingContextId,
-            item,
-            readOnly,
-            onClose,
-            expandItem,
-            key: index.toString(),
-            treeId: treeId,
-          };
-          const element = React.createElement(component, props);
-          return element;
-        })}
+        {treeItemMenuContextComponents.map(({ Component: TreeItemMenuContextComponent }, index) => (
+          <TreeItemMenuContextComponent
+            editingContextId={editingContextId}
+            item={item}
+            readOnly={readOnly}
+            onClose={onClose}
+            expandItem={expandItem}
+            key={index.toString()}
+            treeId={treeId}
+          />
+        ))}
         {item.hasChildren ? (
           <MenuItem
             key="expand-all"

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,11 +24,15 @@ type Modal = 'CreateNewObject' | 'CreateNewRepresentation';
 
 export const ObjectTreeItemContextMenuContribution = forwardRef(
   (
-    { editingContextId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
+    { editingContextId, treeId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const [modal, setModal] = useState<Modal>(null);
     const { setSelection } = useSelection();
+
+    if (!treeId.startsWith('explorer://') || !item.kind.startsWith('siriusComponents://semantic')) {
+      return null;
+    }
 
     const onObjectCreated = (selection: Selection) => {
       setSelection(selection);

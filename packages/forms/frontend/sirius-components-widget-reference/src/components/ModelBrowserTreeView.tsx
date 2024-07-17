@@ -10,8 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TreeView } from '@eclipse-sirius/sirius-components-trees';
+
+import { TreeView, TreeItemActionProps } from '@eclipse-sirius/sirius-components-trees';
+import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
+import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import { useState } from 'react';
 import { ModelBrowserFilterBar } from './ModelBrowserFilterBar';
 import { ModelBrowserTreeViewProps, ModelBrowserTreeViewState } from './ModelBrowserTreeView.types';
@@ -65,8 +68,26 @@ export const ModelBrowserTreeView = ({
           textToFilter={state.filterBarText}
           textToHighlight={state.filterBarText}
           markedItemIds={markedItemIds}
+          treeItemActionRender={(props) => <WidgetReferenceTreeItemAction {...props} />}
         />
       </div>
     </>
+  );
+};
+
+const WidgetReferenceTreeItemAction = ({ onExpandAll, item, isHovered }: TreeItemActionProps) => {
+  if (!onExpandAll || !item || !item.hasChildren || !isHovered) {
+    return null;
+  }
+  return (
+    <IconButton
+      size="small"
+      data-testid="expand-all"
+      title="expand all"
+      onClick={() => {
+        onExpandAll(item);
+      }}>
+      <UnfoldMoreIcon style={{ fontSize: 12 }} />
+    </IconButton>
   );
 };
