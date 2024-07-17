@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,13 +14,9 @@ package org.eclipse.sirius.components.diagrams.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Ratio;
 
 /**
  * Custom assertion class used to perform some tests on an edge.
@@ -55,47 +51,6 @@ public class EdgeAssert extends AbstractAssert<EdgeAssert, Edge> {
         assertThat(actualStyle.getTargetArrow()).isEqualTo(style.getTargetArrow());
         assertThat(actualStyle.getColor()).isEqualTo(style.getColor());
 
-        if (layoutPolicy == LayoutPolicy.WITH_LAYOUT) {
-            assertThat(this.actual.getRoutingPoints()).hasSize(edge.getRoutingPoints().size());
-            int size = this.actual.getRoutingPoints().size();
-            for (int i = 0; i < size; i++) {
-                Position actualRoutingPoint = this.actual.getRoutingPoints().get(i);
-                Position routingPoint = edge.getRoutingPoints().get(i);
-
-                if (actualRoutingPoint == null) {
-                    this.failWithMessage("Expected routing point to be <'{'x: %.2f, y: %.2f'}'> but was null", routingPoint.getX(), routingPoint.getY());
-                } else {
-                    if (actualRoutingPoint.getX() != routingPoint.getX()) {
-                        this.failWithMessage("Expected routing point's x to be <%.2f> but was <%.2f>", actualRoutingPoint.getX(), routingPoint.getX());
-                    }
-                    if (actualRoutingPoint.getY() != routingPoint.getY()) {
-                        this.failWithMessage("Expected routing point's y to be <%.2f> but was <%.2f>", actualRoutingPoint.getY(), routingPoint.getY());
-                    }
-                }
-            }
-        }
-
-        return this;
-    }
-
-    public EdgeAssert goesThrough(List<Position> routingPoints) {
-        assertThat(this.actual.getRoutingPoints()).hasSameSizeAs(routingPoints);
-
-        for (int i = 0; i < routingPoints.size(); i++) {
-            Position routingPoint = routingPoints.get(i);
-            Position actualRoutingPoint = this.actual.getRoutingPoints().get(i);
-            assertThat(actualRoutingPoint).isEqualTo(routingPoint);
-        }
-        return this;
-    }
-
-    public EdgeAssert hasSourceAnchorRelativePositionRatio(Ratio expectedRatio) {
-        assertThat(this.actual.getSourceAnchorRelativePosition()).isEqualTo(expectedRatio);
-        return this;
-    }
-
-    public EdgeAssert hasTargetAnchorRelativePositionRatio(Ratio expectedRatio) {
-        assertThat(this.actual.getTargetAnchorRelativePosition()).isEqualTo(expectedRatio);
         return this;
     }
 

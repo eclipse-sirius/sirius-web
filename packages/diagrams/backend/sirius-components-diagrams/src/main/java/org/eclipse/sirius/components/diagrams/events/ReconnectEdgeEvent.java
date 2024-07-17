@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,6 @@ package org.eclipse.sirius.components.diagrams.events;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.diagrams.Position;
-
 /**
  * Represents a reconnect edge event.
  *
@@ -27,15 +25,9 @@ public class ReconnectEdgeEvent implements IDiagramEvent {
 
     private final ReconnectEdgeKind kind;
 
-    private final String newEdgeEndId;
-
-    private final Position newEdgeEndAnchor;
-
-    public ReconnectEdgeEvent(ReconnectEdgeKind kind, String previousEdgeId, String newEdgeEndId, Position newEdgeEndAnchor) {
+    public ReconnectEdgeEvent(ReconnectEdgeKind kind, String previousEdgeId) {
         this.kind = Objects.requireNonNull(kind);
         this.edgeId = Objects.requireNonNull(previousEdgeId);
-        this.newEdgeEndId = Objects.requireNonNull(newEdgeEndId);
-        this.newEdgeEndAnchor = Objects.requireNonNull(newEdgeEndAnchor);
     }
 
     public ReconnectEdgeKind getKind() {
@@ -48,13 +40,5 @@ public class ReconnectEdgeEvent implements IDiagramEvent {
 
     public void setEdgeId(String reconnectedEdgeId) {
         this.edgeId = Objects.requireNonNull(reconnectedEdgeId);
-    }
-
-    public String getNewEdgeEndId() {
-        return this.newEdgeEndId;
-    }
-
-    public Position getNewEdgeEndAnchor() {
-        return this.newEdgeEndAnchor;
     }
 }

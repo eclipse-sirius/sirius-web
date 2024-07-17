@@ -22,8 +22,6 @@ import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
@@ -70,7 +68,6 @@ public class RelationBasedSourceNodesProviderTests {
     }
 
     private Element createNodeElement(String descriptionId) {
-        // @formatter:off
         INodeStyle style = ImageNodeStyle.newImageNodeStyle()
                 .imageURL("")
                 .build();
@@ -82,14 +79,11 @@ public class RelationBasedSourceNodesProviderTests {
                 .targetObjectLabel("targetObjectLabel")
                 .descriptionId(descriptionId)
                 .style(style)
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
                 .children(List.of())
                 .state(ViewModifier.Normal)
                 .modifiers(Set.of())
                 .collapsingState(CollapsingState.EXPANDED)
                 .build();
-        // @formatter:on
         return new Element(NodeElementProps.TYPE, nodeElementProps);
     }
 }

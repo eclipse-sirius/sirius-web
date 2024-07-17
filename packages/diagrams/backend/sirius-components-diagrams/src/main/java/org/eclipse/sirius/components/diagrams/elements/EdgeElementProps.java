@@ -20,8 +20,6 @@ import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
@@ -57,12 +55,6 @@ public final class EdgeElementProps implements IProps {
     private ViewModifier state;
 
     private EdgeStyle style;
-
-    private List<Position> routingPoints;
-
-    private Ratio sourceAnchorRelativePosition;
-
-    private Ratio targetAnchorRelativePosition;
 
     private boolean centerLabelEditable;
 
@@ -120,18 +112,6 @@ public final class EdgeElementProps implements IProps {
         return this.style;
     }
 
-    public List<Position> getRoutingPoints() {
-        return this.routingPoints;
-    }
-
-    public Ratio getSourceAnchorRelativePosition() {
-        return this.sourceAnchorRelativePosition;
-    }
-
-    public Ratio getTargetAnchorRelativePosition() {
-        return this.targetAnchorRelativePosition;
-    }
-
     public boolean isCenterLabelEditable() {
         return this.centerLabelEditable;
     }
@@ -176,12 +156,6 @@ public final class EdgeElementProps implements IProps {
         private ViewModifier state;
 
         private EdgeStyle style;
-
-        private List<Position> routingPoints;
-
-        private Ratio sourceAnchorRelativePosition;
-
-        private Ratio targetAnchorRelativePosition;
 
         private boolean centerLabelEditable;
 
@@ -241,21 +215,6 @@ public final class EdgeElementProps implements IProps {
             return this;
         }
 
-        public Builder routingPoints(List<Position> routingPoints) {
-            this.routingPoints = Objects.requireNonNull(routingPoints);
-            return this;
-        }
-
-        public Builder sourceAnchorRelativePosition(Ratio sourceAnchorRelativePosition) {
-            this.sourceAnchorRelativePosition = Objects.requireNonNull(sourceAnchorRelativePosition);
-            return this;
-        }
-
-        public Builder targetAnchorRelativePosition(Ratio targetAnchorRelativePosition) {
-            this.targetAnchorRelativePosition = Objects.requireNonNull(targetAnchorRelativePosition);
-            return this;
-        }
-
         public Builder centerLabelEditable(boolean centerLabelEditable) {
             this.centerLabelEditable = centerLabelEditable;
             return this;
@@ -279,9 +238,6 @@ public final class EdgeElementProps implements IProps {
             edgeElementProps.modifiers = Objects.requireNonNull(this.modifiers);
             edgeElementProps.state = Objects.requireNonNull(this.state);
             edgeElementProps.style = Objects.requireNonNull(this.style);
-            edgeElementProps.routingPoints = Objects.requireNonNull(this.routingPoints);
-            edgeElementProps.sourceAnchorRelativePosition = Objects.requireNonNull(this.sourceAnchorRelativePosition);
-            edgeElementProps.targetAnchorRelativePosition = Objects.requireNonNull(this.targetAnchorRelativePosition);
             edgeElementProps.centerLabelEditable = this.centerLabelEditable;
             edgeElementProps.children = this.children;
             return edgeElementProps;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,12 +31,6 @@ public final class Label {
 
     private String text;
 
-    private Position position;
-
-    private Size size;
-
-    private Position alignment;
-
     private LabelStyle style;
 
     private Label() {
@@ -53,18 +47,6 @@ public final class Label {
 
     public String getText() {
         return this.text;
-    }
-
-    public Position getPosition() {
-        return this.position;
-    }
-
-    public Size getSize() {
-        return this.size;
-    }
-
-    public Position getAlignment() {
-        return this.alignment;
     }
 
     public LabelStyle getStyle() {
@@ -98,12 +80,6 @@ public final class Label {
 
         private String text;
 
-        private Position position;
-
-        private Size size;
-
-        private Position alignment;
-
         private LabelStyle style;
 
         private Builder(String id) {
@@ -114,9 +90,6 @@ public final class Label {
             this.id = label.getId();
             this.type = label.getType();
             this.text = label.getText();
-            this.position = label.getPosition();
-            this.size = label.getSize();
-            this.alignment = label.getAlignment();
             this.style = label.getStyle();
         }
 
@@ -130,21 +103,6 @@ public final class Label {
             return this;
         }
 
-        public Builder position(Position position) {
-            this.position = Objects.requireNonNull(position);
-            return this;
-        }
-
-        public Builder size(Size size) {
-            this.size = Objects.requireNonNull(size);
-            return this;
-        }
-
-        public Builder alignment(Position aligment) {
-            this.alignment = Objects.requireNonNull(aligment);
-            return this;
-        }
-
         public Builder style(LabelStyle style) {
             this.style = Objects.requireNonNull(style);
             return this;
@@ -155,9 +113,6 @@ public final class Label {
             label.id = Objects.requireNonNull(this.id);
             label.type = Objects.requireNonNull(this.type);
             label.text = Objects.requireNonNull(this.text);
-            label.position = Objects.requireNonNull(this.position);
-            label.size = Objects.requireNonNull(this.size);
-            label.alignment = Objects.requireNonNull(this.alignment);
             label.style = Objects.requireNonNull(this.style);
             return label;
         }

@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.diagrams;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -65,12 +64,6 @@ public final class Edge implements IDiagramElement {
     private ViewModifier state;
 
     private EdgeStyle style;
-
-    private List<Position> routingPoints;
-
-    private Ratio sourceAnchorRelativePosition;
-
-    private Ratio targetAnchorRelativePosition;
 
     private boolean centerLabelEditable;
 
@@ -144,18 +137,6 @@ public final class Edge implements IDiagramElement {
         return this.style;
     }
 
-    public List<Position> getRoutingPoints() {
-        return this.routingPoints;
-    }
-
-    public Ratio getSourceAnchorRelativePosition() {
-        return this.sourceAnchorRelativePosition;
-    }
-
-    public Ratio getTargetAnchorRelativePosition() {
-        return this.targetAnchorRelativePosition;
-    }
-
     public boolean isCenterLabelEditable() {
         return this.centerLabelEditable;
     }
@@ -203,12 +184,6 @@ public final class Edge implements IDiagramElement {
 
         private EdgeStyle style;
 
-        private List<Position> routingPoints;
-
-        private Ratio sourceAnchorRelativePosition;
-
-        private Ratio targetAnchorRelativePosition;
-
         private boolean centerLabelEditable;
 
         private Builder(String id) {
@@ -230,9 +205,6 @@ public final class Edge implements IDiagramElement {
             this.modifiers = edge.getModifiers();
             this.state = edge.getState();
             this.style = edge.getStyle();
-            this.routingPoints = edge.getRoutingPoints();
-            this.sourceAnchorRelativePosition = edge.getSourceAnchorRelativePosition();
-            this.targetAnchorRelativePosition = edge.getTargetAnchorRelativePosition();
             this.centerLabelEditable = edge.isCenterLabelEditable();
         }
 
@@ -301,21 +273,6 @@ public final class Edge implements IDiagramElement {
             return this;
         }
 
-        public Builder routingPoints(List<Position> routingPoints) {
-            this.routingPoints = Objects.requireNonNull(routingPoints);
-            return this;
-        }
-
-        public Builder sourceAnchorRelativePosition(Ratio sourcePosition) {
-            this.sourceAnchorRelativePosition = Objects.requireNonNull(sourcePosition);
-            return this;
-        }
-
-        public Builder targetAnchorRelativePosition(Ratio targetPosition) {
-            this.targetAnchorRelativePosition = Objects.requireNonNull(targetPosition);
-            return this;
-        }
-
         public Builder centerLabelEditable(boolean centerLabelEditable) {
             this.centerLabelEditable = centerLabelEditable;
             return this;
@@ -337,9 +294,6 @@ public final class Edge implements IDiagramElement {
             edge.modifiers = Objects.requireNonNull(this.modifiers);
             edge.state = Objects.requireNonNull(this.state);
             edge.style = Objects.requireNonNull(this.style);
-            edge.routingPoints = Objects.requireNonNull(this.routingPoints);
-            edge.sourceAnchorRelativePosition = Objects.requireNonNull(this.sourceAnchorRelativePosition);
-            edge.targetAnchorRelativePosition = Objects.requireNonNull(this.targetAnchorRelativePosition);
             edge.centerLabelEditable = this.centerLabelEditable;
             return edge;
         }

@@ -22,8 +22,6 @@ import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 
 /**
@@ -53,9 +51,6 @@ public final class LabelBuilder {
         return Label.newLabel(UUID.randomUUID().toString())
                 .type(Objects.requireNonNull(labelType).getValue())
                 .text(Objects.requireNonNull(text))
-                .alignment(Position.UNDEFINED)
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
                 .style(labelStyle)
                 .build();
     }

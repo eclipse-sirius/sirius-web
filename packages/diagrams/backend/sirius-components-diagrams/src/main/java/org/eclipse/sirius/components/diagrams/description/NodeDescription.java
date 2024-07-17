@@ -23,7 +23,6 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -59,8 +58,6 @@ public final class NodeDescription implements IDiagramElementDescription {
     private Function<VariableManager, INodeStyle> styleProvider;
 
     private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider;
-
-    private Function<VariableManager, Size> sizeProvider;
 
     private UserResizableDirection userResizable;
 
@@ -151,10 +148,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     public Function<VariableManager, ILayoutStrategy> getChildrenLayoutStrategyProvider() {
         return this.childrenLayoutStrategyProvider;
-    }
-
-    public Function<VariableManager, Size> getSizeProvider() {
-        return this.sizeProvider;
     }
 
     public UserResizableDirection getUserResizable() {
@@ -255,8 +248,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider;
 
-        private Function<VariableManager, Size> sizeProvider;
-
         private UserResizableDirection userResizable = UserResizableDirection.BOTH;
 
         private List<NodeDescription> borderNodeDescriptions = new ArrayList<>();
@@ -302,7 +293,6 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.insideLabelDescription = nodeDescription.getInsideLabelDescription();
             this.outsideLabelDescriptions = nodeDescription.getOutsideLabelDescriptions();
             this.styleProvider = nodeDescription.getStyleProvider();
-            this.sizeProvider = nodeDescription.getSizeProvider();
             this.childrenLayoutStrategyProvider = nodeDescription.getChildrenLayoutStrategyProvider();
             this.borderNodeDescriptions = nodeDescription.getBorderNodeDescriptions();
             this.childNodeDescriptions = nodeDescription.getChildNodeDescriptions();
@@ -373,11 +363,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         public Builder childrenLayoutStrategyProvider(Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider) {
             this.childrenLayoutStrategyProvider = Objects.requireNonNull(childrenLayoutStrategyProvider);
-            return this;
-        }
-
-        public Builder sizeProvider(Function<VariableManager, Size> sizeProvider) {
-            this.sizeProvider = Objects.requireNonNull(sizeProvider);
             return this;
         }
 
@@ -469,7 +454,6 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.insideLabelDescription = this.insideLabelDescription; // Optional on purpose
             nodeDescription.outsideLabelDescriptions = Objects.requireNonNull(this.outsideLabelDescriptions);
             nodeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
-            nodeDescription.sizeProvider = Objects.requireNonNull(this.sizeProvider);
             nodeDescription.userResizable = Objects.requireNonNull(this.userResizable);
             nodeDescription.childrenLayoutStrategyProvider = Objects.requireNonNull(this.childrenLayoutStrategyProvider);
             nodeDescription.borderNodeDescriptions = Objects.requireNonNull(this.borderNodeDescriptions);

@@ -32,10 +32,7 @@ import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.representations.Success;
@@ -58,8 +55,6 @@ public class TestDiagramBuilder {
                 .label("diagramLabel")
                 .descriptionId(UUID.randomUUID().toString())
                 .targetObjectId("diagramTargetObjectId")
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
                 .nodes(List.of())
                 .edges(List.of())
                 .build();
@@ -90,8 +85,6 @@ public class TestDiagramBuilder {
                 .descriptionId(UUID.randomUUID().toString())
                 .style(this.getRectangularNodeStyle())
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .modifiers(Set.of())
@@ -141,11 +134,8 @@ public class TestDiagramBuilder {
                 .sourceId(sourceId)
                 .targetId(targetId)
                 .style(style)
-                .routingPoints(List.of())
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
-                .sourceAnchorRelativePosition(Ratio.UNDEFINED)
-                .targetAnchorRelativePosition(Ratio.UNDEFINED)
                 .build();
     }
 

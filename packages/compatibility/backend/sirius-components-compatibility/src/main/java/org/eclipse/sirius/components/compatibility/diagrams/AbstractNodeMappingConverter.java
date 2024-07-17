@@ -33,7 +33,6 @@ import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -120,7 +119,6 @@ public class AbstractNodeMappingConverter {
             }
             return result;
         };
-        Function<VariableManager, Size> sizeProvider = variableManager -> Size.UNDEFINED;
 
         String domainClass = abstractNodeMapping.getDomainClass();
         String semanticCandidatesExpression = abstractNodeMapping.getSemanticCandidatesExpression();
@@ -158,7 +156,6 @@ public class AbstractNodeMappingConverter {
                 .insideLabelDescription(insideLabelDescription)
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
-                .sizeProvider(sizeProvider)
                 .borderNodeDescriptions(borderNodeDescriptions)
                 .childNodeDescriptions(childNodeDescriptions)
                 .collapsible(collapsible)

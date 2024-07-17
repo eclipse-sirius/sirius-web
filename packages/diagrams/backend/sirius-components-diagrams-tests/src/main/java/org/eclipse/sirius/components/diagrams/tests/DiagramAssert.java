@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,6 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 
 /**
  * Custom assertion class used to performs some tests on a diagram.
@@ -104,41 +102,8 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
             assertThat(this.actual.getDescriptionId()).isEqualTo(diagram.getDescriptionId());
             assertThat(this.actual.getLabel()).isEqualTo(diagram.getLabel());
 
-            if (layoutPolicy == LayoutPolicy.WITH_LAYOUT) {
-                this.hasBounds(diagram.getPosition().getX(), diagram.getPosition().getY(), diagram.getSize().getWidth(), diagram.getSize().getHeight());
-            }
         } else {
             this.isNull();
-        }
-
-        return this;
-    }
-
-    public DiagramAssert hasBounds(double x, double y, double width, double height) {
-        this.isNotNull();
-
-        Size size = this.actual.getSize();
-        if (size == null) {
-            this.failWithMessage("Expected diagram's size to be <'{'width: %.2f, height: %.2f'}'> but was null", width, height);
-        } else {
-            if (width != size.getWidth()) {
-                this.failWithMessage("Expected diagram's width to be <%.2f> but was <%.2f>", width, size.getWidth());
-            }
-            if (height != size.getHeight()) {
-                this.failWithMessage("Expected diagram's height to be <%.2f> but was <%.2f>", height, size.getHeight());
-            }
-        }
-
-        Position position = this.actual.getPosition();
-        if (position == null) {
-            this.failWithMessage("Expected diagram's position to be <'{'x: %.2f, y: %.2f'}'> but was null", x, y);
-        } else {
-            if (x != position.getX()) {
-                this.failWithMessage("Expected diagram's x to be <%.2f> but was <%.2f>", x, position.getX());
-            }
-            if (y != position.getY()) {
-                this.failWithMessage("Expected diagram's y to be <%.2f> but was <%.2f>", y, position.getY());
-            }
         }
 
         return this;
@@ -192,14 +157,5 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
             }
             ids.add(label.getId());
         }
-    }
-
-    public DiagramAssert hasNoOverflow() {
-        List<Node> nodes = this.actual.getNodes();
-        for (Node node : nodes) {
-            assertThat(node).hasNoOverflow();
-        }
-
-        return this;
     }
 }

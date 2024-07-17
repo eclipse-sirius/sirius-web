@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClic
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorToolsQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
@@ -248,8 +247,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
                     diagramId.get(),
                     edgeId.get(),
                     siriusWebInfrastructureNodeId.get(),
-                    ReconnectEdgeKind.SOURCE,
-                    Position.UNDEFINED
+                    ReconnectEdgeKind.SOURCE
             );
             var result = this.reconnectEdgeMutationRunner.run(input);
             String typename = JsonPath.read(result, "$.data.reconnectEdge.__typename");
@@ -311,8 +309,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
                     diagramId.get(),
                     edgeId.get(),
                     siriusWebInfrastructureNodeId.get(),
-                    ReconnectEdgeKind.TARGET,
-                    Position.UNDEFINED
+                    ReconnectEdgeKind.TARGET
             );
             var result = this.reconnectEdgeMutationRunner.run(input);
             String typename = JsonPath.read(result, "$.data.reconnectEdge.__typename");

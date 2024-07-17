@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.representations.IProps;
 
 /**
@@ -37,12 +35,6 @@ public final class LabelElementProps implements IProps {
 
     private String text;
 
-    private Position position;
-
-    private Size size;
-
-    private Position alignment;
-
     private LabelStyle style;
 
     private LabelElementProps() {
@@ -59,18 +51,6 @@ public final class LabelElementProps implements IProps {
 
     public String getText() {
         return this.text;
-    }
-
-    public Position getPosition() {
-        return this.position;
-    }
-
-    public Size getSize() {
-        return this.size;
-    }
-
-    public Position getAlignment() {
-        return this.alignment;
     }
 
     public LabelStyle getStyle() {
@@ -100,12 +80,6 @@ public final class LabelElementProps implements IProps {
 
         private String text;
 
-        private Position position;
-
-        private Size size;
-
-        private Position alignment;
-
         private LabelStyle style;
 
         private Builder(String id) {
@@ -122,21 +96,6 @@ public final class LabelElementProps implements IProps {
             return this;
         }
 
-        public Builder position(Position position) {
-            this.position = Objects.requireNonNull(position);
-            return this;
-        }
-
-        public Builder size(Size size) {
-            this.size = Objects.requireNonNull(size);
-            return this;
-        }
-
-        public Builder alignment(Position aligment) {
-            this.alignment = Objects.requireNonNull(aligment);
-            return this;
-        }
-
         public Builder style(LabelStyle style) {
             this.style = Objects.requireNonNull(style);
             return this;
@@ -147,9 +106,6 @@ public final class LabelElementProps implements IProps {
             labelElementProps.id = Objects.requireNonNull(this.id);
             labelElementProps.type = Objects.requireNonNull(this.type);
             labelElementProps.text = Objects.requireNonNull(this.text);
-            labelElementProps.position = Objects.requireNonNull(this.position);
-            labelElementProps.size = Objects.requireNonNull(this.size);
-            labelElementProps.alignment = Objects.requireNonNull(this.alignment);
             labelElementProps.style = Objects.requireNonNull(this.style);
             return labelElementProps;
         }

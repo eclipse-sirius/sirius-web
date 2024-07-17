@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 
 /**
@@ -59,9 +58,5 @@ public class DiagramAssertions extends Assertions {
 
     public static LabelStyleAssert assertThat(LabelStyle labelStyle) {
         return new LabelStyleAssert(labelStyle);
-    }
-
-    public static PositionAssert assertThat(Position position) {
-        return new PositionAssert(position);
     }
 }

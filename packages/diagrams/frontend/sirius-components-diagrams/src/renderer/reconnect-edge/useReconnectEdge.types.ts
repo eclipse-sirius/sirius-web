@@ -28,7 +28,6 @@ export interface GQLReconnectEdgeInput {
   edgeId: string;
   newEdgeEndId: string;
   reconnectEdgeKind: GQLReconnectKind;
-  newEdgeEndPosition: Position;
 }
 
 export interface Position {

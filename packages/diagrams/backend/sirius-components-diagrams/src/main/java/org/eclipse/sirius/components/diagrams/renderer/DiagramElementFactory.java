@@ -75,8 +75,6 @@ public class DiagramElementFactory implements IElementFactory {
                     .targetObjectId(diagramElementProps.getTargetObjectId())
                     .descriptionId(diagramElementProps.getDescriptionId())
                     .label(diagramElementProps.getLabel())
-                    .position(diagramElementProps.getPosition())
-                    .size(diagramElementProps.getSize())
                     .nodes(nodes)
                     .edges(edges)
                     .build();
@@ -116,8 +114,6 @@ public class DiagramElementFactory implements IElementFactory {
                     .descriptionId(nodeElementProps.getDescriptionId())
                     .borderNode(nodeElementProps.isBorderNode())
                     .style(nodeElementProps.getStyle())
-                    .position(nodeElementProps.getPosition())
-                    .size(nodeElementProps.getSize())
                     .borderNodes(borderNodes)
                     .childNodes(childNodes)
                     .customizedProperties(nodeElementProps.getCustomizableProperties())
@@ -166,9 +162,6 @@ public class DiagramElementFactory implements IElementFactory {
                     .sourceId(edgeElementProps.getSourceId())
                     .targetId(edgeElementProps.getTargetId())
                     .style(edgeElementProps.getStyle())
-                    .routingPoints(edgeElementProps.getRoutingPoints())
-                    .sourceAnchorRelativePosition(edgeElementProps.getSourceAnchorRelativePosition())
-                    .targetAnchorRelativePosition(edgeElementProps.getTargetAnchorRelativePosition())
                     .state(edgeElementProps.getState())
                     .modifiers(edgeElementProps.getModifiers())
                     .centerLabelEditable(edgeElementProps.isCenterLabelEditable())
@@ -192,9 +185,6 @@ public class DiagramElementFactory implements IElementFactory {
             return Label.newLabel(labelElementProps.getId())
                     .type(labelElementProps.getType())
                     .text(labelElementProps.getText())
-                    .position(labelElementProps.getPosition())
-                    .size(labelElementProps.getSize())
-                    .alignment(labelElementProps.getAlignment())
                     .style(labelElementProps.getStyle())
                     .build();
         }

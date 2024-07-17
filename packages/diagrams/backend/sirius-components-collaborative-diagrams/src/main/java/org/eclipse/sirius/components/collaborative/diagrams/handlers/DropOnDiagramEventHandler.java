@@ -36,9 +36,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -111,18 +109,14 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
 
-        // @formatter:off
         var optionalDropHandler = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
             .filter(DiagramDescription.class::isInstance)
             .map(DiagramDescription.class::cast)
             .map(DiagramDescription::getDropHandler);
-        // @formatter:on
 
         if (optionalDropHandler.isPresent()) {
             result = new Success();
             var dropHandler = optionalDropHandler.get();
-            Position newPosition = Position.at(startingPositionX, startingPositionY);
-            diagramContext.getDiagramEvents().add(new SinglePositionEvent(diagramElementId, newPosition));
 
             for (Object self : objects) {
                 VariableManager variableManager = new VariableManager();

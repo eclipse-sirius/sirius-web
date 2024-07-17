@@ -42,8 +42,6 @@ import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -79,8 +77,6 @@ public class GetConnectorToolsEventHandlerTests {
     private static final String CONNECTOR_TOOL_ID = "ConnectorTool";
 
     private static final String NOT_CONNECTOR_TOOL_ID = "NotConnectorTool";
-
-    private static final String TOOLSECTION_LABEL = "ToolSectionLabel";
 
     private static final String CONNECTOR_TOOL_LABEL = "ConnectorToolLabel";
 
@@ -125,8 +121,6 @@ public class GetConnectorToolsEventHandlerTests {
                 .insideLabel(insideLabel)
                 .style(new TestDiagramBuilder().getRectangularNodeStyle())
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .modifiers(Set.of())
@@ -234,8 +228,6 @@ public class GetConnectorToolsEventHandlerTests {
                 .label(DIAGRAM_LABEL)
                 .descriptionId(DIAGRAM_DESCRIPTION_ID.toString())
                 .targetObjectId("diagramTargetObjectId")
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
                 .nodes(nodes)
                 .edges(List.of())
                 .build();

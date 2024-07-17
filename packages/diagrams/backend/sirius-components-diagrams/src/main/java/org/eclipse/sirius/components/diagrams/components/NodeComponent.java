@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,8 +24,6 @@ import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -38,7 +35,6 @@ import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.PinDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.ResetViewModifiersEvent;
-import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
@@ -188,27 +184,11 @@ public class NodeComponent implements IComponent {
                 .build();
         Element nodeChildren = new Element(NodeChildrenComponent.class, nodeChildrenComponentProps);
 
-        Position position = optionalPreviousNode.map(Node::getPosition)
-                .orElse(Position.UNDEFINED);
-
         Set<CustomizableProperties> customizableProperties = Set.of();
-
-        Size size = this.getSize(optionalPreviousNode, nodeDescription, nodeVariableManager);
-        Optional<Size> newSize = this.getNodeSizeFromEvent(this.props.getDiagramEvents(), nodeId);
-        if (newSize.isPresent()) {
-            size = newSize.get();
-        }
 
         if (CollapsingState.EXPANDED.equals(collapsingState)) {
             customizableProperties = optionalPreviousNode.map(Node::getCustomizedProperties).orElse(Set.of());
         }
-
-        if (newSize.isPresent()) {
-            var newProperties = new LinkedHashSet<>(customizableProperties);
-            newProperties.add(CustomizableProperties.Size);
-            customizableProperties = newProperties;
-        }
-
         Integer defaultWidth = nodeDescription.getDefaultWidthProvider().apply(nodeVariableManager);
         Integer defaultHeight = nodeDescription.getDefaultHeightProvider().apply(nodeVariableManager);
 
@@ -220,8 +200,6 @@ public class NodeComponent implements IComponent {
                 .descriptionId(nodeDescription.getId())
                 .borderNode(isBorderNode)
                 .style(style)
-                .position(position)
-                .size(size)
                 .children(List.of(nodeChildren))
                 .customizableProperties(customizableProperties)
                 .modifiers(modifiers)
@@ -336,57 +314,6 @@ public class NodeComponent implements IComponent {
             state = ViewModifier.Hidden;
         }
         return state;
-    }
-
-    /**
-     * Computes the size of the node.
-     *
-     * <p>
-     * Four different sizes can be returned by this function (by priority order):
-     * </p>
-     * <ul>
-     * <li>The size of the previous node if it exists and if this size has been customized by a user (manual
-     * resize)</li>
-     * <li>The size computed by the description if it is valid (width > 0 and height > 0)</li>
-     * <li>The size of the previous node if a previous node existed</li>
-     * <li>The undefined size (width = -1, height = -1) if the node did not exist before and if we have no valid size
-     * from the description</li>
-     * </ul>
-     *
-     * @param optionalPreviousNode
-     *         The previous node if this node existed during a previous rendering
-     * @param nodeDescription
-     *         The description of the node
-     * @param nodeVariableManager
-     *         The variable manager of the node
-     * @return The size of the node
-     */
-    private Size getSize(Optional<Node> optionalPreviousNode, NodeDescription nodeDescription, VariableManager nodeVariableManager) {
-        Size size;
-        boolean customizedSize = optionalPreviousNode.map(Node::getCustomizedProperties)
-                .filter(set -> set.contains(CustomizableProperties.Size))
-                .isPresent();
-        if (customizedSize) {
-            size = optionalPreviousNode.map(Node::getSize).orElse(Size.UNDEFINED);
-        } else {
-            size = nodeDescription.getSizeProvider().apply(nodeVariableManager);
-            if (size.getHeight() <= 0 || size.getWidth() <= 0) {
-                size = optionalPreviousNode.map(Node::getSize).orElse(Size.UNDEFINED);
-            }
-        }
-        return size;
-    }
-
-    private Optional<Size> getNodeSizeFromEvent(List<IDiagramEvent> diagramEvents, String nodeId) {
-        Optional<Size> size = Optional.empty();
-        for (IDiagramEvent diagramEvent : diagramEvents) {
-            if (diagramEvent instanceof ResizeEvent resizeEvent) {
-                if (resizeEvent.nodeId().equals(nodeId)) {
-                    size = Optional.ofNullable(resizeEvent.newSize());
-                }
-            }
-        }
-        return size;
     }
 
 
