@@ -31,8 +31,6 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.junit.jupiter.api.Test;
 
 import reactor.test.StepVerifier;
@@ -52,8 +50,6 @@ public class DiagramEventProcessorTests {
             .descriptionId(DIAGRAM_DESCRIPTION_ID)
             .label(String.valueOf(0))
             .targetObjectId("targetObjectId")
-            .position(Position.UNDEFINED)
-            .size(Size.UNDEFINED)
             .nodes(List.of())
             .edges(List.of())
             .build();

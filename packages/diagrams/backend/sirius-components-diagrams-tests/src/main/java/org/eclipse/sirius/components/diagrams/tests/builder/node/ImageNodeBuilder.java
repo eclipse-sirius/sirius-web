@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,6 @@ import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
@@ -49,10 +47,6 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
 
     private InsideLabel insideLabel;
 
-    private Position position;
-
-    private Size size;
-
     private NodesBuilder<ImageNodeBuilder<T>> borderNodesBuilder;
 
     private NodesBuilder<ImageNodeBuilder<T>> childNodesBuilder;
@@ -63,16 +57,6 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
         this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.OUTSIDE_CENTER, false);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
-    }
-
-    public ImageNodeBuilder<T> at(double x, double y) {
-        this.position = Position.at(x, y);
-        return this;
-    }
-
-    public ImageNodeBuilder<T> of(double width, double height) {
-        this.size = Size.of(width, height);
-        return this;
     }
 
     public NodesBuilder<ImageNodeBuilder<T>> borderNodes() {
@@ -99,12 +83,10 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
         List<Node> borderNodes = Optional.ofNullable(this.borderNodesBuilder).map(nodesBuilder -> nodesBuilder.build(targetObjectIdToNodeId)).orElse(List.of());
         List<Node> childNodes = Optional.ofNullable(this.childNodesBuilder).map(nodesBuilder -> nodesBuilder.build(targetObjectIdToNodeId)).orElse(List.of());
 
-        // @formatter:off
         INodeStyle style = ImageNodeStyle.newImageNodeStyle()
                 .imageURL("")
                 .scalingFactor(1)
                 .build();
-        // @formatter:on
 
         String labelText = this.insideLabel.getText();
         String nodeId = UUID.randomUUID().toString();
@@ -118,8 +100,6 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
         return Node.newNode(nodeId)
                 .type(NodeType.NODE_IMAGE)
                 .insideLabel(this.insideLabel)
-                .position(Objects.requireNonNull(this.position))
-                .size(Objects.requireNonNull(this.size))
                 .borderNode(this.isBorderNode)
                 .borderNodes(borderNodes)
                 .childNodes(childNodes)

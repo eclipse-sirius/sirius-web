@@ -31,8 +31,6 @@ type Diagram implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
   targetObjectId: ID!
-  size: Size!
-  position: Position!
   nodes: [Node!]!
   edges: [Edge!]!
   layoutData: DiagramLayoutData!
@@ -71,8 +69,6 @@ type Node {
   targetObjectId: String!
   targetObjectKind: String!
   targetObjectLabel: String!
-  size: Size!
-  position: Position!
   state: ViewModifier!
   pinned: Boolean!
   style: INodeStyle!
@@ -103,9 +99,6 @@ type Label {
   text: String!
   type: String!
   style: LabelStyle!
-  alignment: Position!
-  position: Position!
-  size: Size!
 }
 
 type InsideLabel {
@@ -218,9 +211,6 @@ type Edge {
   targetObjectLabel: String!
   state: ViewModifier!
   style: EdgeStyle!
-  routingPoints: [Position]!
-  sourceAnchorRelativePosition: Ratio!
-  targetAnchorRelativePosition: Ratio!
   centerLabelEditable: Boolean!
 }
 
@@ -249,11 +239,6 @@ enum ArrowStyle {
   CrossedCircle
   ClosedArrowWithVerticalBar
   ClosedArrowWithDots
-}
-
-type Ratio {
-  x: Float!
-  y: Float!
 }
 
 type Position {
@@ -315,7 +300,10 @@ type DiagramDescription implements RepresentationDescription {
   childNodeDescriptionIds: [ID!]!
   edgeDescriptions: [EdgeDescription!]!
   palette(diagramElementId: ID!): Palette!
-  connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
+  connectorTools(
+    sourceDiagramElementId: ID!
+    targetDiagramElementId: ID!
+  ): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!
   debug: Boolean
@@ -365,17 +353,24 @@ extend type Mutation {
   arrangeAll(input: ArrangeAllInput!): ArrangeAllPayload!
   deleteFromDiagram(input: DeleteFromDiagramInput!): DeleteFromDiagramPayload!
   editLabel(input: EditLabelInput!): EditLabelPayload!
-  invokeSingleClickOnDiagramElementTool(input: InvokeSingleClickOnDiagramElementToolInput!): InvokeSingleClickOnDiagramElementToolPayload!
-  invokeSingleClickOnTwoDiagramElementsTool(input: InvokeSingleClickOnTwoDiagramElementsToolInput!): InvokeSingleClickOnTwoDiagramElementsToolPayload!
-  updateNodeBounds(input: UpdateNodeBoundsInput!): UpdateNodeBoundsPayload!
-  updateNodePosition(input: UpdateNodePositionInput!): UpdateNodePositionPayload!
+  invokeSingleClickOnDiagramElementTool(
+    input: InvokeSingleClickOnDiagramElementToolInput!
+  ): InvokeSingleClickOnDiagramElementToolPayload!
+  invokeSingleClickOnTwoDiagramElementsTool(
+    input: InvokeSingleClickOnTwoDiagramElementsToolInput!
+  ): InvokeSingleClickOnTwoDiagramElementsToolPayload!
   dropOnDiagram(input: DropOnDiagramInput!): DropOnDiagramPayload!
   dropNode(input: DropNodeInput!): DropNodePayload!
-  updateEdgeRoutingPoints(input: UpdateEdgeRoutingPointsInput!): UpdateEdgeRoutingPointsPayload!
   reconnectEdge(input: ReconnectEdgeInput!): ReconnectEdgePayload!
-  hideDiagramElement(input: HideDiagramElementInput!): HideDiagramElementPayload!
-  fadeDiagramElement(input: FadeDiagramElementInput!): FadeDiagramElementPayload!
-  updateCollapsingState(input: UpdateCollapsingStateInput!): UpdateCollapsingStatePayload!
+  hideDiagramElement(
+    input: HideDiagramElementInput!
+  ): HideDiagramElementPayload!
+  fadeDiagramElement(
+    input: FadeDiagramElementInput!
+  ): FadeDiagramElementPayload!
+  updateCollapsingState(
+    input: UpdateCollapsingStateInput!
+  ): UpdateCollapsingStatePayload!
   pinDiagramElement(input: PinDiagramElementInput!): PinDiagramElementPayload!
   layoutDiagram(input: LayoutDiagramInput!): LayoutDiagramPayload!
 }
@@ -450,7 +445,7 @@ input InvokeSingleClickOnTwoDiagramElementsToolInput {
 }
 
 union InvokeSingleClickOnTwoDiagramElementsToolPayload =
-  ErrorPayload
+    ErrorPayload
   | InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload
 
 type InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload {
@@ -483,49 +478,13 @@ enum ToolVariableType {
 }
 
 union InvokeSingleClickOnDiagramElementToolPayload =
-  ErrorPayload
+    ErrorPayload
   | InvokeSingleClickOnDiagramElementToolSuccessPayload
 
 type InvokeSingleClickOnDiagramElementToolSuccessPayload {
   id: ID!
   newSelection: WorkbenchSelection
   messages: [Message]!
-}
-
-input UpdateNodeBoundsInput {
-  id: ID!
-  editingContextId: ID!
-  representationId: ID!
-  diagramElementId: ID!
-  newHeight: Float!
-  newPositionX: Float!
-  newPositionY: Float!
-  newWidth: Float!
-}
-
-union UpdateNodeBoundsPayload = ErrorPayload | UpdateNodeBoundsSuccessPayload
-
-type UpdateNodeBoundsSuccessPayload {
-  id: ID!
-  diagram: Diagram!
-}
-
-input UpdateNodePositionInput {
-  id: ID!
-  editingContextId: ID!
-  representationId: ID!
-  diagramElementId: ID!
-  newPositionX: Float!
-  newPositionY: Float!
-}
-
-union UpdateNodePositionPayload =
-  ErrorPayload
-  | UpdateNodePositionSuccessPayload
-
-type UpdateNodePositionSuccessPayload {
-  id: ID!
-  diagram: Diagram!
 }
 
 input DropOnDiagramInput {
@@ -548,21 +507,6 @@ type DropOnDiagramSuccessPayload {
 
 union DropNodePayload = ErrorPayload | SuccessPayload
 
-input UpdateEdgeRoutingPointsInput {
-  id: ID!
-  editingContextId: ID!
-  representationId: ID!
-  diagramElementId: ID!
-  routingPoints: [PositionInput]!
-}
-
-input PositionInput {
-  x: Float!
-  y: Float!
-}
-
-union UpdateEdgeRoutingPointsPayload = ErrorPayload | SuccessPayload
-
 enum ReconnectEdgeKind {
   SOURCE
   TARGET
@@ -575,7 +519,6 @@ input ReconnectEdgeInput {
   edgeId: String!
   newEdgeEndId: String!
   reconnectEdgeKind: ReconnectEdgeKind!
-  newEdgeEndPosition: PositionInput!
 }
 
 union ReconnectEdgePayload = ErrorPayload | SuccessPayload
@@ -641,6 +584,11 @@ input NodeLayoutDataInput {
   position: PositionInput!
   size: SizeInput!
   resizedByUser: Boolean!
+}
+
+input PositionInput {
+  x: Float!
+  y: Float!
 }
 
 input SizeInput {

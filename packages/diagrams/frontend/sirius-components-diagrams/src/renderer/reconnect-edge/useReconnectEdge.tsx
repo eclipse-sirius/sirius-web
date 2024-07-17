@@ -69,7 +69,6 @@ export const useReconnectEdge = (): UseReconnectEdge => {
         edgeId,
         newEdgeEndId,
         reconnectEdgeKind,
-        newEdgeEndPosition: { x: 0, y: 0 },
       };
       if (!readOnly) {
         updateEdgeEnd({ variables: { input } });

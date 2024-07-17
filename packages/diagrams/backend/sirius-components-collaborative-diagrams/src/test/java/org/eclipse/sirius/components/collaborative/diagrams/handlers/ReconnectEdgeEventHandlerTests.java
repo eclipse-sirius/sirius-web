@@ -37,7 +37,6 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -131,7 +130,7 @@ public class ReconnectEdgeEventHandlerTests {
 
         var handler = new ReconnectEdgeEventHandler(new DiagramEventHandlerConfiguration(objectService, diagramQueryService, diagramDescriptionService, representationDescriptionSearchService,
                 messageService, new IFeedbackMessageService.NoOp()), List.of(reconnectionToolExecutor), new SimpleMeterRegistry());
-        var input = new ReconnectEdgeInput(UUID.randomUUID(), "editingContextId", "representationId", edgeId, newEdgeEndId, ReconnectEdgeKind.TARGET, Position.UNDEFINED);
+        var input = new ReconnectEdgeInput(UUID.randomUUID(), "editingContextId", "representationId", edgeId, newEdgeEndId, ReconnectEdgeKind.TARGET);
 
         assertThat(handler.canHandle(input)).isTrue();
 
