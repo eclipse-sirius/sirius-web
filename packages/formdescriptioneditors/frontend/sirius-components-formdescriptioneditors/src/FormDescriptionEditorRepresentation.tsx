@@ -11,14 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { RepresentationComponentProps, Toast } from '@eclipse-sirius/sirius-components-core';
-import { PropertySectionContext, PropertySectionContextValue } from '@eclipse-sirius/sirius-components-forms';
+import { RepresentationComponentProps, Toast, useData } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
 import WebIcon from '@material-ui/icons/Web';
 import { useMachine } from '@xstate/react';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { formDescriptionEditorEventSubscription } from './FormDescriptionEditorEventFragment';
 import {
   GQLFormDescriptionEditorEventInput,
@@ -41,6 +40,7 @@ import { coreWidgets } from './coreWidgets';
 import { FormDescriptionEditorContextProvider } from './hooks/FormDescriptionEditorContext';
 import { ForIcon } from './icons/ForIcon';
 import { IfIcon } from './icons/IfIcon';
+import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 
 const useFormDescriptionEditorStyles = makeStyles((theme) => ({
   formDescriptionEditor: {
@@ -146,10 +146,14 @@ export const FormDescriptionEditorRepresentation = ({
   const { toast, formDescriptionEditorRepresentation } = value as SchemaValue;
   const { id, formDescriptionEditor, message } = context;
 
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
+  const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
   const allWidgets: WidgetDescriptor[] = [...coreWidgets];
-  propertySectionsRegistry.getWidgetContributions().forEach((widgetContribution) => {
-    allWidgets.push({ name: widgetContribution.name, label: widgetContribution.name, icon: widgetContribution.icon });
+  widgetContributions.forEach((widgetContribution) => {
+    allWidgets.push({
+      name: widgetContribution.name,
+      label: widgetContribution.name,
+      icon: widgetContribution.icon,
+    });
   });
   allWidgets.sort((a, b) => (a.label || a.name).localeCompare(b.label || b.name));
 
@@ -160,7 +164,7 @@ export const FormDescriptionEditorRepresentation = ({
   };
   const variables: GQLFormDescriptionEditorEventVariables = { input };
   const { error } = useSubscription<GQLFormDescriptionEditorEventSubscription, GQLFormDescriptionEditorEventVariables>(
-    gql(formDescriptionEditorEventSubscription(propertySectionsRegistry.getWidgetContributions())),
+    gql(formDescriptionEditorEventSubscription),
     {
       variables,
       fetchPolicy: 'no-cache',

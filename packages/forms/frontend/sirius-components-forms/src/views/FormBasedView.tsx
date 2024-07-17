@@ -15,11 +15,8 @@ import { DataExtension, Toast, useData, useSelection } from '@eclipse-sirius/sir
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Form } from '../form/Form';
-import { WidgetContribution } from '../form/Form.types';
-import { PropertySectionContext } from '../form/FormContext';
-import { PropertySectionContextValue } from '../form/FormContext.types';
 import { formRefreshedEventPayloadFragment } from '../form/FormEventFragments';
 import {
   GQLForm,
@@ -41,7 +38,7 @@ import {
   formBasedViewMachine,
 } from './FormBasedViewMachine';
 
-export const getFormEventSubscription = (subscriptionName: string, contributions: Array<WidgetContribution>) => {
+export const getFormEventSubscription = (subscriptionName: string) => {
   return `
   subscription ${subscriptionName}($input: PropertiesEventInput!) {
     ${subscriptionName}(input: $input) {
@@ -51,7 +48,7 @@ export const getFormEventSubscription = (subscriptionName: string, contributions
       }
     }
   }
-  ${formRefreshedEventPayloadFragment(contributions)}
+  ${formRefreshedEventPayloadFragment}
 `;
 };
 
@@ -104,11 +101,7 @@ export const FormBasedView = ({ editingContextId, readOnly, subscriptionName, po
     objectIds: currentSelection?.entries.map((entry) => entry.id),
   };
   const variables: GQLPropertiesEventVariables = { input };
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
-  const formSubscription = getFormEventSubscription(
-    subscriptionName,
-    propertySectionsRegistry.getWidgetContributions()
-  );
+  const formSubscription = getFormEventSubscription(subscriptionName);
   const { error } = useSubscription<GQLPropertiesEventSubscription, GQLPropertiesEventVariables>(
     gql(formSubscription),
     {

@@ -14,6 +14,17 @@ import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
 import {
+  widgetContributionExtensionPoint,
+  GQLWidget,
+  PropertySectionComponent,
+} from '@eclipse-sirius/sirius-components-forms';
+import {
+  ReferenceIcon,
+  ReferencePreview,
+  GQLReferenceWidget,
+  ReferencePropertySection,
+} from '@eclipse-sirius/sirius-components-widget-reference';
+import {
   ApolloClientOptionsConfigurer,
   DefaultExtensionRegistryMergeStrategy,
   DiagramRepresentationConfiguration,
@@ -28,6 +39,7 @@ import { ellipseNodeStyleDocumentTransform } from './nodes/ElipseNodeDocumentTra
 import { EllipseNode } from './nodes/EllipseNode';
 import { EllipseNodeConverter } from './nodes/EllipseNodeConverter';
 import { EllipseNodeLayoutHandler } from './nodes/EllipseNodeLayoutHandler';
+import { referenceWidgetDocumentTransform } from './widgets/ReferenceWidgetDocumentTransform';
 
 import './ReactFlow.css';
 import './fonts.css';
@@ -43,7 +55,7 @@ if (process.env.NODE_ENV !== 'production') {
 const registry = new ExtensionRegistry();
 registry.addAll(papayaExtensionRegistry, new DefaultExtensionRegistryMergeStrategy());
 
-const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
+const nodesApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
   const { documentTransform } = currentOptions;
 
   const newDocumentTransform = documentTransform
@@ -55,9 +67,21 @@ const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOpt
   };
 };
 
+const widgetsApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
+  const { documentTransform } = currentOptions;
+
+  const newDocumentTransform = documentTransform
+    ? documentTransform.concat(referenceWidgetDocumentTransform)
+    : referenceWidgetDocumentTransform;
+  return {
+    ...currentOptions,
+    documentTransform: newDocumentTransform,
+  };
+};
+
 registry.putData(apolloClientOptionsConfigurersExtensionPoint, {
   identifier: `siriusWeb_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
-  data: [apolloClientOptionsConfigurer],
+  data: [nodesApolloClientOptionsConfigurer, widgetsApolloClientOptionsConfigurer],
 });
 
 const nodeTypeRegistry: NodeTypeRegistry = {
@@ -65,6 +89,27 @@ const nodeTypeRegistry: NodeTypeRegistry = {
   nodeConverters: [new EllipseNodeConverter()],
   nodeTypeContributions: [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />],
 };
+
+const isReferenceWidget = (widget: GQLWidget): widget is GQLReferenceWidget => widget.__typename === 'ReferenceWidget';
+
+registry.putData(widgetContributionExtensionPoint, {
+  identifier: 'widget_reference',
+  data: [
+    {
+      name: 'ReferenceWidget',
+      icon: <ReferenceIcon />,
+      previewComponent: ReferencePreview,
+      component: (widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => {
+        let propertySectionComponent: PropertySectionComponent<GQLWidget> | null = null;
+
+        if (isReferenceWidget(widget)) {
+          propertySectionComponent = ReferencePropertySection;
+        }
+        return propertySectionComponent;
+      },
+    },
+  ],
+});
 
 ReactDOM.render(
   <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} extensionRegistry={registry}>

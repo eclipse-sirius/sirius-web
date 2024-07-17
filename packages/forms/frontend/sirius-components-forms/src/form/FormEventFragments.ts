@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { WidgetContribution } from './Form.types';
-
 export const commonFields = `
   fragment commonFields on Widget {
     id
@@ -27,7 +25,7 @@ export const commonFields = `
   }
 `;
 
-export const widgetFields = (contributions: Array<WidgetContribution>) => `
+export const widgetFields = `
   ${commonFields}
   
   fragment textfieldFields on Textfield {
@@ -311,15 +309,6 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
     }
   }
 
-  ${contributions.map(
-    (widget) =>
-      `
-    fragment ${widget.name.toLowerCase()}Fields on ${widget.name} {
-      ${widget.fields}
-    }
-    `
-  )}
-
   fragment widgetFields on Widget {
     ...commonFields
     ... on Textfield {
@@ -376,21 +365,12 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
     ... on DateTime {
       ...dateTimeFields
     }
-
-    ${contributions.map(
-      (widget) =>
-        `
-      ... on ${widget.name} {
-        ...${widget.name.toLowerCase()}Fields
-      }
-      `
-    )}
   }
 `;
 
-export const flexboxContainerFields = (contributions: Array<WidgetContribution>) => `
+export const flexboxContainerFields = `
   ${commonFields}
-  ${widgetFields(contributions)}
+  ${widgetFields}
   fragment flexboxContainerFields on FlexboxContainer {
     ...commonFields
     label
@@ -441,9 +421,9 @@ export const flexboxContainerFields = (contributions: Array<WidgetContribution>)
   }
 `;
 
-export const formRefreshedEventPayloadFragment = (contributions: Array<WidgetContribution>) => `
-  ${widgetFields(contributions)}
-  ${flexboxContainerFields(contributions)}
+export const formRefreshedEventPayloadFragment = `
+  ${widgetFields}
+  ${flexboxContainerFields}
   fragment formRefreshedEventPayloadFragment on FormRefreshedEventPayload {
     id
     form {

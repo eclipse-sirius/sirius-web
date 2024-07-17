@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 export * from './form/Form.types';
-export * from './form/FormContext';
-export * from './form/FormContext.types';
 export * from './form/FormEventFragments';
 export * from './form/FormEventFragments.types';
+export type { PreviewWidgetProps, WidgetContribution } from './form/WidgetContribution.types';
+export { widgetContributionExtensionPoint } from './form/WidgetContributionExtensionPoints';
 export * from './groups/Group';
 export * from './groups/Group.types';
 export type { ButtonStyleProps } from './propertysections/ButtonPropertySection.types';
