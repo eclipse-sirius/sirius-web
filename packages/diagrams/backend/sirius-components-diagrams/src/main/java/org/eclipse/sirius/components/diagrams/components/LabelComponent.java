@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,14 +14,10 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.elements.LabelElementProps;
@@ -46,7 +42,6 @@ public class LabelComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         LabelDescription labelDescription = this.props.getLabelDescription();
-        Optional<Label> optionalPreviousLabel = this.props.getPreviousLabel();
         String type = this.props.getType();
         String idFromProvider = labelDescription.getIdProvider().apply(variableManager);
         String id = UUID.nameUUIDFromBytes(idFromProvider.getBytes()).toString();
@@ -68,11 +63,6 @@ public class LabelComponent implements IComponent {
         LineStyle borderLineStyle = labelStyleDescription.getBorderStyleProvider().apply(variableManager);
         String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
 
-        Position position = optionalPreviousLabel.map(Label::getPosition).orElse(Position.UNDEFINED);
-        Size size = optionalPreviousLabel.map(Label::getSize).orElse(Size.UNDEFINED);
-        Position aligment = optionalPreviousLabel.map(Label::getAlignment).orElse(Position.UNDEFINED);
-
-        // @formatter:off
         var labelStyle = LabelStyle.newLabelStyle()
                 .color(color)
                 .fontSize(fontSize)
@@ -92,12 +82,8 @@ public class LabelComponent implements IComponent {
         LabelElementProps labelElementProps = LabelElementProps.newLabelElementProps(id)
                 .type(type)
                 .text(text)
-                .position(position)
-                .size(size)
-                .alignment(aligment)
                 .style(labelStyle)
                 .build();
-        // @formatter:on
         return new Element(LabelElementProps.TYPE, labelElementProps);
     }
 }

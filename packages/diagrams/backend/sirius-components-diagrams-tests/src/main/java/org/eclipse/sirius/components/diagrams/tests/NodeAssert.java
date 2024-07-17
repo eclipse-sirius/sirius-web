@@ -15,14 +15,10 @@ package org.eclipse.sirius.components.diagrams.tests;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramAssertions.assertThat;
 
-import java.util.List;
-
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
-import org.eclipse.sirius.components.diagrams.Size;
 
 /**
  * Custom assertion class used to perform some tests on a node.
@@ -84,81 +80,10 @@ public class NodeAssert extends AbstractAssert<NodeAssert, Node> {
             assertThat(this.actual.getBorderNodes()).hasSize(node.getBorderNodes().size());
             assertThat(this.actual.getChildNodes()).hasSize(node.getChildNodes().size());
 
-            if (layoutPolicy == LayoutPolicy.WITH_LAYOUT) {
-                this.hasBounds(node.getPosition().getX(), node.getPosition().getY(), node.getSize().getWidth(), node.getSize().getHeight());
-            }
         } else {
             this.isNull();
         }
         return this;
-    }
-
-    public NodeAssert hasBounds(double x, double y, double width, double height) {
-        this.isNotNull();
-
-        Size size = this.actual.getSize();
-        if (size == null) {
-            this.failWithMessage("Expected node's size to be <'{'width: %.2f, height: %.2f'}'> but was null", width, height);
-        } else {
-            if (width != size.getWidth()) {
-                this.failWithMessage("Expected node's width to be <%.2f> but was <%.2f>", width, size.getWidth());
-            }
-            if (height != size.getHeight()) {
-                this.failWithMessage("Expected node's height to be <%.2f> but was <%.2f>", height, size.getHeight());
-            }
-        }
-
-        Position position = this.actual.getPosition();
-        if (position == null) {
-            this.failWithMessage("Expected node's position to be <'{'x: %.2f, y: %.2f'}'> but was null", x, y);
-        } else {
-            if (x != position.getX()) {
-                this.failWithMessage("Expected node's x to be <%.2f> but was <%.2f>", x, position.getX());
-            }
-            if (y != position.getY()) {
-                this.failWithMessage("Expected node's y to be <%.2f> but was <%.2f>", y, position.getY());
-            }
-        }
-
-        return this;
-    }
-
-    public NodeAssert hasEveryChildWithinItsBounds() {
-        this.isNotNull();
-        assertThat(this.actual.getChildNodes()).allMatch(child -> {
-            assertThat(child).hasEveryChildWithinItsBounds();
-            boolean isChildInParentBounds = this.isChildWithinParentBounds(this.actual, child);
-            boolean areChildBorderNodesInParentBounds = child.getBorderNodes().stream().allMatch(border -> this.isChildWithinParentBounds(this.actual, border));
-            return isChildInParentBounds && areChildBorderNodesInParentBounds;
-        });
-        return this;
-    }
-
-    private boolean isChildWithinParentBounds(Node parent, Node child) {
-        Position parentPosition = parent.getPosition();
-        Size parentSize = parent.getSize();
-
-        Position childPosition = child.getPosition();
-        Size childSize = child.getSize();
-
-        double parentX = parentPosition.getX();
-        double parentY = parentPosition.getY();
-        double parentWidth = parentSize.getWidth();
-        double parentHeight = parentSize.getHeight();
-
-        double childX = parentX + childPosition.getX();
-        double childY = parentY + childPosition.getY();
-        double childWidth = childSize.getWidth();
-        double childHeight = childSize.getHeight();
-
-        if (childX < parentX || childY < parentY) {
-            return false;
-        }
-
-        boolean top = this.compareDimensions(parentX, parentWidth, childX, childWidth);
-        boolean side = this.compareDimensions(parentY, parentHeight, childY, childHeight);
-
-        return top && side;
     }
 
     private boolean compareDimensions(double parentStart, double parentDimension, double childStart, double childDimension) {
@@ -169,26 +94,6 @@ public class NodeAssert extends AbstractAssert<NodeAssert, Node> {
         } else {
             return !(parentEnd >= parentStart && childEnd > parentEnd);
         }
-    }
-
-    public void hasNoOverflow() {
-        Size size = this.actual.getSize();
-
-        List<Node> childNodes = this.actual.getChildNodes();
-        for (Node childNode : childNodes) {
-            Position childNodeTopLeftCorner = childNode.getPosition();
-            Position childNodeTopRightCorner = Position.at(childNodeTopLeftCorner.getX() + childNode.getSize().getWidth(), childNodeTopLeftCorner.getY());
-            Position childNodeBottomLeftCorner = Position.at(childNodeTopLeftCorner.getX(), childNodeTopLeftCorner.getY() + childNode.getSize().getHeight());
-            Position childNodeBottomRightCorner = Position.at(childNodeTopRightCorner.getX(), childNodeBottomLeftCorner.getY());
-
-            assertThat(childNodeTopLeftCorner).isInside(size);
-            assertThat(childNodeTopRightCorner).isInside(size);
-            assertThat(childNodeBottomLeftCorner).isInside(size);
-            assertThat(childNodeBottomRightCorner).isInside(size);
-        }
-
-        this.actual.getChildNodes().forEach(childNode -> assertThat(childNode).hasNoOverflow());
-        this.actual.getBorderNodes().forEach(borderNode -> assertThat(borderNode).hasNoOverflow());
     }
 
 }

@@ -29,8 +29,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -110,9 +108,7 @@ public class GetNodeDescriptionsEventHandlerTests {
                         .edges(List.of())
                         .label("")
                         .layoutData(new DiagramLayoutData(Map.of(), Map.of(), Map.of()))
-                        .position(Position.UNDEFINED)
                         .nodes(List.of())
-                        .size(Size.UNDEFINED)
                         .targetObjectId("")
                         .build();
             }

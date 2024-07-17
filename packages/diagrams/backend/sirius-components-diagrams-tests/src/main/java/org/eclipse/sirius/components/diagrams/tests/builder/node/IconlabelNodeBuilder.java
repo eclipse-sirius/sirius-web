@@ -26,8 +26,6 @@ import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
@@ -50,10 +48,6 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
 
     private final InsideLabel insideLabel;
 
-    private Position position;
-
-    private Size size;
-
     private NodesBuilder<IconlabelNodeBuilder<T>> borderNodesBuilder;
 
     private NodesBuilder<IconlabelNodeBuilder<T>> childNodesBuilder;
@@ -64,16 +58,6 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
         this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.INSIDE_CENTER, false);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
-    }
-
-    public IconlabelNodeBuilder<T> at(double x, double y) {
-        this.position = Position.at(x, y);
-        return this;
-    }
-
-    public IconlabelNodeBuilder<T> of(double width, double height) {
-        this.size = Size.of(width, height);
-        return this;
     }
 
     public NodesBuilder<IconlabelNodeBuilder<T>> borderNodes() {
@@ -116,8 +100,6 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
         return Node.newNode(nodeId)
                 .type(NodeType.NODE_ICON_LABEL)
                 .insideLabel(this.insideLabel)
-                .position(Objects.requireNonNull(this.position))
-                .size(Objects.requireNonNull(this.size))
                 .borderNode(this.isBorderNode)
                 .borderNodes(borderNodes)
                 .childNodes(childNodes)

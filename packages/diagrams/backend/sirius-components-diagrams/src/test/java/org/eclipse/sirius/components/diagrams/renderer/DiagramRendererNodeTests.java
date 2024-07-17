@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
@@ -35,7 +33,6 @@ import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -83,7 +80,7 @@ public class DiagramRendererNodeTests {
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
                 .build();
-        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.UNDEFINED, Optional.empty());
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, Optional.empty());
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
@@ -97,7 +94,6 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(NODE_RECTANGULAR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
-        assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == -1 && s.getWidth() == -1);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getId).allMatch(id -> UUID.nameUUIDFromBytes(INSIDE_LABEL_ID.getBytes()).toString().equals(id));
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getText).allMatch(LABEL_TEXT::equals);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
@@ -116,7 +112,7 @@ public class DiagramRendererNodeTests {
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
                 .build();
-        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.empty());
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, Optional.empty());
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
@@ -130,7 +126,6 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(NODE_RECTANGULAR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
-        assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 200 && s.getWidth() == 10);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getId).allMatch(id -> UUID.nameUUIDFromBytes(INSIDE_LABEL_ID.getBytes()).toString().equals(id));
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getText).allMatch(LABEL_TEXT::equals);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
@@ -139,48 +134,6 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::isItalic).allMatch(italic -> italic);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::isUnderline).allMatch(underline -> underline);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::isStrikeThrough).allMatch(strikeThrough -> strikeThrough);
-    }
-
-    @Test
-    public void testSimpleNodeRenderingWithSizeProviderWithPreviousDiagram() {
-        Function<VariableManager, INodeStyle> styleProvider = variableManager -> RectangularNodeStyle.newRectangularNodeStyle()
-                .background("")
-                .borderColor("")
-                .borderSize(0)
-                .borderStyle(LineStyle.Solid)
-                .build();
-        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.empty());
-
-        // We modified the created diagram to change the node previous size.
-        Node node = diagram.getNodes().get(0);
-
-        Node nodeWithNewSize = Node.newNode(node)
-                .size(Size.of(50, 100))
-                .build();
-        Diagram newDiagram = Diagram.newDiagram(diagram)
-                .nodes(List.of(nodeWithNewSize))
-                .build();
-
-        diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.of(newDiagram));
-
-        // We check that the node size is still the one provided by the VSM
-        assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 200 && s.getWidth() == 10);
-
-        // This time, the size provider return 0,0. The NodeComponent should use the previous size in this case
-        diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(0, 0), Optional.of(newDiagram));
-        // We check that the node size is the new one set in new diagram
-        assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 100 && s.getWidth() == 50);
-
-        nodeWithNewSize = Node.newNode(node)
-                .size(Size.of(50, 100))
-                .customizedProperties(Set.of(CustomizableProperties.Size))
-                .build();
-        newDiagram = Diagram.newDiagram(diagram)
-                .nodes(List.of(nodeWithNewSize))
-                .build();
-        diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.of(newDiagram));
-        // We now check that we use the custom user size in priority over the VSM default one.
-        assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 100 && s.getWidth() == 50);
     }
 
     /**
@@ -194,7 +147,7 @@ public class DiagramRendererNodeTests {
                     .scalingFactor(1)
                     .build();
         };
-        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_IMAGE, VariableManager -> Size.UNDEFINED, Optional.empty());
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_IMAGE, Optional.empty());
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
@@ -227,7 +180,7 @@ public class DiagramRendererNodeTests {
                 .borderStyle(LineStyle.Solid)
                 .build();
 
-        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.UNDEFINED, Optional.empty());
+        Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, Optional.empty());
         assertThat(diagram).isNotNull();
         assertThat(diagram.getNodes().get(0).isPinned()).isEqualTo(false);
 
@@ -237,15 +190,14 @@ public class DiagramRendererNodeTests {
         Diagram newDiagram = Diagram.newDiagram(diagram)
                 .nodes(List.of(nodePinned))
                 .build();
-        diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.UNDEFINED, Optional.of(newDiagram));
+        diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, Optional.of(newDiagram));
         assertThat(diagram.getNodes().get(0).isPinned()).isEqualTo(true);
     }
 
     /**
      * Create a diagram with one element that match with the given styleProvider/typeProvider.
      */
-    private Diagram createDiagram(Function<VariableManager, INodeStyle> styleProvider, Function<VariableManager, String> typeProvider, Function<VariableManager, Size> sizeProvider,
-            Optional<Diagram> previousDiagram) {
+    private Diagram createDiagram(Function<VariableManager, INodeStyle> styleProvider, Function<VariableManager, String> typeProvider, Optional<Diagram> previousDiagram) {
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .italicProvider(VariableManager -> true)
                 .boldProvider(VariableManager -> true)
@@ -282,7 +234,6 @@ public class DiagramRendererNodeTests {
                 .insideLabelDescription(insideLbelDescription)
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
-                .sizeProvider(sizeProvider)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())

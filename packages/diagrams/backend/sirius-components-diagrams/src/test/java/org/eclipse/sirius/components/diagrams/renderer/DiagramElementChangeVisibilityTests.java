@@ -40,7 +40,6 @@ import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
@@ -77,8 +76,6 @@ public class DiagramElementChangeVisibilityTests {
     private static final String DIAGRAM_LABEL = "Diagram";
 
     private static final Function<VariableManager, String> TYPE_PROVIDER = variableManager -> NODE_IMAGE;
-
-    private static final Function<VariableManager, Size> SIZE_PROVIDER = VariableManager -> Size.UNDEFINED;
 
     private static final List<String> OBJECT_IDS = List.of("First", "Second", "Third", "Fourth");
 
@@ -145,7 +142,6 @@ public class DiagramElementChangeVisibilityTests {
                 .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLabelDescription).styleProvider(STYLE_PROVIDER)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
-                .sizeProvider(SIZE_PROVIDER)
                 .borderNodeDescriptions(borderNodes)
                 .childNodeDescriptions(children)
                 .labelEditHandler((variableManager, newLabel) -> new Success())
@@ -268,7 +264,6 @@ public class DiagramElementChangeVisibilityTests {
 
     @Test
     public DiagramTestData testHideSpreadToEdgesRendering() {
-        // @formatter:off
         List<NodeDescription> nodeDescriptions = IntStream.range(0, 3)
                 .mapToObj(i -> this.createNodeDescription(OBJECT_IDS.get(i), List.of(), List.of()))
                 .collect(Collectors.toUnmodifiableList());

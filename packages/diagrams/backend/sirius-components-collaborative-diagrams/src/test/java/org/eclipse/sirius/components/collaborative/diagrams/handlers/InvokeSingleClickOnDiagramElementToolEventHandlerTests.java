@@ -53,9 +53,6 @@ import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Ratio;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
@@ -482,8 +479,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .insideLabel(label)
                 .style(new TestDiagramBuilder().getRectangularNodeStyle())
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .modifiers(Set.of())
@@ -530,7 +525,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .reusedBorderNodeDescriptionIds(List.of())
                 .reusedChildNodeDescriptionIds(List.of())
                 .semanticElementsProvider(vm -> List.of())
-                .sizeProvider(vm -> Size.UNDEFINED)
                 .styleProvider(vm -> null)
                 .targetObjectIdProvider(vm -> "")
                 .targetObjectKindProvider(vm -> "")
@@ -551,9 +545,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .build();
 
         var label = Label.newLabel(UUID.randomUUID().toString())
-                .alignment(Position.UNDEFINED)
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
                 .style(labelStyle)
                 .text("text")
                 .type("labelType")
@@ -571,13 +562,10 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .type("edge:straight")
                 .sourceId("")
                 .targetId("")
-                .sourceAnchorRelativePosition(Ratio.UNDEFINED)
-                .targetAnchorRelativePosition(Ratio.UNDEFINED)
                 .beginLabel(label)
                 .centerLabel(label)
                 .endLabel(label)
                 .descriptionId(edgeDescriptionId)
-                .routingPoints(List.of())
                 .style(edgeStyle)
                 .targetObjectId(targetObjectId)
                 .targetObjectKind("")

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,8 +38,6 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -151,8 +149,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
             //We do not apply the tool if a dialog is defined but no variables have been provided
             if (dialogDescriptionId == null || !variables.isEmpty()) {
                 result = tool.getHandler().apply(variableManager);
-                Position newPosition = Position.at(startingPositionX, startingPositionY);
-                diagramContext.getDiagramEvents().add(new SinglePositionEvent(diagramElementId, newPosition));
             }
         }
         return result;

@@ -73,6 +73,7 @@ An event may have been caused by another event or caused by an input received fr
 It is now possible to choose between three options:
 never, always and if_children (to display the separator only if children exist).
 - https://github.com/eclipse-sirius/sirius-web/issues/4021[#4021] [sirius-web] Disable the _Rename_ and _Delete_ project menu actions when project is read-only
+- https://github.com/eclipse-sirius/sirius-web/issues/3677[#3677] [diagram] Remove backend layouting code from the time the backend was computing the layout.
 
 == v2024.9.0
 

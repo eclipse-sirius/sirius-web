@@ -122,7 +122,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
             IStatus status = this.invokeReconnectEdgeTool(optionalEdge.get(), editingContext, diagramContext, reconnectEdgeInput);
             if (status instanceof Success) {
                 diagramContext.getDiagramEvents().add(
-                        new ReconnectEdgeEvent(reconnectEdgeInput.reconnectEdgeKind(), reconnectEdgeInput.edgeId(), reconnectEdgeInput.newEdgeEndId(), reconnectEdgeInput.newEdgeEndPosition()));
+                        new ReconnectEdgeEvent(reconnectEdgeInput.reconnectEdgeKind(), reconnectEdgeInput.edgeId()));
                 payload = new SuccessPayload(reconnectEdgeInput.id(), this.feedbackMessageService.getFeedbackMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, reconnectEdgeInput.representationId(), reconnectEdgeInput);
             } else {
@@ -142,11 +142,9 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
 
         var diagram = diagramContext.getDiagram();
 
-        // @formatter:off
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
-        // @formatter:on
         if (optionalDiagramDescription.isPresent()) {
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
             var optionalReconnectionToolExecutor = this.reconnectionToolsExecutors.stream().filter(reconnectionToolExecutor -> reconnectionToolExecutor.canExecute(diagramDescription)).findFirst();
@@ -191,7 +189,6 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
             if (canExecuteReconnectTool) {
                 IReconnectionToolsExecutor reconnectionToolsExecutor = optionalReconnectionToolExecutor.get();
 
-                // @formatter:off
                 ReconnectionToolInterpreterData reconnectionToolInterpreterData = ReconnectionToolInterpreterData.newReconnectionToolInterpreterData()
                     .diagramContext(diagramContext)
                     .semanticReconnectionSource(optionalPreviousSemanticEdgeEnd.get())
@@ -204,7 +201,6 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
                     .edgeView(edge)
                     .kind(reconnectEdgeKind)
                     .build();
-                // @formatter:on
 
                 status = reconnectionToolsExecutor.execute(editingContext, reconnectionToolInterpreterData, edge, optionalEdgeDescription.get(), reconnectEdgeKind, diagramDescription);
             }

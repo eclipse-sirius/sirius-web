@@ -44,7 +44,6 @@ import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -74,7 +73,6 @@ import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
-import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
@@ -253,8 +251,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return childrenLayoutStrategy;
         };
 
-        Function<VariableManager, Size> sizeProvider = variableManager -> this.computeSize(viewNodeDescription, interpreter, variableManager);
-
         Predicate<VariableManager> isCollapsedByDefaultPredicate = variableManager -> this.computeBooleanProvider(viewNodeDescription.getIsCollapsedByDefaultExpression(), interpreter, variableManager);
 
         Predicate<VariableManager> isHiddenByDefaultPredicate = variableManager -> this.computeBooleanProvider(viewNodeDescription.getIsHiddenByDefaultExpression(), interpreter, variableManager);
@@ -295,7 +291,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .collapsible(viewNodeDescription.isCollapsible())
                 .reusedChildNodeDescriptionIds(reusedChildNodeDescriptionIds)
                 .reusedBorderNodeDescriptionIds(reusedBorderNodeDescriptionIds)
-                .sizeProvider(sizeProvider)
                 .userResizable(userResizableDirection)
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
                 .shouldRenderPredicate(shouldRenderPredicate)
@@ -357,24 +352,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return viewNodeDescription.getConditionalStyles().stream().filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
                 .map(ConditionalNodeStyle::getStyle).findFirst()
                 .orElseGet(viewNodeDescription::getStyle);
-    }
-
-    private Size computeSize(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
-        double computedWidth = Size.UNDEFINED.getWidth();
-        if (viewNodeDescription.eIsSet(DiagramPackage.Literals.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION) && !viewNodeDescription.getDefaultWidthExpression().isBlank()) {
-            Result result = interpreter.evaluateExpression(variableManager.getVariables(), viewNodeDescription.getDefaultWidthExpression());
-            if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
-                computedWidth = result.asInt().getAsInt();
-            }
-        }
-        double computedHeight = Size.UNDEFINED.getHeight();
-        if (viewNodeDescription.eIsSet(DiagramPackage.Literals.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION) && !viewNodeDescription.getDefaultHeightExpression().isBlank()) {
-            Result result = interpreter.evaluateExpression(variableManager.getVariables(), viewNodeDescription.getDefaultHeightExpression());
-            if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
-                computedHeight = result.asInt().getAsInt();
-            }
-        }
-        return Size.of(computedWidth, computedHeight);
     }
 
     private boolean matches(AQLInterpreter interpreter, String condition, VariableManager variableManager) {

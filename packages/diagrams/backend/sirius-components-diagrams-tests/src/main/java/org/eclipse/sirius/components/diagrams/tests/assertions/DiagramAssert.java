@@ -16,8 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.assertj.core.api.AbstractObjectAssert;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 
 /**
  * Custom assertion class used to perform some tests on a diagram.
@@ -52,16 +50,6 @@ public class DiagramAssert extends AbstractObjectAssert<DiagramAssert, Diagram> 
 
     public DiagramAssert hasLabel(String label) {
         assertThat(this.actual.getLabel()).isEqualTo(label);
-        return this;
-    }
-
-    public DiagramAssert hasPosition(Position position) {
-        assertThat(this.actual.getPosition()).isEqualTo(position);
-        return this;
-    }
-
-    public DiagramAssert hasSize(Size size) {
-        assertThat(this.actual.getSize()).isEqualTo(size);
         return this;
     }
 }

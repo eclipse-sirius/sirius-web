@@ -16,8 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.assertj.core.api.AbstractObjectAssert;
 import org.eclipse.sirius.components.diagrams.Label;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 
 /**
  * Custom assertion class used to perform some tests on a label.
@@ -42,21 +40,6 @@ public class LabelAssert extends AbstractObjectAssert<LabelAssert, Label> {
 
     public LabelAssert hasText(String text) {
         assertThat(this.actual.getText()).isEqualTo(text);
-        return this;
-    }
-
-    public LabelAssert hasPosition(Position position) {
-        assertThat(this.actual.getPosition()).isEqualTo(position);
-        return this;
-    }
-
-    public LabelAssert hasSize(Size size) {
-        assertThat(this.actual.getSize()).isEqualTo(size);
-        return this;
-    }
-
-    public LabelAssert hasAlignment(Position alignment) {
-        assertThat(this.actual.getAlignment()).isEqualTo(alignment);
         return this;
     }
 }

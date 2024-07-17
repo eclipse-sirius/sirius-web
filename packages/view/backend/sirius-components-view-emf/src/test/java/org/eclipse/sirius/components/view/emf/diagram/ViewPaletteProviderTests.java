@@ -32,7 +32,6 @@ import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
@@ -277,7 +276,6 @@ public class ViewPaletteProviderTests {
                 .insideLabelDescription(insideLabelDescription)
                 .styleProvider(variableManager -> null)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
-                .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of())
                 .labelEditHandler((variableManager, newLabel) -> new Success())

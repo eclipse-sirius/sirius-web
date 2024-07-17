@@ -28,9 +28,7 @@ import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Node.Builder;
 import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
@@ -52,10 +50,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     private final InsideLabel insideLabel;
 
-    private Position position;
-
-    private Size size;
-
     private CollapsingState collapsingState = CollapsingState.EXPANDED;
 
     private ILayoutStrategy childrenLayoutStrategy;
@@ -74,16 +68,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.INSIDE_CENTER, isLabelAHeader);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
-    }
-
-    public RectangleNodeBuilder<T> at(double x, double y) {
-        this.position = Position.at(x, y);
-        return this;
-    }
-
-    public RectangleNodeBuilder<T> of(double width, double height) {
-        this.size = Size.of(width, height);
-        return this;
     }
 
     public RectangleNodeBuilder<T> collapsingState(CollapsingState collapsingState) {
@@ -136,8 +120,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         Builder nodeBuilder = Node.newNode(nodeId)
                 .type(NodeType.NODE_RECTANGLE)
                 .insideLabel(this.insideLabel)
-                .position(Objects.requireNonNull(this.position))
-                .size(Objects.requireNonNull(this.size))
                 .borderNode(this.isBorderNode)
                 .borderNodes(borderNodes)
                 .childNodes(childNodes)
