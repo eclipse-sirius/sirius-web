@@ -13,13 +13,8 @@
 
 import { gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import {
-  formRefreshedEventPayloadFragment,
-  PropertySectionContext,
-  PropertySectionContextValue,
-  WidgetContribution,
-} from '@eclipse-sirius/sirius-components-forms';
-import { useContext, useEffect, useState } from 'react';
+import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
+import { useEffect, useState } from 'react';
 import {
   GQLFormRefreshedEventPayload,
   GQLRepresentationsEventInput,
@@ -34,8 +29,7 @@ const isFormRefreshedEventPayload = (
   payload: GQLRepresentationsEventPayload
 ): payload is GQLFormRefreshedEventPayload => payload.__typename === 'FormRefreshedEventPayload';
 
-export const getRepresentationsViewEventSubscription = (contributions: WidgetContribution[]) => {
-  return `
+export const getRepresentationsViewEventSubscription = `
   subscription representationsEvent($input: RepresentationsEventInput!) {
     representationsEvent(input: $input) {
       __typename
@@ -44,9 +38,8 @@ export const getRepresentationsViewEventSubscription = (contributions: WidgetCon
       }
     }
   }
-  ${formRefreshedEventPayloadFragment(contributions)}
+  ${formRefreshedEventPayloadFragment}
   `;
-};
 
 export const useRepresentationsViewSubscription = (
   editingContextId: string,
@@ -67,9 +60,6 @@ export const useRepresentationsViewSubscription = (
 
   const variables: GQLRepresentationsEventVariables = { input };
 
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
-  const formSubscription = getRepresentationsViewEventSubscription(propertySectionsRegistry.getWidgetContributions());
-
   const onData = ({ data }: OnDataOptions<GQLRepresentationsEventSubscription>) => {
     const { data: gqlRepresentationsEventSubscription } = data;
     if (gqlRepresentationsEventSubscription) {
@@ -84,7 +74,7 @@ export const useRepresentationsViewSubscription = (
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
   const { error, loading } = useSubscription<GQLRepresentationsEventSubscription, GQLRepresentationsEventVariables>(
-    gql(formSubscription),
+    gql(getRepresentationsViewEventSubscription),
     {
       variables,
       fetchPolicy: 'no-cache',

@@ -13,13 +13,8 @@
 
 import { gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import {
-  formRefreshedEventPayloadFragment,
-  PropertySectionContext,
-  PropertySectionContextValue,
-  WidgetContribution,
-} from '@eclipse-sirius/sirius-components-forms';
-import { useContext, useEffect, useState } from 'react';
+import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
+import { useEffect, useState } from 'react';
 import {
   GQLDiagramFilterEventInput,
   GQLDiagramFilterEventPayload,
@@ -33,8 +28,7 @@ import {
 const isFormRefreshedEventPayload = (payload: GQLDiagramFilterEventPayload): payload is GQLFormRefreshedEventPayload =>
   payload.__typename === 'FormRefreshedEventPayload';
 
-export const getDiagramFilterEventSubscription = (contributions: WidgetContribution[]) => {
-  return `
+export const getDiagramFilterEventSubscription = `
   subscription diagramFilterEvent($input: DiagramFilterEventInput!) {
     diagramFilterEvent(input: $input) {
       __typename
@@ -43,9 +37,8 @@ export const getDiagramFilterEventSubscription = (contributions: WidgetContribut
       }
     }
   }
-  ${formRefreshedEventPayloadFragment(contributions)}
+  ${formRefreshedEventPayloadFragment}
   `;
-};
 
 export const useDiagramFilterSubscription = (
   editingContextId: string,
@@ -66,9 +59,6 @@ export const useDiagramFilterSubscription = (
 
   const variables: GQLDiagramFilterEventVariables = { input };
 
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
-  const formSubscription = getDiagramFilterEventSubscription(propertySectionsRegistry.getWidgetContributions());
-
   const onData = ({ data }: OnDataOptions<GQLDiagramFilterEventSubscription>) => {
     const { data: gqlDiagramFilterEventSubscription } = data;
     if (gqlDiagramFilterEventSubscription) {
@@ -83,7 +73,7 @@ export const useDiagramFilterSubscription = (
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
   const { error, loading } = useSubscription<GQLDiagramFilterEventSubscription, GQLDiagramFilterEventVariables>(
-    gql(formSubscription),
+    gql(getDiagramFilterEventSubscription),
     {
       variables,
       fetchPolicy: 'no-cache',

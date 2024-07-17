@@ -27,18 +27,34 @@ import {
   diagramPanelActionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
-import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
+import {
+  FormRepresentation,
+  GQLWidget,
+  PropertySectionComponent,
+  widgetContributionExtensionPoint,
+} from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { ExplorerView, treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
+import {
+  GQLReferenceWidget,
+  ReferenceIcon,
+  ReferencePreview,
+  ReferencePropertySection,
+} from '@eclipse-sirius/sirius-components-widget-reference';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import Filter from '@material-ui/icons/Filter';
 import LinkIcon from '@material-ui/icons/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import WarningIcon from '@material-ui/icons/Warning';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
+import { ApolloClientOptionsConfigurer } from '../graphql/useCreateApolloClient.types';
+import { apolloClientOptionsConfigurersExtensionPoint } from '../graphql/useCreateApolloClientExtensionPoints';
 import { OnboardArea } from '../onboarding/OnboardArea';
+import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/DiagramTreeItemContextMenuContribution';
+import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/DocumentTreeItemContextMenuContribution';
+import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/ObjectTreeItemContextMenuContribution';
 import { DetailsView } from '../views/edit-project/workbench-views/DetailsView';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/RelatedElementsView';
 import { RepresentationsView } from '../views/edit-project/workbench-views/RepresentationsView';
@@ -46,9 +62,8 @@ import { createProjectAreaCardExtensionPoint } from '../views/project-browser/cr
 import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
 import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
 import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
-import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/DocumentTreeItemContextMenuContribution';
-import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/ObjectTreeItemContextMenuContribution';
-import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/DiagramTreeItemContextMenuContribution';
+import { ellipseNodeStyleDocumentTransform } from './ElipseNodeDocumentTransform';
+import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 const getType = (representation: RepresentationMetadata): string | null => {
@@ -212,6 +227,71 @@ defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
 defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
   identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_diagram`,
   Component: DiagramTreeItemContextMenuContribution,
+});
+
+/*******************************************************************************
+ * Apollo client options configurer
+ *
+ * Used to register new options configurer in the apollo client
+ *
+ *******************************************************************************/
+
+const nodesApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
+  const { documentTransform } = currentOptions;
+
+  const newDocumentTransform = documentTransform
+    ? documentTransform.concat(ellipseNodeStyleDocumentTransform)
+    : ellipseNodeStyleDocumentTransform;
+  return {
+    ...currentOptions,
+    documentTransform: newDocumentTransform,
+  };
+};
+
+const widgetsApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
+  const { documentTransform } = currentOptions;
+
+  const newDocumentTransform = documentTransform
+    ? documentTransform.concat(referenceWidgetDocumentTransform)
+    : referenceWidgetDocumentTransform;
+  return {
+    ...currentOptions,
+    documentTransform: newDocumentTransform,
+  };
+};
+
+defaultExtensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
+  identifier: `siriusWeb_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
+  data: [nodesApolloClientOptionsConfigurer, widgetsApolloClientOptionsConfigurer],
+});
+
+/*******************************************************************************
+ *
+ * Custom widget
+ *
+ * Used to register new custom widget in form
+ *
+ *******************************************************************************/
+
+const isReferenceWidget = (widget: GQLWidget): widget is GQLReferenceWidget => widget.__typename === 'ReferenceWidget';
+
+defaultExtensionRegistry.putData(widgetContributionExtensionPoint, {
+  identifier: 'siriusWeb_${widgetContributionExtensionPoint.identifier}_referenceWidget',
+  data: [
+    {
+      name: 'ReferenceWidget',
+      icon: <ReferenceIcon />,
+      previewComponent: ReferencePreview,
+      component: (widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => {
+        let propertySectionComponent: PropertySectionComponent<GQLWidget> | null = null;
+
+        if (isReferenceWidget(widget)) {
+          propertySectionComponent = ReferencePropertySection;
+        }
+        return propertySectionComponent;
+      },
+    },
+  ],
 });
 
 export { defaultExtensionRegistry };

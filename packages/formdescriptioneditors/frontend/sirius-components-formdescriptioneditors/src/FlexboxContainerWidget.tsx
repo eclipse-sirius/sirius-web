@@ -11,16 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Toast, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
-import {
-  GQLWidget,
-  PropertySectionContext,
-  PropertySectionContextValue,
-} from '@eclipse-sirius/sirius-components-forms';
+import { Toast, getCSSColor, useSelection, useData } from '@eclipse-sirius/sirius-components-core';
+import { GQLWidget, widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlexboxContainerWidgetState, FlexboxContainerWidgetStyleProps } from './FlexboxContainerWidget.types';
 import { addWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -173,7 +169,7 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
   };
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
+  const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
@@ -185,7 +181,7 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
     }
 
     let index = widget.children.length || 0;
-    if (isKind(id) || propertySectionsRegistry.getWidgetContributions().find((contrib) => contrib.name === id)) {
+    if (isKind(id) || widgetContributions.find((widgetContribution) => widgetContribution.name === id)) {
       const addWidgetInput: GQLAddWidgetInput = {
         id: crypto.randomUUID(),
         editingContextId,

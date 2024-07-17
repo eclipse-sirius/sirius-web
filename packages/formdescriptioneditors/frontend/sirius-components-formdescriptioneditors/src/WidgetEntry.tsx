@@ -11,7 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast, useDeletionConfirmationDialog, useSelection } from '@eclipse-sirius/sirius-components-core';
+import {
+  Selection,
+  Toast,
+  useDeletionConfirmationDialog,
+  useSelection,
+  useData,
+} from '@eclipse-sirius/sirius-components-core';
 import {
   GQLButton,
   GQLChartWidget,
@@ -33,13 +39,12 @@ import {
   GQLTextfield,
   GQLTree,
   GQLWidget,
-  PropertySectionContext,
-  PropertySectionContextValue,
+  widgetContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-forms';
 import { GQLContainer } from '@eclipse-sirius/sirius-components-forms/src';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
 import { CheckboxWidget } from './CheckboxWidget';
@@ -136,7 +141,7 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
   const [state, setState] = useState<WidgetEntryState>(initialState);
   const { message } = state;
 
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
+  const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
 
   const { setSelection } = useSelection();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
@@ -280,8 +285,7 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
     if (index <= 0) {
       index = 0;
     }
-
-    if (isKind(id) || propertySectionsRegistry.getWidgetContributions().find((contrib) => contrib.name === id)) {
+    if (isKind(id) || widgetContributions.find((widgetContribution) => widgetContribution.name === id)) {
       const addWidgetInput: GQLAddWidgetInput = {
         id: crypto.randomUUID(),
         editingContextId,
@@ -470,15 +474,20 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
       );
     }
   } else {
-    const PreviewComponent = propertySectionsRegistry.getPreviewComponent(widget);
-    if (PreviewComponent) {
-      widgetElement = (
-        <PreviewComponent data-testid={widget.id} widget={widget} onDropBefore={readOnly ? noop : onDropBefore} />
-      );
-    } else if (propertySectionsRegistry.getComponent(widget)) {
-      widgetElement = (
-        <CustomWidget data-testid={widget.id} widget={widget} onDropBefore={readOnly ? noop : onDropBefore} />
-      );
+    const widgetContribution = widgetContributions.find(
+      (widgetContribution) => widgetContribution.name === widget.__typename
+    );
+    if (widgetContribution) {
+      if (widgetContribution.previewComponent) {
+        const PreviewComponent = widgetContribution.previewComponent;
+        widgetElement = (
+          <PreviewComponent data-testid={widget.id} widget={widget} onDropBefore={readOnly ? noop : onDropBefore} />
+        );
+      } else if (widgetContribution.component(widget)) {
+        widgetElement = (
+          <CustomWidget data-testid={widget.id} widget={widget} onDropBefore={readOnly ? noop : onDropBefore} />
+        );
+      }
     } else {
       console.error(`Unsupported widget type ${widget.__typename}`);
     }

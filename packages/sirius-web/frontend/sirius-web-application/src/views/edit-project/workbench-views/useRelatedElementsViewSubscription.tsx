@@ -13,13 +13,8 @@
 
 import { gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import {
-  formRefreshedEventPayloadFragment,
-  PropertySectionContext,
-  PropertySectionContextValue,
-  WidgetContribution,
-} from '@eclipse-sirius/sirius-components-forms';
-import { useContext, useEffect, useState } from 'react';
+import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
+import { useEffect, useState } from 'react';
 import {
   GQLFormRefreshedEventPayload,
   GQLRelatedElementsEventInput,
@@ -34,8 +29,7 @@ const isFormRefreshedEventPayload = (
   payload: GQLRelatedElementsEventPayload
 ): payload is GQLFormRefreshedEventPayload => payload.__typename === 'FormRefreshedEventPayload';
 
-export const getRelatedElementsViewEventSubscription = (contributions: WidgetContribution[]) => {
-  return `
+export const getRelatedElementsViewEventSubscription = `
   subscription relatedElementsEvent($input: RelatedElementsEventInput!) {
     relatedElementsEvent(input: $input) {
       __typename
@@ -44,9 +38,8 @@ export const getRelatedElementsViewEventSubscription = (contributions: WidgetCon
       }
     }
   }
-  ${formRefreshedEventPayloadFragment(contributions)}
+  ${formRefreshedEventPayloadFragment}
   `;
-};
 
 export const useRelatedElementsViewSubscription = (
   editingContextId: string,
@@ -67,9 +60,6 @@ export const useRelatedElementsViewSubscription = (
 
   const variables: GQLRelatedElementsEventVariables = { input };
 
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
-  const formSubscription = getRelatedElementsViewEventSubscription(propertySectionsRegistry.getWidgetContributions());
-
   const onData = ({ data }: OnDataOptions<GQLRelatedElementsEventSubscription>) => {
     const { data: gqlRelatedElementsEventSubscription } = data;
     if (gqlRelatedElementsEventSubscription) {
@@ -84,7 +74,7 @@ export const useRelatedElementsViewSubscription = (
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
   const { error, loading } = useSubscription<GQLRelatedElementsEventSubscription, GQLRelatedElementsEventVariables>(
-    gql(formSubscription),
+    gql(getRelatedElementsViewEventSubscription),
     {
       variables,
       fetchPolicy: 'no-cache',

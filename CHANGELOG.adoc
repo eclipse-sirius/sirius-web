@@ -28,7 +28,8 @@
 As a result, the following maven modules have been deleted: `sirius-web-sample-application`, `sirius-web-spring`, `sirius-web-graphql`, `sirius-web-services-api`, `sirius-web-services`, `sirius-web-persistence`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3676[#3676] [representation] Remove the label from representation subscriptions and from graphql types.
 + Also remove the label from representation metadata (and sometimes the whole metadata) when the label or metadata were not needed.
-- https://github.com/eclipse-sirius/sirius-web/issues/1470[#1470] [view] Since the computation of converted description ID has changed, the identifier of existing representations is not valid anymore, and these representations cannot be opened.- https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Update some API relative to the diagram:- https://github.com/eclipse-sirius/sirius-web/issues/1470[#1470] [view] Since the computation of converted description ID has changed, the identifier of existing representations is not valid anymore, and these representations cannot be opened.
+- https://github.com/eclipse-sirius/sirius-web/issues/1470[#1470] [view] Since the computation of converted description ID has changed, the identifier of existing representations is not valid anymore, and these representations cannot be opened.
+- https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Update some API relative to the diagram:
 
  * The `NodeTool#selectionDescription` attribute of type `SelectionDescription` has been renamed into `dialogDescription` and is now of type `DialogDescription`.
  * The `SelectionDescription` type has been renamed into `SelectionDialogDescription` and inherit from `DialogDescription`.
@@ -82,6 +83,7 @@ Thanks to this change, the various form based representations (details, related 
 A migration participant has been added to automatically keep compatible all diagram descriptions created before 2024.9.0.
 - https://github.com/eclipse-sirius/sirius-web/issues/3774[#3774] [sirius-web] Add an extension point to contribute custom tools to the diagram palette
 - https://github.com/eclipse-sirius/sirius-web/issues/3785[#3785] [sirius-web] Add an extension point to contribute custom tree item menu entry
+- https://github.com/eclipse-sirius/sirius-web/issues/3782[#3782] [sirius-web] Add an extension point to contribute custom widgets
 
 == v2024.7.0
 

@@ -17,7 +17,6 @@ import {
   ServerContext,
 } from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams';
-import { PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Theme, ThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
@@ -30,7 +29,6 @@ import {
 import { DiagramRepresentationConfigurationProps } from '../diagrams/DiagramRepresentationConfiguration.types';
 import { defaultExtensionRegistry } from '../extension/DefaultExtensionRegistry';
 import { DefaultExtensionRegistryMergeStrategy } from '../extension/DefaultExtensionRegistryMergeStrategy';
-import { propertySectionsRegistry } from '../forms/defaultPropertySectionRegistry';
 import { ApolloGraphQLProvider } from '../graphql/ApolloGraphQLProvider';
 import { Router } from '../router/Router';
 import { siriusWebTheme as defaultTheme } from '../theme/siriusWebTheme';
@@ -86,11 +84,9 @@ export const SiriusWebApplication = ({
                 <ToastProvider>
                   <ConfirmationDialogContextProvider>
                     <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-                      <PropertySectionContext.Provider value={{ propertySectionsRegistry }}>
-                        <div style={style}>
-                          <Router />
-                        </div>
-                      </PropertySectionContext.Provider>
+                      <div style={style}>
+                        <Router />
+                      </div>
                     </NodeTypeContext.Provider>
                   </ConfirmationDialogContextProvider>
                 </ToastProvider>

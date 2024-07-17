@@ -10,9 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useContext } from 'react';
-import { PropertySectionContext } from '../form/FormContext';
-import { PropertySectionContextValue } from '../form/FormContext.types';
+import { useData } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLButton,
   GQLChartWidget,
@@ -34,6 +32,7 @@ import {
   GQLTree,
   GQLWidget,
 } from '../form/FormEventFragments.types';
+import { widgetContributionExtensionPoint } from '../form/WidgetContributionExtensionPoints';
 import { ButtonPropertySection } from './ButtonPropertySection';
 import { ChartWidgetPropertySection } from './ChartWidgetPropertySection';
 import { CheckboxPropertySection } from './CheckboxPropertySection';
@@ -74,7 +73,7 @@ const isImage = (widget: GQLWidget): widget is GQLImage => widget.__typename ===
 const isRichText = (widget: GQLWidget): widget is GQLRichText => widget.__typename === 'RichText';
 
 export const PropertySection = ({ editingContextId, formId, widget, readOnly }: PropertySectionProps) => {
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
+  const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
 
   let propertySection: JSX.Element | null = null;
   if (isTextfield(widget) || isTextarea(widget)) {
@@ -248,7 +247,9 @@ export const PropertySection = ({ editingContextId, formId, widget, readOnly }: 
       />
     );
   } else {
-    const CustomWidgetComponent = propertySectionsRegistry.getComponent(widget);
+    const CustomWidgetComponent = widgetContributions
+      .map((widgetContribution) => widgetContribution.component(widget))
+      .find((component) => component !== null);
     if (CustomWidgetComponent) {
       propertySection = (
         <CustomWidgetComponent
