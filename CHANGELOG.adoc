@@ -39,6 +39,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3767[#3767] [diagram] Improves the robustness of the arrange all
+- https://github.com/eclipse-sirius/sirius-web/issues/3784[#3784] [sirius-web] Fix the click on a representation which is already selected in the explorer.
 
 === New Features
 
