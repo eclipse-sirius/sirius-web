@@ -18,10 +18,6 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { useMachine } from '@xstate/react';
 import {
-  GQLTreeItem,
-  TreeItemContextMenuContext,
-  TreeItemContextMenuContextValue,
-  TreeItemContextMenuContribution,
   TreeToolBarContext,
   TreeToolBarContextValue,
   TreeToolBarContribution,
@@ -32,14 +28,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
-import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
-import { DocumentTreeItemContextMenuContribution } from './DocumentTreeItemContextMenuContribution';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
-import {
-  EditProjectViewParams,
-  TreeItemContextMenuProviderProps,
-  TreeToolBarProviderProps,
-} from './EditProjectView.types';
+import { EditProjectViewParams, TreeToolBarProviderProps } from './EditProjectView.types';
 import {
   EditProjectViewContext,
   EditProjectViewEvent,
@@ -47,7 +37,6 @@ import {
   SelectRepresentationEvent,
   editProjectViewMachine,
 } from './EditProjectViewMachine';
-import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
 import { ProjectContext } from './ProjectContext';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
@@ -133,51 +122,20 @@ export const EditProjectView = () => {
       <ProjectContext.Provider value={{ project: context.project }}>
         <SelectionContextProvider initialSelection={initialSelection}>
           <EditProjectNavbar />
-          <TreeItemContextMenuProvider>
-            <TreeToolBarProvider>
-              <Workbench
-                editingContextId={context.project.currentEditingContext.id}
-                initialRepresentationSelected={context.representation}
-                onRepresentationSelected={onRepresentationSelected}
-                readOnly={false}
-              />
-            </TreeToolBarProvider>
-          </TreeItemContextMenuProvider>
+          <TreeToolBarProvider>
+            <Workbench
+              editingContextId={context.project.currentEditingContext.id}
+              initialRepresentationSelected={context.representation}
+              onRepresentationSelected={onRepresentationSelected}
+              readOnly={false}
+            />
+          </TreeToolBarProvider>
         </SelectionContextProvider>
       </ProjectContext.Provider>
     );
   }
 
   return <div className={classes.editProjectView}>{content}</div>;
-};
-
-const TreeItemContextMenuProvider = ({ children }: TreeItemContextMenuProviderProps) => {
-  const treeItemContextMenuContributions: TreeItemContextMenuContextValue = [
-    <TreeItemContextMenuContribution
-      canHandle={(treeId: string, item: GQLTreeItem) =>
-        treeId.startsWith('explorer://') && item.kind.startsWith('siriusWeb://document')
-      }
-      component={DocumentTreeItemContextMenuContribution}
-    />,
-    <TreeItemContextMenuContribution
-      canHandle={(treeId: string, item: GQLTreeItem) =>
-        treeId.startsWith('explorer://') && item.kind.startsWith('siriusComponents://semantic')
-      }
-      component={ObjectTreeItemContextMenuContribution}
-    />,
-    <TreeItemContextMenuContribution
-      canHandle={(treeId: string, item: GQLTreeItem) =>
-        treeId.startsWith('explorer://') && item.kind === 'siriusComponents://representation?type=Diagram'
-      }
-      component={DiagramTreeItemContextMenuContribution}
-    />,
-  ];
-
-  return (
-    <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
-      {children}
-    </TreeItemContextMenuContext.Provider>
-  );
 };
 
 const TreeToolBarProvider = ({ children }: TreeToolBarProviderProps) => {

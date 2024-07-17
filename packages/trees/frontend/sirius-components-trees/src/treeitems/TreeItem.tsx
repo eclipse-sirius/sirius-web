@@ -17,19 +17,15 @@ import {
   SelectionEntry,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CropDinIcon from '@material-ui/icons/CropDin';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TreeItemProps, TreeItemState } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
-import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
-import { TreeItemContextMenuContextValue } from './TreeItemContextMenu.types';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { isFilterCandidate, splitText } from './filterTreeItem';
+import { TreeItemAction } from './TreeItemAction';
 
 const useTreeItemStyle = makeStyles((theme) => ({
   treeItem: {
@@ -59,18 +55,6 @@ const useTreeItemStyle = makeStyles((theme) => ({
   },
   arrow: {
     cursor: 'pointer',
-  },
-  more: {
-    hover: {
-      backgroundColor: theme.palette.action.hover,
-    },
-    focus: {
-      backgroundColor: theme.palette.action.selected,
-    },
-  },
-  expandIcon: {
-    marginLeft: 'auto',
-    marginRight: theme.spacing(1),
   },
   content: {
     display: 'grid',
@@ -125,25 +109,18 @@ export const TreeItem = ({
   textToFilter,
   enableMultiSelection,
   markedItemIds,
+  treeItemActionRender,
 }: TreeItemProps) => {
   const classes = useTreeItemStyle();
 
-  const treeItemMenuContributionComponents = useContext<TreeItemContextMenuContextValue>(TreeItemContextMenuContext)
-    .filter((contribution) => contribution.props.canHandle(treeId, item))
-    .map((contribution) => contribution.props.component);
-
   const initialState: TreeItemState = {
-    showContextMenu: false,
-    menuAnchor: null,
     editingMode: false,
-    label: item.label,
-    prevSelectionId: null,
     editingKey: null,
     isHovered: false,
   };
 
   const [state, setState] = useState<TreeItemState>(initialState);
-  const { showContextMenu, menuAnchor, editingMode } = state;
+  const { editingMode } = state;
 
   const refDom = useRef() as any;
 
@@ -160,75 +137,24 @@ export const TreeItem = ({
       return { ...prevState, isHovered: false };
     });
   };
-  // Context menu handling
-  const openContextMenu = (event) => {
-    if (!showContextMenu) {
-      const { currentTarget } = event;
-      setState((prevState) => {
-        return {
-          showContextMenu: true,
-          menuAnchor: currentTarget,
-          editingMode: false,
-          editingKey: prevState.editingKey,
-          label: item.label,
-          prevSelectionId: prevState.prevSelectionId,
-          isHovered: prevState.isHovered,
-        };
-      });
-    }
+
+  const onTreeItemAction = () => {
+    setState((prevState) => {
+      return { ...prevState, isHovered: false };
+    });
   };
 
-  let contextMenu = null;
-  if (showContextMenu) {
-    const closeContextMenu = () => {
-      setState((prevState) => {
-        return {
-          modalDisplayed: null,
-          showContextMenu: false,
-          menuAnchor: null,
-          editingMode: false,
-          editingKey: prevState.editingKey,
-          label: item.label,
-          prevSelectionId: prevState.prevSelectionId,
-          isHovered: prevState.isHovered,
-        };
-      });
-    };
-    const enterEditingMode = () => {
-      setState((prevState) => {
-        return {
-          modalDisplayed: null,
-          showContextMenu: false,
-          menuAnchor: null,
-          editingMode: true,
-          editingKey: null,
-          label: item.label,
-          prevSelectionId: prevState.prevSelectionId,
-          isHovered: prevState.isHovered,
-        };
-      });
-    };
+  const enterEditingMode = () => {
+    setState((prevState) => ({
+      ...prevState,
+      editingMode: true,
+      editingKey: null,
+    }));
+  };
 
-    contextMenu = (
-      <TreeItemContextMenu
-        menuAnchor={menuAnchor}
-        editingContextId={editingContextId}
-        treeId={treeId}
-        item={item}
-        readOnly={readOnly}
-        treeItemMenuContributionComponents={treeItemMenuContributionComponents}
-        depth={depth}
-        onExpand={onExpand}
-        onExpandAll={onExpandAll}
-        enterEditingMode={enterEditingMode}
-        onClose={closeContextMenu}
-      />
-    );
-  }
-
-  let children = null;
+  let content = null;
   if (item.expanded && item.children) {
-    children = (
+    content = (
       <ul className={classes.ul}>
         {item.children.map((childItem) => {
           return (
@@ -245,6 +171,7 @@ export const TreeItem = ({
                 textToHighlight={textToHighlight}
                 textToFilter={textToFilter}
                 markedItemIds={markedItemIds}
+                treeItemActionRender={treeItemActionRender}
               />
             </li>
           );
@@ -409,8 +336,6 @@ export const TreeItem = ({
     }
   }
 
-  const shouldDisplayMoreButton = item.deletable || item.editable || treeItemMenuContributionComponents.length > 0;
-
   let currentTreeItem: JSX.Element | null;
   if (textToFilter && isFilterCandidate(item, textToFilter)) {
     currentTreeItem = null;
@@ -447,32 +372,37 @@ export const TreeItem = ({
                 {image}
                 {text}
               </div>
-              {shouldDisplayMoreButton ? (
-                <IconButton
-                  className={classes.more}
-                  size="small"
-                  onClick={openContextMenu}
-                  data-testid={`${item.label}-more`}>
-                  <MoreVertIcon style={{ fontSize: 12 }} />
-                </IconButton>
-              ) : null}
+              <div onClick={onTreeItemAction}>
+                {treeItemActionRender ? (
+                  treeItemActionRender({
+                    editingContextId: editingContextId,
+                    treeId: treeId,
+                    item: item,
+                    depth: depth,
+                    onExpand: onExpand,
+                    onExpandAll: onExpandAll,
+                    readOnly: readOnly,
+                    onEnterEditingMode: enterEditingMode,
+                    isHovered: state.isHovered,
+                  })
+                ) : (
+                  <TreeItemAction
+                    editingContextId={editingContextId}
+                    treeId={treeId}
+                    item={item}
+                    depth={depth}
+                    onExpand={onExpand}
+                    onExpandAll={onExpandAll}
+                    readOnly={readOnly}
+                    onEnterEditingMode={enterEditingMode}
+                    isHovered={state.isHovered}
+                  />
+                )}
+              </div>
             </div>
           </div>
-          {!shouldDisplayMoreButton && state.isHovered && item.hasChildren && (
-            <IconButton
-              className={classes.expandIcon}
-              size="small"
-              data-testid="expand-all"
-              title="expand all"
-              onClick={() => {
-                onExpandAll(item);
-              }}>
-              <UnfoldMoreIcon style={{ fontSize: 12 }} />
-            </IconButton>
-          )}
         </div>
-        {children}
-        {contextMenu}
+        {content}
       </>
     );
   }

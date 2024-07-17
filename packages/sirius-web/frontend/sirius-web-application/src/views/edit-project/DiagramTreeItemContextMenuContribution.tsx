@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,10 @@ import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-compon
 import { Fragment, forwardRef } from 'react';
 
 export const DiagramTreeItemContextMenuContribution = forwardRef(
-  ({}: TreeItemContextMenuComponentProps, _: React.ForwardedRef<HTMLLIElement>) => {
+  ({ treeId, item }: TreeItemContextMenuComponentProps, _: React.ForwardedRef<HTMLLIElement>) => {
+    if (!treeId.startsWith('explorer://') || item.kind !== 'siriusComponents://representation?type=Diagram') {
+      return null;
+    }
     return <Fragment key="diagram-tree-item-context-menu-contribution"></Fragment>;
   }
 );

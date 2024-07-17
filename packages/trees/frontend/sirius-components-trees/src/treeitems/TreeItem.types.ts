@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLTreeItem } from '../views/TreeView.types';
+import { TreeItemActionProps } from './TreeItemAction.types';
 
 export interface TreeItemProps {
   editingContextId: string;
@@ -24,14 +25,11 @@ export interface TreeItemProps {
   textToFilter: string | null;
   enableMultiSelection: boolean;
   markedItemIds: string[];
+  treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
 }
 
 export interface TreeItemState {
-  showContextMenu: boolean;
-  menuAnchor: Element | null;
   editingMode: boolean;
-  label: string;
-  prevSelectionId: string | null;
   editingKey: string | null;
   isHovered: boolean;
 }

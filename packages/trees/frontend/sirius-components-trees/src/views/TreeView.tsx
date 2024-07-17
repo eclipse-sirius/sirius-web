@@ -82,6 +82,7 @@ export const TreeView = ({
   textToHighlight,
   textToFilter,
   markedItemIds = [],
+  treeItemActionRender,
 }: TreeViewComponentProps) => {
   const [{ value, context }, dispatch] = useMachine<TreeViewContext, TreeViewEvent>(treeViewMachine, {
     context: {
@@ -240,6 +241,7 @@ export const TreeView = ({
             markedItemIds={markedItemIds}
             textToFilter={textToFilter}
             textToHighlight={textToHighlight}
+            treeItemActionRender={treeItemActionRender}
           />
         ) : null}
       </div>
