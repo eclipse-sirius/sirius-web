@@ -43,11 +43,22 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
      * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getLabelExpression()
      * @generated
      * @ordered
-     * @see #getLabelExpression()
      */
     protected static final String LABEL_EXPRESSION_EDEFAULT = "aql:self.name";
+
+    /**
+     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
+
     /**
      * The default value of the '{@link #getOverflowStrategy() <em>Overflow Strategy</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -57,24 +68,7 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
      * @see #getOverflowStrategy()
      */
     protected static final LabelOverflowStrategy OVERFLOW_STRATEGY_EDEFAULT = LabelOverflowStrategy.NONE;
-    /**
-     * The default value of the '{@link #getTextAlign() <em>Text Align</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getTextAlign()
-     */
-    protected static final LabelTextAlign TEXT_ALIGN_EDEFAULT = LabelTextAlign.LEFT;
-    /**
-     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getLabelExpression()
-     */
-    protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getOverflowStrategy() <em>Overflow Strategy</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -84,13 +78,24 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
      * @see #getOverflowStrategy()
      */
     protected LabelOverflowStrategy overflowStrategy = OVERFLOW_STRATEGY_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getTextAlign() <em>Text Align</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getTextAlign()
+     * @generated
+     * @ordered
+     */
+    protected static final LabelTextAlign TEXT_ALIGN_EDEFAULT = LabelTextAlign.LEFT;
+
     /**
      * The cached value of the '{@link #getTextAlign() <em>Text Align</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getTextAlign()
      * @generated
      * @ordered
-     * @see #getTextAlign()
      */
     protected LabelTextAlign textAlign = TEXT_ALIGN_EDEFAULT;
 
@@ -271,14 +276,15 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (labelExpression: " +
-                this.labelExpression +
-                ", overflowStrategy: " +
-                this.overflowStrategy +
-                ", textAlign: " +
-                this.textAlign +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (labelExpression: ");
+        result.append(this.labelExpression);
+        result.append(", overflowStrategy: ");
+        result.append(this.overflowStrategy);
+        result.append(", textAlign: ");
+        result.append(this.textAlign);
+        result.append(')');
+        return result.toString();
     }
 
 } // LabelDescriptionImpl

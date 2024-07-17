@@ -27,6 +27,7 @@
 As a result, the following maven modules have been deleted: `sirius-web-sample-application`, `sirius-web-spring`, `sirius-web-graphql`, `sirius-web-services-api`, `sirius-web-services`, `sirius-web-persistence`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3676[#3676] [representation] Remove the label from representation subscriptions and from graphql types.
 + Also remove the label from representation metadata (and sometimes the whole metadata) when the label or metadata were not needed.
+- https://github.com/eclipse-sirius/sirius-web/issues/1470[#1470] [view] Since the computation of converted description ID has changed, the identifier of existing representations is not valid anymore, and these representations cannot be opened. 
 
 
 === Dependency update
@@ -49,6 +50,10 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3702[#3702] [sirius-web] Improve the extensibility of the navigation bar menu by giving consumers of Sirius Web the ability to add new menu entries
 - https://github.com/eclipse-sirius/sirius-web/issues/3675[#3675] [core] Remove the label from the selection entry.
 + It also introduces a new hook to retrieve representation metadata
+- https://github.com/eclipse-sirius/sirius-web/issues/1470[#1470] [view] Add EKeys to containment references in view metamodels.
+The ID of description was previously computed using the URI of the view description, which included its index in its containment reference, meaning that the ID wasn't stable if the view was updated.
+The new implementation still uses URIs, but URIs now have the following pattern: `//@descriptions[name='Form']`, which doesn't rely on the index anymore.
+
 
 
 == v2024.7.0

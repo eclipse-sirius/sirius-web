@@ -89,7 +89,7 @@ public interface LaneDescription extends DeckElementDescription {
      *
      * @return the value of the '<em>Owned Card Descriptions</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.deck.DeckPackage#getLaneDescription_OwnedCardDescriptions()
-     * @model containment="true"
+     * @model containment="true" keys="name"
      * @generated
      */
     EList<CardDescription> getOwnedCardDescriptions();

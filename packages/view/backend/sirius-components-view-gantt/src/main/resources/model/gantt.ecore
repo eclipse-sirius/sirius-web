@@ -3,7 +3,7 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="gantt" nsURI="http://www.eclipse.org/sirius-web/gantt" nsPrefix="gantt">
   <eClassifiers xsi:type="ecore:EClass" name="GanttDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="taskElementDescriptions"
-        upperBound="-1" eType="#//TaskDescription" containment="true"/>
+        upperBound="-1" eType="#//TaskDescription" containment="true" eKeys="#//TaskDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="createTool" eType="#//CreateTaskTool"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="editTool" eType="#//EditTaskTool"
@@ -45,7 +45,7 @@
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self.dependencies"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="subTaskElementDescriptions"
-        upperBound="-1" eType="#//TaskDescription" containment="true"/>
+        upperBound="-1" eType="#//TaskDescription" containment="true" eKeys="#//TaskDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="reusedTaskElementDescriptions"
         upperBound="-1" eType="#//TaskDescription"/>
   </eClassifiers>

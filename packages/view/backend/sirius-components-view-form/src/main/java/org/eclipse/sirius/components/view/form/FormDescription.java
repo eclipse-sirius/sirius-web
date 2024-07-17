@@ -37,7 +37,7 @@ public interface FormDescription extends RepresentationDescription {
      *
      * @return the value of the '<em>Pages</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.form.FormPackage#getFormDescription_Pages()
-     * @model containment="true"
+     * @model containment="true" keys="name"
      * @generated
      */
     EList<PageDescription> getPages();
@@ -48,7 +48,7 @@ public interface FormDescription extends RepresentationDescription {
      *
      * @return the value of the '<em>Form Variables</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.form.FormPackage#getFormDescription_FormVariables()
-     * @model containment="true"
+     * @model containment="true" keys="name"
      * @generated
      */
     EList<FormVariable> getFormVariables();

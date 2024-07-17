@@ -44,8 +44,8 @@ import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
-import org.eclipse.sirius.web.services.FormVariableViewPreEditingContextProcessor;
-import org.eclipse.sirius.web.services.MasterDetailsFormDescriptionProvider;
+import org.eclipse.sirius.web.services.forms.FormVariableViewPreEditingContextProcessor;
+import org.eclipse.sirius.web.services.forms.MasterDetailsFormDescriptionProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,6 +75,9 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenCreatedFormSubscription givenCreatedFormSubscription;
+
+    @Autowired
+    private FormVariableViewPreEditingContextProcessor formVariableViewPreEditingContextProcessor;
 
     @Autowired
     private EditSelectMutationRunner editSelectMutationRunner;
@@ -156,7 +159,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
-                FormVariableViewPreEditingContextProcessor.REPRESENTATION_DESCRIPTION_ID,
+                this.formVariableViewPreEditingContextProcessor.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "Shared Variables Form"
         );
@@ -187,7 +190,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
-                FormVariableViewPreEditingContextProcessor.REPRESENTATION_DESCRIPTION_ID,
+                this.formVariableViewPreEditingContextProcessor.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "Shared Variables Form"
         );

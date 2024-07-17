@@ -22,84 +22,84 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>User Resizable
  * Direction</b></em>', and utility methods for working with them. <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getUserResizableDirection()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getUserResizableDirection()
  */
 public enum UserResizableDirection implements Enumerator {
     /**
      * The '<em><b>BOTH</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #BOTH_VALUE
      * @generated
      * @ordered
-     * @see #BOTH_VALUE
      */
     BOTH(0, "BOTH", "BOTH"),
 
     /**
      * The '<em><b>HORIZONTAL</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #HORIZONTAL_VALUE
      * @generated
      * @ordered
-     * @see #HORIZONTAL_VALUE
      */
     HORIZONTAL(1, "HORIZONTAL", "HORIZONTAL"),
 
     /**
      * The '<em><b>VERTICAL</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #VERTICAL_VALUE
      * @generated
      * @ordered
-     * @see #VERTICAL_VALUE
      */
     VERTICAL(2, "VERTICAL", "VERTICAL"),
 
     /**
      * The '<em><b>NONE</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #NONE_VALUE
      * @generated
      * @ordered
-     * @see #NONE_VALUE
      */
     NONE(3, "NONE", "NONE");
 
     /**
      * The '<em><b>BOTH</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #BOTH
      * @model
      * @generated
      * @ordered
-     * @see #BOTH
      */
     public static final int BOTH_VALUE = 0;
 
     /**
      * The '<em><b>HORIZONTAL</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #HORIZONTAL
      * @model
      * @generated
      * @ordered
-     * @see #HORIZONTAL
      */
     public static final int HORIZONTAL_VALUE = 1;
 
     /**
      * The '<em><b>VERTICAL</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #VERTICAL
      * @model
      * @generated
      * @ordered
-     * @see #VERTICAL
      */
     public static final int VERTICAL_VALUE = 2;
 
     /**
      * The '<em><b>NONE</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #NONE
      * @model
      * @generated
      * @ordered
-     * @see #NONE
      */
     public static final int NONE_VALUE = 3;
 
@@ -118,18 +118,21 @@ public enum UserResizableDirection implements Enumerator {
      * @generated
      */
     public static final List<UserResizableDirection> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final int value;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final String name;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -142,7 +145,7 @@ public enum UserResizableDirection implements Enumerator {
      *
      * @generated
      */
-    UserResizableDirection(int value, String name, String literal) {
+    private UserResizableDirection(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -153,7 +156,7 @@ public enum UserResizableDirection implements Enumerator {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @param literal
-     *         the literal.
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -172,7 +175,7 @@ public enum UserResizableDirection implements Enumerator {
      * <!-- end-user-doc -->
      *
      * @param name
-     *         the name.
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -191,7 +194,7 @@ public enum UserResizableDirection implements Enumerator {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the integer value.
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */

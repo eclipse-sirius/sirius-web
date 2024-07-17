@@ -102,8 +102,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @deprecated
+     * @generated
      */
     @Deprecated
     public static DiagramPackage getPackage() {

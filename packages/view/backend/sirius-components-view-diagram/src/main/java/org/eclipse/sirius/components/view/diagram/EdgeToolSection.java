@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ public interface EdgeToolSection extends ToolSection {
      *
      * @return the value of the '<em>Node Tools</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeToolSection_NodeTools()
-     * @model containment="true"
+     * @model containment="true" keys="name"
      * @generated
      */
     EList<NodeTool> getNodeTools();

@@ -8,14 +8,14 @@
   <eClassifiers xsi:type="ecore:EDataType" name="Length" instanceClassName="int"/>
   <eClassifiers xsi:type="ecore:EClass" name="View">
     <eStructuralFeatures xsi:type="ecore:EReference" name="descriptions" upperBound="-1"
-        eType="#//RepresentationDescription" containment="true"/>
+        eType="#//RepresentationDescription" containment="true" eKeys="#//RepresentationDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="colorPalettes" upperBound="-1"
-        eType="#//ColorPalette" containment="true"/>
+        eType="#//ColorPalette" containment="true" eKeys="#//ColorPalette/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ColorPalette">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="#//Identifier"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="colors" upperBound="-1"
-        eType="#//UserColor" containment="true"/>
+        eType="#//UserColor" containment="true" eKeys="#//UserColor/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FixedColor" eSuperTypes="#//UserColor">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//Color"/>
