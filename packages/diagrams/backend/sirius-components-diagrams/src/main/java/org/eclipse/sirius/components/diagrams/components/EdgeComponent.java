@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,9 +26,6 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
-import org.eclipse.sirius.components.diagrams.Label;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -42,7 +39,6 @@ import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeEvent;
-import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.events.RemoveEdgeEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
@@ -76,10 +72,8 @@ public class EdgeComponent implements IComponent {
 
         List<Element> children = new ArrayList<>();
 
-        // @formatter:off
         boolean hasCandidates = this.hasNodeCandidates(edgeDescription.getSourceNodeDescriptions(), cache)
                 && this.hasNodeCandidates(edgeDescription.getTargetNodeDescriptions(), cache);
-        // @formatter:on
 
         if (hasCandidates) {
             VariableManager semanticElementsVariableManager = new VariableManager();
@@ -157,20 +151,9 @@ public class EdgeComponent implements IComponent {
         ViewModifier state = this.computeState(diagramEvents, sourceNode, sourceId, targetNode, targetId, modifiers);
         edgeElementPropsBuilder.state(state);
 
-        if (diagramEvents.stream().noneMatch(event -> event instanceof RemoveEdgeEvent || event instanceof ReconnectEdgeEvent)) {
-            Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-            Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-            edgeElementPropsBuilder.sourceAnchorRelativePosition(sourceAnchorRelativePosition);
-            edgeElementPropsBuilder.targetAnchorRelativePosition(targetAnchorRelativePosition);
-        }
-
         for (IDiagramEvent diagramEvent : diagramEvents) {
             if (diagramEvent instanceof RemoveEdgeEvent removeEdgeEvent) {
                 optionalPreviousEdge = this.getPreviousEdge(id, lastPreviousRenderedEdgeIds, removeEdgeEvent, edgeIdProvider, count);
-                Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-                Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-                edgeElementPropsBuilder.sourceAnchorRelativePosition(sourceAnchorRelativePosition);
-                edgeElementPropsBuilder.targetAnchorRelativePosition(targetAnchorRelativePosition);
             } else if (diagramEvent instanceof ReconnectEdgeEvent reconnectEdgeEvent) {
                 optionalPreviousEdge = this.getPreviousEdge(id, lastPreviousRenderedEdgeIds, reconnectEdgeEvent, edgeIdProvider, count, optionalPreviousEdge, edgeElementPropsBuilder);
             }
@@ -186,8 +169,7 @@ public class EdgeComponent implements IComponent {
                     .map(Edge::getType)
                     .orElse("edge:straight");
 
-            List<Position> routingPoints = optionalPreviousEdge.map(Edge::getRoutingPoints).orElse(List.of());
-            List<Element> labelChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, optionalPreviousEdge, id, routingPoints);
+            List<Element> labelChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, id);
             EdgeElementProps edgeElementProps = edgeElementPropsBuilder
                     .type(edgeType)
                     .descriptionId(edgeDescription.getId())
@@ -197,7 +179,6 @@ public class EdgeComponent implements IComponent {
                     .sourceId(sourceId)
                     .targetId(targetId)
                     .style(style)
-                    .routingPoints(routingPoints)
                     .children(labelChildren)
                     .centerLabelEditable(edgeDescription.getLabelEditHandler() != null)
                     .build();
@@ -328,16 +309,12 @@ public class EdgeComponent implements IComponent {
             Optional<Edge> potentialPreviousEdge, EdgeElementProps.Builder edgeElementPropsBuilder) {
 
         Optional<Edge> optionalPreviousEdge = potentialPreviousEdge;
-        Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-        Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
 
         if (edgeId.equals(reconnectEdgeEvent.getEdgeId()) || lastPreviousRenderedEdgeIds.contains(edgeId)) {
             // The edge being rendered has been reconnected or has already been rendered. Thus, the
             // previous edge correspond to next sibling (count + 1).
             String potentialPreviousEdgeId = edgeIdProvider.apply(count + 1);
             optionalPreviousEdge = this.props.getEdgesRequestor().getById(potentialPreviousEdgeId);
-            sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-            targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
         }
 
         if (optionalPreviousEdge.isEmpty()) {
@@ -347,34 +324,17 @@ public class EdgeComponent implements IComponent {
 
             String potentialPreviousEdgeId = reconnectEdgeEvent.getEdgeId();
             optionalPreviousEdge = this.props.getEdgesRequestor().getById(potentialPreviousEdgeId);
-            sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-            targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
 
-            // We have the previous edge, but whether the reconnection concern the edge source or the
-            // edge target we must reset the anchor to makes it computed by the layout service.
-            if (ReconnectEdgeKind.SOURCE.equals(reconnectEdgeEvent.getKind())) {
-                // We are reconnecting the source of the edge, thus, the source anchor should be reset
-                sourceAnchorRelativePosition = Ratio.UNDEFINED;
-            }
-
-            if (ReconnectEdgeKind.TARGET.equals(reconnectEdgeEvent.getKind())) {
-                // We are reconnecting the source of the edge, thus, the target anchor should be reset
-                targetAnchorRelativePosition = Ratio.UNDEFINED;
-            }
             // Since the id of the reconnected edge has been updated, update the reconnected edge event edge id for next
             // refresh operations.
             reconnectEdgeEvent.setEdgeId(edgeId);
         }
 
-        edgeElementPropsBuilder.sourceAnchorRelativePosition(sourceAnchorRelativePosition);
-        edgeElementPropsBuilder.targetAnchorRelativePosition(targetAnchorRelativePosition);
         return optionalPreviousEdge;
     }
 
     private Function<Integer, String> getEdgeIdProvider(EdgeDescription edgeDescription, Element sourceNode, Element targetNode) {
-        return (count) -> {
-            return this.computeEdgeId(edgeDescription, sourceNode, targetNode, count);
-        };
+        return (count) -> this.computeEdgeId(edgeDescription, sourceNode, targetNode, count);
     }
 
     /**
@@ -424,27 +384,24 @@ public class EdgeComponent implements IComponent {
         return this.props.getEdgesRequestor().getById(potentialPreviousEdgeId);
     }
 
-    private List<Element> getLabelsChildren(EdgeDescription edgeDescription, VariableManager edgeVariableManager, Optional<Edge> optionalPreviousEdge, String edgeId, List<Position> routingPoints) {
+    private List<Element> getLabelsChildren(EdgeDescription edgeDescription, VariableManager edgeVariableManager, String edgeId) {
         List<Element> edgeChildren = new ArrayList<>();
 
         VariableManager labelVariableManager = edgeVariableManager.createChild();
         labelVariableManager.put(LabelDescription.OWNER_ID, edgeId);
 
         Optional.ofNullable(edgeDescription.getBeginLabelDescription()).map(labelDescription -> {
-            Optional<Label> optionalPreviousLabel = optionalPreviousEdge.map(Edge::getBeginLabel);
-            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, optionalPreviousLabel, LabelType.EDGE_BEGIN.getValue());
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_BEGIN.getValue());
             return new Element(LabelComponent.class, labelComponentProps);
         }).ifPresent(edgeChildren::add);
 
         Optional.ofNullable(edgeDescription.getCenterLabelDescription()).map(labelDescription -> {
-            Optional<Label> optionalPreviousLabel = optionalPreviousEdge.map(Edge::getCenterLabel);
-            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, optionalPreviousLabel, LabelType.EDGE_CENTER.getValue());
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_CENTER.getValue());
             return new Element(LabelComponent.class, labelComponentProps);
         }).ifPresent(edgeChildren::add);
 
         Optional.ofNullable(edgeDescription.getEndLabelDescription()).map(labelDescription -> {
-            Optional<Label> optionalPreviousLabel = optionalPreviousEdge.map(Edge::getEndLabel);
-            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, optionalPreviousLabel, LabelType.EDGE_END.getValue());
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_END.getValue());
             return new Element(LabelComponent.class, labelComponentProps);
         }).ifPresent(edgeChildren::add);
 
@@ -453,7 +410,6 @@ public class EdgeComponent implements IComponent {
 
     private String computeEdgeId(EdgeDescription edgeDescription, Element sourceNode, Element targetNode, int count) {
         var descriptionId = edgeDescription.getId();
-        // @formatter:off
         var sourceId = Optional.of(sourceNode.getProps())
                 .filter(NodeElementProps.class::isInstance)
                 .map(NodeElementProps.class::cast)
@@ -465,7 +421,6 @@ public class EdgeComponent implements IComponent {
                 .map(NodeElementProps.class::cast)
                 .map(NodeElementProps::getId)
                 .orElse(INVALID_NODE_ID);
-        // @formatter:on
         return this.computeEdgeId(descriptionId, sourceId, targetId, count);
     }
 
@@ -476,7 +431,6 @@ public class EdgeComponent implements IComponent {
 
     private String computeEdgeIdPrefix(EdgeDescription edgeDescription, Element sourceNode, Element targetNode) {
         var descriptionId = edgeDescription.getId();
-        // @formatter:off
         var sourceId = Optional.of(sourceNode.getProps())
                 .filter(NodeElementProps.class::isInstance)
                 .map(NodeElementProps.class::cast)
@@ -488,13 +442,11 @@ public class EdgeComponent implements IComponent {
                 .map(NodeElementProps.class::cast)
                 .map(NodeElementProps::getId)
                 .orElse(INVALID_NODE_ID);
-        // @formatter:on
         String rawPrefix = descriptionId + sourceId + targetId;
         return UUID.nameUUIDFromBytes(rawPrefix.getBytes()).toString();
     }
 
     private boolean hasNodeCandidates(List<NodeDescription> nodeDescriptions, DiagramRenderingCache cache) {
-        // @formatter:off
         return nodeDescriptions.stream()
                 .map(NodeDescription::getId)
                 .map(cache.getNodeDescriptionIdToNodes()::get)
@@ -502,27 +454,22 @@ public class EdgeComponent implements IComponent {
                 .flatMap(Collection::stream)
                 .findAny()
                 .isPresent();
-        // @formatter:on
     }
 
     private String getId(Element nodeElement) {
-        // @formatter:off
         return Optional.of(nodeElement.getProps())
                 .filter(NodeElementProps.class::isInstance)
                 .map(NodeElementProps.class::cast)
                 .map(NodeElementProps::getId)
                 .orElse(UUID.randomUUID().toString());
-        // @formatter:on
     }
 
     private ViewModifier getStateFromElement(Element nodeElement) {
-        // @formatter:off
         return Optional.of(nodeElement.getProps())
                 .filter(NodeElementProps.class::isInstance)
                 .map(NodeElementProps.class::cast)
                 .map(NodeElementProps::getState)
                 .orElse(ViewModifier.Normal);
-        // @formatter:on
     }
 
 }

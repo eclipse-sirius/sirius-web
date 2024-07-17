@@ -479,6 +479,63 @@ INSERT INTO representation_data (
   '{
     "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93",
     "edges": [
+      {
+        "id": "e6049f1c-f281-3c83-bcf4-17fc95842de1",
+        "type": "edge:straight",
+        "targetObjectId": "57984ee9-af89-432d-8c1b-42b902791a3c",
+        "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Relation",
+        "targetObjectLabel": "standard",
+        "descriptionId": "siriusComponents://edgeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=262fe9c3-0eaa-362b-9e80-1b920e7bb5b7",
+        "beginLabel": null,
+        "centerLabel": {
+          "id": "ea23f667-e18f-3aed-968d-5719e9c021db",
+          "type": "label:edge-center",
+          "text":"6",
+          "position": {
+            "x": -1.0,
+            "y": -1.0
+          },
+          "size": {
+            "width": -1.0,
+            "height": -1.0
+          },
+          "alignment": {
+            "x": -1.0,
+            "y":-1.0
+          },
+          "style": {
+            "color": "#B1BCBE",
+            "fontSize": 14,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikeThrough": false,
+            "iconURL": []
+          }
+        },
+        "endLabel": null,
+        "sourceId": "9b410b8c-5fa1-3942-90b3-fdbf5c0689c5",
+        "targetId": "82f6f57a-5611-3b5d-a6b0-4a31d60fcada",
+        "modifiers": [],
+        "state": "Normal",
+        "style": {
+          "size": 1,
+          "lineStyle": "Dash",
+          "sourceArrow": "None",
+          "targetArrow": "InputClosedArrow",
+          "color": "#B1BCBE"
+        },
+        "routingPoints":[],
+        "sourceAnchorRelativePosition": {
+          "x": -1.0,
+          "y": -1.0
+        },
+        "targetAnchorRelativePosition": {
+          "x": -1.0,
+          "y": -1.0
+        },
+        "centerLabelEditable": true
+      }
     ],
     "id": "9698833e-ffd4-435a-9aec-765622ce524e",
     "kind": "siriusComponents://representation?type=Diagram",
@@ -532,6 +589,18 @@ INSERT INTO representation_data (
                 "insideLabelLocation": "TOP_CENTER",
                 "isHeader": true,
                 "overflowStrategy": "NONE",
+                "position": {
+                    "x": -1.0,
+                    "y": -1.0
+                },
+                "size": {
+                    "width": -1.0,
+                    "height": -1.0
+                },
+                "alignment": {
+                    "x": -1.0,
+                    "y":-1.0
+                },
                 "style": {
                     "background": "transparent",
                     "bold": false,

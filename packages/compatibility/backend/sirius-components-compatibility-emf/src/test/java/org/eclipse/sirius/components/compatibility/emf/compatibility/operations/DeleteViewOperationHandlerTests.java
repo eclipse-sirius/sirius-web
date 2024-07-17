@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo and others.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,9 +38,7 @@ import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -118,8 +116,6 @@ public class DeleteViewOperationHandlerTests {
                         .textAlign(LabelTextAlign.CENTER)
                         .build())
                 .style(ImageNodeStyle.newImageNodeStyle().imageURL("").scalingFactor(0).build())
-                .position(Position.at(0, 0))
-                .size(Size.of(10, 10))
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .state(ViewModifier.Normal)
@@ -131,8 +127,6 @@ public class DeleteViewOperationHandlerTests {
                 .descriptionId(diagramDescription.getId())
                 .targetObjectId(UUID.randomUUID().toString())
                 .label("DiagramTest")
-                .position(Position.at(0, 0))
-                .size(Size.of(100, 100))
                 .nodes(List.of(node))
                 .edges(List.of())
                 .build();
@@ -232,7 +226,6 @@ public class DeleteViewOperationHandlerTests {
                 .insideLabelDescription(insideLabelDescription)
                 .styleProvider(nodeStyleProvider)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
-                .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.tests.builder.edge;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -24,7 +22,6 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LineStyle;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
@@ -47,8 +44,6 @@ public final class EdgeBuilder {
 
     private Map<String, Integer> edgeIdPrefixToCount;
 
-    private List<Position> routingPoints = new ArrayList<>();
-
     public EdgeBuilder(TestLayoutDiagramBuilder diagramBuilder, String edgeCenterLabel, Map<String, Integer> edgeIdPrefixToCount) {
         this.diagramBuilder = Objects.requireNonNull(diagramBuilder);
         this.centerLabel = new LabelBuilder().basicLabel(edgeCenterLabel, LabelType.EDGE_CENTER);
@@ -63,11 +58,6 @@ public final class EdgeBuilder {
     public EdgeEndBuilder to(String targetTargetObjectLabel) {
         this.targetEdgeBuilder = EdgeEnd.newEdgeEnd(this, targetTargetObjectLabel);
         return this.targetEdgeBuilder;
-    }
-
-    public EdgeBuilder goingThrough(double x, double y) {
-        this.routingPoints.add(Position.at(x, y));
-        return this;
     }
 
     public TestLayoutDiagramBuilder and() {
@@ -88,7 +78,6 @@ public final class EdgeBuilder {
     public Edge build(Map<String, String> targetObjectIdToNodeId) {
         EdgeEnd sourceEdgeEnd = Objects.requireNonNull(this.sourceEdgeBuilder).build();
         EdgeEnd targetEdgeEnd = Objects.requireNonNull(this.targetEdgeBuilder).build();
-        // @formatter:off
         EdgeStyle edgeStyle = EdgeStyle.newEdgeStyle()
                 .size(1)
                 .lineStyle(LineStyle.Solid)
@@ -96,7 +85,6 @@ public final class EdgeBuilder {
                 .targetArrow(ArrowStyle.InputArrow)
                 .color("#002639")
                 .build();
-        // @formatter:on
 
         String sourceId = targetObjectIdToNodeId.get(sourceEdgeEnd.getEndId());
         String targetId = targetObjectIdToNodeId.get(targetEdgeEnd.getEndId());
@@ -105,18 +93,14 @@ public final class EdgeBuilder {
         String targetObjectId = this.computeEdgeId(sourceId, targetId, count);
         this.edgeIdPrefixToCount.put(edgeDiscriminant, ++count);
 
-        // @formatter:off
         return Edge.newEdge(targetObjectId)
                 .type("edge:straight")
                 .sourceId(sourceId)
                 .targetId(targetId)
-                .sourceAnchorRelativePosition(sourceEdgeEnd.getEndRatio())
-                .targetAnchorRelativePosition(targetEdgeEnd.getEndRatio())
                 .beginLabel(null)
                 .centerLabel(this.centerLabel)
                 .endLabel(null)
                 .descriptionId(TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID)
-                .routingPoints(this.routingPoints)
                 .style(edgeStyle)
                 .targetObjectId(sourceEdgeEnd.getEndId())
                 .targetObjectKind("")
@@ -124,6 +108,5 @@ public final class EdgeBuilder {
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .build();
-        // @formatter:on
     }
 }

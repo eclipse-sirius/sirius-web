@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Set;
 
 import org.eclipse.sirius.components.diagrams.Edge;
-import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 
 /**
@@ -68,16 +67,6 @@ public class EdgeAssert extends DiagramElementAssert<EdgeAssert, Edge> {
 
     public EdgeAssert hasState(ViewModifier state) {
         assertThat(this.actual.getState()).isEqualTo(state);
-        return this;
-    }
-
-    public EdgeAssert hasSourceAnchorRelativePosition(Ratio sourceAnchorRelativePosition) {
-        assertThat(this.actual.getSourceAnchorRelativePosition()).isEqualTo(sourceAnchorRelativePosition);
-        return this;
-    }
-
-    public EdgeAssert hasTargetAnchorRelativePosition(Ratio targetAnchorRelativePosition) {
-        assertThat(this.actual.getTargetAnchorRelativePosition()).isEqualTo(targetAnchorRelativePosition);
         return this;
     }
 

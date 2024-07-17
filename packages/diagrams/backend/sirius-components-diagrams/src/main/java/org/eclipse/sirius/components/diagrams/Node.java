@@ -58,10 +58,6 @@ public final class Node implements IDiagramElement {
 
     private ILayoutStrategy childrenLayoutStrategy;
 
-    private Position position;
-
-    private Size size;
-
     private List<Node> borderNodes;
 
     private List<Node> childNodes;
@@ -146,14 +142,6 @@ public final class Node implements IDiagramElement {
         return this.childrenLayoutStrategy;
     }
 
-    public Position getPosition() {
-        return this.position;
-    }
-
-    public Size getSize() {
-        return this.size;
-    }
-
     public List<Node> getBorderNodes() {
         return this.borderNodes;
     }
@@ -229,10 +217,6 @@ public final class Node implements IDiagramElement {
 
         private ILayoutStrategy childrenLayoutStrategy;
 
-        private Position position;
-
-        private Size size;
-
         private List<Node> borderNodes;
 
         private List<Node> childNodes;
@@ -266,8 +250,6 @@ public final class Node implements IDiagramElement {
             this.outsideLabels = node.getOutsideLabels();
             this.style = node.getStyle();
             this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
-            this.position = node.getPosition();
-            this.size = node.getSize();
             this.borderNodes = node.getBorderNodes();
             this.childNodes = node.getChildNodes();
             this.customizedProperties = node.getCustomizedProperties();
@@ -342,16 +324,6 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
-        public Builder position(Position position) {
-            this.position = Objects.requireNonNull(position);
-            return this;
-        }
-
-        public Builder size(Size size) {
-            this.size = Objects.requireNonNull(size);
-            return this;
-        }
-
         public Builder borderNodes(List<Node> borderNodes) {
             this.borderNodes = Objects.requireNonNull(borderNodes);
             return this;
@@ -403,8 +375,6 @@ public final class Node implements IDiagramElement {
             node.outsideLabels = Objects.requireNonNull(this.outsideLabels);
             node.style = Objects.requireNonNull(this.style);
             node.childrenLayoutStrategy = this.childrenLayoutStrategy;
-            node.position = Objects.requireNonNull(this.position);
-            node.size = Objects.requireNonNull(this.size);
             node.borderNodes = Objects.requireNonNull(this.borderNodes);
             node.childNodes = Objects.requireNonNull(this.childNodes);
             node.customizedProperties = this.customizedProperties;

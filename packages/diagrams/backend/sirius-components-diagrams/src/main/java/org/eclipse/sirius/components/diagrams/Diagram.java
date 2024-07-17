@@ -40,10 +40,6 @@ public final class Diagram implements IRepresentation {
 
     private String label;
 
-    private Position position;
-
-    private Size size;
-
     private List<Node> nodes;
 
     private List<Edge> edges;
@@ -77,14 +73,6 @@ public final class Diagram implements IRepresentation {
     @Override
     public String getLabel() {
         return this.label;
-    }
-
-    public Position getPosition() {
-        return this.position;
-    }
-
-    public Size getSize() {
-        return this.size;
     }
 
     public List<Node> getNodes() {
@@ -130,10 +118,6 @@ public final class Diagram implements IRepresentation {
 
         private String label;
 
-        private Position position;
-
-        private Size size;
-
         private List<Node> nodes;
 
         private List<Edge> edges;
@@ -149,8 +133,6 @@ public final class Diagram implements IRepresentation {
             this.targetObjectId = diagram.getTargetObjectId();
             this.descriptionId = diagram.getDescriptionId();
             this.label = diagram.getLabel();
-            this.position = diagram.getPosition();
-            this.size = diagram.getSize();
             this.nodes = diagram.getNodes();
             this.edges = diagram.getEdges();
             this.layoutData = diagram.getLayoutData();
@@ -168,16 +150,6 @@ public final class Diagram implements IRepresentation {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
-            return this;
-        }
-
-        public Builder position(Position position) {
-            this.position = Objects.requireNonNull(position);
-            return this;
-        }
-
-        public Builder size(Size size) {
-            this.size = Objects.requireNonNull(size);
             return this;
         }
 
@@ -203,8 +175,6 @@ public final class Diagram implements IRepresentation {
             diagram.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             diagram.descriptionId = Objects.requireNonNull(this.descriptionId);
             diagram.label = Objects.requireNonNull(this.label);
-            diagram.position = Objects.requireNonNull(this.position);
-            diagram.size = Objects.requireNonNull(this.size);
             diagram.nodes = Objects.requireNonNull(this.nodes);
             diagram.edges = Objects.requireNonNull(this.edges);
             diagram.layoutData = Objects.requireNonNull(this.layoutData);
