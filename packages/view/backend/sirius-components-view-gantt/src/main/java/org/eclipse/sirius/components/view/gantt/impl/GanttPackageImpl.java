@@ -586,6 +586,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
         this.initEClass(this.ganttDescriptionEClass, GanttDescription.class, "GanttDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getGanttDescription_TaskElementDescriptions(), this.getTaskDescription(), null, "taskElementDescriptions", null, 0, -1, GanttDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getGanttDescription_TaskElementDescriptions().getEKeys().add(this.getTaskDescription_Name());
         this.initEReference(this.getGanttDescription_CreateTool(), this.getCreateTaskTool(), null, "createTool", null, 0, 1, GanttDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getGanttDescription_EditTool(), this.getEditTaskTool(), null, "editTool", null, 0, 1, GanttDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -624,6 +625,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
                 TaskDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTaskDescription_SubTaskElementDescriptions(), this.getTaskDescription(), null, "subTaskElementDescriptions", null, 0, -1, TaskDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getTaskDescription_SubTaskElementDescriptions().getEKeys().add(this.getTaskDescription_Name());
         this.initEReference(this.getTaskDescription_ReusedTaskElementDescriptions(), this.getTaskDescription(), null, "reusedTaskElementDescriptions", null, 0, -1, TaskDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

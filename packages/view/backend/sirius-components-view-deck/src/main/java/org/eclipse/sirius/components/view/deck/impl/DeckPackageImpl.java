@@ -757,6 +757,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.initEClass(this.deckDescriptionEClass, DeckDescription.class, "DeckDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getDeckDescription_LaneDescriptions(), this.getLaneDescription(), null, "laneDescriptions", null, 0, -1, DeckDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getDeckDescription_LaneDescriptions().getEKeys().add(this.getLaneDescription_Name());
         this.initEReference(this.getDeckDescription_LaneDropTool(), this.getLaneDropTool(), null, "laneDropTool", null, 0, 1, DeckDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDeckDescription_Style(), this.getDeckDescriptionStyle(), null, "style", null, 0, 1, DeckDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -771,6 +772,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getLaneDescription_OwnedCardDescriptions(), this.getCardDescription(), null, "ownedCardDescriptions", null, 0, -1, LaneDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getLaneDescription_OwnedCardDescriptions().getEKeys().add(this.getCardDescription_Name());
         this.initEReference(this.getLaneDescription_EditTool(), this.getEditLaneTool(), null, "editTool", null, 0, 1, LaneDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getLaneDescription_CreateTool(), this.getCreateCardTool(), null, "createTool", null, 0, 1, LaneDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,

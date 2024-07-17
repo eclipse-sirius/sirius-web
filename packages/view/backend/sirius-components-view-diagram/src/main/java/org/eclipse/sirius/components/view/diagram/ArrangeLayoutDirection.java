@@ -22,102 +22,102 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Arrange Layout
  * Direction</b></em>', and utility methods for working with them. <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getArrangeLayoutDirection()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getArrangeLayoutDirection()
  */
 public enum ArrangeLayoutDirection implements Enumerator {
     /**
      * The '<em><b>UNDEFINED</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #UNDEFINED_VALUE
      * @generated
      * @ordered
-     * @see #UNDEFINED_VALUE
      */
     UNDEFINED(0, "UNDEFINED", "UNDEFINED"),
     /**
      * The '<em><b>RIGHT</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #RIGHT_VALUE
      * @generated
      * @ordered
-     * @see #RIGHT_VALUE
      */
     RIGHT(1, "RIGHT", "RIGHT"),
 
     /**
      * The '<em><b>DOWN</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #DOWN_VALUE
      * @generated
      * @ordered
-     * @see #DOWN_VALUE
      */
     DOWN(2, "DOWN", "DOWN"),
 
     /**
      * The '<em><b>LEFT</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #LEFT_VALUE
      * @generated
      * @ordered
-     * @see #LEFT_VALUE
      */
     LEFT(3, "LEFT", "LEFT"),
 
     /**
      * The '<em><b>UP</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #UP_VALUE
      * @generated
      * @ordered
-     * @see #UP_VALUE
      */
     UP(4, "UP", "UP");
 
     /**
      * The '<em><b>UNDEFINED</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #UNDEFINED
      * @model
      * @generated
      * @ordered
-     * @see #UNDEFINED
      */
     public static final int UNDEFINED_VALUE = 0;
 
     /**
      * The '<em><b>RIGHT</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #RIGHT
      * @model
      * @generated
      * @ordered
-     * @see #RIGHT
      */
     public static final int RIGHT_VALUE = 1;
 
     /**
      * The '<em><b>DOWN</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #DOWN
      * @model
      * @generated
      * @ordered
-     * @see #DOWN
      */
     public static final int DOWN_VALUE = 2;
 
     /**
      * The '<em><b>LEFT</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #LEFT
      * @model
      * @generated
      * @ordered
-     * @see #LEFT
      */
     public static final int LEFT_VALUE = 3;
 
     /**
      * The '<em><b>UP</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #UP
      * @model
      * @generated
      * @ordered
-     * @see #UP
      */
     public static final int UP_VALUE = 4;
 
@@ -163,7 +163,7 @@ public enum ArrangeLayoutDirection implements Enumerator {
      *
      * @generated
      */
-    ArrangeLayoutDirection(int value, String name, String literal) {
+    private ArrangeLayoutDirection(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -174,7 +174,7 @@ public enum ArrangeLayoutDirection implements Enumerator {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @param literal
-     *         the literal.
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -193,7 +193,7 @@ public enum ArrangeLayoutDirection implements Enumerator {
      * <!-- end-user-doc -->
      *
      * @param name
-     *         the name.
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -212,7 +212,7 @@ public enum ArrangeLayoutDirection implements Enumerator {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the integer value.
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */

@@ -515,10 +515,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
+     * @generated
      */
     public static DiagramPackage init() {
         if (isInited)
@@ -2567,8 +2567,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_NodeDescriptions(), this.getNodeDescription(), null, "nodeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getDiagramDescription_NodeDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
         this.initEReference(this.getDiagramDescription_EdgeDescriptions(), this.getEdgeDescription(), null, "edgeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getDiagramDescription_EdgeDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
         this.initEAttribute(this.getDiagramDescription_ArrangeLayoutDirection(), this.getArrangeLayoutDirection(), "arrangeLayoutDirection", "UNDEFINED", 1, 1, DiagramDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2597,8 +2599,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_ChildrenDescriptions(), this.getNodeDescription(), null, "childrenDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getNodeDescription_ChildrenDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
         this.initEReference(this.getNodeDescription_BorderNodesDescriptions(), this.getNodeDescription(), null, "borderNodesDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getNodeDescription_BorderNodesDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
         this.initEReference(this.getNodeDescription_ReusedChildNodeDescriptions(), this.getNodeDescription(), null, "reusedChildNodeDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_ReusedBorderNodeDescriptions(), this.getNodeDescription(), null, "reusedBorderNodeDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT,
@@ -2770,8 +2774,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramPalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getDiagramPalette_NodeTools().getEKeys().add(this.getTool_Name());
         this.initEReference(this.getDiagramPalette_ToolSections(), this.getDiagramToolSection(), null, "toolSections", null, 0, -1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getDiagramPalette_ToolSections().getEKeys().add(this.getToolSection_Name());
 
         this.initEClass(this.nodePaletteEClass, NodePalette.class, "NodePalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getNodePalette_DeleteTool(), this.getDeleteTool(), null, "deleteTool", null, 0, 1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -2782,10 +2788,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodePalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getNodePalette_NodeTools().getEKeys().add(this.getTool_Name());
         this.initEReference(this.getNodePalette_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getNodePalette_EdgeTools().getEKeys().add(this.getTool_Name());
         this.initEReference(this.getNodePalette_ToolSections(), this.getNodeToolSection(), null, "toolSections", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getNodePalette_ToolSections().getEKeys().add(this.getToolSection_Name());
 
         this.initEClass(this.edgePaletteEClass, EdgePalette.class, "EdgePalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getEdgePalette_DeleteTool(), this.getDeleteTool(), null, "deleteTool", null, 0, 1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -2798,10 +2807,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgePalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getEdgePalette_NodeTools().getEKeys().add(this.getTool_Name());
         this.initEReference(this.getEdgePalette_EdgeReconnectionTools(), this.getEdgeReconnectionTool(), null, "edgeReconnectionTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getEdgePalette_EdgeReconnectionTools().getEKeys().add(this.getTool_Name());
         this.initEReference(this.getEdgePalette_ToolSections(), this.getEdgeToolSection(), null, "toolSections", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getEdgePalette_ToolSections().getEKeys().add(this.getToolSection_Name());
 
         this.initEClass(this.toolEClass, Tool.class, "Tool", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTool_Name(), theViewPackage.getIdentifier(), "name", "Tool", 1, 1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
@@ -2866,16 +2878,20 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEClass(this.diagramToolSectionEClass, DiagramToolSection.class, "DiagramToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getDiagramToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, DiagramToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getDiagramToolSection_NodeTools().getEKeys().add(this.getTool_Name());
 
         this.initEClass(this.nodeToolSectionEClass, NodeToolSection.class, "NodeToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getNodeToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, NodeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getNodeToolSection_NodeTools().getEKeys().add(this.getTool_Name());
         this.initEReference(this.getNodeToolSection_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, NodeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getNodeToolSection_EdgeTools().getEKeys().add(this.getTool_Name());
 
         this.initEClass(this.edgeToolSectionEClass, EdgeToolSection.class, "EdgeToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getEdgeToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, EdgeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getEdgeToolSection_NodeTools().getEKeys().add(this.getTool_Name());
 
         this.initEClass(this.dropNodeToolEClass, DropNodeTool.class, "DropNodeTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getDropNodeTool_AcceptedNodeTypes(), this.getNodeDescription(), null, "acceptedNodeTypes", null, 0, -1, DropNodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,

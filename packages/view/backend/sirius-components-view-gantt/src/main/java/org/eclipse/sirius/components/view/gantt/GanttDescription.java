@@ -48,7 +48,7 @@ public interface GanttDescription extends RepresentationDescription {
      *
      * @return the value of the '<em>Task Element Descriptions</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription_TaskElementDescriptions()
-     * @model containment="true"
+     * @model containment="true" keys="name"
      * @generated
      */
     EList<TaskDescription> getTaskElementDescriptions();

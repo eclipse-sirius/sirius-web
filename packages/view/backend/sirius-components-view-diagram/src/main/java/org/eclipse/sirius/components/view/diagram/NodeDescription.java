@@ -50,10 +50,10 @@ public interface NodeDescription extends DiagramElementDescription {
      * Returns the value of the '<em><b>Collapsible</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Collapsible</em>' attribute.
-     * @model
-     * @generated
      * @see #setCollapsible(boolean)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_Collapsible()
+     * @model
+     * @generated
      */
     boolean isCollapsible();
 
@@ -62,9 +62,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Collapsible</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Collapsible</em>' attribute.
      * @see #isCollapsible()
+     * @generated
      */
     void setCollapsible(boolean value);
 
@@ -73,10 +73,10 @@ public interface NodeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Palette</em>' containment reference.
-     * @model containment="true"
-     * @generated
      * @see #setPalette(NodePalette)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_Palette()
+     * @model containment="true"
+     * @generated
      */
     NodePalette getPalette();
 
@@ -85,9 +85,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * <em>Palette</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Palette</em>' containment reference.
-     * @generated
+     *            the new value of the '<em>Palette</em>' containment reference.
      * @see #getPalette()
+     * @generated
      */
     void setPalette(NodePalette value);
 
@@ -96,10 +96,10 @@ public interface NodeDescription extends DiagramElementDescription {
      * --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Children Layout Strategy</em>' containment reference.
-     * @model containment="true"
-     * @generated
      * @see #setChildrenLayoutStrategy(LayoutStrategyDescription)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_ChildrenLayoutStrategy()
+     * @model containment="true"
+     * @generated
      */
     LayoutStrategyDescription getChildrenLayoutStrategy();
 
@@ -109,9 +109,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * Strategy</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Children Layout Strategy</em>' containment reference.
-     * @generated
+     *            the new value of the '<em>Children Layout Strategy</em>' containment reference.
      * @see #getChildrenLayoutStrategy()
+     * @generated
      */
     void setChildrenLayoutStrategy(LayoutStrategyDescription value);
 
@@ -132,9 +132,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Style</em>' containment reference.
-     * @generated
+     *            the new value of the '<em>Style</em>' containment reference.
      * @see #getStyle()
+     * @generated
      */
     void setStyle(NodeStyleDescription value);
 
@@ -144,9 +144,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_ConditionalStyles()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_ConditionalStyles()
      */
     EList<ConditionalNodeStyle> getConditionalStyles();
 
@@ -156,9 +156,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Children Descriptions</em>' containment reference list.
-     * @model containment="true"
-     * @generated
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_ChildrenDescriptions()
+     * @model containment="true" keys="name"
+     * @generated
      */
     EList<NodeDescription> getChildrenDescriptions();
 
@@ -168,9 +168,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>Border Nodes Descriptions</em>' containment reference list.
-     * @model containment="true"
-     * @generated
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_BorderNodesDescriptions()
+     * @model containment="true" keys="name"
+     * @generated
      */
     EList<NodeDescription> getBorderNodesDescriptions();
 
@@ -180,9 +180,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Reused Child Node Descriptions</em>' reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_ReusedChildNodeDescriptions()
      * @model
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_ReusedChildNodeDescriptions()
      */
     EList<NodeDescription> getReusedChildNodeDescriptions();
 
@@ -192,9 +192,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Reused Border Node Descriptions</em>' reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_ReusedBorderNodeDescriptions()
      * @model
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_ReusedBorderNodeDescriptions()
      */
     EList<NodeDescription> getReusedBorderNodeDescriptions();
 
@@ -204,11 +204,11 @@ public interface NodeDescription extends DiagramElementDescription {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>User Resizable</em>' attribute.
-     * @model default="BOTH" required="true"
-     * @generated
      * @see org.eclipse.sirius.components.view.diagram.UserResizableDirection
      * @see #setUserResizable(UserResizableDirection)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_UserResizable()
+     * @model default="BOTH" required="true"
+     * @generated
      */
     UserResizableDirection getUserResizable();
 
@@ -217,10 +217,10 @@ public interface NodeDescription extends DiagramElementDescription {
      * <em>User Resizable</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>User Resizable</em>' attribute.
-     * @generated
+     *            the new value of the '<em>User Resizable</em>' attribute.
      * @see org.eclipse.sirius.components.view.diagram.UserResizableDirection
      * @see #getUserResizable()
+     * @generated
      */
     void setUserResizable(UserResizableDirection value);
 
@@ -229,10 +229,10 @@ public interface NodeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Default Width Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setDefaultWidthExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_DefaultWidthExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getDefaultWidthExpression();
 
@@ -242,9 +242,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Default Width Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Default Width Expression</em>' attribute.
      * @see #getDefaultWidthExpression()
+     * @generated
      */
     void setDefaultWidthExpression(String value);
 
@@ -253,10 +253,10 @@ public interface NodeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Default Height Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setDefaultHeightExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_DefaultHeightExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getDefaultHeightExpression();
 
@@ -266,9 +266,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Default Height Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Default Height Expression</em>' attribute.
      * @see #getDefaultHeightExpression()
+     * @generated
      */
     void setDefaultHeightExpression(String value);
 
@@ -289,9 +289,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * <em>Keep Aspect Ratio</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Keep Aspect Ratio</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Keep Aspect Ratio</em>' attribute.
      * @see #isKeepAspectRatio()
+     * @generated
      */
     void setKeepAspectRatio(boolean value);
 
@@ -300,10 +300,10 @@ public interface NodeDescription extends DiagramElementDescription {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>Is Collapsed By Default Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setIsCollapsedByDefaultExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_IsCollapsedByDefaultExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getIsCollapsedByDefaultExpression();
 
@@ -313,9 +313,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * Collapsed By Default Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Is Collapsed By Default Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Is Collapsed By Default Expression</em>' attribute.
      * @see #getIsCollapsedByDefaultExpression()
+     * @generated
      */
     void setIsCollapsedByDefaultExpression(String value);
 
@@ -324,10 +324,10 @@ public interface NodeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Inside Label</em>' containment reference.
-     * @model containment="true"
-     * @generated
      * @see #setInsideLabel(InsideLabelDescription)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_InsideLabel()
+     * @model containment="true"
+     * @generated
      */
     InsideLabelDescription getInsideLabel();
 
@@ -336,9 +336,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * <em>Inside Label</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Inside Label</em>' containment reference.
-     * @generated
+     *            the new value of the '<em>Inside Label</em>' containment reference.
      * @see #getInsideLabel()
+     * @generated
      */
     void setInsideLabel(InsideLabelDescription value);
 
@@ -348,9 +348,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Outside Labels</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_OutsideLabels()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_OutsideLabels()
      */
     EList<OutsideLabelDescription> getOutsideLabels();
 
@@ -359,10 +359,10 @@ public interface NodeDescription extends DiagramElementDescription {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>Is Hidden By Default Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setIsHiddenByDefaultExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_IsHiddenByDefaultExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getIsHiddenByDefaultExpression();
 
@@ -372,9 +372,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * By Default Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Is Hidden By Default Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Is Hidden By Default Expression</em>' attribute.
      * @see #getIsHiddenByDefaultExpression()
+     * @generated
      */
     void setIsHiddenByDefaultExpression(String value);
 
@@ -383,10 +383,10 @@ public interface NodeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Is Faded By Default Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setIsFadedByDefaultExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_IsFadedByDefaultExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getIsFadedByDefaultExpression();
 
@@ -396,9 +396,9 @@ public interface NodeDescription extends DiagramElementDescription {
      * Default Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Is Faded By Default Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Is Faded By Default Expression</em>' attribute.
      * @see #getIsFadedByDefaultExpression()
+     * @generated
      */
     void setIsFadedByDefaultExpression(String value);
 

@@ -80,9 +80,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="palette" eType="#//DiagramPalette"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeDescriptions" upperBound="-1"
-        eType="#//NodeDescription" containment="true"/>
+        eType="#//NodeDescription" containment="true" eKeys="#//DiagramElementDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeDescriptions" upperBound="-1"
-        eType="#//EdgeDescription" containment="true"/>
+        eType="#//EdgeDescription" containment="true" eKeys="#//DiagramElementDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="arrangeLayoutDirection"
         lowerBound="1" eType="#//ArrangeLayoutDirection" defaultValueLiteral="UNDEFINED"/>
   </eClassifiers>
@@ -109,9 +109,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="#//ConditionalNodeStyle" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="childrenDescriptions" upperBound="-1"
-        eType="#//NodeDescription" containment="true"/>
+        eType="#//NodeDescription" containment="true" eKeys="#//DiagramElementDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="borderNodesDescriptions"
-        upperBound="-1" eType="#//NodeDescription" containment="true"/>
+        upperBound="-1" eType="#//NodeDescription" containment="true" eKeys="#//DiagramElementDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="reusedChildNodeDescriptions"
         upperBound="-1" eType="#//NodeDescription"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="reusedBorderNodeDescriptions"
@@ -273,9 +273,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="dropNodeTool" eType="#//DropNodeTool"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
-        eType="#//NodeTool" containment="true"/>
+        eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
-        eType="#//DiagramToolSection" containment="true"/>
+        eType="#//DiagramToolSection" containment="true" eKeys="#//ToolSection/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodePalette">
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
@@ -285,11 +285,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="dropNodeTool" eType="#//DropNodeTool"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
-        eType="#//NodeTool" containment="true"/>
+        eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
-        eType="#//EdgeTool" containment="true"/>
+        eType="#//EdgeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
-        eType="#//NodeToolSection" containment="true"/>
+        eType="#//NodeToolSection" containment="true" eKeys="#//ToolSection/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgePalette">
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
@@ -301,11 +301,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="endLabelEditTool" eType="#//LabelEditTool"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
-        eType="#//NodeTool" containment="true"/>
+        eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeReconnectionTools"
-        upperBound="-1" eType="#//EdgeReconnectionTool" containment="true"/>
+        upperBound="-1" eType="#//EdgeReconnectionTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
-        eType="#//EdgeToolSection" containment="true"/>
+        eType="#//EdgeToolSection" containment="true" eKeys="#//ToolSection/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Tool" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
@@ -364,17 +364,17 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramToolSection" eSuperTypes="#//ToolSection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
-        eType="#//NodeTool" containment="true"/>
+        eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeToolSection" eSuperTypes="#//ToolSection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
-        eType="#//NodeTool" containment="true"/>
+        eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
-        eType="#//EdgeTool" containment="true"/>
+        eType="#//EdgeTool" containment="true" eKeys="#//Tool/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeToolSection" eSuperTypes="#//ToolSection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
-        eType="#//NodeTool" containment="true"/>
+        eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DropNodeTool" eSuperTypes="#//Tool">
     <eStructuralFeatures xsi:type="ecore:EReference" name="acceptedNodeTypes" upperBound="-1"

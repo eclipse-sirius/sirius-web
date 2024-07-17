@@ -3155,8 +3155,10 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEClass(this.formDescriptionEClass, FormDescription.class, "FormDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getFormDescription_Pages(), this.getPageDescription(), null, "pages", null, 0, -1, FormDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getFormDescription_Pages().getEKeys().add(this.getPageDescription_Name());
         this.initEReference(this.getFormDescription_FormVariables(), this.getFormVariable(), null, "formVariables", null, 0, -1, FormDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getFormDescription_FormVariables().getEKeys().add(this.getFormVariable_Name());
 
         this.initEClass(this.formVariableEClass, FormVariable.class, "FormVariable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getFormVariable_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, FormVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
@@ -3177,8 +3179,10 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getPageDescription_Groups(), this.getGroupDescription(), null, "groups", null, 0, -1, PageDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getPageDescription_Groups().getEKeys().add(this.getGroupDescription_Name());
         this.initEReference(this.getPageDescription_ToolbarActions(), this.getButtonDescription(), null, "toolbarActions", null, 0, -1, PageDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getPageDescription_ToolbarActions().getEKeys().add(this.getFormElementDescription_Name());
 
         this.initEClass(this.groupDescriptionEClass, GroupDescription.class, "GroupDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getGroupDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
@@ -3191,8 +3195,10 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getGroupDescription_ToolbarActions(), this.getButtonDescription(), null, "toolbarActions", null, 0, -1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getGroupDescription_ToolbarActions().getEKeys().add(this.getFormElementDescription_Name());
         this.initEReference(this.getGroupDescription_Children(), this.getFormElementDescription(), null, "children", null, 0, -1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getGroupDescription_Children().getEKeys().add(this.getFormElementDescription_Name());
         this.initEReference(this.getGroupDescription_BorderStyle(), this.getContainerBorderStyle(), null, "borderStyle", null, 0, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getGroupDescription_ConditionalBorderStyles(), this.getConditionalContainerBorderStyle(), null, "conditionalBorderStyles", null, 0, -1, GroupDescription.class,
@@ -3267,6 +3273,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEClass(this.flexboxContainerDescriptionEClass, FlexboxContainerDescription.class, "FlexboxContainerDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getFlexboxContainerDescription_Children(), this.getFormElementDescription(), null, "children", null, 0, -1, FlexboxContainerDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getFlexboxContainerDescription_Children().getEKeys().add(this.getFormElementDescription_Name());
         this.initEAttribute(this.getFlexboxContainerDescription_FlexDirection(), this.getFlexDirection(), "flexDirection", "row", 1, 1, FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getFlexboxContainerDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, FlexboxContainerDescription.class,
@@ -3383,6 +3390,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEClass(this.splitButtonDescriptionEClass, SplitButtonDescription.class, "SplitButtonDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getSplitButtonDescription_Actions(), this.getButtonDescription(), null, "actions", null, 0, -1, SplitButtonDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getSplitButtonDescription_Actions().getEKeys().add(this.getFormElementDescription_Name());
         this.initEAttribute(this.getSplitButtonDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, SplitButtonDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -3578,6 +3586,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getFormElementFor_Children(), this.getFormElementDescription(), null, "children", null, 0, -1, FormElementFor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getFormElementFor_Children().getEKeys().add(this.getFormElementDescription_Name());
 
         this.initEClass(this.formElementIfEClass, FormElementIf.class, "FormElementIf", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getFormElementIf_PredicateExpression(), theViewPackage.getInterpretedExpression(), "predicateExpression", null, 1, 1, FormElementIf.class, !IS_TRANSIENT, !IS_VOLATILE,

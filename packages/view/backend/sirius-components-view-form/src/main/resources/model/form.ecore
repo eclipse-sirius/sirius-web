@@ -29,9 +29,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FormDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pages" upperBound="-1"
-        eType="#//PageDescription" containment="true"/>
+        eType="#//PageDescription" containment="true" eKeys="#//PageDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="formVariables" upperBound="-1"
-        eType="#//FormVariable" containment="true"/>
+        eType="#//FormVariable" containment="true" eKeys="#//FormVariable/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FormVariable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
@@ -50,9 +50,9 @@
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="groups" upperBound="-1"
-        eType="#//GroupDescription" containment="true"/>
+        eType="#//GroupDescription" containment="true" eKeys="#//GroupDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolbarActions" upperBound="-1"
-        eType="#//ButtonDescription" containment="true"/>
+        eType="#//ButtonDescription" containment="true" eKeys="#//FormElementDescription/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GroupDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
@@ -63,9 +63,9 @@
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolbarActions" upperBound="-1"
-        eType="#//ButtonDescription" containment="true"/>
+        eType="#//ButtonDescription" containment="true" eKeys="#//FormElementDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
-        eType="#//FormElementDescription" containment="true"/>
+        eType="#//FormElementDescription" containment="true" eKeys="#//FormElementDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="borderStyle" eType="#//ContainerBorderStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalBorderStyles"
@@ -129,7 +129,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FlexboxContainerDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
-        eType="#//FormElementDescription" containment="true"/>
+        eType="#//FormElementDescription" containment="true" eKeys="#//FormElementDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="flexDirection" lowerBound="1"
         eType="#//FlexDirection" defaultValueLiteral="row"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsEnabledExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
@@ -224,7 +224,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SplitButtonDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="actions" upperBound="-1"
-        eType="#//ButtonDescription" containment="true"/>
+        eType="#//ButtonDescription" containment="true" eKeys="#//FormElementDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsEnabledExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TextAreaDescription" eSuperTypes="#//WidgetDescription">
@@ -370,7 +370,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="iterableExpression" lowerBound="1"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
-        eType="#//FormElementDescription" containment="true"/>
+        eType="#//FormElementDescription" containment="true" eKeys="#//FormElementDescription/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FormElementIf" eSuperTypes="#//FormElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="predicateExpression" lowerBound="1"

@@ -38,7 +38,7 @@ public interface SplitButtonDescription extends WidgetDescription {
      *
      * @return the value of the '<em>Actions</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.form.FormPackage#getSplitButtonDescription_Actions()
-     * @model containment="true"
+     * @model containment="true" keys="name"
      * @generated
      */
     EList<ButtonDescription> getActions();

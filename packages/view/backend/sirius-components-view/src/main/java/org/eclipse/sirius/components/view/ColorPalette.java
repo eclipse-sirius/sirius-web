@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,7 @@ public interface ColorPalette extends EObject {
      *
      * @return the value of the '<em>Colors</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.ViewPackage#getColorPalette_Colors()
-     * @model containment="true"
+     * @model containment="true" keys="name"
      * @generated
      */
     EList<UserColor> getColors();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -138,7 +138,7 @@ public interface EdgePalette extends EObject {
      *
      * @return the value of the '<em>Node Tools</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgePalette_NodeTools()
-     * @model containment="true"
+     * @model containment="true" keys="name"
      * @generated
      */
     EList<NodeTool> getNodeTools();
@@ -150,7 +150,7 @@ public interface EdgePalette extends EObject {
      *
      * @return the value of the '<em>Edge Reconnection Tools</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgePalette_EdgeReconnectionTools()
-     * @model containment="true"
+     * @model containment="true" keys="name"
      * @generated
      */
     EList<EdgeReconnectionTool> getEdgeReconnectionTools();
@@ -162,7 +162,7 @@ public interface EdgePalette extends EObject {
      *
      * @return the value of the '<em>Tool Sections</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgePalette_ToolSections()
-     * @model containment="true"
+     * @model containment="true" keys="name"
      * @generated
      */
     EList<EdgeToolSection> getToolSections();

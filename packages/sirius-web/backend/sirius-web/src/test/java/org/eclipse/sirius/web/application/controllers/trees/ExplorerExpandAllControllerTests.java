@@ -46,11 +46,12 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
 import org.eclipse.sirius.components.trees.tests.graphql.TreeEventSubscriptionRunner;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.PapayaViewInjector;
+import org.eclipse.sirius.web.services.TaskViewInjector;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -87,6 +88,9 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
     private PapayaViewInjector papayaViewInjector;
 
     @Autowired
+    private TaskViewInjector taskViewInjector;
+
+    @Autowired
     private ExpandAllTreePathQueryRunner expandAllTreePathQueryRunner;
 
     @Autowired
@@ -98,10 +102,22 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a studio, when we ask for the tree path to expand an object, then its path in the explorer is returned")
+    @DisplayName("Given a studio, when we ask for the tree path to expand a papaya view object, then its path in the explorer is returned")
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenStudioWhenWeAskForTheTreePathOfAnObjectThenItsPathInTheExplorerIsReturned() {
+    public void givenStudioWhenWeAskForTheTreePathOfPapayaViewObjectThenItsPathInTheExplorerIsReturned() {
+        this.givenStudioWhenWeAskForTheTreePathOfAnObjectThenItsPathInTheExplorerIsReturned(this.papayaViewInjector);
+    }
+
+    @Test
+    @DisplayName("Given a studio, when we ask for the tree path to expand a task view object, then its path in the explorer is returned")
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenStudioWhenWeAskForTheTreePathOfTaskViewObjectThenItsPathInTheExplorerIsReturned() {
+        this.givenStudioWhenWeAskForTheTreePathOfAnObjectThenItsPathInTheExplorerIsReturned(this.taskViewInjector);
+    }
+
+    public void givenStudioWhenWeAskForTheTreePathOfAnObjectThenItsPathInTheExplorerIsReturned(BiFunction<IEditingContext, IInput, IPayload> objectInjector) {
         var input = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, List.of(), List.of());
         var flux = this.treeEventSubscriptionRunner.run(input);
 
@@ -117,7 +133,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable createView = () -> {
-            var createViewInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), this.papayaViewInjector);
+            var createViewInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), objectInjector);
             this.executeEditingContextFunctionRunner.execute(createViewInput).block();
 
             BiFunction<IEditingContext, IInput, IPayload> getObjectIdFunction = (editingContext, executeEditingContextFunctionInput) -> {
@@ -127,8 +143,8 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
                         .flatMap(emfEditingContext -> {
                             var iterator = emfEditingContext.getDomain().getResourceSet().getAllContents();
                             var stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
-                            return stream.filter(DiagramDescription.class::isInstance)
-                                    .map(DiagramDescription.class::cast)
+                            return stream.filter(RepresentationDescription.class::isInstance)
+                                    .map(RepresentationDescription.class::cast)
                                     .findFirst()
                                     .map(EObject::eResource);
                         })
