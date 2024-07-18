@@ -24,11 +24,13 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -43,6 +45,7 @@ import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.representations.Failure;
@@ -141,6 +144,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
                 .treeItemObjectProvider(this::getTreeItemObject)
+                .parentObjectProvider(this::getParentObject)
                 .build();
     }
 
@@ -405,11 +409,44 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
     }
 
     private Object getTreeItemObject(VariableManager variableManager) {
+        Object result = null;
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         var optionalId = variableManager.get(TreeDescription.ID, String.class);
         if (optionalId.isPresent() && optionalEditingContext.isPresent()) {
-            return this.objectService.getObject(optionalEditingContext.get(), optionalId.get());
+            var optionalObject = this.objectService.getObject(optionalEditingContext.get(), optionalId.get());
+            if (optionalObject.isPresent()) {
+                result = optionalObject.get();
+            } else {
+                var optionalEditingDomain = Optional.of(optionalEditingContext.get())
+                        .filter(IEMFEditingContext.class::isInstance)
+                        .map(IEMFEditingContext.class::cast)
+                        .map(IEMFEditingContext::getDomain);
+
+                if (optionalEditingDomain.isPresent()) {
+                    var editingDomain = optionalEditingDomain.get();
+                    ResourceSet resourceSet = editingDomain.getResourceSet();
+                    URI uri = new JSONResourceFactory().createResourceURI(optionalId.get());
+
+                    result = resourceSet.getResources().stream()
+                            .filter(resource -> resource.getURI().equals(uri))
+                            .findFirst()
+                            .orElse(null);
+                }
+            }
         }
-        return null;
+        return result;
+    }
+
+    private Object getParentObject(VariableManager variableManager) {
+        Object result = null;
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        if (self instanceof EObject eObject) {
+            Object semanticContainer = eObject.eContainer();
+            if (semanticContainer == null) {
+                semanticContainer = eObject.eResource();
+            }
+            result = semanticContainer;
+        }
+        return result;
     }
 }

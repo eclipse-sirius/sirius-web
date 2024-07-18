@@ -51,7 +51,7 @@ public class ExplorerTreePathProvider implements ITreePathProvider {
         int maxDepth = 0;
         Set<String> allAncestors = new LinkedHashSet<>();
         for (String selectionEntryId : input.selectionEntryIds()) {
-            List<String> itemAncestors = this.explorerNavigationService.getAncestors(editingContext, selectionEntryId, tree);
+            List<String> itemAncestors = this.explorerNavigationService.getAncestors(editingContext, tree, selectionEntryId);
             allAncestors.addAll(itemAncestors);
             maxDepth = Math.max(maxDepth, itemAncestors.size());
         }

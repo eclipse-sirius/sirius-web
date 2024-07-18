@@ -25,10 +25,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerNavigationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -41,43 +38,42 @@ public class ExplorerNavigationService implements IExplorerNavigationService {
 
     private final IIdentityService identityService;
 
-    private final IRepresentationDataSearchService representationDataSearchService;
-
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    public ExplorerNavigationService(IIdentityService identityService, IRepresentationDataSearchService representationDataSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+    public ExplorerNavigationService(IIdentityService identityService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
         this.identityService = Objects.requireNonNull(identityService);
-        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
     }
 
     @Override
-    public List<String> getAncestors(IEditingContext editingContext, String treeItemId, Tree tree) {
+    public List<String> getAncestors(IEditingContext editingContext, Tree tree, String treeItemId) {
         List<String> ancestorsIds = new ArrayList<>();
 
-        var optionalRepresentationMetadata = new UUIDParser().parse(treeItemId).flatMap(this.representationDataSearchService::findMetadataById);
-        var optionalSemanticObject = this.getTreeItemObject(editingContext, treeItemId, tree);
-
-        Optional<Object> optionalObject = Optional.empty();
-        if (optionalRepresentationMetadata.isPresent()) {
-            // The first parent of a representation item is the item for its targetObject.
-            optionalObject = optionalRepresentationMetadata.map(RepresentationDataMetadataOnly::targetObjectId)
-                    .flatMap(objectId -> this.getTreeItemObject(editingContext, objectId, tree));
-        } else if (optionalSemanticObject.isPresent()) {
-            // The first parent of a semantic object item is the item for its actual container
-            optionalObject = optionalSemanticObject.filter(EObject.class::isInstance)
-                    .map(EObject.class::cast)
-                    .map(eObject -> Optional.<Object> ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
-        }
-
+        Optional<Object> optionalObject = this.getParentSemanticObject(editingContext, tree, treeItemId);
         while (optionalObject.isPresent()) {
-            ancestorsIds.add(this.getItemId(optionalObject.get()));
-            optionalObject = optionalObject
-                    .filter(EObject.class::isInstance)
-                    .map(EObject.class::cast)
-                    .map(eObject -> Optional.<Object>ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
+            String parentId = this.getItemId(optionalObject.get());
+            ancestorsIds.add(parentId);
+            optionalObject = this.getParentSemanticObject(editingContext, tree, parentId);
         }
         return ancestorsIds;
+    }
+
+    private Optional<Object> getParentSemanticObject(IEditingContext editingContext, Tree tree, String elementId) {
+        Optional<Object> result = Optional.empty();
+
+        var variableManager = new VariableManager();
+        var optionalSemanticObject = this.getTreeItemObject(editingContext, tree, elementId);
+        var optionalTreeDescription = this.representationDescriptionSearchService.findById(editingContext, tree.getDescriptionId())
+                .filter(TreeDescription.class::isInstance)
+                .map(TreeDescription.class::cast);
+
+        if (optionalSemanticObject.isPresent() && optionalTreeDescription.isPresent()) {
+            variableManager.put(VariableManager.SELF, optionalSemanticObject.get());
+            variableManager.put(TreeDescription.ID, elementId);
+            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            result = Optional.ofNullable(optionalTreeDescription.get().getParentObjectProvider().apply(variableManager));
+        }
+        return result;
     }
 
     private String getItemId(Object object) {
@@ -90,7 +86,7 @@ public class ExplorerNavigationService implements IExplorerNavigationService {
         return result;
     }
 
-    private Optional<Object> getTreeItemObject(IEditingContext editingContext, String id, Tree tree) {
+    private Optional<Object> getTreeItemObject(IEditingContext editingContext, Tree tree, String id) {
         var optionalTreeDescription = this.representationDescriptionSearchService.findById(editingContext, tree.getDescriptionId())
                 .filter(TreeDescription.class::isInstance)
                 .map(TreeDescription.class::cast);

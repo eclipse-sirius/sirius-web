@@ -109,6 +109,8 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3777[#3777] [sirius-web] Add support for any kind of object as semantic element in the tree representation
 - https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagram] Prevent edge from passing through another node
 - https://github.com/eclipse-sirius/sirius-web/issues/3763[#3763] [diagram] Split the SelectionDialogDescription to prepare the Tree support
+- https://github.com/eclipse-sirius/sirius-web/issues/3793[#3793] [sirius-web] Add mechanism to retrieve the parent object of an element in the tree representation
+
 
 == v2024.7.0
 

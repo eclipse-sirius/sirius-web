@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.views.explorer.services;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -72,10 +73,10 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
         String treeItemId = input.treeItemId();
 
         Set<String> treeItemIdsToExpand = new LinkedHashSet<>();
-        var object = this.getTreeItemObject(editingContext, treeItemId, tree);
-        if (object instanceof EObject) {
+        var object = this.getTreeItemObject(editingContext, tree, treeItemId);
+        if (object instanceof EObject || treeItemId.startsWith(ExplorerDescriptionProvider.SETTING)) {
             // We need to get the current depth of the tree item
-            var itemAncestors = this.explorerNavigationService.getAncestors(editingContext, treeItemId, tree);
+            var itemAncestors = this.explorerNavigationService.getAncestors(editingContext, tree, treeItemId);
             maxDepth = itemAncestors.size();
             maxDepth = this.addAllContents(editingContext, treeItemId, maxDepth, treeItemIdsToExpand, tree);
         } else if (object instanceof Resource resource) {
@@ -96,9 +97,18 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
 
     private int addAllContents(IEditingContext editingContext, String treeItemId, int depth, Set<String> treeItemIdsToExpand, Tree tree) {
         var depthConsidered = depth;
-        var object = this.getTreeItemObject(editingContext, treeItemId, tree);
+        var object = this.getTreeItemObject(editingContext, tree, treeItemId);
 
-        if (object instanceof EObject eObject) {
+        if (treeItemId.startsWith(ExplorerDescriptionProvider.SETTING) && object instanceof List<?> list) {
+            treeItemIdsToExpand.add(treeItemId);
+            for (var child : list) {
+                String childId = this.identityService.getId(child);
+                treeItemIdsToExpand.add(childId);
+                var childTreePathMaxDepth = depth + 1;
+                childTreePathMaxDepth = this.addAllContents(editingContext, childId, childTreePathMaxDepth, treeItemIdsToExpand, tree);
+                depthConsidered = Math.max(depthConsidered, childTreePathMaxDepth);
+            }
+        } else if (object instanceof EObject eObject) {
             if (object instanceof Entity entity) {
                 // an Entity has a virtual node for its super types, this node should be a child of the Entity
                 var id = ExplorerDescriptionProvider.SETTING + this.identityService.getId(entity) + ExplorerDescriptionProvider.SETTING_ID_SEPARATOR + "superTypes";
@@ -130,7 +140,7 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
         return depthConsidered;
     }
 
-    private Object getTreeItemObject(IEditingContext editingContext, String treeItemId, Tree tree) {
+    private Object getTreeItemObject(IEditingContext editingContext, Tree tree, String treeItemId) {
         var optionalTreeDescription = this.representationDescriptionSearchService.findById(editingContext, tree.getDescriptionId())
                 .filter(TreeDescription.class::isInstance)
                 .map(TreeDescription.class::cast);

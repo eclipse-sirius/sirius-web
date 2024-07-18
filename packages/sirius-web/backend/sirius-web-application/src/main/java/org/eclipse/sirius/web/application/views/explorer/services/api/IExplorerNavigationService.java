@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.trees.Tree;
  */
 public interface IExplorerNavigationService {
 
-    List<String> getAncestors(IEditingContext editingContext, String treeItemId, Tree tree);
+    List<String> getAncestors(IEditingContext editingContext, Tree tree, String treeItemId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -34,7 +34,7 @@ public interface IExplorerNavigationService {
     class NoOp implements IExplorerNavigationService {
 
         @Override
-        public List<String> getAncestors(IEditingContext editingContext, String treeItemId, Tree tree) {
+        public List<String> getAncestors(IEditingContext editingContext, Tree tree, String treeItemId) {
             return List.of();
         }
     }
