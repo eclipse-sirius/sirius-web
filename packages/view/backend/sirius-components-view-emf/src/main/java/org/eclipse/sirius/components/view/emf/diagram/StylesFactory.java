@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
+import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.UserColor;
@@ -51,9 +52,12 @@ public final class StylesFactory {
 
     private final IObjectService objectService;
 
-    public StylesFactory(List<INodeStyleProvider> iNodeStyleProviders, IObjectService objectService) {
+    private final AQLInterpreter interpreter;
+
+    public StylesFactory(List<INodeStyleProvider> iNodeStyleProviders, IObjectService objectService, AQLInterpreter interpreter) {
         this.iNodeStyleProviders = Objects.requireNonNull(iNodeStyleProviders);
         this.objectService = Objects.requireNonNull(objectService);
+        this.interpreter = Objects.requireNonNull(interpreter);
     }
 
     public LabelStyleDescription createEdgeLabelStyleDescription(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle) {
@@ -157,10 +161,15 @@ public final class StylesFactory {
                 .strikeThroughProvider(variableManager -> labelStyle.isStrikeThrough())
                 .iconURLProvider(variableManager -> {
                     List<String> iconURL = List.of();
-                    if (labelStyle.isShowIcon() && labelStyle.getLabelIcon() == null) {
+                    boolean isShowIcon = false;
+                    String showIconExpression = labelStyle.getShowIconExpression();
+                    if (showIconExpression != null && !showIconExpression.isBlank()) {
+                        isShowIcon = this.interpreter.evaluateExpression(variableManager.getVariables(), showIconExpression).asBoolean().orElse(false);
+                    }
+                    if (isShowIcon && labelStyle.getLabelIcon() == null) {
                         iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
                     }
-                    if (labelStyle.isShowIcon() && labelStyle.getLabelIcon() != null) {
+                    if (isShowIcon && labelStyle.getLabelIcon() != null) {
                         iconURL = List.of(labelStyle.getLabelIcon());
                     }
                     return iconURL;
@@ -183,10 +192,15 @@ public final class StylesFactory {
                 .strikeThroughProvider(variableManager -> labelStyle.isStrikeThrough())
                 .iconURLProvider(variableManager -> {
                     List<String> iconURL = List.of();
-                    if (labelStyle.isShowIcon() && labelStyle.getLabelIcon() == null) {
+                    boolean isShowIcon = false;
+                    String showIconExpression = labelStyle.getShowIconExpression();
+                    if (showIconExpression != null && !showIconExpression.isBlank()) {
+                        isShowIcon = this.interpreter.evaluateExpression(variableManager.getVariables(), showIconExpression).asBoolean().orElse(false);
+                    }
+                    if (isShowIcon && labelStyle.getLabelIcon() == null) {
                         iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
                     }
-                    if (labelStyle.isShowIcon() && labelStyle.getLabelIcon() != null) {
+                    if (isShowIcon && labelStyle.getLabelIcon() != null) {
                         iconURL = List.of(labelStyle.getLabelIcon());
                     }
                     return iconURL;

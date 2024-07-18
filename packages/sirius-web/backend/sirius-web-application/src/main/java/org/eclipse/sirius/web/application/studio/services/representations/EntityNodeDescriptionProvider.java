@@ -297,7 +297,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
         var insideLabelStyle = new DiagramBuilders()
                 .newInsideLabelStyle()
                 .labelColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BLACK_COLOR))
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .withHeader(true)
                 .displayHeaderSeparator(true)
                 .borderSize(0)
@@ -306,7 +306,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
         var abstractEntityLabelStyle = new DiagramBuilders()
                 .newInsideLabelStyle()
                 .labelColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BLACK_COLOR))
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .withHeader(true)
                 .displayHeaderSeparator(true)
                 .italic(true)
@@ -360,7 +360,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .newInsideLabelStyle()
                 .fontSize(12)
                 .labelColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.GREY_COLOR))
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .borderSize(0)
                 .build();
 
@@ -368,7 +368,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .newInsideLabelStyle()
                 .fontSize(12)
                 .labelColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.GREY_COLOR))
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .bold(true)
                 .borderSize(0)
                 .build();

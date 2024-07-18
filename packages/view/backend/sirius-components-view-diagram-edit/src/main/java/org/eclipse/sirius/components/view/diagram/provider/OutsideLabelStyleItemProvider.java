@@ -58,7 +58,7 @@ public class OutsideLabelStyleItemProvider extends LabelStyleItemProvider {
             this.addBorderLineStylePropertyDescriptor(object);
             this.addLabelColorPropertyDescriptor(object);
             this.addBackgroundPropertyDescriptor(object);
-            this.addShowIconPropertyDescriptor(object);
+            this.addShowIconExpressionPropertyDescriptor(object);
             this.addLabelIconPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -120,17 +120,6 @@ public class OutsideLabelStyleItemProvider extends LabelStyleItemProvider {
     }
 
     /**
-     * This adds a property descriptor for the Show Icon feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addShowIconPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeLabelStyle_showIcon_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_NodeLabelStyle_showIcon_feature", "_UI_NodeLabelStyle_type"),
-                DiagramPackage.Literals.NODE_LABEL_STYLE__SHOW_ICON, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
-
-    /**
      * This adds a property descriptor for the Label Icon feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -150,6 +139,19 @@ public class OutsideLabelStyleItemProvider extends LabelStyleItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_NodeLabelStyle_background_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_NodeLabelStyle_background_feature", "_UI_NodeLabelStyle_type"),
                 DiagramPackage.Literals.NODE_LABEL_STYLE__BACKGROUND, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Show Icon Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addShowIconExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeLabelStyle_showIconExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeLabelStyle_showIconExpression_feature", "_UI_NodeLabelStyle_type"),
+                DiagramPackage.Literals.NODE_LABEL_STYLE__SHOW_ICON_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -199,7 +201,7 @@ public class OutsideLabelStyleItemProvider extends LabelStyleItemProvider {
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_RADIUS:
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_SIZE:
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_LINE_STYLE:
-            case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON:
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;

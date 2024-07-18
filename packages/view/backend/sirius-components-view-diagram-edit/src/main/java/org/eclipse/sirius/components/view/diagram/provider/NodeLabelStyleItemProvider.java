@@ -53,7 +53,7 @@ public class NodeLabelStyleItemProvider extends LabelStyleItemProvider {
             super.getPropertyDescriptors(object);
 
             this.addLabelColorPropertyDescriptor(object);
-            this.addShowIconPropertyDescriptor(object);
+            this.addShowIconExpressionPropertyDescriptor(object);
             this.addLabelIconPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -75,10 +75,11 @@ public class NodeLabelStyleItemProvider extends LabelStyleItemProvider {
      *
      * @generated
      */
-    protected void addShowIconPropertyDescriptor(Object object) {
+    protected void addShowIconExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeLabelStyle_showIcon_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_NodeLabelStyle_showIcon_feature", "_UI_NodeLabelStyle_type"),
-                DiagramPackage.Literals.NODE_LABEL_STYLE__SHOW_ICON, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+                this.getString("_UI_NodeLabelStyle_showIconExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeLabelStyle_showIconExpression_feature", "_UI_NodeLabelStyle_type"),
+                DiagramPackage.Literals.NODE_LABEL_STYLE__SHOW_ICON_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -135,7 +136,7 @@ public class NodeLabelStyleItemProvider extends LabelStyleItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(NodeLabelStyle.class)) {
-            case DiagramPackage.NODE_LABEL_STYLE__SHOW_ICON:
+            case DiagramPackage.NODE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
             case DiagramPackage.NODE_LABEL_STYLE__LABEL_ICON:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;

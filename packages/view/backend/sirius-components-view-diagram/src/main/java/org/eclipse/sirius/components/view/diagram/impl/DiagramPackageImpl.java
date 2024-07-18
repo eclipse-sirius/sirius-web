@@ -1303,16 +1303,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeLabelStyle_ShowIcon() {
-        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EAttribute getNodeLabelStyle_LabelIcon() {
         return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(3);
     }
@@ -1325,6 +1315,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EReference getNodeLabelStyle_Background() {
         return (EReference) this.nodeLabelStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getNodeLabelStyle_ShowIconExpression() {
+        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -2369,7 +2369,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.nodeLabelStyleEClass = this.createEClass(NODE_LABEL_STYLE);
         this.createEReference(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__LABEL_COLOR);
         this.createEReference(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__BACKGROUND);
-        this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__SHOW_ICON);
+        this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__SHOW_ICON_EXPRESSION);
         this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__LABEL_ICON);
 
         this.nodeStyleDescriptionEClass = this.createEClass(NODE_STYLE_DESCRIPTION);
@@ -2716,8 +2716,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeLabelStyle_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeLabelStyle_ShowIcon(), this.ecorePackage.getEBoolean(), "showIcon", "false", 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeLabelStyle_ShowIconExpression(), theViewPackage.getInterpretedExpression(), "showIconExpression", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeLabelStyle_LabelIcon(), this.ecorePackage.getEString(), "labelIcon", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

@@ -55,29 +55,6 @@ public interface NodeLabelStyle extends LabelStyle, BorderStyle {
     void setLabelColor(UserColor value);
 
     /**
-     * Returns the value of the '<em><b>Show Icon</b></em>' attribute. The default value is <code>"false"</code>. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Show Icon</em>' attribute.
-     * @model default="false"
-     * @generated
-     * @see #setShowIcon(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_ShowIcon()
-     */
-    boolean isShowIcon();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#isShowIcon <em>Show
-     * Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Show Icon</em>' attribute.
-     * @see #isShowIcon()
-     * @generated
-     */
-    void setShowIcon(boolean value);
-
-    /**
      * Returns the value of the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Label Icon</em>' attribute.
@@ -120,5 +97,28 @@ public interface NodeLabelStyle extends LabelStyle, BorderStyle {
      * @generated
      */
     void setBackground(UserColor value);
+
+    /**
+     * Returns the value of the '<em><b>Show Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Show Icon Expression</em>' attribute.
+     * @see #setShowIconExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeLabelStyle_ShowIconExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getShowIconExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getShowIconExpression
+     * <em>Show Icon Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Show Icon Expression</em>' attribute.
+     * @see #getShowIconExpression()
+     * @generated
+     */
+    void setShowIconExpression(String value);
 
 } // NodeLabelStyle

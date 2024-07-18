@@ -1161,12 +1161,13 @@ public interface DiagramPackage extends EPackage {
     int NODE_LABEL_STYLE__BACKGROUND = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 5;
 
     /**
-     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Show Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_LABEL_STYLE__SHOW_ICON = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 6;
+    int NODE_LABEL_STYLE__SHOW_ICON_EXPRESSION = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1293,12 +1294,13 @@ public interface DiagramPackage extends EPackage {
     int INSIDE_LABEL_STYLE__BACKGROUND = NODE_LABEL_STYLE__BACKGROUND;
 
     /**
-     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Show Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int INSIDE_LABEL_STYLE__SHOW_ICON = NODE_LABEL_STYLE__SHOW_ICON;
+    int INSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION = NODE_LABEL_STYLE__SHOW_ICON_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1443,12 +1445,13 @@ public interface DiagramPackage extends EPackage {
     int OUTSIDE_LABEL_STYLE__BACKGROUND = NODE_LABEL_STYLE__BACKGROUND;
 
     /**
-     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Show Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int OUTSIDE_LABEL_STYLE__SHOW_ICON = NODE_LABEL_STYLE__SHOW_ICON;
+    int OUTSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION = NODE_LABEL_STYLE__SHOW_ICON_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4402,15 +4405,15 @@ public interface DiagramPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#isShowIcon <em>Show Icon</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getShowIconExpression <em>Show Icon
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Show Icon</em>'.
-     * @generated
-     * @see org.eclipse.sirius.components.view.diagram.NodeLabelStyle#isShowIcon()
+     * @return the meta object for the attribute '<em>Show Icon Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getShowIconExpression()
      * @see #getNodeLabelStyle()
+     * @generated
      */
-    EAttribute getNodeLabelStyle_ShowIcon();
+    EAttribute getNodeLabelStyle_ShowIconExpression();
 
     /**
      * Returns the meta object for the attribute
@@ -6129,12 +6132,12 @@ public interface DiagramPackage extends EPackage {
         EReference NODE_LABEL_STYLE__BACKGROUND = eINSTANCE.getNodeLabelStyle_Background();
 
         /**
-         * The meta object literal for the '<em><b>Show Icon</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
+         * The meta object literal for the '<em><b>Show Icon Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute NODE_LABEL_STYLE__SHOW_ICON = eINSTANCE.getNodeLabelStyle_ShowIcon();
+        EAttribute NODE_LABEL_STYLE__SHOW_ICON_EXPRESSION = eINSTANCE.getNodeLabelStyle_ShowIconExpression();
 
         /**
          * The meta object literal for the '<em><b>Label Icon</b></em>' attribute feature. <!-- begin-user-doc --> <!--

@@ -156,12 +156,12 @@ public class InsideLabelStyleBuilder {
     }
 
     /**
-     * Setter for ShowIcon.
+     * Setter for ShowIconExpression.
      *
      * @generated
      */
-    public InsideLabelStyleBuilder showIcon(java.lang.Boolean value) {
-        this.getInsideLabelStyle().setShowIcon(value);
+    public InsideLabelStyleBuilder showIconExpression(java.lang.String value) {
+        this.getInsideLabelStyle().setShowIconExpression(value);
         return this;
     }
 

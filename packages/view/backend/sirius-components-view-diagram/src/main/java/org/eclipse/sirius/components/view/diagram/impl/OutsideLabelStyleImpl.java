@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,8 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
  * Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getBackground
  * <em>Background</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#isShowIcon <em>Show Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getShowIconExpression <em>Show Icon
+ * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.OutsideLabelStyleImpl#getLabelIcon <em>Label
  * Icon</em>}</li>
  * </ul>
@@ -50,7 +51,6 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
  * @generated
  */
 public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabelStyle {
-
     /**
      * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -105,9 +105,9 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      * The default value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getBorderLineStyle()
      * @generated
      * @ordered
-     * @see #getBorderLineStyle()
      */
     protected static final LineStyle BORDER_LINE_STYLE_EDEFAULT = LineStyle.SOLID;
 
@@ -142,24 +142,24 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
     protected UserColor background;
 
     /**
-     * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The default value of the '{@link #getShowIconExpression() <em>Show Icon Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #isShowIcon()
+     * @see #getShowIconExpression()
      * @generated
      * @ordered
      */
-    protected static final boolean SHOW_ICON_EDEFAULT = false;
+    protected static final String SHOW_ICON_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The cached value of the '{@link #getShowIconExpression() <em>Show Icon Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #isShowIcon()
+     * @see #getShowIconExpression()
      * @generated
      * @ordered
      */
-    protected boolean showIcon = SHOW_ICON_EDEFAULT;
+    protected String showIconExpression = SHOW_ICON_EXPRESSION_EDEFAULT;
 
     /**
      * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -223,12 +223,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      *
      * @generated
      */
-    @Override
-    public void setBorderColor(UserColor newBorderColor) {
-        UserColor oldBorderColor = this.borderColor;
-        this.borderColor = newBorderColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
+    public UserColor basicGetBorderColor() {
+        return this.borderColor;
     }
 
     /**
@@ -236,8 +232,12 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      *
      * @generated
      */
-    public UserColor basicGetBorderColor() {
-        return this.borderColor;
+    @Override
+    public void setBorderColor(UserColor newBorderColor) {
+        UserColor oldBorderColor = this.borderColor;
+        this.borderColor = newBorderColor;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
     }
 
     /**
@@ -332,6 +332,15 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      *
      * @generated
      */
+    public UserColor basicGetLabelColor() {
+        return this.labelColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     @Override
     public void setLabelColor(UserColor newLabelColor) {
         UserColor oldLabelColor = this.labelColor;
@@ -345,8 +354,26 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      *
      * @generated
      */
-    public UserColor basicGetLabelColor() {
-        return this.labelColor;
+    @Override
+    public UserColor getBackground() {
+        if (this.background != null && this.background.eIsProxy()) {
+            InternalEObject oldBackground = (InternalEObject) this.background;
+            this.background = (UserColor) this.eResolveProxy(oldBackground);
+            if (this.background != oldBackground) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND, oldBackground, this.background));
+            }
+        }
+        return this.background;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetBackground() {
+        return this.background;
     }
 
     /**
@@ -355,21 +382,34 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      * @generated
      */
     @Override
-    public boolean isShowIcon() {
-        return this.showIcon;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setShowIcon(boolean newShowIcon) {
-        boolean oldShowIcon = this.showIcon;
-        this.showIcon = newShowIcon;
+    public void setBackground(UserColor newBackground) {
+        UserColor oldBackground = this.background;
+        this.background = newBackground;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON, oldShowIcon, this.showIcon));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND, oldBackground, this.background));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getShowIconExpression() {
+        return this.showIconExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setShowIconExpression(String newShowIconExpression) {
+        String oldShowIconExpression = this.showIconExpression;
+        this.showIconExpression = newShowIconExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION, oldShowIconExpression, this.showIconExpression));
     }
 
     /**
@@ -401,46 +441,6 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
      * @generated
      */
     @Override
-    public UserColor getBackground() {
-        if (this.background != null && this.background.eIsProxy()) {
-            InternalEObject oldBackground = (InternalEObject) this.background;
-            this.background = (UserColor) this.eResolveProxy(oldBackground);
-            if (this.background != oldBackground) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND, oldBackground, this.background));
-            }
-        }
-        return this.background;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setBackground(UserColor newBackground) {
-        UserColor oldBackground = this.background;
-        this.background = newBackground;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND, oldBackground, this.background));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public UserColor basicGetBackground() {
-        return this.background;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BORDER_COLOR:
@@ -461,8 +461,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
                 if (resolve)
                     return this.getBackground();
                 return this.basicGetBackground();
-            case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON:
-                return this.isShowIcon();
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
+                return this.getShowIconExpression();
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 return this.getLabelIcon();
         }
@@ -495,8 +495,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND:
                 this.setBackground((UserColor) newValue);
                 return;
-            case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON:
-                this.setShowIcon((Boolean) newValue);
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
+                this.setShowIconExpression((String) newValue);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 this.setLabelIcon((String) newValue);
@@ -531,8 +531,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND:
                 this.setBackground((UserColor) null);
                 return;
-            case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON:
-                this.setShowIcon(SHOW_ICON_EDEFAULT);
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
+                this.setShowIconExpression(SHOW_ICON_EXPRESSION_EDEFAULT);
                 return;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 this.setLabelIcon(LABEL_ICON_EDEFAULT);
@@ -561,8 +561,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
                 return this.labelColor != null;
             case DiagramPackage.OUTSIDE_LABEL_STYLE__BACKGROUND:
                 return this.background != null;
-            case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON:
-                return this.showIcon != SHOW_ICON_EDEFAULT;
+            case DiagramPackage.OUTSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
+                return SHOW_ICON_EXPRESSION_EDEFAULT == null ? this.showIconExpression != null : !SHOW_ICON_EXPRESSION_EDEFAULT.equals(this.showIconExpression);
             case DiagramPackage.OUTSIDE_LABEL_STYLE__LABEL_ICON:
                 return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
         }
@@ -634,8 +634,8 @@ public class OutsideLabelStyleImpl extends LabelStyleImpl implements OutsideLabe
         result.append(this.borderSize);
         result.append(", borderLineStyle: ");
         result.append(this.borderLineStyle);
-        result.append(", showIcon: ");
-        result.append(this.showIcon);
+        result.append(", showIconExpression: ");
+        result.append(this.showIconExpression);
         result.append(", labelIcon: ");
         result.append(this.labelIcon);
         result.append(')');

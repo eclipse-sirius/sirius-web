@@ -138,12 +138,12 @@ public abstract class NodeLabelStyleBuilder {
     }
 
     /**
-     * Setter for ShowIcon.
+     * Setter for ShowIconExpression.
      *
      * @generated
      */
-    public NodeLabelStyleBuilder showIcon(java.lang.Boolean value) {
-        this.getNodeLabelStyle().setShowIcon(value);
+    public NodeLabelStyleBuilder showIconExpression(java.lang.String value) {
+        this.getNodeLabelStyle().setShowIconExpression(value);
         return this;
     }
 

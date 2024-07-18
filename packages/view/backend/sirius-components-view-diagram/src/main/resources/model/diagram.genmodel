@@ -174,7 +174,7 @@
     <genClasses image="false" ecoreClass="diagram.ecore#//NodeLabelStyle">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeLabelStyle/labelColor"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeLabelStyle/background"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/showIcon"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/showIconExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/labelIcon"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//NodeStyleDescription"/>
