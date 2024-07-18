@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
+import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IDeleteTreeItemHandler;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class DeleteRepresentationTreeItemEventHandler implements IDeleteTreeItem
     }
 
     @Override
-    public IStatus handle(IEditingContext editingContext, TreeItem treeItem) {
+    public IStatus handle(IEditingContext editingContext, TreeItem treeItem, Tree tree) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, treeItem.getId());
         return new Success(ChangeKind.REPRESENTATION_TO_DELETE, parameters);
