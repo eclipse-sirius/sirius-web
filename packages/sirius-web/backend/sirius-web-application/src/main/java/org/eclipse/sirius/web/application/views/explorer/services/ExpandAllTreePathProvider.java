@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.application.views.explorer.services;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -30,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
@@ -81,18 +81,16 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
             var itemAncestors = this.explorerNavigationService.getAncestors(editingContext, treeItemId, tree);
             maxDepth = itemAncestors.size();
             maxDepth = this.addAllContents(editingContext, treeItemId, maxDepth, treeItemIdsToExpand, tree);
-        } else if (object instanceof List<?> list) {
+        } else if (object instanceof Resource resource) {
             // The object may be a document
-            if (list.size() > 0 && list.get(0) instanceof Resource resource) {
-                var contents = resource.getContents();
-                if (!contents.isEmpty()) {
-                    treeItemIdsToExpand.add(treeItemId);
-                    for (var rootObject : contents) {
-                        var rootObjectId = this.identityService.getId(rootObject);
-                        var rootObjectTreePathMaxDepth = 1;
-                        rootObjectTreePathMaxDepth = this.addAllContents(editingContext, rootObjectId, rootObjectTreePathMaxDepth, treeItemIdsToExpand, tree);
-                        maxDepth = Math.max(maxDepth, rootObjectTreePathMaxDepth);
-                    }
+            var contents = resource.getContents();
+            if (!contents.isEmpty()) {
+                treeItemIdsToExpand.add(treeItemId);
+                for (var rootObject : contents) {
+                    var rootObjectId = this.identityService.getId(rootObject);
+                    var rootObjectTreePathMaxDepth = 1;
+                    rootObjectTreePathMaxDepth = this.addAllContents(editingContext, rootObjectId, rootObjectTreePathMaxDepth, treeItemIdsToExpand, tree);
+                    maxDepth = Math.max(maxDepth, rootObjectTreePathMaxDepth);
                 }
             }
         }
@@ -104,6 +102,17 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
         var object = this.getTreeItemObject(editingContext, treeItemId, tree);
 
         if (object instanceof EObject eObject) {
+            if (object instanceof Entity entity) {
+                // an Entity has a virtual node for its super types, this node should be a child of the Entity
+                var id = ExplorerDescriptionProvider.SETTING + this.identityService.getId(entity) + ExplorerDescriptionProvider.SETTING_ID_SEPARATOR + "superTypes";
+                treeItemIdsToExpand.add(id);
+                var superTypes = entity.getSuperTypes();
+                if (superTypes.size() > 0) {
+                    depthConsidered = Math.max(depthConsidered, depth + 2);
+                } else {
+                    depthConsidered = Math.max(depthConsidered, depth + 1);
+                }
+            }
             var contents = this.contentService.getContents(eObject);
             if (!contents.isEmpty()) {
                 treeItemIdsToExpand.add(treeItemId);

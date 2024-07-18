@@ -320,7 +320,8 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
                         result = resourceSet.getResources().stream()
                                 .filter(resource -> resource.getURI().equals(uri))
-                                .toList();
+                                .findFirst()
+                                .orElse(null);
                     }
                 }
             }

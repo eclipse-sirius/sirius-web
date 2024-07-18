@@ -12,11 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer.services;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -64,9 +64,9 @@ public class DeleteDocumentTreeItemEventHandler implements IDeleteTreeItemHandle
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(TreeDescription.ID, treeItem.getId());
             var object = optionalTreeDescription.get().getTreeItemObjectProvider().apply(variableManager);
-            if (object instanceof List<?> resourcesToDelete) {
+            if (object instanceof Resource resource) {
                 ResourceSet resourceSet = optionalEditingDomain.get().getResourceSet();
-                resourcesToDelete.forEach(resourceSet.getResources()::remove);
+                resourceSet.getResources().remove(resource);
                 return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
             }
         }

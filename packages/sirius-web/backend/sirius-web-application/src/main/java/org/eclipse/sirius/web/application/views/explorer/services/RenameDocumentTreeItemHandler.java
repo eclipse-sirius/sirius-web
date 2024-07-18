@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer.services;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -60,12 +59,12 @@ public class RenameDocumentTreeItemHandler implements IRenameTreeItemHandler {
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(TreeDescription.ID, treeItem.getId());
             var object = optionalTreeDescription.get().getTreeItemObjectProvider().apply(variableManager);
-            if (object instanceof List<?> resourcesToRename) {
-                ((List<Resource>) resourcesToRename).forEach(resource -> resource.eAdapters().stream()
+            if (object instanceof Resource resource) {
+                resource.eAdapters().stream()
                         .filter(ResourceMetadataAdapter.class::isInstance)
                         .map(ResourceMetadataAdapter.class::cast)
                         .findFirst()
-                        .ifPresent(adapter -> adapter.setName(newLabel)));
+                        .ifPresent(adapter -> adapter.setName(newLabel));
 
                 result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
             }
