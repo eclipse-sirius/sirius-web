@@ -140,6 +140,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
                 .treeItemObjectProvider(this::getTreeItemObject)
+                .parentObjectProvider(this::getParentObject)
                 .build();
     }
 
@@ -406,5 +407,14 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
             return this.objectService.getObject(optionalEditingContext.get(), optionalId.get());
         }
         return null;
+    }
+
+    private Object getParentObject(VariableManager variableManager) {
+        Object result = null;
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        if (self instanceof EObject object) {
+            result = object.eContainer();
+        }
+        return result;
     }
 }

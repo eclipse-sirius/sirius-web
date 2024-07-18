@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerNavigationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.springframework.stereotype.Service;
 
@@ -55,29 +54,32 @@ public class ExplorerNavigationService implements IExplorerNavigationService {
     public List<String> getAncestors(IEditingContext editingContext, String treeItemId, Tree tree) {
         List<String> ancestorsIds = new ArrayList<>();
 
-        var optionalRepresentationMetadata = new UUIDParser().parse(treeItemId).flatMap(this.representationDataSearchService::findMetadataById);
-        var optionalSemanticObject = this.getTreeItemObject(editingContext, treeItemId, tree);
-
-        Optional<Object> optionalObject = Optional.empty();
-        if (optionalRepresentationMetadata.isPresent()) {
-            // The first parent of a representation item is the item for its targetObject.
-            optionalObject = optionalRepresentationMetadata.map(RepresentationDataMetadataOnly::targetObjectId)
-                    .flatMap(objectId -> this.getTreeItemObject(editingContext, objectId, tree));
-        } else if (optionalSemanticObject.isPresent()) {
-            // The first parent of a semantic object item is the item for its actual container
-            optionalObject = optionalSemanticObject.filter(EObject.class::isInstance)
-                    .map(EObject.class::cast)
-                    .map(eObject -> Optional.<Object> ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
-        }
-
+        Optional<Object> optionalObject = this.getParentSemanticObject(treeItemId, ancestorsIds, editingContext, tree);
         while (optionalObject.isPresent()) {
-            ancestorsIds.add(this.getItemId(optionalObject.get()));
-            optionalObject = optionalObject
-                    .filter(EObject.class::isInstance)
-                    .map(EObject.class::cast)
-                    .map(eObject -> Optional.<Object>ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
+            String parentId = this.getItemId(optionalObject.get());
+            ancestorsIds.add(parentId);
+            optionalObject = this.getParentSemanticObject(parentId, ancestorsIds, editingContext, tree);
         }
         return ancestorsIds;
+    }
+
+    private Optional<Object> getParentSemanticObject(String elementId, List<String> ancestorsIds, IEditingContext editingContext, Tree tree) {
+        Optional<Object> result = Optional.empty();
+
+        var variableManager = new VariableManager();
+        var optionalRepresentationMetadata = new UUIDParser().parse(elementId).flatMap(this.representationDataSearchService::findMetadataById);
+        var optionalSemanticObject = this.getTreeItemObject(editingContext, elementId, tree);
+        var optionalTreeDesceiption = this.getTreeDescription(editingContext, tree);
+
+        if (optionalRepresentationMetadata.isPresent()) {
+            variableManager.put("representationDataMetadata", optionalRepresentationMetadata.orElse(null));
+        }
+        if (optionalSemanticObject.isPresent() && optionalTreeDesceiption.isPresent()) {
+            variableManager.put(VariableManager.SELF, optionalSemanticObject.get());
+            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            result = Optional.ofNullable(optionalTreeDesceiption.get().getParentObjectProvider().apply(variableManager));
+        }
+        return result;
     }
 
     private String getItemId(Object object) {

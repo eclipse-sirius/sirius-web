@@ -48,6 +48,7 @@ import org.eclipse.sirius.web.application.views.explorer.services.api.IDeleteTre
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IRenameTreeItemHandler;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
 import org.springframework.stereotype.Service;
 
 /**
@@ -107,6 +108,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
                 .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
+                .parentObjectProvider(this::getParentObject)
                 .iconURLProvider(this::getImageURL)
                 .editableProvider(this::isEditable)
                 .deletableProvider(this::isDeletable)
@@ -326,7 +328,28 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 }
             }
         }
+        return result;
+    }
 
+    private Object getParentObject(VariableManager variableManager) {
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        Object result = null;
+
+        if (self instanceof RepresentationMetadata && optionalEditingContext.isPresent()) {
+            Optional<RepresentationDataMetadataOnly> optRepresentationDataMetadata = variableManager.get("representationDataMetadata", RepresentationDataMetadataOnly.class);
+            var repId = optRepresentationDataMetadata.map(RepresentationDataMetadataOnly::targetObjectId).orElse(null);
+            result = this.objectService.getObject(optionalEditingContext.get(), repId);
+        } else if (self instanceof EObject eObject) {
+            Object semanticContainer = eObject.eContainer();
+            if (semanticContainer == null) {
+                semanticContainer = eObject.eResource();
+            }
+            result = semanticContainer;
+        } else if (self instanceof Setting setting) {
+            // the parent of the superTypes node is the object associated to this Setting
+            result = setting.getEObject();
+        }
         return result;
     }
 }

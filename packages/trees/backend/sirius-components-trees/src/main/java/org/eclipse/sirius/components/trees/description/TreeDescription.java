@@ -56,6 +56,8 @@ public final class TreeDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
+    private Function<VariableManager, Object> parentObjectProvider;
+
     private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, Boolean> editableProvider;
@@ -114,6 +116,10 @@ public final class TreeDescription implements IRepresentationDescription {
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
         return this.targetObjectIdProvider;
+    }
+
+    public Function<VariableManager, Object> getParentObjectProvider() {
+        return this.parentObjectProvider;
     }
 
     public Function<VariableManager, List<String>> getIconURLProvider() {
@@ -189,6 +195,8 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
+        private Function<VariableManager, Object> parentObjectProvider;
+
         private Function<VariableManager, List<String>> iconURLProvider;
 
         private Function<VariableManager, Boolean> editableProvider;
@@ -242,6 +250,11 @@ public final class TreeDescription implements IRepresentationDescription {
 
         public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
             this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
+            return this;
+        }
+
+        public Builder parentObjectProvider(Function<VariableManager, Object> parentObjectProvider) {
+            this.parentObjectProvider = Objects.requireNonNull(parentObjectProvider);
             return this;
         }
 
@@ -309,6 +322,7 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             treeDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             treeDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
+            treeDescription.parentObjectProvider = Objects.requireNonNull(this.parentObjectProvider);
             treeDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             treeDescription.editableProvider = Objects.requireNonNull(this.editableProvider);
             treeDescription.deletableProvider = Objects.requireNonNull(this.deletableProvider);
