@@ -19,8 +19,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -30,10 +34,13 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
@@ -58,6 +65,10 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     public static final String PREFIX = "explorer://";
 
     public static final String REPRESENTATION_NAME = "Explorer";
+
+    public static final String SETTING = "setting:";
+
+    public static final String SETTING_ID_SEPARATOR = "::";
 
     private final IObjectService objectService;
 
@@ -106,6 +117,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .canCreatePredicate(canCreatePredicate)
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
+                .treeItemObjectProvider(this::getTreeItemObject)
                 .build();
         return List.of(explorerTreeDescription);
     }
@@ -142,6 +154,8 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
             id = resource.getURI().path().substring(1);
         } else if (self instanceof EObject) {
             id = this.objectService.getId(self);
+        } else if (self instanceof Setting setting) {
+            id = SETTING + this.objectService.getId(setting.getEObject()) + SETTING_ID_SEPARATOR + setting.getEStructuralFeature().getName();
         }
         return id;
     }
@@ -153,6 +167,8 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
             kind = representationMetadata.getKind();
         } else if (self instanceof Resource) {
             kind = DOCUMENT_KIND;
+        } else if (self instanceof Setting) {
+            kind = "setting";
         } else {
             kind = this.objectService.getKind(self);
         }
@@ -173,6 +189,8 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 var kind = this.objectService.getKind(self);
                 label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
             }
+        }  else if (self instanceof Setting setting) {
+            label = setting.getEStructuralFeature().getName();
         }
         return label;
     }
@@ -229,7 +247,9 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     private IStatus getDeleteHandler(VariableManager variableManager) {
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         var optionalTreeItem = variableManager.get(TreeItem.SELECTED_TREE_ITEM, TreeItem.class);
-        if (optionalEditingContext.isPresent() && optionalTreeItem.isPresent()) {
+        var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
+
+        if (optionalEditingContext.isPresent() && optionalTreeItem.isPresent() && optionalTree.isPresent()) {
             IEditingContext editingContext = optionalEditingContext.get();
             TreeItem treeItem = optionalTreeItem.get();
 
@@ -239,7 +259,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
             if (optionalHandler.isPresent()) {
                 IDeleteTreeItemHandler deleteTreeItemHandler = optionalHandler.get();
-                return deleteTreeItemHandler.handle(editingContext, treeItem);
+                return deleteTreeItemHandler.handle(editingContext, treeItem, optionalTree.get());
             }
         }
         return new Failure("");
@@ -248,7 +268,9 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     private IStatus getRenameHandler(VariableManager variableManager, String newLabel) {
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         var optionalTreeItem = variableManager.get(TreeItem.SELECTED_TREE_ITEM, TreeItem.class);
-        if (optionalEditingContext.isPresent() && optionalTreeItem.isPresent()) {
+        var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
+
+        if (optionalEditingContext.isPresent() && optionalTreeItem.isPresent() && optionalTree.isPresent()) {
             IEditingContext editingContext = optionalEditingContext.get();
             TreeItem treeItem = optionalTreeItem.get();
 
@@ -258,9 +280,54 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
             if (optionalHandler.isPresent()) {
                 IRenameTreeItemHandler renameTreeItemHandler = optionalHandler.get();
-                return renameTreeItemHandler.handle(editingContext, treeItem, newLabel);
+                return renameTreeItemHandler.handle(editingContext, treeItem, newLabel, optionalTree.get());
             }
         }
         return new Failure("");
+    }
+
+    private Object getTreeItemObject(VariableManager variableManager) {
+        Object result = null;
+        var optionalTreeItemId = variableManager.get(TreeDescription.ID, String.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+
+        if (optionalEditingContext.isPresent() && optionalTreeItemId.isPresent()) {
+            var treeItemId = optionalTreeItemId.get();
+            var editingContext = optionalEditingContext.get();
+
+            if (treeItemId.startsWith(SETTING)) {
+                // the tree item is a setting, get the object and then the structural feature associated
+                var objectId = treeItemId.substring(SETTING.length(), treeItemId.indexOf(SETTING_ID_SEPARATOR));
+                var featureName = treeItemId.substring(treeItemId.indexOf(SETTING_ID_SEPARATOR) + SETTING_ID_SEPARATOR.length());
+                var optObject = this.objectService.getObject(editingContext, objectId);
+                if (optObject.isPresent()) {
+                    InternalEObject internalObject = (InternalEObject) optObject.get();
+                    result = internalObject.eSetting(internalObject.eClass().getEStructuralFeature(featureName));
+                }
+            } else {
+                var optionalObject = this.objectService.getObject(editingContext, treeItemId);
+                if (optionalObject.isPresent()) {
+                    result = optionalObject.get();
+                } else {
+                    var optionalEditingDomain = Optional.of(editingContext)
+                            .filter(IEMFEditingContext.class::isInstance)
+                            .map(IEMFEditingContext.class::cast)
+                            .map(IEMFEditingContext::getDomain);
+
+                    if (optionalEditingDomain.isPresent()) {
+                        var editingDomain = optionalEditingDomain.get();
+                        ResourceSet resourceSet = editingDomain.getResourceSet();
+                        URI uri = new JSONResourceFactory().createResourceURI(treeItemId);
+
+                        result = resourceSet.getResources().stream()
+                                .filter(resource -> resource.getURI().equals(uri))
+                                .findFirst()
+                                .orElse(null);
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 }

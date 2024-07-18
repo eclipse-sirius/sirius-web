@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.views.explorer.services.api;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.trees.Tree;
 
 /**
  * Interface of the service for the navigation through the Sirius Web Explorer.
@@ -23,7 +24,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
  */
 public interface IExplorerNavigationService {
 
-    List<String> getAncestors(IEditingContext editingContext, String treeItemId);
+    List<String> getAncestors(IEditingContext editingContext, String treeItemId, Tree tree);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -33,7 +34,7 @@ public interface IExplorerNavigationService {
     class NoOp implements IExplorerNavigationService {
 
         @Override
-        public List<String> getAncestors(IEditingContext editingContext, String treeItemId) {
+        public List<String> getAncestors(IEditingContext editingContext, String treeItemId, Tree tree) {
             return List.of();
         }
     }
