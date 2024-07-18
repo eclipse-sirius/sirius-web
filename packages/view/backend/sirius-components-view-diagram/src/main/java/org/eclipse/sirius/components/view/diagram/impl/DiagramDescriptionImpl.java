@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramVariable;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
@@ -45,6 +46,8 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getArrangeLayoutDirection
  * <em>Arrange Layout Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getDiagramVariables <em>Diagram
+ * Variables</em>}</li>
  * </ul>
  *
  * @generated
@@ -55,11 +58,52 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * The default value of the '{@link #isAutoLayout() <em>Auto Layout</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #isAutoLayout()
      * @generated
      * @ordered
-     * @see #isAutoLayout()
      */
     protected static final boolean AUTO_LAYOUT_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isAutoLayout() <em>Auto Layout</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isAutoLayout()
+     * @generated
+     * @ordered
+     */
+    protected boolean autoLayout = AUTO_LAYOUT_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getPalette()
+     * @generated
+     * @ordered
+     */
+    protected DiagramPalette palette;
+
+    /**
+     * The cached value of the '{@link #getNodeDescriptions() <em>Node Descriptions</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getNodeDescriptions()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeDescription> nodeDescriptions;
+
+    /**
+     * The cached value of the '{@link #getEdgeDescriptions() <em>Edge Descriptions</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEdgeDescriptions()
+     * @generated
+     * @ordered
+     */
+    protected EList<EdgeDescription> edgeDescriptions;
+
     /**
      * The default value of the '{@link #getArrangeLayoutDirection() <em>Arrange Layout Direction</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -69,42 +113,7 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @see #getArrangeLayoutDirection()
      */
     protected static final ArrangeLayoutDirection ARRANGE_LAYOUT_DIRECTION_EDEFAULT = ArrangeLayoutDirection.UNDEFINED;
-    /**
-     * The cached value of the '{@link #isAutoLayout() <em>Auto Layout</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isAutoLayout()
-     */
-    protected boolean autoLayout = AUTO_LAYOUT_EDEFAULT;
-    /**
-     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getPalette()
-     */
-    protected DiagramPalette palette;
-    /**
-     * The cached value of the '{@link #getNodeDescriptions() <em>Node Descriptions</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getNodeDescriptions()
-     */
-    protected EList<NodeDescription> nodeDescriptions;
-    /**
-     * The cached value of the '{@link #getEdgeDescriptions() <em>Edge Descriptions</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getEdgeDescriptions()
-     */
-    protected EList<EdgeDescription> edgeDescriptions;
+
     /**
      * The cached value of the '{@link #getArrangeLayoutDirection() <em>Arrange Layout Direction</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -114,6 +123,16 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @see #getArrangeLayoutDirection()
      */
     protected ArrangeLayoutDirection arrangeLayoutDirection = ARRANGE_LAYOUT_DIRECTION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getDiagramVariables() <em>Diagram Variables</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDiagramVariables()
+     * @generated
+     * @ordered
+     */
+    protected EList<DiagramVariable> diagramVariables;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -260,6 +279,19 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
+    public EList<DiagramVariable> getDiagramVariables() {
+        if (this.diagramVariables == null) {
+            this.diagramVariables = new EObjectContainmentEList<>(DiagramVariable.class, this, DiagramPackage.DIAGRAM_DESCRIPTION__DIAGRAM_VARIABLES);
+        }
+        return this.diagramVariables;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
@@ -268,6 +300,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return ((InternalEList<?>) this.getNodeDescriptions()).basicRemove(otherEnd, msgs);
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getEdgeDescriptions()).basicRemove(otherEnd, msgs);
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DIAGRAM_VARIABLES:
+                return ((InternalEList<?>) this.getDiagramVariables()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -290,6 +324,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.getEdgeDescriptions();
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 return this.getArrangeLayoutDirection();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DIAGRAM_VARIABLES:
+                return this.getDiagramVariables();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -320,6 +356,10 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.setArrangeLayoutDirection((ArrangeLayoutDirection) newValue);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DIAGRAM_VARIABLES:
+                this.getDiagramVariables().clear();
+                this.getDiagramVariables().addAll((Collection<? extends DiagramVariable>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -336,7 +376,7 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 this.setAutoLayout(AUTO_LAYOUT_EDEFAULT);
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
-                this.setPalette(null);
+                this.setPalette((DiagramPalette) null);
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 this.getNodeDescriptions().clear();
@@ -346,6 +386,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.setArrangeLayoutDirection(ARRANGE_LAYOUT_DIRECTION_EDEFAULT);
+                return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DIAGRAM_VARIABLES:
+                this.getDiagramVariables().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -369,6 +412,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.edgeDescriptions != null && !this.edgeDescriptions.isEmpty();
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 return this.arrangeLayoutDirection != ARRANGE_LAYOUT_DIRECTION_EDEFAULT;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DIAGRAM_VARIABLES:
+                return this.diagramVariables != null && !this.diagramVariables.isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -383,12 +428,13 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (autoLayout: " +
-                this.autoLayout +
-                ", arrangeLayoutDirection: " +
-                this.arrangeLayoutDirection +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (autoLayout: ");
+        result.append(this.autoLayout);
+        result.append(", arrangeLayoutDirection: ");
+        result.append(this.arrangeLayoutDirection);
+        result.append(')');
+        return result.toString();
     }
 
 } // DiagramDescriptionImpl

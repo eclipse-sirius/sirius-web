@@ -31,9 +31,9 @@ import org.eclipse.sirius.components.view.UserColor;
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getBackground <em>Background</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle()
  */
 public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
 
@@ -56,10 +56,10 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * Style</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Line Style</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Line Style</em>' attribute.
      * @see org.eclipse.sirius.components.view.diagram.LineStyle
      * @see #getLineStyle()
+     * @generated
      */
     void setLineStyle(LineStyle value);
 
@@ -69,11 +69,11 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * {@link org.eclipse.sirius.components.view.diagram.ArrowStyle}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Source Arrow Style</em>' attribute.
-     * @model default="None" required="true"
-     * @generated
      * @see org.eclipse.sirius.components.view.diagram.ArrowStyle
      * @see #setSourceArrowStyle(ArrowStyle)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_SourceArrowStyle()
+     * @model default="None" required="true"
+     * @generated
      */
     ArrowStyle getSourceArrowStyle();
 
@@ -82,10 +82,10 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * Arrow Style</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Source Arrow Style</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Source Arrow Style</em>' attribute.
      * @see org.eclipse.sirius.components.view.diagram.ArrowStyle
      * @see #getSourceArrowStyle()
+     * @generated
      */
     void setSourceArrowStyle(ArrowStyle value);
 
@@ -95,11 +95,11 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * {@link org.eclipse.sirius.components.view.diagram.ArrowStyle}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Target Arrow Style</em>' attribute.
-     * @model default="InputArrow" required="true"
-     * @generated
      * @see org.eclipse.sirius.components.view.diagram.ArrowStyle
      * @see #setTargetArrowStyle(ArrowStyle)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_TargetArrowStyle()
+     * @model default="InputArrow" required="true"
+     * @generated
      */
     ArrowStyle getTargetArrowStyle();
 
@@ -108,10 +108,10 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * Arrow Style</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Target Arrow Style</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Target Arrow Style</em>' attribute.
      * @see org.eclipse.sirius.components.view.diagram.ArrowStyle
      * @see #getTargetArrowStyle()
+     * @generated
      */
     void setTargetArrowStyle(ArrowStyle value);
 
@@ -132,9 +132,9 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * Width</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Edge Width</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Edge Width</em>' attribute.
      * @see #getEdgeWidth()
+     * @generated
      */
     void setEdgeWidth(int value);
 
@@ -155,9 +155,9 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Show Icon</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Show Icon</em>' attribute.
      * @see #isShowIcon()
+     * @generated
      */
     void setShowIcon(boolean value);
 
@@ -165,10 +165,10 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * Returns the value of the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Label Icon</em>' attribute.
-     * @model
-     * @generated
      * @see #setLabelIcon(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_LabelIcon()
+     * @model
+     * @generated
      */
     String getLabelIcon();
 
@@ -177,9 +177,9 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Label Icon</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Label Icon</em>' attribute.
      * @see #getLabelIcon()
+     * @generated
      */
     void setLabelIcon(String value);
 
@@ -187,10 +187,10 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * Returns the value of the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Background</em>' reference.
-     * @model
-     * @generated
      * @see #setBackground(UserColor)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_Background()
+     * @model
+     * @generated
      */
     UserColor getBackground();
 
@@ -199,9 +199,9 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * <em>Background</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Background</em>' reference.
-     * @generated
+     *            the new value of the '<em>Background</em>' reference.
      * @see #getBackground()
+     * @generated
      */
     void setBackground(UserColor value);
 

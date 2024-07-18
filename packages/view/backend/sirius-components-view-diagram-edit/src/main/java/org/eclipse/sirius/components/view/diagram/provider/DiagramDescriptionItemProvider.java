@@ -103,6 +103,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
+            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__DIAGRAM_VARIABLES);
         }
         return this.childrenFeatures;
     }
@@ -170,6 +171,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DIAGRAM_VARIABLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }

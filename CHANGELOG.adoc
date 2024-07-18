@@ -40,6 +40,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3781[#3781] [diagram] Allow the use of custom variables in the `VariableManager` initialized by the DiagramDescription.
 
 === Improvements
 

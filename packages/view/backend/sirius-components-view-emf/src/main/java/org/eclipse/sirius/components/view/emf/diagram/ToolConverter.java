@@ -51,6 +51,8 @@ import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolIma
  */
 public class ToolConverter {
 
+    private static final  String VARIABLE_MANAGER = "variableManager";
+
     private static final String CONVERTED_NODES_VARIABLE = "convertedNodes";
 
     private final IObjectService objectService;
@@ -177,6 +179,7 @@ public class ToolConverter {
                 .iconURL(this.toolIconURLProvider(nodeTool.getIconURLsExpression(), ViewToolImageProvider.NODE_CREATION_TOOL_ICON, converterContext.getInterpreter()))
                 .handler(variableManager -> {
                     VariableManager child = variableManager.createChild();
+                    child.put(VARIABLE_MANAGER, variableManager);
                     child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
                     return this.execute(converterContext, convertedNodes, nodeTool, child);
                 })

@@ -410,6 +410,30 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.DiagramVariable} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DiagramVariableItemProvider diagramVariableItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramVariable}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDiagramVariableAdapter() {
+        if (this.diagramVariableItemProvider == null) {
+            this.diagramVariableItemProvider = new DiagramVariableItemProvider(this);
+        }
+
+        return this.diagramVariableItemProvider;
+    }
+
+    /**
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.NodeDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1036,6 +1060,8 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     public void dispose() {
         if (this.diagramDescriptionItemProvider != null)
             this.diagramDescriptionItemProvider.dispose();
+        if (this.diagramVariableItemProvider != null)
+            this.diagramVariableItemProvider.dispose();
         if (this.nodeDescriptionItemProvider != null)
             this.nodeDescriptionItemProvider.dispose();
         if (this.edgeDescriptionItemProvider != null)

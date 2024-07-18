@@ -39,6 +39,14 @@ public interface DiagramFactory extends EFactory {
     DiagramDescription createDiagramDescription();
 
     /**
+     * Returns a new object of class '<em>Variable</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Variable</em>'.
+     * @generated
+     */
+    DiagramVariable createDiagramVariable();
+
+    /**
      * Returns a new object of class '<em>Node Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Node Description</em>'.
