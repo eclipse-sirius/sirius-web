@@ -14,17 +14,19 @@ package org.eclipse.sirius.web.application.views.explorer.services;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
+import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
+import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IDeleteTreeItemHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,13 +42,13 @@ public class DeleteObjectTreeItemEventHandler implements IDeleteTreeItemHandler 
 
     private final Logger logger = LoggerFactory.getLogger(DeleteObjectTreeItemEventHandler.class);
 
-    private final IObjectSearchService objectSearchService;
-
     private final IEditService editService;
 
-    public DeleteObjectTreeItemEventHandler(IObjectSearchService objectSearchService, IEditService editService) {
-        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    public DeleteObjectTreeItemEventHandler(IEditService editService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
         this.editService = Objects.requireNonNull(editService);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
     }
 
     @Override
@@ -55,16 +57,27 @@ public class DeleteObjectTreeItemEventHandler implements IDeleteTreeItemHandler 
     }
 
     @Override
-    public IStatus handle(IEditingContext editingContext, TreeItem treeItem) {
-        Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, treeItem.getId());
-        if (optionalObject.isPresent()) {
-            Object object = optionalObject.get();
-            this.editService.delete(object);
+    public IStatus handle(IEditingContext editingContext, TreeItem treeItem, Tree tree) {
+        IStatus result = new Failure("");
+        var optionalTreeDescription = this.representationDescriptionSearchService.findById(editingContext, tree.getDescriptionId())
+                .filter(TreeDescription.class::isInstance)
+                .map(TreeDescription.class::cast);
 
-            return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
+        if (optionalTreeDescription.isPresent()) {
+            var variableManager = new VariableManager();
+            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(TreeDescription.ID, treeItem.getId());
+
+            var object = optionalTreeDescription.get().getTreeItemObjectProvider().apply(variableManager);
+            if (object != null) {
+                this.editService.delete(object);
+                result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
+            } else {
+                this.logger.warn("The object with the id {} does not exist", treeItem.getId());
+            }
         } else {
-            this.logger.warn("The object with the id {} does not exist", treeItem.getId());
+            this.logger.warn("Unable to retrieve the tree description with the id {}", tree.getDescriptionId());
         }
-        return new Failure("");
+        return result;
     }
 }

@@ -19,11 +19,15 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
+import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
+import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IRenameTreeItemHandler;
 import org.springframework.stereotype.Service;
 
@@ -39,9 +43,12 @@ public class RenameObjectTreeItemEventHandler implements IRenameTreeItemHandler 
 
     private final IEditService editService;
 
-    public RenameObjectTreeItemEventHandler(IObjectService objectService, IEditService editService) {
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    public RenameObjectTreeItemEventHandler(IObjectService objectService, IEditService editService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
     }
 
     @Override
@@ -50,19 +57,28 @@ public class RenameObjectTreeItemEventHandler implements IRenameTreeItemHandler 
     }
 
     @Override
-    public IStatus handle(IEditingContext editingContext, TreeItem treeItem, String newLabel) {
-        var optionalObject = this.objectService.getObject(editingContext, treeItem.getId());
-        if (optionalObject.isPresent()) {
-            Object object = optionalObject.get();
-            var optionalLabelField = this.objectService.getLabelField(object);
-            if (optionalLabelField.isPresent()) {
-                String labelField = optionalLabelField.get();
-                this.editService.editLabel(object, labelField, newLabel);
-                return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
+    public IStatus handle(IEditingContext editingContext, TreeItem treeItem, String newLabel, Tree tree) {
+        IStatus result = new Failure("Something went wrong while handling this rename action.");
+
+        var optionalTreeDescription = this.representationDescriptionSearchService.findById(editingContext, tree.getDescriptionId())
+                .filter(TreeDescription.class::isInstance)
+                .map(TreeDescription.class::cast);
+
+        if (optionalTreeDescription.isPresent()) {
+            var variableManager = new VariableManager();
+            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(TreeDescription.ID, treeItem.getId());
+
+            var object = optionalTreeDescription.get().getTreeItemObjectProvider().apply(variableManager);
+            if (object != null) {
+                var optionalLabelField = this.objectService.getLabelField(object);
+                if (optionalLabelField.isPresent()) {
+                    String labelField = optionalLabelField.get();
+                    this.editService.editLabel(object, labelField, newLabel);
+                    result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
+                }
             }
         }
-
-        return new Failure("Something went wrong while handling this rename action.");
+        return result;
     }
-
 }

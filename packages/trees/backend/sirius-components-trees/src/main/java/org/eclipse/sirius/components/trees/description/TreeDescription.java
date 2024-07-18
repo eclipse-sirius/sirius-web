@@ -32,6 +32,16 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @Immutable
 public final class TreeDescription implements IRepresentationDescription {
 
+    /**
+     * The variable name used for the id.
+     */
+    public static final String ID = "id";
+
+    /**
+     * The variable name used to store a reference to a tree.
+     */
+    public static final String TREE = "tree";
+
     private String id;
 
     private String label;
@@ -65,6 +75,8 @@ public final class TreeDescription implements IRepresentationDescription {
     private Function<VariableManager, IStatus> deleteHandler;
 
     private BiFunction<VariableManager, String, IStatus> renameHandler;
+
+    private Function<VariableManager, Object> treeItemObjectProvider;
 
     private TreeDescription() {
         // Prevent instantiation
@@ -145,6 +157,10 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.renameHandler;
     }
 
+    public Function<VariableManager, Object> getTreeItemObjectProvider() {
+        return this.treeItemObjectProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -192,6 +208,8 @@ public final class TreeDescription implements IRepresentationDescription {
         private Function<VariableManager, IStatus> deleteHandler;
 
         private BiFunction<VariableManager, String, IStatus> renameHandler;
+
+        private Function<VariableManager, Object> treeItemObjectProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -277,6 +295,11 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder treeItemObjectProvider(Function<VariableManager, Object> treeItemObjectProvider) {
+            this.treeItemObjectProvider = Objects.requireNonNull(treeItemObjectProvider);
+            return this;
+        }
+
         public TreeDescription build() {
             TreeDescription treeDescription = new TreeDescription();
             treeDescription.id = Objects.requireNonNull(this.id);
@@ -296,6 +319,7 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             treeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
             treeDescription.renameHandler = Objects.requireNonNull(this.renameHandler);
+            treeDescription.treeItemObjectProvider = Objects.requireNonNull(this.treeItemObjectProvider);
             return treeDescription;
         }
     }

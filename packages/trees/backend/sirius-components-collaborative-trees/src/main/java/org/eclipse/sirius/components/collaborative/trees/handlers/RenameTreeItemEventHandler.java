@@ -88,6 +88,7 @@ public class RenameTreeItemEventHandler implements ITreeEventHandler {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 variableManager.put(TreeItem.SELECTED_TREE_ITEM, treeItem);
+                variableManager.put(TreeDescription.TREE, tree);
 
                 var status = treeDescription.getRenameHandler().apply(variableManager, input.newLabel());
                 if (status instanceof Success success) {

@@ -13,16 +13,20 @@
 package org.eclipse.sirius.web.application.views.explorer.services;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
@@ -66,6 +70,15 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
             if (!hasChildren) {
                 String id = this.objectService.getId(eObject);
                 hasChildren = this.representationDataSearchService.existAnyRepresentationForTargetObjectId(id);
+            }
+
+            if (!hasChildren && self instanceof Entity) {
+                hasChildren = true;
+            }
+        } else if (self instanceof Setting setting) {
+            var value = setting.get(true);
+            if (value instanceof Collection<?> collection) {
+                hasChildren = !collection.isEmpty();
             }
         }
         return hasChildren;
@@ -117,8 +130,17 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
                     representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
                     result.addAll(representationMetadata);
                     List<Object> contents = this.objectService.getContents(self);
+                    if (self instanceof Entity entity) {
+                        result.add(((InternalEObject) entity).eSetting(entity.eClass().getEStructuralFeature("superTypes")));
+                    }
                     result.addAll(contents);
+                } else if (self instanceof Setting setting) {
+                    var value = setting.get(true);
+                    if (value instanceof Collection<?> collection) {
+                        result.addAll(collection);
+                    }
                 }
+
             }
         }
         return result;
@@ -145,6 +167,8 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
             id = resource.getURI().path().substring(1);
         } else if (self instanceof EObject) {
             id = this.objectService.getId(self);
+        } else if (self instanceof Setting setting) {
+            id = ExplorerDescriptionProvider.SETTING + this.objectService.getId(setting.getEObject()) + ExplorerDescriptionProvider.SETTING_ID_SEPARATOR + setting.getEStructuralFeature().getName();
         }
         return id;
     }

@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.views.explorer.services.api;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 
 /**
@@ -24,5 +25,5 @@ import org.eclipse.sirius.components.trees.TreeItem;
 public interface IRenameTreeItemHandler {
     boolean canHandle(IEditingContext editingContext, TreeItem treeItem, String newLabel);
 
-    IStatus handle(IEditingContext editingContext, TreeItem treeItem, String newLabel);
+    IStatus handle(IEditingContext editingContext, TreeItem treeItem, String newLabel, Tree tree);
 }
