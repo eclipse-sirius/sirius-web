@@ -120,6 +120,7 @@ public class ExplorerNonSemanticElementControllerTests extends AbstractIntegrati
 
         var expandedTreeInput = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, treeItemIds.get(), List.of());
         var expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
+        var rootTreeItemId = new AtomicReference<String>();
 
         Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
             assertThat(tree).isNotNull();
@@ -133,13 +134,28 @@ public class ExplorerNonSemanticElementControllerTests extends AbstractIntegrati
             List<TreeItem> domainElements = domainDocument.getChildren().get(0).getChildren();
             assertThat(domainElements).hasSize(3);
             assertThat(domainElements.get(0).getLabel().toString()).isEqualTo("Root");
+            rootTreeItemId.set(domainElements.get(0).getId());
             assertThat(domainElements.get(0).getChildren()).isNotEmpty();
             assertThat(domainElements.get(0).getChildren()).hasSize(3);
             assertThat(domainElements.get(0).getChildren().get(0).getLabel().toString()).isEqualTo("superTypes");
         });
 
+        Runnable getTreePathFromRoot = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "treeId", treeId.get(),
+                    "treeItemId", rootTreeItemId.get()
+            );
+            var result = this.expandAllTreePathQueryRunner.run(variables);
+            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            assertThat(treeItemIdsToExpand).isNotEmpty();
+            // only one superType tree item found underneath the Root entity.
+            assertThat(treeItemIdsToExpand.stream().filter(id -> id.startsWith(ExplorerDescriptionProvider.SETTING)).toList()).hasSize(1);
+        };
+
         StepVerifier.create(expandedTreeFlux)
                 .consumeNextWith(initialExpandedTreeContentConsumer)
+                .then(getTreePathFromRoot)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
