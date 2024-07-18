@@ -1,0 +1,20 @@
+= ADR-154 Add support for finding parent in tree representation
+
+== Context
+
+Sirius Web doesn't provide in its Tree API a way to retrieve the parent tree element. 
+At the moment Sirius Web relies on the EMF `eContainer` feature to retrieve an element ancestor.
+In order to extend the tree capabilities to handle virtual nodes, we need to defined a mechanism to provide the ancestor element from a given tree element.
+
+== Decision
+
+We will add a new field `Function<VariableManager, Object> parentObjectProvider` in `org.eclipse.sirius.components.trees.description.TreeDescription` and in its builder.
+Existing usages of `org.eclipse.sirius.components.trees.description.TreeDescription` should be completed by providing a default parent retrieval mechanism based on the EMF `eContainer` feature.
+
+`org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerNavigationService` exposes an API to return ancestors from a tree element.
+The implementation of this service, `org.eclipse.sirius.web.application.views.explorer.services.ExplorerNavigationService` should be updated to use the parent provider instead of doing the parent computation.
+
+== Status
+
+Work in progress
+

@@ -12,6 +12,7 @@
 
 - [ADR-152] Add support for any kind of object as semantic element in the tree representation
 - [ADR-153] Restore the Selection Dialog support in diagrams
+- [ADR-154] Add support for finding parent in tree representation
 
 === Deprecation warning
 
