@@ -156,12 +156,12 @@ public class OutsideLabelStyleBuilder {
     }
 
     /**
-     * Setter for ShowIcon.
+     * Setter for ShowIconExpression.
      *
      * @generated
      */
-    public OutsideLabelStyleBuilder showIcon(java.lang.Boolean value) {
-        this.getOutsideLabelStyle().setShowIcon(value);
+    public OutsideLabelStyleBuilder showIconExpression(java.lang.String value) {
+        this.getOutsideLabelStyle().setShowIconExpression(value);
         return this;
     }
 

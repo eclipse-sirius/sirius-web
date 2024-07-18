@@ -41,6 +41,10 @@ public final class MigrationIdentifiers {
 
     public static final String MIGRATION_DIAGRAM_LABEL_STYLE_BORDER_SIZE_STUDIO_DIAGRAM = "DiagramLabelStyle#borderSize migration";
 
+    public static final UUID MIGRATION_NODE_LABEL_STYLE_SHOW_ICON_STUDIO = UUID.fromString("8e4dc281-b458-4354-b2c8-a03b426b6966");
+
+    public static final String MIGRATION_NODE_LABEL_STYLE_SHOW_ICON_STUDIO_DIAGRAM = "NodeLabelStyle#showIcon migration";
+
     private MigrationIdentifiers() {
         // Prevent instantiation
     }

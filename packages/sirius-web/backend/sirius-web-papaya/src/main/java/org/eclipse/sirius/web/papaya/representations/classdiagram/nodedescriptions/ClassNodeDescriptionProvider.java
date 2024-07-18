@@ -57,7 +57,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
     @Override
     public NodeDescription create() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .displayHeaderSeparator(true)
                 .withHeader(true)
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
@@ -137,7 +137,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription constructorNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
                 .borderSize(0)
                 .build();
@@ -167,7 +167,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription attributesNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
-                .showIcon(false)
+                .showIconExpression("aql:false")
                 .withHeader(true)
                 .displayHeaderSeparator(false)
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
@@ -208,7 +208,8 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription attributeNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
-                .showIcon(true)
+                .showIconExpression("aql:true")
+
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
                 .borderSize(0)
                 .build();
@@ -238,7 +239,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription operationsNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
-                .showIcon(false)
+                .showIconExpression("aql:false")
                 .withHeader(true)
                 .displayHeaderSeparator(false)
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
@@ -279,7 +280,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription operationNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
                 .borderSize(0)
                 .build();

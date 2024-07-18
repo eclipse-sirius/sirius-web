@@ -769,3 +769,147 @@ INSERT INTO document (
   '2024-07-01 15:00:0.000',
   '2024-07-01 15:00:0.000'
 );
+
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '8e4dc281-b458-4354-b2c8-a03b426b6966',
+  'Migration NodeLabelStyle#showIcon Studio',
+  '2024-07-18 15:00:0.000',
+  '2024-07-18 15:00:0.000'
+);
+INSERT INTO nature (
+  project_id,
+  name
+) VALUES (
+  '8e4dc281-b458-4354-b2c8-a03b426b6966',
+  'siriusComponents://nature?kind=studio'
+);
+INSERT INTO semantic_data (
+  id,
+  project_id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '6d89dded-c843-475f-91b4-e2c91b9a883a',
+  '8e4dc281-b458-4354-b2c8-a03b426b6966',
+  '2024-07-01 15:00:0.000',
+  '2024-07-01 15:00:0.000'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '6d89dded-c843-475f-91b4-e2c91b9a883a',
+  'http://www.eclipse.org/sirius-web/view'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '6d89dded-c843-475f-91b4-e2c91b9a883a',
+  'http://www.eclipse.org/sirius-web/diagram'
+);
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '261b8eb9-7af9-47c8-9a8d-030dbffabcb0',
+  '6d89dded-c843-475f-91b4-e2c91b9a883a',
+  'NodeLabelStyle#showIcon migration',
+  '{
+      "json": { "version": "1.0", "encoding": "utf-8" },
+      "ns": {
+        "diagram": "http://www.eclipse.org/sirius-web/diagram",
+        "view": "http://www.eclipse.org/sirius-web/view"
+      },
+      "content": [
+        {
+          "id": "9712889d-60e2-4c1d-9349-bd5de9b45d1b",
+          "eClass": "view:View",
+          "data": {
+            "descriptions": [
+              {
+                "id": "3d1a4ce8-9ff2-4714-a3ce-6720b7b5c945",
+                "eClass": "diagram:DiagramDescription",
+                "data": {
+                  "name": "NodeLabelStyle#showIcon migration",
+                  "domainType": "flow::System",
+                  "titleExpression": "NodeLabelStyle#showIcon diagram",
+                  "nodeDescriptions": [
+                    {
+                      "id": "6b69cc8b-b1e8-4aed-9195-539351ac34d9",
+                      "eClass": "diagram:NodeDescription",
+                      "data": {
+                        "name": "ShowIcon migration Node 1",
+                        "domainType": "flow::CompositeProcessor",
+                        "childrenLayoutStrategy": {
+                          "id": "50b48332-c97e-4638-9912-feed821df798",
+                          "eClass": "diagram:FreeFormLayoutStrategyDescription"
+                        },
+                        "style": {
+                          "id": "e35c8df3-8286-47e4-8bba-b7e8342bdca2",
+                          "eClass": "diagram:RectangularNodeStyleDescription"
+                        },
+                        "insideLabel": {
+                          "id": "bd646979-6305-478d-9ab4-afeba966c4be",
+                          "eClass": "diagram:InsideLabelDescription",
+                          "data": {
+                            "style": {
+                              "id": "4a519202-e33a-4c9d-9f4d-be101165c7f3",
+                              "eClass": "diagram:InsideLabelStyle",
+                              "data": { "borderSize": "0", "showIcon": true }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "id": "6c5106eb-27fc-473a-bc55-461c7fcca989",
+                      "eClass": "diagram:NodeDescription",
+                      "data": {
+                        "name": "ShowIcon migration Node 2",
+                        "domainType": "flow::CompositeProcessor",
+                        "childrenLayoutStrategy": {
+                          "id": "bb2bef9c-17c3-43bd-9062-a9fa664be36b",
+                          "eClass": "diagram:FreeFormLayoutStrategyDescription"
+                        },
+                        "style": {
+                          "id": "be7cd982-20f6-429b-bd10-bae995ec8fb6",
+                          "eClass": "diagram:RectangularNodeStyleDescription",
+                          "data": {
+                            "borderColor": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#//@colorPalettes.1/@colors.0",
+                            "background": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#//@colorPalettes.1/@colors.1"
+                          }
+                        },
+                        "insideLabel": {
+                          "id": "9738edfc-29db-49ae-bd43-ef3b4556eaaf",
+                          "eClass": "diagram:InsideLabelDescription",
+                          "data": {
+                            "style": {
+                              "id": "ac093a41-a0d6-412e-8dab-b12550fa7bf6",
+                              "eClass": "diagram:InsideLabelStyle",
+                              "data": { "borderSize": "0" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+   }',
+  '2024-07-18 15:00:0.000',
+  '2024-07-18 15:00:0.000'
+);

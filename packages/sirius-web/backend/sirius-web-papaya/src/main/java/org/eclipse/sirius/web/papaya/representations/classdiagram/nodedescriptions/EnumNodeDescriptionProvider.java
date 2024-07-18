@@ -44,7 +44,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
     @Override
     public NodeDescription create() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .displayHeaderSeparator(true)
                 .withHeader(true)
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
@@ -84,7 +84,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription enumLiteralNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
                 .borderSize(0)
                 .build();

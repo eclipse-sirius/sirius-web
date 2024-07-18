@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,8 +30,22 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.InsideLabelStyleImpl#getBorderColor <em>Border
+ * Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.InsideLabelStyleImpl#getBorderRadius <em>Border
+ * Radius</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.InsideLabelStyleImpl#getBorderSize <em>Border
+ * Size</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.InsideLabelStyleImpl#getBorderLineStyle <em>Border Line
+ * Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.InsideLabelStyleImpl#getLabelColor <em>Label
  * Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.InsideLabelStyleImpl#getBackground
+ * <em>Background</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.InsideLabelStyleImpl#getShowIconExpression <em>Show Icon
+ * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.InsideLabelStyleImpl#getLabelIcon <em>Label
+ * Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.InsideLabelStyleImpl#isWithHeader <em>With
  * Header</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.InsideLabelStyleImpl#isDisplayHeaderSeparator <em>Display
@@ -41,7 +55,6 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
  * @generated
  */
 public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelStyle {
-
     /**
      * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -96,9 +109,9 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      * The default value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getBorderLineStyle()
      * @generated
      * @ordered
-     * @see #getBorderLineStyle()
      */
     protected static final LineStyle BORDER_LINE_STYLE_EDEFAULT = LineStyle.SOLID;
 
@@ -133,24 +146,24 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
     protected UserColor background;
 
     /**
-     * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The default value of the '{@link #getShowIconExpression() <em>Show Icon Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #isShowIcon()
+     * @see #getShowIconExpression()
      * @generated
      * @ordered
      */
-    protected static final boolean SHOW_ICON_EDEFAULT = false;
+    protected static final String SHOW_ICON_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The cached value of the '{@link #getShowIconExpression() <em>Show Icon Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #isShowIcon()
+     * @see #getShowIconExpression()
      * @generated
      * @ordered
      */
-    protected boolean showIcon = SHOW_ICON_EDEFAULT;
+    protected String showIconExpression = SHOW_ICON_EXPRESSION_EDEFAULT;
 
     /**
      * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -196,9 +209,9 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      * The default value of the '{@link #isDisplayHeaderSeparator() <em>Display Header Separator</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #isDisplayHeaderSeparator()
      * @generated
      * @ordered
-     * @see #isDisplayHeaderSeparator()
      */
     protected static final boolean DISPLAY_HEADER_SEPARATOR_EDEFAULT = false;
 
@@ -206,9 +219,9 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      * The cached value of the '{@link #isDisplayHeaderSeparator() <em>Display Header Separator</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #isDisplayHeaderSeparator()
      * @generated
      * @ordered
-     * @see #isDisplayHeaderSeparator()
      */
     protected boolean displayHeaderSeparator = DISPLAY_HEADER_SEPARATOR_EDEFAULT;
 
@@ -254,12 +267,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      *
      * @generated
      */
-    @Override
-    public void setBorderColor(UserColor newBorderColor) {
-        UserColor oldBorderColor = this.borderColor;
-        this.borderColor = newBorderColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.INSIDE_LABEL_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
+    public UserColor basicGetBorderColor() {
+        return this.borderColor;
     }
 
     /**
@@ -267,8 +276,12 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      *
      * @generated
      */
-    public UserColor basicGetBorderColor() {
-        return this.borderColor;
+    @Override
+    public void setBorderColor(UserColor newBorderColor) {
+        UserColor oldBorderColor = this.borderColor;
+        this.borderColor = newBorderColor;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.INSIDE_LABEL_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
     }
 
     /**
@@ -363,19 +376,6 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      *
      * @generated
      */
-    @Override
-    public void setLabelColor(UserColor newLabelColor) {
-        UserColor oldLabelColor = this.labelColor;
-        this.labelColor = newLabelColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.INSIDE_LABEL_STYLE__LABEL_COLOR, oldLabelColor, this.labelColor));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
     public UserColor basicGetLabelColor() {
         return this.labelColor;
     }
@@ -386,44 +386,11 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      * @generated
      */
     @Override
-    public boolean isShowIcon() {
-        return this.showIcon;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setShowIcon(boolean newShowIcon) {
-        boolean oldShowIcon = this.showIcon;
-        this.showIcon = newShowIcon;
+    public void setLabelColor(UserColor newLabelColor) {
+        UserColor oldLabelColor = this.labelColor;
+        this.labelColor = newLabelColor;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON, oldShowIcon, this.showIcon));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getLabelIcon() {
-        return this.labelIcon;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setLabelIcon(String newLabelIcon) {
-        String oldLabelIcon = this.labelIcon;
-        this.labelIcon = newLabelIcon;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.INSIDE_LABEL_STYLE__LABEL_ICON, oldLabelIcon, this.labelIcon));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.INSIDE_LABEL_STYLE__LABEL_COLOR, oldLabelColor, this.labelColor));
     }
 
     /**
@@ -449,6 +416,15 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      *
      * @generated
      */
+    public UserColor basicGetBackground() {
+        return this.background;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     @Override
     public void setBackground(UserColor newBackground) {
         UserColor oldBackground = this.background;
@@ -462,8 +438,45 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      *
      * @generated
      */
-    public UserColor basicGetBackground() {
-        return this.background;
+    @Override
+    public String getShowIconExpression() {
+        return this.showIconExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setShowIconExpression(String newShowIconExpression) {
+        String oldShowIconExpression = this.showIconExpression;
+        this.showIconExpression = newShowIconExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION, oldShowIconExpression, this.showIconExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getLabelIcon() {
+        return this.labelIcon;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelIcon(String newLabelIcon) {
+        String oldLabelIcon = this.labelIcon;
+        this.labelIcon = newLabelIcon;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.INSIDE_LABEL_STYLE__LABEL_ICON, oldLabelIcon, this.labelIcon));
     }
 
     /**
@@ -538,8 +551,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
                 if (resolve)
                     return this.getBackground();
                 return this.basicGetBackground();
-            case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON:
-                return this.isShowIcon();
+            case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
+                return this.getShowIconExpression();
             case DiagramPackage.INSIDE_LABEL_STYLE__LABEL_ICON:
                 return this.getLabelIcon();
             case DiagramPackage.INSIDE_LABEL_STYLE__WITH_HEADER:
@@ -576,8 +589,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
             case DiagramPackage.INSIDE_LABEL_STYLE__BACKGROUND:
                 this.setBackground((UserColor) newValue);
                 return;
-            case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON:
-                this.setShowIcon((Boolean) newValue);
+            case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
+                this.setShowIconExpression((String) newValue);
                 return;
             case DiagramPackage.INSIDE_LABEL_STYLE__LABEL_ICON:
                 this.setLabelIcon((String) newValue);
@@ -618,8 +631,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
             case DiagramPackage.INSIDE_LABEL_STYLE__BACKGROUND:
                 this.setBackground((UserColor) null);
                 return;
-            case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON:
-                this.setShowIcon(SHOW_ICON_EDEFAULT);
+            case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
+                this.setShowIconExpression(SHOW_ICON_EXPRESSION_EDEFAULT);
                 return;
             case DiagramPackage.INSIDE_LABEL_STYLE__LABEL_ICON:
                 this.setLabelIcon(LABEL_ICON_EDEFAULT);
@@ -654,8 +667,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
                 return this.labelColor != null;
             case DiagramPackage.INSIDE_LABEL_STYLE__BACKGROUND:
                 return this.background != null;
-            case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON:
-                return this.showIcon != SHOW_ICON_EDEFAULT;
+            case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
+                return SHOW_ICON_EXPRESSION_EDEFAULT == null ? this.showIconExpression != null : !SHOW_ICON_EXPRESSION_EDEFAULT.equals(this.showIconExpression);
             case DiagramPackage.INSIDE_LABEL_STYLE__LABEL_ICON:
                 return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
             case DiagramPackage.INSIDE_LABEL_STYLE__WITH_HEADER:
@@ -731,8 +744,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
         result.append(this.borderSize);
         result.append(", borderLineStyle: ");
         result.append(this.borderLineStyle);
-        result.append(", showIcon: ");
-        result.append(this.showIcon);
+        result.append(", showIconExpression: ");
+        result.append(this.showIconExpression);
         result.append(", labelIcon: ");
         result.append(this.labelIcon);
         result.append(", withHeader: ");
