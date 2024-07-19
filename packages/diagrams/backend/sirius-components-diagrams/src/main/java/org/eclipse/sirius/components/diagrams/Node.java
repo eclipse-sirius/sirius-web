@@ -62,8 +62,6 @@ public final class Node implements IDiagramElement {
 
     private List<Node> childNodes;
 
-    private Set<CustomizableProperties> customizedProperties;
-
     private Integer defaultWidth;
 
     private Integer defaultHeight;
@@ -150,10 +148,6 @@ public final class Node implements IDiagramElement {
         return this.childNodes;
     }
 
-    public Set<CustomizableProperties> getCustomizedProperties() {
-        return this.customizedProperties;
-    }
-
     public Integer getDefaultWidth() {
         return this.defaultWidth;
     }
@@ -221,8 +215,6 @@ public final class Node implements IDiagramElement {
 
         private List<Node> childNodes;
 
-        private Set<CustomizableProperties> customizedProperties = Set.of();
-
         private Integer defaultWidth;
 
         private Integer defaultHeight;
@@ -252,7 +244,6 @@ public final class Node implements IDiagramElement {
             this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
             this.borderNodes = node.getBorderNodes();
             this.childNodes = node.getChildNodes();
-            this.customizedProperties = node.getCustomizedProperties();
             this.defaultWidth = node.getDefaultWidth();
             this.defaultHeight = node.getDefaultHeight();
             this.labelEditable = node.isLabelEditable();
@@ -334,11 +325,6 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
-        public Builder customizedProperties(Set<CustomizableProperties> customizedProperties) {
-            this.customizedProperties = Objects.requireNonNull(customizedProperties);
-            return this;
-        }
-
         public Builder defaultWidth(Integer defaultWidth) {
             this.defaultWidth = Objects.requireNonNull(defaultWidth);
             return this;
@@ -377,7 +363,6 @@ public final class Node implements IDiagramElement {
             node.childrenLayoutStrategy = this.childrenLayoutStrategy;
             node.borderNodes = Objects.requireNonNull(this.borderNodes);
             node.childNodes = Objects.requireNonNull(this.childNodes);
-            node.customizedProperties = this.customizedProperties;
             node.defaultWidth = this.defaultWidth; // Optional on purpose
             node.defaultHeight = this.defaultHeight; // Optional on purpose
             node.labelEditable = this.labelEditable;

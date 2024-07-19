@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
@@ -51,8 +50,6 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
 
     private NodesBuilder<ImageNodeBuilder<T>> childNodesBuilder;
 
-    private Set<CustomizableProperties> customizedProperties = Set.of();
-
     public ImageNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
         this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.OUTSIDE_CENTER, false);
         this.isBorderNode = isBorderNode;
@@ -67,11 +64,6 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
     public NodesBuilder<ImageNodeBuilder<T>> childNodes() {
         this.childNodesBuilder = new NodesBuilder<>(this, false);
         return this.childNodesBuilder;
-    }
-
-    public ImageNodeBuilder<T> customizedProperties(Set<CustomizableProperties> customizedProperties) {
-        this.customizedProperties = Objects.requireNonNull(customizedProperties);
-        return this;
     }
 
     public NodesBuilder<T> and() {
@@ -103,7 +95,6 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
                 .borderNode(this.isBorderNode)
                 .borderNodes(borderNodes)
                 .childNodes(childNodes)
-                .customizedProperties(this.customizedProperties)
                 .descriptionId(descriptionId)
                 .targetObjectId(labelText)
                 .targetObjectKind("")

@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -184,11 +183,6 @@ public class NodeComponent implements IComponent {
                 .build();
         Element nodeChildren = new Element(NodeChildrenComponent.class, nodeChildrenComponentProps);
 
-        Set<CustomizableProperties> customizableProperties = Set.of();
-
-        if (CollapsingState.EXPANDED.equals(collapsingState)) {
-            customizableProperties = optionalPreviousNode.map(Node::getCustomizedProperties).orElse(Set.of());
-        }
         Integer defaultWidth = nodeDescription.getDefaultWidthProvider().apply(nodeVariableManager);
         Integer defaultHeight = nodeDescription.getDefaultHeightProvider().apply(nodeVariableManager);
 
@@ -201,7 +195,6 @@ public class NodeComponent implements IComponent {
                 .borderNode(isBorderNode)
                 .style(style)
                 .children(List.of(nodeChildren))
-                .customizableProperties(customizableProperties)
                 .modifiers(modifiers)
                 .state(state)
                 .pinned(isPinned)
