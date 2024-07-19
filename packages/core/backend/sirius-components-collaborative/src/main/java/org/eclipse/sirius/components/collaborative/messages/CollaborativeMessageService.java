@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,12 @@ public class CollaborativeMessageService implements ICollaborativeMessageService
 
     @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName });
+        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] {expectedInputTypeName, receivedInputTypeName});
+    }
+
+    @Override
+    public String objectDoesNotExist(String objectId) {
+        return this.messageSourceAccessor.getMessage("OBJECT_DOES_NOT_EXIST", new Object[] {objectId});
     }
 
     @Override
