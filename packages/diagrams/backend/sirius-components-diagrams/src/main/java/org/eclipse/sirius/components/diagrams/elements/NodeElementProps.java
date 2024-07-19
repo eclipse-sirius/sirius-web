@@ -19,7 +19,6 @@ import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -63,8 +62,6 @@ public final class NodeElementProps implements IProps {
     private Integer defaultWidth;
 
     private Integer defaultHeight;
-
-    private Set<CustomizableProperties> customizableProperties;
 
     private List<Element> children;
 
@@ -136,10 +133,6 @@ public final class NodeElementProps implements IProps {
         return this.defaultHeight;
     }
 
-    public Set<CustomizableProperties> getCustomizableProperties() {
-        return this.customizableProperties;
-    }
-
     @Override
     public List<Element> getChildren() {
         return this.children;
@@ -194,8 +187,6 @@ public final class NodeElementProps implements IProps {
         private Integer defaultWidth;
 
         private Integer defaultHeight;
-
-        private Set<CustomizableProperties> customizableProperties = Set.of();
 
         private List<Element> children;
 
@@ -272,11 +263,6 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
-        public Builder customizableProperties(Set<CustomizableProperties> customizableProperties) {
-            this.customizableProperties = Objects.requireNonNull(customizableProperties);
-            return this;
-        }
-
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -308,7 +294,6 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.childrenLayoutStrategy = this.childrenLayoutStrategy;
             nodeElementProps.children = Objects.requireNonNull(this.children);
             nodeElementProps.labelEditable = this.labelEditable;
-            nodeElementProps.customizableProperties = Objects.requireNonNull(this.customizableProperties);
             nodeElementProps.defaultWidth = this.defaultWidth; // Optional on purpose
             nodeElementProps.defaultHeight = this.defaultHeight; // Optional on purpose
             nodeElementProps.pinned = this.pinned;

@@ -211,7 +211,6 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .borderNodes(List.of())
                 .childNodes(List.of())
-                .customizedProperties(Set.of())
                 .build();
     }
 

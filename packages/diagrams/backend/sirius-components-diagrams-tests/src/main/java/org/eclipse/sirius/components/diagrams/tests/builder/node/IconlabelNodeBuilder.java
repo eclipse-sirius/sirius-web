@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
@@ -52,8 +51,6 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
 
     private NodesBuilder<IconlabelNodeBuilder<T>> childNodesBuilder;
 
-    private Set<CustomizableProperties> customizedProperties = Set.of();
-
     public IconlabelNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
         this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.INSIDE_CENTER, false);
         this.isBorderNode = isBorderNode;
@@ -68,11 +65,6 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
     public NodesBuilder<IconlabelNodeBuilder<T>> childNodes() {
         this.childNodesBuilder = new NodesBuilder<>(this, false);
         return this.childNodesBuilder;
-    }
-
-    public IconlabelNodeBuilder<T> customizedProperties(Set<CustomizableProperties> customizedProperties) {
-        this.customizedProperties = Objects.requireNonNull(customizedProperties);
-        return this;
     }
 
     public NodesBuilder<T> and() {
@@ -103,7 +95,6 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
                 .borderNode(this.isBorderNode)
                 .borderNodes(borderNodes)
                 .childNodes(childNodes)
-                .customizedProperties(this.customizedProperties)
                 .descriptionId(descriptionId)
                 .targetObjectId(labelText)
                 .targetObjectKind("")

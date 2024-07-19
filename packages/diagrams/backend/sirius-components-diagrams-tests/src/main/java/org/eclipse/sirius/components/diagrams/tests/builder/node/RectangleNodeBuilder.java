@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
@@ -58,8 +57,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     private NodesBuilder<RectangleNodeBuilder<T>> childNodesBuilder;
 
-    private Set<CustomizableProperties> customizedProperties = Set.of();
-
     public RectangleNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
         this(nodesBuilder, nodeLabel, isBorderNode, false);
     }
@@ -84,11 +81,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         this.childrenLayoutStrategy = Objects.requireNonNull(layoutStrategy);
         this.childNodesBuilder = new NodesBuilder<>(this, false);
         return this.childNodesBuilder;
-    }
-
-    public RectangleNodeBuilder<T> customizedProperties(Set<CustomizableProperties> customizedProperties) {
-        this.customizedProperties = Objects.requireNonNull(customizedProperties);
-        return this;
     }
 
     public NodesBuilder<T> and() {
@@ -123,7 +115,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                 .borderNode(this.isBorderNode)
                 .borderNodes(borderNodes)
                 .childNodes(childNodes)
-                .customizedProperties(this.customizedProperties)
                 .descriptionId(descriptionId)
                 .targetObjectId(labeltext)
                 .targetObjectKind("")
