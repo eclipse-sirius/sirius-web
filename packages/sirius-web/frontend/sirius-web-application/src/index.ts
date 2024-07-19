@@ -30,9 +30,11 @@ export {
   httpOptionsConfigurersExtensionPoint,
   webSocketOptionsConfigurersExtensionPoint,
 } from './graphql/useCreateApolloClientExtensionPoints';
+export { NavigationBar } from './navigationBar/NavigationBar';
 export {
   type NavigationBarIconProps,
   type NavigationBarLeftContributionProps,
+  type NavigationBarProps,
   type NavigationBarRightContributionProps,
 } from './navigationBar/NavigationBar.types';
 export {
