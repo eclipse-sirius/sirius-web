@@ -116,7 +116,6 @@ public class DiagramElementFactory implements IElementFactory {
                     .style(nodeElementProps.getStyle())
                     .borderNodes(borderNodes)
                     .childNodes(childNodes)
-                    .customizedProperties(nodeElementProps.getCustomizableProperties())
                     .state(nodeElementProps.getState())
                     .pinned(nodeElementProps.isPinned())
                     .modifiers(nodeElementProps.getModifiers())
