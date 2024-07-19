@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,8 @@ package org.eclipse.sirius.web.domain.services.api;
 public interface IMessageService {
 
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
+
+    String upperBoundaryReached(String newInstanceClass, String feature);
 
     String revealSelectedFadedElements();
 
@@ -49,6 +51,10 @@ public interface IMessageService {
 
     String invalidDroppedObject();
 
+    String objectDuplicationFailed();
+
+    String objectDoesNotExist(String objectId);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -58,6 +64,11 @@ public interface IMessageService {
 
         @Override
         public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
+            return "";
+        }
+
+        @Override
+        public String upperBoundaryReached(String newInstanceClass, String feature) {
             return "";
         }
 
@@ -128,6 +139,16 @@ public interface IMessageService {
 
         @Override
         public String invalidDroppedObject() {
+            return "";
+        }
+
+        @Override
+        public String objectDuplicationFailed() {
+            return "";
+        }
+
+        @Override
+        public String objectDoesNotExist(String objectId) {
             return "";
         }
     }

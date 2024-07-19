@@ -14,6 +14,7 @@ import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { ModelBrowserTreeView } from '@eclipse-sirius/sirius-components-browser';
 import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -23,6 +24,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -61,10 +63,6 @@ import {
 } from './CreateModalMachine';
 
 const useStyle = makeStyles()((theme) => ({
-  title: {
-    opacity: 0.6,
-    fontSize: theme.typography.caption.fontSize,
-  },
   select: {
     '&': {
       display: 'flex',
@@ -388,61 +386,69 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
       data-testid="create-modal">
       <DialogTitle id="dialog-title">Create an object</DialogTitle>
       <DialogContent>
-        {widget.reference.containment ? null : (
-          <ModelBrowserTreeView
-            editingContextId={editingContextId}
-            referenceKind={widget.reference.referenceKind}
-            ownerId={widget.ownerId}
-            descriptionId={widget.descriptionId}
-            isContainment={widget.reference.containment}
-            markedItemIds={[]}
-            title={'Select the container'}
-            leafType={'container'}
-            ownerKind={widget.reference.referenceKind}
-            onTreeItemClick={onTreeItemClick}
-            selectedTreeItemIds={containerSelected ? [containerSelected.id] : []}
-          />
-        )}
-        {containerKind === 'siriusWeb://document' && (
-          <>
-            <span className={classes.title}>Select the domain</span>
+        <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1) })}>
+          {widget.reference.containment ? null : (
+            <ModelBrowserTreeView
+              editingContextId={editingContextId}
+              referenceKind={widget.reference.referenceKind}
+              ownerId={widget.ownerId}
+              descriptionId={widget.descriptionId}
+              isContainment={widget.reference.containment}
+              markedItemIds={[]}
+              title={'Select the container'}
+              leafType={'container'}
+              ownerKind={widget.reference.referenceKind}
+              onTreeItemClick={onTreeItemClick}
+              selectedTreeItemIds={containerSelected ? [containerSelected.id] : []}
+            />
+          )}
+          {containerKind === 'siriusWeb://document' && (
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography gutterBottom variant="subtitle1">
+                Select the domain
+              </Typography>
+              <Select
+                variant="standard"
+                value={selectedDomainId}
+                onChange={onDomainChange}
+                disabled={createModal === 'loadingDomains' || createModal === 'creatingChild'}
+                labelId="createModalChildCreationDescriptionLabel"
+                fullWidth
+                data-testid="domain">
+                {domains.map((domain) => (
+                  <MenuItem value={domain.id} key={domain.id}>
+                    {domain.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
+          )}
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography gutterBottom variant="subtitle1">
+              Select the object type
+            </Typography>
             <Select
               variant="standard"
-              value={selectedDomainId}
-              onChange={onDomainChange}
-              disabled={createModal === 'loadingDomains' || createModal === 'creatingChild'}
+              classes={{ select: classes.select }}
+              value={selectedChildCreationDescriptionId}
+              onChange={onChildCreationDescriptionChange}
+              disabled={createModal !== 'validForChild' && createModal !== 'validForRoot'}
               labelId="createModalChildCreationDescriptionLabel"
               fullWidth
-              data-testid="domain">
-              {domains.map((domain) => (
-                <MenuItem value={domain.id} key={domain.id}>
-                  {domain.label}
+              data-testid="childCreationDescription">
+              {creationDescriptions.map((creationDescription) => (
+                <MenuItem value={creationDescription.id} key={creationDescription.id}>
+                  {creationDescription.iconURL.length > 0 && (
+                    <ListItemIcon className={classes.iconRoot}>
+                      <IconOverlay iconURL={creationDescription.iconURL} alt={creationDescription.label} />
+                    </ListItemIcon>
+                  )}
+                  <ListItemText primary={creationDescription.label} />
                 </MenuItem>
               ))}
             </Select>
-          </>
-        )}
-        <span className={classes.title}>Select the object type</span>
-        <Select
-          variant="standard"
-          classes={{ select: classes.select }}
-          value={selectedChildCreationDescriptionId}
-          onChange={onChildCreationDescriptionChange}
-          disabled={createModal !== 'validForChild' && createModal !== 'validForRoot'}
-          labelId="createModalChildCreationDescriptionLabel"
-          fullWidth
-          data-testid="childCreationDescription">
-          {creationDescriptions.map((creationDescription) => (
-            <MenuItem value={creationDescription.id} key={creationDescription.id}>
-              {creationDescription.iconURL.length > 0 && (
-                <ListItemIcon className={classes.iconRoot}>
-                  <IconOverlay iconURL={creationDescription.iconURL} alt={creationDescription.label} />
-                </ListItemIcon>
-              )}
-              <ListItemText primary={creationDescription.label} />
-            </MenuItem>
-          ))}
-        </Select>
+          </Box>
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button

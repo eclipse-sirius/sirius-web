@@ -16,14 +16,13 @@ import { DRAG_SOURCES_TYPE, useMultiToast } from '@eclipse-sirius/sirius-compone
 import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
 import { FilterableSortableList } from '../components/FilterableSortableList';
 import { FilterableSortableListItem } from '../components/FilterableSortableList.types';
@@ -34,23 +33,6 @@ import {
   GQLRepresentationDescription,
 } from '../components/ValuedReferenceAutocomplete.types';
 import { TransferModalProps, TransferModalState } from './TransferModal.types';
-
-const useStyles = makeStyles()((theme) => ({
-  dialogContent: {
-    overflowX: 'hidden',
-  },
-  root: {
-    margin: 'auto',
-  },
-  paper: {
-    width: 400,
-    height: 370,
-    overflow: 'auto',
-  },
-  button: {
-    margin: theme.spacing(0.5, 0),
-  },
-}));
 
 const getReferenceValueOptionsQuery = gql`
   query getReferenceValueOptions($editingContextId: ID!, $representationId: ID!, $referenceWidgetId: ID!) {
@@ -86,7 +68,6 @@ export const TransferModal = ({
   removeElement,
   moveElement,
 }: TransferModalProps) => {
-  const { classes } = useStyles();
   const { addErrorMessage } = useMultiToast();
   const [state, setState] = useState<TransferModalState>({
     right: widget.referenceValues,
@@ -248,75 +229,80 @@ export const TransferModal = ({
       open={true}
       onClose={() => onClose()}
       aria-labelledby="dialog-title"
-      maxWidth={false}
+      maxWidth="lg"
+      fullWidth
       data-testid="transfer-modal">
       <DialogTitle id="dialog-title">Edit reference</DialogTitle>
-      <DialogContent className={classes.dialogContent}>
-        <Grid container spacing={2} justifyContent="center" alignItems="center" className={classes.root}>
-          <Grid item>
-            <div className={classes.paper} onDragOver={handleDragOverLeft} onDrop={handleDropLeft}>
-              <ModelBrowserTreeView
-                editingContextId={editingContextId}
-                referenceKind={widget.reference.referenceKind}
-                ownerId={widget.ownerId}
-                descriptionId={widget.descriptionId}
-                isContainment={widget.reference.containment}
-                markedItemIds={state.right.map((entry) => entry.id)}
-                title={'Choices'}
-                leafType={'reference'}
-                ownerKind={widget.reference.ownerKind}
-                onTreeItemClick={onTreeItemClick}
-                selectedTreeItemIds={state.selectedTreeItemIds}
-              />
-            </div>
-          </Grid>
-          <Grid item>
-            <Grid container direction="column" alignItems="center">
-              <IconButton
-                className={classes.button}
-                onClick={handleDispatchRight}
-                disabled={
-                  !state.selectedTreeItemIds.some(
-                    (selectedId) => !state.right.some((rightEntry) => rightEntry.id === selectedId)
-                  )
-                }
-                aria-label="move selected right"
-                data-testid="move-right">
-                <ChevronRightIcon />
-              </IconButton>
-              <IconButton
-                className={classes.button}
-                onClick={handleDispatchLeft}
-                disabled={state.rightSelection.length === 0}
-                aria-label="move selected left"
-                data-testid="move-left">
-                <ChevronLeftIcon />
-              </IconButton>
-            </Grid>
-          </Grid>
-          <Grid item>
-            <div className={classes.paper}>
-              <FilterableSortableList
-                items={state.right}
-                options={[...state.options, ...widget.referenceValues]}
-                setItems={(items: FilterableSortableListItem[]) =>
-                  setState((prevState) => {
-                    return {
-                      ...prevState,
-                      right: items,
-                    };
-                  })
-                }
-                handleDragItemStart={handleDragStart}
-                handleDragItemEnd={handleDragEnd}
-                handleDropNewItem={handleDropRight}
-                onClick={onClick}
-                selectedItems={state.rightSelection}
-                moveElement={moveElement}
-              />
-            </div>
-          </Grid>
-        </Grid>
+      <DialogContent>
+        <Box
+          sx={(theme) => ({
+            display: 'grid',
+            gridTemplateRows: '1fr',
+            gridTemplateColumns: '1fr min-content 1fr',
+            gap: theme.spacing(1),
+          })}>
+          <div onDragOver={handleDragOverLeft} onDrop={handleDropLeft}>
+            <ModelBrowserTreeView
+              editingContextId={editingContextId}
+              referenceKind={widget.reference.referenceKind}
+              ownerId={widget.ownerId}
+              descriptionId={widget.descriptionId}
+              isContainment={widget.reference.containment}
+              markedItemIds={state.right.map((entry) => entry.id)}
+              title={'Choices'}
+              leafType={'reference'}
+              ownerKind={widget.reference.ownerKind}
+              onTreeItemClick={onTreeItemClick}
+              selectedTreeItemIds={state.selectedTreeItemIds}
+            />
+          </div>
+
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              gap: theme.spacing(1),
+            })}>
+            <IconButton
+              onClick={handleDispatchRight}
+              disabled={
+                !state.selectedTreeItemIds.some(
+                  (selectedId) => !state.right.some((rightEntry) => rightEntry.id === selectedId)
+                )
+              }
+              aria-label="move selected right"
+              data-testid="move-right">
+              <ChevronRightIcon />
+            </IconButton>
+            <IconButton
+              onClick={handleDispatchLeft}
+              disabled={state.rightSelection.length === 0}
+              aria-label="move selected left"
+              data-testid="move-left">
+              <ChevronLeftIcon />
+            </IconButton>
+          </Box>
+
+          <FilterableSortableList
+            items={state.right}
+            options={[...state.options, ...widget.referenceValues]}
+            setItems={(items: FilterableSortableListItem[]) =>
+              setState((prevState) => {
+                return {
+                  ...prevState,
+                  right: items,
+                };
+              })
+            }
+            handleDragItemStart={handleDragStart}
+            handleDragItemEnd={handleDragEnd}
+            handleDropNewItem={handleDropRight}
+            onClick={onClick}
+            selectedItems={state.rightSelection}
+            moveElement={moveElement}
+          />
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button

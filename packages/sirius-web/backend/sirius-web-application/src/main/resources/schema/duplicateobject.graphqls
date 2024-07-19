@@ -1,0 +1,26 @@
+extend type EditingContext {
+  containmentFeatureNames(containerId: ID!, containedObjectId: ID!): [String!]!
+}
+
+extend type Mutation {
+  duplicateObject(input: DuplicateObjectInput!): DuplicateObjectPayload!
+}
+
+input DuplicateObjectInput {
+  id: ID!
+  editingContextId: ID!
+  objectId: ID!
+  containerId: ID!
+  containmentFeatureName: String!
+  duplicateContent: Boolean!
+  copyOutgoingReferences: Boolean!
+  updateIncomingReferences: Boolean!
+}
+
+type DuplicateObjectSuccessPayload {
+  id: ID!
+  object: Object!
+  messages: [Message]!
+}
+
+union DuplicateObjectPayload = ErrorPayload | DuplicateObjectSuccessPayload
