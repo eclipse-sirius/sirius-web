@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,11 +16,13 @@ import AddIcon from '@mui/icons-material/Add';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import { Fragment, forwardRef, useState } from 'react';
+import { DuplicateObjectModal } from '../../modals/duplicate-object/DuplicateObjectModal';
 import { NewObjectModal } from '../../modals/new-object/NewObjectModal';
 import { NewRepresentationModal } from '../../modals/new-representation/NewRepresentationModal';
 
-type Modal = 'CreateNewObject' | 'CreateNewRepresentation';
+type Modal = 'CreateNewObject' | 'CreateNewRepresentation' | 'DuplicateObject';
 
 export const ObjectTreeItemContextMenuContribution = forwardRef(
   (
@@ -59,6 +61,16 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
           onClose={onClose}
         />
       );
+    } else if (modal === 'DuplicateObject') {
+      modalElement = (
+        <DuplicateObjectModal
+          editingContextId={editingContextId}
+          objectToDuplicateId={item.id}
+          objectToDuplicateKind={item.kind}
+          onObjectDuplicated={onObjectCreated}
+          onClose={onClose}
+        />
+      );
     }
 
     return (
@@ -85,6 +97,17 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
             <AddIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="New representation" />
+        </MenuItem>
+        <MenuItem
+          key="duplicate-object"
+          onClick={() => setModal('DuplicateObject')}
+          data-testid="duplicate-object"
+          disabled={readOnly}
+          aria-disabled>
+          <ListItemIcon>
+            <AddToPhotosIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Duplicate Object" />
         </MenuItem>
         {modalElement}
       </Fragment>

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTree, TreeFilter } from '@eclipse-sirius/sirius-components-trees';
+import { GQLTree, GQLTreeItem, TreeFilter } from '@eclipse-sirius/sirius-components-trees';
 
 export interface ExplorerViewState {
   synchronizedWithSelection: boolean;
@@ -22,4 +22,5 @@ export interface ExplorerViewState {
   expanded: { [key: string]: string[] };
   maxDepth: { [key: string]: number };
   tree: GQLTree | null;
+  singleTreeItemSelected: GQLTreeItem | null;
 }

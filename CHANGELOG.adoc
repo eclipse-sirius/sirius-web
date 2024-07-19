@@ -100,6 +100,10 @@ This API is provisionnal for the moment and it may be moved or changed while imp
 The command is only present in studio projects, but the corresponding mutation can work on any project.
 Downstream applications can provide their own command to import libraries into their projects, and rely on Sirius Web's import mechanism to load libraries.
 The publication of a studio that references elements from imported libraries now produces libraries with the appropriate dependencies.
+- https://github.com/eclipse-sirius/sirius-web/issues/3740[#3740] [sirius-web] Add support for object duplication from explorer
++
+image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
+
 
 === Improvements
 

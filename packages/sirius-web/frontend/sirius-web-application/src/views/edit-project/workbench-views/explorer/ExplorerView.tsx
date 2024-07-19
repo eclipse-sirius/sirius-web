@@ -33,6 +33,7 @@ import {
 import { Theme } from '@mui/material/styles';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { DuplicateObjectKeyboardShortcut } from '../../../../modals/duplicate-object/DuplicateObjectKeyboardShortcut';
 import { ExplorerViewState } from './ExplorerView.types';
 import { TreeDescriptionsMenu } from './TreeDescriptionsMenu';
 import { useExplorerDescriptions } from './useExplorerDescriptions';
@@ -67,6 +68,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     expanded: {},
     maxDepth: {},
     tree: null,
+    singleTreeItemSelected: null,
   };
   const [state, setState] = useState<ExplorerViewState>(initialState);
   const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
@@ -284,9 +286,11 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         const newSelection: Selection = { entries: [...selection.entries, newEntry] };
         setSelection(newSelection);
       }
+      setState((prevState) => ({ ...prevState, singleTreeItemSelected: null }));
     } else {
       const { id } = item;
       setSelection({ entries: [{ id }] });
+      setState((prevState) => ({ ...prevState, singleTreeItemSelected: item }));
     }
   };
 
@@ -334,23 +338,28 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         treeToolBarContributionComponents={treeToolBarContributionComponents}>
         {treeDescriptionSelector}
       </TreeToolBar>
-      <div className={styles.treeContent}>
-        {filterBar}
-        {state.tree !== null ? (
-          <TreeView
-            editingContextId={editingContextId}
-            readOnly={readOnly}
-            treeId={'explorer://'}
-            tree={state.tree}
-            textToHighlight={state.filterBarText}
-            textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-            onExpand={onExpand}
-            onExpandAll={onExpandAll}
-            onTreeItemClick={onTreeItemClick}
-            selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
-          />
-        ) : null}
-      </div>
+      <DuplicateObjectKeyboardShortcut
+        editingContextId={editingContextId}
+        readOnly={readOnly}
+        selectedTreeItem={state.singleTreeItemSelected}>
+        <div className={styles.treeContent}>
+          {filterBar}
+          {state.tree !== null ? (
+            <TreeView
+              editingContextId={editingContextId}
+              readOnly={readOnly}
+              treeId={'explorer://'}
+              tree={state.tree}
+              textToHighlight={state.filterBarText}
+              textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+              onExpand={onExpand}
+              onExpandAll={onExpandAll}
+              onTreeItemClick={onTreeItemClick}
+              selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
+            />
+          ) : null}
+        </div>
+      </DuplicateObjectKeyboardShortcut>
     </div>
   );
 };

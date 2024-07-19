@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay, splitText, FilterBar } from '@eclipse-sirius/sirius-components-core';
+import { FilterBar, IconOverlay, splitText } from '@eclipse-sirius/sirius-components-core';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
+import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -40,14 +41,10 @@ const useStyles = makeStyles()((theme: Theme) => ({
   selectedLabel: {
     fontWeight: 'bold',
   },
-  title: {
-    opacity: 0.6,
-    fontSize: theme.typography.caption.fontSize,
-  },
   borderStyle: {
     border: '1px solid',
     borderColor: theme.palette.grey[500],
-    height: 300,
+    height: 500,
     overflow: 'auto',
   },
   dragIcon: {
@@ -181,7 +178,12 @@ export const FilterableSortableList = ({
   };
 
   return (
-    <>
+    <Box
+      sx={(theme) => ({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: theme.spacing(1),
+      })}>
       <FilterBar
         onTextChange={(event) =>
           setState((prevState) => {
@@ -201,59 +203,63 @@ export const FilterableSortableList = ({
         }
         text={state.filterBarText}
       />
-      <span className={classes.title}>Selected</span>
-      <div className={classes.borderStyle} onDrop={handleDropNewItem} onDragOver={handleDragOverNewItem}>
-        <List dense component="div" role="list" data-testid="selected-items-list">
-          {items
-            .filter(({ label }) => {
-              if (state.filterBarText === null || state.filterBarText === '') {
-                return true;
-              }
-              const splitLabelWithTextToHighlight: string[] = splitText(label, state.filterBarText);
-              return (
-                splitLabelWithTextToHighlight.length > 1 ||
-                (splitLabelWithTextToHighlight.length === 1 &&
-                  splitLabelWithTextToHighlight[0]?.toLocaleLowerCase() === state.filterBarText.toLocaleLowerCase())
-              );
-            })
-            .map(({ id, kind, label }, index) => {
-              const iconURL = options.find((option) => option.id === id)?.iconURL ?? [];
-              const labelId = `transfer-list-item-${id}-label`;
-              const selected = selectedItems.some((entry) => entry.id === id);
-              const hover = state.hoveringItemId === id;
-              return (
-                <ListItem
-                  key={id}
-                  role="listitem"
-                  className={selected ? classes.selected : classes.selectable}
-                  onDragOver={(event) => handleDragOverOrder(event, index)}
-                  onDragEnd={handleDragItemEnd}
-                  onClick={(event) => onClick(event, { id, kind, label })}
-                  onMouseEnter={() => handleMouseEnter(id)}
-                  onMouseLeave={handleMouseLeave}
-                  data-testid={label}>
-                  <ListItemIcon
-                    className={hover ? classes.dragIcon : classes.noDragIcon}
-                    draggable
-                    onDragStart={() => handleDragStartOrder(id, index)}
-                    onDragEnd={handleDragEndOrder}>
-                    <DragHandleIcon />
-                  </ListItemIcon>
-                  <ListItemIcon draggable onDragStart={() => handleDragItemStart(id)}>
-                    <IconOverlay iconURL={iconURL} alt={kind} />
-                  </ListItemIcon>
-                  <ListItemText
-                    id={labelId}
-                    draggable
-                    onDragStart={() => handleDragItemStart(id)}
-                    primary={<HighlightedLabel label={label} textToHighlight={state.filterBarText} />}
-                    classes={{ primary: selected ? classes.selectedLabel : '' }}
-                  />
-                </ListItem>
-              );
-            })}
-        </List>
+      <div>
+        <Typography gutterBottom variant="subtitle1">
+          Selected
+        </Typography>
+        <div className={classes.borderStyle} onDrop={handleDropNewItem} onDragOver={handleDragOverNewItem}>
+          <List dense component="div" role="list" data-testid="selected-items-list">
+            {items
+              .filter(({ label }) => {
+                if (state.filterBarText === null || state.filterBarText === '') {
+                  return true;
+                }
+                const splitLabelWithTextToHighlight: string[] = splitText(label, state.filterBarText);
+                return (
+                  splitLabelWithTextToHighlight.length > 1 ||
+                  (splitLabelWithTextToHighlight.length === 1 &&
+                    splitLabelWithTextToHighlight[0]?.toLocaleLowerCase() === state.filterBarText.toLocaleLowerCase())
+                );
+              })
+              .map(({ id, kind, label }, index) => {
+                const iconURL = options.find((option) => option.id === id)?.iconURL ?? [];
+                const labelId = `transfer-list-item-${id}-label`;
+                const selected = selectedItems.some((entry) => entry.id === id);
+                const hover = state.hoveringItemId === id;
+                return (
+                  <ListItem
+                    key={id}
+                    role="listitem"
+                    className={selected ? classes.selected : classes.selectable}
+                    onDragOver={(event) => handleDragOverOrder(event, index)}
+                    onDragEnd={handleDragItemEnd}
+                    onClick={(event) => onClick(event, { id, kind, label })}
+                    onMouseEnter={() => handleMouseEnter(id)}
+                    onMouseLeave={handleMouseLeave}
+                    data-testid={label}>
+                    <ListItemIcon
+                      className={hover ? classes.dragIcon : classes.noDragIcon}
+                      draggable
+                      onDragStart={() => handleDragStartOrder(id, index)}
+                      onDragEnd={handleDragEndOrder}>
+                      <DragHandleIcon />
+                    </ListItemIcon>
+                    <ListItemIcon draggable onDragStart={() => handleDragItemStart(id)}>
+                      <IconOverlay iconURL={iconURL} alt={kind} />
+                    </ListItemIcon>
+                    <ListItemText
+                      id={labelId}
+                      draggable
+                      onDragStart={() => handleDragItemStart(id)}
+                      primary={<HighlightedLabel label={label} textToHighlight={state.filterBarText} />}
+                      classes={{ primary: selected ? classes.selectedLabel : '' }}
+                    />
+                  </ListItem>
+                );
+              })}
+          </List>
+        </div>
       </div>
-    </>
+    </Box>
   );
 };

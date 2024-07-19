@@ -23,20 +23,22 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ModelBrowserTreeViewProps, ModelBrowserTreeViewState } from './ModelBrowserTreeView.types';
 import { useModelBrowserSubscription } from './useModelBrowserSubscription';
 
 const useTreeStyle = makeStyles()((theme) => ({
-  title: {
-    opacity: 0.6,
-    fontSize: theme.typography.caption.fontSize,
+  modelBrowserTreeView: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
   },
   borderStyle: {
     border: '1px solid',
     borderColor: theme.palette.grey[500],
-    height: 300,
+    height: 500,
     overflow: 'auto',
   },
 }));
@@ -151,32 +153,36 @@ export const ModelBrowserTreeView = ({
   }, [treePathData]);
 
   return (
-    <>
+    <div className={classes.modelBrowserTreeView}>
       <FilterBar
         onTextChange={(event) => setState((prevState) => ({ ...prevState, filterBarText: event.target.value }))}
         onTextClear={() => setState((prevState) => ({ ...prevState, filterBarText: '' }))}
         text={state.filterBarText}
       />
-      <span className={classes.title}>{title}</span>
-      <div className={classes.borderStyle}>
-        {tree !== null ? (
-          <TreeView
-            editingContextId={editingContextId}
-            readOnly={true}
-            treeId={treeId}
-            tree={tree}
-            textToFilter={state.filterBarText}
-            textToHighlight={state.filterBarText}
-            markedItemIds={markedItemIds}
-            treeItemActionRender={(props) => <ExpandAllTreeItemAction {...props} />}
-            onExpand={onExpand}
-            onExpandAll={onExpandAll}
-            onTreeItemClick={onTreeItemClick}
-            selectedTreeItemIds={selectedTreeItemIds}
-          />
-        ) : null}
+      <div>
+        <Typography variant="subtitle1" gutterBottom>
+          {title}
+        </Typography>
+        <div className={classes.borderStyle}>
+          {tree !== null ? (
+            <TreeView
+              editingContextId={editingContextId}
+              readOnly={true}
+              treeId={treeId}
+              tree={tree}
+              textToFilter={state.filterBarText}
+              textToHighlight={state.filterBarText}
+              markedItemIds={markedItemIds}
+              treeItemActionRender={(props) => <ExpandAllTreeItemAction {...props} />}
+              onExpand={onExpand}
+              onExpandAll={onExpandAll}
+              onTreeItemClick={onTreeItemClick}
+              selectedTreeItemIds={selectedTreeItemIds}
+            />
+          ) : null}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
