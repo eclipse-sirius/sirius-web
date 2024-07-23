@@ -81,7 +81,7 @@ public class RewriteProxiesEventHandler implements IEditingContextEventHandler {
         resource.getAllContents().forEachRemaining(eObject -> {
             eObject.eCrossReferences().forEach(target -> {
                 InternalEObject internalEObject = (InternalEObject) target;
-                if (internalEObject.eIsProxy()) {
+                if (internalEObject != null && internalEObject.eIsProxy()) {
                     URI proxyURI = internalEObject.eProxyURI();
                     String oldDocumentId = proxyURI.path().substring(1);
                     String newDocumentId = oldDocumentIdToNewDocumentId.get(oldDocumentId);
