@@ -38,7 +38,7 @@ export class Studio {
       if (isCreateProjectFromTemplateSuccessPayload(payload)) {
         const projectId = payload.project.id;
         new Project().visit(projectId);
-        const view_id = 'ea57f74d-bc7b-3a7a-81e0-8aef4ee85770';
+        const view_id = 'view';
         cy.createDocument(projectId, view_id, 'ViewDocument');
         const data: CreatedProjectData = { projectId };
         return cy.wrap(data);

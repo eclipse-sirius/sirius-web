@@ -64,7 +64,7 @@ describe('Forms Widget-reference', () => {
       it('Then widget reference mono-valued is available', () => {
         const explorer = new Explorer();
         const form = new Form();
-        explorer.expand('FlowNewModel');
+        explorer.expand('Flow');
         explorer.expand('NewSystem');
         explorer.expand('DataSource1');
         explorer.createRepresentation('standard', 'WidgetRefMonoValue', 'WidgetRefMonoValue');
@@ -100,7 +100,7 @@ describe('Forms Widget-reference', () => {
       it('Then widget reference multi-valued is available', () => {
         const explorer = new Explorer();
         const form = new Form();
-        explorer.expand('FlowNewModel');
+        explorer.expand('Flow');
         explorer.expand('NewSystem');
         explorer.createRepresentation(
           'CompositeProcessor1',
@@ -113,9 +113,9 @@ describe('Forms Widget-reference', () => {
         form.getWidgetElement('Test Widget Reference', 'Test Widget Reference-clear').should('exist');
         form.getWidgetElement('Test Widget Reference', 'Test Widget Reference-more').click();
         cy.getByTestId('transfer-modal').findByTestId('tree-root-elements').should('exist');
-        cy.getByTestId('transfer-modal').findByTestId('FlowNewModel').should('exist');
+        cy.getByTestId('transfer-modal').findByTestId('Flow').should('exist');
         cy.getByTestId('transfer-modal').findByTestId('selected-items-list').should('exist');
-        cy.getByTestId('transfer-modal').findByTestId('FlowNewModel').click();
+        cy.getByTestId('transfer-modal').findByTestId('Flow').click();
         cy.getByTestId('transfer-modal').findByTestId('expand-all').click();
         cy.getByTestId('transfer-modal').findByTestId('standard').should('exist');
         cy.getByTestId('transfer-modal').findByTestId('standard').click();
@@ -153,7 +153,7 @@ describe('Forms Widget-reference', () => {
       it('Then widget reference containment is available', () => {
         const explorer = new Explorer();
         const form = new Form();
-        explorer.expand('FlowNewModel');
+        explorer.expand('Flow');
         explorer.createRepresentation('NewSystem', 'WidgetRefContainment', 'WidgetRefContainment');
         form.getForm().should('exist');
         form.getWidget('Test Widget Reference').should('exist');
@@ -228,7 +228,7 @@ describe('Forms Widget-reference', () => {
       it('Then widget reference non containment is available', () => {
         const explorer = new Explorer();
         const form = new Form();
-        explorer.expand('FlowNewModel');
+        explorer.expand('Flow');
         explorer.expand('NewSystem');
         explorer.createRepresentation(
           'CompositeProcessor1',
@@ -242,8 +242,8 @@ describe('Forms Widget-reference', () => {
         cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('exist');
         cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
         cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('exist');
-        cy.getByTestId('create-modal').findByTestId('FlowNewModel').should('exist');
-        cy.getByTestId('create-modal').findByTestId('FlowNewModel').click();
+        cy.getByTestId('create-modal').findByTestId('Flow').should('exist');
+        cy.getByTestId('create-modal').findByTestId('Flow').click();
         cy.getByTestId('create-modal').findByTestId('expand-all').click();
         cy.getByTestId('create-modal').findByTestId('NewSystem').should('exist');
         cy.getByTestId('create-modal').findByTestId('DataSource1').should('exist');
@@ -429,6 +429,51 @@ describe('Forms Widget-reference', () => {
       cy.getByTestId('transfer-modal').findByTestId('expand-all').click();
       cy.getByTestId('transfer-modal').findByTestId('Entity2').should('not.exist');
       cy.getByTestId('close-transfer-modal').click();
+    });
+  });
+
+  context('Given a form with a reference widget in a flexbox', () => {
+    let studioProjectId: string = '';
+    let flowProjectId: string = '';
+    before(() =>
+      new Studio().createBlankStudioProjectWithView().then((createdProjectData) => {
+        studioProjectId = createdProjectData.projectId;
+        const explorer = new Explorer();
+        explorer.expand('ViewDocument');
+        const details = new Details();
+        explorer.createObject('View', 'Form Description');
+        explorer.select('New Form Description');
+        details.getTextField('Domain Type').type('flow::CompositeProcessor');
+        details.getTextField('Name').type(`{selectall}WidgetReference{enter}`);
+        details.getTextField('Title Expression').type(`{selectall}WidgetReference{enter}`);
+        explorer.expand('WidgetReference');
+        explorer.expand('PageDescription');
+        explorer.createObject('GroupDescription', 'Widgets Flexbox Container Description');
+        explorer.createObject('FlexboxContainerDescription', 'Reference Widget Description');
+        details.getTextField('Reference Name Expression').should('exist');
+        details.getTextField('Label Expression').type('Test Widget Reference');
+        details.getTextField('Reference Name Expression').type(`incomingFlows{enter}`);
+      })
+    );
+    after(() => cy.deleteProject(studioProjectId));
+    context('When we interact with the widget reference in flow', () => {
+      beforeEach(() =>
+        new Flow().createFlowProject().then((createdProjectData) => {
+          flowProjectId = createdProjectData.projectId;
+          new Project().visit(flowProjectId);
+        })
+      );
+
+      afterEach(() => cy.deleteProject(flowProjectId));
+      it('Then widget reference is available under the flexbox', () => {
+        const explorer = new Explorer();
+        const form = new Form();
+        explorer.expand('Flow');
+        explorer.expand('NewSystem');
+        explorer.createRepresentation('CompositeProcessor1', 'WidgetReference', 'WidgetReference');
+        form.getForm().should('exist');
+        form.getWidget('Test Widget Reference').should('exist');
+      });
     });
   });
 });
