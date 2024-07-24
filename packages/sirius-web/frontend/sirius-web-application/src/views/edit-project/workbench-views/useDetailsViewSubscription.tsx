@@ -49,6 +49,7 @@ export const useDetailsViewSubscription = (
     id: crypto.randomUUID(),
     form: null,
     complete: false,
+    payload: null,
   });
 
   const input: GQLDetailsEventInput = {
@@ -63,6 +64,7 @@ export const useDetailsViewSubscription = (
     const { data: gqlDetailsEventSubscription } = data;
     if (gqlDetailsEventSubscription) {
       const { detailsEvent: payload } = gqlDetailsEventSubscription;
+      setState((prevState) => ({ ...prevState, payload }));
       if (isFormRefreshedEventPayload(payload)) {
         const { form } = payload;
         setState((prevState) => ({ ...prevState, form }));
@@ -93,6 +95,7 @@ export const useDetailsViewSubscription = (
   return {
     loading,
     form: state.form,
+    payload: state.payload,
     complete: state.complete,
   };
 };

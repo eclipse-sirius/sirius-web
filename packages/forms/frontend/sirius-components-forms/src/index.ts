@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export { FormContext } from './contexts/FormContext';
+export type { FormContextValue } from './contexts/FormContext.types';
 export * from './form/Form.types';
 export * from './form/FormEventFragments';
 export type * from './form/FormEventFragments.types';
@@ -28,6 +30,7 @@ export * from './propertysections/ListPropertySection';
 export type { ListStyleProps } from './propertysections/ListPropertySection.types';
 export type { MultiSelectStyleProps } from './propertysections/MultiSelectPropertySection.types';
 export * from './propertysections/PropertySectionLabel';
+export type { PropertySectionLabelDecoratorProps } from './propertysections/PropertySectionLabel.types';
 export * from './propertysections/PropertySectionLabelExtensionPoints';
 export type { RadioStyleProps } from './propertysections/RadioPropertySection.types';
 export type { SelectStyleProps } from './propertysections/SelectPropertySection.types';

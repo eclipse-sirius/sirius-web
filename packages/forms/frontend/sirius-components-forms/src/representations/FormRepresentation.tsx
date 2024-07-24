@@ -15,12 +15,14 @@ import { RepresentationComponentProps, Toast } from '@eclipse-sirius/sirius-comp
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { FormContext } from '../contexts/FormContext';
 import { Form } from '../form/Form';
 import { formRefreshedEventPayloadFragment } from '../form/FormEventFragments';
 import { GQLFormEventSubscription } from '../form/FormEventFragments.types';
 import { Page } from '../pages/Page';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
+import { FormRepresentationState } from './FormRepresentation.types';
 import {
   FormRepresentationContext,
   FormRepresentationEvent,
@@ -89,6 +91,9 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
   );
   const { toast, formRepresentation } = value as SchemaValue;
   const { id, formId, form, message } = context;
+  const [state, setState] = useState<FormRepresentationState>({
+    payload: null,
+  });
 
   /**
    * Displays an other form if the selection indicates that we should display another properties view.
@@ -110,6 +115,10 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
     },
     fetchPolicy: 'no-cache',
     onData: ({ data }) => {
+      if (data.data) {
+        const { formEvent } = data.data;
+        setState((prevState) => ({ ...prevState, payload: formEvent }));
+      }
       const handleDataEvent: HandleSubscriptionResultEvent = {
         type: 'HANDLE_SUBSCRIPTION_RESULT',
         result: data,
@@ -171,12 +180,17 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
 
   return (
     <div data-representation-kind="form">
-      {content}
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
+      <FormContext.Provider
+        value={{
+          payload: state.payload,
+        }}>
+        {content}
+        <Toast
+          message={message}
+          open={toast === 'visible'}
+          onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+        />
+      </FormContext.Provider>
     </div>
   );
 };
