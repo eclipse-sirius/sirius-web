@@ -62,6 +62,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3784[#3784] [sirius-web] Fix the click on a representation which is already selected in the explorer.
 - https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Reactivate the Selection Dialog
 - https://github.com/eclipse-sirius/sirius-web/issues/3766[#3766] [sirius-web] Fix a potential NPE in RewriteProxiesEventHandler#rewriteProxyURIs
+- https://github.com/eclipse-sirius/sirius-web/issues/3808[#3808] [trees] Fix interactions with `TreeItemContextMenu` modal
 
 === New Features
 
