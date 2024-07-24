@@ -67,7 +67,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3748[#3748] [diagram] Store current diagram payload in `DiagramContext`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3758[#3578] [form] Store property and form payload in a context
 
 === Improvements
 

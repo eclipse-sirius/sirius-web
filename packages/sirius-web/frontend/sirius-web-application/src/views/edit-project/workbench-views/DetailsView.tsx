@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useSelection, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { FormBasedView } from '@eclipse-sirius/sirius-components-forms';
+import { FormBasedView, FormContext } from '@eclipse-sirius/sirius-components-forms';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
@@ -52,7 +52,7 @@ export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewCompone
 
   const objectIds: string[] = state.currentSelection.entries.map((entry) => entry.id);
   const skip = objectIds.length === 0;
-  const { form } = useDetailsViewSubscription(editingContextId, objectIds, skip);
+  const { form, payload } = useDetailsViewSubscription(editingContextId, objectIds, skip);
 
   const classes = useDetailsViewStyles();
 
@@ -63,5 +63,14 @@ export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewCompone
       </div>
     );
   }
-  return <FormBasedView editingContextId={editingContextId} form={form} readOnly={readOnly} />;
+  return (
+    <div data-representation-kind="form-details">
+      <FormContext.Provider
+        value={{
+          payload: payload,
+        }}>
+        <FormBasedView editingContextId={editingContextId} form={form} readOnly={readOnly} />
+      </FormContext.Provider>
+    </div>
+  );
 };
