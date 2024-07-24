@@ -63,6 +63,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Reactivate the Selection Dialog
 - https://github.com/eclipse-sirius/sirius-web/issues/3766[#3766] [sirius-web] Fix a potential NPE in RewriteProxiesEventHandler#rewriteProxyURIs
 - https://github.com/eclipse-sirius/sirius-web/issues/3808[#3808] [trees] Fix interactions with `TreeItemContextMenu` modal
+- https://github.com/eclipse-sirius/sirius-web/issues/3811[#3811] [forms] Fix issue with Reference widget not working when placed in a flexbox container
 
 === New Features
 

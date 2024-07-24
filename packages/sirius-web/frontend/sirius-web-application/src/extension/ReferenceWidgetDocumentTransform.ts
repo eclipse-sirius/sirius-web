@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { DocumentTransform } from '@apollo/client';
-import { DocumentNode, FieldNode, InlineFragmentNode, Kind, SelectionNode, visit } from 'graphql';
+import { DocumentNode, FieldNode, InlineFragmentNode, Kind, SelectionNode, visit, FragmentSpreadNode } from 'graphql';
 
 const shouldTransform = (document: DocumentNode) => {
   return (
@@ -23,11 +23,11 @@ const shouldTransform = (document: DocumentNode) => {
 };
 
 const isWidgetFragment = (field: FieldNode) => {
-  if (field.name.value === 'widgets') {
-    const inLinesFragment = field.selectionSet.selections
-      .filter((selection): selection is InlineFragmentNode => selection.kind === Kind.INLINE_FRAGMENT)
-      .map((inlineFragment: InlineFragmentNode) => inlineFragment.typeCondition.name.value);
-    if (inLinesFragment.includes('FlexboxContainer')) {
+  if (field.name.value === 'widgets' || field.name.value === 'children') {
+    const fragmentSpreads = field.selectionSet.selections
+      .filter((selection: SelectionNode): selection is FragmentSpreadNode => selection.kind === Kind.FRAGMENT_SPREAD)
+      .map((fragmentSpread: FragmentSpreadNode) => fragmentSpread.name.value);
+    if (fragmentSpreads.includes('widgetFields')) {
       return true;
     }
   }
