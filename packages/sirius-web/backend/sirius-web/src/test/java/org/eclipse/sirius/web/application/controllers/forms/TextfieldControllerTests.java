@@ -145,7 +145,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
-        
+
         Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
                 .filter(FormRefreshedEventPayload.class::isInstance)
                 .map(FormRefreshedEventPayload.class::cast)
@@ -168,5 +168,4 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
-
 }

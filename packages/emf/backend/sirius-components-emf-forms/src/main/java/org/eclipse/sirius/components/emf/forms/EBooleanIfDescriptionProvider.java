@@ -47,7 +47,8 @@ public class EBooleanIfDescriptionProvider {
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public EBooleanIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
+    public EBooleanIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
+            Function<VariableManager, String> semanticTargetIdProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
@@ -64,7 +65,8 @@ public class EBooleanIfDescriptionProvider {
     private Function<VariableManager, Boolean> getPredicate() {
         return variableManager -> {
             var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
-            return optionalEAttribute.filter(eAttribute -> eAttribute.getEType().equals(EcorePackage.Literals.EBOOLEAN)).isPresent();
+            return optionalEAttribute.filter(eAttribute -> !eAttribute.isMany() && (eAttribute.getEType().equals(EcorePackage.Literals.EBOOLEAN) || eAttribute.getEType()
+                    .equals(EcorePackage.Literals.EBOOLEAN_OBJECT))).isPresent();
         };
     }
 
@@ -78,6 +80,7 @@ public class EBooleanIfDescriptionProvider {
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
+                .isReadOnlyProvider(this.getIsReadOnlyProvider())
                 .build();
     }
 
@@ -94,7 +97,9 @@ public class EBooleanIfDescriptionProvider {
                 EAttribute eAttribute = optionalEAttribute.get();
 
                 Object value = eObject.eGet(eAttribute);
-                return Boolean.valueOf(value.toString());
+                if (value != null) {
+                    return Boolean.valueOf(value.toString());
+                }
             }
             return Boolean.FALSE;
         };
@@ -104,15 +109,25 @@ public class EBooleanIfDescriptionProvider {
         return (variableManager, newValue) -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
+            IStatus result = new Failure("");
             if (optionalEObject.isPresent() && optionalEAttribute.isPresent()) {
                 EObject eObject = optionalEObject.get();
                 EAttribute eAttribute = optionalEAttribute.get();
 
-                eObject.eSet(eAttribute, newValue);
-                return new Success();
+                if (newValue == null) {
+                    eObject.eUnset(eAttribute);
+                } else {
+                    eObject.eSet(eAttribute, newValue);
+                }
+                result = new Success();
             }
-            return new Failure("");
+            return result;
         };
     }
 
+    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
+        return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
+                .map(attr -> !attr.isChangeable())
+                .orElse(false);
+    }
 }
