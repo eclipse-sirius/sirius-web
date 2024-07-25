@@ -106,7 +106,7 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
         var toDoCardDescription = new DeckBuilders().newCardDescription()
                 .name("To do Card")
                 .titleExpression("aql:self.name")
-                .semanticCandidatesExpression("aql:self.tasks->select(task | not task.done)")
+                .semanticCandidatesExpression("aql:self.tasks->select(task | task.isDone=null or not task.isDone)")
                 .deleteTool(deleteCardTool)
                 .build();
 
@@ -138,7 +138,7 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
         var doneCardDescription = new DeckBuilders().newCardDescription()
                 .name("Done Card")
                 .titleExpression("aql:self.name")
-                .semanticCandidatesExpression("aql:self.tasks->select(task | task.done)")
+                .semanticCandidatesExpression("aql:self.tasks->select(task | task.isDone<>null and task.isDone)")
                 .build();
 
         var doneLaneDescription = new DeckBuilders().newLaneDescription()

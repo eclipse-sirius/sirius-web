@@ -37,11 +37,13 @@ import org.eclipse.sirius.components.papaya.Task;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getPriority <em>Priority</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getCost <em>Cost</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getFunding <em>Funding</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getIncome <em>Income</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getTargets <em>Targets</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getTasks <em>Tasks</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getStartDate <em>Start Date</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getEndDate <em>End Date</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#isDone <em>Done</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getIsDone <em>Is Done</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getDependencies <em>Dependencies</em>}</li>
  * </ul>
  *
@@ -76,7 +78,7 @@ public class TaskImpl extends NamedElementImpl implements Task {
      * @generated
      * @ordered
      */
-    protected static final int COST_EDEFAULT = 0;
+    protected static final Integer COST_EDEFAULT = null;
 
     /**
      * The cached value of the '{@link #getCost() <em>Cost</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -86,7 +88,37 @@ public class TaskImpl extends NamedElementImpl implements Task {
      * @generated
      * @ordered
      */
-    protected int cost = COST_EDEFAULT;
+    protected Integer cost = COST_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getFunding() <em>Funding</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getFunding()
+     * @generated
+     * @ordered
+     */
+    protected static final Integer FUNDING_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getFunding() <em>Funding</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getFunding()
+     * @generated
+     * @ordered
+     */
+    protected Integer funding = FUNDING_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getIncome() <em>Income</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getIncome()
+     * @generated
+     * @ordered
+     */
+    protected static final Integer INCOME_EDEFAULT = null;
 
     /**
      * The cached value of the '{@link #getTargets() <em>Targets</em>}' reference list. <!-- begin-user-doc --> <!--
@@ -149,24 +181,24 @@ public class TaskImpl extends NamedElementImpl implements Task {
     protected Instant endDate = END_DATE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isDone() <em>Done</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The default value of the '{@link #getIsDone() <em>Is Done</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
-     * @see #isDone()
+     * @see #getIsDone()
      * @generated
      * @ordered
      */
-    protected static final boolean DONE_EDEFAULT = false;
+    protected static final Boolean IS_DONE_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #isDone() <em>Done</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The cached value of the '{@link #getIsDone() <em>Is Done</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
-     * @see #isDone()
+     * @see #getIsDone()
      * @generated
      * @ordered
      */
-    protected boolean done = DONE_EDEFAULT;
+    protected Boolean isDone = IS_DONE_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}' reference list. <!-- begin-user-doc
@@ -226,7 +258,7 @@ public class TaskImpl extends NamedElementImpl implements Task {
      * @generated
      */
     @Override
-    public int getCost() {
+    public Integer getCost() {
         return this.cost;
     }
 
@@ -236,11 +268,47 @@ public class TaskImpl extends NamedElementImpl implements Task {
      * @generated
      */
     @Override
-    public void setCost(int newCost) {
-        int oldCost = this.cost;
+    public void setCost(Integer newCost) {
+        Integer oldCost = this.cost;
         this.cost = newCost;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.TASK__COST, oldCost, this.cost));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Integer getFunding() {
+        return this.funding;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setFunding(Integer newFunding) {
+        Integer oldFunding = this.funding;
+        this.funding = newFunding;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.TASK__FUNDING, oldFunding, this.funding));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Integer getIncome() {
+        if (this.cost != null && this.funding != null) {
+            return this.cost - this.funding;
+        }
+        return null;
     }
 
     /**
@@ -321,8 +389,8 @@ public class TaskImpl extends NamedElementImpl implements Task {
      * @generated
      */
     @Override
-    public boolean isDone() {
-        return this.done;
+    public Boolean getIsDone() {
+        return this.isDone;
     }
 
     /**
@@ -331,11 +399,11 @@ public class TaskImpl extends NamedElementImpl implements Task {
      * @generated
      */
     @Override
-    public void setDone(boolean newDone) {
-        boolean oldDone = this.done;
-        this.done = newDone;
+    public void setIsDone(Boolean newIsDone) {
+        Boolean oldIsDone = this.isDone;
+        this.isDone = newIsDone;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.TASK__DONE, oldDone, this.done));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.TASK__IS_DONE, oldIsDone, this.isDone));
     }
 
     /**
@@ -377,6 +445,10 @@ public class TaskImpl extends NamedElementImpl implements Task {
                 return this.getPriority();
             case PapayaPackage.TASK__COST:
                 return this.getCost();
+            case PapayaPackage.TASK__FUNDING:
+                return this.getFunding();
+            case PapayaPackage.TASK__INCOME:
+                return this.getIncome();
             case PapayaPackage.TASK__TARGETS:
                 return this.getTargets();
             case PapayaPackage.TASK__TASKS:
@@ -385,8 +457,8 @@ public class TaskImpl extends NamedElementImpl implements Task {
                 return this.getStartDate();
             case PapayaPackage.TASK__END_DATE:
                 return this.getEndDate();
-            case PapayaPackage.TASK__DONE:
-                return this.isDone();
+            case PapayaPackage.TASK__IS_DONE:
+                return this.getIsDone();
             case PapayaPackage.TASK__DEPENDENCIES:
                 return this.getDependencies();
         }
@@ -408,6 +480,9 @@ public class TaskImpl extends NamedElementImpl implements Task {
             case PapayaPackage.TASK__COST:
                 this.setCost((Integer) newValue);
                 return;
+            case PapayaPackage.TASK__FUNDING:
+                this.setFunding((Integer) newValue);
+                return;
             case PapayaPackage.TASK__TARGETS:
                 this.getTargets().clear();
                 this.getTargets().addAll((Collection<? extends ModelElement>) newValue);
@@ -422,8 +497,8 @@ public class TaskImpl extends NamedElementImpl implements Task {
             case PapayaPackage.TASK__END_DATE:
                 this.setEndDate((Instant) newValue);
                 return;
-            case PapayaPackage.TASK__DONE:
-                this.setDone((Boolean) newValue);
+            case PapayaPackage.TASK__IS_DONE:
+                this.setIsDone((Boolean) newValue);
                 return;
             case PapayaPackage.TASK__DEPENDENCIES:
                 this.getDependencies().clear();
@@ -447,6 +522,9 @@ public class TaskImpl extends NamedElementImpl implements Task {
             case PapayaPackage.TASK__COST:
                 this.setCost(COST_EDEFAULT);
                 return;
+            case PapayaPackage.TASK__FUNDING:
+                this.setFunding(FUNDING_EDEFAULT);
+                return;
             case PapayaPackage.TASK__TARGETS:
                 this.getTargets().clear();
                 return;
@@ -459,8 +537,8 @@ public class TaskImpl extends NamedElementImpl implements Task {
             case PapayaPackage.TASK__END_DATE:
                 this.setEndDate(END_DATE_EDEFAULT);
                 return;
-            case PapayaPackage.TASK__DONE:
-                this.setDone(DONE_EDEFAULT);
+            case PapayaPackage.TASK__IS_DONE:
+                this.setIsDone(IS_DONE_EDEFAULT);
                 return;
             case PapayaPackage.TASK__DEPENDENCIES:
                 this.getDependencies().clear();
@@ -480,7 +558,11 @@ public class TaskImpl extends NamedElementImpl implements Task {
             case PapayaPackage.TASK__PRIORITY:
                 return this.priority != PRIORITY_EDEFAULT;
             case PapayaPackage.TASK__COST:
-                return this.cost != COST_EDEFAULT;
+                return COST_EDEFAULT == null ? this.cost != null : !COST_EDEFAULT.equals(this.cost);
+            case PapayaPackage.TASK__FUNDING:
+                return FUNDING_EDEFAULT == null ? this.funding != null : !FUNDING_EDEFAULT.equals(this.funding);
+            case PapayaPackage.TASK__INCOME:
+                return INCOME_EDEFAULT == null ? this.getIncome() != null : !INCOME_EDEFAULT.equals(this.getIncome());
             case PapayaPackage.TASK__TARGETS:
                 return this.targets != null && !this.targets.isEmpty();
             case PapayaPackage.TASK__TASKS:
@@ -489,8 +571,8 @@ public class TaskImpl extends NamedElementImpl implements Task {
                 return START_DATE_EDEFAULT == null ? this.startDate != null : !START_DATE_EDEFAULT.equals(this.startDate);
             case PapayaPackage.TASK__END_DATE:
                 return END_DATE_EDEFAULT == null ? this.endDate != null : !END_DATE_EDEFAULT.equals(this.endDate);
-            case PapayaPackage.TASK__DONE:
-                return this.done != DONE_EDEFAULT;
+            case PapayaPackage.TASK__IS_DONE:
+                return IS_DONE_EDEFAULT == null ? this.isDone != null : !IS_DONE_EDEFAULT.equals(this.isDone);
             case PapayaPackage.TASK__DEPENDENCIES:
                 return this.dependencies != null && !this.dependencies.isEmpty();
         }
@@ -512,12 +594,14 @@ public class TaskImpl extends NamedElementImpl implements Task {
         result.append(this.priority);
         result.append(", cost: ");
         result.append(this.cost);
+        result.append(", funding: ");
+        result.append(this.funding);
         result.append(", startDate: ");
         result.append(this.startDate);
         result.append(", endDate: ");
         result.append(this.endDate);
-        result.append(", done: ");
-        result.append(this.done);
+        result.append(", isDone: ");
+        result.append(this.isDone);
         result.append(')');
         return result.toString();
     }

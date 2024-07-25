@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.papaya.impl;
 import static org.eclipse.sirius.components.papaya.PapayaPackage.CLASS;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -314,6 +315,13 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     private EDataType instantEDataType = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EDataType localDateEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -622,8 +630,28 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
+    public EAttribute getTask_Funding() {
+        return (EAttribute) this.taskEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTask_Income() {
+        return (EAttribute) this.taskEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getTask_Targets() {
-        return (EReference) this.taskEClass.getEStructuralFeatures().get(2);
+        return (EReference) this.taskEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -633,7 +661,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      */
     @Override
     public EReference getTask_Tasks() {
-        return (EReference) this.taskEClass.getEStructuralFeatures().get(3);
+        return (EReference) this.taskEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -643,26 +671,6 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      */
     @Override
     public EAttribute getTask_StartDate() {
-        return (EAttribute) this.taskEClass.getEStructuralFeatures().get(4);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getTask_EndDate() {
-        return (EAttribute) this.taskEClass.getEStructuralFeatures().get(5);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getTask_Done() {
         return (EAttribute) this.taskEClass.getEStructuralFeatures().get(6);
     }
 
@@ -672,8 +680,28 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
+    public EAttribute getTask_EndDate() {
+        return (EAttribute) this.taskEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTask_IsDone() {
+        return (EAttribute) this.taskEClass.getEStructuralFeatures().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getTask_Dependencies() {
-        return (EReference) this.taskEClass.getEStructuralFeatures().get(7);
+        return (EReference) this.taskEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -1552,6 +1580,16 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
+    public EDataType getLocalDate() {
+        return this.localDateEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public PapayaFactory getPapayaFactory() {
         return (PapayaFactory) this.getEFactoryInstance();
     }
@@ -1604,11 +1642,13 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.taskEClass = this.createEClass(TASK);
         this.createEAttribute(this.taskEClass, TASK__PRIORITY);
         this.createEAttribute(this.taskEClass, TASK__COST);
+        this.createEAttribute(this.taskEClass, TASK__FUNDING);
+        this.createEAttribute(this.taskEClass, TASK__INCOME);
         this.createEReference(this.taskEClass, TASK__TARGETS);
         this.createEReference(this.taskEClass, TASK__TASKS);
         this.createEAttribute(this.taskEClass, TASK__START_DATE);
         this.createEAttribute(this.taskEClass, TASK__END_DATE);
-        this.createEAttribute(this.taskEClass, TASK__DONE);
+        this.createEAttribute(this.taskEClass, TASK__IS_DONE);
         this.createEReference(this.taskEClass, TASK__DEPENDENCIES);
 
         this.contributionEClass = this.createEClass(CONTRIBUTION);
@@ -1728,6 +1768,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
 
         // Create data types
         this.instantEDataType = this.createEDataType(INSTANT);
+        this.localDateEDataType = this.createEDataType(LOCAL_DATE);
     }
 
     /**
@@ -1841,8 +1882,12 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.initEClass(this.taskEClass, Task.class, "Task", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTask_Priority(), this.getPriority(), "priority", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
                 IS_ORDERED);
-        this.initEAttribute(this.getTask_Cost(), this.ecorePackage.getEInt(), "cost", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+        this.initEAttribute(this.getTask_Cost(), this.ecorePackage.getEIntegerObject(), "cost", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTask_Funding(), this.ecorePackage.getEIntegerObject(), "funding", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTask_Income(), this.ecorePackage.getEIntegerObject(), "income", null, 0, 1, Task.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTask_Targets(), this.getModelElement(), null, "targets", null, 0, -1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTask_Tasks(), this.getTask(), null, "tasks", null, 0, -1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
@@ -1851,8 +1896,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
                 !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTask_EndDate(), this.getInstant(), "endDate", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
                 IS_ORDERED);
-        this.initEAttribute(this.getTask_Done(), this.ecorePackage.getEBoolean(), "done", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTask_IsDone(), this.ecorePackage.getEBooleanObject(), "isDone", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTask_Dependencies(), this.getTask(), null, "dependencies", null, 0, -1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2040,6 +2085,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
 
         // Initialize data types
         this.initEDataType(this.instantEDataType, Instant.class, "Instant", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        this.initEDataType(this.localDateEDataType, LocalDate.class, "LocalDate", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         this.createResource(eNS_URI);

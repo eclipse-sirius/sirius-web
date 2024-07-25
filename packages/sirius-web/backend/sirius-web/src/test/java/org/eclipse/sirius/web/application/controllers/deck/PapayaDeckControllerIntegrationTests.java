@@ -129,7 +129,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
 
                     var lane = deck.lanes().get(0);
                     laneId.set(lane.id());
-                    assertThat(lane.cards()).hasSize(5);
+                    assertThat(lane.cards()).hasSize(6);
                 }, () -> fail("Missing deck"));
 
         Runnable createNewCard = () -> {
@@ -153,7 +153,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
                 .map(DeckRefreshedEventPayload::deck)
                 .ifPresentOrElse(deck -> {
                     assertThat(deck.lanes()).isNotEmpty();
-                    assertThat(deck.lanes().get(0).cards()).hasSize(6);
+                    assertThat(deck.lanes().get(0).cards()).hasSize(7);
                 }, () -> fail("Missing deck"));
 
         StepVerifier.create(flux)
@@ -185,7 +185,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
 
                     var lane = deck.lanes().get(0);
                     laneId.set(lane.id());
-                    assertThat(lane.cards()).hasSize(5);
+                    assertThat(lane.cards()).hasSize(6);
 
                     cardId.set(lane.cards().get(0).id());
                 }, () -> fail("Missing deck"));
@@ -208,7 +208,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
                 .map(DeckRefreshedEventPayload::deck)
                 .ifPresentOrElse(deck -> {
                     assertThat(deck.lanes()).isNotEmpty();
-                    assertThat(deck.lanes().get(0).cards()).hasSize(4);
+                    assertThat(deck.lanes().get(0).cards()).hasSize(5);
                 }, () -> fail("Missing deck"));
 
         StepVerifier.create(flux)

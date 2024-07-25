@@ -18,6 +18,7 @@ import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertion
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -27,14 +28,19 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.emf.forms.api.IEMFFormDescriptionProvider;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithTextfieldDescriptionProvider;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,6 +50,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -69,6 +76,12 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
     @Autowired
     private EditTextfieldMutationRunner editTextfieldMutationRunner;
 
+    @Autowired
+    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
+
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -81,6 +94,17 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                 this.formWithTextfieldDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithTextfield"
+        );
+        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+    }
+
+    private Flux<Object> givenSubscriptionToDefaultEMFForm() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                IEMFFormDescriptionProvider.DESCRIPTION_ID,
+                PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(),
+                "FormWithCheckbox"
         );
         return this.givenCreatedFormSubscription.createAndSubscribe(input);
     }
@@ -159,6 +183,73 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                             .isNotBold()
                             .isItalic()
                             .isReadOnly();
+                }, () -> fail("Missing form"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(editTextfield)
+                .consumeNextWith(updatedFormContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a textfield widget representing an EIntegerObject, when it is displayed/edited, then its value is properly initialized/updated")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenTextFieldWidgetRepresentingAEIntegerObjectWhenItIsEditedThenItsValueIsUpdated() {
+        var detailsRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.FIRST_TASK_OBJECT.toString()));
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast);
+
+        var formId = new AtomicReference<String>();
+        var incomeTextfieldId = new AtomicReference<String>();
+        var fundingTextfieldId = new AtomicReference<String>();
+
+        String pageName = "Task Improve some features of the diagram";
+        String groupName = "Core Properties";
+        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    formId.set(form.getId());
+
+                    var groupNavigator = new FormNavigator(form).page(pageName).group(groupName);
+                    var incomeTextfield = groupNavigator.findWidget("Income", Textfield.class);
+                    incomeTextfieldId.set(incomeTextfield.getId());
+                    assertThat(incomeTextfield)
+                            .hasValue("");
+
+                    var fundingTextfield = groupNavigator.findWidget("Funding", Textfield.class);
+                    fundingTextfieldId.set(fundingTextfield.getId());
+                    assertThat(fundingTextfield)
+                            .hasValue("");
+
+                }, () -> fail("Missing form"));
+
+        Runnable editTextfield = () -> {
+            var input = new EditTextfieldInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), fundingTextfieldId.get(), "5");
+            var result = this.editTextfieldMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var groupNavigator = new FormNavigator(form).page(pageName).group(groupName);
+                    var incomeTextfield = groupNavigator.findWidget("Income", Textfield.class);
+                    assertThat(incomeTextfield)
+                            .hasValue("-4");
+
+                    var fundingTextfield = groupNavigator.findWidget("Funding", Textfield.class);
+                    assertThat(fundingTextfield)
+                            .hasValue("5");
                 }, () -> fail("Missing form"));
 
         StepVerifier.create(flux)
