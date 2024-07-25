@@ -45,18 +45,18 @@ describe('Diagram - inside outside labels', () => {
             explorer.expand('Entity1 Node');
             explorer.select('aql:self.name');
             details.getTextField('Label Expression').type('{selectAll}InsideLabelNode1{enter}');
-            explorer.createObject('Entity1 Node', 'Outside Label Description');
+            explorer.createObject('Entity1 Node', 'outsideLabels-OutsideLabelDescription');
             explorer.select('aql:self.name');
             details.getTextField('Label Expression').type('{selectAll}OutsideLabelNode1{enter}');
             explorer.collapse('Entity1 Node');
             explorer.expand('Entity2 Node');
             explorer.select('aql:self.name');
             details.getTextField('Label Expression').type('{selectAll}InsideLabelNode2{enter}');
-            explorer.createObject('Entity2 Node', 'Outside Label Description');
+            explorer.createObject('Entity2 Node', 'outsideLabels-OutsideLabelDescription');
             explorer.select('aql:self.name');
             details.getTextField('Label Expression').type('{selectAll}OutsideLabelNode2{enter}');
             explorer.delete('RectangularNodeStyleDescription');
-            explorer.createObject('Entity2 Node', 'Style Image');
+            explorer.createObject('Entity2 Node', 'style-ImageNodeStyleDescription');
             details.selectValue('Shape', 'camera');
           });
         }

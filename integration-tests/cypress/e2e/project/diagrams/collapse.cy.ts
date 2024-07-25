@@ -40,7 +40,7 @@ describe('Diagram - collapsible node', () => {
           cy.get('[title="domain::Domain"]').then(($div) => {
             domainName = $div.data().testid;
             explorer.expand(domainName);
-            explorer.createObject('Entity1', 'Relation');
+            explorer.createObject('Entity1', 'relations-Relation');
             details.getCheckBox('Containment').check();
             details.openReferenceWidgetOptions('Target Type');
             details.selectReferenceWidgetOption('Entity2');
@@ -78,8 +78,8 @@ describe('Diagram - collapsible node', () => {
         const explorer = new Explorer();
         const diagram = new Diagram();
         const details = new Details();
-        explorer.createObject('Root', 'Entity1s Entity1');
-        explorer.createObject('Entity1', 'Relation Entity2');
+        explorer.createObject('Root', 'entity1s-Entity1');
+        explorer.createObject('Entity1', 'relation-Entity2');
         explorer.select('Entity1');
         details.getTextField('Name').type('Entity1{enter}');
         explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');

@@ -22,14 +22,14 @@ import { Form } from '../../../workbench/Form';
 const createFormWithWidgetRef = (domainType: string, name: string, reference: string) => {
   const explorer = new Explorer();
   const details = new Details();
-  explorer.createObject('View', 'Form Description');
+  explorer.createObject('View', 'descriptions-FormDescription');
   explorer.select('New Form Description');
   details.getTextField('Domain Type').type(domainType);
   details.getTextField('Name').type(`{selectall}${name}{enter}`);
   details.getTextField('Title Expression').type(`{selectall}${name}{enter}`);
   explorer.expand(name);
   explorer.expand('PageDescription');
-  explorer.createObject('GroupDescription', 'Widgets Reference Widget Description');
+  explorer.createObject('Group Description', 'children-ReferenceWidgetDescription');
   details.getTextField('Reference Name Expression').should('exist');
   details.getTextField('Label Expression').type('Test Widget Reference');
   details.getTextField('Reference Name Expression').type(`${reference}{enter}`);
@@ -141,7 +141,7 @@ describe('Forms Widget-reference', () => {
         explorer.getTreeItemByLabel('standard').trigger('dragstart', { dataTransfer: dataTransferStandardExplorer });
         form.getWidget('Test Widget Reference').trigger('drop', { dataTransfer: dataTransferStandardExplorer });
         form.getWidgetElement('Test Widget Reference', 'reference-value-standard').should('exist');
-        explorer.createObject('DataSource1', 'Data Flow');
+        explorer.createObject('DataSource1', 'outgoingFlows-DataFlow');
         form.getWidget('Test Widget Reference').click();
         cy.getByTestId('option-standard').should('not.exist');
         cy.getByTestId('option-unused').should('exist');
@@ -170,7 +170,10 @@ describe('Forms Widget-reference', () => {
           .should('have.length.gt', 1);
         cy.getByTestId('childCreationDescription').click();
         cy.getByTestId('childCreationDescription').get('[data-value]').should('have.length', 1);
-        cy.getByTestId('childCreationDescription').get('[data-value="Power Output"]').should('exist').click();
+        cy.getByTestId('childCreationDescription')
+          .get('[data-value="powerOutputs-PowerOutput"]')
+          .should('exist')
+          .click();
         cy.getByTestId('create-modal').findByTestId('create-object').click();
         cy.getByTestId('reference-value-1000').should('exist');
         explorer.getTreeItemByLabel('1000').should('exist');
@@ -202,7 +205,10 @@ describe('Forms Widget-reference', () => {
           .should('have.length.gt', 1);
         cy.getByTestId('childCreationDescription').click();
         cy.getByTestId('childCreationDescription').get('[data-value]').should('have.length', 1);
-        cy.getByTestId('childCreationDescription').get('[data-value="Power Output"]').should('exist').click();
+        cy.getByTestId('childCreationDescription')
+          .get('[data-value="powerOutputs-PowerOutput"]')
+          .should('exist')
+          .click();
         cy.getByTestId('create-modal').findByTestId('create-object').click();
         cy.getByTestId('reference-value-1000').should('exist');
         explorer.getTreeItemByLabel('1000').should('exist');
@@ -258,7 +264,7 @@ describe('Forms Widget-reference', () => {
         cy.getByTestId('childCreationDescription')
           .get('[data-value]')
           .should('have.length', 2)
-          .get('[data-value="Elements Data Flow"]')
+          .get('[data-value="elements-DataFlow"]')
           .should('exist')
           .click();
         cy.getByTestId('create-modal').findByTestId('create-object').click();
@@ -297,21 +303,21 @@ describe('Forms Widget-reference', () => {
       const explorer = new Explorer();
       const details = new Details();
       const form = new Form();
-      explorer.createObject(domainName, 'Entity');
+      explorer.createObject(domainName, 'types-Entity');
 
       details.getTextField('Name').should('have.value', 'NewEntity');
       details.getTextField('Name').type('{selectall}SuperEntity1{enter}');
       details.getCheckBox('Abstract').check();
 
-      explorer.createObject(domainName, 'Entity');
+      explorer.createObject(domainName, 'types-Entity');
       details.getTextField('Name').should('have.value', 'NewEntity');
       details.getTextField('Name').type('{selectall}MonoValuedContainment{enter}');
 
-      explorer.createObject('MonoValuedContainment', 'Attribute');
+      explorer.createObject('MonoValuedContainment', 'attributes-Attribute');
       details.getTextField('Name').should('have.value', 'newString');
       details.getTextField('Name').type('{selectall}Name{enter}');
 
-      explorer.createObject('SuperEntity1', 'Relation');
+      explorer.createObject('SuperEntity1', 'relations-Relation');
       details.getCheckBox('Containment').check();
       details.getCheckBox('Many').uncheck();
       details.openReferenceWidgetOptions('Target Type');
@@ -329,7 +335,7 @@ describe('Forms Widget-reference', () => {
         instanceProjectId = res.projectId;
       });
 
-      explorer.createObject('Root', 'Entity1s Entity1');
+      explorer.createObject('Root', 'entity1s-Entity1');
       explorer.select('Entity1');
       details.getTextField('Name').type('{selectall}Entity1{enter}');
 
@@ -348,7 +354,7 @@ describe('Forms Widget-reference', () => {
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value]').should('have.length', 1);
       cy.getByTestId('childCreationDescription')
-        .get('[data-value="Relation Mono Valued Containment"]')
+        .get('[data-value="relation-MonoValuedContainment"]')
         .should('exist')
         .click();
       cy.getByTestId('create-modal').findByTestId('create-object').click();
@@ -371,7 +377,7 @@ describe('Forms Widget-reference', () => {
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription').get('[data-value]').should('have.length', 1);
       cy.getByTestId('childCreationDescription')
-        .get('[data-value="Relation Mono Valued Containment"]')
+        .get('[data-value="relation-MonoValuedContainment"]')
         .should('exist')
         .click();
       cy.getByTestId('create-modal').findByTestId('create-object').click();
@@ -384,28 +390,28 @@ describe('Forms Widget-reference', () => {
       const form = new Form();
 
       explorer.expand(domainName);
-      explorer.createObject('Entity1', 'Relation');
+      explorer.createObject('Entity1', 'relations-Relation');
       details.getCheckBox('Containment').check();
       details.openReferenceWidgetOptions('Target Type');
       details.selectReferenceWidgetOption('Entity2');
-      explorer.createObject('Entity2', 'Relation');
+      explorer.createObject('Entity2', 'relations-Relation');
       details.getCheckBox('Containment').check();
       details.openReferenceWidgetOptions('Target Type');
       details.selectReferenceWidgetOption('Entity1');
 
       explorer.expand('ViewNewModel');
-      explorer.createObject('View', 'Form Description');
+      explorer.createObject('View', 'descriptions-FormDescription');
       explorer.select('New Form Description');
       details.getTextField('Domain Type').type(`${domainName}::Entity1`);
       details.getTextField('Name').type(`{selectall}WidgetRefRepresentation{enter}`);
       details.getTextField('Title Expression').type(`{selectall}WidgetRefRepresentation{enter}`);
       explorer.expand('WidgetRefRepresentation');
       explorer.expand('PageDescription');
-      explorer.createObject('GroupDescription', 'Widgets Reference Widget Description');
+      explorer.createObject('Group Description', 'children-ReferenceWidgetDescription');
       details.getTextField('Reference Name Expression').should('exist');
       details.getTextField('Label Expression').type('Test Widget Reference linkedTo');
       details.getTextField('Reference Name Expression').type(`linkedTo{enter}`);
-      explorer.createObject('GroupDescription', 'Widgets Reference Widget Description');
+      explorer.createObject('Group Description', 'children-ReferenceWidgetDescription');
       details.getTextField('Reference Name Expression').should('exist');
       details.getTextField('Label Expression').type('Test Widget Reference relation');
       details.getTextField('Reference Name Expression').type(`relation{enter}`);
@@ -414,10 +420,10 @@ describe('Forms Widget-reference', () => {
         instanceProjectId = res.projectId;
       });
 
-      explorer.createObject('Root', 'Entity2s Entity2');
+      explorer.createObject('Root', 'entity2s-Entity2');
       explorer.select('Entity2');
       details.getTextField('Name').type('{selectall}Entity2{enter}');
-      explorer.createObject('Entity2', 'Relation Entity1');
+      explorer.createObject('Entity2', 'relation-Entity1');
       explorer.createRepresentation('Entity1', 'WidgetRefRepresentation', 'WidgetRefRepresentation');
 
       form.getWidget('Test Widget Reference linkedTo').click();
