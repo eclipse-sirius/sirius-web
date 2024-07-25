@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.papaya;
 
+import java.time.LocalDate;
+
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -22,6 +24,10 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getProjects <em>Projects</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Project#getContractualStartDate <em>Contractual Start Date</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Project#getDayDuration <em>Day Duration</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Project#getContractualEndDate <em>Contractual End Date</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Project#getIsSensitive <em>Is Sensitive</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getComponents <em>Components</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getAllComponents <em>All Components</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getComponentExchanges <em>Component Exchanges</em>}</li>
@@ -45,6 +51,85 @@ public interface Project extends NamedElement {
      * @generated
      */
     EList<Project> getProjects();
+
+    /**
+     * Returns the value of the '<em><b>Contractual Start Date</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Contractual Start Date</em>' attribute.
+     * @see #setContractualStartDate(LocalDate)
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_ContractualStartDate()
+     * @model dataType="org.eclipse.sirius.components.papaya.LocalDate"
+     * @generated
+     */
+    LocalDate getContractualStartDate();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.papaya.Project#getContractualStartDate
+     * <em>Contractual Start Date</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Contractual Start Date</em>' attribute.
+     * @see #getContractualStartDate()
+     * @generated
+     */
+    void setContractualStartDate(LocalDate value);
+
+    /**
+     * Returns the value of the '<em><b>Day Duration</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Day Duration</em>' attribute.
+     * @see #setDayDuration(Integer)
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_DayDuration()
+     * @model
+     * @generated
+     */
+    Integer getDayDuration();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.papaya.Project#getDayDuration <em>Day Duration</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Day Duration</em>' attribute.
+     * @see #getDayDuration()
+     * @generated
+     */
+    void setDayDuration(Integer value);
+
+    /**
+     * Returns the value of the '<em><b>Contractual End Date</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Contractual End Date</em>' attribute.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_ContractualEndDate()
+     * @model dataType="org.eclipse.sirius.components.papaya.LocalDate" transient="true" changeable="false"
+     *        volatile="true" derived="true"
+     * @generated
+     */
+    LocalDate getContractualEndDate();
+
+    /**
+     * Returns the value of the '<em><b>Is Sensitive</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Is Sensitive</em>' attribute.
+     * @see #setIsSensitive(Boolean)
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_IsSensitive()
+     * @model
+     * @generated
+     */
+    Boolean getIsSensitive();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.papaya.Project#getIsSensitive <em>Is Sensitive</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Is Sensitive</em>' attribute.
+     * @see #getIsSensitive()
+     * @generated
+     */
+    void setIsSensitive(Boolean value);
 
     /**
      * Returns the value of the '<em><b>Components</b></em>' containment reference list. The list contents are of type

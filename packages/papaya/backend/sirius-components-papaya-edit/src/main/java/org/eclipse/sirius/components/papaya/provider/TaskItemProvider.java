@@ -54,6 +54,8 @@ public class TaskItemProvider extends NamedElementItemProvider {
 
             this.addPriorityPropertyDescriptor(object);
             this.addCostPropertyDescriptor(object);
+            this.addFundingPropertyDescriptor(object);
+            this.addIncomePropertyDescriptor(object);
             this.addTargetsPropertyDescriptor(object);
             this.addStartDatePropertyDescriptor(object);
             this.addEndDatePropertyDescriptor(object);
@@ -82,7 +84,29 @@ public class TaskItemProvider extends NamedElementItemProvider {
     protected void addCostPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Task_cost_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Task_cost_feature", "_UI_Task_type"), PapayaPackage.Literals.TASK__COST, true, false,
-                false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+                false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Funding feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addFundingPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Task_funding_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Task_funding_feature", "_UI_Task_type"), PapayaPackage.Literals.TASK__FUNDING,
+                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Income feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addIncomePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Task_income_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Task_income_feature", "_UI_Task_type"), PapayaPackage.Literals.TASK__INCOME, false,
+                false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -215,6 +239,8 @@ public class TaskItemProvider extends NamedElementItemProvider {
         switch (notification.getFeatureID(Task.class)) {
             case PapayaPackage.TASK__PRIORITY:
             case PapayaPackage.TASK__COST:
+            case PapayaPackage.TASK__FUNDING:
+            case PapayaPackage.TASK__INCOME:
             case PapayaPackage.TASK__START_DATE:
             case PapayaPackage.TASK__END_DATE:
             case PapayaPackage.TASK__DONE:

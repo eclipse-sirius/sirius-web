@@ -25,6 +25,8 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.Task#getPriority <em>Priority</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Task#getCost <em>Cost</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Task#getFunding <em>Funding</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Task#getIncome <em>Income</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Task#getTargets <em>Targets</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Task#getTasks <em>Tasks</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Task#getStartDate <em>Start Date</em>}</li>
@@ -67,12 +69,12 @@ public interface Task extends NamedElement {
      * Returns the value of the '<em><b>Cost</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Cost</em>' attribute.
-     * @see #setCost(int)
+     * @see #setCost(Integer)
      * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTask_Cost()
      * @model
      * @generated
      */
-    int getCost();
+    Integer getCost();
 
     /**
      * Sets the value of the '{@link org.eclipse.sirius.components.papaya.Task#getCost <em>Cost</em>}' attribute. <!--
@@ -83,7 +85,39 @@ public interface Task extends NamedElement {
      * @see #getCost()
      * @generated
      */
-    void setCost(int value);
+    void setCost(Integer value);
+
+    /**
+     * Returns the value of the '<em><b>Funding</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Funding</em>' attribute.
+     * @see #setFunding(Integer)
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTask_Funding()
+     * @model
+     * @generated
+     */
+    Integer getFunding();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.papaya.Task#getFunding <em>Funding</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Funding</em>' attribute.
+     * @see #getFunding()
+     * @generated
+     */
+    void setFunding(Integer value);
+
+    /**
+     * Returns the value of the '<em><b>Income</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Income</em>' attribute.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTask_Income()
+     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @generated
+     */
+    Integer getIncome();
 
     /**
      * Returns the value of the '<em><b>Targets</b></em>' reference list. The list contents are of type

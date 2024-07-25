@@ -18,6 +18,7 @@ import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertion
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,12 +29,16 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.forms.dto.EditCheckboxInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.emf.forms.api.IEMFFormDescriptionProvider;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.tests.graphql.EditCheckboxMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithCheckboxDescriptionProvider;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +50,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -70,6 +76,9 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
     @Autowired
     private EditCheckboxMutationRunner editCheckboxMutationRunner;
 
+    @Autowired
+    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -81,6 +90,17 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
                 this.formWithCheckboxDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
+                "FormWithCheckbox"
+        );
+        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+    }
+
+    private Flux<FormRefreshedEventPayload> givenSubscriptionToDefaultEMFForm() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                IEMFFormDescriptionProvider.DESCRIPTION_ID,
+                PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(),
                 "FormWithCheckbox"
         );
         return this.givenCreatedFormSubscription.createAndSubscribe(input);
@@ -151,6 +171,64 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
                             .hasLabel("Name")
                             .hasValue(false)
                             .hasHelp("Does the object have a name?")
+                            .isNotReadOnly();
+                }, () -> fail("Missing form"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(editCheckbox)
+                .consumeNextWith(updatedFormContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a checkbox widget representing an EBooleanObject, when it is edited, then its value is updated")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenCheckboxWidgetRepresentingAEBooleanObjectWhenItIsEditedThenItsValueIsUpdated() {
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(PapayaIdentifiers.PROJECT_OBJECT.toString()));
+        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast);
+
+        var formId = new AtomicReference<String>();
+        var checkboxId = new AtomicReference<String>();
+
+        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    formId.set(form.getId());
+
+                    var groupNavigator = new FormNavigator(form).page("Project").group("Core Properties");
+                    var checkbox = groupNavigator.findWidget("Is Sensitive", Checkbox.class);
+                    assertThat(checkbox)
+                            .hasLabel("Is Sensitive")
+                            .hasValue(false)
+                            .isNotReadOnly();
+
+                    checkboxId.set(checkbox.getId());
+                }, () -> fail("Missing form"));
+
+        Runnable editCheckbox = () -> {
+            var input = new EditCheckboxInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), checkboxId.get(), true);
+            var result = this.editCheckboxMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editCheckbox.__typename");
+            Assertions.assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var groupNavigator = new FormNavigator(form).page("Project").group("Core Properties");
+                    var checkbox = groupNavigator.findWidget("Is Sensitive", Checkbox.class);
+
+                    assertThat(checkbox)
+                            .hasValue(true)
                             .isNotReadOnly();
                 }, () -> fail("Missing form"));
 
