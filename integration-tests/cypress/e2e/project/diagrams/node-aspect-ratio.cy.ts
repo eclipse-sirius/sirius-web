@@ -56,7 +56,7 @@ describe('Diagram - Node aspect ratio', () => {
           instanceProjectId = res.projectId;
         });
 
-        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'entity1s-Entity1');
         explorer.select('Entity1');
         details.getTextField('Name').type('Node{enter}');
 
@@ -89,10 +89,10 @@ describe('Diagram - Node aspect ratio', () => {
           const explorer = new Explorer();
           const details = new Details();
 
-          explorer.createObject(domainName, 'Entity');
+          explorer.createObject(domainName, 'types-Entity');
           details.getTextField('Name').should('have.value', 'NewEntity');
           details.getTextField('Name').clear().type('SubNode{enter}');
-          explorer.createObject('Entity1', 'Relation');
+          explorer.createObject('Entity1', 'relations-Relation');
           details.getCheckBox('Containment').check();
           details.openReferenceWidgetOptions('Target Type');
           details.selectReferenceWidgetOption('SubNode');
@@ -101,7 +101,7 @@ describe('Diagram - Node aspect ratio', () => {
           explorer.expand('View');
           explorer.expand(`${domainName} Diagram Description`);
 
-          explorer.createObject(`${domainName} Diagram Description`, 'Node Description');
+          explorer.createObject(`${domainName} Diagram Description`, 'nodeDescriptions-NodeDescription');
 
           details.getTextField('Domain Type').should('have.value', '');
           details.getTextField('Domain Type').type(`${domainName}::SubNode`);
@@ -128,11 +128,11 @@ describe('Diagram - Node aspect ratio', () => {
             instanceProjectId = res.projectId;
           });
 
-          explorer.createObject('Root', 'Entity1s Entity1');
+          explorer.createObject('Root', 'entity1s-Entity1');
           explorer.select('Entity1');
           details.getTextField('Name').type('Node{enter}');
 
-          explorer.createObject('Node', 'Relation Sub Node');
+          explorer.createObject('Node', 'relation-SubNode');
 
           explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
 
@@ -156,11 +156,11 @@ describe('Diagram - Node aspect ratio', () => {
             instanceProjectId = res.projectId;
           });
 
-          explorer.createObject('Root', 'Entity1s Entity1');
+          explorer.createObject('Root', 'entity1s-Entity1');
           explorer.select('Entity1');
           details.getTextField('Name').type('Node{enter}');
 
-          explorer.createObject('Node', 'Relation Sub Node');
+          explorer.createObject('Node', 'relation-SubNode');
 
           explorer.createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
 

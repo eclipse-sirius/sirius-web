@@ -69,7 +69,7 @@ describe('Diagram - Direct edit label', () => {
 
       it('Then we cannot perform the direct edition of the node without the direct edit tool', () => {
         const explorer = new Explorer();
-        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'entity1s-Entity1');
         explorer.getTreeItemByLabel('Entity1').click();
 
         const details = new Details();
@@ -87,7 +87,7 @@ describe('Diagram - Direct edit label', () => {
 
       it('Then we can perform the edition of the label of the node with the direct edit tool', () => {
         const explorer = new Explorer();
-        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.createObject('Root', 'entity2s-Entity2');
         explorer.getTreeItemByLabel('Entity2').click();
 
         const details = new Details();
@@ -105,7 +105,7 @@ describe('Diagram - Direct edit label', () => {
 
       it('Then during edit triggering escape cancelled the current edition', () => {
         const explorer = new Explorer();
-        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.createObject('Root', 'entity2s-Entity2');
         explorer.getTreeItemByLabel('Entity2').click();
 
         const details = new Details();
@@ -124,7 +124,7 @@ describe('Diagram - Direct edit label', () => {
 
       it('Then we can set the correct name when typing directly', () => {
         const explorer = new Explorer();
-        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.createObject('Root', 'entity2s-Entity2');
         const details = new Details();
         details.getTextField('Name').type('Entity2{Enter}');
 
@@ -135,8 +135,8 @@ describe('Diagram - Direct edit label', () => {
 
       it('Then we can use direct edit on edge', () => {
         const explorer = new Explorer();
-        explorer.createObject('Root', 'Entity1s Entity1');
-        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.createObject('Root', 'entity1s-Entity1');
+        explorer.createObject('Root', 'entity2s-Entity2');
         explorer.select('Entity2');
         const details = new Details();
         details.getTextField('Name').type('Entity2');
@@ -155,7 +155,7 @@ describe('Diagram - Direct edit label', () => {
 
       it('Then during the direct edition, the palette is hidden', () => {
         const explorer = new Explorer();
-        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.createObject('Root', 'entity2s-Entity2');
         explorer.getTreeItemByLabel('Entity2').click();
 
         const details = new Details();
@@ -223,8 +223,8 @@ describe('Diagram - Direct edit label', () => {
 
       it('Then we can not use direct edit on edge', () => {
         const explorer = new Explorer();
-        explorer.createObject('Root', 'Entity1s Entity1');
-        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.createObject('Root', 'entity1s-Entity1');
+        explorer.createObject('Root', 'entity2s-Entity2');
         explorer.select('Entity2');
         const details = new Details();
         details.getTextField('Name').type('Entity2');

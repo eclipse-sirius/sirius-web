@@ -42,7 +42,7 @@ describe('Diagram - Graphical-dnd', () => {
 
       it.skip('Check graphical Drag and Drop', () => {
         const explorer = new Explorer();
-        explorer.createObject('Entity2', 'Relation');
+        explorer.createObject('Entity2', 'relations-Relation');
         const details = new Details();
         details.getCheckBox('Containment').check();
         details.openReferenceWidgetOptions('Target Type');
@@ -54,14 +54,14 @@ describe('Diagram - Graphical-dnd', () => {
         explorer.expand('Entity2 Node');
         details.openReferenceWidgetOptions('Reused Child Node Descriptions');
         details.selectReferenceWidgetOption('Entity1 Node');
-        explorer.createObject('NodePalette', 'Drop Node Tool');
+        explorer.createObject('NodePalette', 'dropNodeTool-DropNodeTool');
         explorer.select('Tool');
         details.getTextField('Name').type('{selectAll}Drop Entity1 Tool{Enter}');
         details.openReferenceWidgetOptions('Accepted Node Types');
         details.selectReferenceWidgetOption('Entity1 Node');
-        explorer.createObject('Drop Entity1 Tool', 'Change Context');
+        explorer.createObject('Drop Entity1 Tool', 'body-ChangeContext');
         details.getTextField('Expression').type('{selectAll}aql:targetElement{enter}');
-        explorer.createObject('aql:targetElement', 'Set Value');
+        explorer.createObject('aql:targetElement', 'children-SetValue');
         details.getTextField('Feature Name').type('relation{Enter}');
         details.getTextField('Value Expression').type('aql:droppedElement{Enter}');
 
@@ -71,16 +71,16 @@ describe('Diagram - Graphical-dnd', () => {
           new Explorer().createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
         });
 
-        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('Entity1{Enter}');
-        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.createObject('Root', 'entity2s-Entity2');
         details.getTextField('Name').type('Entity2{Enter}');
 
         const diagram = new Diagram();
         diagram.dragAndDropNode('Rectangle - Entity1', 'Rectangle - Entity2');
         diagram.isNodeInside('Rectangle - Entity1', 'Rectangle - Entity2');
 
-        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('InvalidTarget{Enter}');
 
         diagram.dragAndDropNode('Rectangle - Entity1', 'Rectangle - InvalidTarget');

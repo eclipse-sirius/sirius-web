@@ -35,7 +35,7 @@ describe('List-node', () => {
           explorer.expand(`${domainName} Diagram Description`);
         });
         explorer.expand('Entity1 Node');
-        explorer.createObject('Entity1 Node', 'Layout List');
+        explorer.createObject('Entity1 Node', 'childrenLayoutStrategy-ListLayoutStrategyDescription');
       })
     );
 

@@ -146,9 +146,10 @@ public class DefaultEditService implements IDefaultEditService {
                 if (adapter instanceof IEditingDomainItemProvider editingDomainItemProvider) {
                     if (editingDomainItemProvider instanceof Helper helper) {
                         for (CommandParameter commandParameter : commandParameters) {
-                            String text = helper.getCreateChildText(eObject, commandParameter.getFeature(), commandParameter.getValue(), null);
+                            String id = this.getChildCreationDescriptionId(commandParameter);
+                            String label = helper.getCreateChildText(eObject, commandParameter.getFeature(), commandParameter.getValue(), null);
                             List<String> iconURL = this.objectService.getImagePath(commandParameter.getValue());
-                            ChildCreationDescription childCreationDescription = new ChildCreationDescription(text, text, iconURL);
+                            ChildCreationDescription childCreationDescription = new ChildCreationDescription(id, label, iconURL);
                             childCreationDescriptions.add(childCreationDescription);
                         }
                     }
@@ -176,25 +177,21 @@ public class DefaultEditService implements IDefaultEditService {
 
             Collection<?> newChildDescriptors = editingDomain.getNewChildDescriptors(eObject, null);
 
-            List<CommandParameter> commandParameters = newChildDescriptors.stream()
+            return newChildDescriptors.stream()
                     .filter(CommandParameter.class::isInstance)
                     .map(CommandParameter.class::cast)
-                    .toList();
-
-            Adapter adapter = editingDomain.getAdapterFactory().adapt(eObject, IEditingDomainItemProvider.class);
-            if (adapter instanceof IEditingDomainItemProvider editingDomainItemProvider) {
-                if (editingDomainItemProvider instanceof Helper helper) {
-                    for (CommandParameter commandParameter : commandParameters) {
-                        String text = helper.getCreateChildText(eObject, commandParameter.getFeature(), commandParameter.getValue(), null);
-
-                        if (childCreationDescriptionId.equals(text)) {
-                            return this.createObject(editingDomain, eObject, commandParameter);
-                        }
-                    }
-                }
-            }
+                    .filter(commandParameter -> childCreationDescriptionId.equals(this.getChildCreationDescriptionId(commandParameter)))
+                    .findFirst()
+                    .flatMap(commandParameter -> this.createObject(editingDomain, eObject, commandParameter));
         }
         return Optional.empty();
+    }
+
+    private String getChildCreationDescriptionId(CommandParameter commandParameter) {
+        if (commandParameter.getFeature() instanceof  EReference eReference && commandParameter.getValue() instanceof EObject eObject) {
+            return eReference.getName() + "-" + eObject.eClass().getName();
+        }
+        return commandParameter.toString();
     }
 
     private Optional<Object> createObject(AdapterFactoryEditingDomain editingDomain, EObject eObject, CommandParameter commandParameter) {

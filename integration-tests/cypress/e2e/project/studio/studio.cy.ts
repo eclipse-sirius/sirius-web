@@ -77,15 +77,15 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Diagram Tool Section"]').should('exist').click();
+      cy.get('[data-value="toolSections-DiagramToolSection"]').should('exist').click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Tool Section').should('exist');
       cy.getByTestId('Tool Section-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Node Tool"]').should('exist');
-      cy.get('[data-value="Edge Tool"]').should('not.exist');
+      cy.get('[data-value="nodeTools-NodeTool"]').should('exist');
+      cy.get('[data-value="edgeTools-EdgeTool"]').should('not.exist');
     });
 
     it('Check the NodePalette toolSection creation', () => {
@@ -97,16 +97,16 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Node Tool Section"]').should('exist').click();
+      cy.get('[data-value="toolSections-NodeToolSection"]').should('exist').click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Tool Section').should('exist');
       cy.getByTestId('Tool Section-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Node Tool"]').should('exist');
-      cy.get('[data-value="Edge Tool"]').should('exist');
-      cy.get('[data-value="Source Edge End Reconnection Tool"]').should('not.exist');
+      cy.get('[data-value="nodeTools-NodeTool"]').should('exist');
+      cy.get('[data-value="edgeTools-EdgeTool"]').should('exist');
+      cy.get('[data-value="edgeReconnectionTools-SourceEdgeEndReconnectionTool"]').should('not.exist');
     });
 
     it('Check the EdgePalette toolSection creation', () => {
@@ -118,17 +118,17 @@ describe('/projects/:projectId/edit - Studio', () => {
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Edge Tool Section"]').should('exist').click();
+      cy.get('[data-value="toolSections-EdgeToolSection"]').should('exist').click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Tool Section').should('exist');
       cy.getByTestId('Tool Section-more').click();
       cy.getByTestId('new-object').click();
       cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
       cy.getByTestId('childCreationDescription').click();
-      cy.get('[data-value="Node Tool"]').should('exist');
-      cy.get('[data-value="Edge Tool"]').should('not.exist');
-      cy.get('[data-value="Source Edge End Reconnection Tool"]').should('not.exist');
-      cy.get('[data-value="Target Edge End Reconnection Tool"]').should('not.exist');
+      cy.get('[data-value="nodeTools-NodeTool"]').should('exist');
+      cy.get('[data-value="edgeTools-EdgeTool"]').should('not.exist');
+      cy.get('[data-value="edgeReconnectionTools-SourceEdgeEndReconnectionTool"]').should('not.exist');
+      cy.get('[data-value="edgeReconnectionTools-TargetEdgeEndReconnectionTool"]').should('not.exist');
     });
 
     it.skip('Check the precondition on tools', () => {
@@ -142,7 +142,7 @@ describe('/projects/:projectId/edit - Studio', () => {
         .invoke('text')
         .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Node Tool"]').should('exist').click();
+      cy.getByTestId('childCreationDescription').get('[data-value="nodeTools-NodeTool"]').should('exist').click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Precondition Expression').should('exist');
       cy.getByTestId('Precondition Expression').type('aql:self.eAllContents()->size()>0');
@@ -209,7 +209,7 @@ describe('/projects/:projectId/edit - Studio', () => {
       details.getReferenceWidgetSelectedValue('Background', 'white').should('exist');
       details.getReferenceWidgetSelectedValue('Border Color', 'black').should('exist');
       explorer.delete('RectangularNodeStyleDescription');
-      explorer.createObject('Node', 'Style Icon-Label');
+      explorer.createObject('Node', 'style-IconLabelNodeStyleDescription');
       details.getReferenceWidgetSelectedValue('Background', 'white').should('exist');
       details.getReferenceWidgetSelectedValue('Border Color', 'black').should('exist');
     });
@@ -225,7 +225,10 @@ describe('/projects/:projectId/edit - Studio', () => {
         .invoke('text')
         .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="nodeDescriptions-NodeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Node-toggle').click();
       cy.getByTestId('Node-more').click();
@@ -235,7 +238,10 @@ describe('/projects/:projectId/edit - Studio', () => {
         .invoke('text')
         .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Sub-node"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="childrenDescriptions-NodeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Sub-node-toggle').click();
       cy.getByTestId('RectangularNodeStyleDescription').eq(1).click();
@@ -254,7 +260,10 @@ describe('/projects/:projectId/edit - Studio', () => {
         .invoke('text')
         .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="nodeDescriptions-NodeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Node-toggle').click();
       cy.getByTestId('Node-more').click();
@@ -264,7 +273,10 @@ describe('/projects/:projectId/edit - Studio', () => {
         .invoke('text')
         .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Border node"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="borderNodesDescriptions-NodeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Border node-toggle').click();
       cy.getByTestId('RectangularNodeStyleDescription').eq(1).click();
@@ -286,7 +298,10 @@ describe('/projects/:projectId/edit - Studio', () => {
         .invoke('text')
         .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Style Rectangular"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="style-RectangularNodeStyleDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('RectangularNodeStyleDescription').click();
       cy.getByTestId('Background').findByTestId('reference-value-white').should('exist');
@@ -304,7 +319,10 @@ describe('/projects/:projectId/edit - Studio', () => {
         .invoke('text')
         .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Edge Description"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="edgeDescriptions-EdgeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Edge').dblclick();
       cy.getByTestId('EdgeStyle').click();
@@ -321,7 +339,10 @@ describe('/projects/:projectId/edit - Studio', () => {
         .invoke('text')
         .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Form Description"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="descriptions-FormDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('New Form Description').dblclick();
       cy.getByTestId('PageDescription').dblclick();
@@ -334,7 +355,7 @@ describe('/projects/:projectId/edit - Studio', () => {
         .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription')
-        .get('[data-value="Widgets Textfield Description"]')
+        .get('[data-value="children-TextfieldDescription"]')
         .should('exist')
         .click();
       cy.getByTestId('create-object').click();
@@ -346,7 +367,7 @@ describe('/projects/:projectId/edit - Studio', () => {
         .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
       cy.getByTestId('childCreationDescription')
-        .get('[data-value="Style Textfield Description Style"]')
+        .get('[data-value="style-TextfieldDescriptionStyle"]')
         .should('exist')
         .click();
       cy.getByTestId('create-object').click();
@@ -370,7 +391,10 @@ describe('/projects/:projectId/edit - Studio', () => {
         .invoke('text')
         .should('have.length.gt', 1);
       cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
+      cy.getByTestId('childCreationDescription')
+        .get('[data-value="nodeDescriptions-NodeDescription"]')
+        .should('exist')
+        .click();
       cy.getByTestId('create-object').click();
       cy.getByTestId('Node').click();
       cy.getByTestId('Default Width Expression').should('exist');
