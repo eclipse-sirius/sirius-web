@@ -36,7 +36,7 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
     cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription')
-      .get('[data-value="Ellipse Node Style Description"]')
+      .get('[data-value="style-EllipseNodeStyleDescription"]')
       .should('exist')
       .click();
     cy.getByTestId('create-object').click();
@@ -77,7 +77,7 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
     cy.getByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
-    cy.getByTestId('childCreationDescription').get('[data-value="Entity1s Entity1"]').should('exist').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="entity1s-Entity1"]').should('exist').click();
     cy.getByTestId('create-object').click();
 
     cy.getByTestId('Ellipse - ').should('have.css', 'border-radius', '50%');
