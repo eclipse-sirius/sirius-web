@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.collaborative.trees.api.IExpandAllTreePathP
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathSuccessPayload;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePath;
+import org.eclipse.sirius.components.collaborative.widget.reference.browser.ModelBrowsersDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -60,7 +61,9 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
 
     @Override
     public boolean canHandle(Tree tree) {
-        return tree.getDescriptionId().equals(ExplorerDescriptionProvider.DESCRIPTION_ID);
+        return tree.getDescriptionId().equals(ExplorerDescriptionProvider.DESCRIPTION_ID)
+                || tree.getDescriptionId().equals(ModelBrowsersDescriptionProvider.CONTAINER_DESCRIPTION_ID)
+                || tree.getDescriptionId().equals(ModelBrowsersDescriptionProvider.REFERENCE_DESCRIPTION_ID);
     }
 
     @Override
