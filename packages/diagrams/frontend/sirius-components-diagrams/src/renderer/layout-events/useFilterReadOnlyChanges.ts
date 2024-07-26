@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { NodeChange, NodeDimensionChange, NodePositionChange } from '@xyflow/react';
 import { useContext } from 'react';
-import { NodeChange, NodeDimensionChange, NodePositionChange } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { UseFilterReadOnlyChangesValue } from './useFilterReadOnlyChanges.types';

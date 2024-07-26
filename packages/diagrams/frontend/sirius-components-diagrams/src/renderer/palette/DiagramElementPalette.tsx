@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { useKeyPress } from '@xyflow/react';
 import { memo, useContext, useEffect } from 'react';
-import { useKeyPress } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';

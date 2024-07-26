@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import { Theme, useTheme } from '@mui/material/styles';
+import { NodeProps } from '@xyflow/react';
 import { memo, useMemo } from 'react';
-import { NodeProps } from 'reactflow';
 import { Label } from '../Label';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';

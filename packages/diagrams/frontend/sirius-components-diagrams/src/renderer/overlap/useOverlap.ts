@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Node } from '@xyflow/react';
 import { useCallback, useState } from 'react';
-import { Node } from 'reactflow';
 import { UseOverlapValue } from './useOverlap.types';
 
 const nodesOverlap = (nodeA: Node, nodeB: Node): boolean => {

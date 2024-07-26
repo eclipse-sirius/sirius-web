@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Edge, EdgeChange, Node, NodeChange, applyEdgeChanges, applyNodeChanges } from '@xyflow/react';
 import React, { useCallback, useState } from 'react';
-import { Edge, EdgeChange, Node, NodeChange, applyEdgeChanges, applyNodeChanges } from 'reactflow';
 import { StoreContextValue } from './StoreContext.types';
 
 const defaultValue: StoreContextValue = {

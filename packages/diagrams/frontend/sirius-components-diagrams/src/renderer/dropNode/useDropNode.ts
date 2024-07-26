@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { Node, NodeDragHandler, XYPosition, useReactFlow, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
-import { Node, NodeDragHandler, XYPosition, useReactFlow, useStoreApi } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';

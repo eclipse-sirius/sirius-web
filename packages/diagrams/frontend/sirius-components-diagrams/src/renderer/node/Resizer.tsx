@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@mui/material/styles';
+import { NodeResizeControl, NodeResizer, ResizeControlVariant } from '@xyflow/react';
 import { memo, useContext } from 'react';
-import { NodeResizeControl, NodeResizer, ResizeControlVariant } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { ResizerProps } from './Resizer.types';

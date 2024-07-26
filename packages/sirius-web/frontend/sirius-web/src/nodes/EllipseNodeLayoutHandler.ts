@@ -22,19 +22,19 @@ import {
   computePreviousPosition,
   computePreviousSize,
   findNodeIndex,
+  getBorderNodeExtent,
   getChildNodePosition,
-  getEastBorderNodeFootprintHeight,
-  getHeaderHeightFootprint,
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
+  getEastBorderNodeFootprintHeight,
+  getHeaderHeightFootprint,
   getInsideLabelWidthConstraint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
-  getBorderNodeExtent,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Dimensions, HandleElement, Node, Position, XYPosition } from 'reactflow';
+import { Dimensions, HandleElement, Node, Position, XYPosition } from '@xyflow/react';
 
 const borderNodeOffset = 5;
 

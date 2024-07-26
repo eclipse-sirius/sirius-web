@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { NodeDragHandler } from 'reactflow';
+import { NodeDragHandler } from '@xyflow/react';
 import { GQLMessage } from '../Tool.types';
 
 export interface UseDropNodeValue {

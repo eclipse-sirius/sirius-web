@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node } from 'reactflow';
+import { Node } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousSize } from './bounds';
-import { RawDiagram, ForcedDimensions } from './layout.types';
+import { ForcedDimensions, RawDiagram } from './layout.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
   applyRatioOnNewNodeSizeValue,

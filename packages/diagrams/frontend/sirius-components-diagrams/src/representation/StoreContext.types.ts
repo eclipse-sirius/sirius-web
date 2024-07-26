@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Edge, EdgeChange, Node, NodeChange } from '@xyflow/react';
 import { Dispatch, SetStateAction } from 'react';
-import { Edge, EdgeChange, Node, NodeChange } from 'reactflow';
 import { EdgeData, NodeData } from '../renderer/DiagramRenderer.types';
 
 export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;

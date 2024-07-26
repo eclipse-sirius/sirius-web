@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node } from 'reactflow';
+import { Node } from '@xyflow/react';
 
 export interface UseOverlapValue {
   nodeOverlapEnabled: boolean;

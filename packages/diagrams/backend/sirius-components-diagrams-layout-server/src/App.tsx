@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { ReactFlow, useEdgesState, useNodesInitialized, useNodesState } from '@xyflow/react';
 import { useEffect, useState } from 'react';
-import { ReactFlow, useEdgesState, useNodesInitialized, useNodesState } from 'reactflow';
 
-import 'reactflow/dist/style.css';
+import '@xyflow/react/dist/style.css';
 import './App.css';
 
 export const App = () => {

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeInternals, Position, XYPosition } from 'reactflow';
+import { Node, NodeInternals, Position, XYPosition } from '@xyflow/react';
 import { GQLDiagramDescription } from '../../representation/DiagramRepresentation.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters, getNodeCenter, getUpdatedConnectionHandles } from '../edge/EdgeLayout';

@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Node, NodeChange, NodePositionChange } from '@xyflow/react';
 import { useCallback } from 'react';
-import { Node, NodeChange, NodePositionChange } from 'reactflow';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';

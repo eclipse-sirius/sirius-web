@@ -13,8 +13,8 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
+import { NodeProps } from '@xyflow/react';
 import { memo, useMemo } from 'react';
-import { NodeProps } from 'reactflow';
 import { Label } from '../Label';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
 import { useDrop } from '../drop/useDrop';

@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
-import { useNodes } from 'reactflow';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useNodes } from '@xyflow/react';
 import { useEffect, useMemo } from 'react';
 import {
   GQLDiagramDescription,

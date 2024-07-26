@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Connection, XYPosition } from '@xyflow/react';
 import React, { useState } from 'react';
-import { Connection, XYPosition } from 'reactflow';
 import {
   ConnectorContextProviderProps,
   ConnectorContextProviderState,

@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Node, NodeChange, useReactFlow, XYPosition } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
-import { Node, NodeChange, useReactFlow, XYPosition } from 'reactflow';
-import { EdgeData, NodeData, BorderNodePosition } from '../DiagramRenderer.types';
+import { NodeTypeContext } from '../../contexts/NodeContext';
+import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
+import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { findBorderNodePosition } from '../layout/layoutBorderNodes';
 import { borderNodeOffset } from '../layout/layoutParams';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseBorderChangeValue } from './useBorderChange.types';
-import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
-import { NodeTypeContext } from '../../contexts/NodeContext';
 
 const isNewPositionInsideIsParent = (newNodePosition: XYPosition, movedNode: Node, parentNode: Node): boolean => {
   if (movedNode.width && movedNode.height && parentNode?.positionAbsolute && parentNode.width && parentNode.height) {

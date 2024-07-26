@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import { Selection, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
-import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -28,7 +27,8 @@ import {
   ReactFlow,
   ReactFlowProps,
   applyNodeChanges,
-} from 'reactflow';
+} from '@xyflow/react';
+import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { NodeTypeContext } from '../contexts/NodeContext';
@@ -75,7 +75,7 @@ import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useShiftSelection } from './selection/useShiftSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
-import 'reactflow/dist/style.css';
+import '@xyflow/react/dist/style.css';
 
 const GRID_STEP: number = 10;
 

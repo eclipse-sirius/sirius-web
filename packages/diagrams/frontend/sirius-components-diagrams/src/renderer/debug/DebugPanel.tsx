@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import Box from '@mui/material/Box';
+import { Edge, Node, Panel, useReactFlow } from '@xyflow/react';
 import { useContext } from 'react';
-import { Edge, Node, Panel, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { NodeContext } from '../node/NodeContext';
 import { NodeContextValue } from '../node/NodeContext.types';

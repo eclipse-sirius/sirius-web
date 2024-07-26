@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Edge, Node, XYPosition, useKeyPress, useStoreApi } from '@xyflow/react';
 import { useCallback, useEffect, useState } from 'react';
-import { Edge, Node, XYPosition, useKeyPress, useStoreApi } from 'reactflow';
 import { UseGroupPaletteState, UseGroupPaletteValue } from './useGroupPalette.types';
 
 const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds?: DOMRect): XYPosition => {

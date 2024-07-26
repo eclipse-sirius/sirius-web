@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, Node, NodeChange, Position, XYPosition } from 'reactflow';
+import { Edge, Node, NodeChange, Position, XYPosition } from '@xyflow/react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';

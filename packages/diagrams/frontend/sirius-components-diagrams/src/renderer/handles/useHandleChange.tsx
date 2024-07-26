@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Node, NodeChange, NodePositionChange, getConnectedEdges, useStoreApi } from '@xyflow/react';
 import { useCallback } from 'react';
-import { Node, NodeChange, NodePositionChange, getConnectedEdges, useStoreApi } from 'reactflow';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';

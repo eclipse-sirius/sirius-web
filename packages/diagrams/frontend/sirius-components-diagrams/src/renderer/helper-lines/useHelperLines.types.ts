@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeChange } from 'reactflow';
+import { NodeChange } from '@xyflow/react';
 
 export interface UseHelperLinesValue {
   helperLinesEnabled: boolean;

@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
+import { BaseEdge, EdgeLabelRenderer, EdgeProps, Node, Position, getSmoothStepPath, useStoreApi } from '@xyflow/react';
 import { memo, useContext, useMemo } from 'react';
-import { BaseEdge, EdgeLabelRenderer, EdgeProps, Node, Position, getSmoothStepPath, useStoreApi } from 'reactflow';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { NodeData } from '../DiagramRenderer.types';

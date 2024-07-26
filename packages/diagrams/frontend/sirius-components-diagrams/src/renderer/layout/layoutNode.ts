@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Box, Dimensions, Node, NodeInternals, Rect, XYPosition, boxToRect, rectToBox } from 'reactflow';
+import { Box, Dimensions, Node, NodeInternals, Rect, XYPosition, boxToRect, rectToBox } from '@xyflow/react';
 import { InsideLabel, NodeData } from '../DiagramRenderer.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';

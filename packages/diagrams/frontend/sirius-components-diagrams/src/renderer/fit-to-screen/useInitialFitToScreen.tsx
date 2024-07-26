@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { useReactFlow } from '@xyflow/react';
 import { useEffect, useState } from 'react';
-import { useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { UseInitialFitToScreenState, UseInitialFitToScreenValue } from './useInitialFitToScreen.types';
 

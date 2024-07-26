@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Rect, Transform, getRectOfNodes, getTransformForBounds, useReactFlow } from '@xyflow/react';
 import { toSvg } from 'html-to-image';
 import { useCallback } from 'react';
-import { Rect, Transform, getRectOfNodes, getTransformForBounds, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { UseExportToImage } from './useExportToImage.types';
 

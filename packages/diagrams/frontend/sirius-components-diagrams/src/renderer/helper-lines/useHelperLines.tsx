@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useCallback, useState } from 'react';
 import {
   Node,
   NodeChange,
@@ -19,7 +18,8 @@ import {
   NodePositionChange,
   useReactFlow,
   useStoreApi,
-} from 'reactflow';
+} from '@xyflow/react';
+import { useCallback, useState } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { isDescendantOf } from '../layout/layoutNode';
 import { horizontalHelperLinesSnapGap, verticalHelperLinesSnapGap } from '../layout/layoutParams';

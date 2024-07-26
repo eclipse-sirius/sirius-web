@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import { Theme, useTheme } from '@mui/material/styles';
-import { useCallback, useContext } from 'react';
 import {
   Connection,
   Edge,
@@ -23,7 +22,8 @@ import {
   useReactFlow,
   useStoreApi,
   useUpdateNodeInternals,
-} from 'reactflow';
+} from '@xyflow/react';
+import { useCallback, useContext } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters } from '../edge/EdgeLayout';

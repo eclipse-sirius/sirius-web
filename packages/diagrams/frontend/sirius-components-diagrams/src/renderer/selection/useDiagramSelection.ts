@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useOnSelectionChange, useReactFlow } from '@xyflow/react';
 import { useCallback, useEffect, useState } from 'react';
-import { useOnSelectionChange, useReactFlow } from 'reactflow';
 import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 

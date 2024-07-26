@@ -10,17 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, useReactFlow } from 'reactflow';
+import { Node, useReactFlow } from '@xyflow/react';
 import { useContext } from 'react';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';
-import { UseAdjustSizeValue } from './useAdjustSize.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
-import { NodeData, EdgeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { DiagramContext } from '../../contexts/DiagramContext';
 import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
+import { UseAdjustSizeValue } from './useAdjustSize.types';
 
 export const useAdjustSize = (): UseAdjustSizeValue => {
   const { layout } = useLayout();

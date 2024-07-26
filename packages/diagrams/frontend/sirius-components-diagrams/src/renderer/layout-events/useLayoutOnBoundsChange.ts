@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from '@xyflow/react';
 import { useCallback } from 'react';
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from 'reactflow';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';

@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Node, NodeMouseHandler } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
-import { Node, NodeMouseHandler } from 'reactflow';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { DropNodeContext } from '../dropNode/DropNodeContext';

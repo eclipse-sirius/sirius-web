@@ -12,10 +12,6 @@
  *******************************************************************************/
 
 import { ComponentExtension, ShareRepresentationModal, useComponents } from '@eclipse-sirius/sirius-components-core';
-import CircularProgress from '@mui/material/CircularProgress';
-import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
-import Tooltip from '@mui/material/Tooltip';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
@@ -28,8 +24,12 @@ import TonalityIcon from '@mui/icons-material/Tonality';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
+import { Panel, useNodesInitialized, useReactFlow } from '@xyflow/react';
 import { memo, useContext, useEffect, useState } from 'react';
-import { Panel, useNodesInitialized, useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { HelperLinesIcon } from '../../icons/HelperLinesIcon';

@@ -26,8 +26,8 @@ import {
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@mui/material/styles';
+import { NodeProps, NodeResizer } from '@xyflow/react';
 import React, { memo, useContext } from 'react';
-import { NodeProps, NodeResizer } from 'reactflow';
 import { EllipseNodeData } from './EllipseNode.types';
 
 const ellipseNodeStyle = (

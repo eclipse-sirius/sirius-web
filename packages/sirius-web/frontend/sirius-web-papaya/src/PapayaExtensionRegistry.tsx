@@ -14,8 +14,8 @@
 import { ComponentExtension, DataExtension, ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import {
   ReactFlowPropsCustomizer,
-  diagramRendererReactFlowPropsCustomizerExtensionPoint,
   diagramPaletteToolExtensionPoint,
+  diagramRendererReactFlowPropsCustomizerExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   EditProjectNavbarSubtitleProps,
@@ -23,7 +23,7 @@ import {
   useCurrentProject,
 } from '@eclipse-sirius/sirius-web-application';
 import Typography from '@mui/material/Typography';
-import { ReactFlowProps } from 'reactflow';
+import { ReactFlowProps } from '@xyflow/react';
 import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
 import { PapayaDiagramLegendPanel } from './diagrams/PapayaDiagramLegendPanel';
 import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaComponentLabelDetailToolContribution';

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { XYPosition } from 'reactflow';
+import { XYPosition } from '@xyflow/react';
 
 export type DropNodeContextValue = DropNodeContextState & {
   initializeDrop: (newDropData: DropNodeContextState) => void;

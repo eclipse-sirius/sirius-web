@@ -13,8 +13,8 @@
 
 import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
+import { NodeProps } from '@xyflow/react';
 import React, { memo, useContext, useMemo } from 'react';
-import { NodeProps } from 'reactflow';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';

@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useReactFlow } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
-import { useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';

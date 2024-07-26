@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Dimensions, HandleElement, Node, Position, XYPosition } from 'reactflow';
+import { Dimensions, HandleElement, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { RawDiagram, ForcedDimensions } from './layout.types';
+import { ForcedDimensions, RawDiagram } from './layout.types';
 
 export interface ILayoutEngine {
   registerNodeLayoutHandlerContribution(nodeLayoutHandlerContribution: INodeLayoutHandler<NodeData>);

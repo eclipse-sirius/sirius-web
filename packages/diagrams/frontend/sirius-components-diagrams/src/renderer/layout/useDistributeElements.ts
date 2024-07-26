@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useCallback, useContext } from 'react';
-import { Node, XYPosition, useReactFlow } from 'reactflow';
-import { UseDistributeElementsValue } from './useDistributeElements.types';
-import { NodeData, EdgeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
-import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
-import { RawDiagram } from './layout.types';
-import { useLayout } from './useLayout';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { Node, XYPosition, useReactFlow } from '@xyflow/react';
+import { useCallback, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { useOverlap } from '../overlap/useOverlap';
+import { RawDiagram } from './layout.types';
+import { UseDistributeElementsValue } from './useDistributeElements.types';
+import { useLayout } from './useLayout';
+import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
 
 function getComparePositionFn(direction: 'horizontal' | 'vertical') {
   return (node1: Node, node2: Node) => {
