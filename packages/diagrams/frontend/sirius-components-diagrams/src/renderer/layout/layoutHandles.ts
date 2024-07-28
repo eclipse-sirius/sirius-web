@@ -74,15 +74,15 @@ const populateHandleIdToOtherEndNode: PopulateHandleIdToOtherHandNode = (
   handesIdToOtherEndNode
 ) => {
   edges.forEach((edge) => {
-    if (edge.sourceNode && edge.targetNode && edge.sourceHandle && edge.targetHandle) {
+    if (edge.source && edge.target && edge.sourceHandle && edge.targetHandle) {
       if (handlesId.find((id) => id === edge.sourceHandle)) {
-        const node = nodes.find((n) => n.id === edge.targetNode?.id);
+        const node = nodes.find((n) => n.id === edge.target);
         if (node) {
           handesIdToOtherEndNode.set(edge.sourceHandle, node);
         }
       }
       if (handlesId.find((id) => id === edge.targetHandle)) {
-        const node = nodes.find((n) => n.id === edge.sourceNode?.id);
+        const node = nodes.find((n) => n.id === edge.source);
         if (node) {
           handesIdToOtherEndNode.set(edge.targetHandle, node);
         }
@@ -128,15 +128,11 @@ const layoutHandleIndex = (diagram: RawDiagram, nodeLookup) => {
   });
 };
 
-const layoutHandlePosition = (
-  diagram: RawDiagram,
-  diagramDescription: GQLDiagramDescription,
-  nodeLookup
-) => {
+const layoutHandlePosition = (diagram: RawDiagram, diagramDescription: GQLDiagramDescription, nodeLookup) => {
   diagram.edges.forEach((edge) => {
-    const { sourceNode: sourceEdgeNode, targetNode: targetEdgeNode, sourceHandle, targetHandle } = edge;
-    const sourceNode = diagram.nodes.find((node) => node.id === sourceEdgeNode?.id);
-    const targetNode = diagram.nodes.find((node) => node.id === targetEdgeNode?.id);
+    const { source: sourceEdgeNode, target: targetEdgeNode, sourceHandle, targetHandle } = edge;
+    const sourceNode = diagram.nodes.find((node) => node.id === sourceEdgeNode);
+    const targetNode = diagram.nodes.find((node) => node.id === targetEdgeNode);
     if (sourceNode && targetNode && sourceHandle && targetHandle) {
       const { sourcePosition, targetPosition } = getEdgeParameters(
         sourceNode,
@@ -166,11 +162,11 @@ const layoutHandlePosition = (
         );
 
         diagram.nodes = diagram.nodes.map((node) => {
-          if (edge.sourceNode && edge.targetNode) {
-            if (edge.sourceNode.id === node.id) {
+          if (edge.source && edge.target) {
+            if (edge.source === node.id) {
               node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
             }
-            if (edge.targetNode.id === node.id) {
+            if (edge.target === node.id) {
               node.data = { ...node.data, connectionHandles: targetConnectionHandles };
             }
           }
@@ -181,11 +177,7 @@ const layoutHandlePosition = (
   });
 };
 
-export const layoutHandles = (
-  diagram: RawDiagram,
-  diagramDescription: GQLDiagramDescription,
-  nodeLookup
-) => {
+export const layoutHandles = (diagram: RawDiagram, diagramDescription: GQLDiagramDescription, nodeLookup) => {
   layoutHandlePosition(diagram, diagramDescription, nodeLookup);
   layoutHandleIndex(diagram, nodeLookup);
 };

@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, NodeDragHandler, XYPosition, useReactFlow, useStoreApi } from '@xyflow/react';
+import { Edge, Node, OnNodeDrag, XYPosition, useReactFlow, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -97,10 +97,10 @@ const useDropNodeMutation = () => {
 
   const invokeMutation = useCallback(
     (
-      droppedNode: Node,
+      droppedNode: Node<NodeData>,
       targetElementId: string | null,
       dropPosition: XYPosition,
-      onDragCancelled: (node: Node) => void
+      onDragCancelled: (node: Node<NodeData>) => void
     ): void => {
       const input: GQLDropNodeInput = {
         id: crypto.randomUUID(),
@@ -147,7 +147,7 @@ export const useDropNode = (): UseDropNodeValue => {
     return node;
   };
 
-  const onNodeDragStart: NodeDragHandler = useCallback(
+  const onNodeDragStart: OnNodeDrag<Node<NodeData>> = useCallback(
     (_event, node, nodes) => {
       if (!node || nodes.length > 1) {
         // Drag on multi selection is not supported yet
@@ -160,8 +160,7 @@ export const useDropNode = (): UseDropNodeValue => {
       );
       const compatibleNodes = getNodes()
         .filter(
-          (candidate) =>
-            !candidate.hidden && !isDescendantOf(computedNode, candidate, storeApi.getState().nodeLookup)
+          (candidate) => !candidate.hidden && !isDescendantOf(computedNode, candidate, storeApi.getState().nodeLookup)
         )
         .filter((candidate) =>
           dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
@@ -190,7 +189,7 @@ export const useDropNode = (): UseDropNodeValue => {
     [getNodes]
   );
 
-  const onNodeDrag: NodeDragHandler = useCallback(
+  const onNodeDrag: OnNodeDrag<Node<NodeData>> = useCallback(
     (_event, node, nodes) => {
       if (!node || nodes.length > 1) {
         // Drag on multi selection is not supported yet
@@ -233,7 +232,7 @@ export const useDropNode = (): UseDropNodeValue => {
     [droppableOnDiagram, draggedNodeId, getNodes]
   );
 
-  const onNodeDragStop: NodeDragHandler = useCallback(
+  const onNodeDragStop: OnNodeDrag<Node<NodeData>> = useCallback(
     (event) => {
       const draggedNode = getNodes().find((node) => node.id === draggedNodeId) || null;
       const dropPosition = screenToFlowPosition({

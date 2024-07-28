@@ -14,5 +14,8 @@ import { Node, NodeChange } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseBorderChangeValue {
-  transformBorderNodeChanges: (changes: NodeChange<Node<NodeData>>[], oldNodes: Node<NodeData>[]) => NodeChange<Node<NodeData>>[];
+  transformBorderNodeChanges: (
+    changes: NodeChange<Node<NodeData>>[],
+    oldNodes: Node<NodeData>[]
+  ) => NodeChange<Node<NodeData>>[];
 }

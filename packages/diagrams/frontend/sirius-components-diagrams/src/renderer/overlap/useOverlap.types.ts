@@ -11,9 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Node } from '@xyflow/react';
+import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseOverlapValue {
   nodeOverlapEnabled: boolean;
   setNodeOverlapEnabled: (enable: boolean) => void;
-  resolveNodeOverlap: (nodes: Node[], direction: 'horizontal' | 'vertical') => Node[];
+  resolveNodeOverlap: (nodes: Node<NodeData>[], direction: 'horizontal' | 'vertical') => Node<NodeData>[];
 }

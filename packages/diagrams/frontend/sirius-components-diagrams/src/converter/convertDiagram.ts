@@ -22,7 +22,7 @@ import {
   ILayoutStrategy,
   ListLayoutStrategy,
 } from '../graphql/subscription/nodeFragment.types';
-import { Diagram, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
+import { Diagram, EdgeData, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
@@ -132,13 +132,13 @@ export const convertDiagram = (
     diagramDescription.nodeDescriptions
   );
 
-  const nodeId2node = new Map<string, Node>();
+  const nodeId2node = new Map<string, Node<NodeData>>();
   nodes.forEach((node) => nodeId2node.set(node.id, node));
 
   const nodeId2Depth = new Map<string, number>();
   nodes.forEach((node) => nodeId2Depth.set(node.id, nodeDepth(nodeId2node, node.id)));
   let usedHandles: string[] = [];
-  const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
+  const edges: Edge<EdgeData>[] = gqlDiagram.edges.map((gqlEdge) => {
     const sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
     const targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
     const data: MultiLabelEdgeData = {

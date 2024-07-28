@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { HandleElement, Node, NodePositionChange, Position, XYPosition } from '@xyflow/react';
+import { Node, NodePositionChange, Position, XYPosition } from '@xyflow/react';
+import { Handle } from '@xyflow/system';
 import { NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 
@@ -78,7 +79,7 @@ export type GetHandleCoordinatesByPosition = (
   handlePosition: Position,
   handleId: string,
   calculateCustomNodeEdgeHandlePosition:
-    | ((node: Node<NodeData>, handlePosition: Position, handle: HandleElement) => XYPosition)
+    | ((node: Node<NodeData>, handlePosition: Position, handle: Handle) => XYPosition)
     | undefined
 ) => XYPosition;
 

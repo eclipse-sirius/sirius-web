@@ -22,7 +22,7 @@ import {
   OnConnectStartParams,
   useReactFlow,
   useStoreApi,
-  useUpdateNodeInternals
+  useUpdateNodeInternals,
 } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
@@ -62,12 +62,12 @@ export const useConnector = (): UseConnectorValue => {
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   const isConnectionInProgress = () => {
-    const connectionNodeId = store.getState().connectionNodeId;
+    const connectionNodeId = store.getState().connection.fromNode?.id;
     return (!!connectionNodeId && isNewConnection) || !!connection;
   };
 
   const isReconnectionInProgress = () => {
-    const connectionNodeId = store.getState().connectionNodeId;
+    const connectionNodeId = store.getState().connection.fromNode?.id;
     return !!connectionNodeId && !isNewConnection;
   };
 
@@ -76,7 +76,7 @@ export const useConnector = (): UseConnectorValue => {
   }, []);
 
   const onConnectStart: OnConnectStart = useCallback(
-    (_event: React.MouseEvent | React.TouchEvent, params: OnConnectStartParams) => {
+    (_event: MouseEvent | TouchEvent, params: OnConnectStartParams) => {
       hideDiagramElementPalette();
       resetConnection();
       if (params.nodeId) {

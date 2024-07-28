@@ -45,7 +45,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
 
   const processLayoutTool = (
     selectedNodeIds: string[],
-    layoutFn: (selectedNodes: Node<NodeData>[], refNode: Node) => Node<NodeData>[],
+    layoutFn: (selectedNodes: Node<NodeData>[], refNode: Node<NodeData>) => Node<NodeData>[],
     sortFn: ((node1: Node, node2: Node) => number) | null = null,
     refElementId: string | null = null,
     direction: 'horizontal' | 'vertical' = 'horizontal'
@@ -73,13 +73,13 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
     }
     if (refNode) {
       const updatedNodes: Node<NodeData>[] = layoutFn(selectedNodes, refNode);
-      const overlapFreeNodes: Node[] = resolveNodeOverlap(updatedNodes, direction);
+      const overlapFreeNodes: Node<NodeData>[] = resolveNodeOverlap(updatedNodes, direction);
       const diagramToLayout: RawDiagram = {
         nodes: [...overlapFreeNodes] as Node<NodeData, DiagramNodeType>[],
         edges: getEdges(),
       };
       layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
-        const overlapFreeNodesAfterLayout: Node[] = resolveNodeOverlap(laidOutDiagram.nodes, 'horizontal');
+        const overlapFreeNodesAfterLayout: Node<NodeData>[] = resolveNodeOverlap(laidOutDiagram.nodes, 'horizontal');
         setNodes(overlapFreeNodesAfterLayout);
         const finalDiagram: RawDiagram = {
           nodes: overlapFreeNodesAfterLayout as Node<NodeData, DiagramNodeType>[],
@@ -221,7 +221,11 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
   };
 
   const justifyElements = (
-    justifyElementsFn: (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node) => Node[]
+    justifyElementsFn: (
+      selectedNodes: Node<NodeData>[],
+      selectedNodeIds: string[],
+      refNode: Node<NodeData>
+    ) => Node<NodeData>[]
   ) => {
     return useCallback(
       (selectedNodeIds: string[], refElementId: string | null) => {
@@ -240,7 +244,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
   };
 
   const justifyHorizontally = justifyElements(
-    (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node): Node[] => {
+    (selectedNodes: Node<NodeData>[], selectedNodeIds: string[], refNode: Node<NodeData>): Node<NodeData>[] => {
       const largestWidth: number = selectedNodes.reduce((width, node) => Math.max(width, node.width ?? 0), 0);
       return getNodes().map((node) => {
         if (
@@ -267,7 +271,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
   );
 
   const justifyVertically = justifyElements(
-    (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node): Node[] => {
+    (selectedNodes: Node<NodeData>[], selectedNodeIds: string[], refNode: Node<NodeData>): Node<NodeData>[] => {
       const largestHeight: number = selectedNodes.reduce((height, node) => Math.max(height, node.height ?? 0), 0);
       return getNodes().map((node) => {
         if (

@@ -29,7 +29,10 @@ export const useHandleChange = (): UseHandleChangeValue => {
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   const applyHandleChange = useCallback(
-    (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData, DiagramNodeType>[]): Node<NodeData, DiagramNodeType>[] => {
+    (
+      changes: NodeChange<Node<NodeData>>[],
+      nodes: Node<NodeData, DiagramNodeType>[]
+    ): Node<NodeData, DiagramNodeType>[] => {
       const nodeId2ConnectionHandles = new Map<string, ConnectionHandle[]>();
       changes.filter(isNodePositionChange).forEach((nodeDraggingChange) => {
         const movingNode = nodes.find((node) => nodeDraggingChange.id === node.id);
@@ -37,8 +40,8 @@ export const useHandleChange = (): UseHandleChangeValue => {
           const connectedEdges = getConnectedEdges([movingNode], getEdges());
           connectedEdges.forEach((edge) => {
             const { sourceHandle, targetHandle } = edge;
-            const sourceNode = nodes.find((node) => node.id === edge.sourceNode?.id);
-            const targetNode = nodes.find((node) => node.id === edge.targetNode?.id);
+            const sourceNode = nodes.find((node) => node.id === edge.source);
+            const targetNode = nodes.find((node) => node.id === edge.target);
 
             if (sourceNode && targetNode && sourceHandle && targetHandle) {
               const { sourcePosition, targetPosition } = getEdgeParametersWhileMoving(

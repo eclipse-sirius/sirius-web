@@ -197,7 +197,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       } else {
         setNodes((oldNodes) => {
           resetHelperLines(changes);
-          let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges, oldNodes);
+          let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(
+            noReadOnlyChanges,
+            oldNodes
+          );
           transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
           transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
           transformedNodeChanges = applyHelperLines(transformedNodeChanges);

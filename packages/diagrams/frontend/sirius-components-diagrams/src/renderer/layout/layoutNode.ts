@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Box, Dimensions, Node, Rect, XYPosition, boxToRect, rectToBox } from '@xyflow/react';
+import { Box, Dimensions, Node, Rect, XYPosition } from '@xyflow/react';
+import { boxToRect, rectToBox } from '@xyflow/system';
 import { InsideLabel, NodeData } from '../DiagramRenderer.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
@@ -33,7 +34,7 @@ import {
 /**
  * It requires that nodes are already positioned
  */
-export const computeNodesBox = (allVisibleNodes: Node<NodeData>[], nodes: Node[]): Rect => {
+export const computeNodesBox = (allVisibleNodes: Node<NodeData>[], nodes: Node<NodeData>[]): Rect => {
   if (nodes.length <= 0) {
     return boxToRect({ x: 0, y: 0, x2: 0, y2: 0 });
   }

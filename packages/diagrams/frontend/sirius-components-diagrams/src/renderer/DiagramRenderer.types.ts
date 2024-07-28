@@ -106,4 +106,6 @@ export interface OutsideLabel {
   overflowStrategy: LabelOverflowStrategy;
 }
 
-export type ReactFlowPropsCustomizer = (options: ReactFlowProps<Node<NodeData>, Edge<EdgeData>>) => ReactFlowProps<Node<NodeData>, Edge<EdgeData>>;
+export type ReactFlowPropsCustomizer = (
+  options: ReactFlowProps<Node<NodeData>, Edge<EdgeData>>
+) => ReactFlowProps<Node<NodeData>, Edge<EdgeData>>;

@@ -60,62 +60,65 @@ export const useBorderChange = (): UseBorderChangeValue => {
   const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
-  const transformBorderNodeChanges = useCallback((changes: NodeChange<Node<NodeData>>[], oldNodes: Node<NodeData>[]): NodeChange<Node<NodeData>>[] => {
-    return changes.map((change) => {
-      if (change.type === 'position' && change.position && change.positionAbsolute) {
-        const movedNode = getNodes().find((node) => change.id === node.id);
-        if (movedNode && movedNode.data.isBorderNode) {
-          const parentNode = getNodes().find((node) => movedNode.parentId === node.id);
-          const parentLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
-            nodeLayoutHandler.canHandle(parentNode as Node<NodeData, DiagramNodeType>)
-          );
-          if (
-            parentNode &&
-            parentNode.positionAbsolute &&
-            isNewPositionInsideIsParent(change.positionAbsolute, movedNode, parentNode) &&
-            !parentLayoutHandler?.calculateCustomNodeBorderNodePosition
-          ) {
-            const nearestBorder = findNearestBorderPosition(change.positionAbsolute, parentNode);
-            if (nearestBorder === BorderNodePosition.NORTH) {
-              change.position.y = borderNodeOffset - (movedNode.height ?? 0);
-              change.positionAbsolute.y = parentNode.positionAbsolute.y + borderNodeOffset - (movedNode.height ?? 0);
-            } else if (nearestBorder === BorderNodePosition.SOUTH) {
-              change.position.y = (parentNode.height ?? 0) - borderNodeOffset;
-              change.positionAbsolute.y = parentNode.positionAbsolute.y + (parentNode.height ?? 0) - borderNodeOffset;
-            } else if (nearestBorder === BorderNodePosition.WEST) {
-              change.position.x = borderNodeOffset - (movedNode.width ?? 0);
-              change.positionAbsolute.x = parentNode.positionAbsolute.x + borderNodeOffset - (movedNode.width ?? 0);
-            } else if (nearestBorder === BorderNodePosition.EAST) {
-              change.position.x = (parentNode.width ?? 0) - borderNodeOffset;
-              change.positionAbsolute.x = parentNode.positionAbsolute.x + (parentNode.width ?? 0) - borderNodeOffset;
-            } else {
-              //Invalid position, reset to the initial one
-              change.position = movedNode.position;
-              change.positionAbsolute = movedNode.positionAbsolute;
+  const transformBorderNodeChanges = useCallback(
+    (changes: NodeChange<Node<NodeData>>[], oldNodes: Node<NodeData>[]): NodeChange<Node<NodeData>>[] => {
+      return changes.map((change) => {
+        if (change.type === 'position' && change.position && change.positionAbsolute) {
+          const movedNode = getNodes().find((node) => change.id === node.id);
+          if (movedNode && movedNode.data.isBorderNode) {
+            const parentNode = getNodes().find((node) => movedNode.parentId === node.id);
+            const parentLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
+              nodeLayoutHandler.canHandle(parentNode as Node<NodeData, DiagramNodeType>)
+            );
+            if (
+              parentNode &&
+              parentNode.positionAbsolute &&
+              isNewPositionInsideIsParent(change.positionAbsolute, movedNode, parentNode) &&
+              !parentLayoutHandler?.calculateCustomNodeBorderNodePosition
+            ) {
+              const nearestBorder = findNearestBorderPosition(change.positionAbsolute, parentNode);
+              if (nearestBorder === BorderNodePosition.NORTH) {
+                change.position.y = borderNodeOffset - (movedNode.height ?? 0);
+                change.positionAbsolute.y = parentNode.positionAbsolute.y + borderNodeOffset - (movedNode.height ?? 0);
+              } else if (nearestBorder === BorderNodePosition.SOUTH) {
+                change.position.y = (parentNode.height ?? 0) - borderNodeOffset;
+                change.positionAbsolute.y = parentNode.positionAbsolute.y + (parentNode.height ?? 0) - borderNodeOffset;
+              } else if (nearestBorder === BorderNodePosition.WEST) {
+                change.position.x = borderNodeOffset - (movedNode.width ?? 0);
+                change.positionAbsolute.x = parentNode.positionAbsolute.x + borderNodeOffset - (movedNode.width ?? 0);
+              } else if (nearestBorder === BorderNodePosition.EAST) {
+                change.position.x = (parentNode.width ?? 0) - borderNodeOffset;
+                change.positionAbsolute.x = parentNode.positionAbsolute.x + (parentNode.width ?? 0) - borderNodeOffset;
+              } else {
+                //Invalid position, reset to the initial one
+                change.position = movedNode.position;
+                change.positionAbsolute = movedNode.positionAbsolute;
+              }
+            }
+            const oldMovedNode = oldNodes.find((n) => n.id === movedNode.id);
+            const newPosition = findBorderNodePosition(change.position, movedNode, parentNode);
+            if (oldMovedNode && oldMovedNode.data.borderNodePosition !== newPosition) {
+              oldMovedNode.data.borderNodePosition = newPosition;
+            }
+            if (parentLayoutHandler?.calculateCustomNodeBorderNodePosition && parentNode) {
+              change.position = parentLayoutHandler.calculateCustomNodeBorderNodePosition(
+                parentNode,
+                {
+                  x: change.position.x,
+                  y: change.position.y,
+                  width: movedNode.width ?? 0,
+                  height: movedNode.height ?? 0,
+                },
+                true
+              );
             }
           }
-          const oldMovedNode = oldNodes.find((n) => n.id === movedNode.id);
-          const newPosition = findBorderNodePosition(change.position, movedNode, parentNode);
-          if (oldMovedNode && oldMovedNode.data.borderNodePosition !== newPosition) {
-            oldMovedNode.data.borderNodePosition = newPosition;
-          }
-          if (parentLayoutHandler?.calculateCustomNodeBorderNodePosition && parentNode) {
-            change.position = parentLayoutHandler.calculateCustomNodeBorderNodePosition(
-              parentNode,
-              {
-                x: change.position.x,
-                y: change.position.y,
-                width: movedNode.width ?? 0,
-                height: movedNode.height ?? 0,
-              },
-              true
-            );
-          }
         }
-      }
-      return change;
-    });
-  }, []);
+        return change;
+      });
+    },
+    []
+  );
 
   return { transformBorderNodeChanges };
 };

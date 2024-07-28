@@ -10,8 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeDimensionChange } from '@reactflow/core/dist/esm/types/changes';
-import { Node, NodeChange } from '@xyflow/react';
+import { Node, NodeChange, NodeDimensionChange } from '@xyflow/react';
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
@@ -54,7 +53,6 @@ const applyResizeToListContain = (
           id: node.id,
           type: 'dimensions',
           resizing: true,
-          updateStyle: true,
           dimensions: { width: change.dimensions?.width - borderWidth, height: node.height ?? 0 },
         });
         newChanges.push(...applyResizeToListContain(node, nodes, change));

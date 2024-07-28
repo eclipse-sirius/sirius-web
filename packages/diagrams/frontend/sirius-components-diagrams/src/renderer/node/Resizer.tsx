@@ -62,7 +62,7 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
       return (
         <>
           <NodeResizeControl
-            variant={ResizeControlVariant.Line}
+            variant={}
             position={'left'}
             shouldResize={() => !data.isBorderNode}
             style={{ ...resizeControlLineStyle(theme) }}

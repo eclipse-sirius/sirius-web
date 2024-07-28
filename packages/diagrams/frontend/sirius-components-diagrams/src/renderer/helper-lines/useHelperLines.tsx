@@ -17,7 +17,7 @@ import {
   NodeDimensionChange,
   NodePositionChange,
   useReactFlow,
-  useStoreApi
+  useStoreApi,
 } from '@xyflow/react';
 import { useCallback, useState } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';

@@ -11,7 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, Rect, Transform, getRectOfNodes, getTransformForBounds, useReactFlow } from '@xyflow/react';
+import {
+  Edge,
+  Node as ReactFlowNode,
+  Rect,
+  Viewport,
+  getNodesBounds,
+  getViewportForBounds,
+  useReactFlow,
+} from '@xyflow/react';
 import { toSvg } from 'html-to-image';
 import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -25,13 +33,13 @@ const downloadImage = (dataUrl: string) => {
 };
 
 export const useExportToImage = (): UseExportToImage => {
-  const reactFlow = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const reactFlow = useReactFlow<ReactFlowNode<NodeData>, Edge<EdgeData>>();
 
   const exportToImage = useCallback(() => {
-    const nodesBounds: Rect = getRectOfNodes(reactFlow.getNodes());
+    const nodesBounds: Rect = getNodesBounds(reactFlow.getNodes());
     const imageWidth: number = nodesBounds.width;
     const imageHeight: number = nodesBounds.height;
-    const transform: Transform = getTransformForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 0.2);
+    const transform: Viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 0.2);
 
     const viewport: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__viewport');
     const edges: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__edges');

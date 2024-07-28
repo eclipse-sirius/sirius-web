@@ -26,7 +26,10 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { getEdges, getNodes } = useStore();
 
-  const isMoveFinished = (change: NodeChange<Node<NodeData>>, nodes: Node<NodeData>[]): change is NodePositionChange => {
+  const isMoveFinished = (
+    change: NodeChange<Node<NodeData>>,
+    nodes: Node<NodeData>[]
+  ): change is NodePositionChange => {
     return (
       change.type === 'position' &&
       typeof change.dragging === 'boolean' &&
@@ -37,7 +40,10 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
   const isResizeFinished = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
     change.type === 'dimensions' && typeof change.resizing === 'boolean' && !change.resizing;
 
-  const isBoundsChangeFinished = (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): NodeChange<Node<NodeData>> | undefined => {
+  const isBoundsChangeFinished = (
+    changes: NodeChange<Node<NodeData>>[],
+    nodes: Node<NodeData>[]
+  ): NodeChange<Node<NodeData>> | undefined => {
     return changes.find((change) => isMoveFinished(change, nodes) || isResizeFinished(change));
   };
 

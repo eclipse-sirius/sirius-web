@@ -21,7 +21,7 @@ export const edgeTypes: EdgeComponentsMap = {
 };
 
 export interface EdgeDataMap {
-  multiLabelEdge: MultiLabelEdgeData,
+  multiLabelEdge: MultiLabelEdgeData;
 }
 
 export type EdgeComponentsMap = {
