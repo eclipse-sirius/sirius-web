@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useStoreApi } from '@xyflow/react';
+import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { FullscreenContextValue } from './Fullscreen.context.types';
 import { FullscreenContext } from './FullscreenContext';
 import { UseFullscreenValue } from './useFullscreen.types';
 
 export const useFullscreen = (): UseFullscreenValue => {
-  const { domNode } = useStoreApi().getState();
+  const { domNode } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { fullscreen, setFullscreen } = useContext<FullscreenContextValue>(FullscreenContext);
 
   useEffect(() => {

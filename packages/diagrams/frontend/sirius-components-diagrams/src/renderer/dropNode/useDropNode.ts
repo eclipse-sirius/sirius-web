@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { Node, NodeDragHandler, XYPosition, useReactFlow, useStoreApi } from '@xyflow/react';
+import { Edge, Node, NodeDragHandler, XYPosition, useReactFlow, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -67,7 +67,7 @@ const getNodeDepth = (node: Node<NodeData>, intersections: Node<NodeData>[]): nu
   let nodeHierarchy: Node<NodeData> | undefined = node;
   while (nodeHierarchy) {
     nodeDepth++;
-    nodeHierarchy = intersections.find((node) => node.id === nodeHierarchy?.parentNode);
+    nodeHierarchy = intersections.find((node) => node.id === nodeHierarchy?.parentId);
   }
   return nodeDepth;
 };
@@ -131,15 +131,15 @@ export const useDropNode = (): UseDropNodeValue => {
 
   const { diagramDescription } = useDiagramDescription();
   const onDropNode = useDropNodeMutation();
-  const { getNodes, getIntersectingNodes, screenToFlowPosition } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getIntersectingNodes, screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { setNodes } = useStore();
   const storeApi = useStoreApi();
 
-  const getNodeById = (id: string) => storeApi.getState().nodeInternals.get(id);
+  const getNodeById = (id: string) => storeApi.getState().nodeLookup.get(id);
 
   const getDraggableNode = (node: Node<NodeData>): Node<NodeData> => {
-    if (node.parentNode) {
-      const parentNode = getNodeById(node.parentNode);
+    if (node.parentId) {
+      const parentNode = getNodeById(node.parentId);
       if (parentNode && isListData(parentNode) && !parentNode.data.areChildNodesDraggable) {
         return getDraggableNode(parentNode);
       }
@@ -161,7 +161,7 @@ export const useDropNode = (): UseDropNodeValue => {
       const compatibleNodes = getNodes()
         .filter(
           (candidate) =>
-            !candidate.hidden && !isDescendantOf(computedNode, candidate, storeApi.getState().nodeInternals)
+            !candidate.hidden && !isDescendantOf(computedNode, candidate, storeApi.getState().nodeLookup)
         )
         .filter((candidate) =>
           dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
@@ -204,7 +204,7 @@ export const useDropNode = (): UseDropNodeValue => {
         const newParentId =
           [...intersections]
             .filter(
-              (intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, storeApi.getState().nodeInternals)
+              (intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, storeApi.getState().nodeLookup)
             )
             .sort((n1, n2) => getNodeDepth(n2, intersections) - getNodeDepth(n1, intersections))[0]?.id || null;
 
@@ -246,11 +246,11 @@ export const useDropNode = (): UseDropNodeValue => {
         const isDropOnNode: boolean = !!targetNode;
 
         const isDropOnSameParent: boolean =
-          isDropOnNode && !!draggedNode?.parentNode && draggedNode.parentNode === targetNode?.id;
+          isDropOnNode && !!draggedNode?.parentId && draggedNode.parentId === targetNode?.id;
 
-        const isDropFromDiagramToDiagram: boolean = !isDropOnNode && !draggedNode?.parentNode;
+        const isDropFromDiagramToDiagram: boolean = !isDropOnNode && !draggedNode?.parentId;
         const isBorderNodeDrop: boolean =
-          draggedNode.data.isBorderNode && (!isDropOnNode || draggedNode.parentNode === targetNode?.id);
+          draggedNode.data.isBorderNode && (!isDropOnNode || draggedNode.parentId === targetNode?.id);
 
         const isValidDropOnNode: boolean = isDropOnNode && !!targetNode?.data.isDropNodeCandidate;
         const isValidDropOnDiagram: boolean = !isDropOnNode && droppableOnDiagram;

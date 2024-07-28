@@ -22,7 +22,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
-import { Node, OnSelectionChangeFunc, useOnSelectionChange, useReactFlow } from '@xyflow/react';
+import { Edge, Node, OnSelectionChangeFunc, useOnSelectionChange, useReactFlow } from '@xyflow/react';
 import { Fragment, memo, useCallback, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { AlignHorizontalCenterIcon } from '../../../icons/AlignHorizontalCenterIcon';
@@ -120,12 +120,12 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
     isDistributeElementToolSectionExpand: false,
     lastDistributeElementToolId: null,
   });
-  const { getNode } = useReactFlow<NodeData, EdgeData>();
+  const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const onChange: OnSelectionChangeFunc = useCallback(({ nodes, edges }) => {
     const selectedNodes = nodes.filter((node: Node) => node.selected);
     const selectedListChildFiltered = selectedNodes.filter((node: Node) => {
-      const parent = getNode(node.parentNode ?? '');
+      const parent = getNode(node.parentId ?? '');
       if (parent) {
         return !isListData(parent);
       }

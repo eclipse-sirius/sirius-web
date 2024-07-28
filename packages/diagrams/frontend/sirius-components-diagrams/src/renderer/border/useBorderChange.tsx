@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeChange, useReactFlow, XYPosition } from '@xyflow/react';
+import { Edge, Node, NodeChange, useReactFlow, XYPosition } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
@@ -57,15 +57,15 @@ const findNearestBorderPosition = (
 };
 
 export const useBorderChange = (): UseBorderChangeValue => {
-  const { getNodes } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
-  const transformBorderNodeChanges = useCallback((changes: NodeChange[], oldNodes: Node<NodeData>[]): NodeChange[] => {
+  const transformBorderNodeChanges = useCallback((changes: NodeChange<Node<NodeData>>[], oldNodes: Node<NodeData>[]): NodeChange<Node<NodeData>>[] => {
     return changes.map((change) => {
       if (change.type === 'position' && change.position && change.positionAbsolute) {
         const movedNode = getNodes().find((node) => change.id === node.id);
         if (movedNode && movedNode.data.isBorderNode) {
-          const parentNode = getNodes().find((node) => movedNode.parentNode === node.id);
+          const parentNode = getNodes().find((node) => movedNode.parentId === node.id);
           const parentLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
             nodeLayoutHandler.canHandle(parentNode as Node<NodeData, DiagramNodeType>)
           );

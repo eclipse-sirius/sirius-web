@@ -36,7 +36,7 @@ import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { useDiagramDescription } from '../contexts/useDiagramDescription';
 import { convertDiagram } from '../converter/convertDiagram';
 import { useStore } from '../representation/useStore';
-import { Diagram, DiagramRendererProps, NodeData, ReactFlowPropsCustomizer } from './DiagramRenderer.types';
+import { Diagram, DiagramRendererProps, EdgeData, NodeData, ReactFlowPropsCustomizer } from './DiagramRenderer.types';
 import { diagramRendererReactFlowPropsCustomizerExtensionPoint } from './DiagramRendererExtensionPoints';
 import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
@@ -183,31 +183,31 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     resetHelperLines,
   } = useHelperLines();
 
-  const handleNodesChange: OnNodesChange = useCallback(
-    (changes: NodeChange[]) => {
+  const handleNodesChange: OnNodesChange<Node<NodeData>> = useCallback(
+    (changes: NodeChange<Node<NodeData>>[]) => {
       const noReadOnlyChanges = filterReadOnlyChanges(changes);
-      const isResetChange = changes.find((change) => change.type === 'reset');
+      const isResetChange = changes.find((change) => change.type === 'replace');
       if (
         isResetChange ||
         (noReadOnlyChanges.length === 1 &&
           noReadOnlyChanges[0]?.type === 'dimensions' &&
           typeof noReadOnlyChanges[0].resizing !== 'boolean')
       ) {
-        setNodes((oldNodes) => applyNodeChanges(noReadOnlyChanges, oldNodes));
+        setNodes((oldNodes) => applyNodeChanges<Node<NodeData>>(noReadOnlyChanges, oldNodes));
       } else {
         setNodes((oldNodes) => {
           resetHelperLines(changes);
-          let transformedNodeChanges: NodeChange[] = transformBorderNodeChanges(noReadOnlyChanges, oldNodes);
+          let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges, oldNodes);
           transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
           transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
           transformedNodeChanges = applyHelperLines(transformedNodeChanges);
 
-          let newNodes = applyNodeChanges(transformedNodeChanges, oldNodes);
+          let newNodes = applyNodeChanges<Node<NodeData>>(transformedNodeChanges, oldNodes);
 
           newNodes = applyMoveChange(transformedNodeChanges, newNodes);
-          newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+          newNodes = applyHandleChange(transformedNodeChanges, newNodes);
 
-          layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+          layoutOnBoundsChange(transformedNodeChanges, newNodes);
           return newNodes;
         });
       }
@@ -215,8 +215,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     [setNodes, layoutOnBoundsChange, getNodes, getEdges]
   );
 
-  const handleEdgesChange: OnEdgesChange = useCallback(
-    (changes: EdgeChange[]) => {
+  const handleEdgesChange: OnEdgesChange<Edge<EdgeData>> = useCallback(
+    (changes: EdgeChange<Edge<EdgeData>>[]) => {
       onEdgesChange(changes);
     },
     [onEdgesChange]
@@ -295,20 +295,20 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { nodesDraggable } = useNodesDraggable();
 
-  let reactFlowProps: ReactFlowProps = {
+  let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
     nodes: nodes,
     nodeTypes: nodeTypes,
     onNodesChange: handleNodesChange,
     edges: edges,
     edgeTypes: edgeTypes,
-    edgesUpdatable: !readOnly,
+    edgesReconnectable: !readOnly,
     onKeyDown: onKeyDown,
     onConnect: onConnect,
     onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,
     connectionLineComponent: ConnectionLine,
     onEdgesChange: handleEdgesChange,
-    onEdgeUpdate: reconnectEdge,
+    onReconnect: reconnectEdge,
     onPaneClick: handlePaneClick,
     onEdgeClick: handleDiagramElementCLick,
     onNodeClick: handleDiagramElementCLick,

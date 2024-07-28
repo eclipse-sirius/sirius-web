@@ -27,7 +27,7 @@ export const useDropDiagramStyle = (): useDropDiagramStyleValue => {
   const draggedNode = getNodes().find((node) => node.dragging);
 
   const diagramTargeted: boolean =
-    !!draggedNode && !targetNode && !!draggedNode?.parentNode && !draggedNode.data.isBorderNode;
+    !!draggedNode && !targetNode && !!draggedNode?.parentId && !draggedNode.data.isBorderNode;
   const diagramForbidden: boolean = diagramTargeted && !!draggedNode?.id !== null && !droppableOnDiagram;
   const backgroundColor = diagramForbidden ? theme.palette.action.disabledBackground : theme.palette.background.default;
 

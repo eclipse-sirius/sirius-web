@@ -39,7 +39,7 @@ export class LayoutEngine implements ILayoutEngine {
         handler.canHandle(node)
       );
       if (nodeLayoutHandler) {
-        const directChildren = visibleNodes.filter((visibleNode) => visibleNode.parentNode === node.id);
+        const directChildren = visibleNodes.filter((visibleNode) => visibleNode.parentId === node.id);
         nodeLayoutHandler.handle(
           this,
           previousDiagram,

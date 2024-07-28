@@ -40,10 +40,10 @@ const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
   let depth = 0;
 
-  let parentNode = node?.parentNode ? nodeId2node.get(node.parentNode) : undefined;
+  let parentNode = node?.parentId ? nodeId2node.get(node.parentId) : undefined;
   while (parentNode) {
     depth = depth + 1;
-    parentNode = parentNode.parentNode ? nodeId2node.get(parentNode.parentNode) : undefined;
+    parentNode = parentNode.parentId ? nodeId2node.get(parentNode.parentId) : undefined;
   }
 
   return depth;
@@ -209,14 +209,14 @@ export const convertDiagram = (
     edges,
   };
 
-  const nodeInternals = new Map();
+  const nodeLookUp = new Map();
   nodes.forEach((node) => {
-    nodeInternals.set(node.id, node);
+    nodeLookUp.set(node.id, node);
   });
 
   computeBorderNodeExtents(rawDiagram.nodes);
   computeBorderNodePositions(rawDiagram.nodes);
-  layoutHandles(rawDiagram, diagramDescription, nodeInternals);
+  layoutHandles(rawDiagram, diagramDescription, nodeLookUp);
 
   return {
     nodes: rawDiagram.nodes,

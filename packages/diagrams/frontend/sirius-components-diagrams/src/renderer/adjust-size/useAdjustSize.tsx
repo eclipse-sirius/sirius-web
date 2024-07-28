@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, useReactFlow } from '@xyflow/react';
+import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -27,13 +27,13 @@ export const useAdjustSize = (): UseAdjustSizeValue => {
   const { refreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
-  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const adjustSize = (nodeId: string): void => {
     const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
     const targetedNode: Node<NodeData, string> | undefined = nodes.find((node) => node.id === nodeId);
     const childNodes: Node<NodeData, string>[] | [] = nodes
-      .filter((node) => node.parentNode === nodeId)
+      .filter((node) => node.parentId === nodeId)
       .map((node) => {
         node.data.resizedByUser = true;
         return node;

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeInternals, Position, XYPosition } from '@xyflow/react';
+import { Node, Position, XYPosition } from '@xyflow/react';
 import { GQLDiagramDescription } from '../../representation/DiagramRepresentation.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters, getNodeCenter, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
@@ -91,13 +91,13 @@ const populateHandleIdToOtherEndNode: PopulateHandleIdToOtherHandNode = (
   });
 };
 
-const layoutHandleIndex = (diagram: RawDiagram, nodeInternals: NodeInternals) => {
+const layoutHandleIndex = (diagram: RawDiagram, nodeLookup) => {
   const handleIdToOtherEndNode: Map<string, Node<NodeData>> = new Map<string, Node<NodeData>>();
   const nodeIdToNodeCenter: Map<string, XYPosition> = new Map<string, XYPosition>();
   diagram.nodes.forEach((node) => {
     const handlesId = getHandlesIdsFromNode(node);
     populateHandleIdToOtherEndNode(diagram.edges, diagram.nodes, handlesId, handleIdToOtherEndNode);
-    nodeIdToNodeCenter.set(node.id, getNodeCenter(node, nodeInternals));
+    nodeIdToNodeCenter.set(node.id, getNodeCenter(node, nodeLookup));
   });
 
   const nodeIdToConnectionHandle: Map<string, ConnectionHandle[]> = new Map<string, ConnectionHandle[]>();
@@ -131,7 +131,7 @@ const layoutHandleIndex = (diagram: RawDiagram, nodeInternals: NodeInternals) =>
 const layoutHandlePosition = (
   diagram: RawDiagram,
   diagramDescription: GQLDiagramDescription,
-  nodeInternals: NodeInternals
+  nodeLookup
 ) => {
   diagram.edges.forEach((edge) => {
     const { sourceNode: sourceEdgeNode, targetNode: targetEdgeNode, sourceHandle, targetHandle } = edge;
@@ -141,7 +141,7 @@ const layoutHandlePosition = (
       const { sourcePosition, targetPosition } = getEdgeParameters(
         sourceNode,
         targetNode,
-        nodeInternals,
+        nodeLookup,
         diagramDescription.arrangeLayoutDirection
       );
 
@@ -184,8 +184,8 @@ const layoutHandlePosition = (
 export const layoutHandles = (
   diagram: RawDiagram,
   diagramDescription: GQLDiagramDescription,
-  nodeInternals: NodeInternals
+  nodeLookup
 ) => {
-  layoutHandlePosition(diagram, diagramDescription, nodeInternals);
-  layoutHandleIndex(diagram, nodeInternals);
+  layoutHandlePosition(diagram, diagramDescription, nodeLookup);
+  layoutHandleIndex(diagram, nodeLookup);
 };

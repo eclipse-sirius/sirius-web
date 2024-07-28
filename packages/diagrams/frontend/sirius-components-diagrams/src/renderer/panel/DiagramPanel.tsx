@@ -28,7 +28,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
-import { Panel, useNodesInitialized, useReactFlow } from '@xyflow/react';
+import { Edge, Node, Panel, useNodesInitialized, useReactFlow } from '@xyflow/react';
 import { memo, useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -58,7 +58,7 @@ export const DiagramPanel = memo(
       diagramPanelActionExtensionPoint
     );
 
-    const { getNodes, getEdges, zoomIn, zoomOut, fitView } = useReactFlow<NodeData, EdgeData>();
+    const { getNodes, getEdges, zoomIn, zoomOut, fitView } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
     const getAllElementsIds = () => [...getNodes().map((elem) => elem.id), ...getEdges().map((elem) => elem.id)];
     const getSelectedNodes = () => getNodes().filter((node) => node.selected);

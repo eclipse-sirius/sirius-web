@@ -103,7 +103,7 @@ const toImageNode = (
   };
 
   if (gqlParentNode) {
-    node.parentNode = gqlParentNode.id;
+    node.parentId = gqlParentNode.id;
   }
 
   const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];

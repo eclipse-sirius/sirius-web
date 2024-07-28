@@ -24,7 +24,7 @@ const nodesOverlap = (nodeA: Node, nodeB: Node): boolean => {
 
 const getIntersectingNodes = (node: Node, nodes: Node[]): Node[] => {
   return nodes.filter((n) => {
-    if (n.parentNode !== node.parentNode || n.id === node.id) {
+    if (n.parentId !== node.parentId || n.id === node.id) {
       return false;
     }
     return nodesOverlap(node, n);

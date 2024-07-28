@@ -31,7 +31,7 @@ export type OutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_EN
 
 export type OutsideLabels = Partial<Record<OutsideLabelLocation, OutsideLabel>>;
 
-export interface NodeData {
+export interface NodeData extends Record<string, unknown> {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
@@ -63,7 +63,7 @@ export enum BorderNodePosition {
   WEST,
 }
 
-export interface EdgeData {
+export interface EdgeData extends Record<string, unknown> {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
@@ -106,4 +106,4 @@ export interface OutsideLabel {
   overflowStrategy: LabelOverflowStrategy;
 }
 
-export type ReactFlowPropsCustomizer = (options: ReactFlowProps) => ReactFlowProps;
+export type ReactFlowPropsCustomizer = (options: ReactFlowProps<Node<NodeData>, Edge<EdgeData>>) => ReactFlowProps<Node<NodeData>, Edge<EdgeData>>;

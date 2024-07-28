@@ -47,7 +47,7 @@ export const computeBorderNodeExtents = (nodes: Node<NodeData, DiagramNodeType>[
   nodes
     .filter((node) => node.data.isBorderNode)
     .forEach((borderNode) => {
-      const parentNode = nodes.find((node) => node.id === borderNode.parentNode);
+      const parentNode = nodes.find((node) => node.id === borderNode.parentId);
       if (parentNode) {
         borderNode.extent = getBorderNodeExtent(parentNode, borderNode);
       }
@@ -58,7 +58,7 @@ export const computeBorderNodePositions = (nodes: Node<NodeData, DiagramNodeType
   nodes
     .filter((node) => node.data.isBorderNode)
     .forEach((borderNode) => {
-      const parentNode = nodes.find((node) => node.id === borderNode.parentNode);
+      const parentNode = nodes.find((node) => node.id === borderNode.parentId);
       if (parentNode) {
         const newPosition = findBorderNodePosition(borderNode.position, borderNode, parentNode);
         borderNode.data.borderNodePosition = newPosition ?? BorderNodePosition.EAST;

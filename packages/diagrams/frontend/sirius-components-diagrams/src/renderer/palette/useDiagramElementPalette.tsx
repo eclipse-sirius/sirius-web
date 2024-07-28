@@ -29,7 +29,7 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
   const { x, y, isOpened, hideDiagramElementPalette, showDiagramElementPalette } =
     useContext<DiagramElementPaletteContextValue>(DiagramElementPaletteContext);
   const store = useStoreApi();
-  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const onDiagramElementClick = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>, elementClicked: Node | Edge) => {

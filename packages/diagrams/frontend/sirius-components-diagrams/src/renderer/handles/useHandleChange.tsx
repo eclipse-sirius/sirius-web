@@ -10,26 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeChange, NodePositionChange, getConnectedEdges, useStoreApi } from '@xyflow/react';
+import { Edge, Node, NodeChange, NodePositionChange, getConnectedEdges, useStoreApi } from '@xyflow/react';
 import { useCallback } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { useStore } from '../../representation/useStore';
-import { NodeData } from '../DiagramRenderer.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParametersWhileMoving, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
 import { UseHandleChangeValue } from './useHandleChange.types';
 
-const isNodePositionChange = (change: NodeChange): change is NodePositionChange =>
+const isNodePositionChange = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
   change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
 
 export const useHandleChange = (): UseHandleChangeValue => {
   const { getEdges } = useStore();
   const { diagramDescription } = useDiagramDescription();
-  const storeApi = useStoreApi();
+  const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   const applyHandleChange = useCallback(
-    (changes: NodeChange[], nodes: Node<NodeData, DiagramNodeType>[]): Node<NodeData, DiagramNodeType>[] => {
+    (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData, DiagramNodeType>[]): Node<NodeData, DiagramNodeType>[] => {
       const nodeId2ConnectionHandles = new Map<string, ConnectionHandle[]>();
       changes.filter(isNodePositionChange).forEach((nodeDraggingChange) => {
         const movingNode = nodes.find((node) => nodeDraggingChange.id === node.id);
@@ -45,7 +45,7 @@ export const useHandleChange = (): UseHandleChangeValue => {
                 nodeDraggingChange,
                 sourceNode,
                 targetNode,
-                storeApi.getState().nodeInternals,
+                storeApi.getState().nodeLookup,
                 diagramDescription.arrangeLayoutDirection
               );
               const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(

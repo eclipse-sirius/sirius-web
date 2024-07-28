@@ -31,8 +31,8 @@ export type StoreContextValue = {
   getEdges: () => Edge<EdgeData>[];
   getEdge: (id: string) => Edge<EdgeData> | undefined;
   setEdges: Dispatch<SetStateAction<Edge<EdgeData>[]>>;
-  onNodesChange: (changes: NodeChange[]) => void;
-  onEdgesChange: (changes: EdgeChange[]) => void;
+  onNodesChange: (changes: NodeChange<Node<NodeData>>[]) => void;
+  onEdgesChange: (changes: EdgeChange<Edge<EdgeData>>[]) => void;
 };
 
 export interface StoreContextProviderProps {

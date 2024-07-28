@@ -15,13 +15,14 @@ import { Theme, useTheme } from '@mui/material/styles';
 import {
   Connection,
   Edge,
+  Node,
   OnConnect,
   OnConnectEnd,
   OnConnectStart,
   OnConnectStartParams,
   useReactFlow,
   useStoreApi,
-  useUpdateNodeInternals,
+  useUpdateNodeInternals
 } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
@@ -51,14 +52,14 @@ export const useConnector = (): UseConnectorValue => {
     setIsNewConnection,
   } = useContext<ConnectorContextValue>(ConnectorContext);
 
-  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+  const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { getNode, setEdges } = reactFlowInstance;
 
   const theme = useTheme();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
   const updateNodeInternals = useUpdateNodeInternals();
   const { diagramDescription } = useDiagramDescription();
-  const store = useStoreApi();
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   const isConnectionInProgress = () => {
     const connectionNodeId = store.getState().connectionNodeId;
@@ -110,7 +111,7 @@ export const useConnector = (): UseConnectorValue => {
       const { targetPosition, sourcePosition } = getEdgeParameters(
         sourceNode,
         targetNode,
-        store.getState().nodeInternals,
+        store.getState().nodeLookup,
         diagramDescription.arrangeLayoutDirection
       );
 
@@ -122,7 +123,7 @@ export const useConnector = (): UseConnectorValue => {
         targetHandle: `handle--${connection.target}--temp--${targetPosition}`,
         type: 'smoothstep',
         animated: true,
-        updatable: false,
+        reconnectable: false,
         style: tempConnectionLineStyle(theme),
         zIndex: 2002,
       };

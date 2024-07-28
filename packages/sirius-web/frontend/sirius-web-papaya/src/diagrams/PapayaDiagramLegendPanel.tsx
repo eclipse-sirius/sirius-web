@@ -27,7 +27,7 @@ const usePapayaDiagramLegendPanelStyles = makeStyles()((theme) => ({
   },
 }));
 
-const nodesLengthSelector = (state: ReactFlowState) => Array.from(state.nodeInternals.values()).length || 0;
+const nodesLengthSelector = (state: ReactFlowState) => Array.from(state.nodeLookup.values()).length || 0;
 const edgesLengthSelector = (state: ReactFlowState) => Array.from(state.edges.values()).length || 0;
 
 export const PapayaDiagramLegendPanel = memo(() => {

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Box, Dimensions, Node, NodeInternals, Rect, XYPosition, boxToRect, rectToBox } from '@xyflow/react';
+import { Box, Dimensions, Node, Rect, XYPosition, boxToRect, rectToBox } from '@xyflow/react';
 import { InsideLabel, NodeData } from '../DiagramRenderer.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
@@ -165,7 +165,7 @@ export const getInsideLabelWidthConstraint = (
  */
 const getNodeFootprint = (allVisibleNodes: Node<NodeData>[], node: Node<NodeData>): Rect => {
   const borderNodes = allVisibleNodes
-    .filter((visibleNode) => visibleNode.parentNode === node.id)
+    .filter((visibleNode) => visibleNode.parentId === node.id)
     .filter((visibleNode) => visibleNode.data.isBorderNode);
 
   const footPrint: Box = [node, ...borderNodes].reduce<Box>(
@@ -498,7 +498,7 @@ export const getWestBorderNodeFootprintHeight = (
 };
 
 export const getChildren = (node: Node<NodeData>, allVisibleNodes: Node<NodeData>[]): Node<NodeData>[] => {
-  return allVisibleNodes.filter((child) => child.parentNode === node.id);
+  return allVisibleNodes.filter((child) => child.parentId === node.id);
 };
 
 export const applyRatioOnNewNodeSizeValue = (node: Node<NodeData>) => {
@@ -514,25 +514,25 @@ export const applyRatioOnNewNodeSizeValue = (node: Node<NodeData>) => {
   }
 };
 
-export const isDescendantOf = (parent: Node, candidate: Node, nodeInternals: NodeInternals): boolean => {
+export const isDescendantOf = (parent: Node, candidate: Node, nodeLookup): boolean => {
   if (parent.id === candidate.id) {
     return true;
   } else {
-    if (candidate.parentNode) {
-      const candidateParent: Node | undefined = nodeInternals.get(candidate.parentNode);
-      return !!candidateParent && isDescendantOf(parent, candidateParent, nodeInternals);
+    if (candidate.parentId) {
+      const candidateParent: Node | undefined = nodeLookup.get(candidate.parentId);
+      return !!candidateParent && isDescendantOf(parent, candidateParent, nodeLookup);
     }
     return false;
   }
 };
 
-export const isSiblingOrDescendantOf = (sibling: Node, candidate: Node, nodeInternals: NodeInternals): boolean => {
-  if (sibling.parentNode === candidate.id) {
+export const isSiblingOrDescendantOf = (sibling: Node, candidate: Node, nodeLookUp): boolean => {
+  if (sibling.parentId === candidate.id) {
     return true;
   } else {
-    if (candidate.parentNode) {
-      const candidateParent: Node | undefined = nodeInternals.get(candidate.parentNode);
-      return !!candidateParent && isSiblingOrDescendantOf(sibling, candidateParent, nodeInternals);
+    if (candidate.parentId) {
+      const candidateParent: Node | undefined = nodeLookUp.get(candidate.parentId);
+      return !!candidateParent && isSiblingOrDescendantOf(sibling, candidateParent, nodeLookUp);
     }
     return false;
   }

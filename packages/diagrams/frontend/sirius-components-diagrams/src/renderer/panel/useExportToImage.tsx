@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Rect, Transform, getRectOfNodes, getTransformForBounds, useReactFlow } from '@xyflow/react';
+import { Edge, Node, Rect, Transform, getRectOfNodes, getTransformForBounds, useReactFlow } from '@xyflow/react';
 import { toSvg } from 'html-to-image';
 import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -25,7 +25,7 @@ const downloadImage = (dataUrl: string) => {
 };
 
 export const useExportToImage = (): UseExportToImage => {
-  const reactFlow = useReactFlow<NodeData, EdgeData>();
+  const reactFlow = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const exportToImage = useCallback(() => {
     const nodesBounds: Rect = getRectOfNodes(reactFlow.getNodes());

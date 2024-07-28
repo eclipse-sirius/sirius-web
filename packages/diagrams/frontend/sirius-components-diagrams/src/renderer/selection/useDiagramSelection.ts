@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { useOnSelectionChange, useReactFlow } from '@xyflow/react';
+import { Edge, Node, useOnSelectionChange, useReactFlow } from '@xyflow/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -21,7 +21,7 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
   const { selection, setSelection } = useSelection();
   const [shiftSelection, setShiftSelection] = useState<SelectionEntry[]>([]);
 
-  const { fitView } = useReactFlow<NodeData, EdgeData>();
+  const { fitView } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { getNodes, setNodes, getEdges, setEdges } = useStore();
 
   useEffect(() => {

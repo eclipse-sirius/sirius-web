@@ -202,8 +202,8 @@ export const prepareLayoutArea = (
 };
 
 export const cleanLayoutArea = (container: HTMLDivElement) => {
-  if (container?.parentNode) {
-    container.parentNode.removeChild(container);
+  if (container?.parentId) {
+    container.parentId.removeChild(container);
   }
 };
 
@@ -226,7 +226,7 @@ const layoutDiagram = (
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ) => {
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
-  const nodesToLayout = allVisibleNodes.filter((node) => !node.parentNode);
+  const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId);
 
   const layoutEngine: ILayoutEngine = new LayoutEngine();
 
@@ -239,8 +239,8 @@ const layoutDiagram = (
     newlyAddedNode = allVisibleNodes
       .filter((node) => !previousDiagram?.nodes.map((n) => n.id).find((n) => n === node.id))
       .find((node) => {
-        if (node.parentNode) {
-          return referencePosition.parentId === node.parentNode;
+        if (node.parentId) {
+          return referencePosition.parentId === node.parentId;
         }
         return !referencePosition.parentId || referencePosition.parentId === '';
       });
@@ -249,7 +249,7 @@ const layoutDiagram = (
       if (newlyAddedNode.data.isBorderNode) {
         getNewlyAddedBorderNodePosition(
           newlyAddedNode,
-          allVisibleNodes.find((node) => node.id === newlyAddedNode?.parentNode),
+          allVisibleNodes.find((node) => node.id === newlyAddedNode?.parentId),
           referencePosition
         );
       }

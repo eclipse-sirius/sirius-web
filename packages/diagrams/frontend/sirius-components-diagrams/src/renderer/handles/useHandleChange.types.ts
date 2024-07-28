@@ -17,7 +17,7 @@ import { ConnectionHandle } from './ConnectionHandles.types';
 
 export interface UseHandleChangeValue {
   applyHandleChange: (
-    changes: NodeChange[],
+    changes: NodeChange<Node<NodeData>>[],
     nodes: Node<NodeData, DiagramNodeType>[]
   ) => Node<NodeData, DiagramNodeType>[];
 }

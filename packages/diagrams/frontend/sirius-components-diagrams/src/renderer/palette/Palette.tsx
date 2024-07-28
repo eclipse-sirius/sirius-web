@@ -23,7 +23,7 @@ import TonalityIcon from '@mui/icons-material/Tonality';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
-import { useReactFlow, useViewport } from '@xyflow/react';
+import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -224,7 +224,7 @@ export const Palette = ({
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { pinDiagramElements } = usePinDiagramElements();
   const { adjustSize } = useAdjustSize();
-  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
   const { addErrorMessage, addMessages } = useMultiToast();
