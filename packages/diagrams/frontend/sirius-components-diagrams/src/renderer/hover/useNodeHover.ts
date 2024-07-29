@@ -30,9 +30,12 @@ export const useNodeHover = (): UseNodeHoverValue => {
           nds.map((n) => {
             if (n.id === node.id) {
               if (!n.data.isHovered) {
-                n.data = {
-                  ...n.data,
-                  isHovered: true,
+                return {
+                  ...n,
+                  data: {
+                    ...n.data,
+                    isHovered: true,
+                  },
                 };
               }
             }
@@ -49,9 +52,12 @@ export const useNodeHover = (): UseNodeHoverValue => {
       setNodes((nds) =>
         nds.map((n) => {
           if (n.data.isHovered) {
-            n.data = {
-              ...n.data,
-              isHovered: false,
+            return {
+              ...n,
+              data: {
+                ...n.data,
+                isHovered: false,
+              },
             };
           }
           return n;

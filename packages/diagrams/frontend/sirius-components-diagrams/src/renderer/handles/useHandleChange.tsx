@@ -51,6 +51,7 @@ export const useHandleChange = (): UseHandleChangeValue => {
                 storeApi.getState().nodeLookup,
                 diagramDescription.arrangeLayoutDirection
               );
+
               const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(
                 (connectionHandle: ConnectionHandle) => connectionHandle.id === sourceHandle
               );
@@ -82,7 +83,13 @@ export const useHandleChange = (): UseHandleChangeValue => {
       return nodes.map((node) => {
         const connectionHandles = nodeId2ConnectionHandles.get(node.id);
         if (connectionHandles) {
-          node.data = { ...node.data, connectionHandles: connectionHandles };
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              connectionHandles: connectionHandles,
+            },
+          };
         }
         return node;
       });

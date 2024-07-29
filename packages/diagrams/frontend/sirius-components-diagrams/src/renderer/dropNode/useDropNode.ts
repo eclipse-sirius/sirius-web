@@ -177,9 +177,12 @@ export const useDropNode = (): UseDropNodeValue => {
       setNodes((nds) =>
         nds.map((n) => {
           if (compatibleNodes.includes(n.id)) {
-            n.data = {
-              ...n.data,
-              isDropNodeCandidate: true,
+            return {
+              ...n,
+              data: {
+                ...n.data,
+                isDropNodeCandidate: true,
+              },
             };
           }
           return n;
@@ -213,14 +216,20 @@ export const useDropNode = (): UseDropNodeValue => {
           setNodes((nds) =>
             nds.map((n) => {
               if (n.id === newParentId) {
-                n.data = {
-                  ...n.data,
-                  isDropNodeTarget: true,
+                return {
+                  ...n,
+                  data: {
+                    ...n.data,
+                    isDropNodeTarget: true,
+                  },
                 };
               } else if (n.data.isDropNodeTarget && n.id !== newParentId) {
-                n.data = {
-                  ...n.data,
-                  isDropNodeTarget: false,
+                return {
+                  ...n,
+                  data: {
+                    ...n.data,
+                    isDropNodeTarget: false,
+                  },
                 };
               }
               return n;
@@ -271,10 +280,13 @@ export const useDropNode = (): UseDropNodeValue => {
         setNodes((nds) =>
           nds.map((n) => {
             if (n.data.isDropNodeCandidate || n.data.isDropNodeTarget) {
-              n.data = {
-                ...n.data,
-                isDropNodeCandidate: false,
-                isDropNodeTarget: false,
+              return {
+                ...n,
+                data: {
+                  ...n.data,
+                  isDropNodeCandidate: false,
+                  isDropNodeTarget: false,
+                },
               };
             }
             return n;
@@ -290,13 +302,12 @@ export const useDropNode = (): UseDropNodeValue => {
       setNodes((nds) =>
         nds.map((n) => {
           if (n.id === node.id) {
-            n.position = initialPosition;
-            n.position = initialPositionAbsolute;
-            n.data = {
-              ...n.data,
+            return {
+              ...n,
+              position: initialPosition,
+              dragging: false,
             };
           }
-          n.dragging = false;
           return n;
         })
       );

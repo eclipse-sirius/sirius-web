@@ -118,8 +118,8 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, nodeLookup, layo
   let centerA: NodeCenter;
   if (movingNode && movingNode.id === nodeA.id) {
     centerA = {
-      x: (movingNode.positionAbsolute?.x ?? 0) + (nodeA.width ?? 0) / 2,
-      y: (movingNode.positionAbsolute?.y ?? 0) + (nodeA.height ?? 0) / 2,
+      x: (movingNode.position?.x ?? 0) + (nodeA.width ?? 0) / 2,
+      y: (movingNode.position?.y ?? 0) + (nodeA.height ?? 0) / 2,
     };
   } else {
     centerA = getNodeCenter(nodeA, nodeLookup);
@@ -128,12 +128,13 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, nodeLookup, layo
   let centerB: NodeCenter;
   if (movingNode && movingNode.id === nodeB.id) {
     centerB = {
-      x: (movingNode.positionAbsolute?.x ?? 0) + (nodeB.width ?? 0) / 2,
-      y: (movingNode.positionAbsolute?.y ?? 0) + (nodeB.height ?? 0) / 2,
+      x: (movingNode.position?.x ?? 0) + (nodeB.width ?? 0) / 2,
+      y: (movingNode.position?.y ?? 0) + (nodeB.height ?? 0) / 2,
     };
   } else {
     centerB = getNodeCenter(nodeB, nodeLookup);
   }
+
   const horizontalDifference = Math.abs(centerA.x - centerB.x);
   const verticalDifference = Math.abs(centerA.y - centerB.y);
   const isDescendant = isDescendantOf(nodeB, nodeA, nodeLookup);
@@ -175,30 +176,23 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, nodeLookup, layo
 };
 
 export const getNodeCenter: GetNodeCenter = (node, nodeLookup) => {
-  if (node.internals) {
-    return {
-      x: node.internals.positionAbsolute.x + (node.width ?? 0) / 2,
-      y: node.internals.positionAbsolute.y + (node.height ?? 0) / 2,
-    };
-  } else {
-    let position = {
-      x: (node.position?.x ?? 0) + (node.width ?? 0) / 2,
-      y: (node.position?.y ?? 0) + (node.height ?? 0) / 2,
-    };
+  let position = {
+    x: (node.position?.x ?? 0) + (node.width ?? 0) / 2,
+    y: (node.position?.y ?? 0) + (node.height ?? 0) / 2,
+  };
 
-    if (node.parentId) {
-      let parentNode = nodeLookup.get(node.parentId);
-      while (parentNode) {
-        position = {
-          x: position.x + (parentNode.position?.x ?? 0),
-          y: position.y + (parentNode.position?.y ?? 0),
-        };
-        let parentNodeId = parentNode.parentId ?? '';
-        parentNode = nodeLookup.get(parentNodeId);
-      }
+  if (node.parentId) {
+    let parentNode = nodeLookup.get(node.parentId);
+    while (parentNode) {
+      position = {
+        x: position.x + (parentNode.position?.x ?? 0),
+        y: position.y + (parentNode.position?.y ?? 0),
+      };
+      let parentNodeId = parentNode.parentId ?? '';
+      parentNode = nodeLookup.get(parentNodeId);
     }
-    return position;
   }
+  return position;
 };
 
 export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (
