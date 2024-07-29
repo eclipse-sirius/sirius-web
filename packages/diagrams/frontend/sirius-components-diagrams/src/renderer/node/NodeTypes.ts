@@ -13,7 +13,6 @@
 
 import { Node, NodeProps } from '@xyflow/react';
 import { FC } from 'react';
-import { NodeData } from '../DiagramRenderer.types';
 import { FreeFormNode } from './FreeFormNode';
 import { FreeFormNodeData } from './FreeFormNode.types';
 import { IconLabelNode } from './IconLabelNode';
@@ -39,5 +38,3 @@ export type NodeComponentsMap = {
 export type NodePropsMap = {
   [K in keyof NodeDataMap]: NodeProps<Node<NodeDataMap[K], K>>;
 };
-
-export type AppNode = Node<NodeData, 'appNode'>;

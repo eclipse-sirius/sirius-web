@@ -32,7 +32,7 @@ export const useInitialFitToScreen = (): UseInitialFitToScreenValue => {
   // We cannot perform the fit to screen directly but instead need to wait for the next render in order to retrieve the updated nodes and edges in the react flow instance
   useEffect(() => {
     if (state.shouldPerformFitToScreen) {
-      reactFlowInstance.fitView({ duration: 200 });
+      reactFlowInstance.fitView({ duration: 200, nodes: reactFlowInstance.getNodes() });
       setState((prevState) => ({ ...prevState, initialFitToScreenPerformed: true, shouldPerformFitToScreen: false }));
     }
   }, [state.shouldPerformFitToScreen]);

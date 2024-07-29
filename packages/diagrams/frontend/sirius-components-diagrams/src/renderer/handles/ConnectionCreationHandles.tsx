@@ -21,6 +21,7 @@ import { useConnector } from '../connector/useConnector';
 import { useConnectionCandidatesQuery } from './useConnectionCandidatesQuery';
 
 import { ConnectionCreationHandlesProps, ConnectionCreationHandlesState } from './ConnectionCreationHandles.types';
+import { useRefreshTargetHandles } from './useRefreshTargetHandles';
 
 const connectionCreationHandleStyle = (
   position: Position,
@@ -78,6 +79,9 @@ export const ConnectionCreationHandles = memo(({ nodeId }: ConnectionCreationHan
 
   const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, nodeId);
   const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
+
+  useRefreshTargetHandles(nodeId, shouldRender);
+
   useEffect(() => {
     if (candidates !== null) {
       setCandidates(candidates);

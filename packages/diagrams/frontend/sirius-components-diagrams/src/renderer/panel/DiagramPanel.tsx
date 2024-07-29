@@ -68,12 +68,18 @@ export const DiagramPanel = memo(
     const nodesInitialized = useNodesInitialized();
     useEffect(() => {
       if (nodesInitialized && state.arrangeAllDone) {
-        fitView({ duration: 400 });
+        fitView({ duration: 400, nodes: getNodes() });
         setState((prevState) => ({ ...prevState, arrangeAllDone: false }));
       }
     }, [nodesInitialized, state.arrangeAllDone]);
 
-    const handleFitToScreen = () => fitView({ duration: 200, nodes: getSelectedNodes() });
+    const handleFitToScreen = () => {
+      if (getSelectedNodes().length) {
+        fitView({ duration: 200, nodes: getSelectedNodes() });
+      } else {
+        fitView({ duration: 200, nodes: getNodes() });
+      }
+    };
     const handleZoomIn = () => zoomIn({ duration: 200 });
     const handleZoomOut = () => zoomOut({ duration: 200 });
     const handleShare = () => setState((prevState) => ({ ...prevState, dialogOpen: 'Share' }));
