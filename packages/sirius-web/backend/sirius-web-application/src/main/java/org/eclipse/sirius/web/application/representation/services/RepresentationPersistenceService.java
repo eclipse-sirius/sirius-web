@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.application.representation.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -113,8 +112,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
     private RepresentationMigrationData getInitialMigrationData(String kind) {
         return this.migrationParticipants.stream()
                 .filter(migrationParticipant -> migrationParticipant.getKind().equals(kind))
-                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
-                .sorted(Collections.reverseOrder())
+                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion).reversed())
                 .map(migrationParticipant -> new RepresentationMigrationData(NONE, migrationParticipant.getVersion()))
                 .findFirst().orElse(new RepresentationMigrationData(NONE, "0"));
     }
@@ -122,8 +120,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
     private RepresentationMigrationData getLastMigrationData(String kind) {
         return this.migrationParticipants.stream()
                 .filter(migrationParticipant -> migrationParticipant.getKind().equals(kind))
-                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
-                .sorted(Collections.reverseOrder())
+                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion).reversed())
                 .map(migrationParticipant -> new RepresentationMigrationData(migrationParticipant.getClass().getSimpleName(), migrationParticipant.getVersion()))
                 .findFirst().orElse(new RepresentationMigrationData(NONE, "0"));
     }
