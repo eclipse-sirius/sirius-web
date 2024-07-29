@@ -16,7 +16,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import IconButton from '@mui/material/IconButton';
-import { useNodes } from '@xyflow/react';
+import { Node, useNodes } from '@xyflow/react';
 import { Fragment, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 
@@ -30,7 +30,7 @@ type Modal = 'dialog';
 export const PapayaComponentLabelDetailToolContribution = ({ diagramElementId }: DiagramPaletteToolComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);
   const { classes } = useToolStyle();
-  const nodes = useNodes<NodeData>();
+  const nodes = useNodes<Node<NodeData>>();
   const targetedNode = nodes.find((node) => node.id === diagramElementId);
   if (
     !targetedNode ||

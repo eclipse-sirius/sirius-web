@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodePositionChange, Position, XYPosition } from '@xyflow/react';
-import { Handle } from '@xyflow/system';
+import { InternalNode, Node, NodePositionChange, Position, XYPosition } from '@xyflow/react';
+import { NodeHandle, NodeLookup } from '@xyflow/system';
 import { NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 
@@ -37,16 +37,16 @@ export interface GetUpdatedConnectionHandles {
 
 export type GetEdgeParametersWhileMoving = (
   movingNode: NodePositionChange,
-  source: Node<NodeData>,
-  target: Node<NodeData>,
-  nodeLookup,
+  source: InternalNode<Node<NodeData>>,
+  target: InternalNode<Node<NodeData>>,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
   layoutDirection: string
 ) => EdgeParameters;
 
 export type GetEdgeParameters = (
-  source: Node<NodeData>,
-  target: Node<NodeData>,
-  nodeLookup,
+  source: InternalNode<Node<NodeData>>,
+  target: InternalNode<Node<NodeData>>,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
   layoutDirection: string
 ) => EdgeParameters;
 
@@ -57,9 +57,9 @@ export interface EdgeParameters {
 
 export type GetParameters = (
   movingNode: NodePositionChange | null,
-  nodeA: Node<NodeData>,
-  nodeB: Node<NodeData>,
-  nodeLookup,
+  nodeA: InternalNode<Node<NodeData>>,
+  nodeB: InternalNode<Node<NodeData>>,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
   layoutDirection: string
 ) => Parameters;
 
@@ -67,7 +67,10 @@ export interface Parameters {
   position: Position;
 }
 
-export type GetNodeCenter = (node: Node<NodeData>, nodeLookup) => NodeCenter;
+export type GetNodeCenter = (
+  node: InternalNode<Node<NodeData>>,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
+) => NodeCenter;
 
 export interface NodeCenter {
   x: number;
@@ -75,19 +78,13 @@ export interface NodeCenter {
 }
 
 export type GetHandleCoordinatesByPosition = (
-  node: Node<NodeData>,
+  node: InternalNode<Node<NodeData>>,
   handlePosition: Position,
   handleId: string,
   calculateCustomNodeEdgeHandlePosition:
-    | ((node: Node<NodeData>, handlePosition: Position, handle: Handle) => XYPosition)
+    | ((node: Node<NodeData>, handlePosition: Position, handle: NodeHandle) => XYPosition)
     | undefined
 ) => XYPosition;
-
-export type GetHandleCoordinatesByPosition2 = (
-  node: Node<NodeData>,
-  handlePosition: Position,
-  edgeId: string
-) => HandleCoordinates;
 
 export interface HandleCoordinates {
   x: number;

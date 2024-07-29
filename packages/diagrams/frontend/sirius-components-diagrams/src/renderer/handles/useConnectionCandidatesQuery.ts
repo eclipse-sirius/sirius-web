@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useNodes } from '@xyflow/react';
+import { Node, useNodes } from '@xyflow/react';
 import { useEffect, useMemo } from 'react';
 import {
   GQLDiagramDescription,
@@ -82,7 +82,7 @@ export const useConnectionCandidatesQuery = (
   nodeId: string
 ): GQLNodeDescription[] | null => {
   const { addErrorMessage } = useMultiToast();
-  const nodes = useNodes<NodeData>();
+  const nodes = useNodes<Node<NodeData>>();
 
   const { data, error } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(getToolSectionsQuery, {
     variables: {

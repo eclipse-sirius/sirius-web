@@ -23,7 +23,7 @@ export const useNodeHover = (): UseNodeHoverValue => {
   const { setNodes } = useStore();
   const { draggedNodeId } = useContext<DropNodeContextValue>(DropNodeContext);
 
-  const onNodeMouseEnter: NodeMouseHandler = useCallback(
+  const onNodeMouseEnter: NodeMouseHandler<Node<NodeData>> = useCallback(
     (_: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData>) => {
       if (!draggedNodeId) {
         setNodes((nds) =>

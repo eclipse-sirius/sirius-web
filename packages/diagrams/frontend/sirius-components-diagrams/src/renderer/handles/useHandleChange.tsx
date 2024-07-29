@@ -27,7 +27,7 @@ export const useHandleChange = (): UseHandleChangeValue => {
   const { getEdges } = useStore();
   const { diagramDescription } = useDiagramDescription();
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-
+  const { nodeLookup } = storeApi.getState();
   const applyHandleChange = useCallback(
     (
       changes: NodeChange<Node<NodeData>>[],
@@ -40,8 +40,8 @@ export const useHandleChange = (): UseHandleChangeValue => {
           const connectedEdges = getConnectedEdges([movingNode], getEdges());
           connectedEdges.forEach((edge) => {
             const { sourceHandle, targetHandle } = edge;
-            const sourceNode = nodes.find((node) => node.id === edge.source);
-            const targetNode = nodes.find((node) => node.id === edge.target);
+            const sourceNode = nodeLookup.get(edge.source);
+            const targetNode = nodeLookup.get(edge.target);
 
             if (sourceNode && targetNode && sourceHandle && targetHandle) {
               const { sourcePosition, targetPosition } = getEdgeParametersWhileMoving(

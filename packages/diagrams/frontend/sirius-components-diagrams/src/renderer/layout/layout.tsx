@@ -15,7 +15,7 @@ import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { ApolloProvider } from '@apollo/client/react';
 import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { ThemeProvider } from '@mui/material/styles';
-import { Node, ReactFlowProvider } from '@xyflow/react';
+import { Node, NodeProps, ReactFlowProvider } from '@xyflow/react';
 import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
@@ -38,19 +38,9 @@ const emptyNodeProps = {
   selected: false,
   isConnectable: true,
   dragging: false,
-  xPos: 0,
-  yPos: 0,
+  positionAbsoluteX: 0,
+  positionAbsoluteY: 0,
   zIndex: -1,
-};
-
-const emptyListNodeProps = {
-  ...emptyNodeProps,
-  type: 'listNode',
-};
-
-const emptyRectangularNodeProps = {
-  ...emptyNodeProps,
-  type: 'rectangularNode',
 };
 
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
@@ -138,8 +128,15 @@ export const prepareLayoutArea = (
     if (hiddenContainer && node) {
       const children: JSX.Element[] = [];
       if (isRectangularNode(node)) {
+        const freeFormNodeProps: NodeProps<Node<FreeFormNodeData, 'freeFormNode'>> = {
+          ...emptyNodeProps,
+          type: 'freeFormNode',
+          id: node.id,
+          data: node.data,
+        };
+
         const element = createElement(FreeFormNode, {
-          ...emptyRectangularNodeProps,
+          ...freeFormNodeProps,
           id: node.id,
           data: node.data,
           key: `${node.id}-${index}`,
@@ -147,10 +144,15 @@ export const prepareLayoutArea = (
         children.push(element);
       }
       if (isListNode(node)) {
-        const element = createElement(ListNode, {
-          ...emptyListNodeProps,
+        const listNodeProps: NodeProps<Node<ListNodeData, 'listNode'>> = {
+          ...emptyNodeProps,
+          type: 'listNode',
           id: node.id,
           data: node.data,
+        };
+
+        const element = createElement(ListNode, {
+          ...listNodeProps,
           key: `${node.id}-${index}`,
         });
         children.push(element);
@@ -202,8 +204,8 @@ export const prepareLayoutArea = (
 };
 
 export const cleanLayoutArea = (container: HTMLDivElement) => {
-  if (container?.parentId) {
-    container.parentId.removeChild(container);
+  if (container?.parentNode) {
+    container.parentNode.removeChild(container);
   }
 };
 

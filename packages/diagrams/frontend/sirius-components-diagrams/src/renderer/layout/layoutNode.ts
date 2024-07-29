@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Box, Dimensions, Node, Rect, XYPosition } from '@xyflow/react';
-import { boxToRect, rectToBox } from '@xyflow/system';
+import { Box, Dimensions, InternalNode, Node, Rect, XYPosition } from '@xyflow/react';
+import { boxToRect, NodeLookup, rectToBox } from '@xyflow/system';
 import { InsideLabel, NodeData } from '../DiagramRenderer.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
@@ -515,7 +515,11 @@ export const applyRatioOnNewNodeSizeValue = (node: Node<NodeData>) => {
   }
 };
 
-export const isDescendantOf = (parent: Node, candidate: Node, nodeLookup): boolean => {
+export const isDescendantOf = (
+  parent: Node,
+  candidate: Node,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
+): boolean => {
   if (parent.id === candidate.id) {
     return true;
   } else {
@@ -527,7 +531,11 @@ export const isDescendantOf = (parent: Node, candidate: Node, nodeLookup): boole
   }
 };
 
-export const isSiblingOrDescendantOf = (sibling: Node, candidate: Node, nodeLookUp): boolean => {
+export const isSiblingOrDescendantOf = (
+  sibling: Node,
+  candidate: Node,
+  nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>
+): boolean => {
   if (sibling.parentId === candidate.id) {
     return true;
   } else {

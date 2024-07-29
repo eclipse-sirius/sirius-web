@@ -133,7 +133,7 @@ export const useDropNode = (): UseDropNodeValue => {
   const onDropNode = useDropNodeMutation();
   const { getNodes, getIntersectingNodes, screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { setNodes } = useStore();
-  const storeApi = useStoreApi();
+  const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   const getNodeById = (id: string) => storeApi.getState().nodeLookup.get(id);
 
@@ -169,7 +169,7 @@ export const useDropNode = (): UseDropNodeValue => {
 
       initializeDrop({
         initialPosition: computedNode.position,
-        initialPositionAbsolute: computedNode.positionAbsolute || null,
+        initialPositionAbsolute: computedNode.position || null,
         droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
         draggedNodeId: computedNode.id,
       });
@@ -291,7 +291,7 @@ export const useDropNode = (): UseDropNodeValue => {
         nds.map((n) => {
           if (n.id === node.id) {
             n.position = initialPosition;
-            n.positionAbsolute = initialPositionAbsolute;
+            n.position = initialPositionAbsolute;
             n.data = {
               ...n.data,
             };

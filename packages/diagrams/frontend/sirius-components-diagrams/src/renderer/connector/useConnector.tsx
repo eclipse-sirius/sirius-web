@@ -53,13 +53,14 @@ export const useConnector = (): UseConnectorValue => {
   } = useContext<ConnectorContextValue>(ConnectorContext);
 
   const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-  const { getNode, setEdges } = reactFlowInstance;
+  const { setEdges } = reactFlowInstance;
 
   const theme = useTheme();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
   const updateNodeInternals = useUpdateNodeInternals();
   const { diagramDescription } = useDiagramDescription();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { nodeLookup } = store.getState();
 
   const isConnectionInProgress = () => {
     const connectionNodeId = store.getState().connection.fromNode?.id;
@@ -105,8 +106,8 @@ export const useConnector = (): UseConnectorValue => {
   }, []);
 
   const addTempConnectionLine = () => {
-    const sourceNode = getNode(connection?.source ?? '');
-    const targetNode = getNode(connection?.target ?? '');
+    const sourceNode = nodeLookup.get(connection?.source ?? '');
+    const targetNode = nodeLookup.get(connection?.target ?? '');
     if (sourceNode && targetNode && !!connection) {
       const { targetPosition, sourcePosition } = getEdgeParameters(
         sourceNode,

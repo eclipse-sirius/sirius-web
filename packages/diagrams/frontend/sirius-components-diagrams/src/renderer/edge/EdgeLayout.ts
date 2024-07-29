@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { HandleElement, Position, XYPosition, internalsSymbol } from '@xyflow/react';
+import { Position, XYPosition } from '@xyflow/react';
+import { Handle } from '@xyflow/system';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
@@ -174,10 +175,10 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, nodeLookup, layo
 };
 
 export const getNodeCenter: GetNodeCenter = (node, nodeLookup) => {
-  if (node.positionAbsolute?.x && node.positionAbsolute?.y) {
+  if (node.internals) {
     return {
-      x: (node.positionAbsolute?.x ?? 0) + (node.width ?? 0) / 2,
-      y: (node.positionAbsolute?.y ?? 0) + (node.height ?? 0) / 2,
+      x: node.internals.positionAbsolute.x + (node.width ?? 0) / 2,
+      y: node.internals.positionAbsolute.y + (node.height ?? 0) / 2,
     };
   } else {
     let position = {
@@ -206,11 +207,9 @@ export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (
   handleId,
   calculateCustomNodeEdgeHandlePosition
 ) => {
-  let handle: HandleElement | undefined = (node[internalsSymbol]?.handleBounds?.source ?? []).find(
-    (handle) => handle.id === handleId
-  );
+  let handle: Handle | undefined = (node.internals.handleBounds?.source ?? []).find((handle) => handle.id === handleId);
   if (!handle) {
-    handle = (node[internalsSymbol]?.handleBounds?.target ?? []).find((handle) => handle.id === handleId);
+    handle = (node.internals.handleBounds?.target ?? []).find((handle) => handle.id === handleId);
   }
 
   let handleXYPosition: XYPosition = { x: 0, y: 0 };
@@ -243,7 +242,7 @@ export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (
   }
 
   return {
-    x: (node.positionAbsolute?.x ?? 0) + handleXYPosition.x,
-    y: (node.positionAbsolute?.y ?? 0) + handleXYPosition.y,
+    x: (node.internals.positionAbsolute?.x ?? 0) + handleXYPosition.x,
+    y: (node.internals.positionAbsolute?.y ?? 0) + handleXYPosition.y,
   };
 };

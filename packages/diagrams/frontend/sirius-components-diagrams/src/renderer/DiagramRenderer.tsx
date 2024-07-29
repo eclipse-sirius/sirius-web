@@ -289,7 +289,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
 
   const handleNodeDrag = useCallback(
-    (event: ReactMouseEvent, node: Node, nodes: Node[]) => {
+    (event: ReactMouseEvent, node: Node<NodeData>, nodes: Node<NodeData>[]) => {
       onNodeDrag(event, node, nodes);
       closeAllPalettes();
     },

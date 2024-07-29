@@ -12,6 +12,7 @@
  *******************************************************************************/
 import {
   Edge,
+  InternalNode,
   Node,
   NodeChange,
   NodeDimensionChange,
@@ -19,6 +20,7 @@ import {
   useReactFlow,
   useStoreApi,
 } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { useCallback, useState } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { isDescendantOf } from '../layout/layoutNode';
@@ -41,9 +43,9 @@ interface RectangularBounds {
 const getRectangularBounds = (nodePositionChanges: NodePositionChange[], nodes: Node[]): RectangularBounds => {
   return nodePositionChanges.reduce(
     (rect: RectangularBounds, change: NodePositionChange) => {
-      if (change.positionAbsolute) {
-        const x = change.positionAbsolute.x;
-        const y = change.positionAbsolute.y;
+      if (change.position) {
+        const x = change.position.x;
+        const y = change.position.y;
         const node = nodes.find((n) => n.id === change.id);
         const right = x + (node?.width ?? 0);
         const bottom = y + (node?.height ?? 0);
@@ -68,7 +70,7 @@ const getHelperLinesForMove = (
   movingNodesBounds: RectangularBounds,
   movingNodes: Node<NodeData>[],
   nodes: Node<NodeData>[],
-  nodeLookUp
+  nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>
 ): HelperLines => {
   const noHelperLines: HelperLines = { horizontal: null, vertical: null, snapX: 0, snapY: 0 };
   let verticalSnapGap: number = verticalHelperLinesSnapGap;
@@ -79,12 +81,12 @@ const getHelperLinesForMove = (
     .filter((node) => !movingNodes.some((n) => n.id === node.id))
     .filter((node) => !movingNodes.some((n) => isDescendantOf(n, node, nodeLookUp)))
     .reduce<HelperLines>((helperLines, otherNode) => {
-      if (otherNode.positionAbsolute) {
+      if (otherNode.position) {
         const otherNodeBounds = {
-          x1: otherNode.positionAbsolute.x,
-          x2: otherNode.positionAbsolute.x + (otherNode.width ?? 0),
-          y1: otherNode.positionAbsolute.y,
-          y2: otherNode.positionAbsolute.y + (otherNode.height ?? 0),
+          x1: otherNode.position.x,
+          x2: otherNode.position.x + (otherNode.width ?? 0),
+          y1: otherNode.position.y,
+          y2: otherNode.position.y + (otherNode.height ?? 0),
         };
 
         const x1x1Gap = Math.abs(movingNodesBounds.x1 - otherNodeBounds.x1);
@@ -147,7 +149,7 @@ const getHelperLinesForMove = (
           movingNodesBounds.x1 + movingNodesWidth / 2 - (otherNodeBounds.x1 + (otherNode.width ?? 0) / 2)
         );
         if (verticalCenterGap < verticalSnapGap) {
-          helperLines.vertical = otherNode.positionAbsolute.x + (otherNode.width ?? 0) / 2;
+          helperLines.vertical = otherNode.position.x + (otherNode.width ?? 0) / 2;
           helperLines.snapX = otherNodeBounds.x1 + (otherNode.width ?? 0) / 2 - movingNodesWidth / 2;
         }
 
@@ -155,7 +157,7 @@ const getHelperLinesForMove = (
           movingNodesBounds.y1 + movingNodesHeight / 2 - (otherNodeBounds.y1 + (otherNode.height ?? 0) / 2)
         );
         if (horizontalCenterGap < horizontalSnapGap) {
-          helperLines.horizontal = otherNode.positionAbsolute.y + (otherNode.height ?? 0) / 2;
+          helperLines.horizontal = otherNode.position.y + (otherNode.height ?? 0) / 2;
           helperLines.snapY = otherNodeBounds.y1 + (otherNode.height ?? 0) / 2 - movingNodesHeight / 2;
         }
       }
@@ -167,28 +169,28 @@ const getHelperLinesForResize = (
   change: NodeDimensionChange,
   resizingNode: Node<NodeData>,
   nodes: Node<NodeData>[],
-  nodeLookUp
+  nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>
 ): HelperLines => {
   const noHelperLines: HelperLines = { horizontal: null, vertical: null, snapX: 0, snapY: 0 };
-  if (resizingNode.positionAbsolute && change.dimensions) {
+  if (resizingNode.position && change.dimensions) {
     let verticalSnapGap: number = verticalHelperLinesSnapGap;
     let horizontalSnapGap: number = horizontalHelperLinesSnapGap;
     const resizingNodeBounds: { x1: number; x2: number; y1: number; y2: number } = {
-      x1: resizingNode.positionAbsolute.x,
-      x2: resizingNode.positionAbsolute.x + (change.dimensions.width ?? 0),
-      y1: resizingNode.positionAbsolute.y,
-      y2: resizingNode.positionAbsolute.y + (change.dimensions.height ?? 0),
+      x1: resizingNode.position.x,
+      x2: resizingNode.position.x + (change.dimensions.width ?? 0),
+      y1: resizingNode.position.y,
+      y2: resizingNode.position.y + (change.dimensions.height ?? 0),
     };
     return nodes
       .filter((node) => node.id != resizingNode.id)
       .filter((node) => !isDescendantOf(resizingNode, node, nodeLookUp))
       .reduce<HelperLines>((helperLines, otherNode) => {
-        if (otherNode.positionAbsolute) {
+        if (otherNode.position) {
           const otherNodeBounds = {
-            x1: otherNode.positionAbsolute.x,
-            x2: otherNode.positionAbsolute.x + (otherNode.width ?? 0),
-            y1: otherNode.positionAbsolute.y,
-            y2: otherNode.positionAbsolute.y + (otherNode.height ?? 0),
+            x1: otherNode.position.x,
+            x2: otherNode.position.x + (otherNode.width ?? 0),
+            y1: otherNode.position.y,
+            y2: otherNode.position.y + (otherNode.height ?? 0),
           };
 
           const x2x1Gap = Math.abs(resizingNodeBounds.x2 - otherNodeBounds.x1);
@@ -230,23 +232,23 @@ const getHelperLinesForResizeAndMove = (
   movingChange: NodePositionChange,
   resizingNode: Node<NodeData>,
   nodes: Node<NodeData>[],
-  nodeLookUp
+  nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>
 ): HelperLines => {
   const noHelperLines: HelperLines = { horizontal: null, vertical: null, snapX: 0, snapY: 0 };
-  if (resizingNode.positionAbsolute && resizingChange.dimensions && movingChange.position) {
+  if (resizingNode.position && resizingChange.dimensions && movingChange.position) {
     let verticalSnapGap: number = verticalHelperLinesSnapGap;
     let horizontalSnapGap: number = horizontalHelperLinesSnapGap;
     const nodeBounds: { x1: number; x2: number; y1: number; y2: number } = {
-      x1: movingChange.position.x + resizingNode.positionAbsolute.x - resizingNode.position.x,
+      x1: movingChange.position.x + resizingNode.position.x - resizingNode.position.x,
       x2:
         movingChange.position.x +
-        resizingNode.positionAbsolute.x -
+        resizingNode.position.x -
         resizingNode.position.x +
         (resizingChange.dimensions.width ?? 0),
-      y1: movingChange.position.y + resizingNode.positionAbsolute.y - resizingNode.position.y,
+      y1: movingChange.position.y + resizingNode.position.y - resizingNode.position.y,
       y2:
         movingChange.position.y +
-        resizingNode.positionAbsolute.y -
+        resizingNode.position.y -
         resizingNode.position.y +
         (resizingChange.dimensions.height ?? 0),
     };
@@ -254,12 +256,12 @@ const getHelperLinesForResizeAndMove = (
       .filter((node) => node.id != resizingNode.id)
       .filter((node) => !isDescendantOf(resizingNode, node, nodeLookUp))
       .reduce<HelperLines>((helperLines, otherNode) => {
-        if (otherNode.positionAbsolute) {
+        if (otherNode.position) {
           const otherNodeBounds = {
-            x1: otherNode.positionAbsolute.x,
-            x2: otherNode.positionAbsolute.x + (otherNode.width ?? 0),
-            y1: otherNode.positionAbsolute.y,
-            y2: otherNode.positionAbsolute.y + (otherNode.height ?? 0),
+            x1: otherNode.position.x,
+            x2: otherNode.position.x + (otherNode.width ?? 0),
+            y1: otherNode.position.y,
+            y2: otherNode.position.y + (otherNode.height ?? 0),
           };
 
           const x1x1Gap = Math.abs(nodeBounds.x1 - otherNodeBounds.x1);
@@ -337,11 +339,11 @@ export const useHelperLines = (): UseHelperLinesValue => {
           if (resizingNode) {
             const helperLines: HelperLines = getHelperLinesForResize(change, resizingNode, getNodes(), nodeLookup);
             setState({ vertical: helperLines.vertical, horizontal: helperLines.horizontal });
-            if (helperLines.snapX && change.dimensions && resizingNode.positionAbsolute) {
-              change.dimensions.width = Math.abs(resizingNode.positionAbsolute.x - helperLines.snapX);
+            if (helperLines.snapX && change.dimensions && resizingNode.position) {
+              change.dimensions.width = Math.abs(resizingNode.position.x - helperLines.snapX);
             }
-            if (helperLines.snapY && change.dimensions && resizingNode.positionAbsolute) {
-              change.dimensions.height = Math.abs(resizingNode.positionAbsolute.y - helperLines.snapY);
+            if (helperLines.snapY && change.dimensions && resizingNode.position) {
+              change.dimensions.height = Math.abs(resizingNode.position.y - helperLines.snapY);
             }
           }
         }
@@ -371,23 +373,21 @@ export const useHelperLines = (): UseHelperLinesValue => {
               helperLines.snapX &&
               resizingChange.dimensions &&
               movingChange.position &&
-              resizingNode.positionAbsolute &&
+              resizingNode.position &&
               resizingNode.width
             ) {
               movingChange.position.x = helperLines.snapX + snapOffsetX;
-              resizingChange.dimensions.width =
-                resizingNode.width + resizingNode.positionAbsolute.x - helperLines.snapX;
+              resizingChange.dimensions.width = resizingNode.width + resizingNode.position.x - helperLines.snapX;
             }
             if (
               helperLines.snapY &&
               resizingChange.dimensions &&
               movingChange.position &&
-              resizingNode.positionAbsolute &&
+              resizingNode.position &&
               resizingNode.height
             ) {
               movingChange.position.y = helperLines.snapY + snapOffsetY;
-              resizingChange.dimensions.height =
-                resizingNode.height + resizingNode.positionAbsolute.y - helperLines.snapY;
+              resizingChange.dimensions.height = resizingNode.height + resizingNode.position.y - helperLines.snapY;
             }
           }
         }
