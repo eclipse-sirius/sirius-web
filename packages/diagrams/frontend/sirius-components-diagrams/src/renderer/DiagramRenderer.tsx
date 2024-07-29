@@ -120,8 +120,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodeTypes } = useNodeType();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
-  const { fitToScreen } = useInitialFitToScreen();
+
   const { setSelection } = useSelection();
+
+  useInitialFitToScreen();
 
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
@@ -139,7 +141,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
       setNodes(convertedDiagram.nodes);
       setEdges(convertedDiagram.edges);
-      fitToScreen();
     } else if (cause === 'refresh') {
       const previousDiagram: RawDiagram = {
         nodes: nodes as Node<NodeData, DiagramNodeType>[],

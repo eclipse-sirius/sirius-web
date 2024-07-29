@@ -11,31 +11,27 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, useReactFlow } from '@xyflow/react';
+import { Edge, Node, useNodesInitialized, useReactFlow } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { UseInitialFitToScreenState, UseInitialFitToScreenValue } from './useInitialFitToScreen.types';
+import { UseInitialFitToScreenState } from './useInitialFitToScreen.types';
 
-export const useInitialFitToScreen = (): UseInitialFitToScreenValue => {
+const options = {
+  includeHiddenNodes: false,
+};
+
+export const useInitialFitToScreen = () => {
+  const nodesInitialized = useNodesInitialized(options);
   const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const [state, setState] = useState<UseInitialFitToScreenState>({
     initialFitToScreenPerformed: false,
-    shouldPerformFitToScreen: false,
   });
-
-  const fitToScreen = () => {
-    if (!state.initialFitToScreenPerformed) {
-      setState((prevState) => ({ ...prevState, shouldPerformFitToScreen: true }));
-    }
-  };
 
   // We cannot perform the fit to screen directly but instead need to wait for the next render in order to retrieve the updated nodes and edges in the react flow instance
   useEffect(() => {
-    if (state.shouldPerformFitToScreen) {
+    if (nodesInitialized && !state.initialFitToScreenPerformed) {
       reactFlowInstance.fitView({ duration: 200, nodes: reactFlowInstance.getNodes() });
-      setState((prevState) => ({ ...prevState, initialFitToScreenPerformed: true, shouldPerformFitToScreen: false }));
+      setState({ initialFitToScreenPerformed: true });
     }
-  }, [state.shouldPerformFitToScreen]);
-
-  return { fitToScreen };
+  }, [nodesInitialized, state.initialFitToScreenPerformed]);
 };

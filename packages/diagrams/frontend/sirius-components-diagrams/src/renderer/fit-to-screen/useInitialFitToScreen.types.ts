@@ -11,11 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface UseInitialFitToScreenValue {
-  fitToScreen: () => void;
-}
-
 export interface UseInitialFitToScreenState {
   initialFitToScreenPerformed: boolean;
-  shouldPerformFitToScreen: boolean;
 }
