@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.data;
 
 import java.util.UUID;
 
+import org.eclipse.emf.common.util.URI;
+
 /**
  * Used to store some test identifiers related to the migration projects.
  *
@@ -28,6 +30,8 @@ public final class MigrationIdentifiers {
     public static final UUID MIGRATION_NODE_DESCRIPTION_USER_RESIZABLE_STUDIO = UUID.fromString("a5441b64-83a5-4754-8794-57227bf8a322");
 
     public static final String MIGRATION_NODE_DESCRIPTION_LABEL_EXPRESSION_STUDIO_DIAGRAM = "NodeDescription#labelExpression migration";
+
+    public static final URI MIGRATION_NODE_DESCRIPTION_LABEL_EXPRESSION_STUDIO_DIAGRAM_URI = URI.createURI("sirius:///1d8aac3e-5fe7-4787-b0fc-1f8eb491cd5e");
 
     public static final String MIGRATION_NODE_STYLE_DESCRIPTION_COLOR_STUDIO_DIAGRAM = "NodeStyleDescription#color migration";
 

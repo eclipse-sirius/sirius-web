@@ -65,6 +65,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3808[#3808] [trees] Fix interactions with `TreeItemContextMenu` modal
 - https://github.com/eclipse-sirius/sirius-web/issues/3811[#3811] [forms] Fix issue with Reference widget not working when placed in a flexbox container
 - https://github.com/eclipse-sirius/sirius-web/issues/3776[#3776] [trees] Restore expand all functionality for ref widget trees
+- https://github.com/eclipse-sirius/sirius-web/issues/3824[#3824] [core] Fix representation migration participant execution which was failing when there were many representation migration participant to apply.
 
 === New Features
 

@@ -14,6 +14,7 @@ package org.eclipse.sirius.web;
 
 import org.eclipse.sirius.web.infrastructure.persistence.JDBCConfiguration;
 import org.eclipse.sirius.web.starter.SiriusWebStarterConfiguration;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -22,9 +23,15 @@ import org.testcontainers.containers.PostgreSQLContainer;
 /**
  * Superclass of all the integration tests used to setup the test environment.
  *
+ * <p>
+ * NOTE: The annotation @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS) has been set to close jdbc connection after each test class
+ * because without this annotation we have reached the max connection number.
+ * </p>
+ *
  * @author sbegaudeau
  */
 @SpringJUnitConfig(classes = { IntegrationTestConfiguration.class, SiriusWebStarterConfiguration.class, JDBCConfiguration.class })
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public abstract class AbstractIntegrationTests {
     public static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER;
 
