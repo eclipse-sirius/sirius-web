@@ -11,9 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, XYPosition, useReactFlow, useStoreApi } from '@xyflow/react';
+import { XYPosition, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramElementPaletteContext } from './DiagramElementPaletteContext';
 import { DiagramElementPaletteContextValue } from './DiagramElementPaletteContext.types';
 import { UseDiagramElementPaletteValue } from './useDiagramElementPalette.types';
@@ -29,23 +28,14 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
   const { x, y, isOpened, hideDiagramElementPalette, showDiagramElementPalette } =
     useContext<DiagramElementPaletteContextValue>(DiagramElementPaletteContext);
   const store = useStoreApi();
-  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const onDiagramElementClick = useCallback(
-    (event: React.MouseEvent<Element, MouseEvent>, elementClicked: Node | Edge) => {
+    (event: React.MouseEvent<Element, MouseEvent>) => {
       const { domNode } = store.getState();
       const element = domNode?.getBoundingClientRect();
       const palettePosition = computePalettePosition(event, element);
-      const selectedElement = [
-        ...getNodes().filter((node) => node.selected),
-        ...getEdges().filter((edge) => edge.selected),
-      ];
-      if (
-        !event.altKey &&
-        selectedElement.length === 1 &&
-        selectedElement[0] &&
-        selectedElement[0].id === elementClicked.id
-      ) {
+
+      if (!event.altKey && !event.ctrlKey) {
         showDiagramElementPalette(palettePosition.x, palettePosition.y);
       } else {
         hideDiagramElementPalette();
