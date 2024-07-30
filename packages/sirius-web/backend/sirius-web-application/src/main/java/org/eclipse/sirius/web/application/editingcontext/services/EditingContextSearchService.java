@@ -23,7 +23,9 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.StreamSupport;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
@@ -138,11 +140,18 @@ public class EditingContextSearchService implements IEditingContextSearchService
     }
 
     private void loadSemanticData(EditingContext editingContext, SemanticData semanticData) {
+        List<Resource> loadedResources = semanticData.getDocuments().stream()
+                .parallel()
+                .flatMap(document -> {
+                    ResourceSet localResourceSet = new ResourceSetImpl();
+                    localResourceSet.getPackageRegistry().putAll(editingContext.getDomain().getResourceSet().getPackageRegistry());
+                    localResourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
+                    return this.resourceLoader.toResource(localResourceSet, document.getId().toString(), document.getName(), document.getContent()).stream();
+                }).toList();
+
         ResourceSet resourceSet = editingContext.getDomain().getResourceSet();
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
-
-        semanticData.getDocuments().forEach(document -> this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent()));
-
+        resourceSet.getResources().addAll(loadedResources);
         // The ECrossReferenceAdapter must be set after the resource loading because it needs to resolve proxies in case
         // of inter-resources references
         resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
