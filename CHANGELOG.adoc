@@ -89,6 +89,7 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3785[#3785] [sirius-web] Add an extension point to contribute custom tree item menu entry
 - https://github.com/eclipse-sirius/sirius-web/issues/3782[#3782] [sirius-web] Add an extension point to contribute custom widgets
 - https://github.com/eclipse-sirius/sirius-web/issues/3801[#3801] Add an equivalent of IViewDiagramDescriptionSearchService for Form descriptions
+- https://github.com/eclipse-sirius/sirius-web/issues/3827[#3827] [core] Improved loading time of projects with multiple documents by loading the documents in multiple threads in parallel.
 
 == v2024.7.0
 

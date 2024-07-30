@@ -20,9 +20,13 @@ import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.StreamSupport;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -71,6 +75,8 @@ public class EditingContextSearchService implements IEditingContextSearchService
     private final List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders;
 
     private final List<IEditingContextProcessor> editingContextProcessors;
+
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
 
     private final Timer timer;
 
@@ -138,11 +144,31 @@ public class EditingContextSearchService implements IEditingContextSearchService
     }
 
     private void loadSemanticData(EditingContext editingContext, SemanticData semanticData) {
+        List<Resource> loadedResources = new ArrayList<>();
+
+        var loaders = semanticData.getDocuments().stream().map(document -> {
+            Callable<Resource> loader = () -> {
+                ResourceSet resourceSet = editingContext.getDomain().getResourceSet();
+                resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
+                var optionalResource = this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent());
+                if (optionalResource.isPresent()) {
+                    loadedResources.add(optionalResource.get());
+                }
+                return optionalResource.orElse(null);
+            };
+            return loader;
+        }).toList();
+
+
+        try {
+            this.executor.invokeAll(loaders);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ResourceSet resourceSet = editingContext.getDomain().getResourceSet();
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
-
-        semanticData.getDocuments().forEach(document -> this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent()));
-
+        resourceSet.getResources().addAll(loadedResources);
         // The ECrossReferenceAdapter must be set after the resource loading because it needs to resolve proxies in case
         // of inter-resources references
         resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
