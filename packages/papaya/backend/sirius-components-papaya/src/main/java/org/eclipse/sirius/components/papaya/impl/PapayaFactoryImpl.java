@@ -589,7 +589,6 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @deprecated
      * @generated
      */
     @Deprecated

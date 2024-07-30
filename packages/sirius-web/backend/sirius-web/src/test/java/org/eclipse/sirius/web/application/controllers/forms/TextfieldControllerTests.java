@@ -28,7 +28,6 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.emf.forms.api.IEMFFormDescriptionProvider;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -94,17 +93,6 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                 this.formWithTextfieldDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithTextfield"
-        );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
-    }
-
-    private Flux<Object> givenSubscriptionToDefaultEMFForm() {
-        var input = new CreateRepresentationInput(
-                UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
-                IEMFFormDescriptionProvider.DESCRIPTION_ID,
-                PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(),
-                "FormWithCheckbox"
         );
         return this.givenCreatedFormSubscription.createAndSubscribe(input);
     }

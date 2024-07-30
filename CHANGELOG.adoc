@@ -86,6 +86,7 @@ never, always and if_children (to display the separator only if children exist).
 - https://github.com/eclipse-sirius/sirius-web/issues/3856[#3856] [trees] Add tree representation in the view DSL
 - https://github.com/eclipse-sirius/sirius-web/issues/4000[#4000] [trees] Add support for styled labels in view model for trees
 - https://github.com/eclipse-sirius/sirius-web/issues/3816[#3816] [form] Make EMF default form support Integer null value
+- https://github.com/eclipse-sirius/sirius-web/issues/3826[#3826] [form] Make EMF default form support attributes with a date
 
 == v2024.9.0
 
