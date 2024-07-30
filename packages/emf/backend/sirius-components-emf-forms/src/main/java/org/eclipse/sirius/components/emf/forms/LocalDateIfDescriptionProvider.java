@@ -12,11 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.forms;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
@@ -88,7 +84,16 @@ public class LocalDateIfDescriptionProvider {
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .type(DateTimeType.DATE)
+                .isReadOnlyProvider(this.getIsReadOnlyProvider())
                 .build();
+    }
+
+    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
+        return variableManager -> {
+            return variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
+                    .map(attr -> !attr.isChangeable())
+                    .orElse(false);
+        };
     }
 
     private Function<VariableManager, String> getLabelProvider() {
@@ -106,8 +111,7 @@ public class LocalDateIfDescriptionProvider {
 
                 Object value = eObject.eGet(eAttribute);
                 if (value instanceof LocalDate localDate) {
-                    Instant instant = localDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
-                    return DateTimeFormatter.ISO_INSTANT.format(instant);
+                    return DateTimeFormatter.ISO_LOCAL_DATE.format(localDate);
                 }
             }
             return "";
@@ -127,8 +131,7 @@ public class LocalDateIfDescriptionProvider {
                     eObject.eSet(eAttribute, null);
                     status = new Success();
                 } else {
-                    Instant instant = Instant.parse(newValue);
-                    LocalDate localDate = LocalDateTime.ofInstant(instant, ZoneOffset.UTC).toLocalDate();
+                    LocalDate localDate = LocalDate.parse(newValue);
                     eObject.eSet(eAttribute, localDate);
                     status = new Success();
                 }
