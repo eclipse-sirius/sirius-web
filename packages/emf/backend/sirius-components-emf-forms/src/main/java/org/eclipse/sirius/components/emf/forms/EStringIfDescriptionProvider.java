@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 public class EStringIfDescriptionProvider {
+
     private static final String IF_DESCRIPTION_ID = "EString";
 
     private static final String TEXTAREA_DESCRIPTION_ID = "Textarea";
@@ -82,7 +83,14 @@ public class EStringIfDescriptionProvider {
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
+                .isReadOnlyProvider(this.getIsReadOnlyProvider())
                 .build();
+    }
+
+    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
+        return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
+                .map(eAttribute -> !eAttribute.isChangeable())
+                .orElse(false);
     }
 
     private Function<VariableManager, String> getLabelProvider() {

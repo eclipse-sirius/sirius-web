@@ -95,7 +95,14 @@ public class EEnumIfDescriptionProvider {
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
+                .isReadOnlyProvider(this.getIsReadOnlyProvider())
                 .build();
+    }
+
+    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
+        return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
+                .map(eAttribute -> !eAttribute.isChangeable())
+                .orElse(false);
     }
 
     private Function<VariableManager, String> getLabelProvider() {
@@ -172,8 +179,7 @@ public class EEnumIfDescriptionProvider {
                     EObject eObject = optionalEObject.get();
                     EAttribute eAttribute = optionalEAttribute.get();
                     EClassifier eType = eAttribute.getEType();
-                    if (eType instanceof EEnum) {
-                        EEnum eEnum = (EEnum) eType;
+                    if (eType instanceof EEnum eEnum) {
                         EEnumLiteral literal = eEnum.getEEnumLiteral(id);
                         if (literal != null) {
                             Object value = EcoreUtil.createFromString(eEnum, literal.getLiteral());

@@ -85,6 +85,7 @@ public class NumberIfDescriptionProvider {
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
+                .isReadOnlyProvider(this.getIsReadOnlyProvider())
                 .build();
     }
 

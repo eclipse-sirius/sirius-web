@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author lfasani
  */
 public class InstantIfDescriptionProvider {
+
     private static final String IF_DESCRIPTION_ID = "java.time.Instant";
 
     private static final String DATE_TIME_DESCRIPTION_ID = "DateTime";
@@ -84,7 +85,14 @@ public class InstantIfDescriptionProvider {
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .type(DateTimeType.DATE_TIME)
+                .isReadOnlyProvider(this.getIsReadOnlyProvider())
                 .build();
+    }
+
+    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
+        return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
+                .map(eAttribute -> !eAttribute.isChangeable())
+                .orElse(false);
     }
 
     private Function<VariableManager, String> getLabelProvider() {
