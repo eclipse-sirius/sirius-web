@@ -127,7 +127,7 @@ public class EBooleanIfDescriptionProvider {
 
     private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
         return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
-                .map(attr -> !attr.isChangeable())
+                .map(eAttribute -> !eAttribute.isChangeable())
                 .orElse(false);
     }
 }

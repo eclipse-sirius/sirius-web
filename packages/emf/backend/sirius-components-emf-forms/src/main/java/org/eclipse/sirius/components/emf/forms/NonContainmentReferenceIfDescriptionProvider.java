@@ -116,7 +116,14 @@ public class NonContainmentReferenceIfDescriptionProvider {
                 .setHandlerProvider(this::handleSetReference)
                 .addHandlerProvider(this::handleAddReferenceValues)
                 .moveHandlerProvider(this::handleMoveReferenceValue)
+                .isReadOnlyProvider(this.getIsReadOnlyProvider())
                 .build();
+    }
+
+    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
+        return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EStructuralFeature.class)
+                .map(eStructuralFeature -> !eStructuralFeature.isChangeable())
+                .orElse(false);
     }
 
     private List<?> getReferenceValue(VariableManager variableManager) {

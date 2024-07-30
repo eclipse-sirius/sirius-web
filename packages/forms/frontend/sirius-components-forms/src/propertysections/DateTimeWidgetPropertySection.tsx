@@ -94,7 +94,7 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
         editingContextId,
         representationId: formId,
         widgetId: widget.id,
-        newValue: convertToUTCDateTimeString(state.editedValue),
+        newValue: convertToUTCDateTimeString(widget.type, state.editedValue),
       };
       const variables: GQLEditDateTimeMutationVariables = {
         input,
@@ -116,7 +116,7 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    if (value?.length > 0) {
+    if (value != null) {
       setState((prevState) => ({ ...prevState, editedValue: value }));
     }
   };
@@ -127,7 +127,6 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
   } else if (widget.type === 'TIME') {
     type = 'time';
   }
-
   return (
     <div
       onBlur={(event: FocusEvent<HTMLDivElement, Element>) => {
@@ -179,9 +178,12 @@ const convertToLocalDateTimeString = (dateTimeType: string, dateTimeString: stri
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
-const convertToUTCDateTimeString = (dateTimeString: string): string => {
+const convertToUTCDateTimeString = (dateTimeType: string, dateTimeString: string): string => {
   const dateTime = new Date(dateTimeString);
 
+  if (dateTimeString.length == 0) {
+    return '';
+  }
   // Get the local date and time components
   const year = String(dateTime.getUTCFullYear()).padStart(4, '0');
   const month = String(dateTime.getUTCMonth() + 1).padStart(2, '0');
@@ -189,6 +191,12 @@ const convertToUTCDateTimeString = (dateTimeString: string): string => {
   const hours = String(dateTime.getUTCHours()).padStart(2, '0');
   const minutes = String(dateTime.getUTCMinutes()).padStart(2, '0');
   const seconds = String(dateTime.getUTCSeconds()).padStart(2, '0');
+
+  if (dateTimeType === 'DATE') {
+    return `${year}-${month}-${day}`;
+  } else if (dateTimeType === 'TIME') {
+    return `${hours}:${minutes}`;
+  }
 
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}Z`;
 };
