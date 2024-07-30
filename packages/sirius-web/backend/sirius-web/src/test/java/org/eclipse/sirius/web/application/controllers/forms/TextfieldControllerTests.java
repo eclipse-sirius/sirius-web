@@ -211,12 +211,14 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                     var incomeTextfield = groupNavigator.findWidget("Income", Textfield.class);
                     incomeTextfieldId.set(incomeTextfield.getId());
                     assertThat(incomeTextfield)
-                            .hasValue("");
+                            .hasValue("")
+                            .isReadOnly();
 
                     var fundingTextfield = groupNavigator.findWidget("Funding", Textfield.class);
                     fundingTextfieldId.set(fundingTextfield.getId());
                     assertThat(fundingTextfield)
-                            .hasValue("");
+                            .hasValue("")
+                            .isNotReadOnly();
 
                 }, () -> fail("Missing form"));
 
@@ -234,11 +236,13 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                     var groupNavigator = new FormNavigator(form).page(pageName).group(groupName);
                     var incomeTextfield = groupNavigator.findWidget("Income", Textfield.class);
                     assertThat(incomeTextfield)
-                            .hasValue("-4");
+                            .hasValue("-4")
+                            .isReadOnly();
 
                     var fundingTextfield = groupNavigator.findWidget("Funding", Textfield.class);
                     assertThat(fundingTextfield)
-                            .hasValue("5");
+                            .hasValue("5")
+                            .isNotReadOnly();
                 }, () -> fail("Missing form"));
 
         StepVerifier.create(flux)

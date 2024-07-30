@@ -90,7 +90,16 @@ public class LocalDateIfDescriptionProvider {
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .type(DateTimeType.DATE)
+                .isReadOnlyProvider(this.getIsReadOnlyProvider())
                 .build();
+    }
+
+    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
+        return variableManager -> {
+            return variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
+                    .map(attr -> !attr.isChangeable())
+                    .orElse(false);
+        };
     }
 
     private Function<VariableManager, String> getLabelProvider() {

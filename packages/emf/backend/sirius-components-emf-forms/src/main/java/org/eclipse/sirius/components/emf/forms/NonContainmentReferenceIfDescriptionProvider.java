@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -116,7 +117,16 @@ public class NonContainmentReferenceIfDescriptionProvider {
                 .setHandlerProvider(this::handleSetReference)
                 .addHandlerProvider(this::handleAddReferenceValues)
                 .moveHandlerProvider(this::handleMoveReferenceValue)
+                .isReadOnlyProvider(this.getIsReadOnlyProvider())
                 .build();
+    }
+
+    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
+        return variableManager -> {
+            return variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
+                    .map(attr -> !attr.isChangeable())
+                    .orElse(false);
+        };
     }
 
     private List<?> getReferenceValue(VariableManager variableManager) {

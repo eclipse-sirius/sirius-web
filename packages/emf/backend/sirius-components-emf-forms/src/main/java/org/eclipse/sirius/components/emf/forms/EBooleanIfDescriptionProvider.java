@@ -78,6 +78,7 @@ public class EBooleanIfDescriptionProvider {
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
+                .isReadOnlyProvider(getIsReadOnlyProvider())
                 .build();
     }
 
@@ -126,4 +127,11 @@ public class EBooleanIfDescriptionProvider {
         };
     }
 
+    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
+        return variableManager -> {
+            return variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
+                    .map(attr -> !attr.isChangeable())
+                    .orElse(false);
+        };
+    }
 }

@@ -186,8 +186,15 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
 
                     var startDateTime = new FormNavigator(form).page("Project").group("Core Properties").findWidget("Contractual Start Date", DateTime.class);
                     startDate.set(startDateTime.getId());
+                    assertThat(startDateTime)
+                            .hasValue("2023-12-11T00:00:00Z")
+                            .isNotReadOnly();
 
-                    assertThat(startDateTime).hasValue("2023-12-11T00:00:00Z");
+                    var endDateTime = new FormNavigator(form).page("Project").group("Core Properties").findWidget("Contractual End Date", DateTime.class);
+                    assertThat(endDateTime)
+                            .hasValue("2023-12-15T00:00:00Z")
+                            .isReadOnly();
+
                 }, () -> fail("Missing form"));
 
         Runnable editDateTime = () -> {
@@ -253,8 +260,9 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
 
                     var startDateTime = new FormNavigator(form).page("Iteration 2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
                     startDate.set(startDateTime.getId());
-
-                    assertThat(startDateTime).hasValue("2023-12-11T09:00:00Z");
+                    assertThat(startDateTime)
+                            .hasValue("2023-12-11T09:00:00Z")
+                            .isNotReadOnly();
                 }, () -> fail("Missing form"));
 
         Runnable editDateTime = () -> {
