@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
@@ -60,6 +62,7 @@ public class EditingContextLoader implements IEditingContextLoader {
         this.migrationParticipantPredicates = Objects.requireNonNull(migrationParticipantPredicates);
     }
 
+    @Override
     public void load(EditingContext editingContext, UUID projectId) {
         this.editingContextProcessors.forEach(processor -> processor.preProcess(editingContext));
 
@@ -75,12 +78,19 @@ public class EditingContextLoader implements IEditingContextLoader {
     }
 
     private void loadSemanticData(EditingContext editingContext, SemanticData semanticData) {
+        var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext));
+        List<Resource> loadedResources = semanticData.getDocuments().stream()
+                .parallel()
+                .flatMap(document -> {
+                    ResourceSet localResourceSet = new ResourceSetImpl();
+                    localResourceSet.getPackageRegistry().putAll(editingContext.getDomain().getResourceSet().getPackageRegistry());
+                    localResourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
+                    return this.resourceLoader.toResource(localResourceSet, document.getId().toString(), document.getName(), document.getContent(), applyMigrationParticipants).stream();
+                }).toList();
+
         ResourceSet resourceSet = editingContext.getDomain().getResourceSet();
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
-
-        semanticData.getDocuments().forEach(document -> this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent(),
-                this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext))));
-
+        resourceSet.getResources().addAll(loadedResources);
         // The ECrossReferenceAdapter must be set after the resource loading because it needs to resolve proxies in case
         // of inter-resources references
         resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
