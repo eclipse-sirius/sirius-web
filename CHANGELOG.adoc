@@ -111,6 +111,7 @@ This will allow specifier to create images that fir perfectly in the project tem
 - https://github.com/eclipse-sirius/sirius-web/issues/4029[#4029] [sirius-web] Add Project Custom Images element to the exported APIs
 - https://github.com/eclipse-sirius/sirius-web/issues/4027[#4027] [forms] List widgets in read-only mode now still allow the selection of their items, but still prevent the invocation of the corresponding single or double-click handlers (which can perform mutations).
 - https://github.com/eclipse-sirius/sirius-web/issues/3816[#3816] [form] Make EMF default form support Integer null value
+- https://github.com/eclipse-sirius/sirius-web/issues/3826[#3826] [form] Make EMF default form support attributes with a date
 
 
 == v2024.9.0

@@ -175,6 +175,8 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
         ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.emfKindService, this.feedbackMessageService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new InstantIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new LocalDateIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
         var numericDataTypes = List.of(
                 EcorePackage.Literals.EINT,
