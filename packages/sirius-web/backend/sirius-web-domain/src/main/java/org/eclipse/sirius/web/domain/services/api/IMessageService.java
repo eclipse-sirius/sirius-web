@@ -40,4 +40,67 @@ public interface IMessageService {
     String unexpectedError();
 
     String unpinSelectedElements();
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author arichard
+     */
+    class NoOp implements IMessageService {
+
+        @Override
+        public String revealSelectedFadedElements() {
+            return "";
+        }
+
+        @Override
+        public String collapseSelectedElements() {
+            return "";
+        }
+
+        @Override
+        public String expandSelectedElements() {
+            return "";
+        }
+
+        @Override
+        public String fadeSelectedElements() {
+            return "";
+        }
+
+        @Override
+        public String hideSelectedElements() {
+            return "";
+        }
+
+        @Override
+        public String invalidName() {
+            return "";
+        }
+
+        @Override
+        public String notFound() {
+            return "";
+        }
+
+        @Override
+        public String pinSelectedElements() {
+            return "";
+        }
+
+        @Override
+        public String showSelectedElements() {
+            return "";
+        }
+
+        @Override
+        public String unexpectedError() {
+            return "";
+        }
+
+        @Override
+        public String unpinSelectedElements() {
+            return "";
+        }
+    }
 }
