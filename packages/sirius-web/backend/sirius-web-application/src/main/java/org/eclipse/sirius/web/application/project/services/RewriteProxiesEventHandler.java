@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,6 +30,7 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.web.application.project.services.api.IRewriteProxiesResourceFilter;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
@@ -43,10 +45,14 @@ import reactor.core.publisher.Sinks.One;
  */
 @Service
 public class RewriteProxiesEventHandler implements IEditingContextEventHandler {
+
     private final IMessageService messageService;
 
-    public RewriteProxiesEventHandler(IMessageService messageService) {
+    private final List<IRewriteProxiesResourceFilter> rewriteProxiesResourceFilter;
+
+    public RewriteProxiesEventHandler(IMessageService messageService, List<IRewriteProxiesResourceFilter> rewriteProxiesResourceFilter) {
         this.messageService = Objects.requireNonNull(messageService);
+        this.rewriteProxiesResourceFilter = Objects.requireNonNull(rewriteProxiesResourceFilter);
     }
 
     @Override
@@ -59,11 +65,13 @@ public class RewriteProxiesEventHandler implements IEditingContextEventHandler {
         IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
-        if (input instanceof RewriteProxiesInput && editingContext instanceof IEMFEditingContext) {
-            RewriteProxiesInput rewriteInput = (RewriteProxiesInput) input;
-            AdapterFactoryEditingDomain adapterFactoryEditingDomain = ((IEMFEditingContext) editingContext).getDomain();
+        if (input instanceof RewriteProxiesInput rewriteInput && editingContext instanceof IEMFEditingContext emfEditingContext) {
+            AdapterFactoryEditingDomain adapterFactoryEditingDomain = emfEditingContext.getDomain();
             int totalRewrittenCount = 0;
-            for (Resource resource : adapterFactoryEditingDomain.getResourceSet().getResources()) {
+            var resources = adapterFactoryEditingDomain.getResourceSet().getResources().stream()
+                    .filter(r -> this.rewriteProxiesResourceFilter.stream().allMatch(f -> f.shouldRewriteProxies(r)))
+                    .toList();
+            for (Resource resource : resources) {
                 totalRewrittenCount += this.rewriteProxyURIs(resource, rewriteInput.oldDocumentIdToNewDocumentId());
             }
             if (totalRewrittenCount > 0) {
