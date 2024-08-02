@@ -10,11 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { ServerContext, ServerContextValue, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import { Theme, makeStyles } from '@material-ui/core/styles';
-import gql from 'graphql-tag';
 import { useContext, useEffect } from 'react';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLButton } from '../form/FormEventFragments.types';
