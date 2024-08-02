@@ -16,6 +16,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="Project" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="projects" upperBound="-1"
         eType="#//Project" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="contractualStartDate" eType="#//LocalDate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dayDuration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="contractualEndDate" eType="#//LocalDate"
+        changeable="false" volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isSensitive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
         eType="#//Component" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="allComponents" upperBound="-1"
@@ -30,6 +35,7 @@
         eType="#//Contribution" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Instant" instanceClassName="java.time.Instant"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="LocalDate" instanceClassName="java.time.LocalDate"/>
   <eClassifiers xsi:type="ecore:EClass" name="Iteration" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startDate" eType="#//Instant"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endDate" eType="#//Instant"/>
@@ -40,7 +46,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Task" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" eType="#//Priority"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cost" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cost" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="funding" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="income" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
+        changeable="false" volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="targets" upperBound="-1"
         eType="#//ModelElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tasks" upperBound="-1"

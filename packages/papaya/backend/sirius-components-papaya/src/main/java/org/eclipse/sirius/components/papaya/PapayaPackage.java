@@ -238,13 +238,47 @@ public interface PapayaPackage extends EPackage {
     int PROJECT__PROJECTS = NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Contractual Start Date</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PROJECT__CONTRACTUAL_START_DATE = NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Day Duration</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PROJECT__DAY_DURATION = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Contractual End Date</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PROJECT__CONTRACTUAL_END_DATE = NAMED_ELEMENT_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Is Sensitive</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PROJECT__IS_SENSITIVE = NAMED_ELEMENT_FEATURE_COUNT + 4;
+
+    /**
      * The feature id for the '<em><b>Components</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PROJECT__COMPONENTS = NAMED_ELEMENT_FEATURE_COUNT + 1;
+    int PROJECT__COMPONENTS = NAMED_ELEMENT_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>All Components</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
@@ -253,7 +287,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PROJECT__ALL_COMPONENTS = NAMED_ELEMENT_FEATURE_COUNT + 2;
+    int PROJECT__ALL_COMPONENTS = NAMED_ELEMENT_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Component Exchanges</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -262,7 +296,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PROJECT__COMPONENT_EXCHANGES = NAMED_ELEMENT_FEATURE_COUNT + 3;
+    int PROJECT__COMPONENT_EXCHANGES = NAMED_ELEMENT_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Iterations</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -271,7 +305,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PROJECT__ITERATIONS = NAMED_ELEMENT_FEATURE_COUNT + 4;
+    int PROJECT__ITERATIONS = NAMED_ELEMENT_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Tasks</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -280,7 +314,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PROJECT__TASKS = NAMED_ELEMENT_FEATURE_COUNT + 5;
+    int PROJECT__TASKS = NAMED_ELEMENT_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Contributions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -289,7 +323,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PROJECT__CONTRIBUTIONS = NAMED_ELEMENT_FEATURE_COUNT + 6;
+    int PROJECT__CONTRIBUTIONS = NAMED_ELEMENT_FEATURE_COUNT + 10;
 
     /**
      * The number of structural features of the '<em>Project</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -297,7 +331,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PROJECT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 7;
+    int PROJECT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 11;
 
     /**
      * The number of operations of the '<em>Project</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -444,12 +478,28 @@ public interface PapayaPackage extends EPackage {
     int TASK__COST = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Funding</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TASK__FUNDING = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Income</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TASK__INCOME = NAMED_ELEMENT_FEATURE_COUNT + 3;
+
+    /**
      * The feature id for the '<em><b>Targets</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TASK__TARGETS = NAMED_ELEMENT_FEATURE_COUNT + 2;
+    int TASK__TARGETS = NAMED_ELEMENT_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Tasks</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -458,7 +508,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK__TASKS = NAMED_ELEMENT_FEATURE_COUNT + 3;
+    int TASK__TASKS = NAMED_ELEMENT_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Start Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -466,7 +516,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK__START_DATE = NAMED_ELEMENT_FEATURE_COUNT + 4;
+    int TASK__START_DATE = NAMED_ELEMENT_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>End Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -474,7 +524,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK__END_DATE = NAMED_ELEMENT_FEATURE_COUNT + 5;
+    int TASK__END_DATE = NAMED_ELEMENT_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Done</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -482,7 +532,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK__DONE = NAMED_ELEMENT_FEATURE_COUNT + 6;
+    int TASK__DONE = NAMED_ELEMENT_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
@@ -491,7 +541,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK__DEPENDENCIES = NAMED_ELEMENT_FEATURE_COUNT + 7;
+    int TASK__DEPENDENCIES = NAMED_ELEMENT_FEATURE_COUNT + 9;
 
     /**
      * The number of structural features of the '<em>Task</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -499,7 +549,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TASK_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 8;
+    int TASK_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 10;
 
     /**
      * The number of operations of the '<em>Task</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2762,6 +2812,15 @@ public interface PapayaPackage extends EPackage {
     int INSTANT = 35;
 
     /**
+     * The meta object id for the '<em>Local Date</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see java.time.LocalDate
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getLocalDate()
+     * @generated
+     */
+    int LOCAL_DATE = 36;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.ModelElement <em>Model
      * Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2869,6 +2928,52 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EReference getProject_Projects();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.papaya.Project#getContractualStartDate <em>Contractual Start Date</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Contractual Start Date</em>'.
+     * @see org.eclipse.sirius.components.papaya.Project#getContractualStartDate()
+     * @see #getProject()
+     * @generated
+     */
+    EAttribute getProject_ContractualStartDate();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Project#getDayDuration
+     * <em>Day Duration</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Day Duration</em>'.
+     * @see org.eclipse.sirius.components.papaya.Project#getDayDuration()
+     * @see #getProject()
+     * @generated
+     */
+    EAttribute getProject_DayDuration();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.papaya.Project#getContractualEndDate <em>Contractual End Date</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Contractual End Date</em>'.
+     * @see org.eclipse.sirius.components.papaya.Project#getContractualEndDate()
+     * @see #getProject()
+     * @generated
+     */
+    EAttribute getProject_ContractualEndDate();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Project#getIsSensitive
+     * <em>Is Sensitive</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Sensitive</em>'.
+     * @see org.eclipse.sirius.components.papaya.Project#getIsSensitive()
+     * @see #getProject()
+     * @generated
+     */
+    EAttribute getProject_IsSensitive();
 
     /**
      * Returns the meta object for the containment reference list
@@ -3028,6 +3133,28 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EAttribute getTask_Cost();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Task#getFunding
+     * <em>Funding</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Funding</em>'.
+     * @see org.eclipse.sirius.components.papaya.Task#getFunding()
+     * @see #getTask()
+     * @generated
+     */
+    EAttribute getTask_Funding();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Task#getIncome
+     * <em>Income</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Income</em>'.
+     * @see org.eclipse.sirius.components.papaya.Task#getIncome()
+     * @see #getTask()
+     * @generated
+     */
+    EAttribute getTask_Income();
 
     /**
      * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Task#getTargets
@@ -4061,6 +4188,17 @@ public interface PapayaPackage extends EPackage {
     EDataType getInstant();
 
     /**
+     * Returns the meta object for data type '{@link java.time.LocalDate <em>Local Date</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for data type '<em>Local Date</em>'.
+     * @see java.time.LocalDate
+     * @model instanceClass="java.time.LocalDate"
+     * @generated
+     */
+    EDataType getLocalDate();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -4169,6 +4307,38 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EReference PROJECT__PROJECTS = eINSTANCE.getProject_Projects();
+
+        /**
+         * The meta object literal for the '<em><b>Contractual Start Date</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PROJECT__CONTRACTUAL_START_DATE = eINSTANCE.getProject_ContractualStartDate();
+
+        /**
+         * The meta object literal for the '<em><b>Day Duration</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PROJECT__DAY_DURATION = eINSTANCE.getProject_DayDuration();
+
+        /**
+         * The meta object literal for the '<em><b>Contractual End Date</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PROJECT__CONTRACTUAL_END_DATE = eINSTANCE.getProject_ContractualEndDate();
+
+        /**
+         * The meta object literal for the '<em><b>Is Sensitive</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PROJECT__IS_SENSITIVE = eINSTANCE.getProject_IsSensitive();
 
         /**
          * The meta object literal for the '<em><b>Components</b></em>' containment reference list feature. <!--
@@ -4285,6 +4455,22 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EAttribute TASK__COST = eINSTANCE.getTask_Cost();
+
+        /**
+         * The meta object literal for the '<em><b>Funding</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TASK__FUNDING = eINSTANCE.getTask_Funding();
+
+        /**
+         * The meta object literal for the '<em><b>Income</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TASK__INCOME = eINSTANCE.getTask_Income();
 
         /**
          * The meta object literal for the '<em><b>Targets</b></em>' reference list feature. <!-- begin-user-doc -->
@@ -5088,6 +5274,16 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EDataType INSTANT = eINSTANCE.getInstant();
+
+        /**
+         * The meta object literal for the '<em>Local Date</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
+         * -->
+         *
+         * @see java.time.LocaDate
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getLocalDate()
+         * @generated
+         */
+        EDataType LOCAL_DATE = eINSTANCE.getLocalDate();
 
     }
 

@@ -65,6 +65,8 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3808[#3808] [trees] Fix interactions with `TreeItemContextMenu` modal
 - https://github.com/eclipse-sirius/sirius-web/issues/3811[#3811] [forms] Fix issue with Reference widget not working when placed in a flexbox container
 - https://github.com/eclipse-sirius/sirius-web/issues/3776[#3776] [trees] Restore expand all functionality for ref widget trees
+- https://github.com/eclipse-sirius/sirius-web/issues/3816[#3816] [form] Make EMF default form support Integer null value
+- https://github.com/eclipse-sirius/sirius-web/issues/3826[#3826] [form] Make EMF default form support attributes with a date
 
 === New Features
 
@@ -92,7 +94,8 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3774[#3774] [sirius-web] Add an extension point to contribute custom tools to the diagram palette
 - https://github.com/eclipse-sirius/sirius-web/issues/3785[#3785] [sirius-web] Add an extension point to contribute custom tree item menu entry
 - https://github.com/eclipse-sirius/sirius-web/issues/3782[#3782] [sirius-web] Add an extension point to contribute custom widgets
-- https://github.com/eclipse-sirius/sirius-web/issues/3801[#3801] Add an equivalent of IViewDiagramDescriptionSearchService for Form descriptions
+- https://github.com/eclipse-sirius/sirius-web/issues/3801[#3801] [form] Add an equivalent of IViewDiagramDescriptionSearchService for Form descriptions
+- https://github.com/eclipse-sirius/sirius-web/issues/2163[#2163] [form] Make EMF default form support non changeable features
 
 == v2024.7.0
 

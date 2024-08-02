@@ -12,12 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.papaya.impl;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.papaya.Component;
@@ -35,6 +38,12 @@ import org.eclipse.sirius.components.papaya.Task;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getProjects <em>Projects</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getContractualStartDate <em>Contractual Start
+ * Date</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getDayDuration <em>Day Duration</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getContractualEndDate <em>Contractual End
+ * Date</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getIsSensitive <em>Is Sensitive</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getComponents <em>Components</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getAllComponents <em>All Components</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getComponentExchanges <em>Component
@@ -56,6 +65,76 @@ public class ProjectImpl extends NamedElementImpl implements Project {
      * @ordered
      */
     protected EList<Project> projects;
+
+    /**
+     * The default value of the '{@link #getContractualStartDate() <em>Contractual Start Date</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getContractualStartDate()
+     * @generated
+     * @ordered
+     */
+    protected static final LocalDate CONTRACTUAL_START_DATE_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getContractualStartDate() <em>Contractual Start Date</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getContractualStartDate()
+     * @generated
+     * @ordered
+     */
+    protected LocalDate contractualStartDate = CONTRACTUAL_START_DATE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getDayDuration() <em>Day Duration</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getDayDuration()
+     * @generated
+     * @ordered
+     */
+    protected static final Integer DAY_DURATION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDayDuration() <em>Day Duration</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDayDuration()
+     * @generated
+     * @ordered
+     */
+    protected Integer dayDuration = DAY_DURATION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getContractualEndDate() <em>Contractual End Date</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getContractualEndDate()
+     * @generated
+     * @ordered
+     */
+    protected static final LocalDate CONTRACTUAL_END_DATE_EDEFAULT = null;
+
+    /**
+     * The default value of the '{@link #getIsSensitive() <em>Is Sensitive</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getIsSensitive()
+     * @generated
+     * @ordered
+     */
+    protected static final Boolean IS_SENSITIVE_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getIsSensitive() <em>Is Sensitive</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getIsSensitive()
+     * @generated
+     * @ordered
+     */
+    protected Boolean isSensitive = IS_SENSITIVE_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getComponents() <em>Components</em>}' containment reference list. <!--
@@ -137,6 +216,88 @@ public class ProjectImpl extends NamedElementImpl implements Project {
             this.projects = new EObjectContainmentEList<>(Project.class, this, PapayaPackage.PROJECT__PROJECTS);
         }
         return this.projects;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LocalDate getContractualStartDate() {
+        return this.contractualStartDate;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setContractualStartDate(LocalDate newContractualStartDate) {
+        LocalDate oldContractualStartDate = this.contractualStartDate;
+        this.contractualStartDate = newContractualStartDate;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.PROJECT__CONTRACTUAL_START_DATE, oldContractualStartDate, this.contractualStartDate));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Integer getDayDuration() {
+        return this.dayDuration;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDayDuration(Integer newDayDuration) {
+        Integer oldDayDuration = this.dayDuration;
+        this.dayDuration = newDayDuration;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.PROJECT__DAY_DURATION, oldDayDuration, this.dayDuration));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public LocalDate getContractualEndDate() {
+        if (this.contractualStartDate != null && this.dayDuration != null) {
+            return this.contractualStartDate.plusDays(this.dayDuration);
+        }
+        return null;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Boolean getIsSensitive() {
+        return this.isSensitive;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIsSensitive(Boolean newIsSensitive) {
+        Boolean oldIsSensitive = this.isSensitive;
+        this.isSensitive = newIsSensitive;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.PROJECT__IS_SENSITIVE, oldIsSensitive, this.isSensitive));
     }
 
     /**
@@ -253,6 +414,14 @@ public class ProjectImpl extends NamedElementImpl implements Project {
         switch (featureID) {
             case PapayaPackage.PROJECT__PROJECTS:
                 return this.getProjects();
+            case PapayaPackage.PROJECT__CONTRACTUAL_START_DATE:
+                return this.getContractualStartDate();
+            case PapayaPackage.PROJECT__DAY_DURATION:
+                return this.getDayDuration();
+            case PapayaPackage.PROJECT__CONTRACTUAL_END_DATE:
+                return this.getContractualEndDate();
+            case PapayaPackage.PROJECT__IS_SENSITIVE:
+                return this.getIsSensitive();
             case PapayaPackage.PROJECT__COMPONENTS:
                 return this.getComponents();
             case PapayaPackage.PROJECT__ALL_COMPONENTS:
@@ -281,6 +450,15 @@ public class ProjectImpl extends NamedElementImpl implements Project {
             case PapayaPackage.PROJECT__PROJECTS:
                 this.getProjects().clear();
                 this.getProjects().addAll((Collection<? extends Project>) newValue);
+                return;
+            case PapayaPackage.PROJECT__CONTRACTUAL_START_DATE:
+                this.setContractualStartDate((LocalDate) newValue);
+                return;
+            case PapayaPackage.PROJECT__DAY_DURATION:
+                this.setDayDuration((Integer) newValue);
+                return;
+            case PapayaPackage.PROJECT__IS_SENSITIVE:
+                this.setIsSensitive((Boolean) newValue);
                 return;
             case PapayaPackage.PROJECT__COMPONENTS:
                 this.getComponents().clear();
@@ -317,6 +495,15 @@ public class ProjectImpl extends NamedElementImpl implements Project {
             case PapayaPackage.PROJECT__PROJECTS:
                 this.getProjects().clear();
                 return;
+            case PapayaPackage.PROJECT__CONTRACTUAL_START_DATE:
+                this.setContractualStartDate(CONTRACTUAL_START_DATE_EDEFAULT);
+                return;
+            case PapayaPackage.PROJECT__DAY_DURATION:
+                this.setDayDuration(DAY_DURATION_EDEFAULT);
+                return;
+            case PapayaPackage.PROJECT__IS_SENSITIVE:
+                this.setIsSensitive(IS_SENSITIVE_EDEFAULT);
+                return;
             case PapayaPackage.PROJECT__COMPONENTS:
                 this.getComponents().clear();
                 return;
@@ -346,6 +533,14 @@ public class ProjectImpl extends NamedElementImpl implements Project {
         switch (featureID) {
             case PapayaPackage.PROJECT__PROJECTS:
                 return this.projects != null && !this.projects.isEmpty();
+            case PapayaPackage.PROJECT__CONTRACTUAL_START_DATE:
+                return CONTRACTUAL_START_DATE_EDEFAULT == null ? this.contractualStartDate != null : !CONTRACTUAL_START_DATE_EDEFAULT.equals(this.contractualStartDate);
+            case PapayaPackage.PROJECT__DAY_DURATION:
+                return DAY_DURATION_EDEFAULT == null ? this.dayDuration != null : !DAY_DURATION_EDEFAULT.equals(this.dayDuration);
+            case PapayaPackage.PROJECT__CONTRACTUAL_END_DATE:
+                return CONTRACTUAL_END_DATE_EDEFAULT == null ? this.getContractualEndDate() != null : !CONTRACTUAL_END_DATE_EDEFAULT.equals(this.getContractualEndDate());
+            case PapayaPackage.PROJECT__IS_SENSITIVE:
+                return IS_SENSITIVE_EDEFAULT == null ? this.isSensitive != null : !IS_SENSITIVE_EDEFAULT.equals(this.isSensitive);
             case PapayaPackage.PROJECT__COMPONENTS:
                 return this.components != null && !this.components.isEmpty();
             case PapayaPackage.PROJECT__ALL_COMPONENTS:
@@ -360,6 +555,27 @@ public class ProjectImpl extends NamedElementImpl implements Project {
                 return this.contributions != null && !this.contributions.isEmpty();
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String toString() {
+        if (this.eIsProxy())
+            return super.toString();
+
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (contractualStartDate: ");
+        result.append(this.contractualStartDate);
+        result.append(", dayDuration: ");
+        result.append(this.dayDuration);
+        result.append(", isSensitive: ");
+        result.append(this.isSensitive);
+        result.append(')');
+        return result.toString();
     }
 
 } // ProjectImpl

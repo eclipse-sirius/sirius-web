@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.papaya.impl;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import org.eclipse.emf.ecore.EClass;
@@ -168,6 +169,8 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
                 return this.createVisibilityFromString(eDataType, initialValue);
             case PapayaPackage.INSTANT:
                 return this.createInstantFromString(eDataType, initialValue);
+            case PapayaPackage.LOCAL_DATE:
+                return this.createLocalDateFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -187,6 +190,8 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
                 return this.convertVisibilityToString(eDataType, instanceValue);
             case PapayaPackage.INSTANT:
                 return this.convertInstantToString(eDataType, instanceValue);
+            case PapayaPackage.LOCAL_DATE:
+                return this.convertLocalDateToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -537,6 +542,27 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     public String convertInstantToString(EDataType eDataType, Object instanceValue) {
         if (instanceValue instanceof Instant instant) {
             return DateTimeFormatter.ISO_INSTANT.format(instant);
+        }
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    public LocalDate createLocalDateFromString(EDataType eDataType, String initialValue) {
+        return LocalDate.parse(initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    public String convertLocalDateToString(EDataType eDataType, Object instanceValue) {
+        if (instanceValue instanceof LocalDate localDate) {
+            return DateTimeFormatter.ISO_LOCAL_DATE.format(localDate);
         }
         return super.convertToString(eDataType, instanceValue);
     }

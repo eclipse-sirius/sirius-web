@@ -25,6 +25,7 @@
       <genEnumLiterals ecoreEnumLiteral="papaya.ecore#//Visibility/PRIVATE"/>
     </genEnums>
     <genDataTypes ecoreDataType="papaya.ecore#//Instant"/>
+    <genDataTypes ecoreDataType="papaya.ecore#//LocalDate"/>
     <genClasses image="false" ecoreClass="papaya.ecore#//ModelElement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//ModelElement/tags"/>
     </genClasses>
@@ -38,6 +39,10 @@
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//Project">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/projects"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Project/contractualStartDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Project/dayDuration"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Project/contractualEndDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Project/isSensitive"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/components"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference papaya.ecore#//Project/allComponents"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/componentExchanges"/>
@@ -54,6 +59,8 @@
     <genClasses ecoreClass="papaya.ecore#//Task">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/priority"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/cost"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/funding"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/income"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Task/targets"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Task/tasks"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Task/startDate"/>

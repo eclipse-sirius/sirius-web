@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.forms;
 
+import java.time.DateTimeException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -20,27 +28,26 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.forms.DateTimeType;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.forms.description.DateTimeDescription;
 import org.eclipse.sirius.components.forms.description.IfDescription;
-import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * Provides the default description of the widget to use to support an EString feature.
+ * Provides the default description of the widget to use to support DataType feature of type java.time.LocalDate.
  *
- * @author sbegaudeau
+ * @author lfasani
  */
-public class EStringIfDescriptionProvider {
-    private static final String IF_DESCRIPTION_ID = "EString";
+public class LocalDateIfDescriptionProvider {
+    private static final String IF_DESCRIPTION_ID = "java.time.LocalDate";
 
-    private static final String TEXTAREA_DESCRIPTION_ID = "Textarea";
+    private static final String DATE_DESCRIPTION_ID = "Date";
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
@@ -48,7 +55,7 @@ public class EStringIfDescriptionProvider {
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public EStringIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
+    public LocalDateIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
@@ -58,7 +65,7 @@ public class EStringIfDescriptionProvider {
         return IfDescription.newIfDescription(IF_DESCRIPTION_ID)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .predicate(this.getPredicate())
-                .controlDescriptions(List.of(this.getTextareaDescription()))
+                .controlDescriptions(List.of(this.getDateTimeDescription()))
                 .build();
     }
 
@@ -67,21 +74,22 @@ public class EStringIfDescriptionProvider {
             var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
             return optionalEAttribute.filter(eAttribute -> {
                 EClassifier eType = eAttribute.getEType();
-                return !eAttribute.isMany() && (eType.equals(EcorePackage.Literals.ESTRING) || Objects.equals(eType.getInstanceClassName(), String.class.getName()));
+                return !eAttribute.isMany() && Objects.equals(eType.getInstanceClassName(), LocalDate.class.getName());
             }).isPresent();
         };
     }
 
-    private TextareaDescription getTextareaDescription() {
-        return TextareaDescription.newTextareaDescription(TEXTAREA_DESCRIPTION_ID)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+    private DateTimeDescription getDateTimeDescription() {
+        return DateTimeDescription.newDateTimeDescription(DATE_DESCRIPTION_ID)
                 .idProvider(new WidgetIdProvider())
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(this.getLabelProvider())
-                .valueProvider(this.getValueProvider())
+                .stringValueProvider(this.getValueProvider())
                 .newValueHandler(this.getNewValueHandler())
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
+                .type(DateTimeType.DATE)
                 .isReadOnlyProvider(this.getIsReadOnlyProvider())
                 .build();
     }
@@ -108,29 +116,43 @@ public class EStringIfDescriptionProvider {
                 EAttribute eAttribute = optionalEAttribute.get();
 
                 Object value = eObject.eGet(eAttribute);
-                if (value != null && !eAttribute.isMany()) {
-                    return EcoreUtil.convertToString(EcorePackage.Literals.ESTRING, value);
+                if (value instanceof LocalDate localDate) {
+                    try {
+                        Instant instant = localDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
+                        return DateTimeFormatter.ISO_INSTANT.format(instant);
+                    } catch (DateTimeException | NullPointerException e) {
+                        // Ignore
+                    }
                 }
             }
-
             return "";
         };
     }
 
     private BiFunction<VariableManager, String, IStatus> getNewValueHandler() {
         return (variableManager, newValue) -> {
+            IStatus status = new Failure("");
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
             if (optionalEObject.isPresent() && optionalEAttribute.isPresent()) {
                 EObject eObject = optionalEObject.get();
                 EAttribute eAttribute = optionalEAttribute.get();
 
-                String value = EcoreUtil.createFromString(EcorePackage.Literals.ESTRING, newValue).toString();
-                eObject.eSet(eAttribute, value);
-
-                return new Success();
+                if (newValue == null || newValue.isBlank()) {
+                    eObject.eSet(eAttribute, null);
+                    status = new Success();
+                } else {
+                    try {
+                        Instant instant = Instant.parse(newValue);
+                        LocalDate localDate = LocalDateTime.ofInstant(instant, ZoneOffset.UTC).toLocalDate();
+                        eObject.eSet(eAttribute, localDate);
+                        status = new Success();
+                    } catch (DateTimeParseException e) {
+                        // Ignore
+                    }
+                }
             }
-            return new Failure("");
+            return status;
         };
     }
 }

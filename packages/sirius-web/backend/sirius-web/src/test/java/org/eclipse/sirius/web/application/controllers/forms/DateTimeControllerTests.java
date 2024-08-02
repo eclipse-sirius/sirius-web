@@ -19,6 +19,7 @@ import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertion
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -32,8 +33,10 @@ import org.eclipse.sirius.components.forms.DateTime;
 import org.eclipse.sirius.components.forms.tests.graphql.EditDateTimeMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithDateTimeDescriptionProvider;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +48,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -69,6 +73,9 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private EditDateTimeMutationRunner editDateTimeMutationRunner;
+
+    @Autowired
+    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -155,4 +162,148 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
+
+    @Test
+    @DisplayName("Given a date widget from default Details, when it is displayed/edited, then its value is properly initialized/updated")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenDateWidgetFromDefaultDetailsWhenItIsEditedThenTheValueIsUpdated() {
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(PapayaIdentifiers.PROJECT_OBJECT.toString()));
+        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast);
+
+        var formId = new AtomicReference<String>();
+        var startDate = new AtomicReference<String>();
+
+        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    formId.set(form.getId());
+
+                    var startDateTime = new FormNavigator(form).page("Project").group("Core Properties").findWidget("Contractual Start Date", DateTime.class);
+                    startDate.set(startDateTime.getId());
+                    assertThat(startDateTime)
+                            .hasValue("2023-12-11T00:00:00Z")
+                            .isNotReadOnly();
+
+                    var endDateTime = new FormNavigator(form).page("Project").group("Core Properties").findWidget("Contractual End Date", DateTime.class);
+                    assertThat(endDateTime)
+                            .hasValue("2023-12-15T00:00:00Z")
+                            .isReadOnly();
+
+                }, () -> fail("Missing form"));
+
+        Runnable editDateTime = () -> {
+            var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), startDate.get(), "2024-02-02T09:10:00Z");
+            var result = this.editDateTimeMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editDateTime.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var dateTime = new FormNavigator(form).page("Project").group("Core Properties").findWidget("Contractual Start Date", DateTime.class);
+                    assertThat(dateTime).hasValue("2024-02-02T00:00:00Z");
+                }, () -> fail("Missing form"));
+
+        Runnable editDateTime2 = () -> {
+            var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), startDate.get(), "");
+            var result = this.editDateTimeMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editDateTime.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer2 = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var dateTime = new FormNavigator(form).page("Project").group("Core Properties").findWidget("Contractual Start Date", DateTime.class);
+                    assertThat(dateTime).hasValue("");
+                }, () -> fail("Missing form"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(editDateTime)
+                .consumeNextWith(updatedFormContentConsumer)
+                .then(editDateTime2)
+                .consumeNextWith(updatedFormContentConsumer2)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a dateTime widget from default Details, when it is displayed/edited, then its value is properly initialized/updated")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenDateTimeWidgetFromDefaultDetailsWhenItIsEditedThenTheValueIsUpdated() {
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString()));
+        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast);
+
+        var formId = new AtomicReference<String>();
+        var startDate = new AtomicReference<String>();
+
+        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    formId.set(form.getId());
+
+                    var startDateTime = new FormNavigator(form).page("Iteration 2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
+                    startDate.set(startDateTime.getId());
+                    assertThat(startDateTime)
+                            .hasValue("2023-12-11T09:00:00Z")
+                            .isNotReadOnly();
+                }, () -> fail("Missing form"));
+
+        Runnable editDateTime = () -> {
+            var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), startDate.get(), "2024-02-11T09:00:00Z");
+            var result = this.editDateTimeMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editDateTime.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var dateTime = new FormNavigator(form).page("Iteration 2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
+                    assertThat(dateTime).hasValue("2024-02-11T09:00:00Z");
+                }, () -> fail("Missing form"));
+
+        Runnable editDateTime2 = () -> {
+            var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), startDate.get(), "");
+            var result = this.editDateTimeMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editDateTime.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer2 = payload -> Optional.of(payload)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var dateTime = new FormNavigator(form).page("Iteration 2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
+                    assertThat(dateTime).hasValue("");
+                }, () -> fail("Missing form"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(editDateTime)
+                .consumeNextWith(updatedFormContentConsumer)
+                .then(editDateTime2)
+                .consumeNextWith(updatedFormContentConsumer2)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+
 }

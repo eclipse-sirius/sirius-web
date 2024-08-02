@@ -20,6 +20,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
@@ -51,9 +52,59 @@ public class ProjectItemProvider extends NamedElementItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addContractualStartDatePropertyDescriptor(object);
+            this.addDayDurationPropertyDescriptor(object);
+            this.addContractualEndDatePropertyDescriptor(object);
+            this.addIsSensitivePropertyDescriptor(object);
             this.addAllComponentsPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Contractual Start Date feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addContractualStartDatePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Project_contractualStartDate_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Project_contractualStartDate_feature", "_UI_Project_type"),
+                PapayaPackage.Literals.PROJECT__CONTRACTUAL_START_DATE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Day Duration feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDayDurationPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Project_dayDuration_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Project_dayDuration_feature", "_UI_Project_type"),
+                PapayaPackage.Literals.PROJECT__DAY_DURATION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Contractual End Date feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addContractualEndDatePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Project_contractualEndDate_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Project_contractualEndDate_feature", "_UI_Project_type"),
+                PapayaPackage.Literals.PROJECT__CONTRACTUAL_END_DATE, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Is Sensitive feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addIsSensitivePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Project_isSensitive_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Project_isSensitive_feature", "_UI_Project_type"),
+                PapayaPackage.Literals.PROJECT__IS_SENSITIVE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -145,6 +196,12 @@ public class ProjectItemProvider extends NamedElementItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(Project.class)) {
+            case PapayaPackage.PROJECT__CONTRACTUAL_START_DATE:
+            case PapayaPackage.PROJECT__DAY_DURATION:
+            case PapayaPackage.PROJECT__CONTRACTUAL_END_DATE:
+            case PapayaPackage.PROJECT__IS_SENSITIVE:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
             case PapayaPackage.PROJECT__PROJECTS:
             case PapayaPackage.PROJECT__COMPONENTS:
             case PapayaPackage.PROJECT__COMPONENT_EXCHANGES:
