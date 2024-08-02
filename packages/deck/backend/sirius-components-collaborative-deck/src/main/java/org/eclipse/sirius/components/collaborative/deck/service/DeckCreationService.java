@@ -52,7 +52,9 @@ public class DeckCreationService implements IDeckCreationService {
     public DeckCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
-        this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH).tag(Monitoring.NAME, "deck").register(meterRegistry);
+        this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
+                .tag(Monitoring.NAME, "deck")
+                .register(meterRegistry);
     }
 
     @Override
@@ -83,6 +85,7 @@ public class DeckCreationService implements IDeckCreationService {
         VariableManager variableManager = new VariableManager();
         variableManager.put(DeckDescription.LABEL, label);
         variableManager.put(VariableManager.SELF, targetObject);
+        variableManager.put(DeckDescription.DECK_TARGET, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         Optional<Deck> optionalPreviousDeck = optionalDeckContext.map(IDeckContext::getDeck);
         Optional<IDeckEvent> optionalDeckEvent = optionalDeckContext.map(IDeckContext::getDeckEvent);

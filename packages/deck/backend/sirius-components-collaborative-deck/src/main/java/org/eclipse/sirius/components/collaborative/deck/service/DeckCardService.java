@@ -70,8 +70,9 @@ public class DeckCardService implements IDeckCardService {
         String currentLaneId = createDeckCardInput.currentLaneId();
         Optional<Lane> optionalParentLane = this.findLane(lane -> Objects.equals(lane.id(), currentLaneId), deck);
         Optional<LaneDescription> optionalLaneDescription = optionalParentLane.flatMap(lane -> this.findLaneDescription(lane.descriptionId(), deck, editingContext));
+        Optional<Object> optionalDeckTarget = this.objectService.getObject(editingContext, deck.getTargetObjectId());
 
-        if (optionalLaneDescription.isPresent()) {
+        if (optionalLaneDescription.isPresent() && optionalDeckTarget.isPresent()) {
             VariableManager variableManager = new VariableManager();
             Optional<Object> optionalTargetObject;
             if (currentLaneId != null) {
@@ -84,6 +85,7 @@ public class DeckCardService implements IDeckCardService {
             }
             if (optionalTargetObject.isPresent()) {
                 variableManager.put(VariableManager.SELF, optionalTargetObject.get());
+                variableManager.put(DeckDescription.DECK_TARGET, optionalDeckTarget.get());
                 variableManager.put(DeckDescription.TITLE, createDeckCardInput.title());
                 variableManager.put(DeckDescription.DESCRIPTION, createDeckCardInput.description());
                 variableManager.put(DeckDescription.LABEL, createDeckCardInput.label());

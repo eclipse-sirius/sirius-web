@@ -36,6 +36,8 @@ public record DeckDescription(String id, String label, Function<VariableManager,
 
     public static final String LABEL = "label";
 
+    public static final String DECK_TARGET = "deckTarget";
+
     public static final String NEW_TITLE = "newTitle";
 
     public static final String NEW_DESCRIPTION = "newDescription";
