@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { gql } from '@apollo/client';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
-import gql from 'graphql-tag';
 import { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { NewProjectCard } from './NewProjectCard';
