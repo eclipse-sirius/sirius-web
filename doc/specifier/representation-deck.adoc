@@ -18,6 +18,15 @@ image::images/deck-description-overview.png[Deck description overview]
 * `Precondition Expression`: An expression that determine if it is possible to create the representation
 * `Title Expression`: The initial name of the representation once created
 
+### Variables
+
+The variable `deckTarget` is the semantic element associated with the deck representation.
+It is available for
+
+* lane descriptions
+* card descriptions
+* all style descriptions
+
 ### Deck style
 
 It is possible to define the *background color* of the `Deck` representation by adding a `StyleDescription` in the `DeckDescription`.
