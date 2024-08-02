@@ -18,13 +18,14 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
- * Used to setup the initial state of a test.
+ * Used to set up the initial state of a test.
  *
  * @author sbegaudeau
  */
@@ -45,7 +46,8 @@ public class GivenInitialServerState implements IGivenInitialServerState {
 
         //To use spring service with scope request, we simulate it.
         MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestAttributes requestAttributes = new ServletRequestAttributes(request);
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        RequestAttributes requestAttributes = new ServletRequestAttributes(request, response);
         RequestContextHolder.setRequestAttributes(requestAttributes);
     }
 }
