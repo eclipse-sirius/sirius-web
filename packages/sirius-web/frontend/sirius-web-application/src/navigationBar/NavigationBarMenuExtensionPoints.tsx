@@ -11,9 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ComponentExtensionPoint, DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { MenuItemProps } from '@mui/material/MenuItem';
 import { Help } from './Help';
-import { NavigationBarMenuIconProps } from './NavigationBarMenu.types';
+import { NavigationBarMenuIconProps, NavigationBarMenuItemProps } from './NavigationBarMenu.types';
 
 export const navigationBarMenuIconExtensionPoint: ComponentExtensionPoint<NavigationBarMenuIconProps> = {
   identifier: 'navigationBarMenu#icon',
@@ -25,7 +24,7 @@ export const navigationBarMenuHelpURLExtensionPoint: DataExtensionPoint<string> 
   fallback: 'https://eclipse.dev/sirius/sirius-web.html',
 };
 
-export const navigationBarMenuEntryExtensionPoint: ComponentExtensionPoint<MenuItemProps> = {
+export const navigationBarMenuEntryExtensionPoint: ComponentExtensionPoint<NavigationBarMenuItemProps> = {
   identifier: 'navigationBarMenu#entry',
   FallbackComponent: () => null,
 };

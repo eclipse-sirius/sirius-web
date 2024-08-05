@@ -20,3 +20,5 @@ export interface NavigationBarMenuState {
 export interface NavigationBarMenuIconProps {
   onClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
+
+export interface NavigationBarMenuItemProps {}
