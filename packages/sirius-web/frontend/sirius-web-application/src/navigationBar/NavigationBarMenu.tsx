@@ -16,9 +16,9 @@ import HelpIcon from '@mui/icons-material/Help';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
-import MenuItem, { MenuItemProps } from '@mui/material/MenuItem';
+import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
-import { NavigationBarMenuProps, NavigationBarMenuState } from './NavigationBarMenu.types';
+import { NavigationBarMenuItemProps, NavigationBarMenuProps, NavigationBarMenuState } from './NavigationBarMenu.types';
 import {
   navigationBarMenuEntryExtensionPoint,
   navigationBarMenuHelpURLExtensionPoint,
@@ -32,7 +32,9 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
 
   const { Component: MenuIcon } = useComponent(navigationBarMenuIconExtensionPoint);
   const { data: url } = useData(navigationBarMenuHelpURLExtensionPoint);
-  const menuItemProps: ComponentExtension<MenuItemProps>[] = useComponents(navigationBarMenuEntryExtensionPoint);
+  const menuItemComponentExtensions: ComponentExtension<NavigationBarMenuItemProps>[] = useComponents(
+    navigationBarMenuEntryExtensionPoint
+  );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) =>
     setState((prevState) => ({ ...prevState, menuAnchor: event.currentTarget }));
@@ -53,8 +55,8 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
           </ListItemIcon>
           <ListItemText primary="Help" />
         </MenuItem>
-        {menuItemProps.map((props, index) => (
-          <MenuItem {...props} key={index} />
+        {menuItemComponentExtensions.map(({ Component: NavigationBarMenuItem }, index) => (
+          <NavigationBarMenuItem key={index} />
         ))}
       </Menu>
     </>
