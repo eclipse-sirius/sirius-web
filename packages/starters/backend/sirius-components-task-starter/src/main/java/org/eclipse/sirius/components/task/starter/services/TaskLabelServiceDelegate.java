@@ -19,6 +19,8 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.emf.services.DefaultLabelService;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
 import org.eclipse.sirius.components.task.TaskTag;
 import org.eclipse.sirius.ext.emf.edit.EditingDomainServices;
@@ -67,6 +69,15 @@ public class TaskLabelServiceDelegate extends DefaultLabelService implements ILa
             return Optional.of(this.editingDomainServices.getLabelProviderText(tag));
         } else {
             return super.getLabelField(object);
+        }
+    }
+
+    @Override
+    public StyledString getStyledLabel(Object object) {
+        if (object instanceof TaskTag tag) {
+            return StyledString.of(this.editingDomainServices.getLabelProviderText((EObject) object));
+        } else {
+            return StyledString.of(super.getLabel(object));
         }
     }
 }

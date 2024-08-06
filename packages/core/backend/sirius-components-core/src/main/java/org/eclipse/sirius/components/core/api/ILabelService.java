@@ -15,6 +15,8 @@ package org.eclipse.sirius.components.core.api;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.core.api.labels.StyledString;
+
 /**
  * Interface of the service used to compute the label of the domain objects.
  *
@@ -22,6 +24,8 @@ import java.util.Optional;
  */
 public interface ILabelService {
     String getLabel(Object object);
+
+    StyledString getStyledLabel(Object object);
 
     String getFullLabel(Object object);
 
@@ -40,6 +44,11 @@ public interface ILabelService {
         @Override
         public String getLabel(Object object) {
             return "";
+        }
+
+        @Override
+        public StyledString getStyledLabel(Object object) {
+            return StyledString.of("");
         }
 
         @Override

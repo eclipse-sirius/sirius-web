@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.springframework.stereotype.Service;
 
 /**
@@ -65,6 +66,11 @@ public class ObjectService implements IObjectService {
     @Override
     public String getLabel(Object object) {
         return this.labelService.getLabel(object);
+    }
+
+    @Override
+    public StyledString getStyledLabel(Object object) {
+        return this.labelService.getStyledLabel(object);
     }
 
     @Override
