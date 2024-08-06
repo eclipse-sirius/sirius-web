@@ -4,6 +4,17 @@ extend type Viewer {
   projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplatesConnection!
 }
 
+extend type EditingContext {
+  containmentFeatureNames(containerId: ID!, containedObjectId: ID!): EditingContextContainmentFeatureNamesPayload!
+}
+
+type EditingContextContainmentFeatureNamesSuccessPayload {
+  id: ID!
+  containmentFeatureNames: [String!]!
+}
+
+union EditingContextContainmentFeatureNamesPayload = ErrorPayload | EditingContextContainmentFeatureNamesSuccessPayload
+
 type ViewerProjectsConnection {
   edges: [ViewerProjectsEdge!]!
   pageInfo: PageInfo!
@@ -47,6 +58,7 @@ extend type Mutation {
   renameRepresentation(input: RenameRepresentationInput!): RenameRepresentationPayload!
   deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
   uploadProject(input: UploadProjectInput!): UploadProjectPayload!
+  duplicateObject(input: DuplicateObjectInput!): DuplicateObjectPayload!
 }
 
 input CreateProjectInput {
@@ -148,3 +160,22 @@ type UploadProjectSuccessPayload {
   id: ID!
   project: Project!
 }
+
+input DuplicateObjectInput {
+  id: ID!
+  editingContextId: ID!
+  objectId: ID!
+  containerId: ID!
+  containmentFeatureName: String!
+  duplicateContent: Boolean!
+  copyOutgoingReferences: Boolean!
+  updateIncomingReferences: Boolean!
+}
+
+type DuplicateObjectSuccessPayload {
+  id: ID!
+  object: Object
+  messages: [Message]!
+}
+
+union DuplicateObjectPayload = ErrorPayload | DuplicateObjectSuccessPayload

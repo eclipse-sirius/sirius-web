@@ -16,11 +16,13 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import AddIcon from '@material-ui/icons/Add';
+import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import { Fragment, forwardRef, useState } from 'react';
+import { DuplicateObjectModal } from '../../modals/duplicate-object/DuplicateObjectModal';
 import { NewObjectModal } from '../../modals/new-object/NewObjectModal';
 import { NewRepresentationModal } from '../../modals/new-representation/NewRepresentationModal';
 
-type Modal = 'CreateNewObject' | 'CreateNewRepresentation';
+type Modal = 'CreateNewObject' | 'CreateNewRepresentation' | 'DuplicateObject';
 
 export const ObjectTreeItemContextMenuContribution = forwardRef(
   (
@@ -59,6 +61,15 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
           onClose={onClose}
         />
       );
+    } else if (modal === 'DuplicateObject') {
+      modalElement = (
+        <DuplicateObjectModal
+          editingContextId={editingContextId}
+          item={item}
+          onObjectDuplicated={onObjectCreated}
+          onClose={onClose}
+        />
+      );
     }
 
     return (
@@ -85,6 +96,17 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
             <AddIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="New representation" />
+        </MenuItem>
+        <MenuItem
+          key="duplicate-object"
+          onClick={() => setModal('DuplicateObject')}
+          data-testid="duplicate-object"
+          disabled={readOnly}
+          aria-disabled>
+          <ListItemIcon>
+            <AddToPhotosIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Duplicate Object" />
         </MenuItem>
         {modalElement}
       </Fragment>
