@@ -71,9 +71,9 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
 
     public static final String PREFIX = "modelBrowser://";
 
-    public static final String MODEL_BROWSER_CONTAINER_PREFIX = "modelBrowser://container";
+    public static final String MODEL_BROWSER_CONTAINER_PREFIX = PREFIX + "container";
 
-    public static final String MODEL_BROWSER_REFERENCE_PREFIX = "modelBrowser://reference";
+    public static final String MODEL_BROWSER_REFERENCE_PREFIX = PREFIX + "reference";
 
     private final IObjectService objectService;
 

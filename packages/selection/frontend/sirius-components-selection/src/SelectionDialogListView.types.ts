@@ -11,10 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface SelectionDialogProps {
+export interface SelectionDialogListViewProps {
   editingContextId: string;
   selectionRepresentationId: string;
   targetObjectId: string;
   onClose: () => void;
-  onFinish: (selectedObjectId: string) => void;
 }

@@ -10,5 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 export * from './SelectionDialog';
 export * from './SelectionDialog.types';
+export * from './SelectionDialogListView';
+export * from './SelectionDialogListView.types';
