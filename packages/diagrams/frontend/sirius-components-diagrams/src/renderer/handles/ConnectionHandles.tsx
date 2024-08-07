@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@mui/material/styles';
+import { Handle, Position, ReactFlowState, useStore } from '@xyflow/react';
 import React, { memo, useCallback, useContext } from 'react';
-import { Handle, Position, ReactFlowState, useStore } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { ConnectionHandle, ConnectionHandlesProps } from './ConnectionHandles.types';

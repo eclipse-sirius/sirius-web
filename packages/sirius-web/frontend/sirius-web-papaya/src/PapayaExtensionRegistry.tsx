@@ -13,9 +13,11 @@
 
 import { ComponentExtension, DataExtension, ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import {
+  EdgeData,
+  NodeData,
   ReactFlowPropsCustomizer,
-  diagramRendererReactFlowPropsCustomizerExtensionPoint,
   diagramPaletteToolExtensionPoint,
+  diagramRendererReactFlowPropsCustomizerExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   EditProjectNavbarSubtitleProps,
@@ -23,7 +25,7 @@ import {
   useCurrentProject,
 } from '@eclipse-sirius/sirius-web-application';
 import Typography from '@mui/material/Typography';
-import { ReactFlowProps } from 'reactflow';
+import { Edge, Node, ReactFlowProps } from '@xyflow/react';
 import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
 import { PapayaDiagramLegendPanel } from './diagrams/PapayaDiagramLegendPanel';
 import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaComponentLabelDetailToolContribution';
@@ -49,7 +51,10 @@ const editProjectNavbarSubtitleExtension: ComponentExtension<EditProjectNavbarSu
 };
 papayaExtensionRegistry.addComponent(editProjectNavbarSubtitleExtensionPoint, editProjectNavbarSubtitleExtension);
 
-const reactFlowPropsCustomizer: ReactFlowPropsCustomizer = ({ children, ...props }: ReactFlowProps) => {
+const reactFlowPropsCustomizer: ReactFlowPropsCustomizer = ({
+  children,
+  ...props
+}: ReactFlowProps<Node<NodeData>, Edge<EdgeData>>) => {
   const newChildren = (
     <>
       {children}

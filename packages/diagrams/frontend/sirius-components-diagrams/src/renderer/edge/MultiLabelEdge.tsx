@@ -12,15 +12,24 @@
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
+import {
+  BaseEdge,
+  Edge,
+  EdgeLabelRenderer,
+  EdgeProps,
+  Node,
+  Position,
+  getSmoothStepPath,
+  useStoreApi,
+} from '@xyflow/react';
 import { memo, useContext, useMemo } from 'react';
-import { BaseEdge, EdgeLabelRenderer, EdgeProps, Node, Position, getSmoothStepPath, useStoreApi } from 'reactflow';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
-import { NodeData } from '../DiagramRenderer.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
+import { EdgeComponentsMap } from './EdgeTypes';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 
 const multiLabelEdgeStyle = (
@@ -64,7 +73,7 @@ const labelContainerStyle = (transform: string): React.CSSProperties => {
   };
 };
 
-export const MultiLabelEdge = memo(
+export const MultiLabelEdge: EdgeComponentsMap['multiLabelEdge'] = memo(
   ({
     id,
     source,
@@ -78,15 +87,15 @@ export const MultiLabelEdge = memo(
     targetPosition,
     sourceHandleId,
     targetHandleId,
-  }: EdgeProps<MultiLabelEdgeData>) => {
+  }: EdgeProps<Edge<MultiLabelEdgeData>>) => {
     const { beginLabel, endLabel, label, faded } = data || {};
     const theme = useTheme();
     const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
-    const { nodeInternals } = useStoreApi().getState();
+    const { nodeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
 
-    const sourceNode = nodeInternals.get(source);
-    const targetNode = nodeInternals.get(target);
+    const sourceNode = nodeLookup.get(source);
+    const targetNode = nodeLookup.get(target);
 
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
     const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
@@ -96,12 +105,8 @@ export const MultiLabelEdge = memo(
       return null;
     }
 
-    const sourceLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
-      nodeLayoutHandler.canHandle(sourceNode as Node<NodeData, DiagramNodeType>)
-    );
-    const targetLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
-      nodeLayoutHandler.canHandle(targetNode as Node<NodeData, DiagramNodeType>)
-    );
+    const sourceLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) => nodeLayoutHandler.canHandle(sourceNode));
+    const targetLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) => nodeLayoutHandler.canHandle(targetNode));
 
     let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(
       sourceNode,

@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@mui/material/styles';
+import { NodeResizeControl, NodeResizer } from '@xyflow/react';
 import { memo, useContext } from 'react';
-import { NodeResizeControl, NodeResizer, ResizeControlVariant } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { ResizerProps } from './Resizer.types';
@@ -41,7 +41,7 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
     if (data.isListChild) {
       return (
         <NodeResizeControl
-          variant={ResizeControlVariant.Line}
+          //variant={ResizeControlVariant.Line}
           position={'bottom'}
           shouldResize={() => !data.isBorderNode}
           style={{ ...resizeControlLineStyle(theme) }}
@@ -62,14 +62,14 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
       return (
         <>
           <NodeResizeControl
-            variant={ResizeControlVariant.Line}
+            //variant={}
             position={'left'}
             shouldResize={() => !data.isBorderNode}
             style={{ ...resizeControlLineStyle(theme) }}
             keepAspectRatio={data.nodeDescription?.keepAspectRatio}
           />
           <NodeResizeControl
-            variant={ResizeControlVariant.Line}
+            //variant={ResizeControlVariant.Line}
             position={'right'}
             shouldResize={() => !data.isBorderNode}
             style={{ ...resizeControlLineStyle(theme) }}
@@ -81,14 +81,14 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
       return (
         <>
           <NodeResizeControl
-            variant={ResizeControlVariant.Line}
+            //variant={ResizeControlVariant.Line}
             position={'top'}
             shouldResize={() => !data.isBorderNode}
             style={{ ...resizeControlLineStyle(theme) }}
             keepAspectRatio={data.nodeDescription?.keepAspectRatio}
           />
           <NodeResizeControl
-            variant={ResizeControlVariant.Line}
+            //variant={ResizeControlVariant.Line}
             position={'bottom'}
             shouldResize={() => !data.isBorderNode}
             style={{ ...resizeControlLineStyle(theme) }}

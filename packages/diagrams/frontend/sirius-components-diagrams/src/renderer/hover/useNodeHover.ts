@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Node, NodeMouseHandler } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
-import { Node, NodeMouseHandler } from 'reactflow';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { DropNodeContext } from '../dropNode/DropNodeContext';
@@ -23,16 +23,19 @@ export const useNodeHover = (): UseNodeHoverValue => {
   const { setNodes } = useStore();
   const { draggedNodeId } = useContext<DropNodeContextValue>(DropNodeContext);
 
-  const onNodeMouseEnter: NodeMouseHandler = useCallback(
+  const onNodeMouseEnter: NodeMouseHandler<Node<NodeData>> = useCallback(
     (_: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData>) => {
       if (!draggedNodeId) {
         setNodes((nds) =>
           nds.map((n) => {
             if (n.id === node.id) {
               if (!n.data.isHovered) {
-                n.data = {
-                  ...n.data,
-                  isHovered: true,
+                return {
+                  ...n,
+                  data: {
+                    ...n.data,
+                    isHovered: true,
+                  },
                 };
               }
             }
@@ -49,9 +52,12 @@ export const useNodeHover = (): UseNodeHoverValue => {
       setNodes((nds) =>
         nds.map((n) => {
           if (n.data.isHovered) {
-            n.data = {
-              ...n.data,
-              isHovered: false,
+            return {
+              ...n,
+              data: {
+                ...n.data,
+                isHovered: false,
+              },
             };
           }
           return n;

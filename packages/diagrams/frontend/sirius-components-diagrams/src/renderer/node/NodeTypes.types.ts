@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { NodeProps } from '@xyflow/react';
 import { ComponentType } from 'react';
-import { NodeProps } from 'reactflow';
 
 export type DiagramNodeType = string;
 

@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeDimensionChange } from '@reactflow/core/dist/esm/types/changes';
+import { Node, NodeChange, NodeDimensionChange } from '@xyflow/react';
 import { useCallback } from 'react';
-import { Node, NodeChange } from 'reactflow';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
@@ -44,17 +43,16 @@ const applyResizeToListContain = (
   resizedNode: Node<NodeData>,
   nodes: Node<NodeData>[],
   change: NodeDimensionChange
-): NodeChange[] => {
-  const newChanges: NodeChange[] = [];
+): NodeChange<Node<NodeData>>[] => {
+  const newChanges: NodeChange<Node<NodeData>>[] = [];
   if (isListData(resizedNode)) {
     const borderWidth: number = getLeftRightBorderWidth(resizedNode);
     nodes.forEach((node) => {
-      if (node.parentNode === resizedNode.id && change.dimensions?.width) {
+      if (node.parentId === resizedNode.id && change.dimensions?.width) {
         newChanges.push({
           id: node.id,
           type: 'dimensions',
           resizing: true,
-          updateStyle: true,
           dimensions: { width: change.dimensions?.width - borderWidth, height: node.height ?? 0 },
         });
         newChanges.push(...applyResizeToListContain(node, nodes, change));
@@ -64,16 +62,16 @@ const applyResizeToListContain = (
   return newChanges;
 };
 
-const isResize = (change: NodeChange): change is NodeDimensionChange =>
+const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
   change.type === 'dimensions' && (change.resizing ?? false);
 
 export const useResizeChange = (): UseResizeChangeValue => {
   const { getNodes } = useStore();
 
   const transformResizeListNodeChanges = useCallback(
-    (changes: NodeChange[]): NodeChange[] => {
-      const newChanges: NodeChange[] = [];
-      const updatedChanges: NodeChange[] = changes.map((change) => {
+    (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
+      const newChanges: NodeChange<Node<NodeData>>[] = [];
+      const updatedChanges: NodeChange<Node<NodeData>>[] = changes.map((change) => {
         if (isResize(change)) {
           const resizedNode = getNodes().find((node) => change.id === node.id);
           if (resizedNode) {

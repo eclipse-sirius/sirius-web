@@ -11,9 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import {
+  Edge,
+  Node as ReactFlowNode,
+  Rect,
+  Viewport,
+  getNodesBounds,
+  getViewportForBounds,
+  useReactFlow,
+} from '@xyflow/react';
 import { toSvg } from 'html-to-image';
 import { useCallback } from 'react';
-import { Rect, Transform, getRectOfNodes, getTransformForBounds, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { UseExportToImage } from './useExportToImage.types';
 
@@ -25,30 +33,32 @@ const downloadImage = (dataUrl: string) => {
 };
 
 export const useExportToImage = (): UseExportToImage => {
-  const reactFlow = useReactFlow<NodeData, EdgeData>();
+  const reactFlow = useReactFlow<ReactFlowNode<NodeData>, Edge<EdgeData>>();
 
   const exportToImage = useCallback(() => {
-    const nodesBounds: Rect = getRectOfNodes(reactFlow.getNodes());
+    const nodesBounds: Rect = getNodesBounds(reactFlow.getNodes());
     const imageWidth: number = nodesBounds.width;
     const imageHeight: number = nodesBounds.height;
-    const transform: Transform = getTransformForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 0.2);
 
-    const viewport: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__viewport');
+    const viewport: Viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 2);
+
     const edges: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__edges');
     const edgeMarkersDefs: HTMLElement | null = document.getElementById('edge-markers-defs');
 
-    if (viewport && edges && edgeMarkersDefs) {
+    const reactFlowNodeContainer: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__viewport');
+
+    if (reactFlowNodeContainer && edges && edgeMarkersDefs) {
       const clonedEdgeMarkersDefs: Node = edgeMarkersDefs.cloneNode(true);
       edges.insertBefore(clonedEdgeMarkersDefs, edges.firstChild);
 
-      toSvg(viewport, {
+      toSvg(reactFlowNodeContainer, {
         backgroundColor: '#ffffff',
         width: imageWidth,
         height: imageHeight,
         style: {
           width: imageWidth.toString(),
           height: imageHeight.toString(),
-          transform: `translate(${transform[0]}px, ${transform[1]}px) scale(${transform[2]})`,
+          transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
         },
       })
         .then(downloadImage)

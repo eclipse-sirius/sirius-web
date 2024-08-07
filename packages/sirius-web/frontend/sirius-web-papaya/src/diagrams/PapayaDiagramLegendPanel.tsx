@@ -14,8 +14,8 @@
 import { useCurrentProject } from '@eclipse-sirius/sirius-web-application';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { Panel, ReactFlowState, useStore } from '@xyflow/react';
 import { memo } from 'react';
-import { Panel, ReactFlowState, useStore } from 'reactflow';
 import { makeStyles } from 'tss-react/mui';
 
 const usePapayaDiagramLegendPanelStyles = makeStyles()((theme) => ({
@@ -27,7 +27,7 @@ const usePapayaDiagramLegendPanelStyles = makeStyles()((theme) => ({
   },
 }));
 
-const nodesLengthSelector = (state: ReactFlowState) => Array.from(state.nodeInternals.values()).length || 0;
+const nodesLengthSelector = (state: ReactFlowState) => Array.from(state.nodeLookup.values()).length || 0;
 const edgesLengthSelector = (state: ReactFlowState) => Array.from(state.edges.values()).length || 0;
 
 export const PapayaDiagramLegendPanel = memo(() => {

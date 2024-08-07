@@ -10,9 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeChange } from 'reactflow';
+import { Node, NodeChange } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseBorderChangeValue {
-  transformBorderNodeChanges: (changes: NodeChange[], oldNodes: Node<NodeData>[]) => NodeChange[];
+  transformBorderNodeChanges: (
+    changes: NodeChange<Node<NodeData>>[],
+    oldNodes: Node<NodeData>[]
+  ) => NodeChange<Node<NodeData>>[];
 }

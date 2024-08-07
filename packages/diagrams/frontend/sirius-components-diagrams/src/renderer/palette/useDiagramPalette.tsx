@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { XYPosition, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
-import { XYPosition, useStoreApi } from 'reactflow';
 import { DiagramPaletteContext } from './DiagramPaletteContext';
 import { DiagramPaletteContextValue } from './DiagramPaletteContext.types';
 import { UseDiagramPaletteValue } from './useDiagramPalette.types';

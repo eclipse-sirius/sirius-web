@@ -13,8 +13,8 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
+import { Node, NodeProps } from '@xyflow/react';
 import { memo, useMemo } from 'react';
-import { NodeProps } from 'reactflow';
 import { Label } from '../Label';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
 import { useDrop } from '../drop/useDrop';
@@ -25,6 +25,7 @@ import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ListNodeData } from './ListNode.types';
+import { NodeComponentsMap } from './NodeTypes';
 import { Resizer } from './Resizer';
 
 const listNodeStyle = (
@@ -52,45 +53,47 @@ const listNodeStyle = (
   return listNodeStyle;
 };
 
-export const ListNode = memo(({ data, id, selected, dragging }: NodeProps<ListNodeData>) => {
-  const theme = useTheme();
-  const { onDrop, onDragOver } = useDrop();
-  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
-  const nodeStyle = useMemo(
-    () => listNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
-    [data.style, selected, data.isHovered, data.faded]
-  );
+export const ListNode: NodeComponentsMap['listNode'] = memo(
+  ({ data, id, selected, dragging }: NodeProps<Node<ListNodeData>>) => {
+    const theme = useTheme();
+    const { onDrop, onDragOver } = useDrop();
+    const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
+    const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+    const nodeStyle = useMemo(
+      () => listNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
+      [data.style, selected, data.isHovered, data.faded]
+    );
 
-  const handleOnDrop = (event: React.DragEvent) => {
-    onDrop(event, id);
-  };
+    const handleOnDrop = (event: React.DragEvent) => {
+      onDrop(event, id);
+    };
 
-  useRefreshConnectionHandles(id, data.connectionHandles);
-  return (
-    <>
-      <Resizer data={data} selected={selected} />
-      <div
-        style={{
-          ...nodeStyle,
-          ...connectionFeedbackStyle,
-          ...dropFeedbackStyle,
-        }}
-        onDragOver={onDragOver}
-        onDrop={handleOnDrop}
-        data-testid={`List - ${data?.insideLabel?.text}`}>
-        {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
-        {selected ? (
-          <DiagramElementPalette
-            diagramElementId={id}
-            targetObjectId={data.targetObjectId}
-            labelId={data.insideLabel ? data.insideLabel.id : null}
-          />
-        ) : null}
-        {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
-        <ConnectionHandles connectionHandles={data.connectionHandles} />
-      </div>
-    </>
-  );
-});
+    useRefreshConnectionHandles(id, data.connectionHandles);
+    return (
+      <>
+        <Resizer data={data} selected={!!selected} />
+        <div
+          style={{
+            ...nodeStyle,
+            ...connectionFeedbackStyle,
+            ...dropFeedbackStyle,
+          }}
+          onDragOver={onDragOver}
+          onDrop={handleOnDrop}
+          data-testid={`List - ${data?.insideLabel?.text}`}>
+          {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
+          {selected ? (
+            <DiagramElementPalette
+              diagramElementId={id}
+              targetObjectId={data.targetObjectId}
+              labelId={data.insideLabel ? data.insideLabel.id : null}
+            />
+          ) : null}
+          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
+          <ConnectionHandles connectionHandles={data.connectionHandles} />
+        </div>
+      </>
+    );
+  }
+);
