@@ -18,6 +18,7 @@ import { NewProjectView } from '../views/new-project/NewProjectView';
 import { ProjectBrowser } from '../views/project-browser/ProjectBrowser';
 import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsView';
 import { UploadProjectView } from '../views/upload-project/UploadProjectView';
+import { MyPage } from './MyPage';
 import { routerExtensionPoint } from './RouterExtensionPoints';
 
 export const Router = () => {
@@ -29,6 +30,7 @@ export const Router = () => {
       <Route exact path="/projects" component={withErrorBoundary(ProjectBrowser)} />
       <Route exact path="/projects/:projectId/edit/:representationId?" component={withErrorBoundary(EditProjectView)} />
       <Route exact path="/projects/:projectId/settings" component={withErrorBoundary(ProjectSettingsView)} />
+      <Route exact path="/myPage" component={MyPage} />
       {routes.map((props, index) => (
         <Route key={index} {...props} />
       ))}

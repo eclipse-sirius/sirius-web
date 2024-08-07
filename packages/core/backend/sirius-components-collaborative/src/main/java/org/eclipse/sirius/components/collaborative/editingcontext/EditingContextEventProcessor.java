@@ -125,7 +125,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         this.editingContextEventHandlers = parameters.editingContextEventHandlers();
         this.representationEventProcessorComposedFactory = parameters.representationEventProcessorComposedFactory();
         this.danglingRepresentationDeletionService = parameters.danglingRepresentationDeletionService();
-        this.executorService = parameters.executorServiceProvider().getExecutorService(this.editingContext);
+        this.executorService = parameters.executorServiceProvider().getExecutorService(this.editingContext.getId());
         this.inputPreProcessors = parameters.inputPreProcessors();
         this.inputPostProcessors = parameters.inputPostProcessors();
         this.changeDescriptionDisposable = this.setupChangeDescriptionSinkConsumer();
@@ -358,26 +358,25 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                 .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor);
 
         if (!optionalRepresentationEventProcessor.isPresent()) {
-            optionalRepresentationEventProcessor = this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(configuration, this.editingContext);
-            if (optionalRepresentationEventProcessor.isPresent()) {
-                var representationEventProcessor = optionalRepresentationEventProcessor.get();
-
-                Disposable subscription = representationEventProcessor.canBeDisposed()
-                        .delayElements(Duration.ofSeconds(5))
-                        .publishOn(Schedulers.fromExecutorService(this.executorService))
-                        .subscribe(canBeDisposed -> {
-                            if (canBeDisposed.booleanValue() && representationEventProcessor.getSubscriptionManager().isEmpty()) {
-                                this.disposeRepresentation(configuration.getId());
-                            } else {
-                                this.logger.trace("Stopping the disposal of the representation event processor {}", configuration.getId());
-                            }
-                        }, throwable -> this.logger.warn(throwable.getMessage(), throwable));
-
-                var representationEventProcessorEntry = new RepresentationEventProcessorEntry(representationEventProcessor, subscription);
-                this.representationEventProcessors.put(configuration.getId(), representationEventProcessorEntry);
+            // The purpose of this boolean is to ease the change of one execution context
+            // There are other parts of the code with this.
+            // This also could be pushed a bit further with the use of an environment variable to change for all the parts at the same time.
+            boolean executeInExecutorService = false;
+            if (executeInExecutorService) {
+                var future = this.executorService.submit(() -> this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(configuration, this.editingContext));
+                try {
+                    // Block until the event has been processed
+                    optionalRepresentationEventProcessor = future.get();
+                } catch (InterruptedException | ExecutionException exception) {
+                    this.logger.warn(exception.getMessage(), exception);
+                }
             } else {
-                this.logger.warn("The representation with the id {} does not exist", configuration.getId());
+                optionalRepresentationEventProcessor = this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(configuration, this.editingContext);
             }
+        }
+
+        if (optionalRepresentationEventProcessor.isPresent()) {
+            this.registerRepresentationEventProcessor(optionalRepresentationEventProcessor, configuration);
         }
 
         if (optionalRepresentationEventProcessor.isPresent()) {
@@ -391,6 +390,28 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         this.logger.trace("Representation event processors count: {}", this.representationEventProcessors.size());
         return optionalRepresentationEventProcessor;
+    }
+
+    private void registerRepresentationEventProcessor(Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor, IRepresentationConfiguration configuration) {
+        if (optionalRepresentationEventProcessor.isPresent()) {
+            var representationEventProcessor = optionalRepresentationEventProcessor.get();
+
+            Disposable subscription = representationEventProcessor.canBeDisposed()
+                    .delayElements(Duration.ofSeconds(5))
+                    .publishOn(Schedulers.fromExecutorService(this.executorService))
+                    .subscribe(canBeDisposed -> {
+                        if (canBeDisposed.booleanValue() && representationEventProcessor.getSubscriptionManager().isEmpty()) {
+                            this.disposeRepresentation(configuration.getId());
+                        } else {
+                            this.logger.trace("Stopping the disposal of the representation event processor {}", configuration.getId());
+                        }
+                    }, throwable -> this.logger.warn(throwable.getMessage(), throwable));
+
+            var representationEventProcessorEntry = new RepresentationEventProcessorEntry(representationEventProcessor, subscription);
+            this.representationEventProcessors.put(configuration.getId(), representationEventProcessorEntry);
+        } else {
+            this.logger.warn("The representation with the id {} does not exist", configuration.getId());
+        }
     }
 
     @Override

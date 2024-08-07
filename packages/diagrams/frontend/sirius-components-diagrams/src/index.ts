@@ -28,6 +28,8 @@ export type {
 export { useDialog } from './dialog/useDialog';
 export type { UseDialogValue } from './dialog/useDialog.types';
 export type { GQLNodeDescription } from './graphql/query/nodeDescriptionFragment.types';
+export { diagramEventSubscription } from './graphql/subscription/diagramEventSubscription';
+export type * from './graphql/subscription/diagramEventSubscription.types';
 export type { GQLDiagram, GQLNodeLayoutData } from './graphql/subscription/diagramFragment.types';
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
@@ -63,4 +65,5 @@ export { diagramPaletteToolExtensionPoint } from './renderer/palette/tool/Diagra
 export type { DiagramPanelActionProps } from './renderer/panel/DiagramPanel.types';
 export { diagramPanelActionExtensionPoint } from './renderer/panel/DiagramPanelExtensionPoints';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
+export type * from './representation/DiagramRepresentation.types';
 export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';

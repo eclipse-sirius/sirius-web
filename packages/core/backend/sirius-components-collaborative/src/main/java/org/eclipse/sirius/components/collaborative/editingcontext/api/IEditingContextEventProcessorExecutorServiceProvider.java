@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,6 @@ package org.eclipse.sirius.components.collaborative.editingcontext.api;
 
 import java.util.concurrent.ExecutorService;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
-
 /**
  * Used to provide a different executor service for the editing context event processor.
  *
@@ -27,7 +25,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
  * @author sbegaudeau
  */
 public interface IEditingContextEventProcessorExecutorServiceProvider {
-    ExecutorService getExecutorService(IEditingContext editingContext);
+    ExecutorService getExecutorService(String editingContextId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -37,7 +35,7 @@ public interface IEditingContextEventProcessorExecutorServiceProvider {
     class NoOp implements IEditingContextEventProcessorExecutorServiceProvider {
 
         @Override
-        public ExecutorService getExecutorService(IEditingContext editingContext) {
+        public ExecutorService getExecutorService(String editingContextId) {
             return null;
         }
 

@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useSubscription } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
@@ -22,7 +21,6 @@ import { Toast } from '../toast/Toast';
 import { Panels } from './Panels';
 import { RepresentationNavigation } from './RepresentationNavigation';
 import {
-  GQLEditingContextEventSubscription,
   RepresentationComponentProps,
   RepresentationMetadata,
   WorkbenchProps,
@@ -34,29 +32,26 @@ import {
   workbenchViewContributionExtensionPoint,
 } from './WorkbenchExtensionPoints';
 import {
-  HandleCompleteEvent,
-  HandleSubscriptionResultEvent,
   HideRepresentationEvent,
   HideToastEvent,
   SchemaValue,
-  ShowToastEvent,
   UpdateSelectedRepresentationEvent,
   WorkbenchContext,
   WorkbenchEvent,
   workbenchMachine,
 } from './WorkbenchMachine';
 
-const editingContextEventSubscription = gql`
-  subscription editingContextEvent($input: EditingContextEventInput!) {
-    editingContextEvent(input: $input) {
-      __typename
-      ... on RepresentationRenamedEventPayload {
-        representationId
-        newLabel
-      }
-    }
-  }
-`;
+// const editingContextEventSubscription = gql`
+//   subscription editingContextEvent($input: EditingContextEventInput!) {
+//     editingContextEvent(input: $input) {
+//       __typename
+//       ... on RepresentationRenamedEventPayload {
+//         representationId
+//         newLabel
+//       }
+//     }
+//   }
+// `;
 
 const useWorkbenchStyles = makeStyles(() => ({
   main: {
@@ -86,40 +81,40 @@ export const Workbench = ({
     },
   });
   const { toast } = value as SchemaValue;
-  const { id, representations, displayedRepresentation, message } = context;
+  const { representations, displayedRepresentation, message } = context;
   const { selection, setSelection } = useSelection();
   const { data } = useRepresentationMetadata(editingContextId, selection);
 
   const { data: representationFactories } = useData(representationFactoryExtensionPoint);
 
-  const { error } = useSubscription<GQLEditingContextEventSubscription>(editingContextEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
-      },
-    },
-    fetchPolicy: 'no-cache',
-    onData: ({ data }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: data,
-      };
-      dispatch(handleDataEvent);
-    },
-    onComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-  });
+  // const { error } = useSubscription<GQLEditingContextEventSubscription>(editingContextEventSubscription, {
+  //   variables: {
+  //     input: {
+  //       id,
+  //       editingContextId,
+  //     },
+  //   },
+  //   fetchPolicy: 'no-cache',
+  //   onData: ({ data }) => {
+  //     const handleDataEvent: HandleSubscriptionResultEvent = {
+  //       type: 'HANDLE_SUBSCRIPTION_RESULT',
+  //       result: data,
+  //     };
+  //     dispatch(handleDataEvent);
+  //   },
+  //   onComplete: () => {
+  //     const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
+  //     dispatch(completeEvent);
+  //   },
+  // });
 
-  useEffect(() => {
-    if (error) {
-      const { message } = error;
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-      dispatch(showToastEvent);
-    }
-  }, [error, dispatch]);
+  // useEffect(() => {
+  //   if (error) {
+  //     const { message } = error;
+  //     const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+  //     dispatch(showToastEvent);
+  //   }
+  // }, [error, dispatch]);
 
   useEffect(() => {
     const updateSelectedRepresentation: UpdateSelectedRepresentationEvent = {

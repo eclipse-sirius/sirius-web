@@ -81,10 +81,10 @@ public class SiriusWebStarterConfiguration {
     @Bean
     @ConditionalOnMissingBean(IEditingContextEventProcessorExecutorServiceProvider.class)
     public IEditingContextEventProcessorExecutorServiceProvider editingContextEventProcessorExecutorServiceProvider() {
-        return editingContext -> {
+        return editingContextId -> {
             var executorService = Executors.newSingleThreadExecutor((Runnable runnable) -> {
                 Thread thread = Executors.defaultThreadFactory().newThread(runnable);
-                thread.setName("Editing context " + editingContext.getId());
+                thread.setName("Editing context " + editingContextId);
                 return thread;
             });
             return new DelegatingRequestContextExecutorService(executorService);

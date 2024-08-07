@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useSubscription } from '@apollo/client';
 import { ServerContext, ServerContextValue, Toast, useComponent } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -25,12 +24,12 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { useMachine } from '@xstate/react';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Redirect, Link as RouterLink } from 'react-router-dom';
 import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
-import { EditProjectNavbarProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
+import { EditProjectNavbarProps } from './EditProjectNavbar.types';
 
 import { useCurrentProject } from '../useCurrentProject';
 import { editProjectNavbarSubtitleExtensionPoint } from './EditProjectNavbarExtensionPoints';
@@ -39,28 +38,25 @@ import {
   EditProjectNavbarEvent,
   HandleCloseContextMenuEvent,
   HandleCloseModalEvent,
-  HandleCompleteEvent,
   HandleRedirectingEvent,
   HandleShowContextMenuEvent,
   HandleShowModalEvent,
-  HandleSubscriptionResultEvent,
   HideToastEvent,
   SchemaValue,
-  ShowToastEvent,
   editProjectNavbarMachine,
 } from './EditProjectNavbarMachine';
 
-const projectEventSubscription = gql`
-  subscription projectEvent($input: ProjectEventInput!) {
-    projectEvent(input: $input) {
-      __typename
-      ... on ProjectRenamedEventPayload {
-        projectId
-        newName
-      }
-    }
-  }
-`;
+// const projectEventSubscription = gql`
+//   subscription projectEvent($input: ProjectEventInput!) {
+//     projectEvent(input: $input) {
+//       __typename
+//       ... on ProjectRenamedEventPayload {
+//         projectId
+//         newName
+//       }
+//     }
+//   }
+// `;
 
 const useEditProjectViewNavbarStyles = makeStyles((theme) => ({
   center: {
@@ -101,37 +97,37 @@ export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
     }
   );
   const { toast, navbar } = value as SchemaValue;
-  const { id, to, modalDisplayed, projectMenuAnchor, projectName, message } = context;
+  const { to, modalDisplayed, projectMenuAnchor, projectName, message } = context;
 
-  const { error } = useSubscription<GQLProjectEventSubscription>(projectEventSubscription, {
-    variables: {
-      input: {
-        id,
-        projectId: project.id,
-      },
-    },
-    fetchPolicy: 'no-cache',
-    skip: navbar === 'complete',
-    onData: ({ data }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: data,
-      };
-      dispatch(handleDataEvent);
-    },
-    onComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-  });
+  // const { error } = useSubscription<GQLProjectEventSubscription>(projectEventSubscription, {
+  //   variables: {
+  //     input: {
+  //       id,
+  //       projectId: project.id,
+  //     },
+  //   },
+  //   fetchPolicy: 'no-cache',
+  //   skip: navbar === 'complete',
+  //   onData: ({ data }) => {
+  //     const handleDataEvent: HandleSubscriptionResultEvent = {
+  //       type: 'HANDLE_SUBSCRIPTION_RESULT',
+  //       result: data,
+  //     };
+  //     dispatch(handleDataEvent);
+  //   },
+  //   onComplete: () => {
+  //     const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
+  //     dispatch(completeEvent);
+  //   },
+  // });
 
-  useEffect(() => {
-    if (error) {
-      const { message } = error;
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-      dispatch(showToastEvent);
-    }
-  }, [error, dispatch]);
+  // useEffect(() => {
+  //   if (error) {
+  //     const { message } = error;
+  //     const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+  //     dispatch(showToastEvent);
+  //   }
+  // }, [error, dispatch]);
 
   const onMoreClick = (event: React.MouseEvent<HTMLElement>) => {
     if (navbar === 'empty') {

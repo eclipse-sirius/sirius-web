@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,8 @@ import org.eclipse.sirius.components.graphql.ws.handlers.StartMessageHandler;
 import org.eclipse.sirius.components.graphql.ws.handlers.StopMessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.SubProtocolCapable;
 import org.springframework.web.socket.TextMessage;
@@ -254,7 +256,21 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
             } else if (operationMessage instanceof StartMessage) {
                 StartMessage startMessage = (StartMessage) operationMessage;
 
+                boolean added = false;
+                // Try to reuse the request attributes from the handshake to force the message handle in a request scope
+                // This did not work because request attributes contain the handshake request but marked as finished (request and response in the request facade are null).
+                var httpRequestAttributes = session.getAttributes().get("httpRequestAttributes");
+                var requestAttributes = RequestContextHolder.getRequestAttributes();
+                if (!(requestAttributes instanceof ServletRequestAttributes) && httpRequestAttributes instanceof ServletRequestAttributes servletRequestAttributes) {
+                    RequestContextHolder.setRequestAttributes(servletRequestAttributes);
+                    added = true;
+                }
+
                 new StartMessageHandler(session, this.graphQL, this.objectMapper, this.sessions2entries, this.meterRegistry).handle(startMessage);
+
+                if (added) {
+                    RequestContextHolder.resetRequestAttributes();
+                }
                 this.startMessageCounter.increment();
             } else if (operationMessage instanceof StopMessage) {
                 StopMessage stopMessage = (StopMessage) operationMessage;

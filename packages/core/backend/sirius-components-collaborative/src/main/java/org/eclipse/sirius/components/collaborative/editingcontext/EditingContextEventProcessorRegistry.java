@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,11 +18,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -54,11 +56,14 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     private final Map<String, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
 
+    private final IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider;
+
     public EditingContextEventProcessorRegistry(IEditingContextEventProcessorFactory editingContextEventProcessorFactory, IEditingContextSearchService editingContextSearchService,
-            @Value("${sirius.components.editingContext.disposeDelay:1s}") Duration disposeDelay) {
+            @Value("${sirius.components.editingContext.disposeDelay:1s}") Duration disposeDelay, IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider) {
         this.editingContextEventProcessorFactory = editingContextEventProcessorFactory;
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.disposeDelay = disposeDelay;
+        this.executorServiceProvider = Objects.requireNonNull(executorServiceProvider);
     }
 
     @Override
@@ -77,6 +82,26 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     @Override
     public synchronized Optional<IEditingContextEventProcessor> getOrCreateEditingContextEventProcessor(String editingContextId) {
+        Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = Optional.empty();
+        // The purpose of this boolean is to ease the change of one execution context
+        // There are other parts of the code with this.
+        // This also could be pushed a bit further with the use of an environment variable to change for all the parts at the same time.
+        boolean executedInExecutorService = true;
+        if (executedInExecutorService) {
+            var future = this.executorServiceProvider.getExecutorService(editingContextId).submit(() -> this.doGetOrCreateEditingContextEventProcessor(editingContextId));
+            try {
+                // Block until the event has been processed
+                optionalEditingContextEventProcessor = future.get();
+            } catch (InterruptedException | ExecutionException exception) {
+                this.logger.warn(exception.getMessage(), exception);
+            }
+        } else {
+            optionalEditingContextEventProcessor = this.doGetOrCreateEditingContextEventProcessor(editingContextId);
+        }
+        return optionalEditingContextEventProcessor;
+    }
+
+    private Optional<IEditingContextEventProcessor> doGetOrCreateEditingContextEventProcessor(String editingContextId) {
         Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = Optional.empty();
         if (this.editingContextSearchService.existsById(editingContextId)) {
             optionalEditingContextEventProcessor = Optional.ofNullable(this.editingContextEventProcessors.get(editingContextId))

@@ -66,6 +66,7 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         GraphQLWebSocketHandler graphQLWebSocketHandler = new GraphQLWebSocketHandler(this.objectMapper, this.graphQL, this.meterRegistry, this.graphQLWebSocketHandlerListener);
         WebSocketHandlerRegistration graphQLWebSocketRegistration = registry.addHandler(graphQLWebSocketHandler, URLConstants.GRAPHQL_SUBSCRIPTION_PATH);
+        graphQLWebSocketRegistration.addInterceptors(new DelegatingRequestContextHandshakeInterceptor());
         graphQLWebSocketRegistration.setAllowedOriginPatterns(this.allowedOriginPatterns);
     }
 
