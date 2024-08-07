@@ -11,38 +11,38 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
+import { GQLForm } from '../form/FormEventFragments.types';
 
-export interface UseRelatedElementsViewSubscriptionValue {
+export interface UseFormSubscriptionValue {
   loading: boolean;
-  payload: GQLRelatedElementsEventPayload | null;
+  payload: GQLFormEventPayload | null;
   complete: boolean;
 }
 
-export interface UseRelatedElementsViewSubscriptionState {
+export interface UseFormSubscriptionState {
   id: string;
   complete: boolean;
 }
 
-export interface GQLRelatedElementsEventInput {
+export interface GQLFormEventInput {
   id: string;
   editingContextId: string;
-  objectIds: string[];
+  formId: string;
 }
 
-export interface GQLRelatedElementsEventVariables {
-  input: GQLRelatedElementsEventInput;
+export interface GQLFormEventVariables {
+  input: GQLFormEventInput;
 }
 
-export interface GQLRelatedElementsEventSubscription {
-  relatedElementsEvent: GQLRelatedElementsEventPayload;
+export interface GQLFormEventSubscription {
+  formEvent: GQLFormEventPayload;
 }
 
-export interface GQLRelatedElementsEventPayload {
+export interface GQLFormEventPayload {
   __typename: string;
 }
 
-export interface GQLFormRefreshedEventPayload extends GQLRelatedElementsEventPayload {
+export interface GQLFormRefreshedEventPayload extends GQLFormEventPayload {
   __typename: 'FormRefreshedEventPayload';
   form: GQLForm;
 }

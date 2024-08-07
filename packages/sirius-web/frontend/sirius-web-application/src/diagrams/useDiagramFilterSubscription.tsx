@@ -17,16 +17,11 @@ import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-compon
 import { useEffect, useState } from 'react';
 import {
   GQLDiagramFilterEventInput,
-  GQLDiagramFilterEventPayload,
   GQLDiagramFilterEventSubscription,
   GQLDiagramFilterEventVariables,
-  GQLFormRefreshedEventPayload,
   UseDiagramFilterSubscriptionState,
   UseDiagramFilterSubscriptionValue,
 } from './useDiagramFilterSubscription.types';
-
-const isFormRefreshedEventPayload = (payload: GQLDiagramFilterEventPayload): payload is GQLFormRefreshedEventPayload =>
-  payload.__typename === 'FormRefreshedEventPayload';
 
 export const getDiagramFilterEventSubscription = `
   subscription diagramFilterEvent($input: DiagramFilterEventInput!) {
@@ -47,7 +42,6 @@ export const useDiagramFilterSubscription = (
 ): UseDiagramFilterSubscriptionValue => {
   const [state, setState] = useState<UseDiagramFilterSubscriptionState>({
     id: crypto.randomUUID(),
-    form: null,
     complete: false,
   });
 
@@ -59,20 +53,12 @@ export const useDiagramFilterSubscription = (
 
   const variables: GQLDiagramFilterEventVariables = { input };
 
-  const onData = ({ data }: OnDataOptions<GQLDiagramFilterEventSubscription>) => {
-    const { data: gqlDiagramFilterEventSubscription } = data;
-    if (gqlDiagramFilterEventSubscription) {
-      const { diagramFilterEvent: payload } = gqlDiagramFilterEventSubscription;
-      if (isFormRefreshedEventPayload(payload)) {
-        const { form } = payload;
-        setState((prevState) => ({ ...prevState, form, complete: false }));
-      }
-    }
-  };
-
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const { error, loading } = useSubscription<GQLDiagramFilterEventSubscription, GQLDiagramFilterEventVariables>(
+  const onData = ({}: OnDataOptions<GQLDiagramFilterEventSubscription>) =>
+    setState((prevState) => ({ ...prevState, complete: false }));
+
+  const { data, error, loading } = useSubscription<GQLDiagramFilterEventSubscription, GQLDiagramFilterEventVariables>(
     gql(getDiagramFilterEventSubscription),
     {
       variables,
@@ -92,7 +78,7 @@ export const useDiagramFilterSubscription = (
 
   return {
     loading,
-    form: state.form,
+    payload: data?.diagramFilterEvent ?? null,
     complete: state.complete,
   };
 };

@@ -11,12 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useSelection, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { FormBasedView, GQLForm, Group } from '@eclipse-sirius/sirius-components-forms';
+import {
+  FormBasedView,
+  FormContext,
+  GQLForm,
+  GQLFormRefreshedEventPayload,
+  Group,
+} from '@eclipse-sirius/sirius-components-forms';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { RelatedElementsViewState } from './RelatedElementsView.types';
 import { useRelatedElementsViewSubscription } from './useRelatedElementsViewSubscription';
+import { GQLRelatedElementsEventPayload } from './useRelatedElementsViewSubscription.types';
 
 const useRelatedElementsViewStyles = makeStyles()((theme) => ({
   idle: {
@@ -27,9 +34,14 @@ const useRelatedElementsViewStyles = makeStyles()((theme) => ({
   },
 }));
 
+const isFormRefreshedEventPayload = (
+  payload: GQLRelatedElementsEventPayload
+): payload is GQLFormRefreshedEventPayload => payload && payload.__typename === 'FormRefreshedEventPayload';
+
 export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const [state, setState] = useState<RelatedElementsViewState>({
     currentSelection: { entries: [] },
+    form: null,
   });
 
   const { selection } = useSelection();
@@ -55,7 +67,13 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
 
   const objectIds: string[] = state.currentSelection.entries.map((entry) => entry.id);
   const skip = objectIds.length === 0;
-  const { form, complete } = useRelatedElementsViewSubscription(editingContextId, objectIds, skip);
+
+  const { payload, complete } = useRelatedElementsViewSubscription(editingContextId, objectIds, skip);
+  useEffect(() => {
+    if (isFormRefreshedEventPayload(payload)) {
+      setState((prevState) => ({ ...prevState, form: payload.form }));
+    }
+  }, [payload]);
 
   const { classes } = useRelatedElementsViewStyles();
 
@@ -72,7 +90,7 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
     }
   };
 
-  if (!form || complete) {
+  if (!state.form || complete) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
@@ -80,11 +98,18 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
     );
   }
   return (
-    <FormBasedView
-      editingContextId={editingContextId}
-      form={form}
-      readOnly={readOnly}
-      postProcessor={extractFirstGroup}
-    />
+    <div data-representation-kind="form-related-elements">
+      <FormContext.Provider
+        value={{
+          payload: payload,
+        }}>
+        <FormBasedView
+          editingContextId={editingContextId}
+          form={state.form}
+          readOnly={readOnly}
+          postProcessor={extractFirstGroup}
+        />
+      </FormContext.Provider>
+    </div>
   );
 };

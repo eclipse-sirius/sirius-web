@@ -11,8 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
+
 export interface DiagramFilterFormProps {
   editingContextId: string;
   diagramId: string;
   readOnly: boolean;
+}
+
+export interface DiagramFilterViewState {
+  form: GQLForm | null;
 }

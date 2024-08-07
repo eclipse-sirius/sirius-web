@@ -16,18 +16,12 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
 import { useEffect, useState } from 'react';
 import {
-  GQLFormRefreshedEventPayload,
   GQLRelatedElementsEventInput,
-  GQLRelatedElementsEventPayload,
   GQLRelatedElementsEventSubscription,
   GQLRelatedElementsEventVariables,
   UseRelatedElementsViewSubscriptionState,
   UseRelatedElementsViewSubscriptionValue,
 } from './useRelatedElementsViewSubscription.types';
-
-const isFormRefreshedEventPayload = (
-  payload: GQLRelatedElementsEventPayload
-): payload is GQLFormRefreshedEventPayload => payload.__typename === 'FormRefreshedEventPayload';
 
 export const getRelatedElementsViewEventSubscription = `
   subscription relatedElementsEvent($input: RelatedElementsEventInput!) {
@@ -48,7 +42,6 @@ export const useRelatedElementsViewSubscription = (
 ): UseRelatedElementsViewSubscriptionValue => {
   const [state, setState] = useState<UseRelatedElementsViewSubscriptionState>({
     id: crypto.randomUUID(),
-    form: null,
     complete: false,
   });
 
@@ -60,29 +53,21 @@ export const useRelatedElementsViewSubscription = (
 
   const variables: GQLRelatedElementsEventVariables = { input };
 
-  const onData = ({ data }: OnDataOptions<GQLRelatedElementsEventSubscription>) => {
-    const { data: gqlRelatedElementsEventSubscription } = data;
-    if (gqlRelatedElementsEventSubscription) {
-      const { relatedElementsEvent: payload } = gqlRelatedElementsEventSubscription;
-      if (isFormRefreshedEventPayload(payload)) {
-        const { form } = payload;
-        setState((prevState) => ({ ...prevState, form, complete: false }));
-      }
-    }
-  };
-
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const { error, loading } = useSubscription<GQLRelatedElementsEventSubscription, GQLRelatedElementsEventVariables>(
-    gql(getRelatedElementsViewEventSubscription),
-    {
-      variables,
-      fetchPolicy: 'no-cache',
-      skip,
-      onData,
-      onComplete,
-    }
-  );
+  const onData = ({}: OnDataOptions<GQLRelatedElementsEventSubscription>) =>
+    setState((prevState) => ({ ...prevState, complete: false }));
+
+  const { data, error, loading } = useSubscription<
+    GQLRelatedElementsEventSubscription,
+    GQLRelatedElementsEventVariables
+  >(gql(getRelatedElementsViewEventSubscription), {
+    variables,
+    fetchPolicy: 'no-cache',
+    skip,
+    onData,
+    onComplete,
+  });
 
   const { addErrorMessage } = useMultiToast();
   useEffect(() => {
@@ -93,7 +78,7 @@ export const useRelatedElementsViewSubscription = (
 
   return {
     loading,
-    form: state.form,
+    payload: data?.relatedElementsEvent ?? null,
     complete: state.complete,
   };
 };
