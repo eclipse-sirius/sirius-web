@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
@@ -28,9 +27,7 @@ import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Node.Builder;
 import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
@@ -52,10 +49,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     private final InsideLabel insideLabel;
 
-    private Position position;
-
-    private Size size;
-
     private CollapsingState collapsingState = CollapsingState.EXPANDED;
 
     private ILayoutStrategy childrenLayoutStrategy;
@@ -63,8 +56,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
     private NodesBuilder<RectangleNodeBuilder<T>> borderNodesBuilder;
 
     private NodesBuilder<RectangleNodeBuilder<T>> childNodesBuilder;
-
-    private Set<CustomizableProperties> customizedProperties = Set.of();
 
     public RectangleNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
         this(nodesBuilder, nodeLabel, isBorderNode, false);
@@ -74,16 +65,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.INSIDE_CENTER, isLabelAHeader);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
-    }
-
-    public RectangleNodeBuilder<T> at(double x, double y) {
-        this.position = Position.at(x, y);
-        return this;
-    }
-
-    public RectangleNodeBuilder<T> of(double width, double height) {
-        this.size = Size.of(width, height);
-        return this;
     }
 
     public RectangleNodeBuilder<T> collapsingState(CollapsingState collapsingState) {
@@ -100,11 +81,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         this.childrenLayoutStrategy = Objects.requireNonNull(layoutStrategy);
         this.childNodesBuilder = new NodesBuilder<>(this, false);
         return this.childNodesBuilder;
-    }
-
-    public RectangleNodeBuilder<T> customizedProperties(Set<CustomizableProperties> customizedProperties) {
-        this.customizedProperties = Objects.requireNonNull(customizedProperties);
-        return this;
     }
 
     public NodesBuilder<T> and() {
@@ -136,12 +112,9 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         Builder nodeBuilder = Node.newNode(nodeId)
                 .type(NodeType.NODE_RECTANGLE)
                 .insideLabel(this.insideLabel)
-                .position(Objects.requireNonNull(this.position))
-                .size(Objects.requireNonNull(this.size))
                 .borderNode(this.isBorderNode)
                 .borderNodes(borderNodes)
                 .childNodes(childNodes)
-                .customizedProperties(this.customizedProperties)
                 .descriptionId(descriptionId)
                 .targetObjectId(labeltext)
                 .targetObjectKind("")

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.elements.DiagramElementProps;
@@ -60,7 +58,6 @@ public class DiagramComponent implements IComponent {
 
         IDiagramElementRequestor diagramElementRequestor = new DiagramElementRequestor();
         INodeDescriptionRequestor nodeDescriptionRequestor = new NodeDescriptionRequestor(allDiagramDescriptions);
-        // @formatter:off
         var nodes = diagramDescription.getNodeDescriptions().stream()
                 .map(nodeDescription -> {
                     var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
@@ -94,29 +91,17 @@ public class DiagramComponent implements IComponent {
                     return new Element(EdgeComponent.class, edgeComponentProps);
                 })
                 .toList();
-        // @formatter:on
 
         List<Element> children = new ArrayList<>();
         children.addAll(nodes);
         children.addAll(edges);
 
-        // @formatter:off
-        Position position = optionalPreviousDiagram.map(Diagram::getPosition)
-                .orElse(Position.UNDEFINED);
-
-
-        Size size = optionalPreviousDiagram.map(Diagram::getSize)
-                .orElse(Size.UNDEFINED);
-
         DiagramElementProps diagramElementProps = DiagramElementProps.newDiagramElementProps(diagramId)
                 .targetObjectId(targetObjectId)
                 .descriptionId(diagramDescription.getId())
                 .label(label)
-                .position(position)
-                .size(size)
                 .children(children)
                 .build();
-        // @formatter:on
         return new Element(DiagramElementProps.TYPE, diagramElementProps);
     }
 

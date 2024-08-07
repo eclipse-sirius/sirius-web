@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,6 @@ import java.util.Objects;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.tests.builder.edge.EdgeBuilder;
 import org.eclipse.sirius.components.diagrams.tests.builder.node.NodesBuilder;
 
@@ -77,16 +75,12 @@ public final class TestLayoutDiagramBuilder {
         List<Node> nodes = this.nodesBuilder.build(targetObjectIdToNodeId);
         List<Edge> edges = this.edgeBuilders.stream().map(edgeBuilder -> edgeBuilder.build(targetObjectIdToNodeId)).toList();
 
-        // @formatter:off
         return Diagram.newDiagram(Objects.requireNonNull(this.diagramId))
                 .nodes(nodes)
                 .edges(edges)
                 .label(Objects.requireNonNull(this.targetObjectId))
                 .descriptionId(DIAGRAM_DESCRIPTION_ID)
-                .position(Position.at(0, 0))
-                .size(Size.of(1000, 1000))
                 .targetObjectId(this.targetObjectId)
                 .build();
-        // @formatter:on
     }
 }

@@ -30,8 +30,6 @@ import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationSucce
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.junit.jupiter.api.Test;
@@ -59,17 +57,13 @@ public class RenameDiagramEventHandlerTests {
 
         DiagramDescription diagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(UUID.randomUUID().toString(), List.of(), List.of(), List.of());
 
-        // @formatter:off
         Diagram diagram = Diagram.newDiagram(representationId)
                 .label(OLD_LABEL)
                 .descriptionId(diagramDescription.getId())
                 .targetObjectId(targetObjectId.toString())
-                .size(Size.of(10, 10))
-                .position(Position.at(0, 0))
                 .nodes(Collections.emptyList())
                 .edges(Collections.emptyList())
                 .build();
-        // @formatter:on
         IRepresentationSearchService representationSearchService = new IRepresentationSearchService() {
 
             @Override

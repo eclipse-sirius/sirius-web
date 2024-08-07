@@ -17,10 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Set;
 
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 
 /**
@@ -76,21 +73,6 @@ public class NodeAssert extends DiagramElementAssert<NodeAssert, Node> {
 
     public NodeAssert hasCollapsingState(CollapsingState collapsingState) {
         assertThat(this.actual.getCollapsingState()).isEqualTo(collapsingState);
-        return this;
-    }
-
-    public NodeAssert hasPosition(Position position) {
-        assertThat(this.actual.getPosition()).isEqualTo(position);
-        return this;
-    }
-
-    public NodeAssert hasSize(Size size) {
-        assertThat(this.actual.getSize()).isEqualTo(size);
-        return this;
-    }
-
-    public NodeAssert hasCustomizedProperties(Set<CustomizableProperties> customizedProperties) {
-        assertThat(this.actual.getCustomizedProperties()).hasSameElementsAs(customizedProperties);
         return this;
     }
 

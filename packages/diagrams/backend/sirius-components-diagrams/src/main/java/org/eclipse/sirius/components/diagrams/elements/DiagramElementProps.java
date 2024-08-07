@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -38,10 +36,6 @@ public final class DiagramElementProps implements IProps {
     private String descriptionId;
 
     private String label;
-
-    private Position position;
-
-    private Size size;
 
     private List<Element> children;
 
@@ -63,14 +57,6 @@ public final class DiagramElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
-    }
-
-    public Position getPosition() {
-        return this.position;
-    }
-
-    public Size getSize() {
-        return this.size;
     }
 
     @Override
@@ -103,10 +89,6 @@ public final class DiagramElementProps implements IProps {
 
         private String label;
 
-        private Position position;
-
-        private Size size;
-
         private List<Element> children;
 
         private Builder(String id) {
@@ -128,16 +110,6 @@ public final class DiagramElementProps implements IProps {
             return this;
         }
 
-        public Builder position(Position position) {
-            this.position = Objects.requireNonNull(position);
-            return this;
-        }
-
-        public Builder size(Size size) {
-            this.size = Objects.requireNonNull(size);
-            return this;
-        }
-
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -149,8 +121,6 @@ public final class DiagramElementProps implements IProps {
             diagramElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             diagramElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             diagramElementProps.label = Objects.requireNonNull(this.label);
-            diagramElementProps.position = Objects.requireNonNull(this.position);
-            diagramElementProps.size = Objects.requireNonNull(this.size);
             diagramElementProps.children = Objects.requireNonNull(this.children);
             return diagramElementProps;
         }

@@ -39,10 +39,8 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
-import org.eclipse.sirius.components.diagrams.events.DoublePositionEvent;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -89,11 +87,9 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         this.connectorToolsProviders = Objects.requireNonNull(connectorToolsProviders);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -111,16 +107,12 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
 
         if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput input) {
             Diagram diagram = diagramContext.getDiagram();
-            // @formatter:off
             var optionalTool = this.toolService.findToolById(editingContext, diagram, input.toolId())
                     .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
                     .map(SingleClickOnTwoDiagramElementsTool.class::cast)
                     .or(this.findConnectorToolById(input.diagramSourceElementId(), input.diagramTargetElementId(), editingContext, diagram, input.toolId()));
-            // @formatter:on
             if (optionalTool.isPresent()) {
-                Position sourcePosition = Position.at(input.sourcePositionX(), input.sourcePositionY());
-                Position targetPosition = Position.at(input.targetPositionX(), input.targetPositionY());
-                IStatus status = this.executeTool(editingContext, diagramContext, input.diagramSourceElementId(), input.diagramTargetElementId(), optionalTool.get(), sourcePosition, targetPosition);
+                IStatus status = this.executeTool(editingContext, diagramContext, input.diagramSourceElementId(), input.diagramTargetElementId(), optionalTool.get());
                 if (status instanceof Success success) {
                     WorkbenchSelection newSelection = null;
                     Object newSelectionParameter = success.getParameters().get(Success.NEW_SELECTION);
@@ -139,8 +131,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String sourceNodeId, String targetNodeId, SingleClickOnTwoDiagramElementsTool tool,
-            Position sourcePosition, Position targetPosition) {
+    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String sourceNodeId, String targetNodeId, SingleClickOnTwoDiagramElementsTool tool) {
         IStatus result = new Failure("");
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> sourceNode = this.diagramQueryService.findNodeById(diagram, sourceNodeId);
@@ -168,8 +159,6 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
             variableManager.put(EdgeDescription.EDGE_TARGET, targetView);
 
             result = tool.getHandler().apply(variableManager);
-
-            diagramContext.getDiagramEvents().add(new DoublePositionEvent(sourceNodeId, targetNodeId, sourcePosition, targetPosition));
         }
         return result;
     }

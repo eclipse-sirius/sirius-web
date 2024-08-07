@@ -58,15 +58,9 @@ public final class Node implements IDiagramElement {
 
     private ILayoutStrategy childrenLayoutStrategy;
 
-    private Position position;
-
-    private Size size;
-
     private List<Node> borderNodes;
 
     private List<Node> childNodes;
-
-    private Set<CustomizableProperties> customizedProperties;
 
     private Integer defaultWidth;
 
@@ -146,24 +140,12 @@ public final class Node implements IDiagramElement {
         return this.childrenLayoutStrategy;
     }
 
-    public Position getPosition() {
-        return this.position;
-    }
-
-    public Size getSize() {
-        return this.size;
-    }
-
     public List<Node> getBorderNodes() {
         return this.borderNodes;
     }
 
     public List<Node> getChildNodes() {
         return this.childNodes;
-    }
-
-    public Set<CustomizableProperties> getCustomizedProperties() {
-        return this.customizedProperties;
     }
 
     public Integer getDefaultWidth() {
@@ -229,15 +211,9 @@ public final class Node implements IDiagramElement {
 
         private ILayoutStrategy childrenLayoutStrategy;
 
-        private Position position;
-
-        private Size size;
-
         private List<Node> borderNodes;
 
         private List<Node> childNodes;
-
-        private Set<CustomizableProperties> customizedProperties = Set.of();
 
         private Integer defaultWidth;
 
@@ -266,11 +242,8 @@ public final class Node implements IDiagramElement {
             this.outsideLabels = node.getOutsideLabels();
             this.style = node.getStyle();
             this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
-            this.position = node.getPosition();
-            this.size = node.getSize();
             this.borderNodes = node.getBorderNodes();
             this.childNodes = node.getChildNodes();
-            this.customizedProperties = node.getCustomizedProperties();
             this.defaultWidth = node.getDefaultWidth();
             this.defaultHeight = node.getDefaultHeight();
             this.labelEditable = node.isLabelEditable();
@@ -342,16 +315,6 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
-        public Builder position(Position position) {
-            this.position = Objects.requireNonNull(position);
-            return this;
-        }
-
-        public Builder size(Size size) {
-            this.size = Objects.requireNonNull(size);
-            return this;
-        }
-
         public Builder borderNodes(List<Node> borderNodes) {
             this.borderNodes = Objects.requireNonNull(borderNodes);
             return this;
@@ -359,11 +322,6 @@ public final class Node implements IDiagramElement {
 
         public Builder childNodes(List<Node> childNodes) {
             this.childNodes = Objects.requireNonNull(childNodes);
-            return this;
-        }
-
-        public Builder customizedProperties(Set<CustomizableProperties> customizedProperties) {
-            this.customizedProperties = Objects.requireNonNull(customizedProperties);
             return this;
         }
 
@@ -403,11 +361,8 @@ public final class Node implements IDiagramElement {
             node.outsideLabels = Objects.requireNonNull(this.outsideLabels);
             node.style = Objects.requireNonNull(this.style);
             node.childrenLayoutStrategy = this.childrenLayoutStrategy;
-            node.position = Objects.requireNonNull(this.position);
-            node.size = Objects.requireNonNull(this.size);
             node.borderNodes = Objects.requireNonNull(this.borderNodes);
             node.childNodes = Objects.requireNonNull(this.childNodes);
-            node.customizedProperties = this.customizedProperties;
             node.defaultWidth = this.defaultWidth; // Optional on purpose
             node.defaultHeight = this.defaultHeight; // Optional on purpose
             node.labelEditable = this.labelEditable;

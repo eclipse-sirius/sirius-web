@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,11 +19,8 @@ import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
-import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
@@ -62,15 +59,9 @@ public final class NodeElementProps implements IProps {
 
     private ILayoutStrategy childrenLayoutStrategy;
 
-    private Position position;
-
-    private Size size;
-
     private Integer defaultWidth;
 
     private Integer defaultHeight;
-
-    private Set<CustomizableProperties> customizableProperties;
 
     private List<Element> children;
 
@@ -134,24 +125,12 @@ public final class NodeElementProps implements IProps {
         return this.childrenLayoutStrategy;
     }
 
-    public Position getPosition() {
-        return this.position;
-    }
-
-    public Size getSize() {
-        return this.size;
-    }
-
     public Integer getDefaultWidth() {
         return this.defaultWidth;
     }
 
     public Integer getDefaultHeight() {
         return this.defaultHeight;
-    }
-
-    public Set<CustomizableProperties> getCustomizableProperties() {
-        return this.customizableProperties;
     }
 
     @Override
@@ -205,15 +184,9 @@ public final class NodeElementProps implements IProps {
 
         private ILayoutStrategy childrenLayoutStrategy;
 
-        private Position position;
-
-        private Size size;
-
         private Integer defaultWidth;
 
         private Integer defaultHeight;
-
-        private Set<CustomizableProperties> customizableProperties = Set.of();
 
         private List<Element> children;
 
@@ -280,16 +253,6 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
-        public Builder position(Position position) {
-            this.position = Objects.requireNonNull(position);
-            return this;
-        }
-
-        public Builder size(Size size) {
-            this.size = Objects.requireNonNull(size);
-            return this;
-        }
-
         public Builder defaultWidth(Integer defaultWidth) {
             this.defaultWidth = defaultWidth;
             return this;
@@ -297,11 +260,6 @@ public final class NodeElementProps implements IProps {
 
         public Builder defaultHeight(Integer defaultHeight) {
             this.defaultHeight = defaultHeight;
-            return this;
-        }
-
-        public Builder customizableProperties(Set<CustomizableProperties> customizableProperties) {
-            this.customizableProperties = Objects.requireNonNull(customizableProperties);
             return this;
         }
 
@@ -334,11 +292,8 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.collapsingState = Objects.requireNonNull(this.collapsingState);
             nodeElementProps.style = Objects.requireNonNull(this.style);
             nodeElementProps.childrenLayoutStrategy = this.childrenLayoutStrategy;
-            nodeElementProps.position = Objects.requireNonNull(this.position);
-            nodeElementProps.size = Objects.requireNonNull(this.size);
             nodeElementProps.children = Objects.requireNonNull(this.children);
             nodeElementProps.labelEditable = this.labelEditable;
-            nodeElementProps.customizableProperties = Objects.requireNonNull(this.customizableProperties);
             nodeElementProps.defaultWidth = this.defaultWidth; // Optional on purpose
             nodeElementProps.defaultHeight = this.defaultHeight; // Optional on purpose
             nodeElementProps.pinned = this.pinned;
