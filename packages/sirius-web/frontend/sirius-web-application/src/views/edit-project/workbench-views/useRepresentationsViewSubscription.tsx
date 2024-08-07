@@ -16,18 +16,12 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
 import { useEffect, useState } from 'react';
 import {
-  GQLFormRefreshedEventPayload,
   GQLRepresentationsEventInput,
-  GQLRepresentationsEventPayload,
   GQLRepresentationsEventSubscription,
   GQLRepresentationsEventVariables,
   UseRepresentationsViewSubscriptionState,
   UseRepresentationsViewSubscriptionValue,
 } from './useRepresentationsViewSubscription.types';
-
-const isFormRefreshedEventPayload = (
-  payload: GQLRepresentationsEventPayload
-): payload is GQLFormRefreshedEventPayload => payload.__typename === 'FormRefreshedEventPayload';
 
 export const getRepresentationsViewEventSubscription = `
   subscription representationsEvent($input: RepresentationsEventInput!) {
@@ -48,7 +42,7 @@ export const useRepresentationsViewSubscription = (
 ): UseRepresentationsViewSubscriptionValue => {
   const [state, setState] = useState<UseRepresentationsViewSubscriptionState>({
     id: crypto.randomUUID(),
-    form: null,
+    payload: null,
     complete: false,
   });
 
@@ -64,10 +58,7 @@ export const useRepresentationsViewSubscription = (
     const { data: gqlRepresentationsEventSubscription } = data;
     if (gqlRepresentationsEventSubscription) {
       const { representationsEvent: payload } = gqlRepresentationsEventSubscription;
-      if (isFormRefreshedEventPayload(payload)) {
-        const { form } = payload;
-        setState((prevState) => ({ ...prevState, form }));
-      }
+      setState((prevState) => ({ ...prevState, payload }));
     }
   };
 
@@ -93,7 +84,7 @@ export const useRepresentationsViewSubscription = (
 
   return {
     loading,
-    form: state.form,
+    payload: state.payload,
     complete: state.complete,
   };
 };

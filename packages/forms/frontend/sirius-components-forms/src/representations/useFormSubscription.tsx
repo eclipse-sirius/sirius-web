@@ -13,19 +13,19 @@
 
 import { gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
 import { useEffect, useState } from 'react';
+import { formRefreshedEventPayloadFragment } from '../form/FormEventFragments';
 import {
-  GQLDetailsEventInput,
-  GQLDetailsEventSubscription,
-  GQLDetailsEventVariables,
-  UseDetailsViewSubscriptionState,
-  UseDetailsViewSubscriptionValue,
-} from './useDetailsViewSubscription.types';
+  GQLFormEventInput,
+  GQLFormEventSubscription,
+  GQLFormEventVariables,
+  UseFormSubscriptionState,
+  UseFormSubscriptionValue,
+} from './useFormSubscription.types';
 
-export const getDetailsViewEventSubscription = `
-  subscription detailsEvent($input: DetailsEventInput!) {
-    detailsEvent(input: $input) {
+export const formEventSubscription = `
+  subscription formEvent($input: FormEventInput!) {
+    formEvent(input: $input) {
       __typename
       ... on FormRefreshedEventPayload {
         ...formRefreshedEventPayloadFragment
@@ -33,43 +33,38 @@ export const getDetailsViewEventSubscription = `
     }
   }
   ${formRefreshedEventPayloadFragment}
-  `;
+`;
 
-export const useDetailsViewSubscription = (
-  editingContextId: string,
-  objectIds: string[],
-  skip?: boolean
-): UseDetailsViewSubscriptionValue => {
-  const [state, setState] = useState<UseDetailsViewSubscriptionState>({
+export const useFormSubscription = (editingContextId: string, formId: string): UseFormSubscriptionValue => {
+  const [state, setState] = useState<UseFormSubscriptionState>({
     id: crypto.randomUUID(),
     complete: false,
     payload: null,
   });
 
-  const input: GQLDetailsEventInput = {
+  const input: GQLFormEventInput = {
     id: state.id,
     editingContextId,
-    objectIds,
+    formId,
   };
 
-  const variables: GQLDetailsEventVariables = { input };
+  const variables: GQLFormEventVariables = { input };
 
-  const onData = ({ data }: OnDataOptions<GQLDetailsEventSubscription>) => {
-    const { data: gqlDetailsEventSubscription } = data;
-    if (gqlDetailsEventSubscription) {
-      const { detailsEvent: payload } = gqlDetailsEventSubscription;
+  const onData = ({ data }: OnDataOptions<GQLFormEventSubscription>) => {
+    const { data: gqlFormEventSubscription } = data;
+    if (gqlFormEventSubscription) {
+      const { formEvent: payload } = gqlFormEventSubscription;
       setState((prevState) => ({ ...prevState, payload }));
     }
   };
 
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const { error, loading } = useSubscription<GQLDetailsEventSubscription, GQLDetailsEventVariables>(
-    gql(getDetailsViewEventSubscription),
+  const { error, loading } = useSubscription<GQLFormEventSubscription, GQLFormEventVariables>(
+    gql(formEventSubscription),
     {
       variables,
       fetchPolicy: 'no-cache',
-      skip,
       onData,
       onComplete,
     }
