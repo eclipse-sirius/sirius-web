@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-graphql-tests</artifactId>
-	<version>2024.7.8</version>
+	<version>2024.7.9</version>
 	<name>sirius-components-graphql-tests</name>
 	<description>Sirius Components GraphQL Tests</description>
 
@@ -64,17 +64,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
-			<version>2024.7.8</version>
+			<version>2024.7.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>2024.7.8</version>
+			<version>2024.7.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-api</artifactId>
-			<version>2024.7.8</version>
+			<version>2024.7.9</version>
 		</dependency>
 	</dependencies>
 
