@@ -12,10 +12,18 @@
  *******************************************************************************/
 
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { FormBasedView, GQLForm, Group } from '@eclipse-sirius/sirius-components-forms';
+import {
+  FormBasedView,
+  FormContext,
+  GQLForm,
+  GQLFormRefreshedEventPayload,
+  Group,
+} from '@eclipse-sirius/sirius-components-forms';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { DiagramFilterFormProps } from './DiagramFilterForm.types';
+import { DiagramFilterFormProps, DiagramFilterViewState } from './DiagramFilterForm.types';
 import { useDiagramFilterSubscription } from './useDiagramFilterSubscription';
+import { GQLDiagramFilterEventPayload } from './useDiagramFilterSubscription.types';
 
 const useDiagramFilterViewStyles = makeStyles()((theme) => ({
   idle: {
@@ -26,8 +34,20 @@ const useDiagramFilterViewStyles = makeStyles()((theme) => ({
   },
 }));
 
+const isFormRefreshedEventPayload = (payload: GQLDiagramFilterEventPayload): payload is GQLFormRefreshedEventPayload =>
+  payload && payload.__typename === 'FormRefreshedEventPayload';
+
 export const DiagramFilterForm = ({ editingContextId, diagramId, readOnly }: DiagramFilterFormProps) => {
-  const { form, complete } = useDiagramFilterSubscription(editingContextId, [diagramId]);
+  const [state, setState] = useState<DiagramFilterViewState>({
+    form: null,
+  });
+
+  const { payload, complete } = useDiagramFilterSubscription(editingContextId, [diagramId]);
+  useEffect(() => {
+    if (isFormRefreshedEventPayload(payload)) {
+      setState((prevState) => ({ ...prevState, form: payload.form }));
+    }
+  }, [payload]);
 
   const { classes } = useDiagramFilterViewStyles();
 
@@ -44,15 +64,22 @@ export const DiagramFilterForm = ({ editingContextId, diagramId, readOnly }: Dia
     }
   };
 
-  if (!form || complete) {
+  if (!state.form || complete) {
     return null;
   }
   return (
-    <FormBasedView
-      editingContextId={editingContextId}
-      form={form}
-      readOnly={readOnly}
-      postProcessor={extractFirstGroup}
-    />
+    <div data-representation-kind="form-diagram-filter">
+      <FormContext.Provider
+        value={{
+          payload: payload,
+        }}>
+        <FormBasedView
+          editingContextId={editingContextId}
+          form={state.form}
+          readOnly={readOnly}
+          postProcessor={extractFirstGroup}
+        />
+      </FormContext.Provider>
+    </div>
   );
 };

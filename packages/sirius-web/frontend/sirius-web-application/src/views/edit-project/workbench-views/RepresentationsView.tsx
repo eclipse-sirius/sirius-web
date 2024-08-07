@@ -13,8 +13,10 @@
 import { useSelection, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import {
   FormBasedView,
+  FormContext,
   GQLForm,
   GQLList,
+  GQLRepresentationsEventPayload,
   GQLTree,
   GQLWidget,
   ListPropertySection,
@@ -25,6 +27,7 @@ import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { RepresentationsViewState } from './RepresentationsView.types';
 import { useRepresentationsViewSubscription } from './useRepresentationsViewSubscription';
+import { GQLFormRefreshedEventPayload } from './useRepresentationsViewSubscription.types';
 
 const useRepresentationsViewStyles = makeStyles()((theme) => ({
   idle: {
@@ -37,10 +40,14 @@ const useRepresentationsViewStyles = makeStyles()((theme) => ({
 
 const isList = (widget: GQLWidget | undefined): widget is GQLList => widget && widget.__typename === 'List';
 const isTree = (widget: GQLWidget | undefined): widget is GQLTree => widget && widget.__typename === 'TreeWidget';
+const isFormRefreshedEventPayload = (
+  payload: GQLRepresentationsEventPayload
+): payload is GQLFormRefreshedEventPayload => payload && payload.__typename === 'FormRefreshedEventPayload';
 
 export const RepresentationsView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const [state, setState] = useState<RepresentationsViewState>({
     currentSelection: { entries: [] },
+    form: null,
   });
 
   const { selection } = useSelection();
@@ -66,7 +73,13 @@ export const RepresentationsView = ({ editingContextId, readOnly }: WorkbenchVie
 
   const objectIds: string[] = state.currentSelection.entries.map((entry) => entry.id);
   const skip = objectIds.length === 0;
-  const { form, complete } = useRepresentationsViewSubscription(editingContextId, objectIds, skip);
+
+  const { payload, complete } = useRepresentationsViewSubscription(editingContextId, objectIds, skip);
+  useEffect(() => {
+    if (isFormRefreshedEventPayload(payload)) {
+      setState((prevState) => ({ ...prevState, form: payload.form }));
+    }
+  }, [payload]);
 
   const { classes } = useRepresentationsViewStyles();
 
@@ -99,7 +112,7 @@ export const RepresentationsView = ({ editingContextId, readOnly }: WorkbenchVie
     }
   };
 
-  if (!form || complete) {
+  if (!state.form || complete) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
@@ -107,11 +120,18 @@ export const RepresentationsView = ({ editingContextId, readOnly }: WorkbenchVie
     );
   }
   return (
-    <FormBasedView
-      editingContextId={editingContextId}
-      form={form}
-      readOnly={readOnly}
-      postProcessor={extractPlainList}
-    />
+    <div data-representation-kind="form-representation-list">
+      <FormContext.Provider
+        value={{
+          payload: payload,
+        }}>
+        <FormBasedView
+          editingContextId={editingContextId}
+          form={state.form}
+          readOnly={readOnly}
+          postProcessor={extractPlainList}
+        />
+      </FormContext.Provider>
+    </div>
   );
 };

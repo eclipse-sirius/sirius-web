@@ -17,16 +17,11 @@ import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-compon
 import { useEffect, useState } from 'react';
 import {
   GQLDetailsEventInput,
-  GQLDetailsEventPayload,
   GQLDetailsEventSubscription,
   GQLDetailsEventVariables,
-  GQLFormRefreshedEventPayload,
   UseDetailsViewSubscriptionState,
   UseDetailsViewSubscriptionValue,
 } from './useDetailsViewSubscription.types';
-
-const isFormRefreshedEventPayload = (payload: GQLDetailsEventPayload): payload is GQLFormRefreshedEventPayload =>
-  payload.__typename === 'FormRefreshedEventPayload';
 
 export const getDetailsViewEventSubscription = `
   subscription detailsEvent($input: DetailsEventInput!) {
@@ -47,7 +42,6 @@ export const useDetailsViewSubscription = (
 ): UseDetailsViewSubscriptionValue => {
   const [state, setState] = useState<UseDetailsViewSubscriptionState>({
     id: crypto.randomUUID(),
-    form: null,
     complete: false,
     payload: null,
   });
@@ -60,21 +54,12 @@ export const useDetailsViewSubscription = (
 
   const variables: GQLDetailsEventVariables = { input };
 
-  const onData = ({ data }: OnDataOptions<GQLDetailsEventSubscription>) => {
-    const { data: gqlDetailsEventSubscription } = data;
-    if (gqlDetailsEventSubscription) {
-      const { detailsEvent: payload } = gqlDetailsEventSubscription;
-      setState((prevState) => ({ ...prevState, payload, complete: false }));
-      if (isFormRefreshedEventPayload(payload)) {
-        const { form } = payload;
-        setState((prevState) => ({ ...prevState, form, complete: false }));
-      }
-    }
-  };
-
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const { error, loading } = useSubscription<GQLDetailsEventSubscription, GQLDetailsEventVariables>(
+  const onData = ({}: OnDataOptions<GQLDetailsEventSubscription>) =>
+    setState((prevState) => ({ ...prevState, complete: false }));
+
+  const { data, error, loading } = useSubscription<GQLDetailsEventSubscription, GQLDetailsEventVariables>(
     gql(getDetailsViewEventSubscription),
     {
       variables,
@@ -94,8 +79,7 @@ export const useDetailsViewSubscription = (
 
   return {
     loading,
-    form: state.form,
-    payload: state.payload,
+    payload: data?.detailsEvent ?? null,
     complete: state.complete,
   };
 };

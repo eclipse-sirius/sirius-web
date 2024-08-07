@@ -15,14 +15,12 @@ import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 
 export interface UseDetailsViewSubscriptionValue {
   loading: boolean;
-  form: GQLForm | null;
   payload: GQLDetailsEventPayload | null;
   complete: boolean;
 }
 
 export interface UseDetailsViewSubscriptionState {
   id: string;
-  form: GQLForm | null;
   complete: boolean;
   payload: GQLDetailsEventPayload | null;
 }

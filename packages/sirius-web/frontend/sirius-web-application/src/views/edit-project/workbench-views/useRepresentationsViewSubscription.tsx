@@ -16,18 +16,12 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
 import { useEffect, useState } from 'react';
 import {
-  GQLFormRefreshedEventPayload,
   GQLRepresentationsEventInput,
-  GQLRepresentationsEventPayload,
   GQLRepresentationsEventSubscription,
   GQLRepresentationsEventVariables,
   UseRepresentationsViewSubscriptionState,
   UseRepresentationsViewSubscriptionValue,
 } from './useRepresentationsViewSubscription.types';
-
-const isFormRefreshedEventPayload = (
-  payload: GQLRepresentationsEventPayload
-): payload is GQLFormRefreshedEventPayload => payload.__typename === 'FormRefreshedEventPayload';
 
 export const getRepresentationsViewEventSubscription = `
   subscription representationsEvent($input: RepresentationsEventInput!) {
@@ -48,7 +42,7 @@ export const useRepresentationsViewSubscription = (
 ): UseRepresentationsViewSubscriptionValue => {
   const [state, setState] = useState<UseRepresentationsViewSubscriptionState>({
     id: crypto.randomUUID(),
-    form: null,
+    payload: null,
     complete: false,
   });
 
@@ -60,29 +54,21 @@ export const useRepresentationsViewSubscription = (
 
   const variables: GQLRepresentationsEventVariables = { input };
 
-  const onData = ({ data }: OnDataOptions<GQLRepresentationsEventSubscription>) => {
-    const { data: gqlRepresentationsEventSubscription } = data;
-    if (gqlRepresentationsEventSubscription) {
-      const { representationsEvent: payload } = gqlRepresentationsEventSubscription;
-      if (isFormRefreshedEventPayload(payload)) {
-        const { form } = payload;
-        setState((prevState) => ({ ...prevState, form, complete: false }));
-      }
-    }
-  };
-
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const { error, loading } = useSubscription<GQLRepresentationsEventSubscription, GQLRepresentationsEventVariables>(
-    gql(getRepresentationsViewEventSubscription),
-    {
-      variables,
-      fetchPolicy: 'no-cache',
-      skip,
-      onData,
-      onComplete,
-    }
-  );
+  const onData = ({}: OnDataOptions<GQLRepresentationsEventSubscription>) =>
+    setState((prevState) => ({ ...prevState, complete: false }));
+
+  const { data, error, loading } = useSubscription<
+    GQLRepresentationsEventSubscription,
+    GQLRepresentationsEventVariables
+  >(gql(getRepresentationsViewEventSubscription), {
+    variables,
+    fetchPolicy: 'no-cache',
+    skip,
+    onData,
+    onComplete,
+  });
 
   const { addErrorMessage } = useMultiToast();
   useEffect(() => {
@@ -93,7 +79,7 @@ export const useRepresentationsViewSubscription = (
 
   return {
     loading,
-    form: state.form,
+    payload: data?.representationsEvent ?? null,
     complete: state.complete,
   };
 };

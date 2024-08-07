@@ -15,13 +15,12 @@ import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 
 export interface UseDiagramFilterSubscriptionValue {
   loading: boolean;
-  form: GQLForm | null;
+  payload: GQLDiagramFilterEventPayload | null;
   complete: boolean;
 }
 
 export interface UseDiagramFilterSubscriptionState {
   id: string;
-  form: GQLForm | null;
   complete: boolean;
 }
 

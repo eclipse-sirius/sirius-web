@@ -12,7 +12,9 @@
  *******************************************************************************/
 
 import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 
 export interface RelatedElementsViewState {
   currentSelection: Selection;
+  form: GQLForm | null;
 }
