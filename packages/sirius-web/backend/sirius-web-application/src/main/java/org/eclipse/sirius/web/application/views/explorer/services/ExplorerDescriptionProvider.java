@@ -68,7 +68,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     public static final String SETTING = "setting:";
 
-    public static final String SETTING_ID_SEPARATOR = "-";
+    public static final String SETTING_ID_SEPARATOR = "::";
 
     private final IObjectService objectService;
 
@@ -296,7 +296,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
             if (treeItemId.startsWith(SETTING)) {
                 // the tree item is a setting, get the object and then the structural feature associated
                 var objectId = treeItemId.substring(SETTING.length(), treeItemId.indexOf(SETTING_ID_SEPARATOR));
-                var featureName = treeItemId.substring(treeItemId.indexOf(SETTING_ID_SEPARATOR) + 1);
+                var featureName = treeItemId.substring(treeItemId.indexOf(SETTING_ID_SEPARATOR) + SETTING_ID_SEPARATOR.length());
                 var optObject = this.objectService.getObject(optEditingContext.get(), objectId);
                 if (optObject.isPresent()) {
                     InternalEObject internalObject = (InternalEObject) optObject.get();

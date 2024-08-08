@@ -139,7 +139,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
                 .canCreatePredicate(canCreatePredicate)
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
-                .treeItemObjectProvider(this::getObject)
+                .treeItemObjectProvider(this::getTreeItemObject)
                 .build();
     }
 
@@ -399,7 +399,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
         return new Failure("");
     }
 
-    private Object getObject(VariableManager variableManager) {
+    private Object getTreeItemObject(VariableManager variableManager) {
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         var optionalId = variableManager.get(TreeDescription.ID, String.class);
         if (optionalId.isPresent() && optionalEditingContext.isPresent()) {

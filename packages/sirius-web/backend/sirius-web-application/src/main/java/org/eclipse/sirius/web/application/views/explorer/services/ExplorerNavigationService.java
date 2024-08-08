@@ -103,11 +103,8 @@ public class ExplorerNavigationService implements IExplorerNavigationService {
     }
 
     private Optional<TreeDescription> getTreeDescription(IEditingContext editingContext, Tree tree) {
-        return this.representationDescriptionSearchService
-        .findAll(editingContext).values().stream()
-        .filter(TreeDescription.class::isInstance)
-        .map(TreeDescription.class::cast)
-        .filter(td -> Objects.equals(td.getId(), tree.getDescriptionId()))
-        .findFirst();
+        return this.representationDescriptionSearchService.findById(editingContext, tree.getDescriptionId())
+                .filter(TreeDescription.class::isInstance)
+                .map(TreeDescription.class::cast);
     }
 }
