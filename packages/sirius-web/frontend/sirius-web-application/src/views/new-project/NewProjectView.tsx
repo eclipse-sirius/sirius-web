@@ -19,8 +19,9 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { GQLCreateProjectMutationData, GQLCreateProjectPayload, GQLErrorPayload } from './NewProjectView.types';
@@ -30,6 +31,7 @@ import {
   HideToastEvent,
   NewProjectEvent,
   NewProjectViewContext,
+  NewProjectViewStateSchema,
   RequestProjectCreationEvent,
   SchemaValue,
   ShowToastEvent,
@@ -95,7 +97,8 @@ const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPa
 
 export const NewProjectView = () => {
   const { classes } = useNewProjectViewStyles();
-  const [{ value, context }, dispatch] = useMachine<NewProjectViewContext, NewProjectEvent>(newProjectViewMachine);
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<NewProjectViewContext, NewProjectViewStateSchema, NewProjectEvent>>(newProjectViewMachine);
   const { newProjectView, toast } = value as SchemaValue;
   const { name, nameMessage, nameIsInvalid, message, newProjectId } = context;
   const [createProject, { loading, data, error }] = useMutation<GQLCreateProjectMutationData>(createProjectMutation);
@@ -142,10 +145,10 @@ export const NewProjectView = () => {
         }
       }
     }
-  }, [loading, data, error, dispatch]);
+  }, [loading, data, error]);
 
   if (newProjectView === 'success') {
-    return <Redirect to={`/projects/${newProjectId}/edit`} push />;
+    return <Navigate to={`/projects/${newProjectId}/edit`} />;
   }
 
   return (

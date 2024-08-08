@@ -11,9 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import { useComponent } from '../extension/useComponent';
 import { useData } from '../extension/useData';
 import { useRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata';
@@ -44,6 +45,7 @@ import {
   WorkbenchContext,
   WorkbenchEvent,
   workbenchMachine,
+  WorkbenchStateSchema,
 } from './WorkbenchMachine';
 
 const editingContextEventSubscription = gql`
@@ -79,7 +81,10 @@ export const Workbench = ({
   readOnly,
 }: WorkbenchProps) => {
   const { classes } = useWorkbenchStyles();
-  const [{ value, context }, dispatch] = useMachine<WorkbenchContext, WorkbenchEvent>(workbenchMachine, {
+
+  const [{ value, context }, dispatch] = useMachine<
+    StateMachine<WorkbenchContext, WorkbenchStateSchema, WorkbenchEvent>
+  >(workbenchMachine, {
     context: {
       displayedRepresentation: initialRepresentationSelected,
       representations: initialRepresentationSelected ? [initialRepresentationSelected] : [],

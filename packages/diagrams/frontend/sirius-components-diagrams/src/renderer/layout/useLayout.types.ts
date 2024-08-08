@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Root } from 'react-dom/client';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { RawDiagram } from './layout.types';
 
@@ -27,6 +28,7 @@ export type Step = 'INITIAL_STEP' | 'BEFORE_LAYOUT' | 'LAYOUT' | 'AFTER_LAYOUT';
 
 export interface UseLayoutState {
   hiddenContainer: HTMLDivElement | null;
+  root: Root | null;
   currentStep: Step;
   previousDiagram: RawDiagram | null;
   diagramToLayout: RawDiagram | null;

@@ -12,6 +12,11 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { ServerContext, ServerContextValue, Toast, useComponent } from '@eclipse-sirius/sirius-components-core';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import SettingsIcon from '@mui/icons-material/Settings';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -19,25 +24,22 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { emphasize } from '@mui/material/styles';
-import { makeStyles } from 'tss-react/mui';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import GetAppIcon from '@mui/icons-material/GetApp';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import SettingsIcon from '@mui/icons-material/Settings';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect } from 'react';
-import { Redirect, Link as RouterLink } from 'react-router-dom';
+import { Navigate, Link as RouterLink } from 'react-router-dom';
+import { makeStyles } from 'tss-react/mui';
 import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
 import { EditProjectNavbarProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
 
+import { StateMachine } from 'xstate';
 import { useCurrentProject } from '../useCurrentProject';
 import { editProjectNavbarSubtitleExtensionPoint } from './EditProjectNavbarExtensionPoints';
 import {
   EditProjectNavbarContext,
   EditProjectNavbarEvent,
+  EditProjectNavbarStateSchema,
   HandleCloseContextMenuEvent,
   HandleCloseModalEvent,
   HandleCompleteEvent,
@@ -93,14 +95,13 @@ export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
   const { classes } = useEditProjectViewNavbarStyles();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
-  const [{ value, context }, dispatch] = useMachine<EditProjectNavbarContext, EditProjectNavbarEvent>(
-    editProjectNavbarMachine,
-    {
-      context: {
-        projectName: project.name,
-      },
-    }
-  );
+  const [{ value, context }, dispatch] = useMachine<
+    StateMachine<EditProjectNavbarContext, EditProjectNavbarStateSchema, EditProjectNavbarEvent>
+  >(editProjectNavbarMachine, {
+    context: {
+      projectName: project.name,
+    },
+  });
   const { toast, navbar } = value as SchemaValue;
   const { id, to, modalDisplayed, projectMenuAnchor, projectName, message } = context;
 
@@ -132,7 +133,7 @@ export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
       const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
       dispatch(showToastEvent);
     }
-  }, [error, dispatch]);
+  }, [error]);
 
   const onMoreClick = (event: React.MouseEvent<HTMLElement>) => {
     if (navbar === 'empty') {
@@ -161,7 +162,7 @@ export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
   };
 
   if (navbar === 'redirectState') {
-    return <Redirect to={to} push />;
+    return <Navigate to={to} />;
   }
 
   let modal = null;

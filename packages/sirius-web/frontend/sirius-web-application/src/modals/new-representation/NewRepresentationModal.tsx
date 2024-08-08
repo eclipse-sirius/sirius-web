@@ -25,6 +25,7 @@ import TextField from '@mui/material/TextField';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import {
   GQLCreateRepresentationMutationData,
   GQLCreateRepresentationPayload,
@@ -42,6 +43,7 @@ import {
   HideToastEvent,
   NewRepresentationModalContext,
   NewRepresentationModalEvent,
+  NewRepresentationModalStateSchema,
   SchemaValue,
   ShowToastEvent,
   newRepresentationModalMachine,
@@ -109,9 +111,10 @@ export const NewRepresentationModal = ({
   onClose,
 }: NewRepresentationModalProps) => {
   const { classes } = useNewRepresentationModalStyles();
-  const [{ value, context }, dispatch] = useMachine<NewRepresentationModalContext, NewRepresentationModalEvent>(
-    newRepresentationModalMachine
-  );
+  const [{ value, context }, dispatch] =
+    useMachine<
+      StateMachine<NewRepresentationModalContext, NewRepresentationModalStateSchema, NewRepresentationModalEvent>
+    >(newRepresentationModalMachine);
   const { newRepresentationModal, toast } = value as SchemaValue;
   const {
     name,
@@ -150,7 +153,7 @@ export const NewRepresentationModal = ({
         dispatch(fetchRepresentationDescriptionsEvent);
       }
     }
-  }, [representationDescriptionsLoading, representationDescriptionsData, representationDescriptionsError, dispatch]);
+  }, [representationDescriptionsLoading, representationDescriptionsData, representationDescriptionsError]);
 
   const onNameChange = (event) => {
     const value = event.target.value;
@@ -192,7 +195,7 @@ export const NewRepresentationModal = ({
         }
       }
     }
-  }, [createRepresentationLoading, createRepresentationData, createRepresentationError, dispatch]);
+  }, [createRepresentationLoading, createRepresentationData, createRepresentationError]);
 
   const onCreateRepresentation = () => {
     dispatch({ type: 'CREATE_REPRESENTATION' } as CreateRepresentationEvent);
@@ -218,7 +221,7 @@ export const NewRepresentationModal = ({
         ],
       });
     }
-  }, [createdRepresentationId, createdRepresentationKind, newRepresentationModal, onRepresentationCreated]);
+  }, [createdRepresentationId, createdRepresentationKind, newRepresentationModal]);
 
   return (
     <>

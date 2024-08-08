@@ -27,6 +27,7 @@ import Select from '@mui/material/Select';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import {
   GQLCreateRootObjectMutationData,
   GQLGetRootDomainsQueryData,
@@ -46,6 +47,7 @@ import {
   HideToastEvent,
   NewRootObjectModalContext,
   NewRootObjectModalEvent,
+  NewRootObjectModalStateSchema,
   SchemaValue,
   ShowToastEvent,
   newRootObjectModalMachine,
@@ -117,9 +119,10 @@ const useNewRootObjectModalStyles = makeStyles()((theme) => ({
 
 export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewRootObjectModalProps) => {
   const { classes } = useNewRootObjectModalStyles();
-  const [{ value, context }, dispatch] = useMachine<NewRootObjectModalContext, NewRootObjectModalEvent>(
-    newRootObjectModalMachine
-  );
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<NewRootObjectModalContext, NewRootObjectModalStateSchema, NewRootObjectModalEvent>>(
+      newRootObjectModalMachine
+    );
   const { newRootObjectModal, toast } = value as SchemaValue;
   const {
     domains,
@@ -156,7 +159,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
         dispatch(fetchDomainsEvent);
       }
     }
-  }, [domainsLoading, domainsData, domainsError, dispatch]);
+  }, [domainsLoading, domainsData, domainsError]);
 
   // Fetch the corresponding object creation description whenever the user selects a new domain or toggles the checkbox
   const [
@@ -182,7 +185,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
         dispatch(fetchDescriptionsEvent);
       }
     }
-  }, [descriptionsLoading, descriptionsData, descriptionError, dispatch]);
+  }, [descriptionsLoading, descriptionsData, descriptionError]);
 
   useEffect(() => {
     if (newRootObjectModal === 'loadingRootObjectCreationDescriptions' && selectedDomainId) {
@@ -211,7 +214,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
         dispatch(handleResponseEvent);
       }
     }
-  }, [createRootObjectLoading, createRootObjectError, createRootObjectData, dispatch]);
+  }, [createRootObjectLoading, createRootObjectError, createRootObjectData]);
 
   const onCreateRootObject = () => {
     dispatch({ type: 'CREATE_ROOT_OBJECT' } as CreateRootObjectEvent);
@@ -250,7 +253,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
     if (newRootObjectModal === 'success') {
       onObjectCreated({ entries: [objectToSelect] });
     }
-  }, [newRootObjectModal, onObjectCreated, objectToSelect]);
+  }, [newRootObjectModal, objectToSelect]);
 
   return (
     <>
