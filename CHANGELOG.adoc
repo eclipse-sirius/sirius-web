@@ -31,6 +31,7 @@ Both `IInput` and `IDomainEvent` implement `ICause` and will thus be used to ind
 - https://github.com/eclipse-sirius/sirius-web/issues/3972[#3972] [diagram] The `InsideLabelStyle#displayHeaderSeparator` has been renamed to `headerSeparatorDisplayMode` and is no longer a boolean but an enum with three possible values: NEVER, ALWAYS, and IF-CHILDREN.
 Previously, the value false was equivalent to NEVER, and true to IF-CHILDREN.
 The new option ALWAYS allows the separator to be displayed in every case.
+- https://github.com/eclipse-sirius/sirius-web/issues/3678[#3678] [core] Remove `IRepresentationMetadataSearchService#findByRepresentation`, use `IRepresentationMetadataSearchService#findByRepresentationId` instead. 
 
 === Dependency update
 
@@ -74,6 +75,7 @@ It is now possible to choose between three options:
 never, always and if_children (to display the separator only if children exist).
 - https://github.com/eclipse-sirius/sirius-web/issues/4021[#4021] [sirius-web] Disable the _Rename_ and _Delete_ project menu actions when project is read-only
 - https://github.com/eclipse-sirius/sirius-web/issues/3677[#3677] [diagram] Remove backend layouting code from the time the backend was computing the layout.
+- https://github.com/eclipse-sirius/sirius-web/issues/3678[#3678] [core] Rely on representation id to retrieve representation metadata
 
 == v2024.9.0
 

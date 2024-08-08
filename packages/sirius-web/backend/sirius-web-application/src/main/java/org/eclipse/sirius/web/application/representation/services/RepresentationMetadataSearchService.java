@@ -20,7 +20,6 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
-import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.springframework.stereotype.Service;
 
@@ -46,11 +45,6 @@ public class RepresentationMetadataSearchService implements IRepresentationMetad
         return this.representationMetadataProviders.stream()
                 .flatMap(provider -> provider.getMetadata(representationId).stream())
                 .findFirst();
-    }
-
-    @Override
-    public Optional<RepresentationMetadata> findByRepresentation(IRepresentation representation) {
-        return Optional.of(new RepresentationMetadata(representation.getId(), representation.getKind(), representation.getLabel(), representation.getDescriptionId()));
     }
 
     @Override
