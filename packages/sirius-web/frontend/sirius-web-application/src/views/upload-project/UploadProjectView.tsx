@@ -16,10 +16,11 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import { FileUpload } from '../../core/file-upload/FileUpload';
 import { sendFile } from '../../core/sendFile';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
@@ -27,6 +28,7 @@ import {
   SchemaValue,
   UploadProjectEvent,
   UploadProjectViewContext,
+  UploadProjectViewStateSchema,
   uploadProjectMachine,
 } from './UploadProjectViewMachine';
 
@@ -86,7 +88,10 @@ const useUploadProjectViewStyles = makeStyles()((theme) => ({
 
 export const UploadProjectView = () => {
   const { classes } = useUploadProjectViewStyles();
-  const [{ value, context }, dispatch] = useMachine<UploadProjectViewContext, UploadProjectEvent>(uploadProjectMachine);
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<UploadProjectViewContext, UploadProjectViewStateSchema, UploadProjectEvent>>(
+      uploadProjectMachine
+    );
   const { uploadProjectView, toast } = value as SchemaValue;
   const { file, newProjectId, message } = context;
 
@@ -129,7 +134,7 @@ export const UploadProjectView = () => {
   };
 
   if (uploadProjectView === 'success') {
-    return <Redirect to={`/projects/${newProjectId}/edit`} push />;
+    return <Navigate to={`/projects/${newProjectId}/edit`} />;
   }
   return (
     <div className={classes.uploadProjectView}>

@@ -20,6 +20,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
+import { StateMachine } from 'xstate';
 import {
   GQLErrorPayload,
   GQLRenameImageMutationData,
@@ -33,6 +34,7 @@ import {
   HideToastEvent,
   RenameImageModalContext,
   RenameImageModalEvent,
+  RenameImageModalStateSchema,
   RequestImageRenamingEvent,
   SchemaValue,
   ShowToastEvent,
@@ -54,15 +56,14 @@ const isErrorPayload = (payload: GQLRenameImagePayload): payload is GQLErrorPayl
   payload.__typename === 'ErrorPayload';
 
 export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, onClose }: RenameImageModalProps) => {
-  const [{ value, context }, dispatch] = useMachine<RenameImageModalContext, RenameImageModalEvent>(
-    renameImageModalMachine,
-    {
-      context: {
-        name: initialImageName,
-        initialName: initialImageName,
-      },
-    }
-  );
+  const [{ value, context }, dispatch] = useMachine<
+    StateMachine<RenameImageModalContext, RenameImageModalStateSchema, RenameImageModalEvent>
+  >(renameImageModalMachine, {
+    context: {
+      name: initialImageName,
+      initialName: initialImageName,
+    },
+  });
   const { toast, renameImageModal } = value as SchemaValue;
   const { name, nameIsInvalid, nameMessage, message } = context;
 

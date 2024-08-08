@@ -11,9 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface ProjectSettingsParams {
-  projectId: string;
-}
+export type ProjectSettingsParams = 'projectId';
 
 export interface ProjectSettingTabContribution {
   id: string;

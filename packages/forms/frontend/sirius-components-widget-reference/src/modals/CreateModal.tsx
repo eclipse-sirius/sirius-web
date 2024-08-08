@@ -24,6 +24,7 @@ import Select from '@mui/material/Select';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import {
   CreateModalProps,
@@ -48,6 +49,7 @@ import {
   CreateChildEvent,
   CreateModalContext,
   CreateModalEvent,
+  CreateModalStateSchema,
   CreateRootEvent,
   FetchedChildCreationDescriptionsEvent,
   FetchedDomainsEvent,
@@ -167,7 +169,8 @@ const isSuccessPayload = (
 export const CreateModal = ({ editingContextId, widget, onClose, formId }: CreateModalProps) => {
   const { classes } = useStyle();
   const { addErrorMessage, addMessages } = useMultiToast();
-  const [{ value, context }, dispatch] = useMachine<CreateModalContext, CreateModalEvent>(createModalMachine);
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<CreateModalContext, CreateModalStateSchema, CreateModalEvent>>(createModalMachine);
   const { createModal } = value as SchemaValue;
 
   const {

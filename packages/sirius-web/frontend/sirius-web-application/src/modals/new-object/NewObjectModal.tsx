@@ -25,6 +25,7 @@ import Select from '@mui/material/Select';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import {
   GQLCreateChildMutationData,
   GQLCreateChildPayload,
@@ -41,6 +42,7 @@ import {
   HandleResponseEvent,
   NewObjectModalContext,
   NewObjectModalEvent,
+  NewObjectModalStateSchema,
   SchemaValue,
   newObjectModalMachine,
 } from './NewObjectModalMachine';
@@ -111,7 +113,10 @@ const isSuccessPayload = (payload: GQLCreateChildPayload): payload is GQLCreateC
 export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewObjectModalProps) => {
   const { classes } = useNewObjectModalStyles();
   const { addErrorMessage, addMessages } = useMultiToast();
-  const [{ value, context }, dispatch] = useMachine<NewObjectModalContext, NewObjectModalEvent>(newObjectModalMachine);
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<NewObjectModalContext, NewObjectModalStateSchema, NewObjectModalEvent>>(
+      newObjectModalMachine
+    );
   const { newObjectModal } = value as SchemaValue;
   const { selectedChildCreationDescriptionId, childCreationDescriptions, objectToSelect } = context;
 
