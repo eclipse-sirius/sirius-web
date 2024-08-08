@@ -16,7 +16,7 @@ import { NodeData } from '../renderer/DiagramRenderer.types';
 import { INodeLayoutHandler } from '../renderer/layout/LayoutEngine.types';
 
 export interface NodeTypeContributionProps {
-  component: (props: NodeProps) => JSX.Element | null;
+  component: React.FC<NodeProps>;
   type: string;
 }
 

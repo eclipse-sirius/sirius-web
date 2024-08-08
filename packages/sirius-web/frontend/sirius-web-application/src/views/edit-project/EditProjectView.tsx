@@ -24,8 +24,9 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { generatePath, Redirect, useHistory, useParams, useRouteMatch } from 'react-router-dom';
+import { generatePath, Navigate, useNavigate, useParams, useResolvedPath } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
 import { EditProjectViewParams, TreeToolBarProviderProps } from './EditProjectView.types';
@@ -34,6 +35,7 @@ import {
   EditProjectViewContext,
   EditProjectViewEvent,
   editProjectViewMachine,
+  EditProjectViewStateSchema,
   HandleFetchedProjectEvent,
   SelectRepresentationEvent,
 } from './EditProjectViewMachine';
@@ -53,14 +55,15 @@ const useEditProjectViewStyles = makeStyles()((_) => ({
 }));
 
 export const EditProjectView = () => {
-  const history = useHistory();
-  const routeMatch = useRouteMatch();
+  const navigate = useNavigate();
+  const routeMatch = useResolvedPath('.');
   const { projectId, representationId } = useParams<EditProjectViewParams>();
   const { classes } = useEditProjectViewStyles();
 
-  const [{ value, context }, dispatch] = useMachine<EditProjectViewContext, EditProjectViewEvent>(
-    editProjectViewMachine
-  );
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<EditProjectViewContext, EditProjectViewStateSchema, EditProjectViewEvent>>(
+      editProjectViewMachine
+    );
 
   const { data } = useProjectAndRepresentationMetadata(projectId, representationId);
   useEffect(() => {
@@ -80,11 +83,14 @@ export const EditProjectView = () => {
 
   useEffect(() => {
     if (context.representation && context.representation.id !== representationId) {
-      const pathname = generatePath(routeMatch.path, { projectId, representationId: context.representation.id });
-      history.push({ pathname });
+      const pathname = generatePath('/projects/:projectId/edit/:representationId', {
+        projectId,
+        representationId: context.representation.id,
+      });
+      navigate(pathname);
     } else if (value === 'loaded' && context.representation === null && representationId) {
-      const pathname = generatePath(routeMatch.path, { projectId, representationId: null });
-      history.push({ pathname });
+      const pathname = generatePath('/projects/:projectId/edit/', { projectId });
+      navigate(pathname);
     }
   }, [value, projectId, routeMatch, history, context.representation, representationId]);
 
@@ -95,7 +101,7 @@ export const EditProjectView = () => {
   }
 
   if (value === 'missing') {
-    return <Redirect to="/errors/404" />;
+    return <Navigate to="/errors/404" replace />;
   }
 
   const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);

@@ -13,10 +13,13 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3846[#3846] [core] Migrate frontend to React 18, you now need React 18 to import sirius web modules.
+
 
 === Dependency update
 
 - [releng] Switch to Spring Boot 3.3.3
+- https://github.com/eclipse-sirius/sirius-web/issues/3846[#3846] [core] Migrate the frontend to `react 18.3.1`, `react-dom 18.3.1`, `react-router-dom 6.26.0`, `@xstate/react: 3.0.0` and `@ObeoNetwork/gantt-task-react 0.6.0`
 
 
 === Bug fixes

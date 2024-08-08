@@ -80,7 +80,7 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
     const { key } = event;
     /*If a modifier key is hit alone, do nothing*/
     const isTextField = event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement;
-    if (((event.altKey || event.shiftKey) && event.getModifierState(key)) || isTextField) {
+    if ((event.altKey && key === 'Alt') || (event.shiftKey && key === 'Shift') || isTextField) {
       return;
     }
     event.preventDefault();

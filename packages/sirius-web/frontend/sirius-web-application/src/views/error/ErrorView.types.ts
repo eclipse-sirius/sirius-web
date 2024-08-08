@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface ErrorViewParams {
-  code: string;
-}
+export type ErrorViewParams = 'code';
 
 export type ErrorMessageProvider = (code: string) => string | null;

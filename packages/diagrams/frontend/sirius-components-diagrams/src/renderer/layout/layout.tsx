@@ -16,7 +16,7 @@ import { ApolloProvider } from '@apollo/client/react';
 import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { ThemeProvider } from '@mui/material/styles';
 import { Fragment, createElement } from 'react';
-import ReactDOM from 'react-dom';
+import { Root, createRoot } from 'react-dom/client';
 import { Node, ReactFlowProvider } from 'reactflow';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { NodeData } from '../DiagramRenderer.types';
@@ -61,7 +61,7 @@ export const prepareLayoutArea = (
   diagram: RawDiagram,
   renderCallback: () => void,
   httpOrigin: string
-): HTMLDivElement => {
+): { hiddenContainer: HTMLDivElement; root: Root } => {
   const hiddenContainer: HTMLDivElement = document.createElement('div');
   hiddenContainer.id = 'hidden-container';
   hiddenContainer.style.display = 'inline-block';
@@ -81,7 +81,6 @@ export const prepareLayoutArea = (
           diagramElementId: node.id,
           label: node.data.insideLabel,
           faded: false,
-          transform: '',
           key: node.data.insideLabel.id,
         }),
       ];
@@ -105,7 +104,6 @@ export const prepareLayoutArea = (
           diagramElementId: node.id,
           label: outsideLabel,
           faded: false,
-          transform: '',
           key: outsideLabel.id,
         }),
       ];
@@ -198,13 +196,19 @@ export const prepareLayoutArea = (
     </ReactFlowProvider>
   );
 
-  ReactDOM.render(element, hiddenContainer, renderCallback);
-  return hiddenContainer;
+  const root = createRoot(hiddenContainer!);
+  requestIdleCallback(renderCallback);
+
+  root.render(element);
+
+  return { hiddenContainer, root };
 };
 
-export const cleanLayoutArea = (container: HTMLDivElement) => {
+export const cleanLayoutArea = (container: HTMLDivElement, root: Root | null) => {
   if (container?.parentNode) {
-    ReactDOM.unmountComponentAtNode(container);
+    if (root) {
+      setTimeout(() => root.unmount(), 100);
+    }
     container.parentNode.removeChild(container);
   }
 };

@@ -23,7 +23,7 @@ exports[`should render a readOnly select from widget properties 1`] = `
         data-testid="SelectLabel"
       >
         <div
-          aria-controls="mui-6"
+          aria-controls=":r5:"
           aria-disabled="true"
           aria-expanded="false"
           aria-haspopup="listbox"
@@ -85,7 +85,7 @@ exports[`should render the select with empty style 1`] = `
         data-testid="SelectLabel"
       >
         <div
-          aria-controls="mui-3"
+          aria-controls=":r2:"
           aria-expanded="false"
           aria-haspopup="listbox"
           class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"
@@ -161,7 +161,7 @@ exports[`should render the select with help hint 1`] = `
         data-testid="SelectLabel"
       >
         <div
-          aria-controls="mui-5"
+          aria-controls=":r4:"
           aria-expanded="false"
           aria-haspopup="listbox"
           class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"
@@ -222,7 +222,7 @@ exports[`should render the select with style 1`] = `
         data-testid="SelectLabel"
       >
         <div
-          aria-controls="mui-2"
+          aria-controls=":r1:"
           aria-expanded="false"
           aria-haspopup="listbox"
           class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ijey5v-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"
@@ -283,7 +283,7 @@ exports[`should render the select without style 1`] = `
         data-testid="SelectLabel"
       >
         <div
-          aria-controls="mui-1"
+          aria-controls=":r0:"
           aria-expanded="false"
           aria-haspopup="listbox"
           class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"

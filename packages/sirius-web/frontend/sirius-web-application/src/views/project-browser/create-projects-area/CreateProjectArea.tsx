@@ -13,9 +13,9 @@
 
 import { useComponents } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { makeStyles } from 'tss-react/mui';
 import { CreateProjectAreaProps, CreateProjectAreaState } from './CreateProjectArea.types';
 import { createProjectAreaCardExtensionPoint } from './CreateProjectAreaExtensionPoints';
 import { ProjectTemplateCard } from './ProjectTemplateCard';
@@ -71,7 +71,7 @@ export const CreateProjectArea = ({}: CreateProjectAreaProps) => {
     ? redirectUrlFromTemplate(projectCreatedFromTemplate)
     : null;
   if (redirectUrl) {
-    return <Redirect to={redirectUrl} />;
+    return <Navigate to={redirectUrl} replace />;
   }
 
   return (

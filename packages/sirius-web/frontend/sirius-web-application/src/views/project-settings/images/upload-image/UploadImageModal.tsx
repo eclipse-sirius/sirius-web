@@ -22,6 +22,7 @@ import TextField from '@mui/material/TextField';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import { FileUpload } from '../../../..//core/file-upload/FileUpload';
 import { sendFile } from '../../../../core/sendFile';
 import {
@@ -40,6 +41,7 @@ import {
   UploadImageModalContext,
   UploadImageModalEvent,
   uploadImageModalMachine,
+  UploadImageModalStateSchema,
 } from './UploadImageModalMachine';
 
 const uploadImageMutationFile = gql`
@@ -75,9 +77,10 @@ const isErrorPayload = (payload: GQLUploadImagePayload): payload is GQLErrorPayl
 export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: UploadImageModalProps) => {
   const { classes } = useUploadImageModalStyle();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const [{ value, context }, dispatch] = useMachine<UploadImageModalContext, UploadImageModalEvent>(
-    uploadImageModalMachine
-  );
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<UploadImageModalContext, UploadImageModalStateSchema, UploadImageModalEvent>>(
+      uploadImageModalMachine
+    );
 
   const { toast, uploadImageModal } = value as SchemaValue;
   const { file, message } = context;

@@ -14,6 +14,7 @@ import { gql, useLazyQuery, useSubscription } from '@apollo/client';
 import { DataExtension, Toast, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { StateMachine } from 'xstate';
 import { Tree } from '../trees/Tree';
 import {
   GQLGetExpandAllTreePathData,
@@ -43,6 +44,7 @@ import {
   TreeViewContext,
   TreeViewEvent,
   treeViewMachine,
+  TreeViewStateSchema,
 } from './TreeViewMachine';
 import { getTreeEventSubscription } from './getTreeEventSubscription';
 
@@ -84,11 +86,14 @@ export const TreeView = ({
   markedItemIds = [],
   treeItemActionRender,
 }: TreeViewComponentProps) => {
-  const [{ value, context }, dispatch] = useMachine<TreeViewContext, TreeViewEvent>(treeViewMachine, {
-    context: {
-      synchronizedWithSelection: synchronizedWithSelection,
-    },
-  });
+  const [{ value, context }, dispatch] = useMachine<StateMachine<TreeViewContext, TreeViewStateSchema, TreeViewEvent>>(
+    treeViewMachine,
+    {
+      context: {
+        synchronizedWithSelection: synchronizedWithSelection,
+      },
+    }
+  );
   const { selection } = useSelection();
 
   const { toast, treeView } = value as SchemaValue;

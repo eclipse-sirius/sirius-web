@@ -29,6 +29,7 @@ const initialState: UseLayoutState = {
   diagramToLayout: null,
   laidoutDiagram: null,
   referencePosition: null,
+  root: null,
   onLaidoutDiagram: () => {},
 };
 
@@ -74,10 +75,11 @@ export const useLayout = (): UseLayoutValue => {
 
   useEffect(() => {
     if (state.currentStep === 'BEFORE_LAYOUT' && !state.hiddenContainer && state.diagramToLayout) {
-      const layoutArea = prepareLayoutArea(state.diagramToLayout, layoutAreaPrepared, httpOrigin);
+      const { hiddenContainer, root } = prepareLayoutArea(state.diagramToLayout, layoutAreaPrepared, httpOrigin);
       setState((prevState) => ({
         ...prevState,
-        hiddenContainer: layoutArea,
+        hiddenContainer: hiddenContainer,
+        root: root,
       }));
     } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
       const laidoutDiagram = layout(
@@ -93,7 +95,7 @@ export const useLayout = (): UseLayoutValue => {
         currentStep: 'AFTER_LAYOUT',
       }));
     } else if (state.currentStep === 'AFTER_LAYOUT' && state.hiddenContainer && state.laidoutDiagram) {
-      cleanLayoutArea(state.hiddenContainer);
+      cleanLayoutArea(state.hiddenContainer, state.root);
       state.onLaidoutDiagram(state.laidoutDiagram);
       setState(() => initialState);
     }

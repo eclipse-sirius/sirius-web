@@ -18,7 +18,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { Redirect, Link as RouterLink, useParams } from 'react-router-dom';
+import { Navigate, Link as RouterLink, useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 
@@ -145,7 +145,7 @@ export const ProjectSettingsView = () => {
     return null;
   }
   if (!project) {
-    return <Redirect to="/errors/404" />;
+    return <Navigate to="/errors/404" replace />;
   }
 
   const { id, name } = project;

@@ -13,11 +13,7 @@
 
 import { GQLProject } from './useProjectAndRepresentationMetadata.types';
 
-export interface EditProjectViewParams {
-  projectId: string;
-  representationId: string;
-}
-
+export type EditProjectViewParams = 'projectId' | 'representationId';
 export interface TreeItemContextMenuProviderProps {
   children: React.ReactNode;
 }

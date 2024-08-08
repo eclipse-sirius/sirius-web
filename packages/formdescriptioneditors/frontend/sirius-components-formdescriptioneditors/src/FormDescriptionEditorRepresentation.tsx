@@ -12,12 +12,14 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, Toast, useData } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
+import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import WebIcon from '@mui/icons-material/Web';
+import Typography from '@mui/material/Typography';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import { formDescriptionEditorEventSubscription } from './FormDescriptionEditorEventFragment';
 import {
   GQLFormDescriptionEditorEventInput,
@@ -28,6 +30,7 @@ import { WidgetDescriptor } from './FormDescriptionEditorRepresentation.types';
 import {
   FormDescriptionEditorRepresentationContext,
   FormDescriptionEditorRepresentationEvent,
+  FormDescriptionEditorRepresentationStateSchema,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   InitializeRepresentationEvent,
@@ -40,7 +43,6 @@ import { coreWidgets } from './coreWidgets';
 import { FormDescriptionEditorContextProvider } from './hooks/FormDescriptionEditorContext';
 import { ForIcon } from './icons/ForIcon';
 import { IfIcon } from './icons/IfIcon';
-import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 
 const useFormDescriptionEditorStyles = makeStyles()((theme) => ({
   formDescriptionEditor: {
@@ -140,8 +142,11 @@ export const FormDescriptionEditorRepresentation = ({
   const noop = () => {};
 
   const [{ value, context }, dispatch] = useMachine<
-    FormDescriptionEditorRepresentationContext,
-    FormDescriptionEditorRepresentationEvent
+    StateMachine<
+      FormDescriptionEditorRepresentationContext,
+      FormDescriptionEditorRepresentationStateSchema,
+      FormDescriptionEditorRepresentationEvent
+    >
   >(formDescriptionEditorRepresentationMachine);
   const { toast, formDescriptionEditorRepresentation } = value as SchemaValue;
   const { id, formDescriptionEditor, message } = context;

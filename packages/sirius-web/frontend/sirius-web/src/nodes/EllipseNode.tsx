@@ -68,52 +68,54 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   };
 };
 
-export const EllipseNode = memo(({ data, id, selected, dragging }: NodeProps<EllipseNodeData>) => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const theme = useTheme();
-  const { onDrop, onDragOver } = useDrop();
-  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+export const EllipseNode: React.FC<NodeProps<EllipseNodeData>> = memo(
+  ({ data, id, selected, dragging }: NodeProps<EllipseNodeData>) => {
+    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+    const theme = useTheme();
+    const { onDrop, onDragOver } = useDrop();
+    const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
+    const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
 
-  const handleOnDrop = (event: React.DragEvent) => {
-    onDrop(event, id);
-  };
+    const handleOnDrop = (event: React.DragEvent) => {
+      onDrop(event, id);
+    };
 
-  useRefreshConnectionHandles(id, data.connectionHandles);
+    useRefreshConnectionHandles(id, data.connectionHandles);
 
-  return (
-    <>
-      {data.nodeDescription?.userResizable !== 'NONE' && !readOnly ? (
-        <NodeResizer
-          handleStyle={{ ...resizeHandleStyle(theme) }}
-          lineStyle={{ ...resizeLineStyle(theme) }}
-          color={theme.palette.selected}
-          isVisible={selected}
-          shouldResize={() => !data.isBorderNode}
-          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-        />
-      ) : null}
-      <div
-        style={{
-          ...ellipseNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
-          ...connectionFeedbackStyle,
-          ...dropFeedbackStyle,
-        }}
-        onDragOver={onDragOver}
-        onDrop={handleOnDrop}
-        data-testid={`Ellipse - ${data?.insideLabel?.text}`}>
-        {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
-        {selected ? (
-          <DiagramElementPalette
-            diagramElementId={id}
-            targetObjectId={data.targetObjectId}
-            labelId={data.insideLabel ? data.insideLabel.id : null}
+    return (
+      <>
+        {data.nodeDescription?.userResizable !== 'NONE' && !readOnly ? (
+          <NodeResizer
+            handleStyle={{ ...resizeHandleStyle(theme) }}
+            lineStyle={{ ...resizeLineStyle(theme) }}
+            color={theme.palette.selected}
+            isVisible={selected}
+            shouldResize={() => !data.isBorderNode}
+            keepAspectRatio={data.nodeDescription?.keepAspectRatio}
           />
         ) : null}
-        {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
-        <ConnectionHandles connectionHandles={data.connectionHandles} />
-      </div>
-    </>
-  );
-});
+        <div
+          style={{
+            ...ellipseNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
+            ...connectionFeedbackStyle,
+            ...dropFeedbackStyle,
+          }}
+          onDragOver={onDragOver}
+          onDrop={handleOnDrop}
+          data-testid={`Ellipse - ${data?.insideLabel?.text}`}>
+          {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
+          {selected ? (
+            <DiagramElementPalette
+              diagramElementId={id}
+              targetObjectId={data.targetObjectId}
+              labelId={data.insideLabel ? data.insideLabel.id : null}
+            />
+          ) : null}
+          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
+          <ConnectionHandles connectionHandles={data.connectionHandles} />
+        </div>
+      </>
+    );
+  }
+);
