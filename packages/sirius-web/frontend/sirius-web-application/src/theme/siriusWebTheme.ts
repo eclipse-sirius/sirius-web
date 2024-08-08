@@ -86,16 +86,6 @@ export const siriusWebTheme = createTheme(
           },
         },
       },
-      MuiTextField: {
-        defaultProps: {
-          variant: 'standard',
-        },
-      },
-      MuiSelect: {
-        defaultProps: {
-          variant: 'standard',
-        },
-      },
       MuiLink: {
         defaultProps: {
           underline: 'hover',

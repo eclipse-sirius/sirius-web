@@ -22,9 +22,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
-import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import {
   GQLCreateRepresentationMutationData,
   GQLCreateRepresentationPayload,
@@ -227,6 +227,7 @@ export const NewRepresentationModal = ({
         <DialogContent>
           <div className={classes.form}>
             <TextField
+              variant="standard"
               error={nameIsInvalid}
               helperText={nameMessage}
               label="Name"
@@ -240,6 +241,7 @@ export const NewRepresentationModal = ({
             />
             <InputLabel id="newRepresentationModalRepresentationDescriptionLabel">Representation type</InputLabel>
             <Select
+              variant="standard"
               value={selectedRepresentationDescriptionId}
               onChange={onRepresentationDescriptionChange}
               disabled={newRepresentationModal === 'loading' || newRepresentationModal === 'creatingRepresentation'}

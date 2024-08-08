@@ -130,6 +130,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
     <FormControl error={widget.diagnostics.length > 0}>
       <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <Select
+        variant="standard"
         value={widget.values}
         onChange={onChange}
         displayEmpty

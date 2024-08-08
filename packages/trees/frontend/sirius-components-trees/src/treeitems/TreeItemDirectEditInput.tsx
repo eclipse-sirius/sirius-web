@@ -168,6 +168,7 @@ export const TreeItemDirectEditInput = ({
   return (
     <>
       <TextField
+        variant="standard"
         name="name"
         size="small"
         inputRef={textInput}

@@ -124,6 +124,7 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
     <FormControl error={widget.diagnostics.length > 0}>
       <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <Select
+        variant="standard"
         value={widget.value || ''}
         onChange={onChange}
         displayEmpty

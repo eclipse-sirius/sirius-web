@@ -19,8 +19,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
-import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { NewDocumentModalProps, NewDocumentModalState } from './NewDocumentModal.types';
 import { useCreateDocument } from './useCreateDocument';
 import { useStereotypes } from './useStereotypes';
@@ -88,6 +88,7 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
       <DialogContent>
         <div className={classes.form}>
           <TextField
+            variant="standard"
             error={!state.pristine && state.nameIsInvalid}
             helperText="The name cannot be empty"
             label="Name"
@@ -102,6 +103,7 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
           />
           <InputLabel id="newDocumentModalStereotypeLabel">Model type</InputLabel>
           <Select
+            variant="standard"
             value={state.stereotypeId}
             onChange={onStereotypeChange}
             disabled={loadingStereotypes || documentCreationLoading}

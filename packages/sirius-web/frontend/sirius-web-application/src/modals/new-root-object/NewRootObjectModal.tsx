@@ -260,6 +260,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
           <div className={classes.form}>
             <InputLabel id="domainsLabel">Domain</InputLabel>
             <Select
+              variant="standard"
               value={selectedDomainId}
               onChange={onDomainChange}
               disabled={newRootObjectModal !== 'valid'}
@@ -274,6 +275,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
             </Select>
             <InputLabel id="rootObjectCreationDescriptionsLabel">Object type</InputLabel>
             <Select
+              variant="standard"
               classes={{ select: classes.select }}
               value={selectedRootObjectCreationDescriptionId}
               onChange={onRootObjectCreationDescriptionChange}

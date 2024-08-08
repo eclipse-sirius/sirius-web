@@ -194,6 +194,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: Diagram
   return (
     <>
       <TextField
+        variant="standard"
         name="name"
         size="small"
         inputRef={textInput}

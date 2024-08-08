@@ -74,6 +74,7 @@ export const DateTimeWidget = ({ widget }: DateTimeWidgetProps) => {
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
       <TextField
+        variant="standard"
         id="datetime"
         type={type}
         value={value}

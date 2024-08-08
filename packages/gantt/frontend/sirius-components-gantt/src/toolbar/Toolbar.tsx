@@ -251,6 +251,7 @@ export const Toolbar = ({
         </IconButton>
         <FormControl className={classes.selectColumns}>
           <Select
+            variant="standard"
             labelId="columns-checkbox-label"
             id="columns-checkbox"
             multiple
