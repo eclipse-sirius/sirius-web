@@ -161,7 +161,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 .ifPresentOrElse(form -> {
                     formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Component sirius-web-domain").group("Core Properties");
+                    var groupNavigator = new FormNavigator(form).page("sirius-web-domain").group("Core Properties");
                     var textarea = groupNavigator.findWidget("Name", Textarea.class);
 
                     textareaId.set(textarea.getId());
@@ -196,7 +196,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Component sirius-web-domain-EDITED").group("Core Properties");
+                    var groupNavigator = new FormNavigator(form).page("sirius-web-domain-EDITED").group("Core Properties");
                     var textarea = groupNavigator.findWidget("Name", Textarea.class);
 
                     assertThat(textarea).hasValue("sirius-web-domain-EDITED");
