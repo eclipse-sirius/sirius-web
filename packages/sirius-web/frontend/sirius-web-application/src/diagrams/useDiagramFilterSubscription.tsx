@@ -17,16 +17,11 @@ import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-compon
 import { useEffect, useState } from 'react';
 import {
   GQLDiagramFilterEventInput,
-  GQLDiagramFilterEventPayload,
   GQLDiagramFilterEventSubscription,
   GQLDiagramFilterEventVariables,
-  GQLFormRefreshedEventPayload,
   UseDiagramFilterSubscriptionState,
   UseDiagramFilterSubscriptionValue,
 } from './useDiagramFilterSubscription.types';
-
-const isFormRefreshedEventPayload = (payload: GQLDiagramFilterEventPayload): payload is GQLFormRefreshedEventPayload =>
-  payload.__typename === 'FormRefreshedEventPayload';
 
 export const getDiagramFilterEventSubscription = `
   subscription diagramFilterEvent($input: DiagramFilterEventInput!) {
@@ -47,7 +42,7 @@ export const useDiagramFilterSubscription = (
 ): UseDiagramFilterSubscriptionValue => {
   const [state, setState] = useState<UseDiagramFilterSubscriptionState>({
     id: crypto.randomUUID(),
-    form: null,
+    payload: null,
     complete: false,
   });
 
@@ -63,10 +58,7 @@ export const useDiagramFilterSubscription = (
     const { data: gqlDiagramFilterEventSubscription } = data;
     if (gqlDiagramFilterEventSubscription) {
       const { diagramFilterEvent: payload } = gqlDiagramFilterEventSubscription;
-      if (isFormRefreshedEventPayload(payload)) {
-        const { form } = payload;
-        setState((prevState) => ({ ...prevState, form }));
-      }
+      setState((prevState) => ({ ...prevState, payload }));
     }
   };
 
@@ -92,7 +84,7 @@ export const useDiagramFilterSubscription = (
 
   return {
     loading,
-    form: state.form,
+    payload: state.payload,
     complete: state.complete,
   };
 };

@@ -10,42 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useSubscription } from '@apollo/client';
-import { RepresentationComponentProps, Toast } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@mui/material/Typography';
+import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { useEffect, useMemo, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { useMachine } from '@xstate/react';
-import { useEffect, useState } from 'react';
 import { FormContext } from '../contexts/FormContext';
 import { Form } from '../form/Form';
-import { formRefreshedEventPayloadFragment } from '../form/FormEventFragments';
-import { GQLFormEventSubscription } from '../form/FormEventFragments.types';
+import { GQLFormEventPayload } from '../form/FormEventFragments.types';
 import { Page } from '../pages/Page';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import { FormRepresentationState } from './FormRepresentation.types';
-import {
-  FormRepresentationContext,
-  FormRepresentationEvent,
-  HandleCompleteEvent,
-  HandleSubscriptionResultEvent,
-  HideToastEvent,
-  SchemaValue,
-  ShowToastEvent,
-  SwitchFormEvent,
-  formRepresentationMachine,
-} from './FormRepresentationMachine';
-
-const formEventSubscription = gql(`
-  subscription formEvent($input: FormEventInput!) {
-    formEvent(input: $input) {
-      __typename
-      ... on FormRefreshedEventPayload {
-        ...formRefreshedEventPayloadFragment
-      }
-    }
-  }
-  ${formRefreshedEventPayloadFragment}
-`);
+import { useFormSubscription } from './useFormSubscription';
+import { GQLFormRefreshedEventPayload } from './useFormSubscription.types';
 
 const useFormRepresentationStyles = makeStyles()((theme) => ({
   page: {
@@ -76,107 +51,62 @@ const useFormRepresentationStyles = makeStyles()((theme) => ({
   },
 }));
 
-/**
- * Connect the Form component to the GraphQL API over Web Socket.
- */
+const isFormRefreshedEventPayload = (payload: GQLFormEventPayload): payload is GQLFormRefreshedEventPayload =>
+  payload && payload.__typename === 'FormRefreshedEventPayload';
+
 export const FormRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
-  const { classes } = useFormRepresentationStyles();
-  const [{ value, context }, dispatch] = useMachine<FormRepresentationContext, FormRepresentationEvent>(
-    formRepresentationMachine,
-    {
-      context: {
-        formId: representationId,
-      },
-    }
-  );
-  const { toast, formRepresentation } = value as SchemaValue;
-  const { id, formId, form, message } = context;
   const [state, setState] = useState<FormRepresentationState>({
     payload: null,
+    form: null,
   });
 
-  /**
-   * Displays an other form if the selection indicates that we should display another properties view.
-   */
+  const { payload } = useFormSubscription(editingContextId, representationId);
   useEffect(() => {
-    if (formId !== representationId) {
-      const switchFormEvent: SwitchFormEvent = { type: 'SWITCH_FORM', formId: representationId };
-      dispatch(switchFormEvent);
+    if (isFormRefreshedEventPayload(payload)) {
+      setState((prevState) => ({ ...prevState, form: payload.form }));
     }
-  }, [representationId, formId, dispatch]);
+  }, [payload]);
 
-  const { error } = useSubscription<GQLFormEventSubscription>(formEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
-        formId: representationId,
-      },
-    },
-    fetchPolicy: 'no-cache',
-    onData: ({ data }) => {
-      if (data.data) {
-        const { formEvent } = data.data;
-        setState((prevState) => ({ ...prevState, payload: formEvent }));
-      }
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: data,
-      };
-      dispatch(handleDataEvent);
-    },
-    onComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-  });
+  const { classes } = useFormRepresentationStyles();
 
-  useEffect(() => {
-    if (error) {
-      const { message } = error;
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-      dispatch(showToastEvent);
-    }
-  }, [error, dispatch]);
-
-  let content: JSX.Element | null = null;
-  if (formRepresentation === 'ready') {
-    if (form.pages.length > 1) {
-      content = <Form editingContextId={editingContextId} form={form} readOnly={readOnly} />;
-    } else if (form.pages.length === 1) {
-      let selectedPageToolbar = null;
-      if (form.pages[0].toolbarActions?.length > 0) {
-        selectedPageToolbar = (
-          <div className={classes.toolbar}>
-            {form.pages[0].toolbarActions.map((toolbarAction) => (
-              <div className={classes.toolbarAction} key={toolbarAction.id}>
-                <ToolbarAction
-                  editingContextId={editingContextId}
-                  formId={form.id}
-                  readOnly={readOnly}
-                  widget={toolbarAction}
-                />
-              </div>
-            ))}
+  const renderedForm = useMemo(() => {
+    let content: JSX.Element | null = null;
+    if (state.form) {
+      if (state.form.pages.length > 1) {
+        content = <Form editingContextId={editingContextId} form={state.form} readOnly={readOnly} />;
+      } else if (state.form.pages.length === 1) {
+        let selectedPageToolbar = null;
+        if (state.form.pages[0].toolbarActions?.length > 0) {
+          selectedPageToolbar = (
+            <div className={classes.toolbar}>
+              {state.form.pages[0].toolbarActions.map((toolbarAction) => (
+                <div className={classes.toolbarAction} key={toolbarAction.id}>
+                  <ToolbarAction
+                    editingContextId={editingContextId}
+                    formId={state.form.id}
+                    readOnly={readOnly}
+                    widget={toolbarAction}
+                  />
+                </div>
+              ))}
+            </div>
+          );
+        }
+        content = (
+          <div data-testid="page" className={classes.page}>
+            {selectedPageToolbar}
+            <Page
+              editingContextId={editingContextId}
+              formId={state.form.id}
+              page={state.form.pages[0]}
+              readOnly={readOnly}
+            />
           </div>
         );
       }
-      content = (
-        <div data-testid="page" className={classes.page}>
-          {selectedPageToolbar}
-          <Page editingContextId={editingContextId} formId={form.id} page={form.pages[0]} readOnly={readOnly} />
-        </div>
-      );
     }
-  } else if (formRepresentation === 'complete') {
-    content = (
-      <div className={classes.complete}>
-        <Typography variant="h5" align="center">
-          The form does not exist anymore
-        </Typography>
-      </div>
-    );
-  }
+    return content;
+  }, [state.form]);
 
   return (
     <div data-representation-kind="form">
@@ -184,12 +114,7 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
         value={{
           payload: state.payload,
         }}>
-        {content}
-        <Toast
-          message={message}
-          open={toast === 'visible'}
-          onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-        />
+        {renderedForm}
       </FormContext.Provider>
     </div>
   );

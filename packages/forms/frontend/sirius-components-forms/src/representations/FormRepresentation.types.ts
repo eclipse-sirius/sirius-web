@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLFormEventPayload } from '../form/FormEventFragments.types';
+import { GQLForm, GQLFormEventPayload } from '../form/FormEventFragments.types';
 
 export interface FormRepresentationState {
   payload: GQLFormEventPayload | null;
+  form: GQLForm | null;
 }

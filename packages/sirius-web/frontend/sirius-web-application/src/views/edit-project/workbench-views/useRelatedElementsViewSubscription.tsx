@@ -16,18 +16,12 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
 import { useEffect, useState } from 'react';
 import {
-  GQLFormRefreshedEventPayload,
   GQLRelatedElementsEventInput,
-  GQLRelatedElementsEventPayload,
   GQLRelatedElementsEventSubscription,
   GQLRelatedElementsEventVariables,
   UseRelatedElementsViewSubscriptionState,
   UseRelatedElementsViewSubscriptionValue,
 } from './useRelatedElementsViewSubscription.types';
-
-const isFormRefreshedEventPayload = (
-  payload: GQLRelatedElementsEventPayload
-): payload is GQLFormRefreshedEventPayload => payload.__typename === 'FormRefreshedEventPayload';
 
 export const getRelatedElementsViewEventSubscription = `
   subscription relatedElementsEvent($input: RelatedElementsEventInput!) {
@@ -48,7 +42,7 @@ export const useRelatedElementsViewSubscription = (
 ): UseRelatedElementsViewSubscriptionValue => {
   const [state, setState] = useState<UseRelatedElementsViewSubscriptionState>({
     id: crypto.randomUUID(),
-    form: null,
+    payload: null,
     complete: false,
   });
 
@@ -64,10 +58,7 @@ export const useRelatedElementsViewSubscription = (
     const { data: gqlRelatedElementsEventSubscription } = data;
     if (gqlRelatedElementsEventSubscription) {
       const { relatedElementsEvent: payload } = gqlRelatedElementsEventSubscription;
-      if (isFormRefreshedEventPayload(payload)) {
-        const { form } = payload;
-        setState((prevState) => ({ ...prevState, form }));
-      }
+      setState((prevState) => ({ ...prevState, payload }));
     }
   };
 
@@ -93,7 +84,7 @@ export const useRelatedElementsViewSubscription = (
 
   return {
     loading,
-    form: state.form,
+    payload: state.payload,
     complete: state.complete,
   };
 };
