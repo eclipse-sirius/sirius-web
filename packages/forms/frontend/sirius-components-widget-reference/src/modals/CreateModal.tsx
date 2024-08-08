@@ -404,6 +404,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
             <>
               <span className={classes.title}>Select the domain</span>
               <Select
+                variant="standard"
                 value={selectedDomainId}
                 onChange={onDomainChange}
                 disabled={createModal === 'loadingDomains' || createModal === 'creatingChild'}
@@ -420,6 +421,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           )}
           <span className={classes.title}>Select the object type</span>
           <Select
+            variant="standard"
             classes={{ select: classes.select }}
             value={selectedChildCreationDescriptionId}
             onChange={onChildCreationDescriptionChange}

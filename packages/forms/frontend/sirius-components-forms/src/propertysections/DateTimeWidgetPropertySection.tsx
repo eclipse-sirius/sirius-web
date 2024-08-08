@@ -137,6 +137,7 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
       }}>
       <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
       <TextField
+        variant="standard"
         id="datetime"
         disabled={readOnly || widget.readOnly}
         value={convertToLocalDateTimeString(widget.type, state.editedValue)}

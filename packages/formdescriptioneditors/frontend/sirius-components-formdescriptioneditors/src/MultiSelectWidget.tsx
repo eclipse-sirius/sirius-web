@@ -85,6 +85,7 @@ export const MultiSelectWidget = ({ widget }: MultiSelectWidgetProps) => {
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
       <Select
+        variant="standard"
         data-testid={widget.label}
         label={widget.label}
         multiple

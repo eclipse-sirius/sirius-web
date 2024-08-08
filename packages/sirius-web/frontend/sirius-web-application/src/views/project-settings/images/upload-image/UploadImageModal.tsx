@@ -19,9 +19,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
-import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { FileUpload } from '../../../..//core/file-upload/FileUpload';
 import { sendFile } from '../../../../core/sendFile';
 import {
@@ -146,6 +146,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
         <DialogContent>
           <form id="upload-form-id" onSubmit={uploadImage} encType="multipart/form-data" className={classes.form}>
             <TextField
+              variant="standard"
               label="Label"
               name="label"
               value={label}

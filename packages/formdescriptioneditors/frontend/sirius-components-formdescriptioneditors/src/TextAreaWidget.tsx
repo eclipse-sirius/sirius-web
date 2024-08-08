@@ -74,6 +74,7 @@ export const TextAreaWidget = ({ widget }: TextareaWidgetProps) => {
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
       <TextField
+        variant="standard"
         data-testid={widget.label}
         multiline
         minRows={3}

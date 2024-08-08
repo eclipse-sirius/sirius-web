@@ -16,8 +16,8 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { Theme } from '@mui/material/styles';
-import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { FilterBarProps, FilterBarState } from './FilterBar.types';
 
 const useFilterBarStyles = makeStyles()((theme: Theme) => ({

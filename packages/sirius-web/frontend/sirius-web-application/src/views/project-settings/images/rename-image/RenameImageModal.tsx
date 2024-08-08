@@ -123,6 +123,7 @@ export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, on
         <DialogTitle id="dialog-title">Rename the image</DialogTitle>
         <DialogContent>
           <TextField
+            variant="standard"
             value={name}
             onChange={onNewName}
             error={nameIsInvalid}

@@ -21,11 +21,11 @@ exports[`should display the edited value 1`] = `
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+          class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
           data-testid="input-Name:"
           id="mui-3"
           name="Name:"
@@ -33,20 +33,6 @@ exports[`should display the edited value 1`] = `
           type="text"
           value="Composite Processor"
         />
-        <fieldset
-          aria-hidden="true"
-          class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="css-ihdtdm"
-          >
-            <span
-              class="notranslate"
-            >
-              ​
-            </span>
-          </legend>
-        </fieldset>
       </div>
     </div>
   </div>
@@ -74,11 +60,11 @@ exports[`should display the edited value 2`] = `
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-ve6bqz-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+          class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
           data-testid="input-Name:"
           id="mui-3"
           name="Name:"
@@ -86,20 +72,6 @@ exports[`should display the edited value 2`] = `
           type="text"
           value="Composite Processor"
         />
-        <fieldset
-          aria-hidden="true"
-          class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="css-ihdtdm"
-          >
-            <span
-              class="notranslate"
-            >
-              ​
-            </span>
-          </legend>
-        </fieldset>
       </div>
     </div>
   </div>
@@ -127,11 +99,11 @@ exports[`should display the edited value 3`] = `
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-ve6bqz-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+          class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
           data-testid="input-Name:"
           id="mui-3"
           name="Name:"
@@ -139,20 +111,6 @@ exports[`should display the edited value 3`] = `
           type="text"
           value="Main Composite Processor"
         />
-        <fieldset
-          aria-hidden="true"
-          class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="css-ihdtdm"
-          >
-            <span
-              class="notranslate"
-            >
-              ​
-            </span>
-          </legend>
-        </fieldset>
       </div>
     </div>
   </div>
@@ -183,11 +141,11 @@ exports[`should not trigger completion request if not configured 1`] = `
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Text:"
             id="mui-10"
             name="Text:"
@@ -195,20 +153,6 @@ exports[`should not trigger completion request if not configured 1`] = `
             type="text"
             value="fo"
           />
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-ihdtdm"
-            >
-              <span
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
         </div>
       </div>
     </div>
@@ -240,11 +184,11 @@ exports[`should not trigger completion request if not configured 2`] = `
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Text:"
             id="mui-10"
             name="Text:"
@@ -252,20 +196,6 @@ exports[`should not trigger completion request if not configured 2`] = `
             type="text"
             value="fo"
           />
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-ihdtdm"
-            >
-              <span
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
         </div>
       </div>
     </div>
@@ -297,11 +227,11 @@ exports[`should not trigger completion request if not configured 3`] = `
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Text:"
             id="mui-10"
             name="Text:"
@@ -309,20 +239,6 @@ exports[`should not trigger completion request if not configured 3`] = `
             type="text"
             value="fo"
           />
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-ihdtdm"
-            >
-              <span
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
         </div>
       </div>
     </div>
@@ -351,11 +267,11 @@ exports[`should render a readOnly textfield 1`] = `
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiOutlinedInput-input Mui-disabled css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+          class="MuiInputBase-input MuiInput-input Mui-disabled css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
           data-testid="input-Name:"
           disabled=""
           id="mui-2"
@@ -364,20 +280,6 @@ exports[`should render a readOnly textfield 1`] = `
           type="text"
           value="Composite Processor"
         />
-        <fieldset
-          aria-hidden="true"
-          class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="css-ihdtdm"
-          >
-            <span
-              class="notranslate"
-            >
-              ​
-            </span>
-          </legend>
-        </fieldset>
       </div>
     </div>
   </div>
@@ -405,11 +307,11 @@ exports[`should render a readOnly textfield from widget properties 1`] = `
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiOutlinedInput-input Mui-disabled css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+          class="MuiInputBase-input MuiInput-input Mui-disabled css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
           data-testid="input-Name:"
           disabled=""
           id="mui-13"
@@ -418,20 +320,6 @@ exports[`should render a readOnly textfield from widget properties 1`] = `
           type="text"
           value="Composite Processor"
         />
-        <fieldset
-          aria-hidden="true"
-          class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="css-ihdtdm"
-          >
-            <span
-              class="notranslate"
-            >
-              ​
-            </span>
-          </legend>
-        </fieldset>
       </div>
     </div>
   </div>
@@ -459,11 +347,11 @@ exports[`should render the textfield 1`] = `
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+          class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
           data-testid="input-Name:"
           id="mui-1"
           name="Name:"
@@ -471,20 +359,6 @@ exports[`should render the textfield 1`] = `
           type="text"
           value="Composite Processor"
         />
-        <fieldset
-          aria-hidden="true"
-          class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="css-ihdtdm"
-          >
-            <span
-              class="notranslate"
-            >
-              ​
-            </span>
-          </legend>
-        </fieldset>
       </div>
     </div>
   </div>
@@ -513,11 +387,11 @@ exports[`should render the textfield with empty style 1`] = `
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Name:"
             id="mui-6"
             name="Name:"
@@ -525,20 +399,6 @@ exports[`should render the textfield with empty style 1`] = `
             type="text"
             value="Composite Processor"
           />
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-ihdtdm"
-            >
-              <span
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
         </div>
       </div>
     </div>
@@ -582,11 +442,11 @@ exports[`should render the textfield with help hint 1`] = `
       spellcheck="false"
     >
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
       >
         <input
           aria-invalid="false"
-          class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+          class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
           data-testid="input-Name:"
           id="mui-12"
           name="Name:"
@@ -594,20 +454,6 @@ exports[`should render the textfield with help hint 1`] = `
           type="text"
           value="Composite Processor"
         />
-        <fieldset
-          aria-hidden="true"
-          class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="css-ihdtdm"
-          >
-            <span
-              class="notranslate"
-            >
-              ​
-            </span>
-          </legend>
-        </fieldset>
       </div>
     </div>
   </div>
@@ -636,11 +482,11 @@ exports[`should render the textfield with style 1`] = `
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ijey5v-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ijey5v-style css-953pxc-MuiInputBase-root-MuiInput-root"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Name:"
             id="mui-5"
             name="Name:"
@@ -648,20 +494,6 @@ exports[`should render the textfield with style 1`] = `
             type="text"
             value="Composite Processor"
           />
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-ihdtdm"
-            >
-              <span
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
         </div>
       </div>
     </div>
@@ -691,11 +523,11 @@ exports[`should render the textfield without style 1`] = `
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Name:"
             id="mui-4"
             name="Name:"
@@ -703,20 +535,6 @@ exports[`should render the textfield without style 1`] = `
             type="text"
             value="Composite Processor"
           />
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-ihdtdm"
-            >
-              <span
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
         </div>
       </div>
     </div>
@@ -746,11 +564,11 @@ exports[`should support completion if configured 1`] = `
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Text:"
             id="mui-7"
             name="Text:"
@@ -758,20 +576,6 @@ exports[`should support completion if configured 1`] = `
             type="text"
             value="fo"
           />
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-ihdtdm"
-            >
-              <span
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
         </div>
       </div>
     </div>
@@ -801,11 +605,11 @@ exports[`should support completion if configured 2`] = `
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Text:"
             id="mui-7"
             name="Text:"
@@ -813,20 +617,6 @@ exports[`should support completion if configured 2`] = `
             type="text"
             value="fo"
           />
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-ihdtdm"
-            >
-              <span
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
         </div>
       </div>
     </div>
@@ -856,11 +646,11 @@ exports[`should support completion if configured 3`] = `
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Text:"
             id="mui-7"
             name="Text:"
@@ -868,20 +658,6 @@ exports[`should support completion if configured 3`] = `
             type="text"
             value="fo"
           />
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-ihdtdm"
-            >
-              <span
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
         </div>
       </div>
     </div>
@@ -915,11 +691,11 @@ exports[`should support completion if configured 4`] = `
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
         >
           <input
             aria-invalid="false"
-            class="MuiInputBase-input MuiOutlinedInput-input css-3klcbk-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Text:"
             id="mui-7"
             name="Text:"
@@ -927,20 +703,6 @@ exports[`should support completion if configured 4`] = `
             type="text"
             value="fo"
           />
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-ihdtdm"
-            >
-              <span
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
         </div>
       </div>
     </div>

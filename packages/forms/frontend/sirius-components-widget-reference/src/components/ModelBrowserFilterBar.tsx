@@ -40,6 +40,7 @@ export const ModelBrowserFilterBar = ({ onTextChange, onTextClear, text }: Model
   return (
     <div className={classes.filterbar}>
       <TextField
+        variant="standard"
         id="filterbar-textfield"
         data-testid="filterbar-textfield"
         name="filterbar-textfield"

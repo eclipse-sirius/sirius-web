@@ -320,6 +320,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
       <TextField
         name={widget.label}
         placeholder={widget.label}
+        variant="standard"
         value={value}
         spellCheck={false}
         margin="dense"

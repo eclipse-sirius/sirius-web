@@ -74,6 +74,7 @@ export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
       <TextField
+        variant="standard"
         data-testid={widget.label}
         fullWidth
         inputRef={ref}

@@ -17,10 +17,10 @@ import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
+import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { GQLCreateProjectMutationData, GQLCreateProjectPayload, GQLErrorPayload } from './NewProjectView.types';
@@ -166,6 +166,7 @@ export const NewProjectView = () => {
               <Paper>
                 <form onSubmit={onCreateNewProject} className={classes.form}>
                   <TextField
+                    variant="standard"
                     error={nameIsInvalid}
                     helperText={nameMessage}
                     label="Name"

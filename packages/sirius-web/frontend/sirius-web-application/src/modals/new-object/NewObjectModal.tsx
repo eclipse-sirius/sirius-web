@@ -197,6 +197,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
           <div className={classes.form}>
             <InputLabel id="newObjectModalChildCreationDescriptionLabel">Object type</InputLabel>
             <Select
+              variant="standard"
               classes={{ select: classes.select }}
               value={selectedChildCreationDescriptionId}
               onChange={onChildCreationDescriptionChange}

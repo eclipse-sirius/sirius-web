@@ -52,6 +52,7 @@ export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProje
       <DialogTitle id="dialog-title">Rename the project</DialogTitle>
       <DialogContent>
         <TextField
+          variant="standard"
           value={state.newName}
           onChange={onNewName}
           error={nameIsInvalid}
