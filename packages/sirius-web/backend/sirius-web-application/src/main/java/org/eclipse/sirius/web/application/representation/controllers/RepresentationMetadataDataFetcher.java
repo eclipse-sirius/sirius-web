@@ -64,7 +64,7 @@ public class RepresentationMetadataDataFetcher implements IDataFetcherWithFieldC
     @Override
     public DataFetcherResult<RepresentationMetadata> get(DataFetchingEnvironment environment) throws Exception {
         IRepresentation representation = environment.getSource();
-        var metadata = this.representationMetadataSearchService.findByRepresentation(representation).orElse(null);
+        var metadata = this.representationMetadataSearchService.findByRepresentationId(representation.getId()).orElse(null);
 
         Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
 
