@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,6 +87,7 @@ public class DeleteTreeItemEventHandler implements ITreeEventHandler {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 variableManager.put(TreeItem.SELECTED_TREE_ITEM, treeItem);
+                variableManager.put(TreeDescription.TREE, tree);
 
                 var status = treeDescription.getDeleteHandler().apply(variableManager);
                 if (status instanceof Success success) {

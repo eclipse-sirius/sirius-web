@@ -98,7 +98,7 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3782[#3782] [sirius-web] Add an extension point to contribute custom widgets
 - https://github.com/eclipse-sirius/sirius-web/issues/3801[#3801] Add an equivalent of IViewDiagramDescriptionSearchService for Form descriptions
 - https://github.com/eclipse-sirius/sirius-web/issues/3557[#3550] [sirius-web] Add an extension point to contribute setting pages
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3777[#3777] [sirius-web] Add support for any kind of object as semantic element in the tree representation
 
 == v2024.7.0
 
