@@ -20,7 +20,7 @@ import {
   SiriusWebApplication,
 } from '@eclipse-sirius/sirius-web-application';
 import { papayaExtensionRegistry } from '@eclipse-sirius/sirius-web-papaya';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { EllipseNode } from './nodes/EllipseNode';
 import { EllipseNodeConverter } from './nodes/EllipseNodeConverter';
@@ -46,9 +46,10 @@ const nodeTypeRegistry: NodeTypeRegistry = {
   nodeTypeContributions: [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />],
 };
 
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = createRoot(container!);
+root.render(
   <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} extensionRegistry={registry}>
     <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistry} />
-  </SiriusWebApplication>,
-  document.getElementById('root')
+  </SiriusWebApplication>
 );

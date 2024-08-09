@@ -18,9 +18,10 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import { GQLValidationEventSubscription, GQLValidationEventVariables } from './ValidationView.types';
 import {
   HandleCompleteEvent,
@@ -31,6 +32,7 @@ import {
   ValidationViewContext,
   ValidationViewEvent,
   validationViewMachine,
+  ValidationViewStateSchema,
 } from './ValidationViewMachine';
 
 const validationEventSubscription = gql`
@@ -76,7 +78,10 @@ const useValidationViewStyle = makeStyles()((theme) => ({
 
 export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps) => {
   const { classes } = useValidationViewStyle();
-  const [{ value, context }, dispatch] = useMachine<ValidationViewContext, ValidationViewEvent>(validationViewMachine);
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<ValidationViewContext, ValidationViewStateSchema, ValidationViewEvent>>(
+      validationViewMachine
+    );
   const { toast, validationView } = value as SchemaValue;
   const { id, validation, message } = context;
 

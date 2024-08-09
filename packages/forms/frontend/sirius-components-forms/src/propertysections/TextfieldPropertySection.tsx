@@ -16,6 +16,7 @@ import TextField from '@mui/material/TextField';
 import { useMachine } from '@xstate/react';
 import React, { FocusEvent, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLTextarea, GQLTextfield, GQLWidget } from '../form/FormEventFragments.types';
 import { GQLSuccessPayload } from './ListPropertySection.types';
@@ -43,6 +44,7 @@ import {
   TextfieldPropertySectionContext,
   TextfieldPropertySectionEvent,
   textfieldPropertySectionMachine,
+  TextfieldPropertySectionStateSchema,
 } from './TextfieldPropertySectionMachine';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
@@ -143,8 +145,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
   const { classes } = useStyle(props);
 
   const [{ value: schemaValue, context }, dispatch] = useMachine<
-    TextfieldPropertySectionContext,
-    TextfieldPropertySectionEvent
+    StateMachine<TextfieldPropertySectionContext, TextfieldPropertySectionStateSchema, TextfieldPropertySectionEvent>
   >(textfieldPropertySectionMachine);
   const { textfieldPropertySection } = schemaValue as SchemaValue;
   const { value, completionRequest, proposals } = context;

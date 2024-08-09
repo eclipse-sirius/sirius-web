@@ -13,9 +13,10 @@
 import { gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, Toast } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { useMachine } from '@xstate/react';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import { FormContext } from '../contexts/FormContext';
 import { Form } from '../form/Form';
 import { formRefreshedEventPayloadFragment } from '../form/FormEventFragments';
@@ -26,6 +27,7 @@ import { FormRepresentationState } from './FormRepresentation.types';
 import {
   FormRepresentationContext,
   FormRepresentationEvent,
+  FormRepresentationStateSchema,
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
   HideToastEvent,
@@ -81,14 +83,13 @@ const useFormRepresentationStyles = makeStyles()((theme) => ({
  */
 export const FormRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
   const { classes } = useFormRepresentationStyles();
-  const [{ value, context }, dispatch] = useMachine<FormRepresentationContext, FormRepresentationEvent>(
-    formRepresentationMachine,
-    {
-      context: {
-        formId: representationId,
-      },
-    }
-  );
+  const [{ value, context }, dispatch] = useMachine<
+    StateMachine<FormRepresentationContext, FormRepresentationStateSchema, FormRepresentationEvent>
+  >(formRepresentationMachine, {
+    context: {
+      formId: representationId,
+    },
+  });
   const { toast, formRepresentation } = value as SchemaValue;
   const { id, formId, form, message } = context;
   const [state, setState] = useState<FormRepresentationState>({

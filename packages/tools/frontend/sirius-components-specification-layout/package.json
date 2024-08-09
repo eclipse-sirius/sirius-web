@@ -20,17 +20,17 @@
   "peerDependencies": {
     "@mui/material": "5.15.19",
     "@mui/icons-material": "5.15.19",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
     "@mui/material": "5.15.19",
     "@mui/icons-material": "5.15.19",
-    "@types/react": "17.0.37",
+    "@types/react": "18.3.3",
     "@vitejs/plugin-react": "4.3.0",
     "prettier": "2.7.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "typescript": "5.4.5",
     "vite": "5.2.11"
   }

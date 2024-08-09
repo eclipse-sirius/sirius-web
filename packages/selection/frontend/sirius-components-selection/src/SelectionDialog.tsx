@@ -13,6 +13,7 @@
 import { gql, useSubscription } from '@apollo/client';
 import { IconOverlay, Toast } from '@eclipse-sirius/sirius-components-core';
 import { DiagramDialogComponentProps } from '@eclipse-sirius/sirius-components-diagrams';
+import CropDinIcon from '@mui/icons-material/CropDin';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -23,10 +24,10 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { makeStyles } from 'tss-react/mui';
-import CropDinIcon from '@mui/icons-material/CropDin';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import {
   HandleCompleteEvent,
   HandleSelectionUpdatedEvent,
@@ -35,6 +36,7 @@ import {
   SchemaValue,
   SelectionDialogContext,
   SelectionDialogEvent,
+  SelectionDialogStateSchema,
   ShowToastEvent,
   selectionDialogMachine,
 } from './SelectionDialogMachine';
@@ -80,9 +82,10 @@ export const SelectionDialog = ({
 }: DiagramDialogComponentProps) => {
   const { classes } = useSelectionObjectModalStyles();
 
-  const [{ value, context }, dispatch] = useMachine<SelectionDialogContext, SelectionDialogEvent>(
-    selectionDialogMachine
-  );
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<SelectionDialogContext, SelectionDialogStateSchema, SelectionDialogEvent>>(
+      selectionDialogMachine
+    );
   const { toast, selectionDialog } = value as SchemaValue;
   const { id, selection, message, selectedObjectId } = context;
 

@@ -20,6 +20,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
+import { StateMachine } from 'xstate';
 import {
   DeleteImageModalProps,
   GQLDeleteImageMutationData,
@@ -30,6 +31,7 @@ import {
 import {
   DeleteImageModalContext,
   DeleteImageModalEvent,
+  DeleteImageModalStateSchema,
   HandleResponseEvent,
   HideToastEvent,
   RequestImageDeletionEvent,
@@ -53,9 +55,10 @@ const isErrorPayload = (payload: GQLDeleteImagePayload): payload is GQLErrorPayl
   payload.__typename === 'ErrorPayload';
 
 export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteImageModalProps) => {
-  const [{ value, context }, dispatch] = useMachine<DeleteImageModalContext, DeleteImageModalEvent>(
-    deleteImageModalMachine
-  );
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<DeleteImageModalContext, DeleteImageModalStateSchema, DeleteImageModalEvent>>(
+      deleteImageModalMachine
+    );
   const { toast, deleteImageModal } = value as SchemaValue;
   const { message } = context;
 

@@ -11,8 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useData } from '@eclipse-sirius/sirius-components-core';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { withErrorBoundary } from '../errors/ErrorBoundary';
+import { Navigate, Route, Routes, useRouteError } from 'react-router-dom';
 import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
 import { ProjectBrowser } from '../views/project-browser/ProjectBrowser';
@@ -20,19 +19,33 @@ import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsVi
 import { UploadProjectView } from '../views/upload-project/UploadProjectView';
 import { routerExtensionPoint } from './RouterExtensionPoints';
 
+const ErrorBoundary = () => {
+  let error = useRouteError();
+  console.error(error);
+  return <p>An error has occurred, please contact your administrator or refresh the page...</p>;
+};
+
 export const Router = () => {
   const { data: routes } = useData(routerExtensionPoint);
   return (
-    <Switch>
-      <Route exact path="/new/project" component={withErrorBoundary(NewProjectView)} />
-      <Route exact path="/upload/project" component={withErrorBoundary(UploadProjectView)} />
-      <Route exact path="/projects" component={withErrorBoundary(ProjectBrowser)} />
-      <Route exact path="/projects/:projectId/edit/:representationId?" component={withErrorBoundary(EditProjectView)} />
-      <Route exact path="/projects/:projectId/settings" component={withErrorBoundary(ProjectSettingsView)} />
+    <Routes>
+      <Route path="/new/project/*" element={<NewProjectView></NewProjectView>} ErrorBoundary={ErrorBoundary} />
+      <Route path="/upload/project/*" element={<UploadProjectView></UploadProjectView>} ErrorBoundary={ErrorBoundary} />
+      <Route path="/projects/*" element={<ProjectBrowser></ProjectBrowser>} ErrorBoundary={ErrorBoundary} />
+      <Route
+        path="/projects/:projectId/edit/:representationId?/*"
+        element={<EditProjectView></EditProjectView>}
+        ErrorBoundary={ErrorBoundary}
+      />
+      <Route
+        path="/projects/:projectId/settings/*"
+        element={<ProjectSettingsView></ProjectSettingsView>}
+        ErrorBoundary={ErrorBoundary}
+      />
       {routes.map((props, index) => (
-        <Route key={index} {...props} />
+        <Route key={index} {...props} ErrorBoundary={ErrorBoundary} />
       ))}
-      <Redirect to="/projects" />
-    </Switch>
+      <Route path="/" element={<Navigate to="/projects" replace />} ErrorBoundary={ErrorBoundary} />
+    </Routes>
   );
 };

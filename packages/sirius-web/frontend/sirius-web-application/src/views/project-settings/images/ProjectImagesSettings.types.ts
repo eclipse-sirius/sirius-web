@@ -17,6 +17,4 @@ export interface ProjectImagesSettingsState {
 
 export type ProjectImagesSettingsModal = 'Upload';
 
-export interface ProjectImagesSettingsParams {
-  projectId: string;
-}
+export type ProjectImagesSettingsParams = 'projectId';

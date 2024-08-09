@@ -23,7 +23,7 @@ exports[`should render a readOnly multiselect from widget properties 1`] = `
         data-testid="MultiSelectLabel"
       >
         <div
-          aria-controls="mui-6"
+          aria-controls=":r5:"
           aria-disabled="true"
           aria-expanded="false"
           aria-haspopup="listbox"
@@ -102,7 +102,7 @@ exports[`should render the multiSelect help hint 1`] = `
         data-testid="MultiSelectLabel"
       >
         <div
-          aria-controls="mui-5"
+          aria-controls=":r4:"
           aria-expanded="false"
           aria-haspopup="listbox"
           class="MuiSelect-select MuiSelect-standard MuiSelect-multiple MuiInputBase-input MuiInput-input css-ozvo75-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"
@@ -165,7 +165,7 @@ exports[`should render the multiSelect with empty style 1`] = `
         data-testid="MultiSelectLabel"
       >
         <div
-          aria-controls="mui-3"
+          aria-controls=":r2:"
           aria-expanded="false"
           aria-haspopup="listbox"
           class="MuiSelect-select MuiSelect-standard MuiSelect-multiple MuiInputBase-input MuiInput-input css-ozvo75-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"
@@ -228,7 +228,7 @@ exports[`should render the multiSelect with style 1`] = `
         data-testid="MultiSelectLabel"
       >
         <div
-          aria-controls="mui-2"
+          aria-controls=":r1:"
           aria-expanded="false"
           aria-haspopup="listbox"
           class="MuiSelect-select MuiSelect-standard MuiSelect-multiple MuiInputBase-input MuiInput-input css-1i556zm-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"
@@ -291,7 +291,7 @@ exports[`should render the multiSelect without style 1`] = `
         data-testid="MultiSelectLabel"
       >
         <div
-          aria-controls="mui-1"
+          aria-controls=":r0:"
           aria-expanded="false"
           aria-haspopup="listbox"
           class="MuiSelect-select MuiSelect-standard MuiSelect-multiple MuiInputBase-input MuiInput-input css-ozvo75-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"

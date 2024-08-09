@@ -18,7 +18,7 @@ import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 import gql from 'graphql-tag';
 import { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { NewProjectCard } from './NewProjectCard';
 import { ProjectTemplateCard } from './ProjectTemplateCard';
@@ -102,7 +102,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
     ? redirectUrlFromTemplate(projectCreatedFromTemplate)
     : null;
   if (redirectUrl) {
-    return <Redirect to={redirectUrl} />;
+    return <Navigate to={redirectUrl} replace />;
   }
 
   const cards: JSX.Element[] = [];
