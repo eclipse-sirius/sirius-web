@@ -38,6 +38,8 @@ export { useComponents } from './extension/useComponents';
 export { useData } from './extension/useData';
 export type * from './graphql/GQLTypes.types';
 export * from './icon/IconOverlay';
+export { default as siriusComponentsCoreEn } from './locales/en.json';
+export { default as siriusComponentsCoreRu } from './locales/ru.json';
 export * from './materialui';
 export * from './modals/confirmation/ConfirmationDialogContext';
 export type * from './modals/confirmation/ConfirmationDialogContext.types';

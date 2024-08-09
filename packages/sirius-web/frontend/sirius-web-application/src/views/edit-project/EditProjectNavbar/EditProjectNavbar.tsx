@@ -27,6 +27,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Redirect, Link as RouterLink } from 'react-router-dom';
 import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
@@ -91,6 +92,7 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
 export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
   const { project } = useCurrentProject();
   const { classes } = useEditProjectViewNavbarStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [{ value, context }, dispatch] = useMachine<EditProjectNavbarContext, EditProjectNavbarEvent>(
@@ -216,7 +218,7 @@ export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
           <ListItemIcon>
             <EditIcon />
           </ListItemIcon>
-          <ListItemText primary="Rename" />
+          <ListItemText primary={t('rename')} />
         </MenuItem>
         <MenuItem
           component="a"
@@ -227,7 +229,7 @@ export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
           <ListItemIcon>
             <GetAppIcon />
           </ListItemIcon>
-          <ListItemText primary="Download" />
+          <ListItemText primary={t('download')} />
         </MenuItem>
         <MenuItem
           divider
@@ -238,7 +240,7 @@ export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
           <ListItemIcon>
             <SettingsIcon />
           </ListItemIcon>
-          <ListItemText primary="Settings" />
+          <ListItemText primary={t('settings')} />
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -252,7 +254,7 @@ export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
           <ListItemIcon>
             <DeleteIcon />
           </ListItemIcon>
-          <ListItemText primary="Delete" />
+          <ListItemText primary={t('delete')} />
         </MenuItem>
       </Menu>
       <Toast

@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export { default as siriusComponentsTreesEn } from './locales/en.json';
+export { default as siriusComponentsTreesRu } from './locales/ru.json';
 export * from './toolbar/TreeToolBarContext';
 export * from './toolbar/TreeToolBarContext.types';
 export * from './toolbar/TreeToolBarContribution';

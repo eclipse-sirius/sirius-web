@@ -17,6 +17,7 @@ import Link from '@mui/material/Link';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import { emphasize } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { Link as RouterLink } from 'react-router-dom';
 import { NavigationBarProps } from './NavigationBar.types';
@@ -68,6 +69,7 @@ const useNavigationBarStyles = makeStyles()((theme) => ({
 
 export const NavigationBar = ({ children }: NavigationBarProps) => {
   const { classes } = useNavigationBarStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'navigationBar' });
 
   const { Component: Icon } = useComponent(navigationBarIconExtensionPoint);
 
@@ -80,7 +82,7 @@ export const NavigationBar = ({ children }: NavigationBarProps) => {
       <AppBar position="static">
         <Toolbar className={classes.toolbar} variant="dense">
           <div className={classes.left}>
-            <Tooltip title="Back to the homepage">
+            <Tooltip title={t('backToHomepage')}>
               <Link component={RouterLink} to="/" className={classes.link} color="inherit">
                 <IconButton className={classes.onDarkBackground} color="inherit">
                   <Icon />
