@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EMFImagePathService implements IImagePathService {
 
-    private static final List<String> IMAGES_PATHS = List.of("/icons/full/obj16", "/icons/full/ovr16");
+    private static final List<String> IMAGES_PATHS = List.of("/icons/full/obj16", "/icons/full/ovr16", "/icons");
 
     @Override
     public List<String> getPaths() {

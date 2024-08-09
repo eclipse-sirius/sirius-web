@@ -22,12 +22,15 @@ type Selection implements Representation {
   targetObjectId: String!
   message: String
   objects: [SelectionObject!]!
+  displayedAsTree: Boolean!
 }
 
 type SelectionObject {
   id: ID!
   label: String!
   iconURL: [String!]!
+  parentId: String
+  isSelectable: Boolean!
 }
 
 type SelectionDescription implements RepresentationDescription {

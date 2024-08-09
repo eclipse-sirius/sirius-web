@@ -29,6 +29,10 @@ import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
  * <em>Selection Candidates Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl#getSelectionMessage
  * <em>Selection Message</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl#isDisplayedAsTree
+ * <em>Displayed As Tree</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl#isExpandedAtOpening
+ * <em>Expanded At Opening</em>}</li>
  * </ul>
  *
  * @generated
@@ -73,6 +77,46 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
      * @ordered
      */
     protected String selectionMessage = SELECTION_MESSAGE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isDisplayedAsTree() <em>Displayed As Tree</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #isDisplayedAsTree()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean DISPLAYED_AS_TREE_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isDisplayedAsTree() <em>Displayed As Tree</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #isDisplayedAsTree()
+     * @generated
+     * @ordered
+     */
+    protected boolean displayedAsTree = DISPLAYED_AS_TREE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isExpandedAtOpening() <em>Expanded At Opening</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isExpandedAtOpening()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean EXPANDED_AT_OPENING_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isExpandedAtOpening() <em>Expanded At Opening</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isExpandedAtOpening()
+     * @generated
+     * @ordered
+     */
+    protected boolean expandedAtOpening = EXPANDED_AT_OPENING_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -146,12 +190,62 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
      * @generated
      */
     @Override
+    public boolean isDisplayedAsTree() {
+        return this.displayedAsTree;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDisplayedAsTree(boolean newDisplayedAsTree) {
+        boolean oldDisplayedAsTree = this.displayedAsTree;
+        this.displayedAsTree = newDisplayedAsTree;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.SELECTION_DIALOG_DESCRIPTION__DISPLAYED_AS_TREE, oldDisplayedAsTree, this.displayedAsTree));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isExpandedAtOpening() {
+        return this.expandedAtOpening;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setExpandedAtOpening(boolean newExpandedAtOpening) {
+        boolean oldExpandedAtOpening = this.expandedAtOpening;
+        this.expandedAtOpening = newExpandedAtOpening;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.SELECTION_DIALOG_DESCRIPTION__EXPANDED_AT_OPENING, oldExpandedAtOpening, this.expandedAtOpening));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION:
                 return this.getSelectionCandidatesExpression();
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
                 return this.getSelectionMessage();
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__DISPLAYED_AS_TREE:
+                return this.isDisplayedAsTree();
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__EXPANDED_AT_OPENING:
+                return this.isExpandedAtOpening();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -169,6 +263,12 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
                 return;
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
                 this.setSelectionMessage((String) newValue);
+                return;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__DISPLAYED_AS_TREE:
+                this.setDisplayedAsTree((Boolean) newValue);
+                return;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__EXPANDED_AT_OPENING:
+                this.setExpandedAtOpening((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -188,6 +288,12 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
                 this.setSelectionMessage(SELECTION_MESSAGE_EDEFAULT);
                 return;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__DISPLAYED_AS_TREE:
+                this.setDisplayedAsTree(DISPLAYED_AS_TREE_EDEFAULT);
+                return;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__EXPANDED_AT_OPENING:
+                this.setExpandedAtOpening(EXPANDED_AT_OPENING_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -205,6 +311,10 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
                         : !SELECTION_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.selectionCandidatesExpression);
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
                 return SELECTION_MESSAGE_EDEFAULT == null ? this.selectionMessage != null : !SELECTION_MESSAGE_EDEFAULT.equals(this.selectionMessage);
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__DISPLAYED_AS_TREE:
+                return this.displayedAsTree != DISPLAYED_AS_TREE_EDEFAULT;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__EXPANDED_AT_OPENING:
+                return this.expandedAtOpening != EXPANDED_AT_OPENING_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -224,6 +334,10 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
         result.append(this.selectionCandidatesExpression);
         result.append(", selectionMessage: ");
         result.append(this.selectionMessage);
+        result.append(", displayedAsTree: ");
+        result.append(this.displayedAsTree);
+        result.append(", expandedAtOpening: ");
+        result.append(this.expandedAtOpening);
         result.append(')');
         return result.toString();
     }

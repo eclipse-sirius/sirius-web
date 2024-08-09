@@ -40,6 +40,8 @@ public interface IObjectService {
 
     Optional<Object> getObject(IEditingContext editingContext, String objectId);
 
+    Object getParent(Object object);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -90,6 +92,11 @@ public interface IObjectService {
         @Override
         public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
             return Optional.empty();
+        }
+
+        @Override
+        public Object getParent(Object object) {
+            return null;
         }
     }
 

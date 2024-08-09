@@ -52,6 +52,8 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
 
             this.addSelectionCandidatesExpressionPropertyDescriptor(object);
             this.addSelectionMessagePropertyDescriptor(object);
+            this.addDisplayedAsTreePropertyDescriptor(object);
+            this.addExpandedAtOpeningPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -79,6 +81,31 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
                 this.getString("_UI_SelectionDialogDescription_selectionMessage_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_selectionMessage_feature", "_UI_SelectionDialogDescription_type"),
                 DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Displayed As Tree feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDisplayedAsTreePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_displayedAsTree_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_displayedAsTree_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__DISPLAYED_AS_TREE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Expanded At Opening feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addExpandedAtOpeningPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_expandedAtOpening_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_expandedAtOpening_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__EXPANDED_AT_OPENING, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -126,6 +153,8 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
         switch (notification.getFeatureID(SelectionDialogDescription.class)) {
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION:
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__DISPLAYED_AS_TREE:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__EXPANDED_AT_OPENING:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

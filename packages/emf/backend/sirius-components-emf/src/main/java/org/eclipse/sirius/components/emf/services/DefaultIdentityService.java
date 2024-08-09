@@ -54,6 +54,8 @@ public class DefaultIdentityService implements IDefaultIdentityService {
             id = representation.getId();
         } else if (object instanceof IEditingContext editingContext) {
             id = editingContext.getId();
+        } else if (object instanceof Resource resource) {
+            id = resource.getURI().path().substring(1);
         }
         return id;
     }

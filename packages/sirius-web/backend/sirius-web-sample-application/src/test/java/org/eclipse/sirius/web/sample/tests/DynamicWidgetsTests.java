@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.services.ComposedContentService;
 import org.eclipse.sirius.components.core.services.ComposedIdentityService;
 import org.eclipse.sirius.components.core.services.ComposedLabelService;
@@ -302,7 +303,7 @@ public class DynamicWidgetsTests {
         applicationContext.registerBean(ObjectService.class, labelService, contentService, iIdentityService, iObjectServices);
         applicationContext.registerBean(editService.getClass());
 
-        var viewConverter = new ViewConverter(List.of(), List.of(formDescriptionConverter), applicationContext, objectService, new IDiagramIdProvider.NoOp());
+        var viewConverter = new ViewConverter(List.of(), List.of(formDescriptionConverter), applicationContext, objectService, new IDiagramIdProvider.NoOp(), new IURLParser.NoOp());
         List<IRepresentationDescription> conversionResult = viewConverter.convert(List.of(wrapperView), List.of(EcorePackage.eINSTANCE));
         assertThat(conversionResult).hasSize(1);
         assertThat(conversionResult.get(0)).isInstanceOf(org.eclipse.sirius.components.forms.description.FormDescription.class);

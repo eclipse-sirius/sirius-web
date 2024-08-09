@@ -74,7 +74,7 @@ public class DiagramIdProvider implements IDiagramIdProvider {
             charArray[0] = Character.toLowerCase(charArray[0]);
             typeName += new String(charArray);
         }
-        return typeName;
+        return typeName + "&layoutKind=tree";
     }
 
     private String getSourceIdFromElementDescription(EObject elementDescription) {

@@ -92,4 +92,9 @@ public class ObjectService implements IObjectService {
         return this.objectSearchService.getObject(editingContext, objectId);
     }
 
+    @Override
+    public Object getParent(Object object) {
+        return this.contentService.getParent(object);
+    }
+
 }

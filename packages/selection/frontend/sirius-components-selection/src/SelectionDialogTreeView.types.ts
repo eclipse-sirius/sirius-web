@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface Selection {
-  id: string;
-  message: string;
-  objects: SelectionObject[];
-}
-
-export interface SelectionObject {
-  id: string;
-  label: string;
-  iconURL: string[];
+export interface SelectionDialogTreeViewProps {
+  editingContextId: string;
+  targetObjectId: string;
+  descriptionId: string;
 }

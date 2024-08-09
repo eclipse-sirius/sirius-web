@@ -11,30 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface GQLSelectionEventSubscription {
-  selectionEvent: GQLSelectionEventPayload;
-}
+import { GQLSelection } from './SelectionEvent.types';
 
-export interface GQLSelectionEventPayload {
-  __typename: string;
-}
-
-export interface GQLSelectionRefreshedEventPayload extends GQLSelectionEventPayload {
-  id: string;
+export interface SelectionDialogListViewProps {
   selection: GQLSelection;
 }
 
-export interface GQLSelection {
-  id: string;
-  message: string;
-  objects: GQLSelectionObject[];
-  displayedAsTree: boolean;
-}
-
-export interface GQLSelectionObject {
-  id: string;
-  label: string;
-  iconURL: string[];
-  parentId: string | undefined;
-  isSelectable: boolean;
+export interface SelectionDialogListViewState {
+  selectedObjectId: String;
 }

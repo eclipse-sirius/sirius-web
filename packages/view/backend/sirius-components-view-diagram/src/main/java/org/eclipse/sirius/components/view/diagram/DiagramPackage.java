@@ -3169,13 +3169,31 @@ public interface DiagramPackage extends EPackage {
     int SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE = DIALOG_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Displayed As Tree</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__DISPLAYED_AS_TREE = DIALOG_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Expanded At Opening</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__EXPANDED_AT_OPENING = DIALOG_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
      * The number of structural features of the '<em>Selection Dialog Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SELECTION_DIALOG_DESCRIPTION_FEATURE_COUNT = DIALOG_DESCRIPTION_FEATURE_COUNT + 2;
+    int SELECTION_DIALOG_DESCRIPTION_FEATURE_COUNT = DIALOG_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The number of operations of the '<em>Selection Dialog Description</em>' class. <!-- begin-user-doc --> <!--
@@ -5255,6 +5273,30 @@ public interface DiagramPackage extends EPackage {
     EAttribute getSelectionDialogDescription_SelectionMessage();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isDisplayedAsTree <em>Displayed As
+     * Tree</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Displayed As Tree</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isDisplayedAsTree()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_DisplayedAsTree();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isExpandedAtOpening <em>Expanded At
+     * Opening</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Expanded At Opening</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isExpandedAtOpening()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_ExpandedAtOpening();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ToolSection <em>Tool
      * Section</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6804,6 +6846,22 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE = eINSTANCE.getSelectionDialogDescription_SelectionMessage();
+
+        /**
+         * The meta object literal for the '<em><b>Displayed As Tree</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__DISPLAYED_AS_TREE = eINSTANCE.getSelectionDialogDescription_DisplayedAsTree();
+
+        /**
+         * The meta object literal for the '<em><b>Expanded At Opening</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__EXPANDED_AT_OPENING = eINSTANCE.getSelectionDialogDescription_ExpandedAtOpening();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl

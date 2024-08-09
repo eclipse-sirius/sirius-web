@@ -22,7 +22,10 @@ import java.util.List;
 public interface IContentServiceDelegate {
 
     boolean canHandle(Object object);
+
     List<Object> getContents(Object object);
+
+    Object getParent(Object object);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -37,6 +40,10 @@ public interface IContentServiceDelegate {
         @Override
         public List<Object> getContents(Object object) {
             return List.of();
+        }
+        @Override
+        public Object getParent(Object object) {
+            return null;
         }
 
     }

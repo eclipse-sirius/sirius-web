@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { SubscriptionResult } from '@apollo/client';
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { assign, Machine } from 'xstate';
 import {
   GQLSelection,
@@ -47,12 +46,12 @@ export interface SelectionDialogContext {
   id: string;
   selection: GQLSelection | null;
   message: string | null;
-  selectedObjects: Selection;
+  selectedObjectId: string | null;
 }
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type HandleSelectionUpdatedEvent = { type: 'HANDLE_SELECTION_UPDATED'; selectedObjects: Selection };
+export type HandleSelectionUpdatedEvent = { type: 'HANDLE_SELECTION_UPDATED'; selectedObjectId: string };
 export type HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
 export type HandleSubscriptionResultEvent = {
   type: 'HANDLE_SUBSCRIPTION_RESULT';
@@ -77,7 +76,7 @@ export const selectionDialogMachine = Machine<SelectionDialogContext, SelectionD
       id: crypto.randomUUID(),
       selection: null,
       message: null,
-      selectedObjects: { entries: [] },
+      selectedObjectId: null,
     },
     states: {
       toast: {
@@ -152,8 +151,8 @@ export const selectionDialogMachine = Machine<SelectionDialogContext, SelectionD
     },
     actions: {
       handleSelectionUpdated: assign((_, event) => {
-        const { selectedObjects } = event as HandleSelectionUpdatedEvent;
-        return { selectedObjects };
+        const { selectedObjectId } = event as HandleSelectionUpdatedEvent;
+        return { selectedObjectId };
       }),
       handleSubscriptionResult: assign((_, event) => {
         const { result } = event as HandleSubscriptionResultEvent;

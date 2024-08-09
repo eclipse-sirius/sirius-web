@@ -2051,6 +2051,26 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getSelectionDialogDescription_DisplayedAsTree() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_ExpandedAtOpening() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getToolSection() {
         return this.toolSectionEClass;
     }
@@ -2484,6 +2504,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.selectionDialogDescriptionEClass = this.createEClass(SELECTION_DIALOG_DESCRIPTION);
         this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION);
         this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__DISPLAYED_AS_TREE);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__EXPANDED_AT_OPENING);
 
         this.toolSectionEClass = this.createEClass(TOOL_SECTION);
         this.createEAttribute(this.toolSectionEClass, TOOL_SECTION__NAME);
@@ -2890,6 +2912,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEAttribute(this.getSelectionDialogDescription_SelectionCandidatesExpression(), theViewPackage.getInterpretedExpression(), "selectionCandidatesExpression", "aql:self", 0, 1,
                 SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getSelectionDialogDescription_SelectionMessage(), this.ecorePackage.getEString(), "selectionMessage", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_DisplayedAsTree(), this.ecorePackage.getEBoolean(), "displayedAsTree", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_ExpandedAtOpening(), this.ecorePackage.getEBoolean(), "expandedAtOpening", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.toolSectionEClass, ToolSection.class, "ToolSection", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

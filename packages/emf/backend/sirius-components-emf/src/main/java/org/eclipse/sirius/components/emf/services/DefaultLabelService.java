@@ -24,12 +24,14 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.IDefaultLabelService;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +68,18 @@ public class DefaultLabelService implements IDefaultLabelService {
                     .orElse("");
         } else if (object instanceof IRepresentation representation) {
             label = representation.getLabel();
+        } else if (object instanceof Resource resource) {
+            label = this.getResourceLabel(resource);
         }
         return label;
+    }
+
+    private String getResourceLabel(Resource resource) {
+        return resource.eAdapters().stream()
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast).findFirst()
+                .map(ResourceMetadataAdapter::getName)
+                .orElse(resource.getURI().lastSegment());
     }
 
     @Override
@@ -81,6 +93,8 @@ public class DefaultLabelService implements IDefaultLabelService {
             }
         } else if (object instanceof IRepresentation representation) {
             fullLabel = representation.getLabel();
+        } else if (object instanceof Resource resource) {
+            fullLabel = this.getResourceLabel(resource);
         } else {
             fullLabel = this.getLabel(object);
         }
@@ -137,6 +151,9 @@ public class DefaultLabelService implements IDefaultLabelService {
                     .map(provider -> provider.getImageURL(representation.getKind()))
                     .flatMap(Optional::stream)
                     .toList();
+        }
+        else if (object instanceof Resource) {
+            result = List.of("/icons/Resource.svg");
         }
         return result;
     }
