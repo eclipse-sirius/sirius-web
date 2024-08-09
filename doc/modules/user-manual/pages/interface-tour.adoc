@@ -1,0 +1,12 @@
+= Tour the interface
+
+== Homepage
+
+.xref:user-manual:workbench-ui/workbench-homepage.adoc[Explore the {sw} Homepage]
+image::Homepage.png["{sw} {ui-view-homepage}"]
+
+
+== Project Homepage
+
+.xref:user-manual:workbench-ui/project-homepage.adoc[Explore the Project Homepage]
+image::Project-Homepage.png["Project Homepage"]

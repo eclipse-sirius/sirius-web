@@ -1,0 +1,3 @@
+= Sources
+
+The source code for {SW} and for this documentation is available over at {SW-github}[github.com/eclipse-sirius/sirius-web].
