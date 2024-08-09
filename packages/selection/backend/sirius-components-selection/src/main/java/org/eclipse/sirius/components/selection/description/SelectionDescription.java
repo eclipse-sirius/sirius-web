@@ -52,8 +52,6 @@ public final class SelectionDescription implements IRepresentationDescription {
 
     private boolean displayedAsTree;
 
-    private boolean expandedAtOpening;
-
     private SelectionDescription() {
         // Prevent instantiation
     }
@@ -109,10 +107,6 @@ public final class SelectionDescription implements IRepresentationDescription {
         return this.displayedAsTree;
     }
 
-    public boolean isExpandedAtOpening() {
-        return this.expandedAtOpening;
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -148,8 +142,6 @@ public final class SelectionDescription implements IRepresentationDescription {
         private Predicate<VariableManager> canCreatePredicate;
 
         private boolean displayedAsTree;
-
-        private boolean expandedAtOpening;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -205,11 +197,6 @@ public final class SelectionDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder expandedAtOpening(boolean expandedAtOpening) {
-            this.expandedAtOpening = expandedAtOpening;
-            return this;
-        }
-
         public SelectionDescription build() {
             SelectionDescription selectionDescription = new SelectionDescription();
             selectionDescription.id = Objects.requireNonNull(this.id);
@@ -223,7 +210,6 @@ public final class SelectionDescription implements IRepresentationDescription {
             selectionDescription.selectionObjectsIdProvider = Objects.requireNonNull(this.selectionObjectsIdProvider);
             selectionDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             selectionDescription.displayedAsTree = this.displayedAsTree;
-            selectionDescription.expandedAtOpening = this.expandedAtOpening;
             return selectionDescription;
         }
 

@@ -29,7 +29,6 @@ export interface GQLSelection {
   message: string;
   objects: GQLSelectionObject[];
   displayedAsTree: boolean;
-  expendedAtOpening: boolean;
 }
 
 export interface GQLSelectionObject {

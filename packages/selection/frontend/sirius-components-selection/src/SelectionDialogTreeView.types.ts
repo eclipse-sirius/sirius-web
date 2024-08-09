@@ -11,12 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLSelection } from './SelectionEvent.types';
-
-export interface SelectionDialogListViewProps {
-  selection: GQLSelection;
-}
-
-export interface SelectionDialogListViewState {
-  selectedObjectId: String;
+export interface SelectionDialogTreeViewProps {
+  editingContextId: string;
+  targetObjectId: string;
+  descriptionId: string;
 }

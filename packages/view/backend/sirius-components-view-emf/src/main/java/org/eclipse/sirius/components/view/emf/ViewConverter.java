@@ -142,7 +142,6 @@ public class ViewConverter implements IViewConverter {
                 .label("Selection Description")
                 .canCreatePredicate(variableManager -> false)
                 .displayedAsTree(selectionDescription.isDisplayedAsTree())
-                .expandedAtOpening(selectionDescription.isExpandedAtOpening())
                 .build();
     }
 

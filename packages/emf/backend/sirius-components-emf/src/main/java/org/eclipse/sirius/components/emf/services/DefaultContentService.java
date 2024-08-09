@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.components.core.api.IDefaultContentService;
@@ -46,6 +47,8 @@ public class DefaultContentService implements IDefaultContentService {
             } else {
                 contents.addAll(eObject.eContents());
             }
+        } else if (object instanceof Resource resource) {
+            contents.addAll(resource.getContents());
         }
         return contents;
     }

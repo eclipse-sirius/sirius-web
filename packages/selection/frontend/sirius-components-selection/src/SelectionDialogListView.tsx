@@ -10,52 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useSubscription } from '@apollo/client';
-import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useSelection } from '@eclipse-sirius/sirius-components-core';
 import CropDinIcon from '@mui/icons-material/CropDin';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
 
+import { ListItemButton } from '@mui/material';
 import { SelectionDialogListViewProps } from './SelectionDialogListView.types';
-import {
-  HandleCompleteEvent,
-  HandleSelectionUpdatedEvent,
-  HandleSubscriptionResultEvent,
-  SchemaValue,
-  SelectionDialogContext,
-  SelectionDialogEvent,
-  selectionDialogMachine,
-} from './SelectionDialogMachine';
-import { GQLSelectionEventSubscription } from './SelectionEvent.types';
-
-const selectionEventSubscription = gql`
-  subscription selectionEvent($input: SelectionEventInput!) {
-    selectionEvent(input: $input) {
-      __typename
-      ... on SelectionRefreshedEventPayload {
-        selection {
-          id
-          targetObjectId
-          message
-          displayedAsTree
-          expendedAtOpening
-          objects {
-            id
-            label
-            iconURL
-            isSelectable
-            parentId
-          }
-        }
-      }
-    }
-  }
-`;
 
 const useSelectionObjectModalStyles = makeStyles()((_theme) => ({
   root: {
@@ -66,72 +29,27 @@ const useSelectionObjectModalStyles = makeStyles()((_theme) => ({
   },
 }));
 
-export const SELECTION_DIALOG_TYPE: string = 'selectionDialogDescription';
-
-export const SelectionDialogListView = ({
-  editingContextId,
-  selectionRepresentationId,
-  targetObjectId,
-  onClose,
-}: SelectionDialogListViewProps) => {
-  const { addErrorMessage } = useMultiToast();
-
+export const SelectionDialogListView = ({ selection }: SelectionDialogListViewProps) => {
   const { classes } = useSelectionObjectModalStyles();
-
-  const [{ value, context }, dispatch] = useMachine<SelectionDialogContext, SelectionDialogEvent>(
-    selectionDialogMachine
-  );
-  const { selectionDialog } = value as SchemaValue;
-  const { id, selection, selectedObjectId } = context;
-
-  const { error } = useSubscription<GQLSelectionEventSubscription>(selectionEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
-        selectionId: selectionRepresentationId,
-        targetObjectId,
-      },
-    },
-    fetchPolicy: 'no-cache',
-    skip: selectionDialog === 'complete',
-    onData: ({ data }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: data,
-      };
-      dispatch(handleDataEvent);
-    },
-    onComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-  });
-
-  useEffect(() => {
-    if (error) {
-      const { message } = error;
-      addErrorMessage(message);
-    }
-  }, [error, addErrorMessage]);
-
-  useEffect(() => {
-    if (selectionDialog === 'complete') {
-      onClose();
-    }
-  }, [selectionDialog, onClose]);
+  const { setSelection, selection: selectedObjects } = useSelection();
 
   const handleListItemClick = (selectedObjectId: string) => {
-    dispatch({ type: 'HANDLE_SELECTION_UPDATED', selectedObjectId } as HandleSelectionUpdatedEvent);
+    setSelection({
+      entries: [
+        {
+          id: selectedObjectId,
+          kind: '', //Not used in this context.
+        },
+      ],
+    });
   };
 
   return (
     <List className={classes.root}>
       {selection?.objects.map((selectionObject) => (
-        <ListItem
-          button
+        <ListItemButton
           key={`item-${selectionObject.id}`}
-          selected={selectedObjectId === selectionObject.id}
+          selected={selectedObjects.entries.find((entry) => entry.id === selectionObject.id) !== undefined}
           onClick={() => handleListItemClick(selectionObject.id)}
           data-testid={selectionObject.label}>
           <ListItemIcon>
@@ -147,7 +65,7 @@ export const SelectionDialogListView = ({
             )}
           </ListItemIcon>
           <ListItemText primary={selectionObject.label} />
-        </ListItem>
+        </ListItemButton>
       ))}
     </List>
   );

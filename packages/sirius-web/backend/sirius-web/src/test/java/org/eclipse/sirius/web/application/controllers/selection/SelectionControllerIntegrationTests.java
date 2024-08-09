@@ -75,7 +75,6 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 ... on SelectionRefreshedEventPayload {
                   selection {
                     displayedAsTree
-                    expendedAtOpening
                     objects {
                       id
                       label

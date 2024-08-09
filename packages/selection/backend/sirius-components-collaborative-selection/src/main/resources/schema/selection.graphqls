@@ -23,7 +23,6 @@ type Selection implements Representation {
   message: String
   objects: [SelectionObject!]!
   displayedAsTree: Boolean!
-  expendedAtOpening: Boolean!
 }
 
 type SelectionObject {

@@ -49,8 +49,6 @@ public final class Selection implements IRepresentation {
 
     private boolean displayedAsTree;
 
-    private boolean expendedAtOpening;
-
     private Selection() {
         // Prevent instantiation
     }
@@ -86,10 +84,6 @@ public final class Selection implements IRepresentation {
 
     public boolean isDisplayedAsTree() {
         return this.displayedAsTree;
-    }
-
-    public boolean isExpendedAtOpening() {
-        return this.expendedAtOpening;
     }
 
     public List<SelectionObject> getObjects() {
@@ -129,8 +123,6 @@ public final class Selection implements IRepresentation {
 
         private boolean displayedAsTree;
 
-        private boolean expendedAtOpening;
-
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -165,11 +157,6 @@ public final class Selection implements IRepresentation {
             return this;
         }
 
-        public Builder expendedAtOpening(boolean expendedAtOpening) {
-            this.expendedAtOpening = expendedAtOpening;
-            return this;
-        }
-
         public Selection build() {
             Selection selection = new Selection();
             selection.id = Objects.requireNonNull(this.id);
@@ -180,7 +167,6 @@ public final class Selection implements IRepresentation {
             selection.message = this.message;
             selection.objects = Objects.requireNonNull(this.objects);
             selection.displayedAsTree = this.displayedAsTree;
-            selection.expendedAtOpening = this.expendedAtOpening;
             return selection;
         }
     }

@@ -19,27 +19,45 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { makeStyles } from 'tss-react/mui';
 import { SelectionDialogListView } from './SelectionDialogListView';
 import { SelectionDialogTreeView } from './SelectionDialogTreeView';
 
+import { gql } from '@apollo/client';
+import { useSubscription } from '@apollo/client/react/hooks/useSubscription';
+import { Selection, SelectionContext, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import {
+  HandleCompleteEvent,
+  HandleSelectionUpdatedEvent,
+  HandleSubscriptionResultEvent,
   SchemaValue,
   SelectionDialogContext,
   SelectionDialogEvent,
   selectionDialogMachine,
 } from './SelectionDialogMachine';
+import { GQLSelectionEventSubscription } from './SelectionEvent.types';
 
-const useSelectionObjectModalStyles = makeStyles()((_theme) => ({
-  root: {
-    width: '100%',
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: 300,
-  },
-}));
-
-export const SELECTION_DIALOG_TYPE: string = 'selectionDialogDescription';
+const selectionEventSubscription = gql`
+  subscription selectionEvent($input: SelectionEventInput!) {
+    selectionEvent(input: $input) {
+      __typename
+      ... on SelectionRefreshedEventPayload {
+        selection {
+          id
+          targetObjectId
+          message
+          displayedAsTree
+          objects {
+            id
+            label
+            iconURL
+            isSelectable
+            parentId
+          }
+        }
+      }
+    }
+  }
+`;
 
 export const SelectionDialog = ({
   editingContextId,
@@ -48,9 +66,47 @@ export const SelectionDialog = ({
   onClose,
   onFinish,
 }: DiagramDialogComponentProps) => {
-  const [{ value, context }] = useMachine<SelectionDialogContext, SelectionDialogEvent>(selectionDialogMachine);
+  const [{ value, context }, dispatch] = useMachine<SelectionDialogContext, SelectionDialogEvent>(
+    selectionDialogMachine
+  );
   const { selectionDialog } = value as SchemaValue;
-  const { selection, selectedObjectId } = context;
+  const { selection, id, selectedObjects } = context;
+  const { addErrorMessage } = useMultiToast();
+
+  const setDialogSelection = (selectedObjects: Selection) => {
+    dispatch({ type: 'HANDLE_SELECTION_UPDATED', selectedObjects } as HandleSelectionUpdatedEvent);
+  };
+
+  const { error } = useSubscription<GQLSelectionEventSubscription>(selectionEventSubscription, {
+    variables: {
+      input: {
+        id,
+        editingContextId,
+        selectionId: dialogDescriptionId,
+        targetObjectId,
+      },
+    },
+    fetchPolicy: 'no-cache',
+    skip: selectionDialog === 'complete',
+    onData: ({ data }) => {
+      const handleDataEvent: HandleSubscriptionResultEvent = {
+        type: 'HANDLE_SUBSCRIPTION_RESULT',
+        result: data,
+      };
+      dispatch(handleDataEvent);
+    },
+    onComplete: () => {
+      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
+      dispatch(completeEvent);
+    },
+  });
+
+  useEffect(() => {
+    if (error) {
+      const { message } = error;
+      addErrorMessage(message);
+    }
+  }, [error, addErrorMessage]);
 
   useEffect(() => {
     if (selectionDialog === 'complete') {
@@ -58,47 +114,49 @@ export const SelectionDialog = ({
     }
   }, [selectionDialog, onClose]);
 
-  let content: JSX.Element;
+  let content: JSX.Element | null = null;
 
   if (selection?.displayedAsTree) {
-    content = <SelectionDialogTreeView />;
-  } else {
     content = (
-      <SelectionDialogListView
+      <SelectionDialogTreeView
         editingContextId={editingContextId}
-        onClose={onClose}
+        descriptionId={dialogDescriptionId}
         targetObjectId={targetObjectId}
-        selectionRepresentationId={dialogDescriptionId}
       />
     );
+  } else if (selection) {
+    content = <SelectionDialogListView selection={selection} />;
   }
   return (
-    <Dialog
-      open
-      onClose={onClose}
-      aria-labelledby="dialog-title"
-      maxWidth="xs"
-      fullWidth
-      data-testid="selection-dialog">
-      <DialogTitle id="selection-dialog-title">Selection Dialog</DialogTitle>
-      <DialogContent>
-        <DialogContentText data-testid="selection-dialog-message">{selection?.message}</DialogContentText>
-        {content}
-      </DialogContent>
-      <DialogActions>
-        <Button
-          variant="contained"
-          disabled={selectedObjectId === null}
-          data-testid="finish-action"
-          color="primary"
-          onClick={() => {
-            if (selectedObjectId) {
-              onFinish([{ name: 'selectedObject', value: selectedObjectId, type: 'OBJECT_ID' }]);
-            }
-          }}>
-          Finish
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <SelectionContext.Provider value={{ selection: selectedObjects, setSelection: setDialogSelection }}>
+      <Dialog
+        open
+        onClose={onClose}
+        aria-labelledby="dialog-title"
+        maxWidth="xs"
+        fullWidth
+        data-testid="selection-dialog">
+        <DialogTitle id="selection-dialog-title">Selection Dialog</DialogTitle>
+        <DialogContent>
+          <DialogContentText data-testid="selection-dialog-message">{selection?.message}</DialogContentText>
+          {content}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            disabled={selectedObjects.entries.length == 0}
+            data-testid="finish-action"
+            color="primary"
+            onClick={() => {
+              if (selectedObjects.entries.length > 0) {
+                var selectedObjectId = selectedObjects.entries.map((entry) => entry.id)[0] ?? '';
+                onFinish([{ name: 'selectedObject', value: selectedObjectId, type: 'OBJECT_ID' }]);
+              }
+            }}>
+            Finish
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </SelectionContext.Provider>
   );
 };

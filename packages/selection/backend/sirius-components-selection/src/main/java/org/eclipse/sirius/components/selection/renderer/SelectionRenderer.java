@@ -59,7 +59,6 @@ public class SelectionRenderer {
         } else {
             objects = this.computeFlatListSelectionObject(selectionObjects);
         }
-        boolean expandAtOpening = this.selectionDescription.isExpandedAtOpening();
         boolean displayedAsTree = this.selectionDescription.isDisplayedAsTree();
         return Selection.newSelection(id)
                 .descriptionId(this.selectionDescription.getId())
@@ -67,7 +66,6 @@ public class SelectionRenderer {
                 .targetObjectId(targetObjectId)
                 .message(message)
                 .objects(objects)
-                .expendedAtOpening(expandAtOpening)
                 .displayedAsTree(displayedAsTree)
                 .build();
     }
