@@ -20,8 +20,8 @@ import FormGroup from '@mui/material/FormGroup';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
-import { makeStyles } from 'tss-react/mui';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { TreeFilter } from './ExplorerView.types';
 import { TreeFilterMenuProps } from './TreeFiltersMenu.types';
 
@@ -80,7 +80,8 @@ export const TreeFiltersMenu = ({ filters, onTreeFilterMenuItemClick }: TreeFilt
         open={open}
         anchorEl={anchorRef.current}
         role={undefined}
-        placement={'bottom-start'}>
+        placement={'bottom-start'}
+        transition>
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
             <Paper>
