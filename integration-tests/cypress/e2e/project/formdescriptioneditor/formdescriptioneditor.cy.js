@@ -31,7 +31,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     //make sure the data are fetched before selecting
     cy.getByTestId('create-object').should('be.enabled');
     cy.getByTestId('childCreationDescription').click();
-    cy.get('[data-value="Form Description"]').click();
+    cy.get('[data-value="descriptions-FormDescription"]').click();
     cy.getByTestId('create-object').click();
     // create the form description editor
     cy.getByTestId('New Form Description').click();
@@ -140,7 +140,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('New Form Description-more').should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('childCreationDescription').click().get('[data-value="Page Description"]').should('exist').click();
+    cy.getByTestId('childCreationDescription').click().get('[data-value="pages-PageDescription"]').should('exist').click();
     cy.getByTestId('create-object').click();
     // Adds a widget to the first page
     cy.getByTestId('PageDescription').eq(0).dblclick();
@@ -150,7 +150,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
       .click()
-      .get('[data-value="Widgets Pie Chart Description"]')
+      .get('[data-value="children-PieChartDescription"]')
       .should('exist')
       .click();
     cy.getByTestId('create-object').click();
@@ -162,7 +162,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
       .click()
-      .get('[data-value="Widgets Bar Chart Description"]')
+      .get('[data-value="children-BarChartDescription"]')
       .should('exist')
       .click();
     cy.getByTestId('create-object').click();
@@ -208,9 +208,9 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
       .click()
-      .get('[data-value="Conditional Styles Conditional Reference Widget Description Style"]')
+      .get('[data-value="conditionalStyles-ConditionalReferenceWidgetDescriptionStyle"]')
       .should('exist');
-    cy.get('[data-value="Style Widget Description Style"]').should('exist').click();
+    cy.get('[data-value="style-ReferenceWidgetDescriptionStyle"]').should('exist').click();
     cy.getByTestId('create-object').click();
     cy.getByTestId('Font Size').should('exist');
     cy.getByTestId('Italic').should('exist');
@@ -251,15 +251,15 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
   it('is enabled expression is available only for the editable widgets', () => {
     cy.getByTestId('PageDescription').dblclick();
     // Not editable widgets shouldn't have isEnabledExpression
-    checkWidgetIsEnabledExpression('Widgets Link', 'not.exist');
-    checkWidgetIsEnabledExpression('Widgets Pie Chart', 'not.exist');
-    checkWidgetIsEnabledExpression('Widgets Label', 'not.exist');
+    checkWidgetIsEnabledExpression('children-LinkDescription', 'not.exist');
+    checkWidgetIsEnabledExpression('children-PieChartDescription', 'not.exist');
+    checkWidgetIsEnabledExpression('children-LabelDescription', 'not.exist');
 
     // Editable widgets should have isEnabledExpression
-    checkWidgetIsEnabledExpression('Widgets Button', 'exist');
-    checkWidgetIsEnabledExpression('Widgets Flexbox Container', 'exist');
-    checkWidgetIsEnabledExpression('Toolbar Actions Button', 'exist');
-    checkWidgetIsEnabledExpression('Widgets Slider', 'exist');
+    checkWidgetIsEnabledExpression('children-ButtonDescription', 'exist');
+    checkWidgetIsEnabledExpression('children-FlexboxContainerDescription', 'exist');
+    checkWidgetIsEnabledExpression('toolbarActions-ButtonDescription', 'exist');
+    checkWidgetIsEnabledExpression('children-SliderDescription', 'exist');
   });
 
   function createBorderStyleAndCheckProperties(styleName) {
@@ -282,10 +282,10 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
   it('can create border style in a Group', () => {
     cy.getByTestId('PageDescription').dblclick();
     cy.getByTestId('GroupDescription-more').should('be.enabled').click();
-    createBorderStyleAndCheckProperties('Border Style Container Border Style');
+    createBorderStyleAndCheckProperties('borderStyle-ContainerBorderStyle');
 
     cy.getByTestId('GroupDescription-more').should('be.enabled').click();
-    createBorderStyleAndCheckProperties('Conditional Border Styles Conditional Container Border Style');
+    createBorderStyleAndCheckProperties('conditionalBorderStyles-ConditionalContainerBorderStyle');
     cy.getByTestId('Condition').should('exist');
   });
 
@@ -300,10 +300,10 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
 
     cy.getByTestId('GroupDescription').dblclick();
     cy.getByTestId('FlexboxContainerDescription-more').click();
-    createBorderStyleAndCheckProperties('Border Style Container Border Style');
+    createBorderStyleAndCheckProperties('borderStyle-ContainerBorderStyle');
 
     cy.getByTestId('FlexboxContainerDescription-more').click();
-    createBorderStyleAndCheckProperties('Conditional Border Styles Conditional Container Border Style');
+    createBorderStyleAndCheckProperties('conditionalBorderStyles-ConditionalContainerBorderStyle');
     cy.getByTestId('Condition').should('exist');
   });
 

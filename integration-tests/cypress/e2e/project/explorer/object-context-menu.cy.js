@@ -81,7 +81,7 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
     cy.getByTestId('create-object').should('be.enabled');
 
     cy.getByTestId('childCreationDescription').click();
-    cy.get('[data-value="Power Input"]').click();
+    cy.get('[data-value="powerInputs-PowerInput"]').click();
     cy.getByTestId('create-object').click();
 
     cy.getByTestId('explorer://').contains('PowerInput');
@@ -96,7 +96,7 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
     cy.getByTestId('create-object').should('be.enabled');
 
     cy.getByTestId('childCreationDescription').click();
-    cy.get('[data-value="Power Input"]').click();
+    cy.get('[data-value="powerInputs-PowerInput"]').click();
     cy.getByTestId('create-object').click();
 
     cy.getByTestId('explorer://').contains('PowerInput');

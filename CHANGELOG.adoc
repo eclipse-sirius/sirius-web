@@ -50,6 +50,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 
 * The `String` attribute `org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by the attribute `variables` of type `List<ToolVariable>`
 - https://github.com/eclipse-sirius/sirius-web/issues/3437[#3437] [core] Migrate frontend to MUI 5, if you contributed React componenent that use MUI, you should upgrade them to use MUI 5.
+- https://github.com/eclipse-sirius/sirius-web/issues/3815[#3815] Child creation descriptions are locale independent
 
 === Dependency update
 
