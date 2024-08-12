@@ -262,7 +262,7 @@ export const TreeItem = ({
   }
 
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    if (!state.editingMode) {
+    if (!state.editingMode && event.currentTarget.contains(event.target as HTMLElement)) {
       refDom.current.focus();
       if (!item.selectable) {
         return;
@@ -288,7 +288,7 @@ export const TreeItem = ({
   };
 
   const onBeginEditing = (event) => {
-    if (!item.editable || editingMode || readOnly) {
+    if (!item.editable || editingMode || readOnly || !event.currentTarget.contains(event.target as HTMLElement)) {
       return;
     }
     const { key } = event;
