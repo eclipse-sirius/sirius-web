@@ -74,20 +74,18 @@ export const TreeItemAction = ({
     };
 
     contextMenu = (
-      <div onClick={(event) => event.stopPropagation()} onKeyDown={(event) => event.stopPropagation()}>
-        <TreeItemContextMenu
-          menuAnchor={state.menuAnchor}
-          editingContextId={editingContextId}
-          treeId={treeId}
-          item={item}
-          readOnly={readOnly}
-          depth={depth}
-          onExpand={onExpand}
-          onExpandAll={onExpandAll}
-          enterEditingMode={enterEditingMode}
-          onClose={closeContextMenu}
-        />
-      </div>
+      <TreeItemContextMenu
+        menuAnchor={state.menuAnchor}
+        editingContextId={editingContextId}
+        treeId={treeId}
+        item={item}
+        readOnly={readOnly}
+        depth={depth}
+        onExpand={onExpand}
+        onExpandAll={onExpandAll}
+        enterEditingMode={enterEditingMode}
+        onClose={closeContextMenu}
+      />
     );
   }
 
