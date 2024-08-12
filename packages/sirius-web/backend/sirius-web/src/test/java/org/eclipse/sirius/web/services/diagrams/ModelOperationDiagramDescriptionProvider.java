@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.SelectionDialogTreeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramPaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -193,9 +195,12 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
     }
 
     private void createRenameElementNodeTool() {
+        SelectionDialogTreeDescription selectionDialogTreeDescription = new SelectionDialogTreeDescriptionBuilder()
+                .elementsExpression("aql:self.eResource().eAllContents()")
+                .build();
         var selectionDialog = new SelectionDialogDescriptionBuilder()
-                .selectionCandidatesExpression("aql:self.eResource().eAllContents()")
                 .selectionMessage("Select a new element")
+                .selectionDialogTreeDescription(selectionDialogTreeDescription)
                 .build();
 
         var setSelectedComponentName = new ViewBuilders().newSetValue()

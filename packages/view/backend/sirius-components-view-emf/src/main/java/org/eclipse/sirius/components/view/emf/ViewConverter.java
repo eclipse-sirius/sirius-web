@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.selection.description.SelectionDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,7 +118,10 @@ public class ViewConverter implements IViewConverter {
         String selectionDescriptionId = this.diagramIdProvider.getId(selectionDescription);
         return SelectionDescription.newSelectionDescription(selectionDescriptionId)
                 .objectsProvider(variableManager -> {
-                    Result result = interpreter.evaluateExpression(variableManager.getVariables(), selectionDescription.getSelectionCandidatesExpression());
+                    String expression = Optional.ofNullable(selectionDescription.getSelectionDialogTreeDescription())
+                            .map(SelectionDialogTreeDescription::getElementsExpression)
+                            .orElse("");
+                    Result result = interpreter.evaluateExpression(variableManager.getVariables(), expression);
                     return result.asObjects().orElse(List.of()).stream()
                             .filter(Objects::nonNull)
                             .toList();

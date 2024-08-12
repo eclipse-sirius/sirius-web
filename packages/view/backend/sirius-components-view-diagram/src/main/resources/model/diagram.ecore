@@ -354,10 +354,9 @@
         defaultValueLiteral="aql:selectedNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SelectionDialogDescription" eSuperTypes="#//DialogDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectionCandidatesExpression"
-        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
-        defaultValueLiteral="aql:self"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectionMessage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="selectionDialogTreeDescription"
+        eType="#//SelectionDialogTreeDescription" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ToolSection" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
@@ -382,4 +381,12 @@
         eType="#//NodeDescription"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DialogDescription" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SelectionDialogTreeDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementsExpression" lowerBound="1"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="childrenExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isSelectableExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+  </eClassifiers>
 </ecore:EPackage>

@@ -60,6 +60,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
@@ -529,6 +530,13 @@ public class DiagramSwitch<T> extends Switch<T> {
             case DiagramPackage.DIALOG_DESCRIPTION: {
                 DialogDescription dialogDescription = (DialogDescription) theEObject;
                 T result = this.caseDialogDescription(dialogDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.SELECTION_DIALOG_TREE_DESCRIPTION: {
+                SelectionDialogTreeDescription selectionDialogTreeDescription = (SelectionDialogTreeDescription) theEObject;
+                T result = this.caseSelectionDialogTreeDescription(selectionDialogTreeDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1197,6 +1205,21 @@ public class DiagramSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseDialogDescription(DialogDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Selection Dialog Tree Description</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Selection Dialog Tree Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSelectionDialogTreeDescription(SelectionDialogTreeDescription object) {
         return null;
     }
 

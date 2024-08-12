@@ -61,6 +61,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
@@ -186,6 +187,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createEdgeToolSection();
             case DiagramPackage.DROP_NODE_TOOL:
                 return this.createDropNodeTool();
+            case DiagramPackage.SELECTION_DIALOG_TREE_DESCRIPTION:
+                return this.createSelectionDialogTreeDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -633,6 +636,17 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     public DropNodeTool createDropNodeTool() {
         DropNodeToolImpl dropNodeTool = new DropNodeToolImpl();
         return dropNodeTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SelectionDialogTreeDescription createSelectionDialogTreeDescription() {
+        SelectionDialogTreeDescriptionImpl selectionDialogTreeDescription = new SelectionDialogTreeDescriptionImpl();
+        return selectionDialogTreeDescription;
     }
 
     /**

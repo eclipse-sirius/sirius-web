@@ -61,6 +61,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
@@ -312,6 +313,11 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseDialogDescription(DialogDescription object) {
             return DiagramAdapterFactory.this.createDialogDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseSelectionDialogTreeDescription(SelectionDialogTreeDescription object) {
+            return DiagramAdapterFactory.this.createSelectionDialogTreeDescriptionAdapter();
         }
 
         @Override
@@ -1005,6 +1011,20 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createDialogDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription <em>Selection Dialog Tree
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription
+     * @generated
+     */
+    public Adapter createSelectionDialogTreeDescriptionAdapter() {
         return null;
     }
 

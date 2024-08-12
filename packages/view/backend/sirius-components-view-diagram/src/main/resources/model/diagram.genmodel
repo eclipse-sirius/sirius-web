@@ -264,8 +264,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DeleteView/viewExpression"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//SelectionDialogDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/selectionCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/selectionMessage"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//SelectionDialogDescription/selectionDialogTreeDescription"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//ToolSection">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ToolSection/name"/>
@@ -284,5 +284,10 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//DropNodeTool/acceptedNodeTypes"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//DialogDescription"/>
+    <genClasses ecoreClass="diagram.ecore#//SelectionDialogTreeDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogTreeDescription/elementsExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogTreeDescription/childrenExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogTreeDescription/isSelectableExpression"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

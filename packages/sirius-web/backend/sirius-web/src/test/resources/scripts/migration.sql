@@ -913,3 +913,108 @@ INSERT INTO document (
   '2024-07-18 15:00:0.000',
   '2024-07-18 15:00:0.000'
 );
+
+
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '19d73d38-3de2-4d03-a8f1-ce36c2ed36db',
+  'Migration SelectionDialogDescription#selectionCandidatesExpression Studio',
+  '2024-07-18 15:00:0.000',
+  '2024-07-18 15:00:0.000'
+);
+INSERT INTO nature (
+  project_id,
+  name
+) VALUES (
+  '19d73d38-3de2-4d03-a8f1-ce36c2ed36db',
+  'siriusComponents://nature?kind=studio'
+);
+INSERT INTO semantic_data (
+  id,
+  project_id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '06d828d9-c2c6-46d0-a9c4-7fabd588755b',
+  '19d73d38-3de2-4d03-a8f1-ce36c2ed36db',
+  '2024-07-01 15:00:0.000',
+  '2024-07-01 15:00:0.000'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '06d828d9-c2c6-46d0-a9c4-7fabd588755b',
+  'http://www.eclipse.org/sirius-web/view'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '06d828d9-c2c6-46d0-a9c4-7fabd588755b',
+  'http://www.eclipse.org/sirius-web/diagram'
+);
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '8652ae06-6754-4c46-aa4c-2c8db2c3b602',
+  '06d828d9-c2c6-46d0-a9c4-7fabd588755b',
+  'SelectionDialogDescription#selectionCandidatesExpression migration',
+  '{
+  "json": { "version": "1.0", "encoding": "utf-8" },
+  "ns": { "diagram": "http://www.eclipse.org/sirius-web/diagram", "view": "http://www.eclipse.org/sirius-web/view" },
+  "content": [
+    {
+      "id": "00deb638-5c32-4d94-983d-1d00517ac82f",
+      "eClass": "view:View",
+      "data": {
+        "descriptions": [
+          {
+            "id": "683b678c-6263-4d21-b25a-502661859198",
+            "eClass": "diagram:DiagramDescription",
+            "data": {
+              "name": "SelectionDialogDescription#selectionCandidatesExpression migration",
+              "domainType": "wilson::Root",
+              "titleExpression": "wilson diagram",
+              "palette": {
+                "id": "3e54cf6c-a1d0-4eaa-bfca-48fbb9a25695",
+                "eClass": "diagram:DiagramPalette",
+                "data": {
+                  "nodeTools": [
+                    {
+                      "id": "b5b0dfc1-566c-48ae-9907-00f50a553dae",
+                      "eClass": "diagram:NodeTool",
+                      "data": {
+                        "name": "Selection Tool",
+                        "dialogDescription": {
+                          "id": "6a4e7200-2040-46fb-89c3-9060f321ecf4",
+                          "eClass": "diagram:SelectionDialogDescription",
+                          "data": {
+                            "selectionCandidatesExpression": "aql:self.eContents()",
+                            "selectionMessage": "Select an element"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}',
+  '2024-07-18 15:00:0.000',
+  '2024-07-18 15:00:0.000'
+);

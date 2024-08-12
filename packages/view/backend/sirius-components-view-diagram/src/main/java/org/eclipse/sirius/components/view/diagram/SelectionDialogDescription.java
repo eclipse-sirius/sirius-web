@@ -20,10 +20,10 @@ package org.eclipse.sirius.components.view.diagram;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionCandidatesExpression
- * <em>Selection Candidates Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionMessage <em>Selection
  * Message</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription
+ * <em>Selection Dialog Tree Description</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription()
@@ -31,30 +31,6 @@ package org.eclipse.sirius.components.view.diagram;
  * @generated
  */
 public interface SelectionDialogDescription extends DialogDescription {
-    /**
-     * Returns the value of the '<em><b>Selection Candidates Expression</b></em>' attribute. The default value is
-     * <code>"aql:self"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Selection Candidates Expression</em>' attribute.
-     * @see #setSelectionCandidatesExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_SelectionCandidatesExpression()
-     * @model default="aql:self" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
-    String getSelectionCandidatesExpression();
-
-    /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionCandidatesExpression
-     * <em>Selection Candidates Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Selection Candidates Expression</em>' attribute.
-     * @see #getSelectionCandidatesExpression()
-     * @generated
-     */
-    void setSelectionCandidatesExpression(String value);
-
     /**
      * Returns the value of the '<em><b>Selection Message</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -78,5 +54,29 @@ public interface SelectionDialogDescription extends DialogDescription {
      * @generated
      */
     void setSelectionMessage(String value);
+
+    /**
+     * Returns the value of the '<em><b>Selection Dialog Tree Description</b></em>' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Selection Dialog Tree Description</em>' containment reference.
+     * @see #setSelectionDialogTreeDescription(SelectionDialogTreeDescription)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_SelectionDialogTreeDescription()
+     * @model containment="true"
+     * @generated
+     */
+    SelectionDialogTreeDescription getSelectionDialogTreeDescription();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription
+     * <em>Selection Dialog Tree Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Selection Dialog Tree Description</em>' containment reference.
+     * @see #getSelectionDialogTreeDescription()
+     * @generated
+     */
+    void setSelectionDialogTreeDescription(SelectionDialogTreeDescription value);
 
 } // SelectionDialogDescription

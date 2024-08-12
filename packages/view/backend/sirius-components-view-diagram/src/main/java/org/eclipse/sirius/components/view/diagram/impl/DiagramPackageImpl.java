@@ -70,6 +70,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -406,6 +407,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     private EClass dialogDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass selectionDialogTreeDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2051,7 +2059,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getSelectionDialogDescription_SelectionCandidatesExpression() {
+    public EAttribute getSelectionDialogDescription_SelectionMessage() {
         return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -2061,8 +2069,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getSelectionDialogDescription_SelectionMessage() {
-        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(1);
+    public EReference getSelectionDialogDescription_SelectionDialogTreeDescription() {
+        return (EReference) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2183,6 +2191,46 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EClass getDialogDescription() {
         return this.dialogDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getSelectionDialogTreeDescription() {
+        return this.selectionDialogTreeDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogTreeDescription_ElementsExpression() {
+        return (EAttribute) this.selectionDialogTreeDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogTreeDescription_ChildrenExpression() {
+        return (EAttribute) this.selectionDialogTreeDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogTreeDescription_IsSelectableExpression() {
+        return (EAttribute) this.selectionDialogTreeDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -2504,8 +2552,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.deleteViewEClass, DELETE_VIEW__VIEW_EXPRESSION);
 
         this.selectionDialogDescriptionEClass = this.createEClass(SELECTION_DIALOG_DESCRIPTION);
-        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION);
         this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE);
+        this.createEReference(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION);
 
         this.toolSectionEClass = this.createEClass(TOOL_SECTION);
         this.createEAttribute(this.toolSectionEClass, TOOL_SECTION__NAME);
@@ -2524,6 +2572,11 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.dropNodeToolEClass, DROP_NODE_TOOL__ACCEPTED_NODE_TYPES);
 
         this.dialogDescriptionEClass = this.createEClass(DIALOG_DESCRIPTION);
+
+        this.selectionDialogTreeDescriptionEClass = this.createEClass(SELECTION_DIALOG_TREE_DESCRIPTION);
+        this.createEAttribute(this.selectionDialogTreeDescriptionEClass, SELECTION_DIALOG_TREE_DESCRIPTION__ELEMENTS_EXPRESSION);
+        this.createEAttribute(this.selectionDialogTreeDescriptionEClass, SELECTION_DIALOG_TREE_DESCRIPTION__CHILDREN_EXPRESSION);
+        this.createEAttribute(this.selectionDialogTreeDescriptionEClass, SELECTION_DIALOG_TREE_DESCRIPTION__IS_SELECTABLE_EXPRESSION);
 
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
@@ -2913,10 +2966,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.selectionDialogDescriptionEClass, SelectionDialogDescription.class, "SelectionDialogDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getSelectionDialogDescription_SelectionCandidatesExpression(), theViewPackage.getInterpretedExpression(), "selectionCandidatesExpression", "aql:self", 0, 1,
-                SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getSelectionDialogDescription_SelectionMessage(), this.ecorePackage.getEString(), "selectionMessage", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getSelectionDialogDescription_SelectionDialogTreeDescription(), this.getSelectionDialogTreeDescription(), null, "selectionDialogTreeDescription", null, 0, 1,
+                SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.toolSectionEClass, ToolSection.class, "ToolSection", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getToolSection_Name(), theViewPackage.getIdentifier(), "name", "Tool Section", 1, 1, ToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
@@ -2945,6 +2998,14 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.dialogDescriptionEClass, DialogDescription.class, "DialogDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.selectionDialogTreeDescriptionEClass, SelectionDialogTreeDescription.class, "SelectionDialogTreeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getSelectionDialogTreeDescription_ElementsExpression(), theViewPackage.getInterpretedExpression(), "elementsExpression", "", 1, 1,
+                SelectionDialogTreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogTreeDescription_ChildrenExpression(), theViewPackage.getInterpretedExpression(), "childrenExpression", null, 0, 1,
+                SelectionDialogTreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogTreeDescription_IsSelectableExpression(), theViewPackage.getInterpretedExpression(), "isSelectableExpression", null, 0, 1,
+                SelectionDialogTreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle");
