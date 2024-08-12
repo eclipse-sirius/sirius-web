@@ -313,6 +313,15 @@ public interface DiagramFactory extends EFactory {
     DropNodeTool createDropNodeTool();
 
     /**
+     * Returns a new object of class '<em>Selection Dialog Tree Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Selection Dialog Tree Description</em>'.
+     * @generated
+     */
+    SelectionDialogTreeDescription createSelectionDialogTreeDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

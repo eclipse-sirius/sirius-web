@@ -17,10 +17,12 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 
@@ -50,23 +52,9 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addSelectionCandidatesExpressionPropertyDescriptor(object);
             this.addSelectionMessagePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Selection Candidates Expression feature. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addSelectionCandidatesExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_SelectionDialogDescription_selectionCandidatesExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_selectionCandidatesExpression_feature", "_UI_SelectionDialogDescription_type"),
-                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -79,6 +67,36 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
                 this.getString("_UI_SelectionDialogDescription_selectionMessage_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_selectionMessage_feature", "_UI_SelectionDialogDescription_type"),
                 DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+        if (this.childrenFeatures == null) {
+            super.getChildrenFeatures(object);
+            this.childrenFeatures.add(DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION);
+        }
+        return this.childrenFeatures;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    protected EStructuralFeature getChildFeature(Object object, Object child) {
+        // Check the type of the specified child object and return the proper feature to use for
+        // adding (see {@link AddCommand}) it as a child.
+
+        return super.getChildFeature(object, child);
     }
 
     /**
@@ -108,7 +126,7 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
      */
     @Override
     public String getText(Object object) {
-        String label = ((SelectionDialogDescription) object).getSelectionCandidatesExpression();
+        String label = ((SelectionDialogDescription) object).getSelectionMessage();
         return label == null || label.length() == 0 ? this.getString("_UI_SelectionDialogDescription_type") : this.getString("_UI_SelectionDialogDescription_type") + " " + label;
     }
 
@@ -124,9 +142,11 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(SelectionDialogDescription.class)) {
-            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION:
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
         super.notifyChanged(notification);
@@ -141,6 +161,9 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+
+        newChildDescriptors.add(
+                this.createChildParameter(DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION, DiagramFactory.eINSTANCE.createSelectionDialogTreeDescription()));
     }
 
 }

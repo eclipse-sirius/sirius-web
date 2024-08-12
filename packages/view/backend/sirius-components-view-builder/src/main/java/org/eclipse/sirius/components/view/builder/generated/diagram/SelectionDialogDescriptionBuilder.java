@@ -43,21 +43,22 @@ public class SelectionDialogDescriptionBuilder {
     }
 
     /**
-     * Setter for SelectionCandidatesExpression.
-     *
-     * @generated
-     */
-    public SelectionDialogDescriptionBuilder selectionCandidatesExpression(java.lang.String value) {
-        this.getSelectionDialogDescription().setSelectionCandidatesExpression(value);
-        return this;
-    }
-    /**
      * Setter for SelectionMessage.
      *
      * @generated
      */
     public SelectionDialogDescriptionBuilder selectionMessage(java.lang.String value) {
         this.getSelectionDialogDescription().setSelectionMessage(value);
+        return this;
+    }
+
+    /**
+     * Setter for SelectionDialogTreeDescription.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder selectionDialogTreeDescription(org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription value) {
+        this.getSelectionDialogDescription().setSelectionDialogTreeDescription(value);
         return this;
     }
 

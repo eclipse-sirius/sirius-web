@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder.generated.diagram;
 
+import org.eclipse.sirius.components.view.builder.generated.SelectionDialogTreeDescriptionBuilder;
+
 /**
  * Use to instantiate a new builder.
  *
@@ -357,6 +359,16 @@ public class DiagramBuilders {
      */
     public DropNodeToolBuilder newDropNodeTool() {
         return new DropNodeToolBuilder();
+    }
+
+    /**
+     * Instantiate a SelectionDialogTreeDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public SelectionDialogTreeDescriptionBuilder newSelectionDialogTreeDescription() {
+        return new SelectionDialogTreeDescriptionBuilder();
     }
 
 

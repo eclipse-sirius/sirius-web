@@ -906,6 +906,30 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SelectionDialogTreeDescriptionItemProvider selectionDialogTreeDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSelectionDialogTreeDescriptionAdapter() {
+        if (this.selectionDialogTreeDescriptionItemProvider == null) {
+            this.selectionDialogTreeDescriptionItemProvider = new SelectionDialogTreeDescriptionItemProvider(this);
+        }
+
+        return this.selectionDialogTreeDescriptionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1102,6 +1126,8 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.edgeToolSectionItemProvider.dispose();
         if (this.dropNodeToolItemProvider != null)
             this.dropNodeToolItemProvider.dispose();
+        if (this.selectionDialogTreeDescriptionItemProvider != null)
+            this.selectionDialogTreeDescriptionItemProvider.dispose();
     }
 
     /**
