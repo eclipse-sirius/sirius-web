@@ -16,8 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 /**
  * Configuration of the internationalization.
@@ -26,11 +24,6 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
  */
 @Configuration
 public class I18nConfiguration {
-
-    @Bean
-    public LocaleResolver localeResolver() {
-        return new AcceptHeaderLocaleResolver();
-    }
 
     @Bean
     public ResourceBundleMessageSource resourceBundleMessageSource() {
