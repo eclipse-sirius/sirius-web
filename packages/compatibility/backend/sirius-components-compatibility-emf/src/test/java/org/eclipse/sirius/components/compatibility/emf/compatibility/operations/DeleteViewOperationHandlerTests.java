@@ -157,7 +157,7 @@ public class DeleteViewOperationHandlerTests {
         this.operationTestContext.getVariables().put(CONTAINER_VIEW, diagram);
         this.operationTestContext.getVariables().put(VariableManager.SELF, diagram.getNodes().get(0));
         this.deleteViewOperation = ToolFactory.eINSTANCE.createDeleteView();
-        this.deleteViewOperationHandler = new DeleteViewOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getRepresentationMetadataSearchService(),
+        this.deleteViewOperationHandler = new DeleteViewOperationHandler(this.operationTestContext.getObjectService(),
                 this.operationTestContext.getIdentifierProvider(), this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(List.of()), this.deleteViewOperation);
     }
 

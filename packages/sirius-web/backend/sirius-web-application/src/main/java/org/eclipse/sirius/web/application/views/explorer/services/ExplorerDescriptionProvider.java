@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvi
 import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
 import org.eclipse.sirius.components.core.CoreImageConstants;
-import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -48,8 +47,8 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.configuration.ExplorerDescriptionProviderConfiguration;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -84,13 +83,13 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     private final List<IDeleteTreeItemHandler> deleteTreeItemHandlers;
 
-    private final IRepresentationDataSearchService representationDataSearchService;
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
 
     public ExplorerDescriptionProvider(ExplorerDescriptionProviderConfiguration explorerDescriptionProviderConfiguration, List<IRepresentationImageProvider> representationImageProviders, IExplorerElementsProvider explorerElementsProvider, IExplorerChildrenProvider explorerChildrenProvider, List<IRenameTreeItemHandler> renameTreeItemHandlers, List<IDeleteTreeItemHandler> deleteTreeItemHandlers) {
         this.objectService = explorerDescriptionProviderConfiguration.getObjectService();
         this.urlParser = explorerDescriptionProviderConfiguration.getUrlParser();
-        this.representationDataSearchService = explorerDescriptionProviderConfiguration.getRepresentationDataSearchService();
+        this.representationMetadataSearchService = explorerDescriptionProviderConfiguration.getRepresentationMetadataSearchService();
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.explorerElementsProvider = Objects.requireNonNull(explorerElementsProvider);
         this.explorerChildrenProvider = Objects.requireNonNull(explorerChildrenProvider);
@@ -154,7 +153,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
         String id = null;
         if (self instanceof RepresentationMetadata representationMetadata) {
-            id = representationMetadata.getId();
+            id = representationMetadata.getId().toString();
         } else if (self instanceof Resource resource) {
             id = resource.getURI().path().substring(1);
         } else if (self instanceof EObject) {
@@ -326,8 +325,8 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
         Object result = null;
 
         if (self instanceof RepresentationMetadata && optionalTreeItemId.isPresent() && optionalEditingContext.isPresent()) {
-            var optionalRepresentationMetadata = new UUIDParser().parse(optionalTreeItemId.get()).flatMap(this.representationDataSearchService::findMetadataById);
-            var repId = optionalRepresentationMetadata.map(RepresentationDataMetadataOnly::targetObjectId).orElse(null);
+            var optionalRepresentationMetadata = new UUIDParser().parse(optionalTreeItemId.get()).flatMap(this.representationMetadataSearchService::findMetadataById);
+            var repId = optionalRepresentationMetadata.map(RepresentationMetadata::getTargetObjectId).orElse(null);
             result = this.objectService.getObject(optionalEditingContext.get(), repId);
         } else if (self instanceof EObject eObject) {
             Object semanticContainer = eObject.eContainer();

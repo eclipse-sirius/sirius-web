@@ -24,9 +24,9 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNameUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataContentUpdatedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataUpdateService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentUpdatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDomain;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
@@ -69,10 +69,10 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     private ISemanticDataUpdateService semanticDataUpdateService;
 
     @Autowired
-    private IRepresentationDataSearchService representationDataSearchService;
+    private IRepresentationContentSearchService representationContentSearchService;
 
     @Autowired
-    private IRepresentationDataUpdateService representationDataUpdateService;
+    private IRepresentationContentUpdateService representationContentUpdateService;
 
     @BeforeEach
     public void beforeEach() {
@@ -202,21 +202,21 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRepresentationWhenContentModifiedDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        var optionalRepresentationData = this.representationDataSearchService.findContentById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
-        assertThat(optionalRepresentationData).isPresent();
+        var optionalRepresentationContent = this.representationContentSearchService.findContentByRepresentationMetadata(AggregateReference.to(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION));
+        assertThat(optionalRepresentationContent).isPresent();
 
-        var representationData = optionalRepresentationData.get();
+        var representationContent = optionalRepresentationContent.get();
 
-        var originalContent = representationData.content();
+        var originalContent = representationContent.getContent();
         var newContent = originalContent + "modified";
 
-        this.representationDataUpdateService.updateContent(null, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
+        this.representationContentUpdateService.updateContentByRepresentationId(null, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
         assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
         var event = this.domainEventCollector.getDomainEvents().get(0);
-        assertThat(event instanceof RepresentationDataContentUpdatedEvent represnetationDataContentUpdateEvent && represnetationDataContentUpdateEvent.representationData().getContent().equals(newContent)).isTrue();
+        assertThat(event instanceof RepresentationContentUpdatedEvent representationDataContentUpdateEvent && representationDataContentUpdateEvent.representationContent().getContent().equals(newContent)).isTrue();
     }
 
     @Test
@@ -225,13 +225,13 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRepresentationWhenContentNotModifiedNoDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        var optionalRepresentationData = this.representationDataSearchService.findContentById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
-        assertThat(optionalRepresentationData).isPresent();
+        var optionalRepresentationContent = this.representationContentSearchService.findContentByRepresentationMetadata(AggregateReference.to(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION));
+        assertThat(optionalRepresentationContent).isPresent();
 
-        var representationData = optionalRepresentationData.get();
+        var representationContent = optionalRepresentationContent.get();
 
-        var newContent = representationData.content();
-        this.representationDataUpdateService.updateContent(null, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
+        var newContent = representationContent.getContent();
+        this.representationContentUpdateService.updateContentByRepresentationId(null, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 

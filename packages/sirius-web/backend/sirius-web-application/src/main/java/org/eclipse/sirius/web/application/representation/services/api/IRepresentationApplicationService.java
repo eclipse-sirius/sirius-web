@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.application.representation.services.api;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.components.core.RepresentationMetadata;
+import org.eclipse.sirius.web.application.representation.dto.RepresentationMetadataDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,7 +25,9 @@ import org.springframework.data.domain.Pageable;
  */
 public interface IRepresentationApplicationService {
 
-    Page<RepresentationMetadata> findAllByEditingContextId(String editingContextId, Pageable pageable);
+    Page<RepresentationMetadataDTO> findAllByEditingContextId(String editingContextId, Pageable pageable);
 
     Optional<String> findEditingContextIdFromRepresentationId(String representationId);
+
+    Optional<RepresentationMetadataDTO> findRepresentationMetadataById(String representationMetadataId);
 }

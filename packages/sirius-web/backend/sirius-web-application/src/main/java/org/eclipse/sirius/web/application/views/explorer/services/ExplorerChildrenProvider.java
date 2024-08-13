@@ -19,15 +19,16 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeItemAlteredContentProvider;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -42,14 +43,11 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    private final IRepresentationDataSearchService representationDataSearchService;
-
     private final List<IExplorerTreeItemAlteredContentProvider> alteredContentProviders;
 
-    public ExplorerChildrenProvider(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationDataSearchService representationDataSearchService, List<IExplorerTreeItemAlteredContentProvider> alteredContentProviders) {
+    public ExplorerChildrenProvider(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, List<IExplorerTreeItemAlteredContentProvider> alteredContentProviders) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
-        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
         this.alteredContentProviders = Objects.requireNonNull(alteredContentProviders);
     }
 
@@ -62,10 +60,12 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
             hasChildren = !resource.getContents().isEmpty();
         } else if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
+            var optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
 
-            if (!hasChildren) {
+            if (!hasChildren && optionalEditingContextId.isPresent()) {
+                var projectId = optionalEditingContextId.get();
                 String id = this.objectService.getId(eObject);
-                hasChildren = this.representationDataSearchService.existAnyRepresentationForTargetObjectId(id);
+                hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(projectId), id);
             }
         }
         return hasChildren;
@@ -113,11 +113,13 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllByTargetObjectId(editingContext, id));
-                    representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
-                    result.addAll(representationMetadata);
-                    List<Object> contents = this.objectService.getContents(self);
-                    result.addAll(contents);
+                    new UUIDParser().parse(editingContext.getId()).ifPresent(projectId -> {
+                        var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id));
+                        representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
+                        result.addAll(representationMetadata);
+                        List<Object> contents = this.objectService.getContents(self);
+                        result.addAll(contents);
+                    });
                 }
             }
         }
@@ -140,7 +142,7 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
 
         String id = null;
         if (self instanceof RepresentationMetadata representationMetadata) {
-            id = representationMetadata.getId();
+            id = representationMetadata.getId().toString();
         } else if (self instanceof Resource resource) {
             id = resource.getURI().path().substring(1);
         } else if (self instanceof EObject) {

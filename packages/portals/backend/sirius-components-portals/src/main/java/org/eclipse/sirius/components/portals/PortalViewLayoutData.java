@@ -75,7 +75,7 @@ public final class PortalViewLayoutData {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String portalViewId;
+        private final String portalViewId;
 
         private int x;
 
@@ -111,7 +111,7 @@ public final class PortalViewLayoutData {
 
         public PortalViewLayoutData build() {
             PortalViewLayoutData portalViewLayoutData = new PortalViewLayoutData();
-            portalViewLayoutData.portalViewId = this.portalViewId;
+            portalViewLayoutData.portalViewId = Objects.requireNonNull(this.portalViewId);
             portalViewLayoutData.x = this.x;
             portalViewLayoutData.y = this.y;
             portalViewLayoutData.width = this.width;

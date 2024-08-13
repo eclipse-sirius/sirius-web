@@ -64,6 +64,8 @@ import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementT
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.representations.WorkbenchSelection;
+import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -351,7 +353,19 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var tool = this.createTool(TOOL_ID, false, List.of(edgeDescription));
+        String selectionEntryId = "entryId";
+        String selectionEntryLabel = "entry label";
+        String selectionEntryKind = "entryKind";
+        var expectedSelectionEntry = new WorkbenchSelectionEntry(selectionEntryId, selectionEntryLabel, selectionEntryKind);
+        var expectedWorkbenchSelection = new WorkbenchSelection(List.of(expectedSelectionEntry));
+
+        var tool = this.createTool(TOOL_ID, false, List.of(), null, variableManager -> {
+            var newSelectionEntry = new WorkbenchSelectionEntry(selectionEntryId, selectionEntryLabel, selectionEntryKind);
+            var newWorkbenchSelection = new WorkbenchSelection(List.of(newSelectionEntry));
+            var success = new Success();
+            success.getParameters().put(Success.NEW_SELECTION, newWorkbenchSelection);
+            return success;
+        });
 
         var toolService = new IToolService.NoOp() {
             @Override
@@ -379,6 +393,10 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(InvokeSingleClickOnDiagramElementToolSuccessPayload.class);
+
+        var workbenchSelection = ((InvokeSingleClickOnDiagramElementToolSuccessPayload) payload).newSelection();
+        assertThat(workbenchSelection).isNotNull();
+        assertThat(workbenchSelection).isEqualTo(expectedWorkbenchSelection);
     }
 
     @Test
