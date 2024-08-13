@@ -18,12 +18,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.representation.dto.RepresentationMetadataDTO;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationApplicationService;
+import org.eclipse.sirius.web.application.representation.services.api.IRepresentationMetadataMapper;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -39,40 +40,48 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RepresentationApplicationService implements IRepresentationApplicationService {
 
-    private final IRepresentationDataSearchService representationDataSearchService;
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    public RepresentationApplicationService(IRepresentationDataSearchService representationDataSearchService) {
-        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
+    private final IRepresentationMetadataMapper representationMetadataMapper;
+
+    public RepresentationApplicationService(IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataMapper representationMetadataMapper) {
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.representationMetadataMapper = Objects.requireNonNull(representationMetadataMapper);
     }
 
     @Override
-    public Page<RepresentationMetadata> findAllByEditingContextId(String editingContextId, Pageable pageable) {
-        var representationData =  new UUIDParser().parse(editingContextId)
+    @Transactional(readOnly = true)
+    public Page<RepresentationMetadataDTO> findAllByEditingContextId(String editingContextId, Pageable pageable) {
+        var representationMetadata =  new UUIDParser().parse(editingContextId)
                 .map(AggregateReference::<Project, UUID>to)
-                .map(this.representationDataSearchService::findAllMetadataByProject)
+                .map(this.representationMetadataSearchService::findAllMetadataByProject)
                 .orElse(List.of())
                 .stream()
-                .sorted(Comparator.comparing(RepresentationDataMetadataOnly::label))
+                .sorted(Comparator.comparing(RepresentationMetadata::getLabel))
                 .toList();
 
         int startIndex = (int) pageable.getOffset() * pageable.getPageSize();
-        int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), representationData.size());
-        var representationMetadata = representationData.subList(startIndex, endIndex).stream()
-                .map(this::toRepresentationMetadata)
+        int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), representationMetadata.size());
+        var representationMetadataDTO = representationMetadata.subList(startIndex, endIndex).stream()
+                .map(this.representationMetadataMapper::toDTO)
                 .toList();
-        return new PageImpl<>(representationMetadata, pageable, representationData.size());
-    }
-
-    private RepresentationMetadata toRepresentationMetadata(RepresentationDataMetadataOnly representationData) {
-        return new RepresentationMetadata(representationData.id().toString(), representationData.kind(), representationData.label(), representationData.descriptionId());
+        return new PageImpl<>(representationMetadataDTO, pageable, representationMetadataDTO.size());
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<String> findEditingContextIdFromRepresentationId(String representationId) {
         return new UUIDParser().parse(representationId)
-                .flatMap(this.representationDataSearchService::findProjectByRepresentationId)
+                .flatMap(this.representationMetadataSearchService::findProjectByRepresentationId)
                 .map(AggregateReference::getId)
                 .map(UUID::toString);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<RepresentationMetadataDTO> findRepresentationMetadataById(String representationMetadataId) {
+        return new UUIDParser().parse(representationMetadataId)
+                .flatMap(this.representationMetadataSearchService::findMetadataById)
+                .map(this.representationMetadataMapper::toDTO);
     }
 }

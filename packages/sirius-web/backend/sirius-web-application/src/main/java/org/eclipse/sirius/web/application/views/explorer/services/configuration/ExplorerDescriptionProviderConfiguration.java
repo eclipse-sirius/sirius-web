@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,12 +31,12 @@ public class ExplorerDescriptionProviderConfiguration {
 
     private final IURLParser urlParser;
 
-    private final IRepresentationDataSearchService representationDataSearchService;
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    public ExplorerDescriptionProviderConfiguration(IObjectService objectService, IURLParser urlParser, IRepresentationDataSearchService representationDataSearchService) {
+    public ExplorerDescriptionProviderConfiguration(IObjectService objectService, IURLParser urlParser, IRepresentationMetadataSearchService representationMetadataSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
-        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
     }
 
     public IObjectService getObjectService() {
@@ -47,7 +47,7 @@ public class ExplorerDescriptionProviderConfiguration {
         return this.urlParser;
     }
 
-    public IRepresentationDataSearchService getRepresentationDataSearchService() {
-        return this.representationDataSearchService;
+    public IRepresentationMetadataSearchService getRepresentationMetadataSearchService() {
+        return this.representationMetadataSearchService;
     }
 }

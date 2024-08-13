@@ -42,8 +42,8 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.services.forms.FormVariableViewPreEditingContextProcessor;
 import org.eclipse.sirius.web.services.forms.MasterDetailsFormDescriptionProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
@@ -86,7 +86,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     @Autowired
-    private IRepresentationDataRepository representationDataRepository;
+    private IRepresentationMetadataRepository representationMetadataRepository;
 
     @BeforeEach
     public void beforeEach() {
@@ -206,7 +206,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
 
         var formId =  new AtomicReference<String>();
-        var representationData = new AtomicReference<RepresentationData>();
+        var representationMetadata = new AtomicReference<RepresentationMetadata>();
 
         Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
                 .filter(FormRefreshedEventPayload.class::isInstance)
@@ -222,12 +222,12 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
 
                     var representationId = new UUIDParser().parse(form.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid identifier"));
                     formId.set(form.getId());
-                    this.representationDataRepository.findById(representationId).ifPresentOrElse(representationData::set, () -> fail("Missing representation data"));
+                    this.representationMetadataRepository.findById(representationId).ifPresentOrElse(representationMetadata::set, () -> fail("Missing representation data"));
                 }, () -> fail("Missing form"));
 
         Runnable reloadForm = () -> {
             // Ask the Form to reload (and thus to refresh)
-            this.representationDataRepository.save(representationData.get());
+            this.representationMetadataRepository.save(representationMetadata.get());
             TestTransaction.flagForCommit();
             TestTransaction.end();
             TestTransaction.start();

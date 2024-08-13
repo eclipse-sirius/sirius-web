@@ -18,14 +18,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.data.MigrationIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -49,10 +53,16 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
     private IEditingContextSearchService editingContextSearchService;
 
     @Autowired
-    private IRepresentationDataSearchService representationDataSearchService;
+    private IRepresentationMetadataSearchService representationMetadataSearchService;
+
+    @Autowired
+    private IRepresentationContentSearchService representationContentSearchService;
 
     @Autowired
     private IRepresentationSearchService representationSearchService;
+
+    @Autowired
+    private IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
 
     @Autowired
     private IRepresentationPersistenceService representationPersistenceService;
@@ -73,14 +83,14 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
 
         this.representationPersistenceService.save(null, optionalEditingContext.get(), optionalRepresentation.get());
 
-        var optionalUpdatedRepresentationData = this.representationDataSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
-        assertThat(optionalUpdatedRepresentationData).isPresent();
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
+        assertThat(optionalUpdatedRepresentationContent).isPresent();
 
-        var updatedRepresentationData = optionalUpdatedRepresentationData.get();
+        var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();
 
-        assertThat(updatedRepresentationData.migrationVersion()).isEqualTo("9999.12.99-300012310900");
+        assertThat(updatedRepresentationContent.getMigrationVersion()).isEqualTo("9999.12.99-300012310900");
         // The name is empty because we registered an anonymous representation migration participant.
-        assertThat(updatedRepresentationData.lastMigrationPerformed()).isEqualTo("");
+        assertThat(updatedRepresentationContent.getLastMigrationPerformed()).isEqualTo("");
     }
 
     @Test
@@ -96,15 +106,21 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
         var representation = optionalRepresentation.get();
         var newHierarchy = new Hierarchy(UUID.randomUUID().toString(), representation.getDescriptionId(), representation.getTargetObjectId(), representation.getLabel(), representation.getKind(), representation.getChildNodes());
 
+        var representationMetadata = new RepresentationMetadata(newHierarchy.getId(), newHierarchy.getKind(), newHierarchy.getLabel(), newHierarchy.getDescriptionId());
+        this.representationMetadataPersistenceService.save(null, optionalEditingContext.get(), representationMetadata, newHierarchy.getTargetObjectId());
         this.representationPersistenceService.save(null, optionalEditingContext.get(), newHierarchy);
 
-        var optionalUpdatedRepresentationData = this.representationDataSearchService.findContentById(UUID.fromString(newHierarchy.getId()));
-        assertThat(optionalUpdatedRepresentationData).isPresent();
-        var updatedRepresentationData = optionalUpdatedRepresentationData.get();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
-        assertThat(updatedRepresentationData.migrationVersion()).isEqualTo("9999.12.99-300012310900");
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(UUID.fromString(newHierarchy.getId()));
+        assertThat(optionalUpdatedRepresentationContent).isPresent();
+        var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();
+
+        assertThat(updatedRepresentationContent.getMigrationVersion()).isEqualTo("9999.12.99-300012310900");
         // The name is not empty because the initial representation migration participant is initialized with "none"
-        assertThat(updatedRepresentationData.lastMigrationPerformed()).isEqualTo("none");
+        assertThat(updatedRepresentationContent.getLastMigrationPerformed()).isEqualTo("none");
     }
 
     @Test

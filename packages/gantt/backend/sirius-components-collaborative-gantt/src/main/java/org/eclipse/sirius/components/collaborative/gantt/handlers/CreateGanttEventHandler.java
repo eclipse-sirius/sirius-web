@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
@@ -50,6 +51,8 @@ public class CreateGanttEventHandler implements IEditingContextEventHandler {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
     private final IRepresentationPersistenceService representationPersistenceService;
 
     private final IGanttCreationService ganttCreationService;
@@ -60,9 +63,10 @@ public class CreateGanttEventHandler implements IEditingContextEventHandler {
 
     private final Counter counter;
 
-    public CreateGanttEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
+    public CreateGanttEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService,
             IGanttCreationService ganttCreationService, IObjectService objectService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.ganttCreationService = Objects.requireNonNull(ganttCreationService);
         this.objectService = Objects.requireNonNull(objectService);
@@ -102,9 +106,10 @@ public class CreateGanttEventHandler implements IEditingContextEventHandler {
                 Object object = optionalObject.get();
 
                 Gantt gantt = this.ganttCreationService.create(createRepresentationInput.representationName(), object, ganttDescription, editingContext);
-
-                this.representationPersistenceService.save(createRepresentationInput, editingContext, gantt);
                 var representationMetadata = new RepresentationMetadata(gantt.getId(), gantt.getKind(), gantt.getLabel(), gantt.descriptionId());
+                this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, gantt.targetObjectId());
+                this.representationPersistenceService.save(createRepresentationInput, editingContext, gantt);
+
                 payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }

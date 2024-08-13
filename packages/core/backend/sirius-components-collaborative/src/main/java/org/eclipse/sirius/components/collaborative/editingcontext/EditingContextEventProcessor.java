@@ -263,7 +263,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      *         The sink to publish payload
      * @param input
      *         The input event
-     * @return The response computed by the event handler
+
      */
     private void doHandle(One<IPayload> payloadSink, IInput input) {
         this.logger.trace("Input received: {}", input);
