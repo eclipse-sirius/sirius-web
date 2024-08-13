@@ -55,8 +55,6 @@ type Task {
   taskDependencyIds: [String!]
 }
 
-scalar Instant
-
 type TaskDetail {
   name: String!
   description: String!

@@ -1,6 +1,9 @@
 "Upload type used for the file upload"
 scalar Upload
 
+"Instant type used for dates"
+scalar Instant
+
 type Query {
   viewer: Viewer!
 }
