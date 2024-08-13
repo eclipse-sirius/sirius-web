@@ -22,8 +22,8 @@ import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.builder.generated.DeckBuilders;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
+import org.eclipse.sirius.components.view.builder.generated.deck.DeckBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.deck.CardDescription;
 import org.eclipse.sirius.components.view.deck.CardDropTool;
 import org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle;
@@ -112,40 +112,40 @@ public class ViewDeckDescriptionBuilder {
         DeleteCardTool deleteCardTool = this.createDeleteCardTool();
 
         ConditionalDeckElementDescriptionStyle conditionStyleForTaskWithSubTasks = this.deckBuilders.newConditionalDeckElementDescriptionStyle()
-            .condition(String.format("aql:self.subTasks->select(task | task.tags->exists(tag | tag.prefix == '%s'))->size()>0", tagPrefix))
-            .backgroundColor(view.getColorPalettes().get(0).getColors().get(0))
-            .build();
+                .condition(String.format("aql:self.subTasks->select(task | task.tags->exists(tag | tag.prefix == '%s'))->size()>0", tagPrefix))
+                .backgroundColor(view.getColorPalettes().get(0).getColors().get(0))
+                .build();
 
         ConditionalDeckElementDescriptionStyle conditionStyleForTaskWithParentWithoutSameTag = this.deckBuilders.newConditionalDeckElementDescriptionStyle()
-            .condition(String.format("aql:if self.eContainer().oclIsKindOf(task::AbstractTask) then not self.eContainer().tags->exists(tag | tag.prefix == '%s') else false endif", tagPrefix))
-            .backgroundColor(view.getColorPalettes().get(0).getColors().get(1))
-            .build();
+                .condition(String.format("aql:if self.eContainer().oclIsKindOf(task::AbstractTask) then not self.eContainer().tags->exists(tag | tag.prefix == '%s') else false endif", tagPrefix))
+                .backgroundColor(view.getColorPalettes().get(0).getColors().get(1))
+                .build();
 
         return this.deckBuilders.newCardDescription()
-            .name("Card Description")
-            .semanticCandidatesExpression("aql:self.getTasksWithTag()")
-            .titleExpression(AQL_SELF_NAME)
-            .labelExpression("aql:self.computeTaskDurationDays()")
-            .descriptionExpression(AQL_SELF_DESCRIPTION)
-            .editTool(editCardTool)
-            .deleteTool(deleteCardTool)
-            .conditionalStyles(conditionStyleForTaskWithSubTasks, conditionStyleForTaskWithParentWithoutSameTag)
-            .build();
+                .name("Card Description")
+                .semanticCandidatesExpression("aql:self.getTasksWithTag()")
+                .titleExpression(AQL_SELF_NAME)
+                .labelExpression("aql:self.computeTaskDurationDays()")
+                .descriptionExpression(AQL_SELF_DESCRIPTION)
+                .editTool(editCardTool)
+                .deleteTool(deleteCardTool)
+                .conditionalStyles(conditionStyleForTaskWithSubTasks, conditionStyleForTaskWithParentWithoutSameTag)
+                .build();
     }
 
     private ColorPalette createColorPalette() {
         return this.viewBuilders.newColorPalette()
-            .colors(this.createFixedColor("Deck_LightYellow", "#f7efb1"),
-                    this.createFixedColor("Deck_LightRed", "#f7b1bc"))
-            .build();
+                .colors(this.createFixedColor("Deck_LightYellow", "#f7efb1"),
+                        this.createFixedColor("Deck_LightRed", "#f7b1bc"))
+                .build();
     }
 
     private FixedColor createFixedColor(String name, String value) {
         return this.viewBuilders
-            .newFixedColor()
-            .name(value)
-            .value(value)
-            .build();
+                .newFixedColor()
+                .name(value)
+                .value(value)
+                .build();
     }
 
     private LaneDescription createLaneDescription(String prefix) {
@@ -169,7 +169,7 @@ public class ViewDeckDescriptionBuilder {
         EditCardTool editCardTool = this.createEditCardTool();
         DeleteCardTool deleteCardTool = this.createDeleteCardTool();
 
-        CardDescription cardDescription =  this.deckBuilders.newCardDescription()
+        CardDescription cardDescription = this.deckBuilders.newCardDescription()
                 .name("Key Result Cards")
                 .semanticCandidatesExpression("aql:self.ownedKeyResults")
                 .titleExpression(AQL_SELF_NAME)

@@ -13,8 +13,8 @@
 package org.eclipse.sirius.web.papaya.representations.componentdiagram.tools;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.nodedescriptions.ComponentNodeDescriptionProvider;

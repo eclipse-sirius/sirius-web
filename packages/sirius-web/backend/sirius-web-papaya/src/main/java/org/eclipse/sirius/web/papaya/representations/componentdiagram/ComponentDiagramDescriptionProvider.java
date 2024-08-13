@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.DefaultViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
@@ -27,8 +27,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.edgedescriptions.ComponentDependencyEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.nodedescriptions.ComponentNodeDescriptionProvider;
-import org.eclipse.sirius.web.papaya.representations.componentdiagram.tools.CreateComponentNodeToolProvider;
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.tools.ComponentDiagramDropToolProvider;
+import org.eclipse.sirius.web.papaya.representations.componentdiagram.tools.CreateComponentNodeToolProvider;
 
 /**
  * Used to provide the view model used to create component diagrams.

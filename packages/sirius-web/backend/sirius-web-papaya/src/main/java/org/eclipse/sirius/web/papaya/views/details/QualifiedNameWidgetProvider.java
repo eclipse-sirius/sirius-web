@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.papaya.views.details;
 
 import static org.eclipse.sirius.web.papaya.views.details.PapayaDetailsViewPageDescriptionProvider.QUALIFIED_NAME_COLOR;
 
-import org.eclipse.sirius.components.view.builder.generated.FormBuilders;
+import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.form.LabelDescription;
 import org.springframework.stereotype.Service;

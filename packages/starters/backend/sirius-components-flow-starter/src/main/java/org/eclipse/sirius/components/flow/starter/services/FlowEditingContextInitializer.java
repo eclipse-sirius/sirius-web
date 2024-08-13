@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.UUIDParser;
