@@ -167,7 +167,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
             String representationContent = zipEntries.get(representationPath).toString(StandardCharsets.UTF_8);
 
             var objectMapper = new ObjectMapper();
-            assertThat(objectMapper.readTree(representationContentExpected)).isEqualTo(objectMapper.readTree(representationContent));
+            assertThat(objectMapper.readTree(representationContent)).isEqualTo(objectMapper.readTree(representationContentExpected));
         } catch (IOException exception) {
             fail(exception.getMessage());
         }

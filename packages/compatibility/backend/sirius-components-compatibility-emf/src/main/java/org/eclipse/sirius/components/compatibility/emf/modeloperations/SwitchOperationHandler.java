@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -40,8 +39,6 @@ public class SwitchOperationHandler implements IModelOperationHandler {
 
     private final IObjectService objectService;
 
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
-
     private final IIdentifierProvider identifierProvider;
 
     private final AQLInterpreter interpreter;
@@ -50,10 +47,9 @@ public class SwitchOperationHandler implements IModelOperationHandler {
 
     private final Switch switchOperation;
 
-    public SwitchOperationHandler(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IIdentifierProvider identifierProvider,
+    public SwitchOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider,
             AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler, Switch switchOperation) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.childModelOperationHandler = Objects.requireNonNull(childModelOperationHandler);
@@ -74,7 +70,7 @@ public class SwitchOperationHandler implements IModelOperationHandler {
 
                 if (optionalValueObject.isPresent() && optionalValueObject.get()) {
                     List<ModelOperation> subModelOperations = switchCase.getSubModelOperations();
-                    status = this.childModelOperationHandler.handle(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, childVariables,
+                    status = this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, childVariables,
                             subModelOperations);
 
                     oneCaseHasBeenExecuted = true;
@@ -87,7 +83,7 @@ public class SwitchOperationHandler implements IModelOperationHandler {
             Default defaultCase = this.switchOperation.getDefault();
             if (defaultCase != null) {
                 List<ModelOperation> subModelOperations = defaultCase.getSubModelOperations();
-                status = this.childModelOperationHandler.handle(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, childVariables,
+                status = this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, childVariables,
                         subModelOperations);
             }
         }

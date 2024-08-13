@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.emf.compatibility.diagrams.TestDiagramBuilder;
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
@@ -70,7 +69,7 @@ public class ChildModelOperationHandlerTests {
             }
         };
 
-        IStatus status = new ChildModelOperationHandler(List.of()).handle(objectService, new IRepresentationMetadataSearchService.NoOp(), identifierProvider, interpreter, Map.of(),
+        IStatus status = new ChildModelOperationHandler(List.of()).handle(objectService, identifierProvider, interpreter, Map.of(),
                 List.of(createView));
 
         assertThat(status).isInstanceOf(Success.class);

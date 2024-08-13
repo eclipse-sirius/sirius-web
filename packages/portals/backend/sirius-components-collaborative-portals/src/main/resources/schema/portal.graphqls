@@ -38,6 +38,8 @@ type PortalViewLayoutData {
 
 extend type Mutation {
   addPortalView(input: AddPortalViewInput!): AddPortalViewPayload!
+  removePortalView(input: RemovePortalViewInput!): RemovePortalViewPayload!
+  layoutPortal(input: LayoutPortalInput!): LayoutPortalPayload!
 }
 
 input AddPortalViewInput {
@@ -53,10 +55,6 @@ input AddPortalViewInput {
 
 union AddPortalViewPayload = SuccessPayload | ErrorPayload
 
-extend type Mutation {
-  removePortalView(input: RemovePortalViewInput!): RemovePortalViewPayload!
-}
-
 input RemovePortalViewInput {
   id: ID!
   editingContextId: ID!
@@ -65,10 +63,6 @@ input RemovePortalViewInput {
 }
 
 union RemovePortalViewPayload = SuccessPayload | ErrorPayload
-
-extend type Mutation {
-  layoutPortal(input: LayoutPortalInput!): LayoutPortalPayload!
-}
 
 input LayoutPortalInput {
   id: ID!
@@ -84,6 +78,5 @@ input PortalViewLayoutDataInput {
   width: Int!
   height: Int!
 }
-
 
 union LayoutPortalPayload = SuccessPayload | ErrorPayload

@@ -26,13 +26,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataCreationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataUpdateService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentCreationService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentUpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,11 +44,11 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
     private static final String NONE = "none";
 
-    private final IRepresentationDataSearchService representationDataSearchService;
+    private final IRepresentationContentSearchService representationContentSearchService;
 
-    private final IRepresentationDataCreationService representationDataCreationService;
+    private final IRepresentationContentCreationService representationContentCreationService;
 
-    private final IRepresentationDataUpdateService representationDataUpdateService;
+    private final IRepresentationContentUpdateService representationContentUpdateService;
 
     private final ObjectMapper objectMapper;
 
@@ -58,10 +56,10 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
     private final List<IRepresentationMigrationParticipant> migrationParticipants;
 
-    public RepresentationPersistenceService(IRepresentationDataSearchService representationDataSearchService, IRepresentationDataCreationService representationDataCreationService, IRepresentationDataUpdateService representationDataUpdateService, ObjectMapper objectMapper, List<IRepresentationMigrationParticipant> migrationParticipants) {
-        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
-        this.representationDataCreationService = Objects.requireNonNull(representationDataCreationService);
-        this.representationDataUpdateService = representationDataUpdateService;
+    public RepresentationPersistenceService(IRepresentationContentSearchService representationContentSearchService, IRepresentationContentCreationService representationContentCreationService, IRepresentationContentUpdateService representationContentUpdateService, ObjectMapper objectMapper, List<IRepresentationMigrationParticipant> migrationParticipants) {
+        this.representationContentSearchService = Objects.requireNonNull(representationContentSearchService);
+        this.representationContentCreationService = Objects.requireNonNull(representationContentCreationService);
+        this.representationContentUpdateService = Objects.requireNonNull(representationContentUpdateService);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.migrationParticipants = migrationParticipants;
     }
@@ -69,33 +67,20 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
     @Override
     @Transactional
     public void save(ICause cause, IEditingContext editingContext, IRepresentation representation) {
-        var optionalProjectId = new UUIDParser().parse(editingContext.getId());
         var optionalRepresentationId = new UUIDParser().parse(representation.getId());
-        if (optionalProjectId.isPresent() && optionalRepresentationId.isPresent()) {
-            var projectId = optionalProjectId.get();
+        if (optionalRepresentationId.isPresent()) {
             var representationId = optionalRepresentationId.get();
 
             String content = this.toString(representation);
 
-            var exists = this.representationDataSearchService.existsById(representationId);
+            var exists = this.representationContentSearchService.existsById(representationId);
 
             if (exists) {
                 var migrationData = this.getLastMigrationData(representation.getKind());
-                this.representationDataUpdateService.updateContentWithMigrationData(cause, representationId, content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
+                this.representationContentUpdateService.updateContentByRepresentationIdWithMigrationData(cause, representationId, content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
             } else {
                 var migrationData = this.getInitialMigrationData(representation.getKind());
-                var representationData = RepresentationData.newRepresentationData(representationId)
-                        .project(AggregateReference.to(projectId))
-                        .label(representation.getLabel())
-                        .kind(representation.getKind())
-                        .descriptionId(representation.getDescriptionId())
-                        .targetObjectId(representation.getTargetObjectId())
-                        .content(content)
-                        .lastMigrationPerformed(migrationData.lastMigrationPerformed())
-                        .migrationVersion(migrationData.migrationVersion())
-                        .build(cause);
-
-                this.representationDataCreationService.create(representationData);
+                this.representationContentCreationService.create(cause, representationId, content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
             }
         }
     }

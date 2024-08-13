@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import java.util.Optional;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -36,8 +35,6 @@ public class IfOperationHandler implements IModelOperationHandler {
 
     private final IObjectService objectService;
 
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
-
     private final IIdentifierProvider identifierProvider;
 
     private final AQLInterpreter interpreter;
@@ -46,10 +43,9 @@ public class IfOperationHandler implements IModelOperationHandler {
 
     private final If ifOperation;
 
-    public IfOperationHandler(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IIdentifierProvider identifierProvider,
+    public IfOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider,
             AQLInterpreter interpreter, ChildModelOperationHandler childModelOperationHandler, If ifOperation) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.childModelOperationHandler = Objects.requireNonNull(childModelOperationHandler);
@@ -64,7 +60,7 @@ public class IfOperationHandler implements IModelOperationHandler {
 
             if (optionalValueObject.isPresent() && optionalValueObject.get()) {
                 List<ModelOperation> subModelOperations = this.ifOperation.getSubModelOperations();
-                return this.childModelOperationHandler.handle(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, variables, subModelOperations);
+                return this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, variables, subModelOperations);
             }
         }
 

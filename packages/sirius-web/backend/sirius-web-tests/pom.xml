@@ -80,6 +80,11 @@
 			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
 			<version>2024.9.8</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-portals-tests</artifactId>
+			<version>2024.9.8</version>
+		</dependency>
 	</dependencies>
 
 	<build>

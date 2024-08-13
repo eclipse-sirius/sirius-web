@@ -13,12 +13,13 @@
 package org.eclipse.sirius.web.application.representation.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 
@@ -35,10 +36,10 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
 
     private static final String REPRESENTATION_ID_ARGUMENT = "representationId";
 
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
+    private final List<IRepresentationMetadataProvider> representationMetadataProviders;
 
-    public EditingContextRepresentationDataFetcher(IRepresentationMetadataSearchService representationMetadataSearchService) {
-        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+    public EditingContextRepresentationDataFetcher(List<IRepresentationMetadataProvider> representationMetadataProviders) {
+        this.representationMetadataProviders = Objects.requireNonNull(representationMetadataProviders);
     }
 
     @Override
@@ -48,7 +49,10 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
         Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
         localContext.put(LocalContextConstants.REPRESENTATION_ID, representationId);
 
-        var representationMetadata = this.representationMetadataSearchService.findByRepresentationId(representationId).orElse(null);
+        var representationMetadata = this.representationMetadataProviders.stream()
+                .flatMap(provider -> provider.getMetadata(representationId).stream())
+                .findFirst()
+                .orElse(null);
 
         return DataFetcherResult.<RepresentationMetadata>newResult()
                 .data(representationMetadata)

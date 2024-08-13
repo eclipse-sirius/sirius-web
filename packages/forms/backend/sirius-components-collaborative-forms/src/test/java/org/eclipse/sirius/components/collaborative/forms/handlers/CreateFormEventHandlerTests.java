@@ -21,10 +21,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -49,7 +51,6 @@ public class CreateFormEventHandlerTests {
 
     @Test
     public void testFormCreation() {
-        // @formatter:off
         var formDescription = FormDescription.newFormDescription("representationDescriptionId")
                 .label("label")
                 .canCreatePredicate(variableManager -> true)
@@ -58,7 +59,6 @@ public class CreateFormEventHandlerTests {
                 .labelProvider(variableManager -> "label")
                 .targetObjectIdProvider(variableManager -> "targetObjectId")
                 .build();
-        // @formatter:on
 
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
@@ -67,11 +67,19 @@ public class CreateFormEventHandlerTests {
             }
         };
 
-        AtomicBoolean hasBeenExecuted = new AtomicBoolean();
+        AtomicBoolean representationHasBeenPersisted = new AtomicBoolean();
         IRepresentationPersistenceService representationPersistenceService = new IRepresentationPersistenceService.NoOp() {
             @Override
             public void save(ICause cause, IEditingContext editingContext, IRepresentation representation) {
-                hasBeenExecuted.set(true);
+                representationHasBeenPersisted.set(true);
+            }
+        };
+
+        AtomicBoolean representationMetadataHasBeenPersisted = new AtomicBoolean();
+        IRepresentationMetadataPersistenceService representationMetadataPersistenceService = new IRepresentationMetadataPersistenceService.NoOp() {
+            @Override
+            public void save(ICause cause, IEditingContext editingContext, RepresentationMetadata representationMetadata, String targetObjectId) {
+                representationMetadataHasBeenPersisted.set(true);
             }
         };
 
@@ -82,7 +90,7 @@ public class CreateFormEventHandlerTests {
             }
         };
 
-        var handler = new CreateFormEventHandler(representationDescriptionSearchService, representationPersistenceService, objectService, new ICollaborativeFormMessageService.NoOp(),
+        var handler = new CreateFormEventHandler(representationDescriptionSearchService, representationMetadataPersistenceService, representationPersistenceService, objectService, new ICollaborativeFormMessageService.NoOp(),
                 new SimpleMeterRegistry());
         var input = new CreateRepresentationInput(UUID.randomUUID(), "editingContextId", "representationDescriptionId", "objectId", "representationName");
         IEditingContext editingContext = () -> "editingContextId";
@@ -100,6 +108,7 @@ public class CreateFormEventHandlerTests {
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(CreateRepresentationSuccessPayload.class);
 
-        assertThat(hasBeenExecuted.get()).isTrue();
+        assertThat(representationHasBeenPersisted.get()).isTrue();
+        assertThat(representationMetadataHasBeenPersisted.get()).isTrue();
     }
 }

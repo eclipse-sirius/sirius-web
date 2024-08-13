@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,11 +21,11 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.compatibility.emf.compatibility.services.EditingDomainFactory;
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.CreateInstanceOperationHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -73,7 +73,7 @@ public class CreateInstanceOperationHandlerTests {
 
         this.createInstanceOperation = ToolFactory.eINSTANCE.createCreateInstance();
 
-        this.createInstanceOperationHandler = new CreateInstanceOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getRepresentationMetadataSearchService(),
+        this.createInstanceOperationHandler = new CreateInstanceOperationHandler(this.operationTestContext.getObjectService(),
                 this.operationTestContext.getIdentifierProvider(), this.operationTestContext.getInterpreter(), new EPackageService(), new ChildModelOperationHandler(List.of()),
                 this.createInstanceOperation);
     }

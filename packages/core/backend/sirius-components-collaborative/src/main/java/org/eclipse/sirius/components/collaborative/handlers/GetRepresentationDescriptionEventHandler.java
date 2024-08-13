@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.handlers;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -24,7 +25,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.springframework.stereotype.Service;
 
@@ -39,12 +40,12 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class GetRepresentationDescriptionEventHandler implements IEditingContextEventHandler {
 
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
+    private final List<IRepresentationMetadataProvider> representationMetadataProviders;
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    public GetRepresentationDescriptionEventHandler(IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
-        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+    public GetRepresentationDescriptionEventHandler(List<IRepresentationMetadataProvider> representationMetadataProviders, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+        this.representationMetadataProviders = representationMetadataProviders;
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
     }
 
@@ -56,7 +57,9 @@ public class GetRepresentationDescriptionEventHandler implements IEditingContext
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         if (input instanceof GetRepresentationDescriptionInput getRepresentationDescriptionInput) {
-            IRepresentationDescription representationDescription = this.representationMetadataSearchService.findByRepresentationId(getRepresentationDescriptionInput.representationId())
+            IRepresentationDescription representationDescription = this.representationMetadataProviders.stream()
+                    .flatMap(provider -> provider.getMetadata(getRepresentationDescriptionInput.representationId()).stream())
+                    .findFirst()
                     .map(RepresentationMetadata::getDescriptionId)
                     .flatMap(representationDescriptionId -> this.representationDescriptionSearchService.findById(editingContext, representationDescriptionId))
                     .orElse(null);
