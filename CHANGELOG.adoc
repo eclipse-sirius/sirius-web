@@ -47,6 +47,10 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/3840[#3840] [diagram] Migrate to ReactFlow 12, if you have components that uses the library then you'll need to update them.
 - https://github.com/eclipse-sirius/sirius-web/issues/2399[#2399] [core] When executing successive model operations inside a tool, the execution context (variables, in particular `self`) of all sibling operations now stays the same.
 This is much more natural and closer to the behavior of usual languages, but change the behavior.
+- https://github.com/eclipse-sirius/sirius-web/issues/3679[#3679] [core] Split representation metadata from content
++ Remove `org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService` and its implementation.
++ Use `org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService#findAllMetadataByTargetObjectId` instead of `org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService#findAllByTargetObjectId`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3679[#3679] [sirius-web] The service `hasChildren` requires the editing context like the aql service `getChildren`.
 
 
 === Dependency update
@@ -56,6 +60,7 @@ This is much more natural and closer to the behavior of usual languages, but cha
 - https://github.com/eclipse-sirius/sirius-web/issues/3840[#3840] [diagram] Migrate to ReactFlow 12
 - [releng] Switch to the final release version of AQL 8.0.2
 - https://github.com/eclipse-sirius/sirius-web/issues/3836[#3836] [gantt] Switch to @ObeoNetwork/gantt-task-react 0.6.1 to benefit for enhancements
+
 
 === Bug fixes
 

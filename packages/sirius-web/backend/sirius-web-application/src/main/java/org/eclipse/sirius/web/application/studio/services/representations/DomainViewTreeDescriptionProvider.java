@@ -122,7 +122,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .deletableExpression("aql:self.isDeletable()")
                 .editableExpression("aql:self.isEditable()")
                 .selectableExpression("aql:self.isSelectable()")
-                .hasChildrenExpression("aql:self.hasChildren()")
+                .hasChildrenExpression("aql:editingContext.hasChildren(self)")
                 .elementsExpression("aql:editingContext.getElements()")
                 .childrenExpression("aql:self.getChildren(editingContext, expanded)")
                 .parentExpression("aql:self.getParent(editingContext, id)")

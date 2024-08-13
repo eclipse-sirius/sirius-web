@@ -21,9 +21,9 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataDeletionService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataDeletionService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,14 +38,14 @@ public class DanglingRepresentationDeletionService implements IDanglingRepresent
 
     private final IObjectSearchService objectSearchService;
 
-    private final IRepresentationDataSearchService representationDataSearchService;
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    private final IRepresentationDataDeletionService representationDataDeletionService;
+    private final IRepresentationMetadataDeletionService representationMetadataDeletionService;
 
-    public DanglingRepresentationDeletionService(IObjectSearchService objectSearchService, IRepresentationDataSearchService representationDataSearchService, IRepresentationDataDeletionService representationDataDeletionService) {
+    public DanglingRepresentationDeletionService(IObjectSearchService objectSearchService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataDeletionService representationMetadataDeletionService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
-        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
-        this.representationDataDeletionService = Objects.requireNonNull(representationDataDeletionService);
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.representationMetadataDeletionService = Objects.requireNonNull(representationMetadataDeletionService);
     }
 
     @Override
@@ -59,10 +59,10 @@ public class DanglingRepresentationDeletionService implements IDanglingRepresent
     @Transactional
     public void deleteDanglingRepresentations(ICause cause, IEditingContext editingContext) {
         new UUIDParser().parse(editingContext.getId()).ifPresent(projectId -> {
-            this.representationDataSearchService.findAllMetadataByProject(AggregateReference.to(projectId)).stream()
-                    .filter(representationMetadata -> this.objectSearchService.getObject(editingContext, representationMetadata.targetObjectId()).isEmpty())
-                    .map(RepresentationDataMetadataOnly::id)
-                    .forEach(representationId -> this.representationDataDeletionService.delete(cause, representationId));
+            this.representationMetadataSearchService.findAllMetadataByProject(AggregateReference.to(projectId)).stream()
+                    .filter(representationMetadata -> this.objectSearchService.getObject(editingContext, representationMetadata.getTargetObjectId()).isEmpty())
+                    .map(RepresentationMetadata::getId)
+                    .forEach(representationId -> this.representationMetadataDeletionService.delete(cause, representationId));
         });
     }
 }

@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -59,17 +60,21 @@ public class StudioProjectTemplateInitializer implements IProjectTemplateInitial
 
     private final IDiagramCreationService diagramCreationService;
 
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
     private final IRepresentationPersistenceService representationPersistenceService;
 
     private final IDomainDiagramDescriptionProvider domainDiagramDescriptionProvider;
 
-    public StudioProjectTemplateInitializer(IDomainNameProvider domainNameProvider, IDefaultDomainResourceProvider defaultDomainResourceProvider, IDefaultViewResourceProvider defaultViewResourceProvider, IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramCreationService diagramCreationService, IRepresentationPersistenceService representationPersistenceService, IDomainDiagramDescriptionProvider domainDiagramDescriptionProvider) {
+    public StudioProjectTemplateInitializer(IDomainNameProvider domainNameProvider, IDefaultDomainResourceProvider defaultDomainResourceProvider, IDefaultViewResourceProvider defaultViewResourceProvider,
+            IDomainDiagramDescriptionProvider domainDiagramDescriptionProvider, StudioProjectTemplateInitializerParameters studioProjectTemplateInitializerParameters) {
         this.domainNameProvider = Objects.requireNonNull(domainNameProvider);
         this.defaultDomainResourceProvider = Objects.requireNonNull(defaultDomainResourceProvider);
         this.defaultViewResourceProvider = Objects.requireNonNull(defaultViewResourceProvider);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationDescriptionSearchService = studioProjectTemplateInitializerParameters.representationDescriptionSearchService();
+        this.diagramCreationService = studioProjectTemplateInitializerParameters.diagramCreationService();
+        this.representationMetadataPersistenceService = studioProjectTemplateInitializerParameters.representationMetadataPersistenceService();
+        this.representationPersistenceService = studioProjectTemplateInitializerParameters.representationPersistenceService();
         this.domainDiagramDescriptionProvider = Objects.requireNonNull(domainDiagramDescriptionProvider);
     }
 
@@ -106,9 +111,11 @@ public class StudioProjectTemplateInitializer implements IProjectTemplateInitial
                         Object semanticTarget = domainResource.getContents().get(0);
 
                         Diagram diagram = this.diagramCreationService.create(domainDiagramDescription.getLabel(), semanticTarget, domainDiagramDescription, editingContext);
+                        var representationMetadata = new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId());
+                        this.representationMetadataPersistenceService.save(cause, editingContext, representationMetadata, diagram.getTargetObjectId());
                         this.representationPersistenceService.save(cause, editingContext, diagram);
 
-                        result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
+                        result = Optional.of(representationMetadata);
                     }
 
                     return result;

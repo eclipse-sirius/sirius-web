@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
 import org.eclipse.sirius.components.compatibility.emf.api.IExternalJavaActionProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -42,12 +41,12 @@ public class ChildModelOperationHandler {
         this.externalJavaActionProviders = Objects.requireNonNull(externalJavaActionProviders);
     }
 
-    public IStatus handle(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter,
+    public IStatus handle(IObjectService objectService, IIdentifierProvider identifierProvider, AQLInterpreter interpreter,
             Map<String, Object> variables, List<ModelOperation> modelOperations) {
         Success success = new Success();
         boolean hasBeenSuccessfullyExecuted = true;
 
-        ModelOperationHandlerSwitch modelOperationHandlerSwitch = new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
+        ModelOperationHandlerSwitch modelOperationHandlerSwitch = new ModelOperationHandlerSwitch(objectService, identifierProvider,
                 this.externalJavaActionProviders, interpreter);
         for (ModelOperation modelOperation : modelOperations) {
             Optional<IModelOperationHandler> optionalModelOperationHandler = modelOperationHandlerSwitch.apply(modelOperation);

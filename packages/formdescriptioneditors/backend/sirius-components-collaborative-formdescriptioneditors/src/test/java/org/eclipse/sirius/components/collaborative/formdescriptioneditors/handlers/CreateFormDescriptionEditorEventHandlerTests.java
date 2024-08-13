@@ -20,6 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.TestFormDescriptionEditorBuilder;
@@ -80,7 +82,7 @@ public class CreateFormDescriptionEditorEventHandlerTests {
             }
         };
 
-        CreateFormDescriptionEditorEventHandler handler = new CreateFormDescriptionEditorEventHandler(representationDescriptionSearchService, objectService,
+        CreateFormDescriptionEditorEventHandler handler = new CreateFormDescriptionEditorEventHandler(representationDescriptionSearchService, new IRepresentationMetadataPersistenceService.NoOp(), new IRepresentationPersistenceService.NoOp(), objectService,
                 new ICollaborativeFormDescriptionEditorMessageService.NoOp(), formDescriptionEditorCreationService, new SimpleMeterRegistry());
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "objectId", "representationName");

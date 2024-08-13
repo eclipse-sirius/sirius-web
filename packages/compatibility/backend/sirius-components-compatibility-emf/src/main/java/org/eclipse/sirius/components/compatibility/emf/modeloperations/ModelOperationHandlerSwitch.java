@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,10 +19,9 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
-import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.compatibility.emf.api.IExternalJavaActionProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.diagram.description.tool.CreateView;
 import org.eclipse.sirius.diagram.description.tool.Navigation;
@@ -54,8 +53,6 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
 
     private final IObjectService objectService;
 
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
-
     private final IIdentifierProvider identifierProvider;
 
     private final List<IExternalJavaActionProvider> externalJavaActionProviders;
@@ -64,10 +61,9 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
 
     private final ChildModelOperationHandler childModelOperationHandler;
 
-    public ModelOperationHandlerSwitch(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IIdentifierProvider identifierProvider,
+    public ModelOperationHandlerSwitch(IObjectService objectService, IIdentifierProvider identifierProvider,
             List<IExternalJavaActionProvider> externalJavaActionProviders, AQLInterpreter interpreter) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.externalJavaActionProviders = Objects.requireNonNull(externalJavaActionProviders);
         this.interpreter = Objects.requireNonNull(interpreter);
@@ -121,51 +117,51 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
     }
 
     private Optional<IModelOperationHandler> caseChangeContext(ChangeContext changeContextOperation) {
-        return Optional.of(new ChangeContextOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
+        return Optional.of(new ChangeContextOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
                 changeContextOperation));
     }
 
     private Optional<IModelOperationHandler> caseCreateInstance(CreateInstance createInstanceOperation) {
-        return Optional.of(new CreateInstanceOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, new EPackageService(),
+        return Optional.of(new CreateInstanceOperationHandler(this.objectService, this.identifierProvider, this.interpreter, new EPackageService(),
                 this.childModelOperationHandler, createInstanceOperation));
     }
 
     private Optional<IModelOperationHandler> caseCreateView(CreateView createViewOperation) {
-        return Optional.of(new CreateViewOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
+        return Optional.of(new CreateViewOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
                 createViewOperation));
     }
 
     private Optional<IModelOperationHandler> caseDeleteView(DeleteView deleteViewOperation) {
-        return Optional.of(new DeleteViewOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
+        return Optional.of(new DeleteViewOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
                 deleteViewOperation));
     }
 
     private Optional<IModelOperationHandler> caseFor(For forOperation) {
         return Optional
-                .of(new ForOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, forOperation));
+                .of(new ForOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, forOperation));
     }
 
     private Optional<IModelOperationHandler> caseIf(If ifOperation) {
         return Optional
-                .of(new IfOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, ifOperation));
+                .of(new IfOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, ifOperation));
     }
 
     private Optional<IModelOperationHandler> caseLet(Let letOperation) {
         return Optional
-                .of(new LetOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, letOperation));
+                .of(new LetOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, letOperation));
     }
 
     private Optional<IModelOperationHandler> caseMoveElement(MoveElement moveElementOperation) {
-        return Optional.of(new MoveElementOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
+        return Optional.of(new MoveElementOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
                 moveElementOperation));
     }
 
     private Optional<IModelOperationHandler> caseNavigation(Navigation navigationOperation) {
-        return Optional.of(new NavigationOperationHandler(this.objectService, this.identifierProvider, this.representationMetadataSearchService, this.interpreter, navigationOperation));
+        return Optional.of(new NavigationOperationHandler(this.objectService, this.identifierProvider, this.interpreter, navigationOperation));
     }
 
     private Optional<IModelOperationHandler> caseRemoveElement(RemoveElement removeElementOperation) {
-        return Optional.of(new RemoveElementOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
+        return Optional.of(new RemoveElementOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
                 removeElementOperation));
     }
 
@@ -174,22 +170,22 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
     }
 
     private Optional<IModelOperationHandler> caseSetValue(SetValue setValueOperation) {
-        return Optional.of(new SetValueOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
+        return Optional.of(new SetValueOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler,
                 setValueOperation));
     }
 
     private Optional<IModelOperationHandler> caseUnset(Unset unsetOperation) {
         return Optional.of(
-                new UnsetOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, unsetOperation));
+                new UnsetOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, unsetOperation));
     }
 
     private Optional<IModelOperationHandler> caseSwitch(Switch switchOperation) {
         return Optional.of(
-                new SwitchOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, switchOperation));
+                new SwitchOperationHandler(this.objectService, this.identifierProvider, this.interpreter, this.childModelOperationHandler, switchOperation));
     }
 
     private Optional<IModelOperationHandler> caseExternalJavaAction(ExternalJavaAction externalJavaAction) {
-        return Optional.of(new ExternalJavaActionOperationHandler(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter,
+        return Optional.of(new ExternalJavaActionOperationHandler(this.objectService, this.identifierProvider, this.interpreter,
                 this.childModelOperationHandler, this.externalJavaActionProviders, externalJavaAction));
     }
 
