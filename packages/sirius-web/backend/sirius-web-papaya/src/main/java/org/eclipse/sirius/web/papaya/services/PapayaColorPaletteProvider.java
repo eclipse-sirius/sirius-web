@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.papaya.services;
 
 import org.eclipse.sirius.components.view.ColorPalette;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 
 /**
  * Used to provide the color palette.

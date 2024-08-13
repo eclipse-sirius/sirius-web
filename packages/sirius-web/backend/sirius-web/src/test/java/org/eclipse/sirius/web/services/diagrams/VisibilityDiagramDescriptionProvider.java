@@ -22,14 +22,14 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
-import org.eclipse.sirius.components.view.builder.generated.DiagramDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.InsideLabelDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.NodeDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.NodePaletteBuilder;
-import org.eclipse.sirius.components.view.builder.generated.NodeToolBuilder;
-import org.eclipse.sirius.components.view.builder.generated.RectangularNodeStyleDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodePaletteBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -132,8 +132,8 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 .name("Hide")
                 .body(
                         new ChangeContextBuilder()
-                            .expression("aql:diagramServices.hide(Sequence{ selectedNode })")
-                            .build()
+                                .expression("aql:diagramServices.hide(Sequence{ selectedNode })")
+                                .build()
                 )
                 .build();
 
@@ -141,8 +141,8 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 .name("Reveal")
                 .body(
                         new ChangeContextBuilder()
-                            .expression("aql:diagramServices.reveal(Sequence{ selectedNode })")
-                            .build()
+                                .expression("aql:diagramServices.reveal(Sequence{ selectedNode })")
+                                .build()
                 )
                 .build();
 
@@ -150,8 +150,8 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 .name("Fade")
                 .body(
                         new ChangeContextBuilder()
-                            .expression("aql:diagramServices.fade(Sequence{ selectedNode })")
-                            .build()
+                                .expression("aql:diagramServices.fade(Sequence{ selectedNode })")
+                                .build()
                 )
                 .build();
 
@@ -159,8 +159,8 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 .name("Unfade")
                 .body(
                         new ChangeContextBuilder()
-                            .expression("aql:diagramServices.unfade(Sequence{ selectedNode })")
-                            .build()
+                                .expression("aql:diagramServices.unfade(Sequence{ selectedNode })")
+                                .build()
                 )
                 .build();
 
@@ -168,11 +168,10 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 .name("Reset Visibility")
                 .body(
                         new ChangeContextBuilder()
-                            .expression("aql:diagramServices.resetViewModifiers(Sequence{ selectedNode })")
-                            .build()
+                                .expression("aql:diagramServices.resetViewModifiers(Sequence{ selectedNode })")
+                                .build()
                 )
                 .build();
-
 
 
         var nodePalette = new NodePaletteBuilder()

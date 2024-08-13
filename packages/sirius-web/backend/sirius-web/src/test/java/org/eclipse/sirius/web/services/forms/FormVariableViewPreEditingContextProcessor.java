@@ -22,13 +22,13 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.builder.generated.FormDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.FormVariableBuilder;
-import org.eclipse.sirius.components.view.builder.generated.GroupDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.ListDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.PageDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.TreeDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.form.FormDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.form.FormVariableBuilder;
+import org.eclipse.sirius.components.view.builder.generated.form.GroupDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.form.ListDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.form.PageDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.form.TreeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.GroupDescription;
@@ -45,7 +45,7 @@ import org.springframework.stereotype.Service;
  * @author mcharfadi
  */
 @Service
-public class FormVariableViewPreEditingContextProcessor implements IEditingContextProcessor  {
+public class FormVariableViewPreEditingContextProcessor implements IEditingContextProcessor {
 
     private final IFormIdProvider formIdProvider;
 

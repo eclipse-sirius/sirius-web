@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
  * @author cbrun
  */
 public class BuilderGenerator {
+
     private static final String CLASSBODY = "#classbody";
 
     private static final String PACKAGE = "#package";
@@ -138,7 +139,7 @@ public class BuilderGenerator {
                             public #builderClassName new#className() {
                                 return new #builderClassName();
                             }
-
+                        
                         """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
                         .replace("#className", clazz.getName()));
             }
@@ -162,7 +163,7 @@ public class BuilderGenerator {
                  *     Obeo - initial API and implementation
                  *******************************************************************************/
                 package #package;
-
+                
                 /**
                  * Use to instantiate a new builder.
                  *
@@ -188,7 +189,7 @@ public class BuilderGenerator {
                          * @generated
                          */
                         private #eObjType #eObjNameLowerCase = #packageFactory.create#eObjName();
-
+                    
                         /**
                          * Return instance #eObjType.
                          * @generated
@@ -196,7 +197,7 @@ public class BuilderGenerator {
                         protected #eObjType get#eObjName() {
                             return this.#eObjNameLowerCase;
                         }
-
+                    
                         /**
                          * Return instance #eObjType.
                          * @generated
@@ -204,7 +205,7 @@ public class BuilderGenerator {
                         public #eObjType build() {
                             return this.get#eObjName();
                         }
-
+                    
                     """.replace("#packageFactory", clazz.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor())
                     .replace("#eObjType", clazz.getQualifiedInterfaceName())
                     .replace("#eObjNameLowerCase", clazz.uncapPrefixedName(clazz.getSafeUncapName()))
@@ -244,7 +245,7 @@ public class BuilderGenerator {
                                     }
                                     return this;
                                 }
-
+                            
                             """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
                             .replace("#paramType", feat.getListItemType(clazz))
                             .replace("#accessor", feat.getAccessorName())
@@ -275,7 +276,7 @@ public class BuilderGenerator {
                      *     Obeo - initial API and implementation
                      *******************************************************************************/
                     package #package;
-
+                    
                     /**
                      * Builder for #qualifiedType.
                      *
@@ -283,16 +284,16 @@ public class BuilderGenerator {
                      * @generated
                      */
                     public abstract class #builderClassName {
-
+                    
                         /**
                          * Builder for #qualifiedType.
                          * @generated
                          */
                         protected abstract #qualifiedType get#eObjName();
-
+                    
                     #classbody
                     }
-
+                    
                     """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
                     .replace("#qualifiedType", this.qualifiedNameFromGenClass(clazz))
                     .replace(CLASSBODY, body)
@@ -313,7 +314,7 @@ public class BuilderGenerator {
                      *     Obeo - initial API and implementation
                      *******************************************************************************/
                     package #package;
-
+                    
                     /**
                      * Builder for #builderClassName.
                      *
@@ -321,10 +322,10 @@ public class BuilderGenerator {
                      * @generated
                      */
                     public class #builderClassName {
-
+                    
                     #classbody
                     }
-
+                    
                     """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
                     .replace("#qualifiedType", clazz.getQualifiedInterfaceName())
                     .replace(CLASSBODY, body)
@@ -352,7 +353,7 @@ public class BuilderGenerator {
             StringBuilder factory = this.getFactory(pak, builderFactoryName, factoryClassBody);
 
             String factFileName = builderFactoryName + ".java";
-            this.generateOrMerge(jControlModel, this.outputDirectory, factFileName, factory.toString());
+            this.generateOrMerge(jControlModel, this.outputDirectory + "/" + model.getModelName().toLowerCase(), factFileName, factory.toString());
 
             for (GenClass clazz : pak.getGenClasses()) {
                 StringBuilder builderBody = this.getBody(clazz);
@@ -360,7 +361,7 @@ public class BuilderGenerator {
 
                 String fileName = this.builderClasssName(clazz) + ".java";
                 String contentToGenerate = builder.toString();
-                this.generateOrMerge(jControlModel, this.outputDirectory, fileName, contentToGenerate);
+                this.generateOrMerge(jControlModel, this.outputDirectory + "/" + model.getModelName().toLowerCase(), fileName, contentToGenerate);
             }
         }
     }
@@ -370,7 +371,7 @@ public class BuilderGenerator {
     }
 
     private String getPackageDeclaration(GenPackage pak) {
-        return this.basePackage;
+        return this.basePackage + "." + pak.getGenModel().getModelName().toLowerCase();
     }
 
     private String getDocumentation(GenFeature feat) {

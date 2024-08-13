@@ -13,11 +13,11 @@
 package org.eclipse.sirius.components.task.starter.services.view;
 
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
-import org.eclipse.sirius.components.view.builder.generated.DeleteElementBuilder;
-import org.eclipse.sirius.components.view.builder.generated.GanttBuilders;
-import org.eclipse.sirius.components.view.builder.generated.SetValueBuilder;
-import org.eclipse.sirius.components.view.builder.generated.UnsetValueBuilder;
+import org.eclipse.sirius.components.view.builder.generated.gantt.GanttBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.DeleteElementBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.UnsetValueBuilder;
 import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool;
@@ -42,7 +42,7 @@ public class ViewGanttDescriptionBuilder {
     }
 
     public void addRepresentationDescription(View view) {
-        GanttDescription ganttDescription =  this.createGanttDescription();
+        GanttDescription ganttDescription = this.createGanttDescription();
 
 
         view.getDescriptions().add(ganttDescription);
@@ -113,12 +113,12 @@ public class ViewGanttDescriptionBuilder {
         return new GanttBuilders().newCreateTaskDependencyTool()
                 .name("Create Task Dependency")
                 .body(new ChangeContextBuilder()
-                    .expression("aql:targetObject")
-                    .children(new SetValueBuilder()
-                        .featureName("dependencies")
-                        .valueExpression("aql:sourceObject")
+                        .expression("aql:targetObject")
+                        .children(new SetValueBuilder()
+                                .featureName("dependencies")
+                                .valueExpression("aql:sourceObject")
+                                .build())
                         .build())
-                    .build())
                 .build();
     }
 

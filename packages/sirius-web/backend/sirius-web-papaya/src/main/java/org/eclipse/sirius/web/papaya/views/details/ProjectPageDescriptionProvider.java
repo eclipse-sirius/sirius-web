@@ -16,8 +16,8 @@ import static org.eclipse.sirius.web.papaya.views.details.PapayaDetailsViewPageD
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.builder.generated.FormBuilders;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
+import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.form.ButtonDescription;
 import org.eclipse.sirius.components.view.form.GroupDescription;

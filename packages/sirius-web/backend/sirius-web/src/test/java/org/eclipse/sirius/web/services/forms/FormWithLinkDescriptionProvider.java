@@ -22,11 +22,11 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.builder.generated.FormBuilders;
-import org.eclipse.sirius.components.view.builder.generated.FormDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.GroupDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.PageDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
+import org.eclipse.sirius.components.view.builder.generated.form.FormDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.form.GroupDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.form.PageDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -44,6 +44,7 @@ import org.springframework.stereotype.Service;
 @Conditional(OnStudioTests.class)
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class FormWithLinkDescriptionProvider implements IEditingContextProcessor {
+
     private final IFormIdProvider formIdProvider;
 
     private final View view;

@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder.tests.architecture;
 
-import org.eclipse.sirius.components.view.builder.generated.ReferenceWidgetDescriptionBuilder;
-import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionBuilder;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
  * @author mcharfadi
  */
 public class ViewBuilderTests {
+
     @Test
     void testBuildWidgetDescription() {
         var widgetReference = new ReferenceWidgetDescriptionBuilder()
