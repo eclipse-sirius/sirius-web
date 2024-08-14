@@ -81,11 +81,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
-			<version>2024.7.10</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
 			<version>2024.7.10</version>
 		</dependency>

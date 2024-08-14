@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.collaborative.widget.reference.browser;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -54,7 +54,7 @@ public class ModelBrowserTreePathProvider implements ITreePathProvider {
     @Override
     public IPayload handle(IEditingContext editingContext, Tree tree, TreePathInput input) {
         int maxDepth = 0;
-        Set<String> allAncestors = new HashSet<>();
+        Set<String> allAncestors = new LinkedHashSet<>();
         for (String selectionEntryId : input.selectionEntryIds()) {
             List<String> itemAncestors = this.getAncestors(editingContext, selectionEntryId);
             allAncestors.addAll(itemAncestors);
