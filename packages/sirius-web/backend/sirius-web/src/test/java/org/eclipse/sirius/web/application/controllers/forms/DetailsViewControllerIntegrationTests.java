@@ -19,10 +19,10 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
-import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,10 +59,10 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
 
     @Test
     @DisplayName("Given a semantic object, when we subscribe to its properties events, then the form is sent")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSemanticObjectWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
-        var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString()));
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)

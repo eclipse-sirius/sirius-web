@@ -12,17 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.services;
 
-import org.springframework.stereotype.Service;
-
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
-import org.eclipse.sirius.components.core.api.IDefaultContentService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.sirius.components.core.api.IDefaultContentService;
+import org.springframework.stereotype.Service;
 
 /**
  * Default implementation of {@link IDefaultContentService}.
@@ -47,6 +47,10 @@ public class DefaultContentService implements IDefaultContentService {
             } else {
                 contents.addAll(eObject.eContents());
             }
+        }
+        else if (object instanceof Resource resource) {
+            // The object may be a document
+            contents.addAll(resource.getContents());
         }
         return contents;
     }

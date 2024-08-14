@@ -12,18 +12,35 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.selection;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.UUID;
 
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
-import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.selection.Selection;
-import org.eclipse.sirius.components.selection.description.SelectionDescription;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.IDAdapter;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.SelectionDialogTreeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramPaletteBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.SelectionDialogDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.springframework.stereotype.Service;
 
@@ -37,57 +54,119 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
 
     public static final String LABEL = "Selection";
 
-    public static final String REPRESENTATION_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=selectionDescription&sourceElementId=Test";
+    private static final String DIALOG_MESSAGE = "Select the objects to consider";
 
-    private final IIdentityService identityService;
+    private final View view;
 
-    private final ILabelService labelService;
+    private DiagramDescription diagramDescription;
 
-    public SelectionDescriptionProvider(IIdentityService identityService, ILabelService labelService) {
-        this.identityService = Objects.requireNonNull(identityService);
-        this.labelService = Objects.requireNonNull(labelService);
+    private NodeTool createNodeTool;
+
+    private final IDiagramIdProvider diagramIdProvider;
+
+    private SelectionDialogTreeDescription selectionDialogTreeDescription;
+
+    private SelectionDialogDescription selectionDialog;
+
+
+    public SelectionDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
+        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.view = this.createView();
     }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            siriusWebEditingContext.getRepresentationDescriptions().put(REPRESENTATION_DESCRIPTION_ID, this.getSelectionDescription());
+            siriusWebEditingContext.getViews().add(this.view);
         }
     }
 
-    private SelectionDescription getSelectionDescription() {
-        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.labelService::getLabel)
-                .orElse("");
+    public String getSelectionDialogTreeDescriptionId() {
+        return this.diagramIdProvider.getId(this.selectionDialogTreeDescription);
+    }
 
-        Function<VariableManager, List<String>> iconURLProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.labelService::getImagePath)
-                .orElse(null);
+    public String getSelectionDialogDescriptionId() {
+        return this.diagramIdProvider.getId(this.selectionDialog);
+    }
 
-        Function<VariableManager, List<?>> objectsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .filter(EObject.class::isInstance)
-                .map(EObject.class::cast)
-                .map(eObject -> (List<EObject>) eObject.eContents())
-                .orElse(List.of());
+    private View createView() {
+        ViewBuilder viewBuilder = new ViewBuilder();
+        View unsynchronizedView = viewBuilder.build();
+        unsynchronizedView.getDescriptions().add(this.createDiagramDescription());
 
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.identityService::getId)
-                .orElse(null);
+        unsynchronizedView.eAllContents().forEachRemaining(eObject -> {
+            eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
+        });
 
-        Function<VariableManager, String> selectionObjectsIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.identityService::getId)
-                .orElse(null);
+        String resourcePath = UUID.nameUUIDFromBytes("SelectionDescriptionDiagramDescription".getBytes()).toString();
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
+        resource.eAdapters().add(new ResourceMetadataAdapter("SelectionDescriptionDiagramDescription"));
+        resource.getContents().add(unsynchronizedView);
 
-        return SelectionDescription.newSelectionDescription(REPRESENTATION_DESCRIPTION_ID)
-                .label(LABEL)
-                .idProvider(variableManager -> Selection.PREFIX)
-                .labelProvider(labelProvider)
-                .iconURLProvider(iconURLProvider)
-                .messageProvider(variableManager -> "Select the objects to consider")
-                .objectsProvider(objectsProvider)
-                .targetObjectIdProvider(targetObjectIdProvider)
-                .selectionObjectsIdProvider(selectionObjectsIdProvider)
-                .canCreatePredicate(variableManager -> false)
+        return unsynchronizedView;
+    }
+
+    private DiagramDescription createDiagramDescription() {
+        var nodeStyle = new RectangularNodeStyleDescriptionBuilder()
                 .build();
+
+        var insideLabel = new InsideLabelDescriptionBuilder()
+                .labelExpression("aql:self.name")
+                .style(DiagramFactory.eINSTANCE.createInsideLabelStyle())
+                .position(InsideLabelPosition.TOP_CENTER)
+                .build();
+
+        var nodeDescription = new NodeDescriptionBuilder()
+                .name("Component")
+                .domainType("papaya:Component")
+                .semanticCandidatesExpression("aql:self.eContents()")
+                .insideLabel(insideLabel)
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .style(nodeStyle)
+                .build();
+
+        this.createCreateNodeTool();
+
+        var diagramPalette = new DiagramPaletteBuilder()
+                .nodeTools(this.createNodeTool)
+                .build();
+
+        this.diagramDescription = new DiagramDescriptionBuilder()
+                .name("Diagram")
+                .titleExpression("aql:'SelectionDescriptionDiagram'")
+                .domainType("papaya:Project")
+                .nodeDescriptions(nodeDescription)
+                .edgeDescriptions()
+                .palette(diagramPalette)
+                .autoLayout(false)
+                .build();
+
+        return this.diagramDescription;
+    }
+
+    private void createCreateNodeTool() {
+        this.selectionDialog = this.createSelectionDialog();
+        this.createNodeTool = new NodeToolBuilder()
+                .name("Create Component")
+                .body(
+                        new ChangeContextBuilder()
+                                .expression("aql:self")
+                                .build()
+                )
+                .dialogDescription(this.selectionDialog)
+                .build();
+    }
+
+    private SelectionDialogDescription createSelectionDialog() {
+        this.selectionDialogTreeDescription = new SelectionDialogTreeDescriptionBuilder()
+                .elementsExpression("aql:self.eResource()")
+                .childrenExpression("aql:if self.oclIsKindOf(papaya::NamedElement) then self.eContents() else self.getContents() endif  ")
+                .isSelectableExpression("aql:self.oclIsKindOf(papaya::Component)")
+                .build();
+        return new SelectionDialogDescriptionBuilder()
+                .selectionMessage(DIALOG_MESSAGE)
+                .selectionDialogTreeDescription(this.selectionDialogTreeDescription)
+                .build();
+
     }
 }

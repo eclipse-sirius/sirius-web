@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -31,6 +32,7 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.IDefaultLabelService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,11 +47,15 @@ import org.springframework.stereotype.Service;
 public class DefaultLabelService implements IDefaultLabelService {
 
     public static final String DEFAULT_ICON_PATH = "/icons/svg/Default.svg";
+
     private static final String DEFAULT_LABEL_FEATURE = "name";
+
     private final LabelFeatureProviderRegistry labelFeatureProviderRegistry;
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final List<IRepresentationImageProvider> representationImageProviders;
+
     private final Logger logger = LoggerFactory.getLogger(LabelFeatureProviderRegistry.class);
 
     public DefaultLabelService(LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory, List<IRepresentationImageProvider> representationImageProviders) {
@@ -57,11 +63,13 @@ public class DefaultLabelService implements IDefaultLabelService {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
     }
+
     @Override
     public String getLabel(Object object) {
         return this.getStyledLabel(object).toString();
     }
 
+    @Override
     public StyledString getStyledLabel(Object object) {
         String label = "";
         if (object instanceof EObject eObject) {
@@ -71,9 +79,19 @@ public class DefaultLabelService implements IDefaultLabelService {
                     .orElse("");
         } else if (object instanceof IRepresentation representation) {
             label = representation.getLabel();
+        } else if (object instanceof Resource resource) {
+            label = this.getResourceLabel(resource);
         }
 
         return StyledString.of(label);
+    }
+
+    private String getResourceLabel(Resource resource) {
+        return resource.eAdapters().stream()
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast).findFirst()
+                .map(ResourceMetadataAdapter::getName)
+                .orElse(resource.getURI().lastSegment());
     }
 
     @Override
@@ -87,6 +105,8 @@ public class DefaultLabelService implements IDefaultLabelService {
             }
         } else if (object instanceof IRepresentation representation) {
             fullLabel = representation.getLabel();
+        } else if (object instanceof Resource resource) {
+            fullLabel = this.getResourceLabel(resource);
         } else {
             fullLabel = this.getLabel(object);
         }
@@ -143,6 +163,8 @@ public class DefaultLabelService implements IDefaultLabelService {
                     .map(provider -> provider.getImageURL(representation.getKind()))
                     .flatMap(Optional::stream)
                     .toList();
+        } else if (object instanceof Resource) {
+            result = List.of("/icons/Resource.svg");
         }
         return result;
     }

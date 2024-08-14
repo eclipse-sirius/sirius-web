@@ -14,36 +14,32 @@ package org.eclipse.sirius.web.application.controllers.selection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
-import org.eclipse.sirius.components.collaborative.selection.dto.SelectionEventInput;
-import org.eclipse.sirius.components.collaborative.selection.dto.SelectionRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.forms.Textarea;
-import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
-import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
-import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
+import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogTreeEventInput;
+import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
+import org.eclipse.sirius.components.trees.Tree;
+import org.eclipse.sirius.components.trees.TreeItem;
+import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.services.diagrams.ModelOperationDiagramDescriptionProvider;
 import org.eclipse.sirius.web.services.selection.SelectionDescriptionProvider;
-import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.selection.SelectionDialogTreeEventSubscriptionRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,7 +50,6 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.execution.DataFetcherResult;
-import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
@@ -67,15 +62,34 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,  properties = { "sirius.web.test.enabled=studio" })
 public class SelectionControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String GET_SELECTION_EVENT_SUBSCRIPTION = """
-            subscription selectionEvent($input: SelectionEventInput!) {
-              selectionEvent(input: $input) {
+    private static final String GET_SELECTION_DESCRIPTION = """
+            query getSelectionDescription($editingContextId: ID!, $representationId: ID!, $targetObjectId: ID!) {
+              viewer {
+                editingContext(editingContextId: $editingContextId) {
+                  representation(representationId: $representationId) {
+                    description {
+                      ... on SelectionDescription {
+                          message(targetObjectId: $targetObjectId)
+                          treeDescription {
+                            id
+                          }
+                        }
+                    }
+                  }
+                }
+              }
+            }
+            """;
+
+    private static final String GET_TREE_EVENT_SUBSCRIPTION = """
+            subscription selectionDialogTreeEvent($input: SelectionDialogTreeEventInput!) {
+              selectionDialogTreeEvent(input: $input) {
                 __typename
-                ... on SelectionRefreshedEventPayload {
-                  selection {
-                    objects {
-                      id
-                      label
+                ... on TreeRefreshedEventPayload {
+                  id
+                  tree {
+                    id
+                    children {
                       iconURL
                     }
                   }
@@ -84,6 +98,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
             }
             """;
 
+
     @Autowired
     private IGraphQLRequestor graphQLRequestor;
 
@@ -91,16 +106,13 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
+    private SelectionDialogTreeEventSubscriptionRunner selectionDialogTreeEventSubscriptionRunner;
 
     @Autowired
-    private EditTextfieldMutationRunner editTextfieldMutationRunner;
+    private SelectionDescriptionProvider selectionDescriptionProvider;
 
     @Autowired
-    private ModelOperationDiagramDescriptionProvider modelOperationDiagramDescriptionProvider;
-
-    @Autowired
-    private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
+    private ExpandAllTreePathQueryRunner expandAllTreePathQueryRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -108,147 +120,264 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     }
 
     @Test
-    @DisplayName("Given a semantic object, when we subscribe to its selection events, then the selection is sent")
+    @DisplayName("Given a semantic object and a dialog description id, when requesting the Selection Description, then the Selection Description is sent")
+    @Sql(scripts = { "/scripts/papaya.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSemanticObjectWhenRequestingSelectionDescriptionThenTheSelectionDescriptionIsSent() {
+        String representationId = "selectionDialog://?representationDescription=" + URLEncoder.encode(this.selectionDescriptionProvider.getSelectionDialogDescriptionId(), StandardCharsets.UTF_8);
+        Map<String, Object> variables = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_PROJECT.toString(), "representationId", representationId, "targetObjectId",
+                PapayaIdentifiers.PROJECT_OBJECT.toString());
+        var result = this.graphQLRequestor.execute(GET_SELECTION_DESCRIPTION, variables);
+        String message = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.message");
+        String treeDescriptionId = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeDescription.id");
+
+        assertThat(message).isEqualTo("Select the objects to consider");
+        assertThat(treeDescriptionId).isEqualTo(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId());
+    }
+
+    @Test
+    @DisplayName("Given a semantic object, when we subscribe to its selection dialog tree, then the tree is sent")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSemanticObjectWhenWeSubscribeToItsSelectionEventsThenTheSelectionIsSent() {
-        var input = new SelectionEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, PapayaIdentifiers.PROJECT_OBJECT.toString());
-        var flux = this.graphQLRequestor.subscribe(GET_SELECTION_EVENT_SUBSCRIPTION, input)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(SelectionRefreshedEventPayload.class::isInstance)
-                .map(SelectionRefreshedEventPayload.class::cast);
-
-        Consumer<SelectionRefreshedEventPayload> selectionContentConsumer = payload -> Optional.of(payload)
-                .map(SelectionRefreshedEventPayload::selection)
-                .ifPresentOrElse(selection -> {
-                    assertThat(selection.getObjects()).hasSizeGreaterThanOrEqualTo(5);
-                }, () -> fail("Missing selection"));
-
+        var treeId = "selection://?treeDescriptionId=" + URLEncoder.encode(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), StandardCharsets.UTF_8) + "&targetObjectId="
+                + PapayaIdentifiers.PROJECT_OBJECT.toString();
+        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), treeId, List.of());
+        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
+        var hasResourceRootContent = this.getTreeRefreshedEventPayloadMatcher();
         StepVerifier.create(flux)
-                .consumeNextWith(selectionContentConsumer)
-                .thenCancel()
-                .verify(Duration.ofSeconds(10));
+            .expectNextMatches(hasResourceRootContent)
+            .thenCancel()
+            .verify();
     }
 
     @Test
-    @DisplayName("Given a selection representation, when we edit the details of an object, then the selection representation is updated")
+    @DisplayName("Given the selection dialog tree, when we expand the first item, then the children are sent")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenSelectionRepresentationWhenWeEditTheDetailsOfAnObjectThenTheSelectionRepresentationIsUpdated() {
-        this.testSelectionRepresentationUpdate(PapayaIdentifiers.PROJECT_OBJECT.toString());
+    public void givenSelectionDialogTreeWhenWeExpandTheFirstItemThenChildrenAreSent() {
+        var treeId = "selection://?treeDescriptionId=" + URLEncoder.encode(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), StandardCharsets.UTF_8) + "&targetObjectId="
+                + PapayaIdentifiers.PROJECT_OBJECT.toString();
+        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), treeId, List.of());
+        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
+
+        var treeItemId = new AtomicReference<String>();
+
+        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(1);
+            assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
+
+            treeItemId.set(tree.getChildren().get(0).getId());
+        });
+
+        StepVerifier.create(flux)
+            .consumeNextWith(initialTreeContentConsumer)
+            .thenCancel()
+            .verify();
+
+        var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), treeId, List.of(treeItemId.get()));
+        var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput);
+        var treeRefreshedEventPayloadExpandMatcher = this.getTreeRefreshedEventPayloadExpandMatcher();
+        StepVerifier.create(expandedTreeFlux)
+            .expectNextMatches(treeRefreshedEventPayloadExpandMatcher)
+            .thenCancel()
+            .verify();
     }
 
-    private void testSelectionRepresentationUpdate(String targetObjectId) throws AssertionError {
-        var selectionEventInput = new SelectionEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, targetObjectId);
-        var selectionFlux = this.graphQLRequestor.subscribe(GET_SELECTION_EVENT_SUBSCRIPTION, selectionEventInput);
 
-        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString()));
-        var detailsFlux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
+    @Test
+    @DisplayName("Given the selection dialog tree, when we perform expand all on the first item, then the children are sent")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSelectionDialogTreeWhenWePerformExpandAllOnTheFirstItemThenChildrenAreSent() {
+        var treeId = "selection://?treeDescriptionId=" + URLEncoder.encode(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), StandardCharsets.UTF_8) + "&targetObjectId="
+                + PapayaIdentifiers.PROJECT_OBJECT.toString();
+        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), treeId, List.of());
+        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
 
-        var formId = new AtomicReference<String>();
-        var textareaId = new AtomicReference<String>();
+        var treeItemId = new AtomicReference<String>();
+        var treeInstanceId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(1);
+            assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
+            treeInstanceId.set(tree.getId());
+            treeItemId.set(tree.getChildren().get(0).getId());
+        });
 
-                    var groupNavigator = new FormNavigator(form).page("sirius-web-domain").group("Core Properties");
-                    var textarea = groupNavigator.findWidget("Name", Textarea.class);
+        var treeItemIds = new AtomicReference<List<String>>();
 
-                    textareaId.set(textarea.getId());
-                }, () -> fail("Missing form"));
+        Runnable getTreePath = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    "treeId", treeInstanceId.get(),
+                    "treeItemId", treeItemId.get()
+            );
+            var result = this.expandAllTreePathQueryRunner.run(variables);
+            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            assertThat(treeItemIdsToExpand).isNotEmpty();
 
-        Consumer<Object> selectionContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(SelectionRefreshedEventPayload.class::isInstance)
-                .map(SelectionRefreshedEventPayload.class::cast)
-                .map(SelectionRefreshedEventPayload::selection)
-                .ifPresentOrElse(selection -> {
-                    assertThat(selection.getObjects())
-                            .isNotEmpty()
-                            .anyMatch(selectionObject -> selectionObject.getLabel().contains("sirius-web-domain"));
-                }, () -> fail("Missing selection"));
-
-        Runnable editTextfield = () -> {
-            var input = new EditTextfieldInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), textareaId.get(), "sirius-web-domain-EDITED");
-            var result = this.editTextfieldMutationRunner.run(input);
-
-            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
-            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+            treeItemIds.set(treeItemIdsToExpand);
         };
 
-        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("sirius-web-domain-EDITED").group("Core Properties");
-                    var textarea = groupNavigator.findWidget("Name", Textarea.class);
+        StepVerifier.create(flux)
+            .consumeNextWith(initialTreeContentConsumer)
+            .then(getTreePath)
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
 
-                    assertThat(textarea).hasValue("sirius-web-domain-EDITED");
-                }, () -> fail("Missing form"));
+        Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(1);
+            assertThat(tree.getChildren()).anySatisfy(treeItem -> assertThat(treeItem.getChildren()).isNotEmpty());
 
-        Consumer<Object> updatedSelectionContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(SelectionRefreshedEventPayload.class::isInstance)
-                .map(SelectionRefreshedEventPayload.class::cast)
-                .map(SelectionRefreshedEventPayload::selection)
-                .ifPresentOrElse(selection -> {
-                    assertThat(selection.getObjects())
-                            .isNotEmpty()
-                            .anyMatch(selectionObject -> selectionObject.getLabel().contains("sirius-web-domain-EDITED"));
-                }, () -> fail("Missing selection"));
+        });
 
-        StepVerifier.create(Flux.merge(selectionFlux, detailsFlux))
-                .consumeNextWith(selectionContentConsumer)
-                .consumeNextWith(initialFormContentConsumer)
-                .then(editTextfield)
-                .consumeNextWith(updatedFormContentConsumer)
-                .consumeNextWith(updatedSelectionContentConsumer)
+        var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), treeId, treeItemIds.get());
+        var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput);
+
+        StepVerifier.create(expandedTreeFlux)
+                .consumeNextWith(initialExpandedTreeContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
-    private Flux<Object> givenSubscriptionToModelOperationDiagram() {
-        var input = new CreateRepresentationInput(
-                UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
-                this.modelOperationDiagramDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaIdentifiers.PROJECT_OBJECT.toString(),
-                "ModelOperationDiagram"
-        );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+    @Test
+    @DisplayName("Given the selection dialog tree, when we perform expand all on the second item (the root project), then the children are sent")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSelectionDialogTreeWhenWePerformExpandAllOnTheSecondItemThenChildrenAreSent() {
+        var treeId = "selection://?treeDescriptionId=" + URLEncoder.encode(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), StandardCharsets.UTF_8) + "&targetObjectId="
+                + PapayaIdentifiers.PROJECT_OBJECT.toString();
+        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), treeId, List.of());
+        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
+
+        var rootTreeItemId = new AtomicReference<String>();
+        var treeInstanceId = new AtomicReference<String>();
+
+        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(1);
+            assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
+            treeInstanceId.set(tree.getId());
+            rootTreeItemId.set(tree.getChildren().get(0).getId());
+        });
+
+        StepVerifier.create(flux)
+            .consumeNextWith(initialTreeContentConsumer)
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+
+        //We expand the first tree item (representing the resource)
+        var expandedFirstTreeItemInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), treeId, List.of(rootTreeItemId.get()));
+        var expandedFirstTreeItemFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedFirstTreeItemInput);
+
+        //Used to retrieve the Papaya Root Project tree item
+        var rootProjectTreeItemId = new AtomicReference<String>();
+        Consumer<Object> firstTreeItemExpandedContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(1);
+            var rootResourceTreeItem = tree.getChildren().get(0);
+            assertThat(tree.getChildren()).hasSize(1);
+            rootProjectTreeItemId.set(rootResourceTreeItem.getChildren().get(0).getId());
+        });
+
+        var treeItemIds = new AtomicReference<List<String>>();
+
+        Runnable getTreePath = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    "treeId", treeInstanceId.get(),
+                    "treeItemId", rootProjectTreeItemId.get()
+                    );
+            var result = this.expandAllTreePathQueryRunner.run(variables);
+            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            assertThat(treeItemIdsToExpand).isNotEmpty();
+            treeItemIdsToExpand.add(0, rootTreeItemId.get());
+            treeItemIds.set(treeItemIdsToExpand);
+        };
+
+        StepVerifier.create(expandedFirstTreeItemFlux)
+            .consumeNextWith(firstTreeItemExpandedContentConsumer)
+            //Now that we have expand and retrieve the Papaya Root Project tree item, we can perform the expandAll from it
+            .then(getTreePath)
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+
+
+        Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(1);
+            TreeItem rootProjectTreeItem = tree.getChildren().get(0);
+            assertThat(rootProjectTreeItem.getChildren()).isNotEmpty();
+        });
+
+        var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), treeId, treeItemIds.get());
+        var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput);
+        // We now verify the expandAll result
+        StepVerifier.create(expandedTreeFlux)
+                .consumeNextWith(initialExpandedTreeContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+
+    }
+
+    private Predicate<Object> getTreeRefreshedEventPayloadMatcher() {
+        Predicate<Tree> treeMatcher = tree -> {
+            return tree.getChildren().size() == 1 && tree.getChildren().get(0).getIconURL().get(0).equals("/icons/Resource.svg")
+                    && tree.getChildren().get(0).getLabel().toString().equals("Sirius Web Architecture") && tree.getChildren().get(0).getChildren().isEmpty();
+        };
+
+        return object -> {
+            return Optional.of(object)
+                    .filter(DataFetcherResult.class::isInstance)
+                    .map(DataFetcherResult.class::cast)
+                    .map(DataFetcherResult::getData)
+                    .filter(TreeRefreshedEventPayload.class::isInstance)
+                    .map(TreeRefreshedEventPayload.class::cast)
+                    .map(TreeRefreshedEventPayload::tree)
+                    .filter(treeMatcher)
+                    .isPresent();
+        };
+    }
+
+    private Predicate<Object> getTreeRefreshedEventPayloadExpandMatcher() {
+        Predicate<Tree> treeMatcher = tree -> {
+            return tree.getChildren().size() == 1 && !tree.getChildren().get(0).getChildren().isEmpty();
+        };
+
+        return object -> {
+            return Optional.of(object)
+                    .filter(DataFetcherResult.class::isInstance)
+                    .map(DataFetcherResult.class::cast)
+                    .map(DataFetcherResult::getData)
+                    .filter(TreeRefreshedEventPayload.class::isInstance)
+                    .map(TreeRefreshedEventPayload.class::cast)
+                    .map(TreeRefreshedEventPayload::tree)
+                    .filter(treeMatcher)
+                    .isPresent();
+        };
     }
 
     @Test
-    @DisplayName("Given a semantic object, when we subscribe to its selection events, then the URL of its objects is valid")
+    @DisplayName("Given a semantic object, when we subscribe to its selection dialog tree, then the URL of its treeItems is valid")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSemanticObjectWhenWeSubscribeToItsSelectionEventsThenTheURLOfItsObjectsIsValid() {
-        var input = new SelectionEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), SelectionDescriptionProvider.REPRESENTATION_DESCRIPTION_ID, PapayaIdentifiers.PROJECT_OBJECT.toString());
-        var flux = this.graphQLRequestor.subscribeToSpecification(GET_SELECTION_EVENT_SUBSCRIPTION, input);
+        var treeId = "selection://?treeDescriptionId=" + URLEncoder.encode(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), StandardCharsets.UTF_8) + "&targetObjectId="
+                + PapayaIdentifiers.PROJECT_OBJECT.toString();
+        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), treeId, List.of());
+        var flux = this.graphQLRequestor.subscribeToSpecification(GET_TREE_EVENT_SUBSCRIPTION, input);
 
-        Consumer<String> selectionContentConsumer = payload -> Optional.of(payload)
+        Consumer<String> treeContentConsumer = payload -> Optional.of(payload)
                 .ifPresentOrElse(body -> {
-                    String typename = JsonPath.read(body, "$.data.selectionEvent.__typename");
-                    assertThat(typename).isEqualTo(SelectionRefreshedEventPayload.class.getSimpleName());
+                    String typename = JsonPath.read(body, "$.data.selectionDialogTreeEvent.__typename");
+                    assertThat(typename).isEqualTo(TreeRefreshedEventPayload.class.getSimpleName());
 
-                    List<List<String>> objectIconURLs = JsonPath.read(body, "$.data.selectionEvent.selection.objects[*].iconURL");
+                    List<List<String>> objectIconURLs = JsonPath.read(body, "$.data.selectionDialogTreeEvent.tree.children[*].iconURL");
                     assertThat(objectIconURLs)
                             .isNotEmpty()
                             .allSatisfy(iconURLs -> {
@@ -260,10 +389,19 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 }, () -> fail("Missing selection"));
 
         StepVerifier.create(flux)
-                .consumeNextWith(selectionContentConsumer)
+                .consumeNextWith(treeContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
-
+    private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
+        return object -> Optional.of(object)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(TreeRefreshedEventPayload.class::isInstance)
+                .map(TreeRefreshedEventPayload.class::cast)
+                .map(TreeRefreshedEventPayload::tree)
+                .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
+    }
 }

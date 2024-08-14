@@ -51,6 +51,11 @@
 			<version>2024.9.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-trees</artifactId>
+			<version>2024.9.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

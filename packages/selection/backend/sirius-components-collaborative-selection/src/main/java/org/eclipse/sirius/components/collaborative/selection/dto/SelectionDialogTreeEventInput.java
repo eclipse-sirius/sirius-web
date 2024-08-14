@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.selection.api;
+package org.eclipse.sirius.components.collaborative.selection.dto;
 
-import org.eclipse.sirius.components.core.api.IRepresentationInput;
+import java.util.List;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * Represents an input sent by a client which concerns a selection representation.
+ * The input of the selection dialog tree event subscription.
  *
- * @author arichard
+ * @author fbarbin
  */
-public interface ISelectionInput extends IRepresentationInput {
-
+public record SelectionDialogTreeEventInput(UUID id, String editingContextId, String treeId, List<String> expanded) implements IInput {
 }

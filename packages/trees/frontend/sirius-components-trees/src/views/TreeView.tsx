@@ -146,15 +146,15 @@ export const TreeView = ({
     }
   }, [expandAllTreePathLoading, expandAllTreePathData]);
 
-  const { addMessages } = useMultiToast();
+  const { addErrorMessage } = useMultiToast();
   useEffect(() => {
     if (expandAllTreePathError) {
-      addMessages(expandAllTreePathError.message);
+      addErrorMessage(expandAllTreePathError.message);
     }
   }, [expandAllTreePathError]);
   useEffect(() => {
     if (treePathError) {
-      addMessages(treePathError.message);
+      addErrorMessage(treePathError.message);
     }
   }, [treePathError]);
 
