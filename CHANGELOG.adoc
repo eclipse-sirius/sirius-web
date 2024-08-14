@@ -100,6 +100,7 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3782[#3782] [sirius-web] Add an extension point to contribute custom widgets
 - https://github.com/eclipse-sirius/sirius-web/issues/3801[#3801] Add an equivalent of IViewDiagramDescriptionSearchService for Form descriptions
 - https://github.com/eclipse-sirius/sirius-web/issues/3557[#3550] [sirius-web] Add an extension point to contribute setting pages
+- https://github.com/eclipse-sirius/sirius-web/issues/3776[#3776] [trees] Remove unwanted dependency from the reference widget in the explorer
 
 
 == v2024.7.0

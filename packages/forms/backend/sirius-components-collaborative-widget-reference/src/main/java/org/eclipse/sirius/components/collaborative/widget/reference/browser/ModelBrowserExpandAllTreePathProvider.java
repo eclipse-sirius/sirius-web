@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.views.explorer.services;
+package org.eclipse.sirius.components.collaborative.widget.reference.browser;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.collaborative.trees.api.IExpandAllTreePathP
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathSuccessPayload;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePath;
+import org.eclipse.sirius.components.collaborative.widget.reference.browser.api.IModelBrowserNavigationService;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -28,17 +29,15 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.trees.Tree;
-import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerNavigationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation of {@link IExpandAllTreePathProvider} for Sirius Web Tree.
+ * Implementation of {@link IExpandAllTreePathProvider} for Widget Reference Tree.
  *
- * @author arichard
+ * @author frouene
  */
 @Service
-public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
+public class ModelBrowserExpandAllTreePathProvider implements IExpandAllTreePathProvider {
 
     private final IObjectSearchService objectSearchService;
 
@@ -46,21 +45,19 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
 
     private final IContentService contentService;
 
-    private final IExplorerNavigationService explorerNavigationService;
+    private final IModelBrowserNavigationService modelBrowserNavigationService;
 
-    private final IRepresentationDataSearchService representationDataSearchService;
-
-    public ExpandAllTreePathProvider(IObjectSearchService objectSearchService, IIdentityService identityService, IContentService contentService, IExplorerNavigationService explorerNavigationService, IRepresentationDataSearchService representationDataSearchService) {
+    public ModelBrowserExpandAllTreePathProvider(IObjectSearchService objectSearchService, IIdentityService identityService, IContentService contentService, IModelBrowserNavigationService modelBrowserNavigationService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.identityService = Objects.requireNonNull(identityService);
         this.contentService = Objects.requireNonNull(contentService);
-        this.explorerNavigationService = Objects.requireNonNull(explorerNavigationService);
-        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
+        this.modelBrowserNavigationService = Objects.requireNonNull(modelBrowserNavigationService);
     }
 
     @Override
     public boolean canHandle(Tree tree) {
-        return tree.getDescriptionId().equals(ExplorerDescriptionProvider.DESCRIPTION_ID);
+        return tree.getDescriptionId().equals(ModelBrowsersDescriptionProvider.CONTAINER_DESCRIPTION_ID)
+                || tree.getDescriptionId().equals(ModelBrowsersDescriptionProvider.REFERENCE_DESCRIPTION_ID);
     }
 
     @Override
@@ -71,7 +68,7 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
         var object = this.objectSearchService.getObject(editingContext, treeItemId);
         if (object.isPresent()) {
             // We need to get the current depth of the tree item
-            var itemAncestors = this.explorerNavigationService.getAncestors(editingContext, treeItemId);
+            var itemAncestors = this.modelBrowserNavigationService.getAncestors(editingContext, treeItemId);
             maxDepth = itemAncestors.size();
             maxDepth = this.addAllContents(editingContext, treeItemId, maxDepth, treeItemIdsToExpand);
         } else {
@@ -116,9 +113,6 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
                     childTreePathMaxDepth = this.addAllContents(editingContext, childId, childTreePathMaxDepth, treeItemIdsToExpand);
                     depthConsidered = Math.max(depthConsidered, childTreePathMaxDepth);
                 }
-            } else if (this.representationDataSearchService.existAnyRepresentationForTargetObjectId(treeItemId)) {
-                treeItemIdsToExpand.add(treeItemId);
-                depthConsidered = Math.max(depthConsidered, depth + 1);
             }
         }
 

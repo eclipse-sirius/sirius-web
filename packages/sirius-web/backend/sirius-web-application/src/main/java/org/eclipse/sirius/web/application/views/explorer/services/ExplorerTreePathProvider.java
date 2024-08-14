@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer.services;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -49,7 +49,7 @@ public class ExplorerTreePathProvider implements ITreePathProvider {
     @Override
     public IPayload handle(IEditingContext editingContext, Tree tree, TreePathInput input) {
         int maxDepth = 0;
-        Set<String> allAncestors = new HashSet<>();
+        Set<String> allAncestors = new LinkedHashSet<>();
         for (String selectionEntryId : input.selectionEntryIds()) {
             List<String> itemAncestors = this.explorerNavigationService.getAncestors(editingContext, selectionEntryId);
             allAncestors.addAll(itemAncestors);
