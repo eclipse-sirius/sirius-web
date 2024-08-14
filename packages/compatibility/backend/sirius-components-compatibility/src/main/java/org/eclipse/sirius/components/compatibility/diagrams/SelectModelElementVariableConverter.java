@@ -12,17 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.compatibility.diagrams;
 
-import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.compatibility.api.IAQLInterpreterFactory;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.services.selection.api.ISelectModelElementVariableConverter;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.selection.Selection;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
 import org.eclipse.sirius.viewpoint.description.tool.SelectModelElementVariable;
 import org.springframework.stereotype.Service;
@@ -41,24 +36,15 @@ public class SelectModelElementVariableConverter implements ISelectModelElementV
 
     private final IIdentifierProvider identifierProvider;
 
-    private final IAQLInterpreterFactory interpreterFactory;
 
-    public SelectModelElementVariableConverter(IObjectService objectService, IIdentifierProvider identifierProvider, IAQLInterpreterFactory interpreterFactory) {
+    public SelectModelElementVariableConverter(IObjectService objectService, IIdentifierProvider identifierProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
-        this.interpreterFactory = Objects.requireNonNull(interpreterFactory);
     }
 
     @Override
     public SelectionDescription convert(SelectModelElementVariable selectModelElementVariable, org.eclipse.sirius.diagram.description.DiagramDescription diagramDescription) {
-        AQLInterpreter interpreter = this.interpreterFactory.create(diagramDescription);
         return SelectionDescription.newSelectionDescription(this.identifierProvider.getIdentifier(selectModelElementVariable))
-                .objectsProvider(variableManager -> {
-                    Result result = interpreter.evaluateExpression(variableManager.getVariables(), selectModelElementVariable.getCandidatesExpression());
-                    return result.asObjects().orElse(List.of()).stream()
-                            .filter(Objects::nonNull)
-                            .toList();
-                })
                 .messageProvider(variableManager -> {
                     String message = selectModelElementVariable.getMessage();
                     if (message == null) {
@@ -66,11 +52,9 @@ public class SelectModelElementVariableConverter implements ISelectModelElementV
                     }
                     return message;
                 })
-                .idProvider(variableManager -> Selection.PREFIX)
+                .idProvider(variableManager -> "selection://")
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null))
-                .iconURLProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of()))
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .selectionObjectsIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .label("Selection Description")
                 .canCreatePredicate(variableManager -> false)
                 .build();

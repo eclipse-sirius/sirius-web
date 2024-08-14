@@ -27,19 +27,14 @@ import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
-import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.selection.Selection;
-import org.eclipse.sirius.components.selection.description.SelectionDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
-import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
-import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
+import org.eclipse.sirius.components.view.diagram.DialogDescription;
+import org.eclipse.sirius.components.view.emf.api.IDialogDescriptionConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -63,19 +58,16 @@ public class ViewConverter implements IViewConverter {
 
     private final ApplicationContext applicationContext;
 
-    private final IObjectService objectService;
+    private final List<IDialogDescriptionConverter> dialogDescriptionConverts;
 
-    private final IDiagramIdProvider diagramIdProvider;
-
-    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext, IObjectService objectService, IDiagramIdProvider diagramIdProvider) {
+    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext, List<IDialogDescriptionConverter> dialogDescriptionConverts) {
         this.javaServiceProviders = new ArrayList<>();
         this.javaServiceProviders.addAll(Objects.requireNonNull(javaServiceProviders));
         IServiceProvider nodeServiceProvider = (IReadOnlyQueryEnvironment queryEnvironment) -> ServiceUtils.getReceiverServices(null, Node.class).stream().toList();
         this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class, DiagramServices.class, nodeServiceProvider.getClass()));
         this.representationDescriptionConverters = Objects.requireNonNull(representationDescriptionConverters);
         this.applicationContext = Objects.requireNonNull(applicationContext);
-        this.objectService = Objects.requireNonNull(objectService);
-        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.dialogDescriptionConverts = Objects.requireNonNull(dialogDescriptionConverts);
     }
 
     /**
@@ -94,7 +86,7 @@ public class ViewConverter implements IViewConverter {
                         .flatMap(Optional::stream)
                         .toList());
 
-                result.addAll(this.convertSelectionsDialogs(view, interpreter));
+                result.addAll(this.convertDialogDescriptions(view, interpreter));
 
             } catch (NullPointerException exception) {
                 // Can easily happen if the View model is currently invalid/inconsistent, typically because it is
@@ -105,42 +97,25 @@ public class ViewConverter implements IViewConverter {
         return result;
     }
 
-    private List<IRepresentationDescription> convertSelectionsDialogs(View view, AQLInterpreter interpreter) {
-        return view.getDescriptions().stream().filter(DiagramDescription.class::isInstance)
-            .flatMap(this::getAllContent)
-            .filter(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription.class::isInstance)
-            .map(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription.class::cast)
-            .map(selectionDescription -> this.convertSelectionDialog(selectionDescription, interpreter))
-            .toList();
+    private List<IRepresentationDescription> convertDialogDescriptions(View view, AQLInterpreter interpreter) {
+        List<IRepresentationDescription> representationDescriptions = new ArrayList<>();
+        view.getDescriptions().stream()
+                .filter(DiagramDescription.class::isInstance)
+                .flatMap(this::getAllContent)
+                .filter(org.eclipse.sirius.components.view.diagram.DialogDescription.class::isInstance)
+                .map(org.eclipse.sirius.components.view.diagram.DialogDescription.class::cast)
+                .forEach(dialogDescription -> this.convertDialogDescription(dialogDescription, interpreter, representationDescriptions));
+        return representationDescriptions;
     }
 
-    private IRepresentationDescription convertSelectionDialog(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription selectionDescription, AQLInterpreter interpreter) {
-        String selectionDescriptionId = this.diagramIdProvider.getId(selectionDescription);
-        return SelectionDescription.newSelectionDescription(selectionDescriptionId)
-                .objectsProvider(variableManager -> {
-                    String expression = Optional.ofNullable(selectionDescription.getSelectionDialogTreeDescription())
-                            .map(SelectionDialogTreeDescription::getElementsExpression)
-                            .orElse("");
-                    Result result = interpreter.evaluateExpression(variableManager.getVariables(), expression);
-                    return result.asObjects().orElse(List.of()).stream()
-                            .filter(Objects::nonNull)
-                            .toList();
-                })
-                .messageProvider(variableManager -> {
-                    String message = selectionDescription.getSelectionMessage();
-                    if (message == null) {
-                        message = "";
-                    }
-                    return message;
-                })
-                .idProvider(variableManager -> Selection.PREFIX)
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null))
-                .iconURLProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(null))
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .selectionObjectsIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .label("Selection Description")
-                .canCreatePredicate(variableManager -> false)
-                .build();
+    private void convertDialogDescription(DialogDescription dialogDescription, AQLInterpreter interpreter, List<IRepresentationDescription> representationDescriptions) {
+        this.dialogDescriptionConverts.stream()
+                .filter(converter -> converter.canConvert(dialogDescription))
+                .findFirst()
+                .map(converter -> converter.convert(dialogDescription, interpreter))
+                .stream()
+                .flatMap(List::stream)
+                .forEach(representationDescriptions::add);
     }
 
     private Stream<EObject> getAllContent(EObject representationDescription) {

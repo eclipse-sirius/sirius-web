@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.springframework.stereotype.Service;
 
 /**
@@ -61,6 +62,17 @@ public class DiagramIdProvider implements IDiagramIdProvider {
             String sourceId = this.getSourceIdFromElementDescription(dialogDescription);
             String sourceElementId = this.objectService.getId(dialogDescription);
             return this.getDialogDescriptionTypeName(dialogDescription) + "&" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
+                    + sourceElementId;
+        }
+        return null;
+    }
+
+    @Override
+    public String getId(SelectionDialogTreeDescription treeDescription) {
+        if (treeDescription != null) {
+            String sourceId = this.getSourceIdFromElementDescription(treeDescription);
+            String sourceElementId = this.objectService.getId(treeDescription);
+            return SELECTION_DIALOG_TREE_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
                     + sourceElementId;
         }
         return null;

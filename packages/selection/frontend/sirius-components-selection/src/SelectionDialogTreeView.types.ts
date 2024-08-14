@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.selection.dto;
 
-import java.util.UUID;
+export interface SelectionDialogTreeViewProps {
+  editingContextId: string;
+  treeDescriptionId: string;
+  targetObjectId: string;
+}
 
-import org.eclipse.sirius.components.core.api.IInput;
-
-/**
- * The input of the selection event subscription.
- *
- * @author arichard
- */
-public record SelectionEventInput(UUID id, String editingContextId, String selectionId, String targetObjectId) implements IInput {
+export interface SelectionDialogTreeViewState {
+  expanded: string[];
+  maxDepth: number;
 }

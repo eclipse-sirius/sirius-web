@@ -1,36 +1,17 @@
 extend type Subscription {
-  selectionEvent(input: SelectionEventInput!): SelectionEventPayload!
+  selectionDialogTreeEvent(input: SelectionDialogTreeEventInput!): TreeEventPayload!
 }
 
-input SelectionEventInput {
+input SelectionDialogTreeEventInput {
   id: ID!
+  treeId: String!
   editingContextId: ID!
-  selectionId: ID!
-  targetObjectId: ID!
-}
-
-union SelectionEventPayload = ErrorPayload | SelectionRefreshedEventPayload
-
-type SelectionRefreshedEventPayload {
-  id: ID!
-  selection: Selection!
-}
-
-type Selection implements Representation {
-  id: ID!
-  metadata: RepresentationMetadata!
-  targetObjectId: String!
-  message: String
-  objects: [SelectionObject!]!
-}
-
-type SelectionObject {
-  id: ID!
-  label: String!
-  iconURL: [String!]!
+  expanded: [String!]!
 }
 
 type SelectionDescription implements RepresentationDescription {
   id: ID!
   label: String!
+  message(targetObjectId: ID!): String!
+  treeDescription: TreeDescription!
 }

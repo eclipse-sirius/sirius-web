@@ -25,6 +25,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.NodeTool} object. <!--
@@ -156,13 +158,15 @@ public class NodeToolItemProvider extends ToolItemProvider {
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_TOOL__DIALOG_DESCRIPTION, DiagramFactory.eINSTANCE.createSelectionDialogDescription()));
+        SelectionDialogDescription selectionDialogDescription = DiagramFactory.eINSTANCE.createSelectionDialogDescription();
+        SelectionDialogTreeDescription selectionDialogTreeDescription = DiagramFactory.eINSTANCE.createSelectionDialogTreeDescription();
+        selectionDialogDescription.setSelectionDialogTreeDescription(selectionDialogTreeDescription);
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_TOOL__DIALOG_DESCRIPTION, selectionDialogDescription));
     }
 
 }

@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.selection.description;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -21,6 +20,7 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.trees.description.TreeDescription;
 
 /**
  * The root concept of the description of a selection representation.
@@ -40,15 +40,11 @@ public final class SelectionDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
-    private Function<VariableManager, List<String>> iconURLProvider;
-
     private Function<VariableManager, String> messageProvider;
 
-    private Function<VariableManager, List<?>> objectsProvider;
-
-    private Function<VariableManager, String> selectionObjectsIdProvider;
-
     private Predicate<VariableManager> canCreatePredicate;
+
+    private TreeDescription treeDescription;
 
     private SelectionDescription() {
         // Prevent instantiation
@@ -80,25 +76,18 @@ public final class SelectionDescription implements IRepresentationDescription {
         return this.targetObjectIdProvider;
     }
 
-    public Function<VariableManager, List<String>> getIconURLProvider() {
-        return this.iconURLProvider;
-    }
 
     public Function<VariableManager, String> getMessageProvider() {
         return this.messageProvider;
     }
 
-    public Function<VariableManager, List<?>> getObjectsProvider() {
-        return this.objectsProvider;
-    }
-
-    public Function<VariableManager, String> getSelectionObjectsIdProvider() {
-        return this.selectionObjectsIdProvider;
-    }
-
     @Override
     public Predicate<VariableManager> getCanCreatePredicate() {
         return this.canCreatePredicate;
+    }
+
+    public TreeDescription getTreeDescription() {
+        return this.treeDescription;
     }
 
     @Override
@@ -125,15 +114,11 @@ public final class SelectionDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
-        private Function<VariableManager, List<String>> iconURLProvider;
-
         private Function<VariableManager, String> messageProvider;
 
-        private Function<VariableManager, List<?>> objectsProvider;
-
-        private Function<VariableManager, String> selectionObjectsIdProvider;
-
         private Predicate<VariableManager> canCreatePredicate;
+
+        private TreeDescription treeDescription;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -159,28 +144,18 @@ public final class SelectionDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
-            this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
-            return this;
-        }
-
         public Builder messageProvider(Function<VariableManager, String> messageProvider) {
             this.messageProvider = Objects.requireNonNull(messageProvider);
             return this;
         }
 
-        public Builder objectsProvider(Function<VariableManager, List<?>> objectsProvider) {
-            this.objectsProvider = Objects.requireNonNull(objectsProvider);
-            return this;
-        }
-
-        public Builder selectionObjectsIdProvider(Function<VariableManager, String> selectionObjectsIdProvider) {
-            this.selectionObjectsIdProvider = Objects.requireNonNull(selectionObjectsIdProvider);
-            return this;
-        }
-
         public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
             this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
+            return this;
+        }
+
+        public Builder treeDescription(TreeDescription treeDescription) {
+            this.treeDescription = Objects.requireNonNull(treeDescription);
             return this;
         }
 
@@ -191,13 +166,12 @@ public final class SelectionDescription implements IRepresentationDescription {
             selectionDescription.idProvider = Objects.requireNonNull(this.idProvider);
             selectionDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             selectionDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            selectionDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             selectionDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
-            selectionDescription.objectsProvider = Objects.requireNonNull(this.objectsProvider);
-            selectionDescription.selectionObjectsIdProvider = Objects.requireNonNull(this.selectionObjectsIdProvider);
             selectionDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
+            selectionDescription.treeDescription = Objects.requireNonNull(this.treeDescription);
             return selectionDescription;
         }
 
     }
+
 }

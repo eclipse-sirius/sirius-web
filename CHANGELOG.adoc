@@ -23,6 +23,11 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3875[#3875] [sirius-web] The `ExplorerView` component has been moved from `sirius-components-trees` to `sirius-web-application` module
 - https://github.com/eclipse-sirius/sirius-web/issues/3155[#3155] [core] All the paths in the code involving the modification of some data (project, semantic data, representation data, etc.) will now require a new parameter `ICause cause` which is the cause of this change.
 Both `IInput` and `IDomainEvent` implement `ICause` and will thus be used to indicate which action has triggered the change.
+- https://github.com/eclipse-sirius/sirius-web/issues/3763[#3763] [core] updates some services behavior:
+** The `org.eclipse.sirius.components.emf.services.DefaultIdentityService#getId(Object object)` Can now provides the Id if the Object is of type `org.eclipse.emf.ecore.resource.Resource`. Before this change, it would have returned null.
+** The `org.eclipse.sirius.components.emf.services.DefaultLabelService` Can now provides the label if the Object is of type `org.eclipse.emf.ecore.resource.Resource`. Before this change, it would have returned an empty string.
+** The `org.eclipse.sirius.components.emf.services.DefaultContentService#getContents(Object)` Can now provides the content if the Object is of type `org.eclipse.emf.ecore.resource.Resource`. Before this change, it would have returned an empty list.
+
 
 === Dependency update
 
@@ -39,6 +44,8 @@ Both `IInput` and `IDomainEvent` implement `ICause` and will thus be used to ind
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3763[#3763] [diagram] Make it possible to display semantic candidates in the selection dialog using a tree
+
 
 === Improvements
 
@@ -50,7 +57,6 @@ Both `IInput` and `IDomainEvent` implement `ICause` and will thus be used to ind
 - https://github.com/eclipse-sirius/sirius-web/issues/3155[#3155] [core] Propagate the cause of the events in Sirius Web.
 The interfaces `IInput` and `IDomainEvent` are now both extending `ICause` which let us capture the causes of a domain event recursively.
 An event may have been caused by another event or caused by an input received from the frontend for example.
-
 
 == v2024.9.0
 
@@ -185,6 +191,7 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3932[#3932] [forms] Do not display the 'Delete' button (even disabled) for non-deletable lists
 - https://github.com/eclipse-sirius/sirius-web/issues/3951[#3951] [sirius-web] Provide an error page to redirect users in case of error
 - https://github.com/eclipse-sirius/sirius-web/issues/3974[#3974] [diagram] Add support for `<` and `>` to trigger direct edit
+
 
 == v2024.7.0
 

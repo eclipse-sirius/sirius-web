@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,17 +15,18 @@ package org.eclipse.sirius.components.collaborative.selection.dto;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.selection.Selection;
+import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.selection.description.SelectionDescription;
 
 /**
- * Payload used to indicate that the selection has been refreshed.
+ * The input for the Selection Description message query.
  *
- * @author arichard
+ * @author fbarbin
  */
-public record SelectionRefreshedEventPayload(UUID id, Selection selection) implements IPayload {
-    public SelectionRefreshedEventPayload {
+public record GetSelectionDescriptionMessageInput(UUID id, String targetObjectId, SelectionDescription selectionDescription) implements IInput {
+    public GetSelectionDescriptionMessageInput {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(selection);
+        Objects.requireNonNull(targetObjectId);
+        Objects.requireNonNull(selectionDescription);
     }
 }

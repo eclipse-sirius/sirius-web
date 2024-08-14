@@ -10,66 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useSubscription } from '@apollo/client';
-import { IconOverlay, Toast } from '@eclipse-sirius/sirius-components-core';
+import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
 import { DiagramDialogComponentProps } from '@eclipse-sirius/sirius-components-diagrams';
-import CropDinIcon from '@mui/icons-material/CropDin';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
-import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
-import {
-  HandleCompleteEvent,
-  HandleSelectionUpdatedEvent,
-  HandleSubscriptionResultEvent,
-  HideToastEvent,
-  SchemaValue,
-  SelectionDialogContext,
-  SelectionDialogEvent,
-  SelectionDialogStateSchema,
-  ShowToastEvent,
-  selectionDialogMachine,
-} from './SelectionDialogMachine';
-import { GQLSelectionEventSubscription } from './SelectionEvent.types';
-
-const selectionEventSubscription = gql`
-  subscription selectionEvent($input: SelectionEventInput!) {
-    selectionEvent(input: $input) {
-      __typename
-      ... on SelectionRefreshedEventPayload {
-        selection {
-          id
-          targetObjectId
-          message
-          objects {
-            id
-            label
-            iconURL
-          }
-        }
-      }
-    }
-  }
-`;
-
-const useSelectionObjectModalStyles = makeStyles()((_theme) => ({
-  root: {
-    width: '100%',
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: 300,
-  },
-}));
+import { useState } from 'react';
+import { SelectionDialogState } from './SelectionDialog.types';
+import { SelectionDialogTreeView } from './SelectionDialogTreeView';
+import { useSelectionDescription } from './useSelectionDescription';
 
 export const SELECTION_DIALOG_TYPE: string = 'selectionDialogDescription';
 
@@ -80,114 +32,67 @@ export const SelectionDialog = ({
   onClose,
   onFinish,
 }: DiagramDialogComponentProps) => {
-  const { classes } = useSelectionObjectModalStyles();
-
-  const [{ value, context }, dispatch] =
-    useMachine<StateMachine<SelectionDialogContext, SelectionDialogStateSchema, SelectionDialogEvent>>(
-      selectionDialogMachine
-    );
-  const { toast, selectionDialog } = value as SchemaValue;
-  const { id, selection, message, selectedObjectId } = context;
-
-  const { error } = useSubscription<GQLSelectionEventSubscription>(selectionEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
-        selectionId: dialogDescriptionId,
-        targetObjectId,
-      },
-    },
-    fetchPolicy: 'no-cache',
-    skip: selectionDialog === 'complete',
-    onData: ({ data }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: data,
-      };
-      dispatch(handleDataEvent);
-    },
-    onComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
+  const [state, setState] = useState<SelectionDialogState>({
+    selectedObjects: [],
   });
 
-  useEffect(() => {
-    if (error) {
-      const { message } = error;
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-      dispatch(showToastEvent);
-    }
-  }, [error, dispatch]);
+  const { selectionDescription } = useSelectionDescription({
+    editingContextId,
+    selectionDescriptionId: dialogDescriptionId,
+    targetObjectId,
+  });
 
-  useEffect(() => {
-    if (selectionDialog === 'complete') {
-      onClose();
-    }
-  }, [selectionDialog, onClose]);
+  const message: string = selectionDescription?.message ?? '';
+  const treeDescriptionId: string | null = selectionDescription?.treeDescription.id ?? null;
 
-  const handleListItemClick = (selectedObjectId: string) => {
-    dispatch({ type: 'HANDLE_SELECTION_UPDATED', selectedObjectId } as HandleSelectionUpdatedEvent);
+  const setDialogSelection = (selection: Selection) => {
+    setState((prevState) => ({ ...prevState, selectedObjects: [...selection.entries] }));
   };
 
+  const handleClick = () => {
+    if (state.selectedObjects.length > 0) {
+      const selectedObjectId = state.selectedObjects[0]?.id ?? '';
+      onFinish([{ name: 'selectedObject', value: selectedObjectId, type: 'OBJECT_ID' }]);
+    }
+  };
+
+  let content: JSX.Element | null = null;
+  if (treeDescriptionId !== null) {
+    content = (
+      <SelectionDialogTreeView
+        editingContextId={editingContextId}
+        targetObjectId={targetObjectId}
+        treeDescriptionId={treeDescriptionId}
+      />
+    );
+  }
+
   return (
-    <>
+    <SelectionContext.Provider
+      value={{ selection: { entries: [...state.selectedObjects] }, setSelection: setDialogSelection }}>
       <Dialog
         open
         onClose={onClose}
         aria-labelledby="dialog-title"
-        maxWidth="xs"
+        maxWidth="md"
         fullWidth
         data-testid="selection-dialog">
         <DialogTitle id="selection-dialog-title">Selection Dialog</DialogTitle>
         <DialogContent>
-          <DialogContentText data-testid="selection-dialog-message">{selection?.message}</DialogContentText>
-          <List className={classes.root}>
-            {selection?.objects.map((selectionObject) => (
-              <ListItem
-                button
-                key={`item-${selectionObject.id}`}
-                selected={selectedObjectId === selectionObject.id}
-                onClick={() => handleListItemClick(selectionObject.id)}
-                data-testid={selectionObject.label}>
-                <ListItemIcon>
-                  {selectionObject.iconURL.length > 0 ? (
-                    <IconOverlay
-                      iconURL={selectionObject.iconURL}
-                      alt={selectionObject.label}
-                      customIconHeight={24}
-                      customIconWidth={24}
-                    />
-                  ) : (
-                    <CropDinIcon style={{ fontSize: 24 }} />
-                  )}
-                </ListItemIcon>
-                <ListItemText primary={selectionObject.label} />
-              </ListItem>
-            ))}
-          </List>
+          <DialogContentText data-testid="selection-dialog-message">{message}</DialogContentText>
+          {content}
         </DialogContent>
         <DialogActions>
           <Button
             variant="contained"
-            disabled={selectedObjectId === null}
+            disabled={state.selectedObjects.length == 0}
             data-testid="finish-action"
             color="primary"
-            onClick={() => {
-              if (selectedObjectId) {
-                onFinish([{ name: 'selectedObject', value: selectedObjectId, type: 'OBJECT_ID' }]);
-              }
-            }}>
+            onClick={handleClick}>
             Finish
           </Button>
         </DialogActions>
       </Dialog>
-      <Toast
-        message={message ?? ''}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
-    </>
+    </SelectionContext.Provider>
   );
 };
