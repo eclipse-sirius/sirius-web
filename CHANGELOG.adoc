@@ -44,6 +44,8 @@ This may have some consequences for downstream applications which are embedding 
 - https://github.com/eclipse-sirius/sirius-web/issues/4366[#4366] [form] Fix a warning in the reference widget
 - https://github.com/eclipse-sirius/sirius-web/issues/4343[#4343] [table] Fix an issue where filters were reset on table opening
 - https://github.com/eclipse-sirius/sirius-web/issues/4311[#4311] [table] Fix typos in table variables
+- https://github.com/eclipse-sirius/sirius-web/issues/3578[#3578] [diagram] Fix tooltip and menu visibility in a full screen mode.
+See https://github.com/mui/material-ui/issues/15618[this link] for additional details.
 
 === New Features
 
