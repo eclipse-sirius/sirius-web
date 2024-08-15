@@ -69,6 +69,10 @@ export const baseTheme: Theme = createTheme({
   },
 });
 
+function container() {
+  return document.fullscreenElement ?? document.body;
+}
+
 export const siriusWebTheme = createTheme(
   {
     components: {
@@ -79,7 +83,17 @@ export const siriusWebTheme = createTheme(
           },
         },
       },
+      MuiMenu: {
+        defaultProps: {
+          container,
+        },
+      },
       MuiTooltip: {
+        defaultProps: {
+          PopperProps: {
+            container,
+          },
+        },
         styleOverrides: {
           tooltip: {
             backgroundColor: baseTheme.palette.common.black,
