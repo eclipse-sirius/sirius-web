@@ -25,8 +25,10 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.SelectionDialogTreeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramPaletteBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.EdgeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodePaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.SelectionDialogDescriptionBuilder;
@@ -34,6 +36,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBu
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
@@ -67,6 +70,8 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
     private SelectionDialogTreeDescription selectionDialogTreeDescription;
 
     private SelectionDialogDescription selectionDialog;
+
+    private EdgeTool edgeTool;
 
 
     public SelectionDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
@@ -116,6 +121,12 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .position(InsideLabelPosition.TOP_CENTER)
                 .build();
 
+        this.createEdgeTool();
+
+        var nodePalette = new NodePaletteBuilder()
+                .edgeTools(this.edgeTool)
+                .build();
+
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
                 .domainType("papaya:Component")
@@ -123,9 +134,11 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .insideLabel(insideLabel)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .style(nodeStyle)
+                .palette(nodePalette)
                 .build();
 
-        this.createCreateNodeTool();
+        this.createNodeTool();
+
 
         var diagramPalette = new DiagramPaletteBuilder()
                 .nodeTools(this.createNodeTool)
@@ -144,7 +157,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
         return this.diagramDescription;
     }
 
-    private void createCreateNodeTool() {
+    private void createNodeTool() {
         this.selectionDialog = this.createSelectionDialog();
         this.createNodeTool = new NodeToolBuilder()
                 .name("Create Component")
@@ -157,6 +170,19 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .build();
     }
 
+    private void createEdgeTool() {
+        var edgeSelectionDialog = this.createEdgeSelectionDialog();
+        this.edgeTool = new EdgeToolBuilder()
+                .name("Create relation")
+                .body(
+                        new ChangeContextBuilder()
+                                .expression("aql:self")
+                                .build()
+                )
+                .dialogDescription(edgeSelectionDialog)
+                .build();
+    }
+
     private SelectionDialogDescription createSelectionDialog() {
         this.selectionDialogTreeDescription = new SelectionDialogTreeDescriptionBuilder()
                 .elementsExpression("aql:self.eResource()")
@@ -166,6 +192,19 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
         return new SelectionDialogDescriptionBuilder()
                 .selectionMessage(DIALOG_MESSAGE)
                 .selectionDialogTreeDescription(this.selectionDialogTreeDescription)
+                .build();
+
+    }
+
+    private SelectionDialogDescription createEdgeSelectionDialog() {
+        var edgeSelectionDialogTreeDescription = new SelectionDialogTreeDescriptionBuilder()
+                .elementsExpression("aql:self.eResource()")
+                .childrenExpression("aql:if self.oclIsKindOf(papaya::NamedElement) then self.eContents() else self.getContents() endif  ")
+                .isSelectableExpression("aql:self.oclIsKindOf(papaya::Component)")
+                .build();
+        return new SelectionDialogDescriptionBuilder()
+                .selectionMessage(DIALOG_MESSAGE)
+                .selectionDialogTreeDescription(edgeSelectionDialogTreeDescription)
                 .build();
 
     }

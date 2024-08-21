@@ -141,7 +141,7 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
                 candidates.add(convertedCandidate);
             });
             convertedTool = new SingleClickOnTwoDiagramElementsTool(singleClickOnTwoDiagramElementsTool.getId(), singleClickOnTwoDiagramElementsTool.getLabel(),
-                    singleClickOnTwoDiagramElementsTool.getIconURL(), candidates);
+                    singleClickOnTwoDiagramElementsTool.getIconURL(), candidates, null);
         }
         return convertedTool;
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,12 +17,16 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeTool} object. <!--
@@ -82,6 +86,36 @@ public class EdgeToolItemProvider extends ToolItemProvider {
     }
 
     /**
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+        if (this.childrenFeatures == null) {
+            super.getChildrenFeatures(object);
+            this.childrenFeatures.add(DiagramPackage.Literals.EDGE_TOOL__DIALOG_DESCRIPTION);
+        }
+        return this.childrenFeatures;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    protected EStructuralFeature getChildFeature(Object object, Object child) {
+        // Check the type of the specified child object and return the proper feature to use for
+        // adding (see {@link AddCommand}) it as a child.
+
+        return super.getChildFeature(object, child);
+    }
+
+    /**
      * This returns EdgeTool.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -127,6 +161,9 @@ public class EdgeToolItemProvider extends ToolItemProvider {
             case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
+            case DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }
@@ -135,11 +172,15 @@ public class EdgeToolItemProvider extends ToolItemProvider {
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+        SelectionDialogDescription selectionDialogDescription = DiagramFactory.eINSTANCE.createSelectionDialogDescription();
+        SelectionDialogTreeDescription selectionDialogTreeDescription = DiagramFactory.eINSTANCE.createSelectionDialogTreeDescription();
+        selectionDialogDescription.setSelectionDialogTreeDescription(selectionDialogTreeDescription);
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_TOOL__DIALOG_DESCRIPTION, selectionDialogDescription));
     }
 
 }

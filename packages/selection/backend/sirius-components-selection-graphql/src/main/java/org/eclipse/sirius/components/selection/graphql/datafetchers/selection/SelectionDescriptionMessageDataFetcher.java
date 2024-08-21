@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.selection.graphql.datafetchers.selection;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,6 +25,7 @@ import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDescriptionMessageInput;
 import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDescriptionMessagePayload;
+import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogVariable;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
@@ -35,11 +39,14 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "SelectionDescription", field = "message")
 public class SelectionDescriptionMessageDataFetcher  implements IDataFetcherWithFieldCoordinates<CompletableFuture<String>> {
 
-    private static final String TARGET_OBJECT_ID = "targetObjectId";
+    private static final String VARIABLES = "variables";
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public SelectionDescriptionMessageDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+    private final ObjectMapper objectMapper;
+
+    public SelectionDescriptionMessageDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
     }
 
@@ -49,9 +56,12 @@ public class SelectionDescriptionMessageDataFetcher  implements IDataFetcherWith
 
         Map<String, Object> localContext = environment.getLocalContext();
         var editingContextId = Optional.of(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString);
-        String targetObjectId = environment.getArgument(TARGET_OBJECT_ID);
+        List<Object> variablesObject = environment.getArgument(VARIABLES);
+        List<SelectionDialogVariable> variables = variablesObject.stream()
+                .map(object -> this.objectMapper.convertValue(object, SelectionDialogVariable.class))
+                .toList();
 
-        var input = new GetSelectionDescriptionMessageInput(UUID.randomUUID(), targetObjectId, selectionDescription);
+        var input = new GetSelectionDescriptionMessageInput(UUID.randomUUID(), variables, selectionDescription);
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId.get(), input)
                .filter(GetSelectionDescriptionMessagePayload.class::isInstance)
                .map(GetSelectionDescriptionMessagePayload.class::cast)

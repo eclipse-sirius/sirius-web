@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -32,5 +33,6 @@ public record InvokeSingleClickOnTwoDiagramElementsToolInput(
         double sourcePositionY,
         double targetPositionX,
         double targetPositionY,
-        String toolId) implements IDiagramInput {
+        String toolId,
+        List<ToolVariable> variables) implements IDiagramInput {
 }

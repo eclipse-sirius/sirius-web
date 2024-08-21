@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandl
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDescriptionMessageInput;
 import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDescriptionMessagePayload;
+import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogVariable;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -40,6 +41,8 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class SelectionDescriptionMessageEventHandler implements IEditingContextEventHandler {
 
+    private static final String TARGET_OBJECT_ID = "targetObjectId";
+
     private final ICollaborativeMessageService messageService;
 
     private final IObjectService objectService;
@@ -57,18 +60,27 @@ public class SelectionDescriptionMessageEventHandler implements IEditingContextE
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         if (input instanceof GetSelectionDescriptionMessageInput getSelectionDescriptionMessageInput) {
-            String targetObjectId = getSelectionDescriptionMessageInput.targetObjectId();
-            Optional<Object> optionalTargetObject = this.objectService.getObject(editingContext, targetObjectId);
             VariableManager variableManager = new VariableManager();
-            if (optionalTargetObject.isPresent()) {
-                variableManager.put(VariableManager.SELF, optionalTargetObject.get());
-            }
+            getSelectionDescriptionMessageInput.variables().forEach(variable -> this.addToVariableManager(editingContext, variable, variableManager));
             SelectionDescription selectionDescription = getSelectionDescriptionMessageInput.selectionDescription();
             String message = selectionDescription.getMessageProvider().apply(variableManager);
             payloadSink.tryEmitValue(new GetSelectionDescriptionMessagePayload(input.id(), message));
         } else {
             String message = this.messageService.invalidInput(input.getClass().getSimpleName(), GetSelectionDescriptionMessageInput.class.getSimpleName());
             payloadSink.tryEmitValue(new ErrorPayload(input.id(), message));
+        }
+    }
+
+    private void addToVariableManager(IEditingContext editingContext, SelectionDialogVariable variable, VariableManager variableManager) {
+        Optional<Object> optionalObject = this.objectService.getObject(editingContext, variable.value());
+        if (optionalObject.isPresent()) {
+            String variableName;
+            if (TARGET_OBJECT_ID.equals(variable.name())) {
+                variableName = VariableManager.SELF;
+            } else {
+                variableName = variable.name();
+            }
+            variableManager.put(variableName, optionalObject.get());
         }
     }
 }

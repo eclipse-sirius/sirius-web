@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -55,6 +56,14 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
 
     private static final String TARGET_OBJECT_ID = "targetObjectId";
 
+    private static final String SOURCE_DIAGRAM_ELEMENT_TARGET_OBJECT = "sourceDiagramElementTargetObject";
+
+    private static final String SOURCE_DIAGRAM_ELEMENT_TARGET_OBJECT_ID = SOURCE_DIAGRAM_ELEMENT_TARGET_OBJECT + "Id";
+
+    private static final String TARGET_DIAGRAM_ELEMENT_TARGET_OBJECT = "targetDiagramElementTargetObject";
+
+    private static final String TARGET_DIAGRAM_ELEMENT_TARGET_OBJECT_ID = TARGET_DIAGRAM_ELEMENT_TARGET_OBJECT + "Id";
+
     private static final String TREE_DESCRIPTION_ID = "treeDescriptionId";
 
     private static final String DIALOG_DESCRIPTION_TREE_REPRESENTATION_NAME = "Selection Dialog Tree Representation";
@@ -76,11 +85,17 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
     public List<IRepresentationDescription> convert(DialogDescription dialogDescription, AQLInterpreter interpreter) {
         List<IRepresentationDescription> representationDescriptions = new ArrayList<>();
         if (dialogDescription instanceof SelectionDialogDescription selectionDialogDescription) {
-            SelectionDescription selectionDescription = this.convertSelectionDialog(selectionDialogDescription, interpreter);
-            representationDescriptions.add(selectionDescription);
-            representationDescriptions.add(selectionDescription.getTreeDescription());
+            if (this.isValid(selectionDialogDescription)) {
+                SelectionDescription selectionDescription = this.convertSelectionDialog(selectionDialogDescription, interpreter);
+                representationDescriptions.add(selectionDescription);
+                representationDescriptions.add(selectionDescription.getTreeDescription());
+            }
         }
         return representationDescriptions;
+    }
+
+    private boolean isValid(SelectionDialogDescription selectionDialogDescription) {
+        return selectionDialogDescription.getSelectionDialogTreeDescription() != null;
     }
 
     @Override
@@ -293,9 +308,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
             if (optionalEditingContext.isPresent()) {
                 //Set the targetObject as the SELF value.
                 //The targetObjectId is provided by the frontend in the treeId.
-                this.getTargetObjectId(variableManager)
-                    .flatMap(targetObjectId -> this.objectService.getObject(optionalEditingContext.get(), targetObjectId))
-                    .ifPresent(targetObject -> variableManager.put(VariableManager.SELF, targetObject));
+                this.convertTreeIdParametersToVariables(variableManager, optionalEditingContext.get());
 
                 String elementsExpression = selectionDialogTreeDescription.getElementsExpression();
                 Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementsExpression);
@@ -324,4 +337,22 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         return id;
     }
 
+    private void convertTreeIdParametersToVariables(VariableManager variableManager, IEditingContext editingContext) {
+        Map<String, List<String>> parameters = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class)
+                .map(this.urlParser::getParameterValues)
+                .orElse(Map.of());
+        this.safeAddVariable(parameters, variableManager, editingContext, TARGET_OBJECT_ID, VariableManager.SELF);
+        this.safeAddVariable(parameters, variableManager, editingContext, SOURCE_DIAGRAM_ELEMENT_TARGET_OBJECT_ID, SOURCE_DIAGRAM_ELEMENT_TARGET_OBJECT);
+        this.safeAddVariable(parameters, variableManager, editingContext, TARGET_DIAGRAM_ELEMENT_TARGET_OBJECT_ID, TARGET_DIAGRAM_ELEMENT_TARGET_OBJECT);
+    }
+
+    private void safeAddVariable(Map<String, List<String>> parameters, VariableManager variableManager, IEditingContext editingContext, String parameterName, String variableName) {
+        Optional.ofNullable(parameters.get(parameterName))
+            .filter(list -> !list.isEmpty())
+            .map(list -> list.get(0))
+            .flatMap(objectId -> this.objectService.getObject(editingContext, objectId))
+            .ifPresent(value -> {
+                variableManager.put(variableName, value);
+            });
+    }
 }

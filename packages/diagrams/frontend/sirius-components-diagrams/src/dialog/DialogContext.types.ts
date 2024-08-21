@@ -11,19 +11,30 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLToolVariable } from '../renderer/palette/Palette.types';
+import { DiagramDialogVariable } from './DialogContextExtensionPoints.types';
 
 export interface DialogContextValue {
   showDialog: (
     dialogDescriptionId: string,
-    targetObjectId: string,
-    onConfirm: (variables: GQLToolVariable[]) => void
+    variables: DiagramDialogVariable[],
+    onConfirm: (variables: ToolVariable[]) => void,
+    onClose: () => void
   ) => void;
+  isOpened: boolean;
 }
 
 export interface DialogContextProviderState {
   open: boolean;
   dialogDescriptionId: string | null;
-  targetObjectId: string | null;
-  onConfirm: (variables: GQLToolVariable[]) => void;
+  variables: DiagramDialogVariable[];
+  onConfirm: (variables: ToolVariable[]) => void;
+  onClose: () => void;
 }
+
+export interface ToolVariable {
+  name: string;
+  value: string;
+  type: ToolVariableType;
+}
+
+export type ToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';

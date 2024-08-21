@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -112,7 +113,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
                     .map(SingleClickOnTwoDiagramElementsTool.class::cast)
                     .or(this.findConnectorToolById(input.diagramSourceElementId(), input.diagramTargetElementId(), editingContext, diagram, input.toolId()));
             if (optionalTool.isPresent()) {
-                IStatus status = this.executeTool(editingContext, diagramContext, input.diagramSourceElementId(), input.diagramTargetElementId(), optionalTool.get());
+                IStatus status = this.executeTool(editingContext, diagramContext, input, optionalTool.get());
                 if (status instanceof Success success) {
                     WorkbenchSelection newSelection = null;
                     Object newSelectionParameter = success.getParameters().get(Success.NEW_SELECTION);
@@ -131,7 +132,9 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String sourceNodeId, String targetNodeId, SingleClickOnTwoDiagramElementsTool tool) {
+    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, InvokeSingleClickOnTwoDiagramElementsToolInput input, SingleClickOnTwoDiagramElementsTool tool) {
+        String sourceNodeId = input.diagramSourceElementId();
+        String targetNodeId = input.diagramTargetElementId();
         IStatus result = new Failure("");
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> sourceNode = this.diagramQueryService.findNodeById(diagram, sourceNodeId);
@@ -158,9 +161,33 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
             variableManager.put(EdgeDescription.EDGE_SOURCE, sourceView);
             variableManager.put(EdgeDescription.EDGE_TARGET, targetView);
 
+            input.variables().forEach(toolVariable -> this.addToolVariablesInVariableManager(toolVariable, editingContext, variableManager));
+
             result = tool.getHandler().apply(variableManager);
         }
         return result;
+    }
+
+    private void addToolVariablesInVariableManager(ToolVariable toolvariable, IEditingContext editingContext, VariableManager variableManager) {
+        switch (toolvariable.type()) {
+            case STRING -> variableManager.put(toolvariable.name(), toolvariable.value());
+            case OBJECT_ID -> {
+                var optionalObject = this.objectService.getObject(editingContext, toolvariable.value());
+                variableManager.put(toolvariable.name(), optionalObject.orElse(null));
+            }
+            case OBJECT_ID_ARRAY -> {
+                String value = toolvariable.value();
+                List<String> objectsIds = List.of(value.split(","));
+                List<Object> objects = objectsIds.stream()
+                        .map(objectId -> this.objectService.getObject(editingContext, objectId))
+                        .map(optionalObject -> optionalObject.orElse(null))
+                        .toList();
+                variableManager.put(toolvariable.name(), objects);
+            }
+            default -> {
+                //We do nothing, the variable type is not supported
+            }
+        }
     }
 
     private Supplier<Optional<SingleClickOnTwoDiagramElementsTool>> findConnectorToolById(String diagramSourceElementId, String diagramTargetElementId, IEditingContext editingContext, Diagram diagram,

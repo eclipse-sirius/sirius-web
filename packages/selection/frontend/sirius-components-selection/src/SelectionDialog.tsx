@@ -28,7 +28,7 @@ export const SELECTION_DIALOG_TYPE: string = 'selectionDialogDescription';
 export const SelectionDialog = ({
   editingContextId,
   dialogDescriptionId,
-  targetObjectId,
+  variables,
   onClose,
   onFinish,
 }: DiagramDialogComponentProps) => {
@@ -39,7 +39,7 @@ export const SelectionDialog = ({
   const { selectionDescription } = useSelectionDescription({
     editingContextId,
     selectionDescriptionId: dialogDescriptionId,
-    targetObjectId,
+    variables,
   });
 
   const message: string = selectionDescription?.message ?? '';
@@ -61,7 +61,7 @@ export const SelectionDialog = ({
     content = (
       <SelectionDialogTreeView
         editingContextId={editingContextId}
-        targetObjectId={targetObjectId}
+        variables={variables}
         treeDescriptionId={treeDescriptionId}
       />
     );

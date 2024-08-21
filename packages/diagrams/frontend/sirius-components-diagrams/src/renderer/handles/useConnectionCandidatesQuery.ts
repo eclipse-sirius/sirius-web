@@ -21,9 +21,9 @@ import {
   GQLNodeDescription,
   GQLRepresentationDescription,
   GQLSingleClickOnTwoDiagramElementsTool,
-  GQLTool,
 } from '../connector/useConnector.types';
 import { NodeData } from '../DiagramRenderer.types';
+import { GQLTool } from '../palette/Palette.types';
 
 const getToolSectionsQuery = gql`
   query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
@@ -34,31 +34,11 @@ const getToolSectionsQuery = gql`
             ... on DiagramDescription {
               palette(diagramElementId: $diagramElementId) {
                 tools {
-                  __typename
-                  ... on SingleClickOnTwoDiagramElementsTool {
-                    candidates {
-                      sources {
-                        id
-                      }
-                      targets {
-                        id
-                      }
-                    }
-                  }
+                  ...ToolFields
                 }
                 toolSections {
                   tools {
-                    __typename
-                    ... on SingleClickOnTwoDiagramElementsTool {
-                      candidates {
-                        sources {
-                          id
-                        }
-                        targets {
-                          id
-                        }
-                      }
-                    }
+                    ...ToolFields
                   }
                 }
               }
@@ -66,6 +46,21 @@ const getToolSectionsQuery = gql`
           }
         }
       }
+    }
+  }
+
+  fragment ToolFields on Tool {
+    __typename
+    ... on SingleClickOnTwoDiagramElementsTool {
+      candidates {
+        sources {
+          id
+        }
+        targets {
+          id
+        }
+      }
+      dialogDescriptionId
     }
   }
 `;

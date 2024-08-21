@@ -10,11 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DiagramDialogVariable } from '@eclipse-sirius/sirius-components-diagrams';
 
 export interface SelectionDialogTreeViewProps {
   editingContextId: string;
   treeDescriptionId: string;
-  targetObjectId: string;
+  variables: DiagramDialogVariable[];
 }
 
 export interface SelectionDialogTreeViewState {
