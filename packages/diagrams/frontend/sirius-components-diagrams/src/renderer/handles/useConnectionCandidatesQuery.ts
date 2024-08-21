@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
-import { useNodes } from 'reactflow';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect, useMemo } from 'react';
+import { useNodes } from 'reactflow';
 import {
   GQLDiagramDescription,
   GQLGetToolSectionsData,
@@ -25,7 +25,25 @@ import {
 } from '../connector/useConnector.types';
 import { NodeData } from '../DiagramRenderer.types';
 
+const ToolFields = gql`
+  fragment ToolFields on Tool {
+    __typename
+    ... on SingleClickOnTwoDiagramElementsTool {
+      candidates {
+        sources {
+          id
+        }
+        targets {
+          id
+        }
+      }
+      dialogDescriptionId
+    }
+  }
+`;
+
 const getToolSectionsQuery = gql`
+  ${ToolFields}
   query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
@@ -34,31 +52,11 @@ const getToolSectionsQuery = gql`
             ... on DiagramDescription {
               palette(diagramElementId: $diagramElementId) {
                 tools {
-                  __typename
-                  ... on SingleClickOnTwoDiagramElementsTool {
-                    candidates {
-                      sources {
-                        id
-                      }
-                      targets {
-                        id
-                      }
-                    }
-                  }
+                  ...ToolFields
                 }
                 toolSections {
                   tools {
-                    __typename
-                    ... on SingleClickOnTwoDiagramElementsTool {
-                      candidates {
-                        sources {
-                          id
-                        }
-                        targets {
-                          id
-                        }
-                      }
-                    }
+                    ...ToolFields
                   }
                 }
               }

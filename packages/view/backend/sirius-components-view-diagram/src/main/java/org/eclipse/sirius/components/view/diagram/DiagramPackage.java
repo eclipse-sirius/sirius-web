@@ -2684,13 +2684,22 @@ public interface DiagramPackage extends EPackage {
     int EDGE_TOOL__ICON_UR_LS_EXPRESSION = TOOL_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Dialog Description</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL__DIALOG_DESCRIPTION = TOOL_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 2;
+    int EDGE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5082,6 +5091,18 @@ public interface DiagramPackage extends EPackage {
     EAttribute getEdgeTool_IconURLsExpression();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getDialogDescription <em>Dialog Description</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Dialog Description</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeTool#getDialogDescription()
+     * @see #getEdgeTool()
+     * @generated
+     */
+    EReference getEdgeTool_DialogDescription();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool
      * <em>Edge Reconnection Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6746,6 +6767,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute EDGE_TOOL__ICON_UR_LS_EXPRESSION = eINSTANCE.getEdgeTool_IconURLsExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Dialog Description</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_TOOL__DIALOG_DESCRIPTION = eINSTANCE.getEdgeTool_DialogDescription();
 
         /**
          * The meta object literal for the

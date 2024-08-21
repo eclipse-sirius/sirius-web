@@ -11,10 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { DiagramDialogVariable } from '@eclipse-sirius/sirius-components-diagrams';
+
 export interface UseSelectionDescriptionProps {
   editingContextId: string;
   selectionDescriptionId: string;
-  targetObjectId: string;
+  variables: DiagramDialogVariable[];
 }
 
 export interface UseSelectionDescriptionValue {
@@ -25,7 +27,7 @@ export interface UseSelectionDescriptionValue {
 export interface GetSelectionDescriptionVariables {
   editingContextId: string;
   representationId: string;
-  targetObjectId: string;
+  variables: DiagramDialogVariable[];
 }
 
 export interface GQLSelectionDescription {

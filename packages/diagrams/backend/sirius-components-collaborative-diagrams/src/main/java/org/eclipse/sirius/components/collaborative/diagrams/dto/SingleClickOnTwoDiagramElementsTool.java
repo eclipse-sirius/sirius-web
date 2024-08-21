@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import java.util.Objects;
  *
  * @author mcharfadi
  */
-public record SingleClickOnTwoDiagramElementsTool(String id, String label, List<String> iconURL, List<SingleClickOnTwoDiagramElementsCandidate> candidates) implements ITool {
+public record SingleClickOnTwoDiagramElementsTool(String id, String label, List<String> iconURL, List<SingleClickOnTwoDiagramElementsCandidate> candidates, String dialogDescriptionId) implements ITool {
 
     public SingleClickOnTwoDiagramElementsTool {
         Objects.requireNonNull(id);
@@ -50,6 +50,8 @@ public record SingleClickOnTwoDiagramElementsTool(String id, String label, List<
 
         private List<SingleClickOnTwoDiagramElementsCandidate> candidates;
 
+        private String dialogDescriptionId;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -69,8 +71,13 @@ public record SingleClickOnTwoDiagramElementsTool(String id, String label, List<
             return this;
         }
 
+        public Builder dialogDescriptionId(String dialogDescriptionId) {
+            this.dialogDescriptionId = dialogDescriptionId;
+            return this;
+        }
+
         public SingleClickOnTwoDiagramElementsTool build() {
-            return new SingleClickOnTwoDiagramElementsTool(this.id, this.label, this.iconURL, this.candidates);
+            return new SingleClickOnTwoDiagramElementsTool(this.id, this.label, this.iconURL, this.candidates, this.dialogDescriptionId);
         }
     }
 

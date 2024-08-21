@@ -21,13 +21,17 @@ import {
   UseSelectionDescriptionValue,
 } from './useSelectionDescription.types';
 const getSelectionDescription = gql`
-  query getSelectionDescription($editingContextId: ID!, $representationId: ID!, $targetObjectId: ID!) {
+  query getSelectionDescription(
+    $editingContextId: ID!
+    $representationId: ID!
+    $variables: [SelectionDialogVariable!]!
+  ) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         representation(representationId: $representationId) {
           description {
             ... on SelectionDescription {
-              message(targetObjectId: $targetObjectId)
+              message(variables: $variables)
               treeDescription {
                 id
               }
@@ -42,7 +46,7 @@ const getSelectionDescription = gql`
 export const useSelectionDescription = ({
   editingContextId,
   selectionDescriptionId,
-  targetObjectId,
+  variables,
 }: UseSelectionDescriptionProps): UseSelectionDescriptionValue => {
   //Since the SelectionDialogRepresentation does not really exist, the representationId just contains the description id
   const representationId = `selectionDialog://?representationDescription=${encodeURIComponent(selectionDescriptionId)}`;
@@ -52,7 +56,7 @@ export const useSelectionDescription = ({
       variables: {
         editingContextId,
         representationId,
-        targetObjectId,
+        variables,
       },
     }
   );

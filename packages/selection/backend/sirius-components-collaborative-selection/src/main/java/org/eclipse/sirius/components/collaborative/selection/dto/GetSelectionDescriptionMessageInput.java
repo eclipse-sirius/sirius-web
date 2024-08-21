@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.selection.dto;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -23,10 +24,10 @@ import org.eclipse.sirius.components.selection.description.SelectionDescription;
  *
  * @author fbarbin
  */
-public record GetSelectionDescriptionMessageInput(UUID id, String targetObjectId, SelectionDescription selectionDescription) implements IInput {
+public record GetSelectionDescriptionMessageInput(UUID id, List<SelectionDialogVariable> variables, SelectionDescription selectionDescription) implements IInput {
     public GetSelectionDescriptionMessageInput {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(targetObjectId);
+        Objects.requireNonNull(variables);
         Objects.requireNonNull(selectionDescription);
     }
 }

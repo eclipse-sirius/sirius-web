@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,12 +15,15 @@ package org.eclipse.sirius.components.view.diagram.impl;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 
 /**
@@ -33,6 +36,8 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
  * Element Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolImpl#getIconURLsExpression <em>Icon UR Ls
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolImpl#getDialogDescription <em>Dialog
+ * Description</em>}</li>
  * </ul>
  *
  * @generated
@@ -67,6 +72,16 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
      * @ordered
      */
     protected String iconURLsExpression = ICON_UR_LS_EXPRESSION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getDialogDescription() <em>Dialog Description</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDialogDescription()
+     * @generated
+     * @ordered
+     */
+    protected DialogDescription dialogDescription;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -129,12 +144,76 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
      * @generated
      */
     @Override
+    public DialogDescription getDialogDescription() {
+        return this.dialogDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetDialogDescription(DialogDescription newDialogDescription, NotificationChain msgs) {
+        DialogDescription oldDialogDescription = this.dialogDescription;
+        this.dialogDescription = newDialogDescription;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION, oldDialogDescription, newDialogDescription);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDialogDescription(DialogDescription newDialogDescription) {
+        if (newDialogDescription != this.dialogDescription) {
+            NotificationChain msgs = null;
+            if (this.dialogDescription != null)
+                msgs = ((InternalEObject) this.dialogDescription).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION, null, msgs);
+            if (newDialogDescription != null)
+                msgs = ((InternalEObject) newDialogDescription).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION, null, msgs);
+            msgs = this.basicSetDialogDescription(newDialogDescription, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION, newDialogDescription, newDialogDescription));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+            case DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION:
+                return this.basicSetDialogDescription(null, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS:
                 return this.getTargetElementDescriptions();
             case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
                 return this.getIconURLsExpression();
+            case DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION:
+                return this.getDialogDescription();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -155,6 +234,9 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
             case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
                 this.setIconURLsExpression((String) newValue);
                 return;
+            case DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION:
+                this.setDialogDescription((DialogDescription) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -173,6 +255,9 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
             case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
                 this.setIconURLsExpression(ICON_UR_LS_EXPRESSION_EDEFAULT);
                 return;
+            case DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION:
+                this.setDialogDescription((DialogDescription) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -189,6 +274,8 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
                 return this.targetElementDescriptions != null && !this.targetElementDescriptions.isEmpty();
             case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
                 return ICON_UR_LS_EXPRESSION_EDEFAULT == null ? this.iconURLsExpression != null : !ICON_UR_LS_EXPRESSION_EDEFAULT.equals(this.iconURLsExpression);
+            case DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION:
+                return this.dialogDescription != null;
         }
         return super.eIsSet(featureID);
     }

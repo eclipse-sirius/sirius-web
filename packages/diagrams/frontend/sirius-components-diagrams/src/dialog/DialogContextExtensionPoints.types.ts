@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLToolVariable } from '../renderer/palette/Palette.types';
+import { ToolVariable } from './DialogContext.types';
 
 export interface DiagramDialogContribution {
   canHandle: (dialogDescriptionId: string) => boolean;
@@ -21,7 +21,12 @@ export interface DiagramDialogContribution {
 export interface DiagramDialogComponentProps {
   editingContextId: string;
   dialogDescriptionId: string;
-  targetObjectId: string;
+  variables: DiagramDialogVariable[];
   onClose: () => void;
-  onFinish: (variables: GQLToolVariable[]) => void;
+  onFinish: (variables: ToolVariable[]) => void;
+}
+
+export interface DiagramDialogVariable {
+  name: string;
+  value: string;
 }

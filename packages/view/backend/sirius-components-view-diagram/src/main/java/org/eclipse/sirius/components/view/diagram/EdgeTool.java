@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.EList;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getIconURLsExpression <em>Icon UR Ls
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getDialogDescription <em>Dialog Description</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeTool()
@@ -66,5 +67,28 @@ public interface EdgeTool extends Tool {
      * @generated
      */
     void setIconURLsExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Dialog Description</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Dialog Description</em>' containment reference.
+     * @see #setDialogDescription(DialogDescription)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeTool_DialogDescription()
+     * @model containment="true"
+     * @generated
+     */
+    DialogDescription getDialogDescription();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getDialogDescription <em>Dialog
+     * Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Dialog Description</em>' containment reference.
+     * @see #getDialogDescription()
+     * @generated
+     */
+    void setDialogDescription(DialogDescription value);
 
 } // EdgeTool
