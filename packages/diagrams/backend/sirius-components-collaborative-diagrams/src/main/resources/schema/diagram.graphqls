@@ -290,6 +290,7 @@ type SingleClickOnTwoDiagramElementsTool implements Tool {
   id: ID!
   label: String!
   iconURL: [String!]!
+  dialogDescriptionId: String
   candidates: [SingleClickOnTwoDiagramElementsCandidate]!
 }
 
@@ -436,6 +437,7 @@ input InvokeSingleClickOnTwoDiagramElementsToolInput {
   sourcePositionY: Float!
   targetPositionX: Float!
   targetPositionY: Float!
+  variables: [ToolVariable!]!
 }
 
 union InvokeSingleClickOnTwoDiagramElementsToolPayload = ErrorPayload | InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload

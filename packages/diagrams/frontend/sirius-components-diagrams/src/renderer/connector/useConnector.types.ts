@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { Connection, OnConnect, OnConnectEnd, OnConnectStart, XYPosition } from '@xyflow/react';
+import { GQLTool } from '../palette/Palette.types';
 
 export interface UseConnectorValue {
   onConnect: OnConnect;
@@ -70,15 +71,9 @@ export interface GQLToolSection {
   tools: GQLTool[];
   __typename: string;
 }
-
-export interface GQLTool {
-  id: string;
-  label: string;
-  imageURL: string;
-  __typename: string;
-}
 export interface GQLSingleClickOnTwoDiagramElementsTool extends GQLTool {
   candidates: GQLSingleClickOnTwoDiagramElementsCandidate[];
+  dialogDescriptionId: string;
 }
 export interface GQLSingleClickOnTwoDiagramElementsCandidate {
   sources: GQLNodeDescription[];

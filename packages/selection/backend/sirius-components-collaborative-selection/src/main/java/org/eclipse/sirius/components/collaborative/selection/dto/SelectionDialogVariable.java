@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo and others.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.selection.dto;
 
-import { ToolVariable } from './DialogContext.types';
-import { DiagramDialogVariable } from './DialogContextExtensionPoints.types';
+import java.util.Objects;
 
-export interface UseDialogValue {
-  showDialog: (
-    dialogDescriptionId: string,
-    variables: DiagramDialogVariable[],
-    onConfirm: (variables: ToolVariable[]) => void,
-    onClose: () => void
-  ) => void;
-  isOpened: boolean;
+/**
+ * Represent a variable coming from the frontend selection dialog.
+ * @author fbarbin
+ */
+public record SelectionDialogVariable(String name, String value) {
+    public SelectionDialogVariable {
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(value);
+    }
 }

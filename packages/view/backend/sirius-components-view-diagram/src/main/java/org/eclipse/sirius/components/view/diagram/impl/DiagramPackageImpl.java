@@ -1897,6 +1897,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getEdgeTool_DialogDescription() {
+        return (EReference) this.edgeToolEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getEdgeReconnectionTool() {
         return this.edgeReconnectionToolEClass;
     }
@@ -2545,6 +2555,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.edgeToolEClass = this.createEClass(EDGE_TOOL);
         this.createEReference(this.edgeToolEClass, EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS);
         this.createEAttribute(this.edgeToolEClass, EDGE_TOOL__ICON_UR_LS_EXPRESSION);
+        this.createEReference(this.edgeToolEClass, EDGE_TOOL__DIALOG_DESCRIPTION);
 
         this.edgeReconnectionToolEClass = this.createEClass(EDGE_RECONNECTION_TOOL);
 
@@ -2951,6 +2962,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getEdgeTool_IconURLsExpression(), theViewPackage.getInterpretedExpression(), "iconURLsExpression", null, 0, 1, EdgeTool.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getEdgeTool_DialogDescription(), this.getDialogDescription(), null, "dialogDescription", null, 0, 1, EdgeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.edgeReconnectionToolEClass, EdgeReconnectionTool.class, "EdgeReconnectionTool", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

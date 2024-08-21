@@ -24,6 +24,7 @@ export { diagramDialogContributionExtensionPoint } from './dialog/DialogContextE
 export type {
   DiagramDialogComponentProps,
   DiagramDialogContribution,
+  DiagramDialogVariable,
 } from './dialog/DialogContextExtensionPoints.types';
 export { useDialog } from './dialog/useDialog';
 export type { UseDialogValue } from './dialog/useDialog.types';

@@ -327,6 +327,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetElementDescriptions"
         upperBound="-1" eType="#//DiagramElementDescription"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="iconURLsExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dialogDescription" eType="#//DialogDescription"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeReconnectionTool" abstract="true"
       eSuperTypes="#//Tool"/>

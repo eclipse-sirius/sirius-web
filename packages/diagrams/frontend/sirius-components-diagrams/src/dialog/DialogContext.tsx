@@ -15,13 +15,17 @@ import { useData } from '@eclipse-sirius/sirius-components-core';
 import React, { useContext, useState } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
-import { GQLToolVariable } from '../renderer/palette/Palette.types';
-import { DialogContextProviderState, DialogContextValue } from './DialogContext.types';
+import { DialogContextProviderState, DialogContextValue, ToolVariable } from './DialogContext.types';
 import { diagramDialogContributionExtensionPoint } from './DialogContextExtensionPoints';
-import { DiagramDialogComponentProps, DiagramDialogContribution } from './DialogContextExtensionPoints.types';
+import {
+  DiagramDialogComponentProps,
+  DiagramDialogContribution,
+  DiagramDialogVariable,
+} from './DialogContextExtensionPoints.types';
 
 const defaultValue: DialogContextValue = {
   showDialog: () => {},
+  isOpened: false,
 };
 
 export const DialogContext = React.createContext<DialogContextValue>(defaultValue);
@@ -29,8 +33,9 @@ export const DialogContext = React.createContext<DialogContextValue>(defaultValu
 export const DialogContextProvider = ({ children }) => {
   const [state, setState] = useState<DialogContextProviderState>({
     dialogDescriptionId: null,
-    targetObjectId: null,
+    variables: [],
     onConfirm: () => {},
+    onClose: () => {},
     open: false,
   });
 
@@ -38,18 +43,22 @@ export const DialogContextProvider = ({ children }) => {
 
   const showDialog = (
     dialogDescriptionId: string,
-    targetObjectId: string,
-    onConfirm: (variables: GQLToolVariable[]) => void
+    variables: DiagramDialogVariable[],
+    onConfirm: (variables: ToolVariable[]) => void,
+    onClose: () => void
   ) => {
-    setState({ open: true, dialogDescriptionId, targetObjectId, onConfirm });
+    if (!state.open) {
+      setState({ open: true, dialogDescriptionId, variables, onConfirm, onClose });
+    }
   };
 
-  const onFinish = (toolVariables: GQLToolVariable[]) => {
+  const onFinish = (toolVariables: ToolVariable[]) => {
     state.onConfirm(toolVariables);
     setState((prevState) => ({ ...prevState, open: false, dialogTypeId: undefined }));
   };
 
-  const onClose = () => {
+  const internalClose = () => {
+    state.onClose();
     setState((prevState) => ({ ...prevState, open: false, dialogTypeId: undefined }));
   };
 
@@ -59,9 +68,9 @@ export const DialogContextProvider = ({ children }) => {
   const dialogComponentProps: DiagramDialogComponentProps = {
     editingContextId,
     dialogDescriptionId: state.dialogDescriptionId ?? '',
-    targetObjectId: state.targetObjectId ?? '',
+    variables: state.variables ?? '',
     onFinish,
-    onClose,
+    onClose: internalClose,
   };
   if (state.open && state.dialogDescriptionId) {
     const dialogDescriptionId: string = state.dialogDescriptionId;
@@ -73,7 +82,7 @@ export const DialogContextProvider = ({ children }) => {
     }
   }
   return (
-    <DialogContext.Provider value={{ showDialog }}>
+    <DialogContext.Provider value={{ isOpened: state.open, showDialog }}>
       {children}
       {state.open && DialogComponent && <DialogComponent {...dialogComponentProps} />}
     </DialogContext.Provider>

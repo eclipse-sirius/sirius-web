@@ -61,7 +61,6 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagramEventHandler {
 
-    private static final String OBJECT_ID_ARRAY_SEPARATOR = ",";
 
     private final Logger logger = LoggerFactory.getLogger(InvokeSingleClickOnDiagramElementToolEventHandler.class);
 
@@ -106,8 +105,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
                     .filter(SingleClickOnDiagramElementTool.class::isInstance)
                     .map(SingleClickOnDiagramElementTool.class::cast);
             if (optionalTool.isPresent()) {
-                IStatus status = this.executeTool(editingContext, diagramContext, input.diagramElementId(), optionalTool.get(), input.startingPositionX(), input.startingPositionY(),
-                        input.variables());
+                IStatus status = this.executeTool(editingContext, diagramContext, input.diagramElementId(), optionalTool.get(), input.variables());
                 if (status instanceof Success success) {
                     WorkbenchSelection newSelection = null;
                     Object newSelectionParameter = success.getParameters().get(Success.NEW_SELECTION);
@@ -126,8 +124,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramElementId, SingleClickOnDiagramElementTool tool, double startingPositionX,
-            double startingPositionY, List<ToolVariable> variables) {
+    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramElementId, SingleClickOnDiagramElementTool tool, List<ToolVariable> variables) {
         IStatus result = new Failure("");
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
@@ -142,9 +139,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         if (self.isPresent()) {
             VariableManager variableManager = this.populateVariableManager(editingContext, diagramContext, node, edge, self);
             var dialogDescriptionId = tool.getDialogDescriptionId();
-            if (dialogDescriptionId != null) {
-                variables.forEach(toolVariable -> this.handleToolVariable(toolVariable, editingContext, variableManager));
-            }
+            variables.forEach(toolVariable -> this.addToolVariablesInVariableManager(toolVariable, editingContext, variableManager));
 
             //We do not apply the tool if a dialog is defined but no variables have been provided
             if (dialogDescriptionId == null || !variables.isEmpty()) {
@@ -154,7 +149,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         return result;
     }
 
-    private void handleToolVariable(ToolVariable toolvariable, IEditingContext editingContext, VariableManager variableManager) {
+    private void addToolVariablesInVariableManager(ToolVariable toolvariable, IEditingContext editingContext, VariableManager variableManager) {
         switch (toolvariable.type()) {
             case STRING -> variableManager.put(toolvariable.name(), toolvariable.value());
             case OBJECT_ID -> {
@@ -163,14 +158,16 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
             }
             case OBJECT_ID_ARRAY -> {
                 String value = toolvariable.value();
-                List<String> objectsIds = List.of(value.split(OBJECT_ID_ARRAY_SEPARATOR));
+                List<String> objectsIds = List.of(value.split(","));
                 List<Object> objects = objectsIds.stream()
                         .map(objectId -> this.objectService.getObject(editingContext, objectId))
                         .map(optionalObject -> optionalObject.orElse(null))
                         .toList();
                 variableManager.put(toolvariable.name(), objects);
             }
-            default -> this.logger.warn("Unexpected value: " + toolvariable.type());
+            default -> {
+                //We do nothing, the variable type is not supported
+            }
         }
     }
 

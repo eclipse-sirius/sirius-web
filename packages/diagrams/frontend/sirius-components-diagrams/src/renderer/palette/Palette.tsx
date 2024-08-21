@@ -421,7 +421,7 @@ export const Palette = ({
     const onConfirm = (variables: GQLToolVariable[]) => {
       invokeSingleClickTool(tool, variables);
     };
-    showDialog(tool.dialogDescriptionId, targetObjectId, onConfirm);
+    showDialog(tool.dialogDescriptionId, [{ name: 'targetObjectId', value: targetObjectId }], onConfirm, () => {});
   };
 
   const handleToolClick = (tool: GQLTool) => {

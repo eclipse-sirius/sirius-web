@@ -11,6 +11,11 @@ input SelectionDialogTreeEventInput {
 type SelectionDescription implements RepresentationDescription {
   id: ID!
   label: String!
-  message(targetObjectId: ID!): String!
+  message(variables: [SelectionDialogVariable!]!): String!
   treeDescription: TreeDescription!
+}
+
+input SelectionDialogVariable {
+  name: String!
+  value: String!
 }

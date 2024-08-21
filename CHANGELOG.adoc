@@ -74,6 +74,7 @@ The new endpoints are:
 description (optional).
 ** deleteProject (`POST /api/rest/projects/{projectId}`): Delete the project with the given id (projectId).
 ** updateProject (`PUT /projects/{projectId}`): Update the project with the given id (projectId).
+- https://github.com/eclipse-sirius/sirius-web/issues/3873[#3873] [diagram] Make the Selection Dialog available for the EdgeTool
 
 === Improvements
 
@@ -207,6 +208,7 @@ Introduce new `IRewriteProxiesResourceFilter` interface, to register resource fi
 +
 image:doc/screenshots/treeItemLabelStyled.jpg[StyledString, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3963[#3963] [core] Add support for optional GraphQLCodeRegistry post-processing/transformation.
+
 
 === Improvements
 

@@ -185,7 +185,8 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
                     0,
                     0,
                     0,
-                    this.edgeDiagramDescriptionProvider.getNewDependencyToolId()
+                    this.edgeDiagramDescriptionProvider.getNewDependencyToolId(),
+                    List.of()
             );
             var result = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(input);
             String payloadTypeName = JsonPath.read(result, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
