@@ -10,17 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export * from './toolbar/TreeToolBar';
 export * from './toolbar/TreeToolBarContext';
 export * from './toolbar/TreeToolBarContext.types';
 export * from './toolbar/TreeToolBarContribution';
 export * from './toolbar/TreeToolBarContribution.types';
+export * from './treeitems/filterTreeItem';
 export * from './treeitems/TreeItemAction.types';
 export * from './treeitems/TreeItemContextMenu';
 export * from './treeitems/TreeItemContextMenu.types';
 export * from './treeitems/TreeItemContextMenuEntry.types';
 export * from './treeitems/TreeItemContextMenuEntryExtensionPoints';
-export * from './treeitems/filterTreeItem';
-export * from './views/ExplorerView';
+export * from './trees/FilterBar';
+export * from './views/getTreeEventSubscription';
+export * from './views/TreeFiltersMenu';
+export * from './views/TreeFiltersMenu.types';
 export * from './views/TreeView';
 export * from './views/TreeView.types';
 export * from './views/TreeViewExtensionPoints';
+export * from './views/useTreeFilters';

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.web.application.views.explorer;
 
-export interface ExplorerViewState {
-  synchronizedWithSelection: boolean;
-  filterBar: boolean;
-  filterBarText: string | null;
-  filterBarTreeFiltering: boolean;
-  treeFilters: TreeFilter[];
-}
+import java.util.List;
+import java.util.UUID;
 
-export interface TreeFilter {
-  id: string;
-  label: string;
-  state: boolean;
+import org.eclipse.sirius.components.core.api.IInput;
+
+/**
+ * The input of the explorer event subscription.
+ *
+ * @author sbegaudeau
+ */
+public record ExplorerEventInput(UUID id, String editingContextId, String treeId, List<String> expanded, List<String> activeFilterIds) implements IInput {
 }

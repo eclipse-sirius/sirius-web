@@ -22,8 +22,7 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { TreeFilter } from './ExplorerView.types';
-import { TreeFilterMenuProps } from './TreeFiltersMenu.types';
+import { TreeFilterMenuProps, TreeFilter } from './TreeFiltersMenu.types';
 
 const useTreeFiltersMenuStyles = makeStyles()((_) => ({
   root: {

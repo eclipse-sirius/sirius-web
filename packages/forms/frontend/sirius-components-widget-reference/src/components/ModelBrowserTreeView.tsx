@@ -11,13 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { TreeView, TreeItemActionProps } from '@eclipse-sirius/sirius-components-trees';
-import IconButton from '@mui/material/IconButton';
-import { makeStyles } from 'tss-react/mui';
+import { TreeItemActionProps, TreeView } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
+import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { ModelBrowserFilterBar } from './ModelBrowserFilterBar';
 import { ModelBrowserTreeViewProps, ModelBrowserTreeViewState } from './ModelBrowserTreeView.types';
+import { useModelBrowserSubscription } from './useModelBrowserSubscription';
 
 const useTreeStyle = makeStyles()((theme) => ({
   title: {
@@ -43,33 +44,47 @@ export const ModelBrowserTreeView = ({
 }: ModelBrowserTreeViewProps) => {
   const { classes } = useTreeStyle();
 
-  const [state, setState] = useState<ModelBrowserTreeViewState>({ filterBarText: '' });
+  const [state, setState] = useState<ModelBrowserTreeViewState>({
+    filterBarText: '',
+    expanded: [],
+    maxDepth: 1,
+  });
+
+  const treeId: string = `modelBrowser://${leafType}?ownerKind=${encodeURIComponent(
+    ownerKind
+  )}&targetType=${encodeURIComponent(widget.reference.referenceKind)}&ownerId=${
+    widget.ownerId
+  }&descriptionId=${encodeURIComponent(widget.descriptionId)}&isContainment=${widget.reference.containment}`;
+  const { tree } = useModelBrowserSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
+
+  const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
+    setState((prevState) => ({ ...prevState, expanded, maxDepth }));
+  };
 
   return (
     <>
       <ModelBrowserFilterBar
-        onTextChange={(event) => setState({ filterBarText: event.target.value })}
-        onTextClear={() => setState({ filterBarText: '' })}
+        onTextChange={(event) => setState((prevState) => ({ ...prevState, filterBarText: event.target.value }))}
+        onTextClear={() => setState((prevState) => ({ ...prevState, filterBarText: '' }))}
         text={state.filterBarText}
       />
       <span className={classes.title}>{title}</span>
       <div className={classes.borderStyle}>
-        <TreeView
-          editingContextId={editingContextId}
-          readOnly={true}
-          treeId={`modelBrowser://${leafType}?ownerKind=${encodeURIComponent(
-            ownerKind
-          )}&targetType=${encodeURIComponent(widget.reference.referenceKind)}&ownerId=${
-            widget.ownerId
-          }&descriptionId=${encodeURIComponent(widget.descriptionId)}&isContainment=${widget.reference.containment}`}
-          enableMultiSelection={enableMultiSelection}
-          synchronizedWithSelection={true}
-          activeFilterIds={[]}
-          textToFilter={state.filterBarText}
-          textToHighlight={state.filterBarText}
-          markedItemIds={markedItemIds}
-          treeItemActionRender={(props) => <WidgetReferenceTreeItemAction {...props} />}
-        />
+        {tree !== null ? (
+          <TreeView
+            editingContextId={editingContextId}
+            readOnly={true}
+            treeId={treeId}
+            tree={tree}
+            enableMultiSelection={enableMultiSelection}
+            synchronizedWithSelection={true}
+            textToFilter={state.filterBarText}
+            textToHighlight={state.filterBarText}
+            markedItemIds={markedItemIds}
+            treeItemActionRender={(props) => <WidgetReferenceTreeItemAction {...props} />}
+            onExpandedElementChange={onExpandedElementChange}
+          />
+        ) : null}
       </div>
     </>
   );

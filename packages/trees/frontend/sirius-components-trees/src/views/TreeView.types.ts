@@ -11,47 +11,31 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLStyledString, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { GQLStyledString } from '@eclipse-sirius/sirius-components-core';
 import { TreeItemActionProps } from '../treeitems/TreeItemAction.types';
 
-export interface TreeViewComponentProps extends WorkbenchViewComponentProps {
+export interface TreeViewProps {
+  editingContextId: string;
+  readOnly: boolean;
   treeId: string;
+  tree: GQLTree;
   enableMultiSelection: boolean;
   synchronizedWithSelection: boolean;
-  activeFilterIds: string[];
   textToHighlight: string | null;
   textToFilter: string | null;
   markedItemIds?: string[];
   treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
+  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
+}
+
+export interface TreeViewState {
+  autoExpandToRevealSelection: boolean;
+  expanded: string[];
+  maxDepth: number;
 }
 
 export interface TreeConverter {
   convert(editingContextId: string, tree: GQLTree): GQLTree;
-}
-
-export interface GQLTreeEventVariables {
-  input: GQLTreeEventInput;
-}
-
-export interface GQLTreeEventInput {
-  id: string;
-  treeId: string;
-  editingContextId: string;
-  expanded: string[];
-  activeFilterIds: string[];
-}
-
-export interface GQLTreeEventData {
-  treeEvent: GQLTreeEventPayload;
-}
-
-export interface GQLTreeEventPayload {
-  __typename: string;
-}
-
-export interface GQLTreeRefreshedEventPayload extends GQLTreeEventPayload {
-  id: string;
-  tree: GQLTree;
 }
 
 export interface GQLTree {

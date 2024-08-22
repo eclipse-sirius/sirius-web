@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.trees.api;
+package org.eclipse.sirius.web.application.views.explorer;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -20,13 +20,11 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 
 /**
- * The configuration of the tree event processor.
+ * The configuration of the explorer event processor.
  *
  * @author sbegaudeau
  */
-public class TreeConfiguration implements IRepresentationConfiguration {
-
-    public static final String TREE_ID = "treeId";
+public class ExplorerConfiguration implements IRepresentationConfiguration {
 
     private final String treeId;
 
@@ -34,7 +32,7 @@ public class TreeConfiguration implements IRepresentationConfiguration {
 
     private final List<String> expanded;
 
-    public TreeConfiguration(String editingContextId, String treeId, List<String> expanded, List<String> activeFilters) {
+    public ExplorerConfiguration(String editingContextId, String treeId, List<String> expanded, List<String> activeFilters) {
         this.activeFilterIds = Objects.requireNonNull(activeFilters);
         this.expanded = Objects.requireNonNull(expanded);
 

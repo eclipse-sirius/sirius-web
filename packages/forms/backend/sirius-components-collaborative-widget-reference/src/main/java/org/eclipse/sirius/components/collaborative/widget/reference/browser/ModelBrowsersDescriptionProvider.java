@@ -22,7 +22,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -34,7 +33,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetRootCandidateSearchProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.URLParser;
@@ -99,34 +97,28 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
-        Predicate<VariableManager> containerDescriptionCanCreatePredicate = variableManager -> variableManager.get(TreeConfiguration.TREE_ID, String.class)
-                .map(treeId -> treeId.startsWith(MODEL_BROWSER_CONTAINER_PREFIX))
-                .orElse(false);
         Function<VariableManager, Boolean> containerDescriptionIsSelectableProvider = variableManager -> {
             EClass referenceKind = this.resolveReferenceEClass(variableManager).orElse(null);
             return this.isContainerSelectable(variableManager, referenceKind);
         };
-        var containerDescription = this.getModelBrowserDescription(CONTAINER_DESCRIPTION_ID, containerDescriptionCanCreatePredicate, containerDescriptionIsSelectableProvider, this::getCreationScopeElements);
+        var containerDescription = this.getModelBrowserDescription(CONTAINER_DESCRIPTION_ID, containerDescriptionIsSelectableProvider, this::getCreationScopeElements, MODEL_BROWSER_CONTAINER_PREFIX);
 
-        Predicate<VariableManager> referenceDescriptionCanCreatePredicate = variableManager -> variableManager.get(TreeConfiguration.TREE_ID, String.class)
-                .map(treeId -> treeId.startsWith(MODEL_BROWSER_REFERENCE_PREFIX))
-                .orElse(false);
         Function<VariableManager, Boolean> referenceDescriptionIsSelectableProvider = variableManager -> {
             EClass targetType = this.resolveTargetType(variableManager).orElse(null);
             boolean isContainment = this.resolveIsContainment(variableManager);
             return this.isTypeSelectable(variableManager, targetType, isContainment);
         };
-        var referenceDescription = this.getModelBrowserDescription(REFERENCE_DESCRIPTION_ID, referenceDescriptionCanCreatePredicate, referenceDescriptionIsSelectableProvider, this::getSearchScopeElements);
+        var referenceDescription = this.getModelBrowserDescription(REFERENCE_DESCRIPTION_ID, referenceDescriptionIsSelectableProvider, this::getSearchScopeElements, MODEL_BROWSER_REFERENCE_PREFIX);
 
         return List.of(containerDescription, referenceDescription);
     }
 
-    private TreeDescription getModelBrowserDescription(String descriptionId, Predicate<VariableManager> canCreatePredicate, Function<VariableManager, Boolean> isSelectableProvider,
-            Function<VariableManager, List<?>> elementsProvider) {
+    private TreeDescription getModelBrowserDescription(String descriptionId, Function<VariableManager, Boolean> isSelectableProvider,
+            Function<VariableManager, List<?>> elementsProvider, String treeId) {
 
         return TreeDescription.newTreeDescription(descriptionId)
                 .label(REPRESENTATION_NAME)
-                .idProvider(variableManager -> variableManager.get(TreeConfiguration.TREE_ID, String.class).orElse(null))
+                .idProvider(variableManager -> variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class).orElse(treeId))
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
@@ -140,7 +132,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
                 .childrenProvider(variableManager -> this.getChildren(variableManager, isSelectableProvider))
                 // This predicate will NOT be used while creating the model browser, but we don't want to see the description of the
                 // model browser in the list of representations that can be created. Thus, we will return false all the time.
-                .canCreatePredicate(canCreatePredicate)
+                .canCreatePredicate(variableManager -> false)
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
                 .treeItemObjectProvider(this::getTreeItemObject)

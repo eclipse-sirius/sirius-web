@@ -35,8 +35,9 @@ import {
 } from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
-import { ExplorerView, treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
+import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
+import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import {
   GQLReferenceWidget,
   ReferenceIcon,
@@ -59,17 +60,17 @@ import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/Obj
 import { DetailsView } from '../views/edit-project/workbench-views/DetailsView';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/RelatedElementsView';
 import { RepresentationsView } from '../views/edit-project/workbench-views/RepresentationsView';
+import { ExplorerView } from '../views/explorer/ExplorerView';
 import { createProjectAreaCardExtensionPoint } from '../views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
 import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
 import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
+import { ProjectSettingTabContribution } from '../views/project-settings/ProjectSettingsView.types';
+import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
 import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
 import { ellipseNodeStyleDocumentTransform } from './ElipseNodeDocumentTransform';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 
-import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
-import { ProjectSettingTabContribution } from '../views/project-settings/ProjectSettingsView.types';
-import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
   const params = new URLSearchParams(query);

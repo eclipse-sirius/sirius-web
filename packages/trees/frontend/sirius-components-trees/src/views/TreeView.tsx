@@ -10,11 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useLazyQuery, useSubscription } from '@apollo/client';
-import { DataExtension, Toast, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
-import { StateMachine } from 'xstate';
+import { gql, useLazyQuery } from '@apollo/client';
+import { DataExtension, useData, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useEffect, useState } from 'react';
 import { Tree } from '../trees/Tree';
 import {
   GQLGetExpandAllTreePathData,
@@ -22,31 +20,12 @@ import {
   GQLGetTreePathData,
   GQLGetTreePathVariables,
   GQLTree,
-  GQLTreeEventData,
-  GQLTreeEventVariables,
   GQLTreeItem,
   TreeConverter,
-  TreeViewComponentProps,
+  TreeViewProps,
+  TreeViewState,
 } from './TreeView.types';
 import { treeViewTreeConverterExtensionPoint } from './TreeViewExtensionPoints';
-import {
-  AutoExpandToRevealSelectionEvent,
-  HandleCompleteEvent,
-  HandleExpandAllTreePathEvent,
-  HandleExpandedEvent,
-  HandleOnExpandAllEvent,
-  HandleSubscriptionResultEvent,
-  HandleTreePathEvent,
-  HideToastEvent,
-  SchemaValue,
-  ShowToastEvent,
-  SynchronizeWithSelectionEvent,
-  TreeViewContext,
-  TreeViewEvent,
-  treeViewMachine,
-  TreeViewStateSchema,
-} from './TreeViewMachine';
-import { getTreeEventSubscription } from './getTreeEventSubscription';
 
 const getTreePathQuery = gql`
   query getTreePath($editingContextId: ID!, $treeId: ID!, $selectionEntryIds: [ID!]!) {
@@ -77,27 +56,22 @@ const getExpandAllTreePathQuery = gql`
 export const TreeView = ({
   editingContextId,
   readOnly,
+  tree,
   treeId,
   enableMultiSelection,
   synchronizedWithSelection,
-  activeFilterIds,
   textToHighlight,
   textToFilter,
   markedItemIds = [],
   treeItemActionRender,
-}: TreeViewComponentProps) => {
-  const [{ value, context }, dispatch] = useMachine<StateMachine<TreeViewContext, TreeViewStateSchema, TreeViewEvent>>(
-    treeViewMachine,
-    {
-      context: {
-        synchronizedWithSelection: synchronizedWithSelection,
-      },
-    }
-  );
+  onExpandedElementChange,
+}: TreeViewProps) => {
+  const [state, setState] = useState<TreeViewState>({
+    autoExpandToRevealSelection: synchronizedWithSelection,
+    expanded: [],
+    maxDepth: 1,
+  });
   const { selection } = useSelection();
-
-  const { toast, treeView } = value as SchemaValue;
-  const { id, tree, expanded, maxDepth, autoExpandToRevealSelection, treeItemToExpandAll, message } = context;
 
   const [getTreePath, { loading: treePathLoading, data: treePathData, error: treePathError }] = useLazyQuery<
     GQLGetTreePathData,
@@ -115,7 +89,7 @@ export const TreeView = ({
     .sort()
     .join(':');
   useEffect(() => {
-    if (tree && autoExpandToRevealSelection) {
+    if (state.autoExpandToRevealSelection) {
       const variables: GQLGetTreePathVariables = {
         editingContextId,
         treeId: tree.id,
@@ -123,106 +97,97 @@ export const TreeView = ({
       };
       getTreePath({ variables });
     }
-  }, [editingContextId, tree, selectionKey, autoExpandToRevealSelection, getTreePath]);
+  }, [editingContextId, tree, selectionKey, state.autoExpandToRevealSelection, getTreePath]);
 
   useEffect(() => {
     if (!treePathLoading) {
       if (treePathData) {
-        const handleTreePathEvent: HandleTreePathEvent = { type: 'HANDLE_TREE_PATH', treePathData };
-        dispatch(handleTreePathEvent);
-      }
-      if (treePathError) {
-        const { message } = treePathError;
-        const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-        dispatch(showToastEvent);
-      }
-    }
-  }, [treePathLoading, treePathData, treePathError]);
+        const { expanded, maxDepth } = state;
+        if (treePathData.viewer?.editingContext?.treePath) {
+          const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } = treePathData.viewer.editingContext.treePath;
+          const newExpanded: string[] = [...expanded];
 
-  useEffect(() => {
-    if (tree && treeItemToExpandAll) {
-      const variables: GQLGetExpandAllTreePathVariables = {
-        editingContextId,
-        treeId: tree.id,
-        treeItemId: treeItemToExpandAll,
-      };
-      getExpandAllTreePath({ variables });
+          treeItemIdsToExpand?.forEach((itemToExpand) => {
+            if (!expanded.includes(itemToExpand)) {
+              newExpanded.push(itemToExpand);
+            }
+          });
+          setState((prevState) => ({
+            ...prevState,
+            expanded: newExpanded,
+            maxDepth: Math.max(expandedMaxDepth, maxDepth),
+          }));
+        }
+      }
     }
-  }, [editingContextId, tree, treeItemToExpandAll, getExpandAllTreePathQuery]);
+  }, [treePathLoading, treePathData]);
 
   useEffect(() => {
     if (!expandAllTreePathLoading) {
       if (expandAllTreePathData) {
-        const handleExpandAllTreePathEvent: HandleExpandAllTreePathEvent = {
-          type: 'HANDLE_EXPAND_ALL_TREE_PATH',
-          expandAllTreePathData,
-        };
-        dispatch(handleExpandAllTreePathEvent);
-      }
-      if (expandAllTreePathError) {
-        const { message } = expandAllTreePathError;
-        const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-        dispatch(showToastEvent);
+        const { expanded, maxDepth } = state;
+        if (expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
+          const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
+            expandAllTreePathData.viewer.editingContext.expandAllTreePath;
+          const newExpanded: string[] = [...expanded];
+
+          treeItemIdsToExpand?.forEach((itemToExpand) => {
+            if (!expanded.includes(itemToExpand)) {
+              newExpanded.push(itemToExpand);
+            }
+          });
+          setState((prevState) => ({
+            ...prevState,
+            expanded: newExpanded,
+            maxDepth: Math.max(expandedMaxDepth, maxDepth),
+          }));
+        }
       }
     }
-  }, [expandAllTreePathLoading, expandAllTreePathData, expandAllTreePathError]);
+  }, [expandAllTreePathLoading, expandAllTreePathData]);
 
-  const { error } = useSubscription<GQLTreeEventData, GQLTreeEventVariables>(gql(getTreeEventSubscription(maxDepth)), {
-    variables: {
-      input: {
-        id,
-        treeId,
-        editingContextId,
-        expanded,
-        activeFilterIds,
-      },
-    },
-    fetchPolicy: 'no-cache',
-    skip: treeView === 'complete',
-    onData: ({ data }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: data,
-      };
-      dispatch(handleDataEvent);
-    },
-    onComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-  });
+  const { addMessages } = useMultiToast();
   useEffect(() => {
-    if (error) {
-      const { message } = error;
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-      dispatch(showToastEvent);
+    if (expandAllTreePathError) {
+      addMessages(expandAllTreePathError.message);
     }
-  }, [error, dispatch]);
-
+  }, [expandAllTreePathError]);
   useEffect(() => {
-    const autoExpandToRevealSelectionEvent: AutoExpandToRevealSelectionEvent = {
-      type: 'AUTO_EXPAND_TO_REVEAL_SELECTION',
-      autoExpandToRevealSelection: true,
-    };
-    dispatch(autoExpandToRevealSelectionEvent);
-  }, [selection]);
-
-  useEffect(() => {
-    const synchronizeWithSelectionEvent: SynchronizeWithSelectionEvent = {
-      type: 'SYNCHRONIZE_WITH_SELECTION',
-      synchronizedWithSelection: synchronizedWithSelection,
-    };
-    dispatch(synchronizeWithSelectionEvent);
-  }, [synchronizedWithSelection]);
+    if (treePathError) {
+      addMessages(treePathError.message);
+    }
+  }, [treePathError]);
 
   const onExpand = (id: string, depth: number) => {
-    const handleExpandedEvent: HandleExpandedEvent = { type: 'HANDLE_EXPANDED', id, depth };
-    dispatch(handleExpandedEvent);
+    const { expanded, maxDepth } = state;
+
+    if (expanded.includes(id)) {
+      const newExpanded = [...expanded];
+      newExpanded.splice(newExpanded.indexOf(id), 1);
+
+      // Disable synchronize mode on collapse
+      setState((prevState) => ({
+        ...prevState,
+        autoExpandToRevealSelection: false,
+        expanded: newExpanded,
+        maxDepth: Math.max(maxDepth, depth),
+      }));
+    } else {
+      setState((prevState) => ({ ...prevState, expanded: [...expanded, id], maxDepth: Math.max(maxDepth, depth) }));
+    }
   };
 
+  useEffect(() => {
+    onExpandedElementChange(state.expanded, state.maxDepth);
+  }, [state.expanded, state.maxDepth]);
+
   const onExpandAll = (treeItem: GQLTreeItem) => {
-    const handleOnExpandAllEvent: HandleOnExpandAllEvent = { type: 'HANDLE_ON_EXPAND_ALL', treeItemId: treeItem.id };
-    dispatch(handleOnExpandAllEvent);
+    const variables: GQLGetExpandAllTreePathVariables = {
+      editingContextId,
+      treeId: tree.id,
+      treeItemId: treeItem.id,
+    };
+    getExpandAllTreePath({ variables });
   };
 
   const { data: treeConverters }: DataExtension<TreeConverter[]> = useData(treeViewTreeConverterExtensionPoint);
@@ -233,28 +198,19 @@ export const TreeView = ({
   });
 
   return (
-    <>
-      <div data-testid={treeId}>
-        {tree ? (
-          <Tree
-            editingContextId={editingContextId}
-            tree={convertedTree}
-            onExpand={onExpand}
-            onExpandAll={onExpandAll}
-            readOnly={readOnly}
-            enableMultiSelection={enableMultiSelection}
-            markedItemIds={markedItemIds}
-            textToFilter={textToFilter}
-            textToHighlight={textToHighlight}
-            treeItemActionRender={treeItemActionRender}
-          />
-        ) : null}
-      </div>
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+    <div data-testid={treeId}>
+      <Tree
+        editingContextId={editingContextId}
+        tree={convertedTree}
+        onExpand={onExpand}
+        onExpandAll={onExpandAll}
+        readOnly={readOnly}
+        enableMultiSelection={enableMultiSelection}
+        markedItemIds={markedItemIds}
+        textToFilter={textToFilter}
+        textToHighlight={textToHighlight}
+        treeItemActionRender={treeItemActionRender}
       />
-    </>
+    </div>
   );
 };

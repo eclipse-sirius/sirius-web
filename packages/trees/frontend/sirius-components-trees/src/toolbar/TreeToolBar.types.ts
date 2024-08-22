@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TreeFilter } from '../views/ExplorerView.types';
 import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
+import { TreeFilter } from '../views/TreeFiltersMenu.types';
 
 export interface TreeToolBarProps {
   editingContextId: string;

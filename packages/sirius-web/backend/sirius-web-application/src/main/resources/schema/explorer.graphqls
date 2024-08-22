@@ -1,0 +1,11 @@
+extend type Subscription {
+  explorerEvent(input: ExplorerEventInput!): TreeEventPayload!
+}
+
+input ExplorerEventInput {
+  id: ID!
+  treeId: String!
+  editingContextId: ID!
+  expanded: [String!]!
+  activeFilterIds: [String!]!
+}

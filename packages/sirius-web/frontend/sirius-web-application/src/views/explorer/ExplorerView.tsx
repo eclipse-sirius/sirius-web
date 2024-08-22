@@ -11,16 +11,20 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import {
+  FilterBar,
+  TreeFilter,
+  TreeToolBar,
+  TreeToolBarContext,
+  TreeToolBarContextValue,
+  TreeView,
+  useTreeFilters,
+} from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { TreeToolBar } from '../toolbar/TreeToolBar';
-import { TreeToolBarContext } from '../toolbar/TreeToolBarContext';
-import { TreeToolBarContextValue } from '../toolbar/TreeToolBarContext.types';
-import { FilterBar } from '../trees/FilterBar';
-import { ExplorerViewState, TreeFilter } from './ExplorerView.types';
-import { TreeView } from './TreeView';
-import { useTreeFilters } from './useTreeFilters';
+import { ExplorerViewState } from './ExplorerView.types';
+import { useExplorerSubscription } from './useExplorerSubscription';
 
 const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
@@ -43,11 +47,16 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     filterBarText: '',
     filterBarTreeFiltering: false,
     treeFilters: [],
+    expanded: [],
+    maxDepth: 1,
   };
   const [state, setState] = useState<ExplorerViewState>(initialState);
   const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
     (contribution) => contribution.props.component
   );
+  const activeTreeFilterIds = state.treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
+
+  const { tree } = useExplorerSubscription(editingContextId, activeTreeFilterIds, state.expanded, state.maxDepth);
 
   const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
 
@@ -96,9 +105,10 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
           });
         }}
         onFilterButtonClick={(enabled) =>
-          setState((prevState) => {
-            return { ...prevState, filterBarTreeFiltering: enabled };
-          })
+          setState((prevState) => ({
+            ...prevState,
+            filterBarTreeFiltering: enabled,
+          }))
         }
         onClose={() =>
           setState((prevState) => {
@@ -108,8 +118,9 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       />
     );
   }
-
-  const activeTreeFilterIds = state.treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
+  const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
+    setState((prevState) => ({ ...prevState, expanded, maxDepth }));
+  };
 
   return (
     <div className={styles.treeView} ref={treeElement}>
@@ -132,16 +143,19 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       />
       <div className={styles.treeContent}>
         {filterBar}
-        <TreeView
-          editingContextId={editingContextId}
-          readOnly={readOnly}
-          treeId={'explorer://'}
-          enableMultiSelection={true}
-          synchronizedWithSelection={state.synchronizedWithSelection}
-          activeFilterIds={activeTreeFilterIds}
-          textToHighlight={state.filterBarText}
-          textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-        />
+        {tree !== null ? (
+          <TreeView
+            editingContextId={editingContextId}
+            readOnly={readOnly}
+            treeId={'explorer://'}
+            tree={tree}
+            enableMultiSelection={true}
+            synchronizedWithSelection={state.synchronizedWithSelection}
+            textToHighlight={state.filterBarText}
+            textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+            onExpandedElementChange={onExpandedElementChange}
+          />
+        ) : null}
       </div>
     </div>
   );

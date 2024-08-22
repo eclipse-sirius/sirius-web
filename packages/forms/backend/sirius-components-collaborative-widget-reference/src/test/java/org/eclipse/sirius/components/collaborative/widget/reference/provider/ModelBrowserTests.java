@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.collaborative.widget.reference.browser.ModelBrowsersDescriptionProvider;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -55,7 +54,6 @@ public class ModelBrowserTests {
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
         var referenceTreeId = "modelBrowser://reference";
-        variableManager.put(TreeConfiguration.TREE_ID, referenceTreeId);
         var tree = new TreeRenderer(variableManager, referenceBrowserDescription.get()).render();
         assertThat(tree).isNotNull();
         assertThat(tree.getId()).isEqualTo(referenceTreeId);
@@ -63,7 +61,6 @@ public class ModelBrowserTests {
         assertThat(tree.getKind()).isEqualTo(Tree.KIND);
 
         var containerTreeId = "modelBrowser://container";
-        variableManager.put(TreeConfiguration.TREE_ID, containerTreeId);
         tree = new TreeRenderer(variableManager, containerBrowserDescription.get()).render();
         assertThat(tree).isNotNull();
         assertThat(tree.getId()).isEqualTo(containerTreeId);

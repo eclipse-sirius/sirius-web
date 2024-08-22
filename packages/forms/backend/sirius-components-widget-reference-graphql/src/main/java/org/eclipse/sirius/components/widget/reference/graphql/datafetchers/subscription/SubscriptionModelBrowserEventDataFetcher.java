@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.trees.graphql.datafetchers.subscription;
+package org.eclipse.sirius.components.widget.reference.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeEventInput;
+import org.eclipse.sirius.components.collaborative.widget.reference.configurations.ModelBrowserConfiguration;
+import org.eclipse.sirius.components.collaborative.widget.reference.dto.ModelBrowserEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
@@ -32,13 +32,12 @@ import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to send the refreshed tree to a subscription.
+ * The data fetcher used to send the refreshed tree to a model browser subscription .
  *
- * @author hmarchadour
- * @author pcdavid
+ * @author Jerome Gout
  */
-@SubscriptionDataFetcher(type = "Subscription", field = "treeEvent")
-public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
+@SubscriptionDataFetcher(type = "Subscription", field = "modelBrowserEvent")
+public class SubscriptionModelBrowserEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
 
     private static final String INPUT_ARGUMENT = "input";
 
@@ -48,7 +47,7 @@ public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCo
 
     private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
-    public SubscriptionTreeEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
+    public SubscriptionModelBrowserEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
         this.eventProcessorSubscriptionProvider = Objects.requireNonNull(eventProcessorSubscriptionProvider);
@@ -57,14 +56,14 @@ public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCo
     @Override
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
-        var input = this.objectMapper.convertValue(argument, TreeEventInput.class);
-        var treeConfiguration = new TreeConfiguration(input.editingContextId(), input.treeId(), input.expanded(), input.activeFilterIds());
+        var input = this.objectMapper.convertValue(argument, ModelBrowserEventInput.class);
+        var modelBrowserConfiguration = new ModelBrowserConfiguration(input.editingContextId(), input.treeId(), input.expanded());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
-        localContext.put(LocalContextConstants.REPRESENTATION_ID, treeConfiguration.getId());
+        localContext.put(LocalContextConstants.REPRESENTATION_ID, modelBrowserConfiguration.getId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), treeConfiguration, input), input)
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), modelBrowserConfiguration, input), input)
                 .map(payload ->  DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)

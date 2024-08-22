@@ -15,8 +15,8 @@ import { expect, test } from 'vitest';
 import { getTreeEventSubscription } from '../getTreeEventSubscription';
 
 const getDocumentSubscription = gql`
-  subscription treeEvent($input: TreeEventInput!) {
-    treeEvent(input: $input) {
+  subscription explorerEvent($input: ExplorerEventInput!) {
+    explorerEvent(input: $input) {
       __typename
       ... on TreeRefreshedEventPayload {
         id
@@ -66,7 +66,7 @@ const getDocumentSubscription = gql`
 
 test('looks like the graphql subscription loaded from graphql test subscription file', () => {
   // apply getTreeEventSubscription with depth 2
-  const getBuiltSubscription = getTreeEventSubscription(2);
+  const getBuiltSubscription = getTreeEventSubscription(2, 'explorerEvent', 'ExplorerEventInput');
   // compare results
   const received = getBuiltSubscription.trim().replace(/\s+/g, ' ');
   const expected = getDocumentSubscription.replace(/\s+/g, ' ');

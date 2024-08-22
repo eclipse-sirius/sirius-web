@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.trees.tests.graphql;
+package org.eclipse.sirius.web.tests.services.modelbrowser;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeEventInput;
+import org.eclipse.sirius.components.collaborative.widget.reference.dto.ModelBrowserEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
@@ -22,16 +22,16 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 /**
- * Used to get the tree event subscription with the GraphQL API.
+ * Used to get the model browser event subscription with the GraphQL API.
  *
- * @author gdaniel
+ * @author Jerome Gout
  */
 @Service
-public class TreeEventSubscriptionRunner implements ISubscriptionRunner<TreeEventInput> {
+public class ModelBrowserEventSubscriptionRunner implements ISubscriptionRunner<ModelBrowserEventInput> {
 
-    private static final String TREE_EVENT_SUBSCRIPTION = """
-            subscription treeEvent($input: TreeEventInput!) {
-              treeEvent(input: $input) {
+    private static final String MODEL_BROWSER_EVENT_SUBSCRIPTION = """
+            subscription modelBrowserEvent($input: ModelBrowserEventInput!) {
+              modelBrowserEvent(input: $input) {
                 __typename
               }
             }
@@ -39,13 +39,13 @@ public class TreeEventSubscriptionRunner implements ISubscriptionRunner<TreeEven
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public TreeEventSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
+    public ModelBrowserEventSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public Flux<Object> run(TreeEventInput input) {
-        return this.graphQLRequestor.subscribe(TREE_EVENT_SUBSCRIPTION, input);
+    public Flux<Object> run(ModelBrowserEventInput input) {
+        return this.graphQLRequestor.subscribe(MODEL_BROWSER_EVENT_SUBSCRIPTION, input);
     }
 
 }
