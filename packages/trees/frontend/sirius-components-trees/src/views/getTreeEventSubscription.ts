@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export const getTreeEventSubscription = (depth: number): string => {
+export const getTreeEventSubscription = (depth: number, eventType: string, eventInputType: string): string => {
   const treeChildren = recursiveGetChildren(depth);
   const subscription = `
-subscription treeEvent($input: TreeEventInput!) {
-  treeEvent(input: $input) {
+subscription ${eventType}($input: ${eventInputType}!) {
+  ${eventType}(input: $input) {
     __typename
     ... on TreeRefreshedEventPayload {
       id

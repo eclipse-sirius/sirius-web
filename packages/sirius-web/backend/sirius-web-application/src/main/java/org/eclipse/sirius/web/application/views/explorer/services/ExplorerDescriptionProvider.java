@@ -17,7 +17,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -104,10 +103,6 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
-        Predicate<VariableManager> canCreatePredicate = variableManager -> variableManager.get("treeId", String.class)
-                .map(treeId -> treeId.startsWith(PREFIX))
-                .orElse(false);
-
         var explorerTreeDescription = TreeDescription.newTreeDescription(DESCRIPTION_ID)
                 .label(REPRESENTATION_NAME)
                 .idProvider(this::getTreeId)
@@ -123,7 +118,9 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .elementsProvider(this.explorerElementsProvider::getElements)
                 .hasChildrenProvider(this.explorerChildrenProvider::hasChildren)
                 .childrenProvider(this.explorerChildrenProvider::getChildren)
-                .canCreatePredicate(canCreatePredicate)
+                // This predicate will NOT be used while creating the explorer, but we don't want to see the description of the
+                // explorer in the list of representations that can be created. Thus, we will return false all the time.
+                .canCreatePredicate(variableManager -> false)
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
                 .treeItemObjectProvider(this::getTreeItemObject)

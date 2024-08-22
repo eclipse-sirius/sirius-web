@@ -10,20 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
+import { TreeFilter } from '@eclipse-sirius/sirius-components-trees';
 
-export interface ModelBrowserTreeViewProps {
-  editingContextId: string;
-  widget: GQLReferenceWidget;
-  markedItemIds: string[];
-  enableMultiSelection: boolean;
-  title: string;
-  leafType: 'reference' | 'container';
-  ownerKind: string;
-}
-
-export interface ModelBrowserTreeViewState {
-  filterBarText: string;
+export interface ExplorerViewState {
+  synchronizedWithSelection: boolean;
+  filterBar: boolean;
+  filterBarText: string | null;
+  filterBarTreeFiltering: boolean;
+  treeFilters: TreeFilter[];
   expanded: string[];
   maxDepth: number;
 }

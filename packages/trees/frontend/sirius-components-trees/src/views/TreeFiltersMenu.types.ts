@@ -11,9 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { TreeFilter } from './ExplorerView.types';
-
 export interface TreeFilterMenuProps {
   filters: TreeFilter[];
   onTreeFilterMenuItemClick: (filters: TreeFilter[]) => void;
+}
+
+export interface TreeFilter {
+  id: string;
+  label: string;
+  state: boolean;
 }

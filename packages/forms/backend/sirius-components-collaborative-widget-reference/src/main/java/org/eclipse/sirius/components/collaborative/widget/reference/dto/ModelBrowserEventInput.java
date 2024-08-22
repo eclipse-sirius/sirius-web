@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.trees.dto;
+package org.eclipse.sirius.components.collaborative.widget.reference.dto;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,9 +18,9 @@ import java.util.UUID;
 import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * The input of the tree event subscription.
+ * The input of the model browser event subscription.
  *
- * @author sbegaudeau
+ * @author Jerome Gout
  */
-public record TreeEventInput(UUID id, String editingContextId, String treeId, List<String> expanded, List<String> activeFilterIds) implements IInput {
+public record ModelBrowserEventInput(UUID id, String editingContextId, String treeId, List<String> expanded) implements IInput {
 }

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.trees;
+package org.eclipse.sirius.web.application.views.explorer;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,14 +22,14 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.trees.TreeEventProcessor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
-import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeCreationParameters;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -40,7 +40,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  * @author sbegaudeau
  */
 @Service
-public class TreeEventProcessorFactory implements IRepresentationEventProcessorFactory {
+public class ExplorerEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
     public static final String TREE_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString();
 
@@ -54,7 +54,7 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public TreeEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, ITreeService treeService, List<ITreeEventHandler> treeEventHandlers,
+    public ExplorerEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, ITreeService treeService, List<ITreeEventHandler> treeEventHandlers,
             ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.treeService = Objects.requireNonNull(treeService);
@@ -65,14 +65,17 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
 
     @Override
     public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof TreeConfiguration;
+        return configuration instanceof ExplorerConfiguration;
     }
 
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
-        if (configuration instanceof TreeConfiguration treeConfiguration) {
+        if (configuration instanceof ExplorerConfiguration treeConfiguration) {
 
-            Optional<TreeDescription> optionalTreeDescription = this.findTreeDescription(editingContext, treeConfiguration);
+            Optional<TreeDescription> optionalTreeDescription = this.representationDescriptionSearchService
+                    .findById(editingContext, ExplorerDescriptionProvider.DESCRIPTION_ID)
+                    .filter(TreeDescription.class::isInstance)
+                    .map(TreeDescription.class::cast);
             if (optionalTreeDescription.isPresent()) {
                 var treeDescription = optionalTreeDescription.get();
 
@@ -90,16 +93,4 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
         }
         return Optional.empty();
     }
-
-    private Optional<TreeDescription> findTreeDescription(IEditingContext editingContext, TreeConfiguration treeConfiguration) {
-        VariableManager variableManager = new VariableManager();
-        variableManager.put(TreeConfiguration.TREE_ID, treeConfiguration.getId());
-        return this.representationDescriptionSearchService
-                .findAll(editingContext).values().stream()
-                .filter(TreeDescription.class::isInstance)
-                .map(TreeDescription.class::cast)
-                .filter(treeDescription -> treeDescription.getCanCreatePredicate().test(variableManager))
-                .findFirst();
-    }
-
 }

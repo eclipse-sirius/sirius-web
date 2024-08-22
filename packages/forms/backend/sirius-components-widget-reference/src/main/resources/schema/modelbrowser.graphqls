@@ -1,0 +1,10 @@
+extend type Subscription {
+  modelBrowserEvent(input: ModelBrowserEventInput!): TreeEventPayload!
+}
+
+input ModelBrowserEventInput {
+  id: ID!
+  treeId: String!
+  editingContextId: ID!
+  expanded: [String!]!
+}
