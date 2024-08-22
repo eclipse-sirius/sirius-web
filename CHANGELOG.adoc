@@ -7,6 +7,7 @@
 - Add tree representation in the view DSL
 - Add support for object duplication from Explorer
 - Add support for diagram tool shortcuts
+- Extend the explorer to support multiple presentations
 
 === Architectural decision records
 
