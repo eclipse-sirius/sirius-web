@@ -25,7 +25,7 @@ declare global {
       getByTestId: (testId: string) => Chainable<JQuery<HTMLElement>>;
       findByTestId: (testId: string) => Chainable<JQuery<HTMLElement>>;
 
-      createProject: (name: string) => Chainable<Response<MutationResponse<CreateProjectData>>>;
+      createProject: (name: string, natures: string[]) => Chainable<Response<MutationResponse<CreateProjectData>>>;
       createProjectFromTemplate: (name: string) => Chainable<Response<MutationResponse<CreateProjectFromTemplateData>>>;
       deleteProject: (projectId: string) => Chainable<Response<MutationResponse<DeleteProjectData>>>;
 

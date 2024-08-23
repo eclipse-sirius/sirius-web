@@ -47,6 +47,7 @@ The new option ALWAYS allows the separator to be displayed in every case.
 - https://github.com/eclipse-sirius/sirius-web/issues/4005[#4005] [diagram] Fix a problem synchronizing explorer with current selection
 - https://github.com/eclipse-sirius/sirius-web/issues/4008[#4008] [diagram] Prevent `detailsEvent` to be triggered twice when selecting a multi-represented element in the diagram
 
+
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3763[#3763] [diagram] Make it possible to display semantic candidates in the selection dialog using a tree
@@ -76,6 +77,7 @@ never, always and if_children (to display the separator only if children exist).
 - https://github.com/eclipse-sirius/sirius-web/issues/4021[#4021] [sirius-web] Disable the _Rename_ and _Delete_ project menu actions when project is read-only
 - https://github.com/eclipse-sirius/sirius-web/issues/3677[#3677] [diagram] Remove backend layouting code from the time the backend was computing the layout.
 - https://github.com/eclipse-sirius/sirius-web/issues/3678[#3678] [core] Rely on representation id to retrieve representation metadata
+- https://github.com/eclipse-sirius/sirius-web/issues/3754[#3754] [sirius-web] Activate cypress tests again
 
 == v2024.9.0
 

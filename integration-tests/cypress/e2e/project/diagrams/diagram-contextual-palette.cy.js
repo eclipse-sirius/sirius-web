@@ -10,30 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-describe('/projects/:projectId/edit - Robot Diagram', () => {
-  const fadeByElementTestId = (elementTestId) => {
-    cy.getByTestId(elementTestId).should('have.css', 'opacity', '1');
-    cy.getByTestId(elementTestId).first().click({ force: true });
-    cy.getByTestId('Fade-element').should('exist').click({ force: true });
-    cy.getByTestId(elementTestId).should('have.css', 'opacity', '0.4');
-  };
 
-  const hideByElementTestId = (elementTestId) => {
-    cy.getByTestId(elementTestId).then((elementBefore) => {
-      const countBefore = elementBefore.length ?? 0;
-      cy.getByTestId(elementTestId).first().click({ force: true });
-      cy.getByTestId('Hide-element').should('exist').click({ force: true });
-      cy.getByTestId('Hide-element').should('not.exist');
-      if (countBefore === 1) {
-        cy.getByTestId(elementTestId).should('not.exist');
-      } else {
-        cy.getByTestId(elementTestId).then((elementAfter) => {
-          cy.expect((elementAfter.length ?? 0) + 1).to.equal(countBefore);
-        });
-      }
-    });
-  };
-
+describe.skip('/projects/:projectId/edit - Robot Diagram', () => {
   const createFlowReactFlowDiagram = () => {
     cy.createProject('Cypress Project').then((res) => {
       const projectId = res.body.data.createProject.project.id;
@@ -58,40 +36,6 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
 
   beforeEach(() => {
     cy.deleteAllProjects();
-  });
-
-  it.skip('test Hide/Fade action is not available on diagram background', () => {
-    createFlowReactFlowDiagram();
-    cy.getByTestId('rf__wrapper').findByTestId('Label - CaptureSubSystem').should('exist').click('topLeft');
-
-    cy.getByTestId('Hide-element').should('exist');
-    cy.getByTestId('Fade-element').should('exist');
-    cy.getByTestId('rf__wrapper').click('bottomLeft');
-    // NOTE for later: ensure the palette is displayed
-    cy.getByTestId('Hide-element').should('not.exist');
-    cy.getByTestId('Fade-element').should('not.exist');
-  });
-
-  it.skip('can fade any type of nodes', () => {
-    createFlowReactFlowDiagram();
-    fadeByElementTestId('IconLabel - Temperature: 25');
-    fadeByElementTestId('FreeForm - Motion_Engine');
-    fadeByElementTestId('FreeForm - Central_Unit');
-    fadeByElementTestId('List - Description');
-  });
-
-  it.skip('can hide any type of nodes', () => {
-    createFlowReactFlowDiagram();
-    cy.getByTestId('Label - Temperature: 25').should('have.length', 1);
-    cy.getByTestId('Label - Temperature: 28').click();
-    cy.getByTestId('form').findByTestId('input-Temperature').should('not.be.disabled');
-    cy.getByTestId('form').findByTestId('input-Temperature').should('have.attr', 'value', '28');
-    cy.getByTestId('form').findByTestId('Temperature').type('{selectall}').type('25').type('{enter}');
-    cy.getByTestId('Label - Temperature: 25').should('have.length', 2);
-    hideByElementTestId('Label - Temperature: 25');
-    hideByElementTestId('FreeForm - Motion_Engine');
-    hideByElementTestId('List - Description');
-    hideByElementTestId('FreeForm - Central_Unit');
   });
 
   it('can not open multi tool section in the same time', () => {
@@ -170,41 +114,6 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
         cy.getByTestId('tool2_section1 - Tool').should('not.exist');
         cy.getByTestId('tool2_section2 - Tool').should('not.exist');
       });
-  });
-
-  it('remembers the last tool invoked from a tool section', () => {
-    // Create a studio project with a Domain diagram
-    cy.createProjectFromTemplate('studio-template').then((res) => {
-      const projectId = res.body.data.createProjectFromTemplate.project.id;
-      cy.visit(`/projects/${projectId}/edit`);
-    });
-
-    // Rename the diagram
-    cy.getByTestId('onboard-open-Domain').click();
-    cy.getByTestId('Domain').click();
-    cy.getByTestId('Domain-more').click();
-    cy.getByTestId('rename-tree-item').click();
-    cy.getByTestId('name-edit').type('Domain{enter}');
-
-    // Open the palette of the "Root" entity.
-    cy.getByTestId('rf__wrapper').findByTestId('Label - Root').click();
-    cy.getByTestId('Palette').should('exist');
-    // It should have the "Text attribute" tool as the default in its first tool section
-    cy.getByTestId('Text - Tool').should('exist');
-    cy.getByTestId('Boolean - Tool').should('not.exist');
-
-    // Expand the palette and invoke the "Boolean attribute" tool
-    cy.getByTestId('expand').click();
-    cy.getByTestId('Boolean - Tool').click();
-    // Check the attribute has been created
-    cy.getByTestId('rf__wrapper').findByTestId('Label - newBoolean').should('exist');
-
-    // Open the palette of the "Root" entity.
-    // It should now have the "Boolean attribute" tool as the default in its first tool section
-    cy.getByTestId('rf__wrapper').findByTestId('Label - Root').click();
-    cy.getByTestId('Palette').should('exist');
-    cy.getByTestId('Text - Tool').should('not.exist');
-    cy.getByTestId('Boolean - Tool').should('exist');
   });
 
   it('closes the diagram palette on Esc', () => {

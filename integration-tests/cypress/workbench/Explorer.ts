@@ -72,6 +72,12 @@ export class Explorer {
     this.getTreeItemByLabel(treeItemLabel).click({ ctrlKey: multiSelection });
   }
 
+  public selectRepresentation(treeItemLabel: string): void {
+    this.getTreeItemByLabel(treeItemLabel).should('exist');
+    this.getTreeItemByLabel(treeItemLabel).click();
+    cy.getByTestId('representation-area').should('exist');
+  }
+
   public createRepresentation(
     treeItemLabel: string,
     representationDescriptionName: string,

@@ -115,6 +115,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
+                    // The form contains two widgets displaying both the value of a semantic element...
                     formId.set(form.getId());
 
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -126,6 +127,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable changeMasterValue = () -> {
+            // ... updating the value with the select ...
             var editSelectInput = new EditSelectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), formId.get(), selectId.get(), "second");
 
             var editSelectResult = this.editSelectMutationRunner.run(editSelectInput);
@@ -142,6 +144,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
+                    // ... updates the value of the rich text
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var richText = groupNavigator.findWidget("RichText", RichText.class);
                     assertThat(richText).hasValue("second");
@@ -189,7 +192,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a form , when a reload is triggered, then the form is refreshed")
+    @DisplayName("Given a form, when a reload is triggered, then the form is refreshed")
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenViewBasedFormWhenReloadTriggeredThenFormIsRefreshed() {

@@ -10,14 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { CreatedProjectData } from './Papaya.types';
-import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
-import { isCreateProjectSuccessPayload } from '../support/server/createProjectCommand';
 import { Project } from '../pages/Project';
-import { Workbench } from '../workbench/Workbench';
+import { isCreateProjectSuccessPayload } from '../support/server/createProjectCommand';
+import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
 import { Explorer } from '../workbench/Explorer';
+import { Workbench } from '../workbench/Workbench';
+import { CreatedProjectData } from './Papaya.types';
 
 export class Papaya {
+  static readonly PAPAYA_NATURE = 'siriusComponents://nature?kind=papaya';
+
   public createPapayaStudioProject(): Cypress.Chainable<CreatedProjectData> {
     return cy.createProjectFromTemplate('papaya-studio-template').then((res) => {
       const payload = res.body.data.createProjectFromTemplate;
@@ -32,7 +34,7 @@ export class Papaya {
   }
 
   public createPapayaInstanceProject(name: string): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProject(name).then((res) => {
+    return cy.createProject(name, [Papaya.PAPAYA_NATURE]).then((res) => {
       const payload = res.body.data.createProject;
       if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;

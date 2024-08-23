@@ -92,10 +92,10 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     }
 
     @Test
-    @DisplayName("Given a studio, when the filter to hide the default palette is active, then the default palette is hidden")
+    @DisplayName("Given a studio, when the filter to hide the default color palette is active, then the default color palette is hidden")
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenStudioWhenFilterToHideDefaultPaletteIsActiveThenTheDefaultPaletteIsHidden() {
+    public void givenStudioWhenFilterToHideDefaultColorPaletteIsActiveThenTheDefaultColorPaletteIsHidden() {
         var treeRepresentationId = representationIdBuilder.buildExplorerRepresentationId(List.of(), List.of(StudioExplorerTreeFilterProvider.HIDE_STUDIO_COLOR_PALETTES_TREE_FILTER_ID));
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
@@ -118,10 +118,10 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     }
 
     @Test
-    @DisplayName("Given a studio, when the filter to show the default palette is inactive, then the default palette is visible")
+    @DisplayName("Given a studio, when the filter to show the default color palette is inactive, then the default color palette is visible")
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenStudioWhenFilterToHideDefaultPaletteIsInactiveThenTheDefaultPaletteIsHidden() {
+    public void givenStudioWhenFilterToHideDefaultColorPaletteIsInactiveThenTheDefaultColorPaletteIsHidden() {
         var treeRepresentationId = representationIdBuilder.buildExplorerRepresentationId(List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);

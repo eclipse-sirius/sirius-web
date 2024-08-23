@@ -13,10 +13,10 @@
 
 import { Project } from '../../../pages/Project';
 import { Flow } from '../../../usecases/Flow';
-import { Explorer } from '../../../workbench/Explorer';
 import { Diagram } from '../../../workbench/Diagram';
+import { Explorer } from '../../../workbench/Explorer';
 
-describe('arrange all - Diagram', () => {
+describe('Diagram - arrange all', () => {
   context('Given a flow project', () => {
     let projectId: string = '';
     beforeEach(() => {
@@ -26,9 +26,9 @@ describe('arrange all - Diagram', () => {
         project.visit(projectId);
         project.disableDeletionConfirmationDialog();
         const explorer = new Explorer();
-        explorer.expand('FlowNewModel');
+        explorer.expand('Flow');
         explorer.expand('NewSystem');
-        explorer.select('Topography');
+        explorer.selectRepresentation('Topography');
       });
     });
 

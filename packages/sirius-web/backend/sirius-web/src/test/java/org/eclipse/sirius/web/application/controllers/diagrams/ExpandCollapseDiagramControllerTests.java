@@ -166,7 +166,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
     }
 
     @Test
-    @DisplayName("Given a diagram with collapsed nodes by default, when a tool collapsing nodes is invoked, then expanded nodes are collapsed")
+    @DisplayName("Given a diagram with expanded nodes by default, when a tool collapsing nodes is invoked, then expanded nodes are collapsed")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramWithCollapsedNodesByDefaultWhenToolCollapsingNodesIsInvokedThenExpandedNodesAreCollapsed() {

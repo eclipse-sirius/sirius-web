@@ -177,10 +177,10 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a diagram with hidden nodes by default, when a tool hidding nodes is invoked, then revealed nodes are hidden")
+    @DisplayName("Given a diagram with visible nodes by default, when a tool hiding nodes is invoked, then visible nodes are hidden")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenDiagramWithHiddenNodesByDefaultWhenToolHiddingNodesIsInvokedThenRevealedNodesAreHidden() {
+    public void givenDiagramWithVisibleNodesByDefaultWhenToolHidingNodesIsInvokedThenVisibleNodesAreHidden() {
         var flux = this.givenSubscriptionToVisibilityDiagram();
 
         var diagramId = new AtomicReference<String>();
@@ -230,10 +230,10 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a diagram with faded nodes by default, when a tool fading nodes is invoked, then not faded nodes are faded")
+    @DisplayName("Given a diagram with nodes not faded by default, when a tool fading nodes is invoked, then not faded nodes are faded")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenDiagramWithFadedNodesByDefaultWhenToolFadingNodesIsInvokedThenNotFadedNodesAreFaded() {
+    public void givenDiagramWithNodesNotFadedByDefaultWhenToolFadingNodesIsInvokedThenNotFadedNodesAreFaded() {
         var flux = this.givenSubscriptionToVisibilityDiagram();
 
         var diagramId = new AtomicReference<String>();

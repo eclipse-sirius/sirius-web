@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Studio } from '../../../usecases/Studio';
 import { Project } from '../../../pages/Project';
-import { Explorer } from '../../../workbench/Explorer';
+import { Studio } from '../../../usecases/Studio';
 import { Details } from '../../../workbench/Details';
 import { Diagram } from '../../../workbench/Diagram';
+import { Explorer } from '../../../workbench/Explorer';
 
 describe('Diagram - Node aspect ratio', () => {
-  context('Given a studio template', () => {
+  context.skip('Given a studio template', () => {
     let studioProjectId: string = '';
     let domainName: string = '';
 

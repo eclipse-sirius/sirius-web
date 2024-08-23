@@ -12,11 +12,12 @@
  *******************************************************************************/
 import { Project } from '../../../pages/Project';
 import { Studio } from '../../../usecases/Studio';
-import { Explorer } from '../../../workbench/Explorer';
 import { Details } from '../../../workbench/Details';
 import { Diagram } from '../../../workbench/Diagram';
+import { Explorer } from '../../../workbench/Explorer';
 
-describe('Diagram - Graphical-dnd', () => {
+// Skipped because Diagram#dragAndDropNode has an issue with the coordinate: see the warning in Diagram#dragAndDropNode
+describe.skip('Diagram - Graphical-dnd', () => {
   context('Given a studio template', () => {
     let studioProjectId: string = '';
     let domainName: string = '';
@@ -40,7 +41,7 @@ describe('Diagram - Graphical-dnd', () => {
 
       afterEach(() => cy.deleteProject(instanceProjectId));
 
-      it.skip('Check graphical Drag and Drop', () => {
+      it('Check graphical Drag and Drop', () => {
         const explorer = new Explorer();
         explorer.createObject('Entity2', 'relations-Relation');
         const details = new Details();
@@ -77,15 +78,15 @@ describe('Diagram - Graphical-dnd', () => {
         details.getTextField('Name').type('Entity2{Enter}');
 
         const diagram = new Diagram();
-        diagram.dragAndDropNode('Rectangle - Entity1', 'Rectangle - Entity2');
-        diagram.isNodeInside('Rectangle - Entity1', 'Rectangle - Entity2');
+        diagram.dragAndDropNode('FreeForm - Entity1', 'FreeForm - Entity2');
+        diagram.isNodeInside('FreeForm - Entity1', 'FreeForm - Entity2');
 
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('InvalidTarget{Enter}');
 
-        diagram.dragAndDropNode('Rectangle - Entity1', 'Rectangle - InvalidTarget');
+        diagram.dragAndDropNode('FreeForm - Entity1', 'FreeForm - InvalidTarget');
         // The target is invalid, the move is canceled
-        diagram.isNodeInside('Rectangle - Entity1', 'Rectangle - Entity2');
+        diagram.isNodeInside('FreeForm - Entity1', 'FreeForm - Entity2');
       });
     });
   });

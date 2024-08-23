@@ -188,7 +188,6 @@ jobs:
         working-directory: integration-tests
 
       - name: Run end to end tests against the sirius-web application
-        if: false
         uses: cypress-io/github-action@v5
         with:
           build: docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml up -d
@@ -205,7 +204,6 @@ jobs:
 
       - name: Store Cypress screenshots
         uses: actions/upload-artifact@v4
-        if: false
         with:
           name: cypress-screenshots
           path: integration-tests/target/screenshots/**/*.png

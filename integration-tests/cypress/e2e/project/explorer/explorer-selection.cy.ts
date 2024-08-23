@@ -27,7 +27,7 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
       });
       const explorer = new Explorer();
       explorer.expand('robot');
-      explorer.createRepresentation('Robot', 'Topography', 'diagram');
+      explorer.createRepresentation('System', 'Topography', 'diagram');
 
       new Diagram().getNodes('diagram', 'Wifi').should('exist');
     });
@@ -35,7 +35,8 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
     afterEach(() => cy.deleteProject(projectId));
 
     context('When we interact with the explorer', () => {
-      it('Then the synchronization mode should not reveal the semantic element selected on a diagram but activating it will', () => {
+      // Skipped because there is no mean yet to select a node without label easily
+      it.skip('Then the synchronization mode should not reveal the semantic element selected on a diagram but activating it will', () => {
         // 1. Deactivate the synchronization mode
         cy.getByTestId('tree-synchronize').click();
 
@@ -45,7 +46,7 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
 
         // 3. Check that the 'CaptureSubSystem' node is visible and selected in the explorer
         const explorer = new Explorer();
-        explorer.getSelectedTreeItems().contains('CaptureSubSystem').should('exist');
+        explorer.getSelectedTreeItems().contains('CompositeProcessor').should('exist');
         explorer.getSelectedTreeItems().contains('DSP').should('not.exist');
 
         // 4. On the diagram, click on the 'DSP'

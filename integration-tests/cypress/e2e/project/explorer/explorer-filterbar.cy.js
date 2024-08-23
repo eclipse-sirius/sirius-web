@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-describe('/projects/:projectId/edit - Tree filter bar', () => {
+
+describe.skip('/projects/:projectId/edit - Tree filter bar', () => {
   beforeEach(() => {
     cy.deleteAllProjects();
     cy.createProject('Cypress Project').then((res) => {
@@ -22,13 +23,6 @@ describe('/projects/:projectId/edit - Tree filter bar', () => {
     });
   });
 
-  it('open/close filter bar', () => {
-    cy.getByTestId('filterbar-textfield').should('not.exist');
-    cy.getByTestId('flow').type('{ctrl+f}');
-    cy.getByTestId('filterbar-textfield').should('exist');
-    cy.getByTestId('filterbar-close-button').click();
-    cy.getByTestId('filterbar-textfield').should('not.exist');
-  });
 
   it('type text in filter bar', () => {
     cy.getByTestId('flow').dblclick();

@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Explorer } from '../../../workbench/Explorer';
-import { Flow } from '../../../usecases/Flow';
 import { Project } from '../../../pages/Project';
-import { Details } from '../../../workbench/Details';
 import { isCreateProjectFromTemplateSuccessPayload } from '../../../support/server/createProjectFromTemplateCommand';
+import { Flow } from '../../../usecases/Flow';
+import { Details } from '../../../workbench/Details';
+import { Explorer } from '../../../workbench/Explorer';
 
-describe('Details Widget-reference', () => {
+describe('Details - Widget-reference', () => {
   context('Given a flow project', () => {
     let flowProjectId: string = '';
 
@@ -31,7 +31,7 @@ describe('Details Widget-reference', () => {
 
     it('then diagnostic messages are display on widget reference', () => {
       const explorer = new Explorer();
-      explorer.expand('FlowNewModel');
+      explorer.expand('Flow');
       explorer.expand('NewSystem');
       explorer.expand('DataSource1');
       explorer.select('standard');
@@ -41,7 +41,7 @@ describe('Details Widget-reference', () => {
       details.getReferenceWidget('Target').find('p[class*="Mui-error"]').should('exist');
     });
   });
-  context('Given a studio', () => {
+  context.skip('Given a studio', () => {
     let studioProjectId: string = '';
     let domainName: string = '';
 

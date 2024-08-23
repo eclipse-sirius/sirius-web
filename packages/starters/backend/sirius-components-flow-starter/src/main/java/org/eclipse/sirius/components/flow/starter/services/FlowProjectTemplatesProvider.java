@@ -17,14 +17,14 @@ import java.util.List;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
 import org.eclipse.sirius.web.application.project.services.api.ProjectTemplate;
 import org.eclipse.sirius.web.application.project.services.api.ProjectTemplateNature;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides Flow-specific project templates.
  *
  * @author pcdavid
  */
-@Configuration
+@Service
 public class FlowProjectTemplatesProvider implements IProjectTemplateProvider {
 
     public static final String FLOW_TEMPLATE_ID = "flow-template";
