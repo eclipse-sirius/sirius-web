@@ -33,7 +33,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     it('Then we can create views by Drag and Drop on an unsynchronized diagram', () => {
       const explorer = new Explorer();
       explorer.expand('robot');
-      explorer.createRepresentation('Robot', 'Topography unsynchronized', 'diagram');
+      explorer.createRepresentation('System', 'Topography unsynchronized', 'diagram');
 
       const diagram = new Diagram();
 

@@ -62,7 +62,7 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a regularProject, when it is loaded, then the views from all studios are available")
+    @DisplayName("Given a regular project, when it is loaded, then the views from all studios are available")
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRegularProjectWhenItIsLoadedThenTheViewsFromAllStudiosAreAvailable() {
@@ -85,7 +85,7 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a studio, when it is loaded, then the palette is available")
+    @DisplayName("Given a studio, when it is loaded, then the color palette is available")
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenItIsLoadedThenThenPaletteIsAvailable() {

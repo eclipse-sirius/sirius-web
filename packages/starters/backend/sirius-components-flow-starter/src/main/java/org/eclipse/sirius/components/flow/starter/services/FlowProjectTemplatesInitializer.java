@@ -36,7 +36,7 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.MeterRegistry;
 
@@ -45,7 +45,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  *
  * @author pcdavid
  */
-@Configuration
+@Service
 public class FlowProjectTemplatesInitializer implements IProjectTemplateInitializer {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;

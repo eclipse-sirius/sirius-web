@@ -40,7 +40,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests of the textfield widget.
+ * Integration tests of the title expression of a form.
  *
  * @author sbegaudeau
  */

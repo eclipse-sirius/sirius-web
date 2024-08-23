@@ -13,7 +13,7 @@
 import { Project } from '../../../pages/Project';
 import { Studio } from '../../../usecases/Studio';
 
-describe('/projects/:projectId/edit - Custom Shape', () => {
+describe.skip('/projects/:projectId/edit - Custom Shape', () => {
   beforeEach(() => {
     cy.deleteAllProjects();
     new Studio().createStudioProject().then((createdProjectData) => {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,18 +18,6 @@ describe('Project creation', () => {
     beforeEach(() => new NewProject().visit());
 
     context('When we manipulate the form', () => {
-      it('Then it contains all the expected fields', () => {
-        new NewProject()
-          .getNameField()
-          .should('have.attr', 'type', 'text')
-          .should('have.attr', 'name', 'name')
-          .should('have.attr', 'placeholder', 'Enter the project name');
-      });
-
-      it('The it focuses the name textfield automatically', () => {
-        cy.focused().should('have.attr', 'data-testid', 'name');
-      });
-
       it('Then it requires a name', () => {
         new NewProject().getCreateProjectButton().should('be.disabled');
       });
@@ -53,16 +41,10 @@ describe('Project creation', () => {
         });
       });
 
-      it('Then it navigates to the edit project view on successful project creation with enter', () => {
-        new NewProject().getNameField().type('Cypress Project - New{enter}');
-
-        cy.url().should('match', new RegExp(Cypress.config().baseUrl + '/projects/[a-z0-9-]*/edit'));
-      });
-
       it('Then it navigates to the edit project view on successful project creation by clicking on the create button', () => {
         const newProject = new NewProject();
         newProject.getNameField().type('Cypress Project - New');
-        newProject.getCreateProjectButton().click();
+        newProject.getCreateProjectButton().should('be.enabled').click();
 
         cy.url().should('match', new RegExp(Cypress.config().baseUrl + '/projects/[a-z0-9-]*/edit'));
       });

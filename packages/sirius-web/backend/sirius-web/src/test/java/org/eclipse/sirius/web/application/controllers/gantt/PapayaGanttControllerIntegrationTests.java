@@ -273,7 +273,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
-    @DisplayName("Given a gantt representation, when the expand Task mutation is performed then it succeeds")
+    @DisplayName("Given a gantt representation, when the expand Task mutation is performed, then it succeeds")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenGanttRepresentationWhenTheExpandTaskMutationIsPerformedThenItSucceeds() {

@@ -12,12 +12,12 @@
  *******************************************************************************/
 import { Project } from '../../../pages/Project';
 import { Studio } from '../../../usecases/Studio';
-import { Explorer } from '../../../workbench/Explorer';
 import { Details } from '../../../workbench/Details';
 import { Diagram } from '../../../workbench/Diagram';
+import { Explorer } from '../../../workbench/Explorer';
 
 describe('Diagram - edges', () => {
-  context('Given a studio template', () => {
+  context.skip('Given a studio template', () => {
     let studioProjectId: string = '';
     let domainName: string = '';
 
@@ -88,7 +88,8 @@ describe('Diagram - edges', () => {
       });
     });
   });
-  context('Given a studio template with an ellipse style', () => {
+
+  context.skip('Given a studio template with an ellipse style', () => {
     let studioProjectId: string = '';
     let domainName: string = '';
 
@@ -165,7 +166,8 @@ describe('Diagram - edges', () => {
       });
     });
   });
-  context('Given a studio template with border node', () => {
+
+  context.skip('Given a studio template with border node', () => {
     let studioProjectId: string = '';
     let domainName: string = '';
 

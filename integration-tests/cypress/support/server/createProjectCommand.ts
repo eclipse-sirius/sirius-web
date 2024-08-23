@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ const url = Cypress.env('baseAPIUrl') + '/api/graphql';
 export const isCreateProjectSuccessPayload = (payload: CreateProjectPayload): payload is CreateProjectSuccessPayload =>
   payload.__typename === 'CreateProjectSuccessPayload';
 
-Cypress.Commands.add('createProject', (name) => {
+Cypress.Commands.add('createProject', (name, natures) => {
   const query = `
    mutation createProject($input: CreateProjectInput!) {
      createProject(input: $input) {
@@ -41,7 +41,7 @@ Cypress.Commands.add('createProject', (name) => {
     input: {
       id: crypto.randomUUID(),
       name,
-      natures: [],
+      natures: [...natures],
     },
   };
 
