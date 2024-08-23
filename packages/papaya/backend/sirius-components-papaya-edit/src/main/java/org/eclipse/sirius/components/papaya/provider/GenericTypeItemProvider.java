@@ -20,6 +20,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
@@ -137,7 +138,17 @@ public class GenericTypeItemProvider extends ModelElementItemProvider {
      */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_GenericType_type");
+        return ((StyledString) this.getStyledText(object)).getString();
+    }
+
+    /**
+     * This returns the label styled text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object getStyledText(Object object) {
+        return new StyledString(this.getString("_UI_GenericType_type"));
     }
 
     /**

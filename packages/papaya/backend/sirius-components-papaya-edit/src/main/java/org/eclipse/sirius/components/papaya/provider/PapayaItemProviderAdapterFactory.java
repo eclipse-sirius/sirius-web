@@ -31,6 +31,7 @@ import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IItemStyledLabelProvider;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
@@ -113,6 +114,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
         this.supportedTypes.add(ITreeItemContentProvider.class);
         this.supportedTypes.add(IItemLabelProvider.class);
         this.supportedTypes.add(IItemPropertySource.class);
+        this.supportedTypes.add(IItemStyledLabelProvider.class);
     }
 
     /**
