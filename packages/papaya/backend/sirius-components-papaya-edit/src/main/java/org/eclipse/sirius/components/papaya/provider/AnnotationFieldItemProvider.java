@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.AnnotationField;
 
 /**
@@ -77,8 +78,24 @@ public class AnnotationFieldItemProvider extends TypedElementItemProvider {
      */
     @Override
     public String getText(Object object) {
+        return ((StyledString) this.getStyledText(object)).getString();
+    }
+
+    /**
+     * This returns the label styled text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object getStyledText(Object object) {
         String label = ((AnnotationField) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_AnnotationField_type") : this.getString("_UI_AnnotationField_type") + " " + label;
+        StyledString styledLabel = new StyledString();
+        if (label == null || label.length() == 0) {
+            styledLabel.append(this.getString("_UI_AnnotationField_type"), StyledString.Style.QUALIFIER_STYLER);
+        } else {
+            styledLabel.append(this.getString("_UI_AnnotationField_type"), StyledString.Style.QUALIFIER_STYLER).append(" " + label);
+        }
+        return styledLabel;
     }
 
     /**

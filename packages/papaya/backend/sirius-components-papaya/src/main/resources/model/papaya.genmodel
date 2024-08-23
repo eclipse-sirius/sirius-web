@@ -7,7 +7,7 @@
     updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     codeFormatting="true" commentFormatting="true" importerID="org.eclipse.emf.importer.ecore"
     bundleManifest="false" complianceLevel="17.0" copyrightFields="false" editPluginID="sirius-components-papaya-edit"
-    operationReflection="true" importOrganizing="true" cleanup="true">
+    operationReflection="true" importOrganizing="true" styleProviders="true" cleanup="true">
   <foreignModel>papaya.ecore</foreignModel>
   <genPackages prefix="Papaya" basePackage="org.eclipse.sirius.components" disposableProviderFactory="true"
       extensibleProviderFactory="true" childCreationExtenders="true" ecorePackage="papaya.ecore#/">
