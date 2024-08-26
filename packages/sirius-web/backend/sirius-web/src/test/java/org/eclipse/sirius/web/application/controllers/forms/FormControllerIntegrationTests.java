@@ -110,7 +110,9 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var selectId = new AtomicReference<String>();
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     formId.set(form.getId());
@@ -135,7 +137,9 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
             TestTransaction.start();
         };
 
-        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -165,7 +169,9 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -199,7 +205,9 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         var formId =  new AtomicReference<String>();
         var representationData = new AtomicReference<RepresentationData>();
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");

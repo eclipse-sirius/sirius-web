@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.services.api;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 
 import reactor.core.publisher.Flux;
 
@@ -23,5 +22,5 @@ import reactor.core.publisher.Flux;
  * @author pcdavid
  */
 public interface IGivenCreatedPortalSubscription {
-    Flux<PortalRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input);
+    Flux<Object> createAndSubscribe(CreateRepresentationInput input);
 }

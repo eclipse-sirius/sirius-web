@@ -81,7 +81,9 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
 
         var diagramId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());

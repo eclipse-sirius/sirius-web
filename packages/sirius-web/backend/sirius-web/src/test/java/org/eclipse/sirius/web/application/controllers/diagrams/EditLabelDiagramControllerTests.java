@@ -78,7 +78,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToLabelEditableDiagramDiagram() {
+    private Flux<Object> givenSubscriptionToLabelEditableDiagramDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -99,7 +99,9 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
         var diagramId = new AtomicReference<String>();
         var labelId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -138,7 +140,9 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
         var nodeId = new AtomicReference<String>();
         var labelId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -155,7 +159,9 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
             assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 
-        Predicate<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+        Predicate<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .filter(diagram -> {
                     return diagram.getNodes().stream()

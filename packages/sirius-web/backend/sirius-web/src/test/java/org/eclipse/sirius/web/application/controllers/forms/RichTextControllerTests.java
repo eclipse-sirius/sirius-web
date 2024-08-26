@@ -74,7 +74,7 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<FormRefreshedEventPayload> givenSubscriptionToRichTextForm() {
+    private Flux<Object> givenSubscriptionToRichTextForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -92,7 +92,9 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
     public void givenRichTextWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToRichTextForm();
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -121,7 +123,9 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var richTextId = new AtomicReference<String>();
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     formId.set(form.getId());
@@ -140,7 +144,9 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");

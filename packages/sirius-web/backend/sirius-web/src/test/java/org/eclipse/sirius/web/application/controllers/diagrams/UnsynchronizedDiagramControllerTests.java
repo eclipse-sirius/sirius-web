@@ -84,7 +84,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToUnsynchronizedDiagram() {
+    private Flux<Object> givenSubscriptionToUnsynchronizedDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -102,7 +102,9 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
     public void givenUnsynchronousDiagramWhenItIsOpenedThenUnsynchronizedNodesShouldNotAppear() {
         var flux = this.givenSubscriptionToUnsynchronizedDiagram();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     assertThat(diagram.getNodes()).isEmpty();
@@ -123,7 +125,9 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
 
         var diagramId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -139,7 +143,9 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
             assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
-        Predicate<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+        Predicate<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .filter(diagram -> {
                     assertThat(diagram.getNodes()).isNotEmpty();
@@ -164,7 +170,9 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
 
         var diagramId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -186,7 +194,9 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
             assertThat(typename).isEqualTo(DropOnDiagramSuccessPayload.class.getSimpleName());
         };
 
-        Consumer<DiagramRefreshedEventPayload> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     assertThat(diagram.getNodes()).isNotEmpty();

@@ -87,7 +87,9 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -121,7 +123,9 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var referenceWidgetId = new AtomicReference<String>();
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     formId.set(form.getId());

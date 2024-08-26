@@ -100,7 +100,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<GanttRefreshedEventPayload> givenSubscriptionToGantt() {
+    private Flux<Object> givenSubscriptionToGantt() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -118,7 +118,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     public void givenGanttRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var flux = this.givenSubscriptionToGantt();
 
-        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     assertThat(gantt).isNotNull();
@@ -141,7 +143,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
 
         var ganttId = new AtomicReference<String>();
         var taskId = new AtomicReference<String>();
-        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     ganttId.set(gantt.getId());
@@ -165,7 +169,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<GanttRefreshedEventPayload> createGanttTaskConsumer = payload -> Optional.of(payload)
+        Consumer<Object> createGanttTaskConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks()).hasSize(3);
@@ -190,7 +196,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
 
         var ganttId = new AtomicReference<String>();
         var taskId = new AtomicReference<String>();
-        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     ganttId.set(gantt.getId());
@@ -214,7 +222,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<GanttRefreshedEventPayload> deleteGanttTaskConsumer = payload -> Optional.of(payload)
+        Consumer<Object> deleteGanttTaskConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     assertThat(new GanttNavigator(gantt).existTaskByName(taskName)).isFalse();
@@ -237,7 +247,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
 
         var ganttId = new AtomicReference<String>();
         var taskId = new AtomicReference<String>();
-        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     ganttId.set(gantt.getId());
@@ -263,7 +275,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<GanttRefreshedEventPayload> collapseGanttTaskConsumer = payload -> Optional.of(payload)
+        Consumer<Object> collapseGanttTaskConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     assertThat(new GanttNavigator(gantt).findTaskByName("2024.3.0").detail().collapsed()).isTrue();
@@ -286,7 +300,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         var flux = this.givenSubscriptionToGantt();
 
         var ganttRef = new AtomicReference<Gantt>();
-        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     ganttRef.set(gantt);
@@ -309,7 +325,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<GanttRefreshedEventPayload> changeColumnConsumer = payload -> Optional.of(payload)
+        Consumer<Object> changeColumnConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     var changedColumn = gantt.columns().stream()
@@ -341,7 +359,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         var targetTaskId = new AtomicReference<String>();
         String taskName1 = "Improve some features of the deck";
         String taskName2 = "Improve some features of the gantt";
-        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     ganttRef.set(gantt);
@@ -364,7 +384,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<GanttRefreshedEventPayload> checkDependencyConsumer = payload -> Optional.of(payload)
+        Consumer<Object> checkDependencyConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     var task = new GanttNavigator(gantt).findTaskByName(taskName2);
@@ -382,7 +404,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<GanttRefreshedEventPayload> checkDependencyAfterDeleteConsumer = payload -> Optional.of(payload)
+        Consumer<Object> checkDependencyAfterDeleteConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     var task = new GanttNavigator(gantt).findTaskByName(taskName2);

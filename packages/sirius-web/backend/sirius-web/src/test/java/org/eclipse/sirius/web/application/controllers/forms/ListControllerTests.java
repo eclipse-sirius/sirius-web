@@ -75,7 +75,7 @@ public class ListControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<FormRefreshedEventPayload> givenSubscriptionToListForm() {
+    private Flux<Object> givenSubscriptionToListForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
@@ -97,7 +97,9 @@ public class ListControllerTests extends AbstractIntegrationTests {
         var listId = new AtomicReference<String>();
         var listItemId = new AtomicReference<String>();
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     formId.set(form.getId());
@@ -119,7 +121,9 @@ public class ListControllerTests extends AbstractIntegrationTests {
             Assertions.assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");

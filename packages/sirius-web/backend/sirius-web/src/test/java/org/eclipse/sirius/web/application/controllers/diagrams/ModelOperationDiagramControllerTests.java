@@ -75,7 +75,7 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToModelOperationDiagram() {
+    private Flux<Object> givenSubscriptionToModelOperationDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -95,7 +95,9 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
 
         var diagramId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -113,7 +115,9 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
             assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
-        Consumer<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+        Consumer<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     assertThat(diagram.getNodes())
@@ -139,7 +143,9 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
 
         var diagramId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -158,7 +164,9 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
             assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
-        Consumer<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+        Consumer<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     assertThat(diagram.getNodes())

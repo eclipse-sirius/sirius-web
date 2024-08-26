@@ -71,7 +71,9 @@ public class CustomNodesDiagramControllerTests extends AbstractIntegrationTests 
         var input = new CreateRepresentationInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), this.customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), "ExpandCollapseDiagram");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     assertThat(diagram.getNodes())

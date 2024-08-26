@@ -73,7 +73,7 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToLabelEditableDiagramDiagram() {
+    private Flux<Object> givenSubscriptionToLabelEditableDiagramDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -95,7 +95,9 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
         var siriusWebApplicationNodeId = new AtomicReference<String>();
         var siriusWebInfrastructureNodeId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -126,7 +128,9 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<DiagramRefreshedEventPayload> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     assertThat(diagram.getEdges())

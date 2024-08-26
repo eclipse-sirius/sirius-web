@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.tests.services.deck;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.deck.dto.DeckRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DeckEventInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
@@ -48,7 +47,7 @@ public class GivenCreatedDeckSubscription implements IGivenCreatedDeckSubscripti
     }
 
     @Override
-    public Flux<DeckRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input) {
+    public Flux<Object> createAndSubscribe(CreateRepresentationInput input) {
         this.givenCommittedTransaction.commit();
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
@@ -62,8 +61,6 @@ public class GivenCreatedDeckSubscription implements IGivenCreatedDeckSubscripti
 
         return flux.filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(DeckRefreshedEventPayload.class::isInstance)
-                .map(DeckRefreshedEventPayload.class::cast);
+                .map(DataFetcherResult::getData);
     }
 }

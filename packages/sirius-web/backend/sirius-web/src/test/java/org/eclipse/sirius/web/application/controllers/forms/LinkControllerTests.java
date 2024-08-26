@@ -65,7 +65,7 @@ public class LinkControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<FormRefreshedEventPayload> givenSubscriptionToLinkForm() {
+    private Flux<Object> givenSubscriptionToLinkForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
@@ -83,7 +83,9 @@ public class LinkControllerTests extends AbstractIntegrationTests {
     public void givenLinkWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToLinkForm();
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");

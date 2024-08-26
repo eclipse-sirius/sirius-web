@@ -84,7 +84,7 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<FormDescriptionEditorRefreshedEventPayload> givenSubscriptionToFormDescriptionEditor() {
+    private Flux<Object> givenSubscriptionToFormDescriptionEditor() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
@@ -102,7 +102,9 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
     public void givenFormDescriptionEditorWhenWeSubscribeToItsEventsThenTheRepresentationDataAreReceived() {
         var flux = this.givenSubscriptionToFormDescriptionEditor();
 
-        Consumer<FormDescriptionEditorRefreshedEventPayload> initialFormDescriptionEditorContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormDescriptionEditorContentConsumer = payload -> Optional.of(payload)
+                .filter(FormDescriptionEditorRefreshedEventPayload.class::isInstance)
+                .map(FormDescriptionEditorRefreshedEventPayload.class::cast)
                 .map(FormDescriptionEditorRefreshedEventPayload::formDescriptionEditor)
                 .ifPresentOrElse(formDescriptionEditor -> {
                     assertThat(formDescriptionEditor).isNotNull();
@@ -247,7 +249,9 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
 
         var formDescriptionEditorId = new AtomicReference<String>();
 
-        Consumer<FormDescriptionEditorRefreshedEventPayload> initialFormDescriptionEditorContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormDescriptionEditorContentConsumer = payload -> Optional.of(payload)
+                .filter(FormDescriptionEditorRefreshedEventPayload.class::isInstance)
+                .map(FormDescriptionEditorRefreshedEventPayload.class::cast)
                 .map(FormDescriptionEditorRefreshedEventPayload::formDescriptionEditor)
                 .ifPresentOrElse(formDescriptionEditor -> {
                     assertThat(formDescriptionEditor).isNotNull();
@@ -271,7 +275,9 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<FormDescriptionEditorRefreshedEventPayload> addedWidgetConsumer = payload -> Optional.of(payload)
+        Consumer<Object> addedWidgetConsumer = payload -> Optional.of(payload)
+                .filter(FormDescriptionEditorRefreshedEventPayload.class::isInstance)
+                .map(FormDescriptionEditorRefreshedEventPayload.class::cast)
                 .map(FormDescriptionEditorRefreshedEventPayload::formDescriptionEditor)
                 .ifPresentOrElse(formDescriptionEditor -> {
                     var firstGroup = formDescriptionEditor.getPages().get(0).getGroups().get(0);

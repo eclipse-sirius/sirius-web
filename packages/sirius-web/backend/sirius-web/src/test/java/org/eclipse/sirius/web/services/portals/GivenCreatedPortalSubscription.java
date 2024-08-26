@@ -17,7 +17,6 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
-import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
 import org.eclipse.sirius.web.services.api.IGivenCreatedPortalSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
@@ -49,7 +48,7 @@ public class GivenCreatedPortalSubscription implements IGivenCreatedPortalSubscr
     }
 
     @Override
-    public Flux<PortalRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input) {
+    public Flux<Object> createAndSubscribe(CreateRepresentationInput input) {
         this.givenCommittedTransaction.commit();
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
@@ -63,8 +62,6 @@ public class GivenCreatedPortalSubscription implements IGivenCreatedPortalSubscr
 
         return flux.filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast);
+                .map(DataFetcherResult::getData);
     }
 }

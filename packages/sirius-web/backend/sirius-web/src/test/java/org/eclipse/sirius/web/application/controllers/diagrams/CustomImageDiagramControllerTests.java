@@ -66,7 +66,9 @@ public class CustomImageDiagramControllerTests extends AbstractIntegrationTests 
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.INSTANCE_PROJECT.toString(), StudioIdentifiers.DIAGRAM_DESCRIPTION_ID, StudioIdentifiers.ROOT_OBJECT.toString(), "");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     assertThat(diagram.getNodes())

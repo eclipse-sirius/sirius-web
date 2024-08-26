@@ -87,7 +87,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<GanttRefreshedEventPayload> givenSubscriptionToGantt() {
+    private Flux<Object> givenSubscriptionToGantt() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -111,7 +111,9 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
         var taskId = new AtomicReference<String>();
         var representationData = new AtomicReference<RepresentationData>();
 
-        Consumer<GanttRefreshedEventPayload> initialGanttContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     ganttId.set(gantt.getId());
@@ -139,7 +141,9 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<GanttRefreshedEventPayload> deleteGanttTaskConsumer = payload -> Optional.of(payload)
+        Consumer<Object> deleteGanttTaskConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     assertThat(new GanttNavigator(gantt).existTaskByName(taskName)).isFalse();

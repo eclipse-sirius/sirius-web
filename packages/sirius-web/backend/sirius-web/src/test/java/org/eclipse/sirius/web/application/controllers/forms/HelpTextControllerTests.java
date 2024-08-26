@@ -89,7 +89,9 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var textfieldId = new AtomicReference<String>();
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     formId.set(form.getId());

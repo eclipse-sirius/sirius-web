@@ -121,7 +121,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToExpandedCollapseDiagram() {
+    private Flux<Object> givenSubscriptionToExpandedCollapseDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -211,7 +211,9 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
         AtomicReference<Diagram> diagramReference = new AtomicReference<>();
         AtomicReference<String> nodeId = new AtomicReference<>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramReference.set(diagram);
@@ -334,11 +336,11 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
 
     private void givenDiagramAndDiagramFilterWhenNodesAreSelectedAndActionIsPerformedThenDiagramIsUpdated(Predicate<Node> nodeToSelectPredicate, Predicate<Button> buttonToClickPredicate, Predicate<Button> buttonToClickToRevertPredicate, BiFunction<Diagram, String, Boolean> isDiagramUpdatedPredicate) {
         var diagramFlux = this.givenSubscriptionToExpandedCollapseDiagram();
-
         AtomicReference<Diagram> diagramReference = new AtomicReference<>();
         AtomicReference<String> nodeId = new AtomicReference<>();
-
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramReference.set(diagram);

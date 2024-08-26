@@ -68,8 +68,10 @@ public class HierarchyLifecycleControllerTests extends AbstractIntegrationTests 
         var input = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), HierarchyDescriptionProvider.HIERARCHY_DESCRIPTION_ID, TestIdentifiers.EPACKAGE_OBJECT.toString(), "Sample Hierarchy");
         var flux = this.givenCreatedHierarchySubscription.createAndSubscribe(input);
 
-        Consumer<HierarchyRefreshedEventPayload> initialHierarchyContentConsumer = payload -> {
+        Consumer<Object> initialHierarchyContentConsumer = payload -> {
             Optional.of(payload)
+                .filter(HierarchyRefreshedEventPayload.class::isInstance)
+                .map(HierarchyRefreshedEventPayload.class::cast)
                 .map(HierarchyRefreshedEventPayload::hierarchy)
                 .ifPresentOrElse(hierarchy -> {
                     assertThat(hierarchy.getLabel()).isEqualTo("Sample Hierarchy");

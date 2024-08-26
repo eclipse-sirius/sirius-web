@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.api;
 
-import org.eclipse.sirius.components.collaborative.charts.HierarchyRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 
 import reactor.core.publisher.Flux;
@@ -23,5 +22,5 @@ import reactor.core.publisher.Flux;
  * @author pcdavid
  */
 public interface IGivenCreatedHierarchySubscription {
-    Flux<HierarchyRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input);
+    Flux<Object> createAndSubscribe(CreateRepresentationInput input);
 }

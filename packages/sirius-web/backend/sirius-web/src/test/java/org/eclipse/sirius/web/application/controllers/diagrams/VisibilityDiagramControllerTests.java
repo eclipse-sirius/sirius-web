@@ -81,7 +81,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToVisibilityDiagram() {
+    private Flux<Object> givenSubscriptionToVisibilityDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -99,7 +99,9 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
     public void givenDiagramWithHiddenAndFadedNodesByDefaultWhenItIsOpenedThenSomeNodesAreHiddenAndFaded() {
         var flux = this.givenSubscriptionToVisibilityDiagram();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
 
@@ -137,7 +139,9 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         var diagramId = new AtomicReference<String>();
         var hiddenNodeId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -155,7 +159,9 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
-        Consumer<DiagramRefreshedEventPayload> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
@@ -180,7 +186,9 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         var diagramId = new AtomicReference<String>();
         var revealedNodeId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -201,7 +209,8 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
             assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
-        Predicate<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+        Predicate<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .filter(diagram -> {
                     return diagram.getNodes().stream()
@@ -230,7 +239,9 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         var diagramId = new AtomicReference<String>();
         var unfadedNodeId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -251,7 +262,8 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
             assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
-        Predicate<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+        Predicate<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .filter(diagram -> {
                     return diagram.getNodes().stream()
@@ -280,7 +292,9 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         var diagramId = new AtomicReference<String>();
         var fadedNodeId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -299,7 +313,9 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
-        Consumer<DiagramRefreshedEventPayload> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
@@ -325,7 +341,9 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         var nodeToFadeId = new AtomicReference<String>();
         var nodeToHideId = new AtomicReference<String>();
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -372,7 +390,9 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
-        Consumer<DiagramRefreshedEventPayload> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     var nodeToFade = diagram.getNodes().stream().filter(node -> Objects.equals(node.getId(), nodeToFadeId.get())).findFirst();

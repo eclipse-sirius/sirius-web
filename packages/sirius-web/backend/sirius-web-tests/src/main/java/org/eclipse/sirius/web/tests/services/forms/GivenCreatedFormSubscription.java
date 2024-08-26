@@ -17,7 +17,6 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.tests.graphql.FormEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
@@ -49,7 +48,7 @@ public class GivenCreatedFormSubscription implements IGivenCreatedFormSubscripti
     }
 
     @Override
-    public Flux<FormRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input) {
+    public Flux<Object> createAndSubscribe(CreateRepresentationInput input) {
         this.givenCommittedTransaction.commit();
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
@@ -63,8 +62,6 @@ public class GivenCreatedFormSubscription implements IGivenCreatedFormSubscripti
 
         return flux.filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast);
+                .map(DataFetcherResult::getData);
     }
 }

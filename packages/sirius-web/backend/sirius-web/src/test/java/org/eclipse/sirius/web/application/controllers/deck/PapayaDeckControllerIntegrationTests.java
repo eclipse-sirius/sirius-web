@@ -77,7 +77,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<DeckRefreshedEventPayload> givenSubscriptionToDeck() {
+    private Flux<Object> givenSubscriptionToDeck() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -95,7 +95,9 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
     public void givenDeckRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var flux = this.givenSubscriptionToDeck();
 
-        Consumer<DeckRefreshedEventPayload> initialDeckContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDeckContentConsumer = payload -> Optional.of(payload)
+                .filter(DeckRefreshedEventPayload.class::isInstance)
+                .map(DeckRefreshedEventPayload.class::cast)
                 .map(DeckRefreshedEventPayload::deck)
                 .ifPresentOrElse(deck -> {
                     assertThat(deck).isNotNull();
@@ -117,7 +119,9 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
         var deckId = new AtomicReference<String>();
         var laneId = new AtomicReference<String>();
 
-        Consumer<DeckRefreshedEventPayload> initialDeckContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDeckContentConsumer = payload -> Optional.of(payload)
+                .filter(DeckRefreshedEventPayload.class::isInstance)
+                .map(DeckRefreshedEventPayload.class::cast)
                 .map(DeckRefreshedEventPayload::deck)
                 .ifPresentOrElse(deck -> {
                     deckId.set(deck.getId());
@@ -143,7 +147,9 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<DeckRefreshedEventPayload> updatedDeckContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> updatedDeckContentConsumer = payload -> Optional.of(payload)
+                .filter(DeckRefreshedEventPayload.class::isInstance)
+                .map(DeckRefreshedEventPayload.class::cast)
                 .map(DeckRefreshedEventPayload::deck)
                 .ifPresentOrElse(deck -> {
                     assertThat(deck.lanes()).isNotEmpty();
@@ -169,7 +175,9 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
         var laneId = new AtomicReference<String>();
         var cardId = new AtomicReference<String>();
 
-        Consumer<DeckRefreshedEventPayload> initialDeckContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDeckContentConsumer = payload -> Optional.of(payload)
+                .filter(DeckRefreshedEventPayload.class::isInstance)
+                .map(DeckRefreshedEventPayload.class::cast)
                 .map(DeckRefreshedEventPayload::deck)
                 .ifPresentOrElse(deck -> {
                     deckId.set(deck.getId());
@@ -194,7 +202,9 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<DeckRefreshedEventPayload> updatedDeckContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> updatedDeckContentConsumer = payload -> Optional.of(payload)
+                .filter(DeckRefreshedEventPayload.class::isInstance)
+                .map(DeckRefreshedEventPayload.class::cast)
                 .map(DeckRefreshedEventPayload::deck)
                 .ifPresentOrElse(deck -> {
                     assertThat(deck.lanes()).isNotEmpty();
