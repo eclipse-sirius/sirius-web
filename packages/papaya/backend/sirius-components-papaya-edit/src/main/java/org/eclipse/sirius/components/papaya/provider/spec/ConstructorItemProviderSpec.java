@@ -13,11 +13,11 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.emf.edit.provider.IItemStyledLabelProvider;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.Constructor;
 import org.eclipse.sirius.components.papaya.NamedElement;
 import org.eclipse.sirius.components.papaya.provider.ConstructorItemProvider;
@@ -48,22 +48,34 @@ public class ConstructorItemProviderSpec extends ConstructorItemProvider {
     }
 
     @Override
-    public String getText(Object object) {
+    public Object getStyledText(Object object) {
         if (object instanceof Constructor constructor) {
             if (constructor.eContainer() instanceof NamedElement namedElement && namedElement.getName() != null && !namedElement.getName().isBlank()) {
-                var text = namedElement.getName();
+                StyledString styledLabel = new StyledString();
+                styledLabel.append(namedElement.getName());
 
-                return text + constructor.getParameters().stream()
-                        .map(parameter -> {
-                            var adapter = new PapayaItemProviderAdapterFactory().adapt(parameter, IItemLabelProvider.class);
-                            if (adapter instanceof IItemLabelProvider itemLabelProvider) {
-                                return itemLabelProvider.getText(parameter);
-                            }
-                            return "";
-                        })
-                        .collect(Collectors.joining(", ", "(", ")"));
+                styledLabel.append("(", PapayaStyledStringStyles.DECORATOR_STYLE);
+
+                for (var i = 0; i < constructor.getParameters().size(); i++) {
+                    var parameter = constructor.getParameters().get(i);
+
+                    var adapter = new PapayaItemProviderAdapterFactory().adapt(parameter, IItemStyledLabelProvider.class);
+                    if (adapter instanceof IItemStyledLabelProvider itemStyledLabelProvider) {
+                        var rawStyledString = itemStyledLabelProvider.getStyledText(parameter);
+                        if (rawStyledString instanceof StyledString styledString) {
+                            styledLabel.append(styledString);
+                        }
+                    }
+
+                    if (i < constructor.getParameters().size() - 1) {
+                        styledLabel.append(", ", PapayaStyledStringStyles.DECORATOR_STYLE);
+                    }
+                }
+
+                styledLabel.append(")", PapayaStyledStringStyles.DECORATOR_STYLE);
+                return styledLabel;
             }
         }
-        return super.getText(object);
+        return super.getStyledText(object);
     }
 }

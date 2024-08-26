@@ -13,12 +13,11 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.Record;
-import org.eclipse.sirius.components.papaya.TypeParameter;
 import org.eclipse.sirius.components.papaya.provider.RecordItemProvider;
 import org.eclipse.sirius.components.papaya.provider.spec.images.VisibilityOverlayImageProvider;
 
@@ -46,20 +45,25 @@ public class RecordItemProviderSpec extends RecordItemProvider {
     }
 
     @Override
-    public String getText(Object object) {
-        var text = this.getString("_UI_Record_type");
-        if (object instanceof Record aRecord) {
-            if (aRecord.getName() != null && !aRecord.getName().isBlank()) {
-                var typeParameters = "";
-                if (!aRecord.getTypeParameters().isEmpty()) {
-                    typeParameters = aRecord.getTypeParameters()
-                            .stream()
-                            .map(TypeParameter::getName)
-                            .collect(Collectors.joining(", ", "<", ">"));
+    public Object getStyledText(Object object) {
+        if (object instanceof Record aRecord && aRecord.getName() != null && !aRecord.getName().isBlank()) {
+            StyledString styledLabel = new StyledString();
+            styledLabel.append(aRecord.getName());
+
+            if (!aRecord.getTypeParameters().isEmpty()) {
+                styledLabel.append("<", PapayaStyledStringStyles.DECORATOR_STYLE);
+
+                for (var i = 0; i < aRecord.getTypeParameters().size(); i++) {
+                    var typeParameter = aRecord.getTypeParameters().get(i);
+                    styledLabel.append(typeParameter.getName(), PapayaStyledStringStyles.GENERIC_TYPE_STYLE);
+                    if (i < aRecord.getTypeParameters().size() - 1) {
+                        styledLabel.append(", ", PapayaStyledStringStyles.DECORATOR_STYLE);
+                    }
                 }
-                text = aRecord.getName() + typeParameters;
+
+                styledLabel.append(">", PapayaStyledStringStyles.DECORATOR_STYLE);
             }
         }
-        return text;
+        return super.getStyledText(object);
     }
 }

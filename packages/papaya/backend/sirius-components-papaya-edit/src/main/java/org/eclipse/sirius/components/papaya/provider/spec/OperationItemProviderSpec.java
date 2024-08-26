@@ -13,12 +13,12 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.emf.edit.provider.IItemStyledLabelProvider;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.Operation;
 import org.eclipse.sirius.components.papaya.provider.OperationItemProvider;
 import org.eclipse.sirius.components.papaya.provider.PapayaItemProviderAdapterFactory;
@@ -48,29 +48,40 @@ public class OperationItemProviderSpec extends OperationItemProvider {
     }
 
     @Override
-    public String getText(Object object) {
+    public Object getStyledText(Object object) {
         if (object instanceof Operation operation && operation.getName() != null && !operation.getName().isBlank()) {
-            var text = operation.getName();
+            StyledString styledLabel = new StyledString();
+            styledLabel.append(operation.getName());
 
-            var parameters = operation.getParameters().stream()
-                    .map(parameter -> Optional.ofNullable(new PapayaItemProviderAdapterFactory().adapt(parameter, IItemLabelProvider.class))
-                            .filter(IItemLabelProvider.class::isInstance)
-                            .map(IItemLabelProvider.class::cast)
-                            .map(itemLabelProvider -> itemLabelProvider.getText(parameter))
-                            .orElse("")
-                    )
-                    .collect(Collectors.joining(", ", "(", ")"));
+            styledLabel.append("(", PapayaStyledStringStyles.DECORATOR_STYLE);
 
-            var type = "";
-            if (operation.getType() != null) {
-                var adapter = new PapayaItemProviderAdapterFactory().adapt(operation.getType(), IItemLabelProvider.class);
-                if (adapter instanceof IItemLabelProvider itemLabelProvider) {
-                    type = ": " + itemLabelProvider.getText(operation.getType());
+            for (var i = 0; i < operation.getParameters().size(); i++) {
+                var parameter = operation.getParameters().get(i);
+                var adapter = new PapayaItemProviderAdapterFactory().adapt(parameter, IItemStyledLabelProvider.class);
+                if (adapter instanceof IItemStyledLabelProvider itemStyledLabelProvider) {
+                    var rawStyledText = itemStyledLabelProvider.getStyledText(parameter);
+                    if (rawStyledText instanceof StyledString styledString) {
+                        styledLabel.append(styledString);
+
+                        if (i < operation.getParameters().size() - 1) {
+                            styledLabel.append(", ", PapayaStyledStringStyles.DECORATOR_STYLE);
+                        }
+                    }
                 }
             }
 
-            return text + parameters + type;
+            styledLabel.append(")", PapayaStyledStringStyles.DECORATOR_STYLE);
+
+            if (operation.getType() != null) {
+                var adapter = new PapayaItemProviderAdapterFactory().adapt(operation.getType(), IItemLabelProvider.class);
+                if (adapter instanceof IItemLabelProvider itemLabelProvider) {
+                    styledLabel.append(": ", PapayaStyledStringStyles.DECORATOR_STYLE);
+                    styledLabel.append(itemLabelProvider.getText(operation.getType()), PapayaStyledStringStyles.TYPE_STYLE);
+                }
+            }
+
+            return styledLabel;
         }
-        return super.getText(object);
+        return super.getStyledText(object);
     }
 }
