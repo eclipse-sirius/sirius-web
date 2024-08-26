@@ -35,9 +35,9 @@ import {
 } from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
-import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
-import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
+import { TreeRepresentation, treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
+import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import {
   GQLReferenceWidget,
   ReferenceIcon,
@@ -152,6 +152,7 @@ const representationFactories: RepresentationComponentFactory[] = [
   (representationMetadata) => (getType(representationMetadata) === 'Gantt' ? GanttRepresentation : null),
   (representationMetadata) => (getType(representationMetadata) === 'Deck' ? DeckRepresentation : null),
   (representationMetadata) => (getType(representationMetadata) === 'Portal' ? PortalRepresentation : null),
+  (representationMetadata) => (getType(representationMetadata) === 'Tree' ? TreeRepresentation : null),
 ];
 
 defaultExtensionRegistry.putData(representationFactoryExtensionPoint, {

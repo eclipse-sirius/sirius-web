@@ -1,3 +1,13 @@
+extend type Subscription {
+  treeEvent(input: TreeEventInput!): TreeEventPayload!
+}
+
+input TreeEventInput {
+  id: ID!
+  representationId: String!
+  editingContextId: ID!
+}
+
 extend type EditingContext {
   treePath(treeId: ID!, selectionEntryIds: [ID!]!): TreePath!
   expandAllTreePath(treeId: ID!, treeItemId: ID!): TreePath!

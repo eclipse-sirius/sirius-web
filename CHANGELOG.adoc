@@ -31,7 +31,7 @@ Both `IInput` and `IDomainEvent` implement `ICause` and will thus be used to ind
 - https://github.com/eclipse-sirius/sirius-web/issues/3972[#3972] [diagram] The `InsideLabelStyle#displayHeaderSeparator` has been renamed to `headerSeparatorDisplayMode` and is no longer a boolean but an enum with three possible values: NEVER, ALWAYS, and IF-CHILDREN.
 Previously, the value false was equivalent to NEVER, and true to IF-CHILDREN.
 The new option ALWAYS allows the separator to be displayed in every case.
-- https://github.com/eclipse-sirius/sirius-web/issues/3678[#3678] [core] Remove `IRepresentationMetadataSearchService#findByRepresentation`, use `IRepresentationMetadataSearchService#findByRepresentationId` instead. 
+- https://github.com/eclipse-sirius/sirius-web/issues/3678[#3678] [core] Remove `IRepresentationMetadataSearchService#findByRepresentation`, use `IRepresentationMetadataSearchService#findByRepresentationId` instead.
 
 === Dependency update
 
@@ -80,6 +80,7 @@ never, always and if_children (to display the separator only if children exist).
 - https://github.com/eclipse-sirius/sirius-web/issues/3754[#3754] [sirius-web] Activate cypress tests again.
 + Make possible to register view models in the loading editing context when the "test" profile is active.
 + To activate the test profile add the value _test_ to the `SPRING_PROFILES_ACTIVE` environment variable.
+- https://github.com/eclipse-sirius/sirius-web/issues/3882[#3882] [sirius-web] Add a new tree event to handle tree description which are not explorer-related
 
 == v2024.9.0
 
@@ -217,7 +218,6 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3932[#3932] [forms] Do not display the 'Delete' button (even disabled) for non-deletable lists
 - https://github.com/eclipse-sirius/sirius-web/issues/3951[#3951] [sirius-web] Provide an error page to redirect users in case of error
 - https://github.com/eclipse-sirius/sirius-web/issues/3974[#3974] [diagram] Add support for `<` and `>` to trigger direct edit
-
 
 == v2024.7.0
 

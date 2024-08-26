@@ -25,17 +25,18 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.trees.dto.TreeEventInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.trees.Tree;
-import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
-import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
+import org.eclipse.sirius.web.application.views.tree.DomainTreeDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
-import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTreeSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
-import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
+import org.eclipse.sirius.web.tests.services.tree.TreeEventSubscriptionRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,23 +47,31 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.execution.DataFetcherResult;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests of a non semantic element in the explorer.
+ * Integration tests of a non semantic element in a tree representation.
  *
  * @author Jerome Gout
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ExplorerNonSemanticElementControllerTests extends AbstractIntegrationTests {
+public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTests {
+
+    private static final String ROOT_ENTITY_ID = "c341bf91-d315-4264-9787-c51b121a6375";
+
+    private static final String ROOT_SETTING_ID = "setting:c341bf91-d315-4264-9787-c51b121a6375::superTypes";
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private ExplorerEventSubscriptionRunner treeEventSubscriptionRunner;
+    private IGivenCreatedTreeSubscription givenCreatedTreeSubscription;
+
+    @Autowired
+    private TreeEventSubscriptionRunner treeEventSubscriptionRunner;
 
     @Autowired
     private ExpandAllTreePathQueryRunner expandAllTreePathQueryRunner;
@@ -75,92 +84,79 @@ public class ExplorerNonSemanticElementControllerTests extends AbstractIntegrati
         this.givenInitialServerState.initialize();
     }
 
+    private Flux<Object> givenSubscriptionToTree() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                DomainTreeDescriptionProvider.DESCRIPTION_ID,
+                StudioIdentifiers.DOMAIN_OBJECT.toString(),
+                "Tree"
+        );
+        return this.givenCreatedTreeSubscription.createAndSubscribe(input);
+    }
+
     @Test
-    @DisplayName("Given a sample studio, when we expand all the domain elements, then underneath entities have a superTypes child")
+    @DisplayName("Given a domain tree representation, when we subscribe to its event, then the representation data contains a superTypes node")
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenStudioWhenWeAskForTheTreePathOfPapayaViewObjectThenItsPathInTheExplorerIsReturned() {
-        var treeRepresentationId = representationIdBuilder.buildExplorerRepresentationId(List.of(), List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), treeRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+    public void givenADomainTreeRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataContainsASuperTypesNode() {
+
+        var flux = this.givenSubscriptionToTree();
 
         var treeId = new AtomicReference<String>();
-        var domainDocumentId = new AtomicReference<String>();
 
-        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        var initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getChildren()).hasSize(5);
-            assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
-
+            assertThat(tree.getChildren()).hasSize(1);
             treeId.set(tree.getId());
-            domainDocumentId.set(tree.getChildren().get(1).getId()); // Domain document is the second child of the tree
         });
 
-        // Expand the part of the tree corresponding to the Domain document
-        var treeItemIds = new AtomicReference<List<String>>();
+        Runnable getTreePathFromSetting = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "treeId", treeId.get(),
+                    "treeItemId", ROOT_SETTING_ID
+            );
+            var result = this.expandAllTreePathQueryRunner.run(variables);
+            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            assertThat(treeItemIdsToExpand).isNotEmpty();
+            assertThat(treeItemIdsToExpand.stream().filter(id -> id.startsWith(DomainTreeDescriptionProvider.SETTING)).toList()).hasSize(1);
+        };
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(
                     "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
                     "treeId", treeId.get(),
-                    "treeItemId", domainDocumentId.get()
-            );
+                    "treeItemId", StudioIdentifiers.DOMAIN_OBJECT.toString()
+                    );
             var result = this.expandAllTreePathQueryRunner.run(variables);
             List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
-            // there are 3 entities in the Domain document, so should get 3 superType treeItems
-            assertThat(treeItemIdsToExpand.stream()
-                    .filter(id -> id.startsWith(ExplorerDescriptionProvider.SETTING))
-                    .toList()
-                    ).hasSize(3);
-            treeItemIds.set(treeItemIdsToExpand);
+            assertThat(treeItemIdsToExpand.stream().filter(id -> id.startsWith(DomainTreeDescriptionProvider.SETTING)).toList()).hasSize(3);
         };
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)
+                .then(getTreePathFromSetting)
                 .then(getTreePath)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        var treeExpendedRepresentationId = representationIdBuilder.buildExplorerRepresentationId(treeItemIds.get(), List.of());
-        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), treeExpendedRepresentationId);
-        var expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
-        var rootTreeItemId = new AtomicReference<String>();
+        String representationId = this.representationIdBuilder.buildTreeRepresentationId(treeId.get().substring(0, treeId.get().indexOf("?expandedIds=")), List.of(StudioIdentifiers.DOMAIN_OBJECT.toString(), ROOT_ENTITY_ID));
+
+        var expandedTreeInput = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationId);
+        Flux<Object> expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
 
         Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getChildren()).isNotEmpty();
-            assertThat(tree.getChildren()).hasSize(5);
-            var domainDocument = tree.getChildren().get(1);
-            assertThat(domainDocument).isNotNull();
-            assertThat(domainDocument.getChildren()).isNotEmpty();
-            assertThat(domainDocument.getChildren()).hasSize(1);
-            assertThat(domainDocument.getChildren().get(0)).isNotNull();
-            List<TreeItem> domainElements = domainDocument.getChildren().get(0).getChildren();
-            assertThat(domainElements).hasSize(3);
-            assertThat(domainElements.get(0).getLabel().toString()).isEqualTo("Root");
-            rootTreeItemId.set(domainElements.get(0).getId());
-            assertThat(domainElements.get(0).getChildren()).isNotEmpty();
-            assertThat(domainElements.get(0).getChildren()).hasSize(3);
-            assertThat(domainElements.get(0).getChildren().get(0).getLabel().toString()).isEqualTo("superTypes");
+            assertThat(tree.getChildren()).hasSize(1);
+            assertThat(tree.getChildren().get(0).getChildren()).hasSize(4);
+            assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren()).hasSize(3);
+            assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren().get(0).getId()).startsWith(DomainTreeDescriptionProvider.SETTING);
         });
-
-        Runnable getTreePathFromRoot = () -> {
-            Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
-                    "treeId", treeId.get(),
-                    "treeItemId", rootTreeItemId.get()
-            );
-            var result = this.expandAllTreePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
-            assertThat(treeItemIdsToExpand).isNotEmpty();
-            // only one superType tree item found underneath the Root entity.
-            assertThat(treeItemIdsToExpand.stream().filter(id -> id.startsWith(ExplorerDescriptionProvider.SETTING)).toList()).hasSize(1);
-        };
 
         StepVerifier.create(expandedTreeFlux)
                 .consumeNextWith(initialExpandedTreeContentConsumer)
-                .then(getTreePathFromRoot)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

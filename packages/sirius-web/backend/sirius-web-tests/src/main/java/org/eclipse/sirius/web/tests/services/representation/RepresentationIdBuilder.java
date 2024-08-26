@@ -12,11 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.tests.services.representation;
 
-import org.springframework.stereotype.Service;
-
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
 
 /**
  * Used to build ids of representations.
@@ -25,6 +25,8 @@ import java.util.List;
  */
 @Service
 public class RepresentationIdBuilder {
+
+    private static final String EXPANDED_IDS = "&expandedIds=[";
 
     @SuppressWarnings("checkstyle:MultipleStringLiterals")
     public String buildExplorerRepresentationId(List<String> expandedObjects, List<String> activatedFilters) {
@@ -40,7 +42,7 @@ public class RepresentationIdBuilder {
     }
 
     public String buildSelectionRepresentationId(String treeDescriptionId, String targetObjectId, List<String> expandedObjectIds) {
-        return "selection://?treeDescriptionId=" + URLEncoder.encode(treeDescriptionId, StandardCharsets.UTF_8) + "&targetObjectId=" + targetObjectId + "&expandedIds=[" + String.join(",", expandedObjectIds) + "]";
+        return "selection://?treeDescriptionId=" + URLEncoder.encode(treeDescriptionId, StandardCharsets.UTF_8) + "&targetObjectId=" + targetObjectId + EXPANDED_IDS + String.join(",", expandedObjectIds) + "]";
     }
 
     public String buildDiagramFilterRepresentationId(List<String> objectIds) {
@@ -82,7 +84,7 @@ public class RepresentationIdBuilder {
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
 
-        treeId.append("&expandedIds=[");
+        treeId.append(EXPANDED_IDS);
         treeId.append(String.join(",", expandedObjectIds));
         treeId.append("]");
 
@@ -93,4 +95,11 @@ public class RepresentationIdBuilder {
         return "validation://";
     }
 
+    public String buildTreeRepresentationId(String treeId, List<String> expandedObjects) {
+        List<String> expandedObjectIds = expandedObjects.stream()
+                .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
+                .toList();
+
+        return treeId + "?expandedIds=[" + String.join(",", expandedObjectIds) + "]";
+    }
 }

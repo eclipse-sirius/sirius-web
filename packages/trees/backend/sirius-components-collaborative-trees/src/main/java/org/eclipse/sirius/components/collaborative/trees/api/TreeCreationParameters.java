@@ -37,6 +37,8 @@ public final class TreeCreationParameters {
 
     private IEditingContext editingContext;
 
+    private Object tragetObject;
+
     private TreeCreationParameters() {
         // Prevent instantiation
     }
@@ -59,6 +61,10 @@ public final class TreeCreationParameters {
 
     public IEditingContext getEditingContext() {
         return this.editingContext;
+    }
+
+    public Object getTargetObject() {
+        return this.tragetObject;
     }
 
     public static Builder newTreeCreationParameters(String id) {
@@ -88,6 +94,8 @@ public final class TreeCreationParameters {
 
         private IEditingContext editingContext;
 
+        private Object targetObject;
+
         private Builder(String id) {
             this.id = id;
         }
@@ -112,6 +120,11 @@ public final class TreeCreationParameters {
             return this;
         }
 
+        public Builder targetObject(Object object) {
+            this.targetObject = object;
+            return this;
+        }
+
         public TreeCreationParameters build() {
             TreeCreationParameters treeCreationParameters = new TreeCreationParameters();
             treeCreationParameters.id = Objects.requireNonNull(this.id);
@@ -119,6 +132,7 @@ public final class TreeCreationParameters {
             treeCreationParameters.activeFilterIds = Objects.requireNonNull(this.activeFilterIds);
             treeCreationParameters.expanded = Objects.requireNonNull(this.expanded);
             treeCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
+            treeCreationParameters.tragetObject = this.targetObject; // can be null;
             return treeCreationParameters;
         }
     }

@@ -34,6 +34,7 @@ public class TreeService implements ITreeService {
         VariableManager variableManager = new VariableManager();
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, treeCreationParameters.getId());
         variableManager.put(IEditingContext.EDITING_CONTEXT, treeCreationParameters.getEditingContext());
+        variableManager.put(VariableManager.SELF, treeCreationParameters.getTargetObject());
         variableManager.put(TreeRenderer.EXPANDED, treeCreationParameters.getExpanded());
         variableManager.put(TreeRenderer.ACTIVE_FILTER_IDS, treeCreationParameters.getActiveFilterIds());
 
