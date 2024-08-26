@@ -13,12 +13,11 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.Interface;
-import org.eclipse.sirius.components.papaya.TypeParameter;
 import org.eclipse.sirius.components.papaya.provider.InterfaceItemProvider;
 import org.eclipse.sirius.components.papaya.provider.spec.images.VisibilityOverlayImageProvider;
 
@@ -46,20 +45,26 @@ public class InterfaceItemProviderSpec extends InterfaceItemProvider {
     }
 
     @Override
-    public String getText(Object object) {
-        var text = this.getString("_UI_Interface_type");
-        if (object instanceof Interface anInterface) {
-            if (anInterface.getName() != null && !anInterface.getName().isBlank()) {
-                var typeParameters = "";
-                if (!anInterface.getTypeParameters().isEmpty()) {
-                    typeParameters = anInterface.getTypeParameters()
-                            .stream()
-                            .map(TypeParameter::getName)
-                            .collect(Collectors.joining(", ", "<", ">"));
+    public Object getStyledText(Object object) {
+        if (object instanceof Interface anInterface && anInterface.getName() != null && !anInterface.getName().isBlank()) {
+            StyledString styledLabel = new StyledString();
+            styledLabel.append(anInterface.getName());
+
+            if (!anInterface.getTypeParameters().isEmpty()) {
+                styledLabel.append("<", PapayaStyledStringStyles.DECORATOR_STYLE);
+
+                for (var i = 0; i < anInterface.getTypeParameters().size(); i++) {
+                    var typeParameter = anInterface.getTypeParameters().get(i);
+                    styledLabel.append(typeParameter.getName(), PapayaStyledStringStyles.GENERIC_TYPE_STYLE);
+                    if (i < anInterface.getTypeParameters().size() - 1) {
+                        styledLabel.append(", ", PapayaStyledStringStyles.DECORATOR_STYLE);
+                    }
                 }
-                text = anInterface.getName() + typeParameters;
+
+                styledLabel.append(">", PapayaStyledStringStyles.DECORATOR_STYLE);
             }
+            return styledLabel;
         }
-        return text;
+        return super.getStyledText(object);
     }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.Attribute;
 import org.eclipse.sirius.components.papaya.provider.AttributeItemProvider;
 import org.eclipse.sirius.components.papaya.provider.PapayaItemProviderAdapterFactory;
@@ -46,19 +47,21 @@ public class AttributeItemProviderSpec extends AttributeItemProvider {
     }
 
     @Override
-    public String getText(Object object) {
+    public Object getStyledText(Object object) {
         if (object instanceof Attribute attribute && attribute.getName() != null && !attribute.getName().isBlank()) {
-            var text = attribute.getName();
+            StyledString styledLabel = new StyledString();
+            styledLabel.append(attribute.getName());
 
             if (attribute.getType() != null) {
                 var adapter = new PapayaItemProviderAdapterFactory().adapt(attribute.getType(), IItemLabelProvider.class);
                 if (adapter instanceof IItemLabelProvider itemLabelProvider) {
-                    text = text + ": " + itemLabelProvider.getText(attribute.getType());
+                    styledLabel.append(": ", PapayaStyledStringStyles.DECORATOR_STYLE);
+                    styledLabel.append(itemLabelProvider.getText(attribute.getType()), PapayaStyledStringStyles.TYPE_STYLE);
                 }
             }
 
-            return text;
+            return styledLabel;
         }
-        return super.getText(object);
+        return super.getStyledText(object);
     }
 }

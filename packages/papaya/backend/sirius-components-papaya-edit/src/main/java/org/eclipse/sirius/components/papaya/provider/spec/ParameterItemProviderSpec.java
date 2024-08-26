@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.provider.PapayaItemProviderAdapterFactory;
 import org.eclipse.sirius.components.papaya.provider.ParameterItemProvider;
@@ -34,19 +35,21 @@ public class ParameterItemProviderSpec extends ParameterItemProvider {
     }
 
     @Override
-    public String getText(Object object) {
+    public Object getStyledText(Object object) {
         if (object instanceof Parameter parameter && parameter.getName() != null && !parameter.getName().isBlank()) {
-            var text = parameter.getName();
+            StyledString styledLabel = new StyledString();
+            styledLabel.append(parameter.getName());
 
             if (parameter.getType() != null) {
                 var adapter = new PapayaItemProviderAdapterFactory().adapt(parameter.getType(), IItemLabelProvider.class);
                 if (adapter instanceof IItemLabelProvider itemLabelProvider) {
-                    text = text + ": " + itemLabelProvider.getText(parameter.getType());
+                    styledLabel.append(": ", PapayaStyledStringStyles.DECORATOR_STYLE);
+                    styledLabel.append(itemLabelProvider.getText(parameter.getType()), PapayaStyledStringStyles.TYPE_STYLE);
                 }
             }
 
-            return text;
+            return styledLabel;
         }
-        return super.getText(object);
+        return super.getStyledText(object);
     }
 }

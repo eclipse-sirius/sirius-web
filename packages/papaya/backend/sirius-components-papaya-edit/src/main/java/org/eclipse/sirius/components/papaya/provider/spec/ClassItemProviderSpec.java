@@ -13,12 +13,11 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.Class;
-import org.eclipse.sirius.components.papaya.TypeParameter;
 import org.eclipse.sirius.components.papaya.provider.ClassItemProvider;
 import org.eclipse.sirius.components.papaya.provider.spec.images.VisibilityOverlayImageProvider;
 
@@ -46,17 +45,26 @@ public class ClassItemProviderSpec extends ClassItemProvider {
     }
 
     @Override
-    public String getText(Object object) {
+    public Object getStyledText(Object object) {
         if (object instanceof Class aClass && aClass.getName() != null && !aClass.getName().isBlank()) {
-            var typeParameters = "";
+            StyledString styledLabel = new StyledString();
+            styledLabel.append(aClass.getName());
+
             if (!aClass.getTypeParameters().isEmpty()) {
-                typeParameters = aClass.getTypeParameters()
-                        .stream()
-                        .map(TypeParameter::getName)
-                        .collect(Collectors.joining(", ", "<", ">"));
+                styledLabel.append("<", PapayaStyledStringStyles.DECORATOR_STYLE);
+
+                for (var i = 0; i < aClass.getTypeParameters().size(); i++) {
+                    var typeParameter = aClass.getTypeParameters().get(i);
+                    styledLabel.append(typeParameter.getName(), PapayaStyledStringStyles.GENERIC_TYPE_STYLE);
+                    if (i < aClass.getTypeParameters().size() - 1) {
+                        styledLabel.append(", ", PapayaStyledStringStyles.DECORATOR_STYLE);
+                    }
+                }
+
+                styledLabel.append(">", PapayaStyledStringStyles.DECORATOR_STYLE);
             }
-            return aClass.getName() + typeParameters;
+            return styledLabel;
         }
-        return super.getText(object);
+        return super.getStyledText(object);
     }
 }

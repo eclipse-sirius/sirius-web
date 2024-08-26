@@ -13,14 +13,18 @@
 package org.eclipse.sirius.web.papaya.services;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.emf.edit.provider.IItemStyledLabelProvider;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.services.DefaultLabelService;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
+import org.eclipse.sirius.components.emf.services.api.IStyledStringConverter;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.provider.PapayaItemProviderAdapterFactory;
 import org.springframework.stereotype.Service;
@@ -32,8 +36,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PapayaLabelProvider extends DefaultLabelService implements ILabelServiceDelegate {
-    public PapayaLabelProvider(LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory, List<IRepresentationImageProvider> representationImageProviders) {
+
+    private final IStyledStringConverter styledStringConverter;
+
+    public PapayaLabelProvider(LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory, List<IRepresentationImageProvider> representationImageProviders, IStyledStringConverter styledStringConverter) {
         super(labelFeatureProviderRegistry, composedAdapterFactory, representationImageProviders);
+        this.styledStringConverter = Objects.requireNonNull(styledStringConverter);
     }
 
     @Override
@@ -51,5 +59,20 @@ public class PapayaLabelProvider extends DefaultLabelService implements ILabelSe
             }
         }
         return super.getLabel(object);
+    }
+
+    @Override
+    public StyledString getStyledLabel(Object object) {
+        if (object instanceof EObject eObject) {
+            var adapter = new PapayaItemProviderAdapterFactory().adapt(eObject, IItemStyledLabelProvider.class);
+            if (adapter instanceof IItemStyledLabelProvider itemStyledLabelProvider) {
+                var rawStyledString = itemStyledLabelProvider.getStyledText(eObject);
+                if (rawStyledString instanceof org.eclipse.emf.edit.provider.StyledString emfStyledString) {
+                    return this.styledStringConverter.convert(emfStyledString);
+                }
+            }
+
+        }
+        return super.getStyledLabel(object);
     }
 }

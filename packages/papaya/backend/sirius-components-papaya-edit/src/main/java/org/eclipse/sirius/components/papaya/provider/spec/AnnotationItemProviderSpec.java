@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.Annotation;
 import org.eclipse.sirius.components.papaya.provider.AnnotationItemProvider;
 import org.eclipse.sirius.components.papaya.provider.spec.images.VisibilityOverlayImageProvider;
@@ -44,10 +45,12 @@ public class AnnotationItemProviderSpec extends AnnotationItemProvider {
     }
 
     @Override
-    public String getText(Object object) {
+    public Object getStyledText(Object object) {
         if (object instanceof Annotation annotation && annotation.getName() != null && !annotation.getName().isBlank()) {
-            return annotation.getName();
+            StyledString styledLabel = new StyledString();
+            styledLabel.append(annotation.getName());
+            return styledLabel;
         }
-        return super.getText(object);
+        return super.getStyledText(object);
     }
 }
