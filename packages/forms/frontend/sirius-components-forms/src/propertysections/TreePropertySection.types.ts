@@ -15,6 +15,7 @@ import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 import { GQLTreeNode } from '../form/FormEventFragments.types';
 
 export interface TreeItemProps {
+  treeItemId: string;
   node: GQLTreeNode;
   nodes: GQLTreeNode[];
   readOnly: boolean;

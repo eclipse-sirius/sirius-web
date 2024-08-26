@@ -119,7 +119,7 @@ test('should render a multi-level tree correctly', () => {
       createNode('1.3.1.2', '1.3.1'),
       createNode('2.1', '2'),
     ],
-    expandedNodesIds: ['1', '2', '1.1', '1.3', '1.3.1'],
+    expandedNodesIds: ['0', '1', '0/0', '0/2', '0/2/0'],
     diagnostics: [],
   };
   const { container } = render(
@@ -180,7 +180,7 @@ test('should correctly interpret the order of nodes with the same parent in the 
       createNode('1.3.1', '1.3'),
       createNode('2.1', '2'),
     ],
-    expandedNodesIds: ['1', '2', '1.1', '1.3', '1.3.1'],
+    expandedNodesIds: ['1', '0', '1/0', '1/1', '1/1/0'],
     diagnostics: [],
   };
   const { container } = render(
@@ -238,7 +238,7 @@ test('should only expand the specified nodes on initial render', () => {
       createNode('1.3.1.2', '1.3.1'),
       createNode('2.1', '2'),
     ],
-    expandedNodesIds: ['1', '2', '1.3.1.2'],
+    expandedNodesIds: ['0', '1', '0/2/0/1'],
     diagnostics: [],
   };
   const { container } = render(
@@ -282,7 +282,7 @@ test('should change the selection when a selectable node is clicked', () => {
     readOnly: false,
     hasHelpText: false,
     nodes: [createNode('1', ''), createNode('2', ''), createNode('1.1', '1', true), createNode('1.2', '1', false)],
-    expandedNodesIds: ['1', '2'],
+    expandedNodesIds: ['0', '1'],
     diagnostics: [],
   };
 
@@ -341,7 +341,7 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     readOnly: false,
     hasHelpText: false,
     nodes: [createNode('1', ''), createNode('1.1', '1'), createNode('1.1.1', '1.1')],
-    expandedNodesIds: ['1', '1.1'],
+    expandedNodesIds: ['0', '0/0'],
     diagnostics: [],
   };
   let selection: SelectionEntry = { id: 'undefined', kind: '' };
