@@ -62,7 +62,7 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<FormRefreshedEventPayload> givenSubscriptionToTitleExpressionForm() {
+    private Flux<Object> givenSubscriptionToTitleExpressionForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -80,7 +80,9 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
     public void givenFormWithTitleExpressionWhenItIsCreatedThenItsLabelIsInitialized() {
         var flux = this.givenSubscriptionToTitleExpressionForm();
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
                     assertThat(form).hasLabel("FormWithTitleExpression");

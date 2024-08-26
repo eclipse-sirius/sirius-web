@@ -16,7 +16,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.gantt.dto.GanttRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.GanttEventInput;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedGanttSubscription;
@@ -48,7 +47,7 @@ public class GivenCreatedGanttSubscription implements IGivenCreatedGanttSubscrip
     }
 
     @Override
-    public Flux<GanttRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input) {
+    public Flux<Object> createAndSubscribe(CreateRepresentationInput input) {
         this.givenCommittedTransaction.commit();
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
@@ -62,8 +61,6 @@ public class GivenCreatedGanttSubscription implements IGivenCreatedGanttSubscrip
 
         return flux.filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(GanttRefreshedEventPayload.class::isInstance)
-                .map(GanttRefreshedEventPayload.class::cast);
+                .map(DataFetcherResult::getData);
     }
 }

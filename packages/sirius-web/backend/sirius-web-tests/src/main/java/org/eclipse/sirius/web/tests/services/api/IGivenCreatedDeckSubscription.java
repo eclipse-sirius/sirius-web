@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.tests.services.api;
 
-import org.eclipse.sirius.components.collaborative.deck.dto.DeckRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 
 import reactor.core.publisher.Flux;
@@ -23,5 +22,5 @@ import reactor.core.publisher.Flux;
  * @author sbegaudeau
  */
 public interface IGivenCreatedDeckSubscription {
-    Flux<DeckRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input);
+    Flux<Object> createAndSubscribe(CreateRepresentationInput input);
 }

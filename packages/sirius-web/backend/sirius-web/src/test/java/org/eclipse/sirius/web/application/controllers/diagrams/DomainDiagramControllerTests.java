@@ -100,7 +100,9 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     var rootNode = new DiagramNavigator(diagram).nodeWithLabel("Root").getNode();
@@ -137,10 +139,12 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
         var humanNodeId  = new AtomicReference<String>();
         var initialDiagramData = new AtomicReference<RepresentationData>(null);
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(diagramPayload -> {
                     currentRevisionId.set(diagramPayload.id());
-                    return payload.diagram();
+                    return diagramPayload.diagram();
                 })
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
@@ -155,10 +159,12 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
 
-        Consumer<DiagramRefreshedEventPayload> initialDiagramLayoutConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialDiagramLayoutConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(diagramPayload -> {
                     currentRevisionId.set(diagramPayload.id());
-                    return payload.diagram();
+                    return diagramPayload.diagram();
                 })
                 .ifPresentOrElse(diagram -> {
                     var humanNodeLayout = diagram.getLayoutData().nodeLayoutData().get(humanNodeId.get());
@@ -175,10 +181,12 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
 
-        Consumer<DiagramRefreshedEventPayload> modifiedDiagramLayoutConsumer = payload -> Optional.of(payload)
+        Consumer<Object> modifiedDiagramLayoutConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
                 .map(diagramPayload -> {
                     currentRevisionId.set(diagramPayload.id());
-                    return payload.diagram();
+                    return diagramPayload.diagram();
                 })
                 .ifPresentOrElse(diagram -> {
                     var humanNodeLayout = diagram.getLayoutData().nodeLayoutData().get(humanNodeId.get());

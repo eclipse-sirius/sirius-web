@@ -104,7 +104,9 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
         var representationData = new AtomicReference<RepresentationData>();
         var newWidgetId = new AtomicReference<String>();
 
-        Consumer<FormDescriptionEditorRefreshedEventPayload> initialFormDescriptionEditorContentConsumer = payload -> Optional.of(payload)
+        Consumer<Object> initialFormDescriptionEditorContentConsumer = payload -> Optional.of(payload)
+                .filter(FormDescriptionEditorRefreshedEventPayload.class::isInstance)
+                .map(FormDescriptionEditorRefreshedEventPayload.class::cast)
                 .map(FormDescriptionEditorRefreshedEventPayload::formDescriptionEditor)
                 .ifPresentOrElse(formDescriptionEditor -> {
                     formDescriptionEditorId.set(formDescriptionEditor.getId());
@@ -130,7 +132,9 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<FormDescriptionEditorRefreshedEventPayload> addedWidgetConsumer = payload -> Optional.of(payload)
+        Consumer<Object> addedWidgetConsumer = payload -> Optional.of(payload)
+                .filter(FormDescriptionEditorRefreshedEventPayload.class::isInstance)
+                .map(FormDescriptionEditorRefreshedEventPayload.class::cast)
                 .map(FormDescriptionEditorRefreshedEventPayload::formDescriptionEditor)
                 .ifPresentOrElse(formDescriptionEditor -> {
                     var firstGroup = formDescriptionEditor.getPages().get(0).getGroups().get(0);

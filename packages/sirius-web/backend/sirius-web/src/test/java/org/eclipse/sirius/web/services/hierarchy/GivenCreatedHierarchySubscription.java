@@ -16,7 +16,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.charts.HierarchyEventInput;
-import org.eclipse.sirius.components.collaborative.charts.HierarchyRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.services.api.IGivenCreatedHierarchySubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
@@ -47,7 +46,7 @@ public class GivenCreatedHierarchySubscription implements IGivenCreatedHierarchy
     }
 
     @Override
-    public Flux<HierarchyRefreshedEventPayload> createAndSubscribe(CreateRepresentationInput input) {
+    public Flux<Object> createAndSubscribe(CreateRepresentationInput input) {
         this.givenCommittedTransaction.commit();
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
@@ -59,7 +58,6 @@ public class GivenCreatedHierarchySubscription implements IGivenCreatedHierarchy
         TestTransaction.end();
         TestTransaction.start();
 
-        return flux.filter(HierarchyRefreshedEventPayload.class::isInstance)
-                .map(HierarchyRefreshedEventPayload.class::cast);
+        return flux;
     }
 }

@@ -120,11 +120,15 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 TestIdentifiers.EPACKAGE_OBJECT.toString(), SAMPLE_PORTAL);
         var flux = this.givenCreatedPortalSubscription.createAndSubscribe(input);
 
-        Consumer<PortalRefreshedEventPayload> initialPortalContentConsumer = payload -> Optional.of(payload).map(PortalRefreshedEventPayload::portal).ifPresentOrElse(portal -> {
-            assertThat(portal.getLabel()).isEqualTo(SAMPLE_PORTAL);
-            assertThat(portal.getViews()).isEmpty();
-            assertThat(portal.getLayoutData()).isEmpty();
-        }, () -> fail("Missing portal"));
+        Consumer<Object> initialPortalContentConsumer = payload -> Optional.of(payload)
+                .filter(PortalRefreshedEventPayload.class::isInstance)
+                .map(PortalRefreshedEventPayload.class::cast)
+                .map(PortalRefreshedEventPayload::portal)
+                .ifPresentOrElse(portal -> {
+                    assertThat(portal.getLabel()).isEqualTo(SAMPLE_PORTAL);
+                    assertThat(portal.getViews()).isEmpty();
+                    assertThat(portal.getLayoutData()).isEmpty();
+                }, () -> fail("Missing portal"));
 
         StepVerifier.create(flux)
                     .consumeNextWith(initialPortalContentConsumer)

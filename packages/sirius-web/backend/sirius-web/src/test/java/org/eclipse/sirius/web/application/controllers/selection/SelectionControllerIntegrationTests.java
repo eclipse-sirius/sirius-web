@@ -25,7 +25,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
@@ -225,7 +224,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 .verify(Duration.ofSeconds(10));
     }
 
-    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToModelOperationDiagram() {
+    private Flux<Object> givenSubscriptionToModelOperationDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
