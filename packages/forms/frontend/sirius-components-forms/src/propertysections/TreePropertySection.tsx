@@ -101,7 +101,7 @@ export const editTreeCheckboxMutation = gql`
   }
 `;
 
-const TreeItem = ({ node, nodes, readOnly, editingContextId, formId, widgetId }: TreeItemProps) => {
+const TreeItem = ({ treeItemId, node, nodes, readOnly, editingContextId, formId, widgetId }: TreeItemProps) => {
   const { classes } = useTreeItemWidgetStyles();
   const { setSelection } = useSelection();
 
@@ -177,19 +177,23 @@ const TreeItem = ({ node, nodes, readOnly, editingContextId, formId, widgetId }:
 
   const childNodes = nodes.filter((childNode) => childNode.parentId === node.id);
   return (
-    <MuiTreeItem itemId={node.id} label={label} classes={{ content: classes.content }}>
-      {childNodes.map((childNode) => (
-        <TreeItem
-          node={childNode}
-          nodes={nodes}
-          key={childNode.id}
-          readOnly={readOnly}
-          aria-role="treeitem"
-          editingContextId={editingContextId}
-          formId={formId}
-          widgetId={widgetId}
-        />
-      ))}
+    <MuiTreeItem itemId={treeItemId} label={label} classes={{ content: classes.content }}>
+      {childNodes.map((childNode, index) => {
+        const childTreeItemId = `${treeItemId}/${index}`;
+        return (
+          <TreeItem
+            treeItemId={childTreeItemId}
+            node={childNode}
+            nodes={nodes}
+            key={childTreeItemId}
+            readOnly={readOnly}
+            aria-role="treeitem"
+            editingContextId={editingContextId}
+            formId={formId}
+            widgetId={widgetId}
+          />
+        );
+      })}
     </MuiTreeItem>
   );
 };
@@ -226,17 +230,21 @@ export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
       <SimpleTreeView
         slots={{ collapseIcon: ExpandMoreIcon, expandIcon: ChevronRightIcon }}
         defaultExpandedItems={expandedNodesIds}>
-        {rootNodes.map((rootNode) => (
-          <TreeItem
-            node={rootNode}
-            nodes={nodes}
-            key={rootNode.id}
-            readOnly={readOnly || widget.readOnly}
-            editingContextId={editingContextId}
-            formId={formId}
-            widgetId={widget.id}
-          />
-        ))}
+        {rootNodes.map((rootNode, index) => {
+          const rootItemId = `${index}`;
+          return (
+            <TreeItem
+              treeItemId={rootItemId}
+              node={rootNode}
+              nodes={nodes}
+              key={rootItemId}
+              readOnly={readOnly || widget.readOnly}
+              editingContextId={editingContextId}
+              formId={formId}
+              widgetId={widget.id}
+            />
+          );
+        })}
       </SimpleTreeView>
     </div>
   );
