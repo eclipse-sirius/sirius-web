@@ -20,8 +20,6 @@ import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
@@ -69,10 +67,6 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     public static final String PREFIX = "explorer://";
 
     public static final String REPRESENTATION_NAME = "Explorer";
-
-    public static final String SETTING = "setting:";
-
-    public static final String SETTING_ID_SEPARATOR = "::";
 
     private final IObjectService objectService;
 
@@ -160,8 +154,6 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
             id = resource.getURI().path().substring(1);
         } else if (self instanceof EObject) {
             id = this.objectService.getId(self);
-        } else if (self instanceof Setting setting) {
-            id = SETTING + this.objectService.getId(setting.getEObject()) + SETTING_ID_SEPARATOR + setting.getEStructuralFeature().getName();
         }
         return id;
     }
@@ -173,8 +165,6 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
             kind = representationMetadata.getKind();
         } else if (self instanceof Resource) {
             kind = DOCUMENT_KIND;
-        } else if (self instanceof Setting) {
-            kind = "setting";
         } else {
             kind = this.objectService.getKind(self);
         }
@@ -197,8 +187,6 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 var kind = this.objectService.getKind(self);
                 label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
             }
-        }  else if (self instanceof Setting setting) {
-            label = setting.getEStructuralFeature().getName();
         }
         return StyledString.of(label);
     }
@@ -302,36 +290,24 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
         if (optionalEditingContext.isPresent() && optionalTreeItemId.isPresent()) {
             var treeItemId = optionalTreeItemId.get();
             var editingContext = optionalEditingContext.get();
-
-            if (treeItemId.startsWith(SETTING)) {
-                // the tree item is a setting, get the object and then the structural feature associated
-                var objectId = treeItemId.substring(SETTING.length(), treeItemId.indexOf(SETTING_ID_SEPARATOR));
-                var featureName = treeItemId.substring(treeItemId.indexOf(SETTING_ID_SEPARATOR) + SETTING_ID_SEPARATOR.length());
-                var optObject = this.objectService.getObject(editingContext, objectId);
-                if (optObject.isPresent()) {
-                    InternalEObject internalObject = (InternalEObject) optObject.get();
-                    result = internalObject.eSetting(internalObject.eClass().getEStructuralFeature(featureName));
-                }
+            var optionalObject = this.objectService.getObject(editingContext, treeItemId);
+            if (optionalObject.isPresent()) {
+                result = optionalObject.get();
             } else {
-                var optionalObject = this.objectService.getObject(editingContext, treeItemId);
-                if (optionalObject.isPresent()) {
-                    result = optionalObject.get();
-                } else {
-                    var optionalEditingDomain = Optional.of(editingContext)
-                            .filter(IEMFEditingContext.class::isInstance)
-                            .map(IEMFEditingContext.class::cast)
-                            .map(IEMFEditingContext::getDomain);
+                var optionalEditingDomain = Optional.of(editingContext)
+                        .filter(IEMFEditingContext.class::isInstance)
+                        .map(IEMFEditingContext.class::cast)
+                        .map(IEMFEditingContext::getDomain);
 
-                    if (optionalEditingDomain.isPresent()) {
-                        var editingDomain = optionalEditingDomain.get();
-                        ResourceSet resourceSet = editingDomain.getResourceSet();
-                        URI uri = new JSONResourceFactory().createResourceURI(treeItemId);
+                if (optionalEditingDomain.isPresent()) {
+                    var editingDomain = optionalEditingDomain.get();
+                    ResourceSet resourceSet = editingDomain.getResourceSet();
+                    URI uri = new JSONResourceFactory().createResourceURI(treeItemId);
 
-                        result = resourceSet.getResources().stream()
-                                .filter(resource -> resource.getURI().equals(uri))
-                                .findFirst()
-                                .orElse(null);
-                    }
+                    result = resourceSet.getResources().stream()
+                            .filter(resource -> resource.getURI().equals(uri))
+                            .findFirst()
+                            .orElse(null);
                 }
             }
         }
@@ -354,9 +330,6 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 semanticContainer = eObject.eResource();
             }
             result = semanticContainer;
-        } else if (self instanceof Setting setting) {
-            // the parent of the superTypes node is the object associated to this Setting
-            result = setting.getEObject();
         }
         return result;
     }
