@@ -65,7 +65,7 @@ export const useDiagramFilterSubscription = (
       const { diagramFilterEvent: payload } = gqlDiagramFilterEventSubscription;
       if (isFormRefreshedEventPayload(payload)) {
         const { form } = payload;
-        setState((prevState) => ({ ...prevState, form }));
+        setState((prevState) => ({ ...prevState, form, complete: false }));
       }
     }
   };

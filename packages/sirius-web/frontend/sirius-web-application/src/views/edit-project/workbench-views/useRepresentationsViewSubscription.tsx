@@ -66,7 +66,7 @@ export const useRepresentationsViewSubscription = (
       const { representationsEvent: payload } = gqlRepresentationsEventSubscription;
       if (isFormRefreshedEventPayload(payload)) {
         const { form } = payload;
-        setState((prevState) => ({ ...prevState, form }));
+        setState((prevState) => ({ ...prevState, form, complete: false }));
       }
     }
   };

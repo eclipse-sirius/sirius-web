@@ -76,6 +76,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3851[#3851] [trees] Fix an issue where the tree filters menu items were not displayed anymore after a click on the filters menu.
 - https://github.com/eclipse-sirius/sirius-web/issues/3849[#3849] [form] Fix the tree representation in form support the display of the same referenced element many times in the tree.
 - https://github.com/eclipse-sirius/sirius-web/issues/3878[#3878] [diagram] Unmount ReactFlowProvider after layout
+- https://github.com/eclipse-sirius/sirius-web/issues/3869[#3869] [form] Close form-based views when the underlying element no longer exists.
 
 === New Features
 
