@@ -37,6 +37,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2604[#2604] [diagram] Expand a tool section when the mouse is over it
+- https://github.com/eclipse-sirius/sirius-web/issues/3887[#3887] [diagram] Memoize diagram representation (improve performance when selecting an element on large diagram)
 
 
 == v2024.9.0
