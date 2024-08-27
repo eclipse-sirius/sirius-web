@@ -171,13 +171,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             }
             this.refreshOtherRepresentations(changeDescription);
 
+            var timer = this.meterRegistry.timer(Monitoring.TIMER_REFRESH_REPRESENTATION, "changeDescription", changeDescription.getSourceId());
+            refreshRepresentationSample.stop(timer);
+
             if (this.shouldPersistTheEditingContext(changeDescription)) {
                 this.editingContextPersistenceService.persist(this.editingContext);
             }
             this.danglingRepresentationDeletionService.deleteDanglingRepresentations(this.editingContext);
 
-            var timer = this.meterRegistry.timer(Monitoring.TIMER_REFRESH_REPRESENTATION, "changeDescription", changeDescription.getSourceId());
-            refreshRepresentationSample.stop(timer);
         };
 
         Consumer<Throwable> errorConsumer = throwable -> this.logger.warn(throwable.getMessage(), throwable);
