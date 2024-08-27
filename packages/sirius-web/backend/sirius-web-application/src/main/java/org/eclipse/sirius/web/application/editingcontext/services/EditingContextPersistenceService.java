@@ -31,6 +31,8 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceT
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,8 @@ import io.micrometer.core.instrument.Timer;
 public class EditingContextPersistenceService implements IEditingContextPersistenceService {
 
     private static final String TIMER_NAME = "siriusweb_editingcontext_save";
+
+    private final Logger logger = LoggerFactory.getLogger(EditingContextPersistenceService.class);
 
     private final ISemanticDataUpdateService semanticDataUpdateService;
 
@@ -69,7 +73,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
     @Override
     @Transactional
     public void persist(ICause cause, IEditingContext editingContext) {
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
 
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(emfEditingContext));
@@ -95,7 +99,8 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                     });
         }
 
-        long end = System.currentTimeMillis();
-        this.timer.record(end - start, TimeUnit.MILLISECONDS);
+        long durationNs = System.nanoTime() - start;
+        this.timer.record(durationNs, TimeUnit.NANOSECONDS);
+        this.logger.debug("Editing context {} saved in {} ms", editingContext.getId(), TimeUnit.NANOSECONDS.toMillis(durationNs));
     }
 }
