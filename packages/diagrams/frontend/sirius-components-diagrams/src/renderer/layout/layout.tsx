@@ -204,6 +204,7 @@ export const prepareLayoutArea = (
 
 export const cleanLayoutArea = (container: HTMLDivElement) => {
   if (container?.parentNode) {
+    ReactDOM.unmountComponentAtNode(container);
     container.parentNode.removeChild(container);
   }
 };
