@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -77,26 +78,29 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(emfEditingContext));
-            new UUIDParser().parse(editingContext.getId())
-                    .map(AggregateReference::<Project, UUID>to)
-                    .ifPresent(project -> {
-                        var documentData = emfEditingContext.getDomain().getResourceSet().getResources().stream()
-                                .filter(resource -> IEMFEditingContext.RESOURCE_SCHEME.equals(resource.getURI().scheme()))
-                                .filter(resource -> this.persistenceFilters.stream().allMatch(filter -> filter.shouldPersist(resource)))
-                                .map(resource -> this.resourceToDocumentService.toDocument(resource, applyMigrationParticipants))
-                                .flatMap(Optional::stream)
-                                .collect(Collectors.toSet());
+            var allResources = emfEditingContext.getDomain().getResourceSet().getResources();
+            if (allResources.stream().anyMatch(Resource::isModified)) {
+                new UUIDParser().parse(editingContext.getId())
+                        .map(AggregateReference::<Project, UUID>to)
+                        .ifPresent(project -> {
+                            var documentData = allResources.stream()
+                                    .filter(resource -> IEMFEditingContext.RESOURCE_SCHEME.equals(resource.getURI().scheme()))
+                                    .filter(resource -> this.persistenceFilters.stream().allMatch(filter -> filter.shouldPersist(resource)))
+                                    .map(resource -> this.resourceToDocumentService.toDocument(resource, applyMigrationParticipants))
+                                    .flatMap(Optional::stream)
+                                    .collect(Collectors.toSet());
 
-                        var documents = new LinkedHashSet<Document>();
-                        var domainUris = new LinkedHashSet<String>();
+                            var documents = new LinkedHashSet<Document>();
+                            var domainUris = new LinkedHashSet<String>();
 
-                        documentData.forEach(data -> {
-                            documents.add(data.document());
-                            domainUris.addAll(data.ePackageEntries().stream().map(EPackageEntry::nsURI).toList());
+                            documentData.forEach(data -> {
+                                documents.add(data.document());
+                                domainUris.addAll(data.ePackageEntries().stream().map(EPackageEntry::nsURI).toList());
+                            });
+
+                            this.semanticDataUpdateService.updateDocuments(cause, project, documents, domainUris);
                         });
-
-                        this.semanticDataUpdateService.updateDocuments(cause, project, documents, domainUris);
-                    });
+            }
         }
 
         long durationNs = System.nanoTime() - start;

@@ -68,6 +68,7 @@ public class ResourceLoader implements IResourceLoader {
         try (var inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8))) {
             resourceSet.getResources().add(resource);
             resource.eAdapters().add(new ResourceMetadataAdapter(name));
+            resource.setTrackingModification(true);
             resource.load(inputStream, options);
 
             optionalResource = Optional.of(resource);
