@@ -27,7 +27,7 @@ const useDiagramFilterViewStyles = makeStyles()((theme) => ({
 }));
 
 export const DiagramFilterForm = ({ editingContextId, diagramId, readOnly }: DiagramFilterFormProps) => {
-  const { form } = useDiagramFilterSubscription(editingContextId, [diagramId]);
+  const { form, complete } = useDiagramFilterSubscription(editingContextId, [diagramId]);
 
   const { classes } = useDiagramFilterViewStyles();
 
@@ -44,7 +44,7 @@ export const DiagramFilterForm = ({ editingContextId, diagramId, readOnly }: Dia
     }
   };
 
-  if (!form) {
+  if (!form || complete) {
     return null;
   }
   return (

@@ -52,11 +52,11 @@ export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewCompone
 
   const objectIds: string[] = state.currentSelection.entries.map((entry) => entry.id);
   const skip = objectIds.length === 0;
-  const { form, payload } = useDetailsViewSubscription(editingContextId, objectIds, skip);
+  const { form, payload, complete } = useDetailsViewSubscription(editingContextId, objectIds, skip);
 
   const { classes } = useDetailsViewStyles();
 
-  if (!form) {
+  if (!form || complete) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>

@@ -55,7 +55,7 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
 
   const objectIds: string[] = state.currentSelection.entries.map((entry) => entry.id);
   const skip = objectIds.length === 0;
-  const { form } = useRelatedElementsViewSubscription(editingContextId, objectIds, skip);
+  const { form, complete } = useRelatedElementsViewSubscription(editingContextId, objectIds, skip);
 
   const { classes } = useRelatedElementsViewStyles();
 
@@ -72,7 +72,7 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
     }
   };
 
-  if (!form) {
+  if (!form || complete) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>

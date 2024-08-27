@@ -64,10 +64,10 @@ export const useDetailsViewSubscription = (
     const { data: gqlDetailsEventSubscription } = data;
     if (gqlDetailsEventSubscription) {
       const { detailsEvent: payload } = gqlDetailsEventSubscription;
-      setState((prevState) => ({ ...prevState, payload }));
+      setState((prevState) => ({ ...prevState, payload, complete: false }));
       if (isFormRefreshedEventPayload(payload)) {
         const { form } = payload;
-        setState((prevState) => ({ ...prevState, form }));
+        setState((prevState) => ({ ...prevState, form, complete: false }));
       }
     }
   };
