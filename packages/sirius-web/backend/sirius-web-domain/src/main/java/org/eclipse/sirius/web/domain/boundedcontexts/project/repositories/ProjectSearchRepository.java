@@ -12,18 +12,22 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.repositories;
 
-import java.util.UUID;
-
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.repository.ListCrudRepository;
-import org.springframework.data.repository.ListPagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
- * Repository used to persist the project aggregate.
+ * Fragment interface used to search projects.
  *
  * @author sbegaudeau
+ *
+ * @param <T> The type of entity
+ * @param <ID> The type of the identifier
  */
-@Repository
-public interface IProjectRepository extends ListPagingAndSortingRepository<Project, UUID>, ListCrudRepository<Project, UUID>, ProjectSearchRepository<Project, UUID> {
+public interface ProjectSearchRepository<T, ID> {
+    boolean existsById(ID id);
+
+    Optional<T> findById(ID id);
+
+    Page<T> findAll(Pageable pageable);
 }

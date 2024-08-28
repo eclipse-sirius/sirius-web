@@ -37,7 +37,6 @@ import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayloa
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.DeleteProjectMutationRunner;
@@ -51,7 +50,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
@@ -89,9 +87,6 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Autowired
     private IProjectSearchService projectSearchService;
-
-    @Autowired
-    private ISemanticDataSearchService semanticDataSearchService;
 
     @Autowired
     private IDomainEventCollector domainEventCollector;
@@ -207,8 +202,8 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         String projectId = JsonPath.read(result, "$.data.createProject.project.id");
 
-        var existsByProject = this.semanticDataSearchService.existsByProject(AggregateReference.to(UUID.fromString(projectId)));
-        assertThat(existsByProject).isTrue();
+        var exists = this.projectSearchService.existsById(UUID.fromString(projectId));
+        assertThat(exists).isTrue();
     }
 
     @Test

@@ -39,11 +39,6 @@ public class SemanticDataSearchService implements ISemanticDataSearchService {
     }
 
     @Override
-    public boolean existsByProject(AggregateReference<Project, UUID> project) {
-        return this.semanticDataRepository.existsByProjectId(project.getId());
-    }
-
-    @Override
     public Optional<SemanticData> findByProject(AggregateReference<Project, UUID> project) {
         return this.semanticDataRepository.findByProjectId(project.getId());
     }

@@ -29,13 +29,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ISemanticDataRepository extends ListPagingAndSortingRepository<SemanticData, UUID>, ListCrudRepository<SemanticData, UUID> {
-    @Query("""
-        SELECT
-          CASE WHEN count(*)> 0 THEN true ELSE false END
-        FROM semantic_data semanticData
-        WHERE semanticData.project_id = :projectId
-        """)
-    boolean existsByProjectId(UUID projectId);
 
     @Query("""
         SELECT *
