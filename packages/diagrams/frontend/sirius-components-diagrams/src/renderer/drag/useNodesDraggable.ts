@@ -34,9 +34,15 @@ export const useNodesDraggable = (): UseNodesDraggableValue => {
     };
     document.addEventListener('keyup', keyupListener);
 
+    const onBlurListener = () => {
+      setState((prevState) => ({ ...prevState, nodesDraggable: true }));
+    };
+    window.addEventListener('blur', onBlurListener);
+
     return () => {
       document.removeEventListener('keydown', keydownListener);
       document.removeEventListener('keyup', keyupListener);
+      window.removeEventListener('blur', onBlurListener);
     };
   }, []);
 
