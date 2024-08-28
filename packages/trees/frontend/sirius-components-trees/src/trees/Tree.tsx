@@ -13,6 +13,7 @@
 import { makeStyles } from 'tss-react/mui';
 
 import { useEffect, useRef } from 'react';
+import { useTreeStore } from '../store/treeStore';
 import { TreeItem } from '../treeitems/TreeItem';
 import { TreeProps } from './Tree.types';
 
@@ -26,7 +27,6 @@ const useTreeStyle = makeStyles()((_) => ({
 export const Tree = ({
   editingContextId,
   tree,
-  onExpand,
   onExpandAll,
   readOnly,
   enableMultiSelection = true,
@@ -37,7 +37,7 @@ export const Tree = ({
 }: TreeProps) => {
   const { classes } = useTreeStyle();
   const treeElement = useRef(null);
-
+  const onExpand = useTreeStore((state) => state.onExpand);
   useEffect(() => {
     const downHandler = (event) => {
       if (
@@ -116,7 +116,6 @@ export const Tree = ({
                 treeId={tree.id}
                 item={item}
                 depth={1}
-                onExpand={onExpand}
                 onExpandAll={onExpandAll}
                 enableMultiSelection={enableMultiSelection}
                 readOnly={readOnly}
