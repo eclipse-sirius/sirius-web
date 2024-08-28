@@ -13,7 +13,9 @@
 package org.eclipse.sirius.components.view.emf.gantt;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.Temporal;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -145,50 +147,12 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .map(viewTaskDesc -> this.convert(viewTaskDesc, interpreter, taskDescription2Ids))
                 .toList();
 
-        Function<VariableManager, Instant> startTimeProvider = variableManager -> {
-            Instant result = null;
-
-            var optionalObject = interpreter.evaluateExpression(variableManager.getVariables(), viewTaskDescription.getStartTimeExpression()).asObject();
-            if (optionalObject.isPresent()) {
-                var object = optionalObject.get();
-                if (object instanceof Instant instant) {
-                    result = instant;
-                } else if (object instanceof String string) {
-                    try {
-                        result = Instant.parse(string);
-                    } catch (DateTimeParseException exception) {
-                        // Not logged on purpose, the user can enter anything
-                    }
-                }
-            }
-            return result;
-        };
-
-        Function<VariableManager, Instant> endTimeProvider = variableManager -> {
-            Instant result = null;
-
-            var optionalObject = interpreter.evaluateExpression(variableManager.getVariables(), viewTaskDescription.getEndTimeExpression()).asObject();
-            if (optionalObject.isPresent()) {
-                var object = optionalObject.get();
-                if (object instanceof Instant instant) {
-                    result = instant;
-                } else if (object instanceof String string) {
-                    try {
-                        result = Instant.parse(string);
-                    } catch (DateTimeParseException exception) {
-                        // Not logged on purpose, the user can enter anything
-                    }
-                }
-            }
-            return result;
-        };
-
         TaskDescription taskDescription = TaskDescription.newTaskDescription(taskDescription2Ids.get(viewTaskDescription))
                 .semanticElementsProvider(variableManager -> this.getSemanticCandidateElements(variableManager, interpreter, viewTaskDescription))
                 .nameProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getNameExpression(), String.class, ""))
                 .descriptionProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getDescriptionExpression(), String.class, ""))
-                .startTimeProvider(startTimeProvider)
-                .endTimeProvider(endTimeProvider)
+                .startTimeProvider(variableManager -> this.getTemporalFromExpression(variableManager, interpreter, viewTaskDescription.getStartTimeExpression()))
+                .endTimeProvider(variableManager -> this.getTemporalFromExpression(variableManager, interpreter, viewTaskDescription.getEndTimeExpression()))
                 .progressProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getProgressExpression(), Integer.class, 0))
                 .computeStartEndDynamicallyProvider(variableManager -> this.evaluateExpression(variableManager, interpreter, viewTaskDescription.getComputeStartEndDynamicallyExpression(), Boolean.class, false))
                 .taskDependenciesProvider(variableManager -> this.getTaskDependencies(variableManager, interpreter, viewTaskDescription.getTaskDependenciesExpression()))
@@ -200,6 +164,29 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .build();
         return taskDescription;
     }
+
+    private Temporal getTemporalFromExpression(VariableManager variableManager, AQLInterpreter interpreter, String expression) {
+        Temporal result = null;
+
+        var optionalObject = interpreter.evaluateExpression(variableManager.getVariables(), expression).asObject();
+        if (optionalObject.isPresent()) {
+            var object = optionalObject.get();
+            if (object instanceof Temporal temporal) {
+                result = temporal;
+            } else if (object instanceof String string) {
+                try {
+                    result = Instant.parse(string);
+                } catch (DateTimeParseException e) {
+                    try {
+                        result = LocalDate.parse(string);
+                    } catch (DateTimeParseException e2) {
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
 
     private <T> T evaluateExpression(VariableManager variableManager, AQLInterpreter interpreter, String expression, Class<T> type, T defaultValue) {
         T value = interpreter.evaluateExpression(variableManager.getVariables(), expression)

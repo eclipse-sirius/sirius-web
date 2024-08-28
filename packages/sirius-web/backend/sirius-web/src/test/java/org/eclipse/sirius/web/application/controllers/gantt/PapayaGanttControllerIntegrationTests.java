@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,6 +35,7 @@ import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTask
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTaskInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.gantt.Gantt;
+import org.eclipse.sirius.components.gantt.TemporalType;
 import org.eclipse.sirius.components.gantt.tests.graphql.ChangeColumnMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.ChangeTaskCollapseStateMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.CreateTaskDependencyMutationRunner;
@@ -187,7 +187,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 }, () -> fail(MISSING_GANTT));
 
         Runnable editGanttTask = () -> {
-            EditGanttTaskDetailInput editGanttTaskDetailInput = new EditGanttTaskDetailInput(null, null, Instant.parse("2023-12-15T09:00:00Z"), null, 0);
+            EditGanttTaskDetailInput editGanttTaskDetailInput = new EditGanttTaskDetailInput(null, null, "2023-12-15T09:00:00Z", null, TemporalType.DATE_TIME, 0);
             var editGanttTaskInput = new EditGanttTaskInput(UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_PROJECT.toString(),
                     ganttId.get(),
@@ -206,7 +206,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .ifPresentOrElse(gantt -> {
                     assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks().get(2).detail())
                             .hasFieldOrPropertyWithValue("name", "")
-                            .hasFieldOrPropertyWithValue("startTime", Instant.parse("2023-12-15T09:00:00Z"));
+                            .hasFieldOrPropertyWithValue("startTime", "2023-12-15T09:00:00Z");
                 }, () -> fail(MISSING_GANTT));
 
         StepVerifier.create(flux)

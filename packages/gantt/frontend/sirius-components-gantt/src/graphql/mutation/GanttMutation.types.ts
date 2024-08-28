@@ -13,9 +13,10 @@
 
 import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
+import { GQLTaskDetail, TemporalType } from '../subscription/GanttSubscription.types';
 
 export interface UseGanttMutations {
-  editTask: (task: TaskOrEmpty) => void;
+  editTask: (taskId: string, taskDetail: GQLTaskDetail) => void;
   createTask: (task: Task) => void;
   deleteTask: (tasks: readonly TaskOrEmpty[]) => void;
   dropTask: (droppedTask: TaskOrEmpty, targetTask: TaskOrEmpty | undefined, dropIndex: number) => void;
@@ -48,6 +49,7 @@ export interface GQLEditGanttTaskDetailInput {
   description: string;
   startTime?: string;
   endTime?: string;
+  temporalType?: TemporalType;
   progress: number;
 }
 export interface GQLEditGanttTaskInput {

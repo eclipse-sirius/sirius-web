@@ -23,9 +23,10 @@ import {
   GQLGanttEventSubscription,
   GQLGanttRefreshedEventPayload,
   GQLTaskDetail,
+  SelectableTask,
 } from '../graphql/subscription/GanttSubscription.types';
 import { ganttEventSubscription } from '../graphql/subscription/ganttSubscription';
-import { getTaskFromGQLTask, updateTask } from '../helper/helper';
+import { formatDate, getTaskFromGQLTask, updateTask } from '../helper/helper';
 import { Gantt } from './Gantt';
 import { GanttRepresentationState } from './GanttRepresentation.types';
 const useGanttRepresentationStyles = makeStyles()((theme) => ({
@@ -125,16 +126,16 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
     const newDetail: GQLTaskDetail = {
       name: task.name,
       description: '',
-      startTime: (task as Task)?.start?.toISOString(),
-      endTime: (task as Task)?.end?.toISOString(),
+      startTime: formatDate((task as Task)?.start, (task as SelectableTask)?.temporalType, false),
+      endTime: formatDate((task as Task)?.end, (task as SelectableTask)?.temporalType, true),
       progress: (task as Task)?.progress,
       computeStartEndDynamically: task.isDisabled,
-      collapsed: (task as Task)?.hideChildren,
+      temporalType: (task as SelectableTask)?.temporalType,
     };
 
     // to avoid blink because useMutation implies a re-render as the task value is the old one
-    updateTask(gantt, task.id, newDetail);
-    editTask(task);
+    updateTask(gantt, task.id, { ...newDetail, collapsed: (task as Task)?.hideChildren });
+    editTask(task.id, newDetail);
   };
 
   const onExpandCollapse = () => {};
