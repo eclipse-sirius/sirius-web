@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.gantt.description;
 
 import java.text.MessageFormat;
-import java.time.Instant;
+import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @PublicApi
 public record TaskDescription(String id, Function<VariableManager, String> targetObjectIdProvider, Function<VariableManager, String> targetObjectKindProvider,
         Function<VariableManager, String> targetObjectLabelProvider, Function<VariableManager, List<?>> semanticElementsProvider, Function<VariableManager, String> nameProvider,
-        Function<VariableManager, String> descriptionProvider, Function<VariableManager, Instant> startTimeProvider, Function<VariableManager, Instant> endTimeProvider,
+        Function<VariableManager, String> descriptionProvider, Function<VariableManager, Temporal> startTimeProvider, Function<VariableManager, Temporal> endTimeProvider,
         Function<VariableManager, Integer> progressProvider, Function<VariableManager, Boolean> computeDatesDynamicallyProvider, Function<VariableManager, List<Object>> taskDependenciesProvider,
         List<String> reusedTaskDescriptionIds, List<TaskDescription> subTaskDescriptions) {
 
@@ -82,9 +82,9 @@ public record TaskDescription(String id, Function<VariableManager, String> targe
 
         private Function<VariableManager, String> descriptionProvider;
 
-        private Function<VariableManager, Instant> startTimeProvider;
+        private Function<VariableManager, Temporal> startTimeProvider;
 
-        private Function<VariableManager, Instant> endTimeProvider;
+        private Function<VariableManager, Temporal> endTimeProvider;
 
         private Function<VariableManager, Integer> progressProvider;
 
@@ -130,12 +130,12 @@ public record TaskDescription(String id, Function<VariableManager, String> targe
             return this;
         }
 
-        public Builder startTimeProvider(Function<VariableManager, Instant> startTimeProvider) {
+        public Builder startTimeProvider(Function<VariableManager, Temporal> startTimeProvider) {
             this.startTimeProvider = Objects.requireNonNull(startTimeProvider);
             return this;
         }
 
-        public Builder endTimeProvider(Function<VariableManager, Instant> endTimeProvider) {
+        public Builder endTimeProvider(Function<VariableManager, Temporal> endTimeProvider) {
             this.endTimeProvider = Objects.requireNonNull(endTimeProvider);
             return this;
         }

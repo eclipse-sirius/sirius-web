@@ -54,7 +54,7 @@ The new option ALWAYS allows the separator to be displayed in every case.
 - https://github.com/eclipse-sirius/sirius-web/issues/3763[#3763] [diagram] Make it possible to display semantic candidates in the selection dialog using a tree
 - https://github.com/eclipse-sirius/sirius-web/issues/3979[#3979] [core] Add Project related REST APIs.
 The new endpoints are:
-** getProjects (`GET /api/rest/projects`): Get all projects. 
+** getProjects (`GET /api/rest/projects`): Get all projects.
 ** getProjectById (`GET /api/rest/projects/{projectId}`): Get project with the given id (projectId).
 ** createProject (`POST /projects`): Create a new project with the given name and
 description (optional).
@@ -85,6 +85,7 @@ never, always and if_children (to display the separator only if children exist).
 - https://github.com/eclipse-sirius/sirius-web/issues/3961[#3961] [sirius-web] Extend the explorer to support multiple presentations
 - https://github.com/eclipse-sirius/sirius-web/issues/3856[#3856] [trees] Add tree representation in the view DSL
 - https://github.com/eclipse-sirius/sirius-web/issues/4000[#4000] [trees] Add support for styled labels in view model for trees
+- https://github.com/eclipse-sirius/sirius-web/issues/3833[#3833] [gantt] Enhance Gantt to support Date and DateTime
 
 == v2024.9.0
 
@@ -140,7 +141,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 
 * The `String` attribute `org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by the attribute `variables` of type `List<ToolVariable>`
 - https://github.com/eclipse-sirius/sirius-web/issues/3437[#3437] [core] Migrate frontend to MUI 5, if you contributed React componenent that use MUI, you should upgrade them to use MUI 5.
-- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService`, you must implement this method if you have custom implementation of these interface. 
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService`, you must implement this method if you have custom implementation of these interface.
 - https://github.com/eclipse-sirius/sirius-web/issues/3815[#3815] [core] Make child creation descriptions locale independent
 - https://github.com/eclipse-sirius/sirius-web/issues/3976[#3976] [core] Remove the configuration object used to create representation event processors.
 

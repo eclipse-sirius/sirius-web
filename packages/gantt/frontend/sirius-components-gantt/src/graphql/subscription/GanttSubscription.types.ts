@@ -55,6 +55,8 @@ export enum GQLGanttDateRoundingTimeUnit {
   DAY,
 }
 
+export type TemporalType = 'DATE' | 'DATE_TIME';
+
 export interface GQLTask {
   id: string;
   descriptionId: string;
@@ -76,6 +78,7 @@ export interface SelectableTask extends Task {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
+  temporalType?: TemporalType;
 }
 export interface SelectableEmptyTask extends EmptyTask {
   targetObjectId: string;
@@ -88,6 +91,7 @@ export interface GQLTaskDetail {
   description: string;
   startTime?: string;
   endTime?: string;
+  temporalType?: TemporalType;
   progress: number;
   computeStartEndDynamically?: boolean;
   collapsed?: boolean;
