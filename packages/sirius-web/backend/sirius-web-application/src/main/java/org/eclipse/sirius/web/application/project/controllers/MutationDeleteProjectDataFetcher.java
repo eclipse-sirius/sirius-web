@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
@@ -38,15 +39,19 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final IProjectApplicationService projectApplicationService;
 
-    public MutationDeleteProjectDataFetcher(ObjectMapper objectMapper, IProjectApplicationService projectApplicationService) {
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
+    public MutationDeleteProjectDataFetcher(ObjectMapper objectMapper, IProjectApplicationService projectApplicationService, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
     }
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteProjectInput.class);
+        this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(input.projectId().toString());
         return this.projectApplicationService.deleteProject(input);
     }
 }
