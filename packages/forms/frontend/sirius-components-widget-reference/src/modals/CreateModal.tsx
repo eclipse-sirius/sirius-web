@@ -22,7 +22,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
@@ -378,6 +378,8 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
     dispatch(changeContainerSelectionEvent);
   };
 
+  const markedItemIds = useMemo(() => [], []);
+
   return (
     <SelectionContext.Provider
       value={{
@@ -396,7 +398,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
             <ModelBrowserTreeView
               editingContextId={editingContextId}
               widget={widget}
-              markedItemIds={[]}
+              markedItemIds={markedItemIds}
               enableMultiSelection={false}
               title={'Select the container'}
               leafType={'container'}
