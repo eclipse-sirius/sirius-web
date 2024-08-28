@@ -116,6 +116,7 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3793[#3793] [sirius-web] Add mechanism to retrieve the parent object of an element in the tree representation
 - https://github.com/eclipse-sirius/sirius-web/issues/3880[#3880] [sirius-web] Make some tests methods more generic
 - https://github.com/eclipse-sirius/sirius-web/issues/3834[#3834] [deck] Add more variables for DeckDescription
+- https://github.com/eclipse-sirius/sirius-web/issues/3892[#3892] [core] Only persist the editing context if there's been actual semantic changes
 
 == v2024.7.0
 

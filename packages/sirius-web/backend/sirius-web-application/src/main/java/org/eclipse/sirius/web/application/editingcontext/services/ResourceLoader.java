@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -21,19 +25,15 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.sirius.components.emf.migration.api.MigrationData;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.migration.MigrationService;
+import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
+import org.eclipse.sirius.components.emf.migration.api.MigrationData;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
-import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
-import org.eclipse.sirius.components.emf.migration.MigrationService;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.springframework.stereotype.Service;
 
 /**
@@ -67,6 +67,7 @@ public class ResourceLoader implements IResourceLoader {
         try (var inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8))) {
             resourceSet.getResources().add(resource);
             resource.eAdapters().add(new ResourceMetadataAdapter(name));
+            resource.setTrackingModification(true);
             resource.load(inputStream, options);
 
             optionalResource = Optional.of(resource);

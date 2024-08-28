@@ -64,6 +64,7 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
         Optional<DocumentData> optionalDocumentData = Optional.empty();
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             resource.save(outputStream, options);
+            resource.setModified(false);
 
             for (Resource.Diagnostic warning : resource.getWarnings()) {
                 this.logger.warn(warning.getMessage());
