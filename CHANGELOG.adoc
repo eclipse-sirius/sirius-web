@@ -78,6 +78,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3849[#3849] [form] Fix the tree representation in form support the display of the same referenced element many times in the tree.
 - https://github.com/eclipse-sirius/sirius-web/issues/3878[#3878] [diagram] Unmount ReactFlowProvider after layout
 - https://github.com/eclipse-sirius/sirius-web/issues/3869[#3869] [form] Close form-based views when the underlying element no longer exists.
+- https://github.com/eclipse-sirius/sirius-web/issues/3899[#3899] [diagram] Fix an issue when using alt-tab shortcut and trying to drag a node afterwards
 
 === New Features
 
