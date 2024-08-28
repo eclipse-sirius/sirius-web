@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.StreamSupport;
 
@@ -89,8 +88,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
     @Transactional(readOnly = true)
     public boolean existsById(String editingContextId) {
         return new UUIDParser().parse(editingContextId)
-                .map(AggregateReference::<Project, UUID>to)
-                .map(this.semanticDataSearchService::existsByProject)
+                .map(this.projectSearchService::existsById)
                 .orElse(false);
     }
 
