@@ -29,6 +29,7 @@ import {
   GQLTaskDetail,
   SelectableEmptyTask,
   SelectableTask,
+  TemporalType,
 } from '../graphql/subscription/GanttSubscription.types';
 import { TaskListColumnEnum } from '../representation/Gantt.types';
 
@@ -54,8 +55,8 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
       task = {
         id: gQLTask.id,
         name: gQLTask.detail.name,
-        start: new Date(gQLTask.detail.startTime),
-        end: new Date(gQLTask.detail.endTime),
+        start: getDateFromString(gQLTask.detail.startTime, gQLTask.detail.temporalType, false),
+        end: getDateFromString(gQLTask.detail.endTime, gQLTask.detail.temporalType, true),
         progress: gQLTask.detail.progress,
         type,
         dependencies,
@@ -64,6 +65,7 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
         targetObjectId: gQLTask.targetObjectId,
         targetObjectKind: gQLTask.targetObjectKind,
         targetObjectLabel: gQLTask.targetObjectLabel,
+        temporalType: gQLTask.detail.temporalType,
       };
     } else {
       task = {
@@ -88,6 +90,45 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
   });
   return tasks;
 }
+
+const getDateFromString = (
+  dateTimeString: string,
+  temporalType: TemporalType | undefined,
+  isEndDate: boolean
+): Date => {
+  if (temporalType === 'DATE') {
+    const date = new Date(dateTimeString);
+    if (isEndDate) {
+      date.setDate(date.getDate() + 1);
+    }
+    // beware of the hourly time shifting
+    date.setHours(0);
+    return date;
+  }
+  return new Date(dateTimeString);
+};
+
+export const formatDate = (
+  date: Date,
+  temporalType: TemporalType | undefined,
+  isEndDate: boolean
+): string | undefined => {
+  if (date && temporalType) {
+    if (temporalType === 'DATE') {
+      const realDate = new Date(date);
+      if (isEndDate) {
+        realDate.setDate(realDate.getDate() - 1);
+      }
+      const year = String(realDate.getFullYear()).padStart(4, '0');
+      const month = String(realDate.getMonth() + 1).padStart(2, '0');
+      const day = String(realDate.getDate()).padStart(2, '0');
+
+      return `${year}-${month}-${day}`;
+    }
+    return date.toISOString();
+  }
+  return undefined;
+};
 
 export const updateTask = (gantt: GQLGantt | null, taskId: string, newDetail: GQLTaskDetail) => {
   if (gantt?.tasks) {
@@ -131,9 +172,15 @@ const StartDateColumn: React.FC<ColumnProps> = ({ data: { task } }) => {
 
 const EndDateColumn: React.FC<ColumnProps> = ({ data: { task } }) => {
   if (task.type !== 'empty') {
-    return <div>{getFormattedDate(task.end)}</div>;
+    let endDate = new Date(task.end);
+    const selectableTask = task as SelectableTask;
+    if (selectableTask?.temporalType === 'DATE') {
+      if (task.end.getHours() == 0 && task.end.getMinutes() == 0) {
+        endDate.setDate(endDate.getDate() - 1);
+      }
+    }
+    return <div>{getFormattedDate(endDate)}</div>;
   }
-
   return null;
 };
 

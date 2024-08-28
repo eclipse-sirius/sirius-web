@@ -55,11 +55,17 @@ type Task {
   taskDependencyIds: [String!]
 }
 
+enum TemporalType {
+  DATE_TIME
+  DATE
+}
+
 type TaskDetail {
   name: String!
   description: String!
-  startTime: Instant
-  endTime: Instant
+  startTime: String
+  endTime: String
+  temporalType: TemporalType
   progress: Int!
   computeStartEndDynamically: Boolean!
   collapsed: Boolean!
@@ -69,12 +75,6 @@ type TaskStyle {
   labelColor: String!
   backgroundColor: String!
   progressColor: String!
-}
-
-enum TaskType {
-  TASK
-  TASK_GROUP
-  MILESTONE
 }
 
 extend type Mutation {
@@ -107,7 +107,7 @@ union DeleteGanttTaskPayload = SuccessPayload | ErrorPayload
 input EditGanttTaskDetailInput {
   name: String
   description: String
-  type: TaskType
+  temporalType: TemporalType
   startTime: String
   endTime: String
   progress: Int

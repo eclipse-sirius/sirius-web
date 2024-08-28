@@ -13,6 +13,9 @@
 package org.eclipse.sirius.components.gantt.renderer.component;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +25,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.gantt.Task;
 import org.eclipse.sirius.components.gantt.TaskDetail;
+import org.eclipse.sirius.components.gantt.TemporalType;
 import org.eclipse.sirius.components.gantt.description.TaskDescription;
 import org.eclipse.sirius.components.gantt.renderer.elements.TaskElementProps;
 import org.eclipse.sirius.components.gantt.renderer.events.ChangeGanttTaskCollapseStateEvent;
@@ -71,8 +75,8 @@ public class TaskDescriptionComponent implements IComponent {
         TaskDescription taskDescription = this.props.taskDescription();
         String name = taskDescription.nameProvider().apply(childVariableManager);
         String description = taskDescription.descriptionProvider().apply(childVariableManager);
-        Instant startTime = taskDescription.startTimeProvider().apply(childVariableManager);
-        Instant endTime = taskDescription.endTimeProvider().apply(childVariableManager);
+        Temporal startTime = taskDescription.startTimeProvider().apply(childVariableManager);
+        Temporal endTime = taskDescription.endTimeProvider().apply(childVariableManager);
         Integer progress = taskDescription.progressProvider().apply(childVariableManager);
         Boolean computeDatesDynamicallyProvider = taskDescription.computeDatesDynamicallyProvider().apply(childVariableManager);
         List<Object> dependencyObjects = taskDescription.taskDependenciesProvider().apply(childVariableManager);
@@ -96,9 +100,29 @@ public class TaskDescriptionComponent implements IComponent {
 
         boolean collapsed = this.computeCollapsed(previousTaskOptional);
 
-        TaskDetail detail = new TaskDetail(name, description, startTime, endTime, progress, computeDatesDynamicallyProvider, collapsed);
+        TaskDetail detail = new TaskDetail(name, description, getTemporalString(startTime), getTemporalString(endTime), getTemporalType(startTime, endTime), progress, computeDatesDynamicallyProvider, collapsed);
         TaskElementProps taskElementProps = new TaskElementProps(UUID.nameUUIDFromBytes(targetObjectId.getBytes()).toString(), taskDescription.id(), targetObjectId, targetObjectKind, targetObjectLabel, detail, dependencyObjectIds, childrenElements);
         return new Element(TaskElementProps.TYPE, taskElementProps);
+    }
+
+    private TemporalType getTemporalType(Temporal startTime, Temporal endTime) {
+        TemporalType temporalType = null;
+        if (startTime instanceof Instant || endTime instanceof Instant) {
+            temporalType = TemporalType.DATE_TIME;
+        } else if (startTime instanceof LocalDate || endTime instanceof LocalDate) {
+            temporalType = TemporalType.DATE;
+        }
+        return temporalType;
+    }
+
+    private String getTemporalString(Temporal temporal) {
+        String temporalString = "";
+        if (temporal instanceof Instant instant) {
+            temporalString = DateTimeFormatter.ISO_INSTANT.format(instant);
+        } else if (temporal instanceof LocalDate localDate) {
+            temporalString = DateTimeFormatter.ISO_LOCAL_DATE.format(localDate);
+        }
+        return temporalString;
     }
 
     private List<Element> getChildren(VariableManager variableManager, TaskDescription taskDescription, Optional<Task> previousTaskOptional) {

@@ -92,20 +92,12 @@ export const useGanttMutations = (editingContextId: string, representationId: st
   );
   useReporting(mutationEditTaskResult, (data: GQLEditTaskData) => data.editGanttTask);
 
-  const editTask = (task: TaskOrEmpty) => {
-    const newDetail: GQLTaskDetail = {
-      name: task.name,
-      description: '',
-      startTime: (task as Task)?.start?.toISOString(),
-      endTime: (task as Task)?.end?.toISOString(),
-      progress: (task as Task)?.progress,
-      computeStartEndDynamically: task.isDisabled,
-    };
+  const editTask = (taskId: string, newDetail: GQLTaskDetail) => {
     const input: GQLEditGanttTaskInput = {
       id: crypto.randomUUID(),
       editingContextId,
       representationId,
-      taskId: task.id,
+      taskId,
       newDetail,
     };
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.gantt.dto.input;
 
-import org.eclipse.sirius.components.gantt.TemporalType;
+package org.eclipse.sirius.components.gantt;
 
 /**
- * The input of the "Edit task" mutation.
+ * Enum representing a type of temporal.
  *
  * @author lfasani
  */
-public record EditGanttTaskDetailInput(String name, String description, String startTime, String endTime, TemporalType temporalType, int progress) {
+public enum TemporalType {
+    DATE_TIME,
+    DATE
 }

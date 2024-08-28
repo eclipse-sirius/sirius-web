@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.gantt;
 
-import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -20,7 +19,7 @@ import java.util.Objects;
  *
  * @author lfasani
  */
-public record TaskDetail(String name, String description, Instant startTime, Instant endTime, int progress, boolean computeStartEndDynamically, boolean collapsed) {
+public record TaskDetail(String name, String description, String startTime, String endTime, TemporalType temporalType, int progress, boolean computeStartEndDynamically, boolean collapsed) {
 
     public TaskDetail {
         Objects.requireNonNull(name);

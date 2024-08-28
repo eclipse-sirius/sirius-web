@@ -13,12 +13,16 @@
 package org.eclipse.sirius.components.gantt.renderer;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.Task;
 import org.eclipse.sirius.components.gantt.TaskDetail;
+import org.eclipse.sirius.components.gantt.TemporalType;
 import org.eclipse.sirius.components.gantt.renderer.elements.GanttElementProps;
 import org.eclipse.sirius.components.gantt.renderer.elements.TaskElementProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
@@ -60,38 +64,70 @@ public class GanttElementFactory implements IElementFactory {
         TaskDetail detail = props.detail();
         if (detail.computeStartEndDynamically() && !subTasks.isEmpty()) {
 
-            Instant startTime = subTasks.stream()
-                    .filter(task -> task.detail().startTime() != null)
-                    .min(Comparator.comparing(task -> task.detail().startTime()))
+            String startTime = subTasks.stream()
                     .map(task -> task.detail().startTime())
+                    .min(Comparator.comparing(timeString -> timeString))
                     .orElse(props.detail().startTime());
 
-            Instant endTime = subTasks.stream()
-                    .filter(task -> task.detail().endTime() != null)
-                    .max(Comparator.comparing(task -> task.detail().endTime()))
-                    .map(task-> task.detail().endTime())
+            String endTime =  subTasks.stream()
+                    .map(task -> task.detail().endTime())
+                    .max(Comparator.comparing(timeString -> timeString))
                     .orElse(props.detail().endTime());
 
             // compute the ratio
-            var numerator =  subTasks.stream()
-                .filter(task -> task.detail().startTime() != null && task.detail().endTime() != null)
-                .mapToLong(task -> task.detail().progress() * (task.detail().endTime().getEpochSecond() - task.detail().startTime().getEpochSecond()))
-                .sum();
+            var numerator = subTasks.stream()
+                    .mapToLong(task -> {
+                        long value = 0;
+                        Temporal start = getTemporal(task.detail().startTime(), task.detail().temporalType());
+                        Temporal end = getTemporal(task.detail().endTime(), task.detail().temporalType());
+                        if (start != null && end != null) {
+                            value = task.detail().progress() * start.until(end, ChronoUnit.SECONDS);
+                        }
+                        return value;
+                    })
+                    .sum();
 
-            var denominator =  subTasks.stream()
-                .filter(task -> task.detail().startTime() != null && task.detail().endTime() != null)
-                .mapToLong(task -> task.detail().endTime().getEpochSecond() - task.detail().startTime().getEpochSecond())
-                .sum();
+            var denominator = subTasks.stream()
+                    .mapToLong(task -> {
+                        long value = 0;
+                        Temporal start = getTemporal(task.detail().startTime(), task.detail().temporalType());
+                        Temporal end = getTemporal(task.detail().endTime(), task.detail().temporalType());
+                        if (start != null && end != null) {
+                            value = start.until(end, ChronoUnit.SECONDS);
+                        }
+                        return value;
+                    })
+                    .sum();
 
             int newProgress = 0;
             if (denominator > 0) {
                 newProgress = (int) (numerator / denominator);
             }
 
-            detail = new TaskDetail(detail.name(), detail.description(), startTime, endTime, newProgress, detail.computeStartEndDynamically(), detail.collapsed());
+            detail = new TaskDetail(detail.name(), detail.description(), startTime, endTime, getTemporalType(subTasks), newProgress, detail.computeStartEndDynamically(), detail.collapsed());
         }
 
         return new Task(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), detail, props.dependencyObjectIds(), subTasks);
     }
 
+    private Temporal getTemporal(String temporalString, TemporalType temporalType) {
+        Temporal temporal = null;
+        if (temporalString != null && !temporalString.isBlank()) {
+            if (TemporalType.DATE.equals(temporalType)) {
+                temporal = LocalDate.parse(temporalString);
+            } else if (TemporalType.DATE_TIME.equals(temporalType)) {
+                temporal = Instant.parse(temporalString);
+            }
+        }
+
+        return temporal;
+    }
+
+    private TemporalType getTemporalType(List<Task> subTasks) {
+        return subTasks.stream()
+                .map(Task::detail)
+                .map(TaskDetail::temporalType)
+                .findFirst()
+                .orElse(null);
+    }
 }

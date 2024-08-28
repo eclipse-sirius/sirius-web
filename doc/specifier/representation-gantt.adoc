@@ -28,6 +28,7 @@ The string contains
 ** an integer which is the number of time unit.
 ** a character among {D,H,m} corresponding to a Day, Hour or minute time unit.
 Example: to round to half a day, the expression must returns `12H`
+Note: To be coherent, if `Start Time Expression` and `End Time Expression` of Task description return a `LocaDate`, `Date Rounding Expression` should be in days.
 
 ## Task description
 
@@ -45,8 +46,8 @@ All the following expressions are called as many times as the number of semantic
 
 * `Name Expression`: An expression that defines the name of the task
 * `Description Expression`: An expression that defines the description of the task
-* `Start Time Expression`: An expression that returns a `java.time.Instant` to define the start date of the task.
-* `End Time Expression`: An expression that returns a `java.time.Instant` to define the end date of the task.
+* `Start Time Expression`: An expression that returns a `java.time.Instant` or `java.time.LocalDate` to define the start date of the task.
+* `End Time Expression`: An expression that returns a `java.time.Instant` or `java.time.LocalDate` to define the end date of the task.
 * `Progress Expression`: An expression that returns an integer between 0 and 100 to define the percentage progress of the task.
 * `Compute Start End Dynamically Expression`: An expression that returns a boolean.
 If true and if the task contains sub-tasks, the start and end dates displayed in the Gantt are computed from the sub-tasks.
