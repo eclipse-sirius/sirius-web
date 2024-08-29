@@ -49,15 +49,15 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
         open={Boolean(state.menuAnchor)}
         anchorEl={state.menuAnchor}
         onClose={handleClose}>
+        {menuItemComponentExtensions.map(({ Component: NavigationBarMenuItem }, index) => (
+          <NavigationBarMenuItem key={index} />
+        ))}
         <MenuItem component="a" href={url} target="_blank" rel="noopener noreferrer">
           <ListItemIcon>
             <HelpIcon />
           </ListItemIcon>
           <ListItemText primary="Help" />
         </MenuItem>
-        {menuItemComponentExtensions.map(({ Component: NavigationBarMenuItem }, index) => (
-          <NavigationBarMenuItem key={index} />
-        ))}
       </Menu>
     </>
   );

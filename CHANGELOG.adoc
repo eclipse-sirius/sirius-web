@@ -120,6 +120,7 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3880[#3880] [sirius-web] Make some tests methods more generic
 - https://github.com/eclipse-sirius/sirius-web/issues/3834[#3834] [deck] Add more variables for DeckDescription
 - https://github.com/eclipse-sirius/sirius-web/issues/3897[#3897] [sirius-web] Improve the search for projects
+- https://github.com/eclipse-sirius/sirius-web/issues/3902[#3902] [core] Move the Help menu entry at the last position (after any contributed entries)
 
 == v2024.7.0
 
