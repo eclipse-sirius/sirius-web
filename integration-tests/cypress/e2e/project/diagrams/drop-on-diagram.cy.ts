@@ -30,7 +30,9 @@ describe('/projects/:projectId/edit - Diagram', () => {
 
     afterEach(() => cy.deleteProject(projectId));
 
-    it('Then we can create views by Drag and Drop on an unsynchronized diagram', () => {
+    // See comments on Diagram#dropOnDiagram which does not work.
+    // We should look again at this test with a more recent cypress version.
+    it.skip('Then we can create views by Drag and Drop on an unsynchronized diagram', () => {
       const explorer = new Explorer();
       explorer.expand('robot');
       explorer.createRepresentation('System', 'Topography unsynchronized', 'diagram');

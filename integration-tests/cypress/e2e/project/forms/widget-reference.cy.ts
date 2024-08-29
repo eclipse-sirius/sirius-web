@@ -29,7 +29,7 @@ const createFormWithWidgetRef = (domainType: string, name: string, reference: st
   details.getTextField('Title Expression').type(`{selectall}${name}{enter}`);
   explorer.expand(name);
   explorer.expand('PageDescription');
-  explorer.createObject('Group Description', 'children-ReferenceWidgetDescription');
+  explorer.createObject('GroupDescription', 'children-ReferenceWidgetDescription');
   details.getTextField('Reference Name Expression').should('exist');
   details.getTextField('Label Expression').type('Test Widget Reference');
   details.getTextField('Reference Name Expression').type(`${reference}{enter}`);

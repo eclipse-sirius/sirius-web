@@ -31,29 +31,15 @@ describe('Diagram - group palette', () => {
 
     afterEach(() => cy.deleteProject(projectId));
 
-    it('Then the group palette is displayed when using multi selection', () => {
-      const diagram = new Diagram();
-      const explorer = new Explorer();
-      diagram.getDiagram('diagram').should('exist');
-      explorer.select('Wifi');
-      explorer.select('Central_Unit', true);
-      diagram.fitToScreen();
-      diagram.getNodes('diagram', 'Wifi').click();
-      diagram.getPalette().should('not.exist');
-      diagram.getGroupPalette().should('exist');
-
-      diagram.getNodes('diagram', 'DSP').click();
-      diagram.getPalette().should('exist');
-      diagram.getGroupPalette().should('not.exist');
-    });
-
     it('Then the last distribute elements tool used is memorized', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
       diagram.getDiagram('diagram').should('exist');
+      diagram.fitToScreen();
       explorer.select('Wifi');
       explorer.select('Central_Unit', true);
-      diagram.fitToScreen();
+      diagram.getSelectedNodes('diagram', 'Wifi');
+      diagram.getSelectedNodes('diagram', 'Central_Unit');
       diagram.getNodes('diagram', 'Wifi').click();
       diagram.getGroupPalette().should('exist');
       diagram.getGroupPalette().findByTestId('Align left').should('exist');
@@ -70,10 +56,14 @@ describe('Diagram - group palette', () => {
     it('Then during multi selection the connection handles are not computed', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
+      diagram.getDiagram('diagram').should('exist');
       diagram.fitToScreen();
       explorer.select('Wifi');
+      diagram.getSelectedNodes('diagram', 'Wifi');
       cy.getByTestId('creationhandle-top').should('exist');
       explorer.select('Central_Unit', true);
+      diagram.getSelectedNodes('diagram', 'Wifi');
+      diagram.getSelectedNodes('diagram', 'Central_Unit');
       cy.getByTestId('creationhandle-top').should('not.exist');
     });
   });

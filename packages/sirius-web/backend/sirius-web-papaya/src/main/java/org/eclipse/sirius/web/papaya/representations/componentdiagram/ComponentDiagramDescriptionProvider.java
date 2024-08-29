@@ -43,7 +43,7 @@ public class ComponentDiagramDescriptionProvider implements IRepresentationDescr
     public RepresentationDescription create(IColorProvider colorProvider) {
         var componentDiagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         componentDiagramDescription.setName(NAME);
-        componentDiagramDescription.setDomainType("papaya:Component");
+        componentDiagramDescription.setDomainType("papaya::Component");
         componentDiagramDescription.setTitleExpression("aql:self.name + ' component diagram'");
         componentDiagramDescription.setAutoLayout(false);
         componentDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.DOWN);
