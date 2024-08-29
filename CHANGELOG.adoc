@@ -70,6 +70,7 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/4073[#4073] [trees] Add missing variables `ancestorIds` and `index` to variable manager used in the default expand all handler.
 - https://github.com/eclipse-sirius/sirius-web/issues/4077[#4077] [charts] Remove metadata from Charts widgets.
 Charts' metadata is only relevant when Charts are used as Representations.
+- https://github.com/eclipse-sirius/sirius-web/issues/3904[#3904] [form] Fix an issue where textfield did not update to reflect backend-set value when it matched the initial value.
 
 === New Features
 

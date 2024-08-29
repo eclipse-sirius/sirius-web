@@ -39,6 +39,7 @@ import {
   CompletionDismissedEvent,
   CompletionReceivedEvent,
   InitializeEvent,
+  NewValueSentEvent,
   RequestCompletionEvent,
   SchemaValue,
   TextfieldPropertySectionContext,
@@ -201,9 +202,19 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
       if (hasError) {
         const initializeEvent: InitializeEvent = { type: 'INITIALIZE', value: widget.stringValue };
         dispatch(initializeEvent);
+      } else {
+        const event: NewValueSentEvent = { type: 'NEW_VALUE_SENT' };
+        dispatch(event);
       }
     }
   }, [updateTextfieldLoading, updateTextfieldData, updateTextfieldError, dispatch]);
+
+  useEffect(() => {
+    if (textfieldPropertySection === 'sent') {
+      const initializeEvent: InitializeEvent = { type: 'INITIALIZE', value: widget.stringValue };
+      dispatch(initializeEvent);
+    }
+  }, [widget.stringValue, textfieldPropertySection]);
 
   const onBlur = () => {
     sendEditedValue();
