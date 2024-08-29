@@ -197,24 +197,22 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       ) {
         setNodes((oldNodes) => applyNodeChanges(noReadOnlyChanges, oldNodes));
       } else {
-        setNodes((oldNodes) => {
-          resetHelperLines(changes);
-          let transformedNodeChanges: NodeChange[] = transformBorderNodeChanges(noReadOnlyChanges, oldNodes);
-          transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
-          transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
-          transformedNodeChanges = applyHelperLines(transformedNodeChanges);
+        resetHelperLines(changes);
+        let transformedNodeChanges: NodeChange[] = transformBorderNodeChanges(noReadOnlyChanges, nodes);
+        transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
+        transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
+        transformedNodeChanges = applyHelperLines(transformedNodeChanges);
 
-          let newNodes = applyNodeChanges(transformedNodeChanges, oldNodes);
+        let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
 
-          newNodes = applyMoveChange(transformedNodeChanges, newNodes);
-          newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+        newNodes = applyMoveChange(transformedNodeChanges, newNodes);
+        newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
 
-          layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
-          return newNodes;
-        });
+        layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+        setNodes(newNodes);
       }
     },
-    [setNodes, layoutOnBoundsChange, getNodes, getEdges]
+    [layoutOnBoundsChange, getNodes, getEdges]
   );
 
   const handleEdgesChange: OnEdgesChange = useCallback(
