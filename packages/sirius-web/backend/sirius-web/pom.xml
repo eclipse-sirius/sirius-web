@@ -71,6 +71,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-e2e-tests</artifactId>
+			<version>2024.9.1</version>
+		</dependency>
 
 		<!-- Test Dependencies -->
 		<dependency>

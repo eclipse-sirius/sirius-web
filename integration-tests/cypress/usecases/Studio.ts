@@ -51,7 +51,7 @@ export class Studio {
   }
 
   public createProjectFromDomain(name: string, domain: string, entity: string): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProject(name, [Studio.STUDIO_NATURE]).then((res) => {
+    return cy.createProject(name, []).then((res) => {
       const payload = res.body.data.createProject;
       if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;

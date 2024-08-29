@@ -29,6 +29,10 @@ export class Diagram {
     cy.wait(4000);
   }
 
+  public getLabel(diagramLabel: string, label: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getDiagram(diagramLabel).findByTestId(`Label - ${label}`);
+  }
+
   public getNodes(diagramLabel: string, nodeLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getDiagram(diagramLabel).contains('.react-flow__node', nodeLabel);
   }
@@ -71,6 +75,14 @@ export class Diagram {
 
   public getNodeCssValue(diagramLabel: string, nodeLabel: string, cssValue: string): Cypress.Chainable<number> {
     return this.getNodes(diagramLabel, nodeLabel)
+      .invoke('css', cssValue)
+      .then((widthValue) => {
+        return parseInt(String(widthValue));
+      });
+  }
+
+  public getLabelCssValue(diagramLabel: string, label: string, cssValue: string): Cypress.Chainable<number> {
+    return this.getLabel(diagramLabel, label)
       .invoke('css', cssValue)
       .then((widthValue) => {
         return parseInt(String(widthValue));
@@ -135,6 +147,11 @@ export class Diagram {
     cy.getByTestId('share').click();
   }
 
+  /**
+   * It seems this method has an issue with the drop on bottom right.
+   * While it does not work on the CI, the behavior executing this test on local is buggy.
+   * It drop the node on the bottom right but further than the _reactflow_ watermark making the whole reactflow viewport move.
+   */
   public dropOnDiagram(diagramLabel: string, dataTransfer: DataTransfer): void {
     this.getDiagram(diagramLabel).getByTestId('rf__wrapper').trigger('drop', 'bottomRight', { dataTransfer });
   }
@@ -161,7 +178,7 @@ export class Diagram {
     return roundedPathData;
   }
 
-  public getLabel(labelId: string): Cypress.Chainable<JQuery<HTMLElement>> {
-    return cy.getByTestId(`Label - ${labelId}`);
-  }
+  // public getLabel(labelId: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  //   return cy.getByTestId(`Label - ${labelId}`);
+  // }
 }
