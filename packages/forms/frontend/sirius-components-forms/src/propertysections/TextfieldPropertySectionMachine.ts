@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ export interface TextfieldPropertySectionStateSchema {
       states: {
         pristine: {};
         edited: {};
+        sent: {};
       };
     };
     completion: {
@@ -32,7 +33,7 @@ export interface TextfieldPropertySectionStateSchema {
 }
 
 export type SchemaValue = {
-  textfieldPropertySection: 'pristine' | 'edited';
+  textfieldPropertySection: 'pristine' | 'edited' | 'sent';
   completion: 'idle' | 'requested' | 'received';
 };
 
@@ -44,6 +45,7 @@ export interface TextfieldPropertySectionContext {
 
 export type InitializeEvent = { type: 'INITIALIZE'; value: string };
 export type ChangeValueEvent = { type: 'CHANGE_VALUE'; value: string };
+export type NewValueSentEvent = { type: 'NEW_VALUE_SENT' };
 export type RequestCompletionEvent = { type: 'COMPLETION_REQUESTED'; currentText: string; cursorPosition: number };
 export type CompletionReceivedEvent = { type: 'COMPLETION_RECEIVED'; proposals: GQLCompletionProposal[] };
 export type CompletionDismissedEvent = { type: 'COMPLETION_DISMISSED' };
@@ -51,6 +53,7 @@ export type CompletionDismissedEvent = { type: 'COMPLETION_DISMISSED' };
 export type TextfieldPropertySectionEvent =
   | InitializeEvent
   | ChangeValueEvent
+  | NewValueSentEvent
   | RequestCompletionEvent
   | CompletionReceivedEvent
   | CompletionDismissedEvent;
@@ -91,6 +94,17 @@ export const textfieldPropertySectionMachine = Machine<
               },
               CHANGE_VALUE: {
                 target: 'edited',
+                actions: 'updateValue',
+              },
+              NEW_VALUE_SENT: {
+                target: 'sent',
+              },
+            },
+          },
+          sent: {
+            on: {
+              INITIALIZE: {
+                target: 'pristine',
                 actions: 'updateValue',
               },
             },
