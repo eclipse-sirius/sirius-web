@@ -12,8 +12,10 @@
  *******************************************************************************/
 import { RepresentationMetadata } from '@eclipse-sirius/sirius-components-core';
 import { Machine, assign } from 'xstate';
-import { EditingContext, Nature, Project } from './useCurrentProject.types';
-import { GQLGetProjectAndRepresentationMetadataQueryData } from './useProjectAndRepresentationMetadata.types';
+import {
+  GQLGetProjectAndRepresentationMetadataQueryData,
+  GQLProject,
+} from './useProjectAndRepresentationMetadata.types';
 
 export interface EditProjectViewStateSchema {
   states: {
@@ -26,7 +28,7 @@ export interface EditProjectViewStateSchema {
 export type SchemaValue = 'loading' | 'loaded' | 'missing';
 
 export interface EditProjectViewContext {
-  project: Project | null;
+  project: GQLProject | null;
   representation: RepresentationMetadata | null;
   message: string | null;
 }
@@ -84,18 +86,14 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
     actions: {
       updateProject: assign((_, event) => {
         const { data } = event as HandleFetchedProjectEvent;
-        const { project: gQLProject } = data.viewer;
-
-        const natures: Nature[] = gQLProject.natures.map((gqlNature) => ({ name: gqlNature.name }));
-        const currentEditingContext: EditingContext = { id: gQLProject.currentEditingContext.id };
-        const project: Project = { id: gQLProject.id, name: gQLProject.name, natures, currentEditingContext };
+        const { project } = data.viewer;
 
         let representation: RepresentationMetadata | null = null;
-        if (gQLProject.currentEditingContext.representation) {
+        if (project.currentEditingContext.representation) {
           representation = {
-            id: gQLProject.currentEditingContext.representation.id,
-            label: gQLProject.currentEditingContext.representation.label,
-            kind: gQLProject.currentEditingContext.representation.kind,
+            id: project.currentEditingContext.representation.id,
+            label: project.currentEditingContext.representation.label,
+            kind: project.currentEditingContext.representation.kind,
           };
         }
 

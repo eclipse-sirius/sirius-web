@@ -10,9 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { ProjectReadOnlyPredicate } from './EditProjectView.types';
 
-import { GQLProject } from './useProjectAndRepresentationMetadata.types';
-
-export interface UseCurrentProjectValue {
-  project: GQLProject;
-}
+export const editProjectViewReadOnlyPredicateExtensionPoint: DataExtensionPoint<ProjectReadOnlyPredicate> = {
+  identifier: 'editProjectView#readOnlyPredicate',
+  fallback: () => false,
+};

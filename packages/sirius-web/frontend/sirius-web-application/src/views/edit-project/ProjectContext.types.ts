@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Project } from './useCurrentProject.types';
+
+import { GQLProject } from './useProjectAndRepresentationMetadata.types';
 
 export interface ProjectContextValue {
-  project: Project;
+  project: GQLProject;
 }

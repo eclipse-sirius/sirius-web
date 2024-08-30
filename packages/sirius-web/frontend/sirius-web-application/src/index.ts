@@ -51,6 +51,7 @@ export {
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
 export { type EditProjectNavbarSubtitleProps } from './views/edit-project/EditProjectNavbar/EditProjectNavbar.types';
 export { editProjectNavbarSubtitleExtensionPoint } from './views/edit-project/EditProjectNavbar/EditProjectNavbarExtensionPoints';
+export { type ProjectReadOnlyPredicate } from './views/edit-project/EditProjectView.types';
 export { useCurrentProject } from './views/edit-project/useCurrentProject';
 export type { UseCurrentProjectValue } from './views/edit-project/useCurrentProject.types';
 export type { GQLProject } from './views/edit-project/useProjectAndRepresentationMetadata.types';
