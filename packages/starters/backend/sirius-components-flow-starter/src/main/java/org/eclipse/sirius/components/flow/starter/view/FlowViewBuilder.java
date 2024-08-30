@@ -37,8 +37,8 @@ public class FlowViewBuilder {
     public static final String RADAR_SVG_ID = "/flow-images/radar.svg";
     public static final String SENSOR_SVG_ID = "/flow-images/sensor.svg";
     public static final String FAN_SVG_ID = "/flow-images/fan.svg";
-    public static final String POWER_OUTPUT_SVG_ID = "/flow-images/power-output.svg";
-    public static final String POWER_INPUT_SVG_ID = "/flow-images/power-input.svg";
+    public static final String POWER_OUTPUT_SVG_ID = "/flow-images/power_output.svg";
+    public static final String POWER_INPUT_SVG_ID = "/flow-images/power_input.svg";
     public static final String ENGINE_HIGH_SVG_ID = "/flow-images/chipset2_high.svg";
     public static final String ENGINE_LOW_SVG_ID = "/flow-images/chipset2_low.svg";
     public static final String ENGINE_OVER_SVG_ID = "/flow-images/chipset2_over.svg";
