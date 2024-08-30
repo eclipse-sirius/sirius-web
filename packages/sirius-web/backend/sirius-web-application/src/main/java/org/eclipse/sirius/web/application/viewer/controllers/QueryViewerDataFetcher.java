@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.viewer.controllers;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.viewer.services.api.IViewerProvider;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -24,8 +27,15 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @QueryDataFetcher(type = "Query", field = "viewer")
 public class QueryViewerDataFetcher implements IDataFetcherWithFieldCoordinates<Object> {
+
+    private final IViewerProvider viewerProvider;
+
+    public QueryViewerDataFetcher(IViewerProvider viewerProvider) {
+        this.viewerProvider = Objects.requireNonNull(viewerProvider);
+    }
+
     @Override
     public Object get(DataFetchingEnvironment environment) throws Exception {
-        return new Object();
+        return this.viewerProvider.getViewer();
     }
 }
