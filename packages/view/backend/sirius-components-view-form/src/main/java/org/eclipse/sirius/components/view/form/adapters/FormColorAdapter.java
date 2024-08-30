@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.form.ButtonDescription;
 import org.eclipse.sirius.components.view.form.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.CheckboxDescription;
 import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
 import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormPackage;
@@ -52,6 +53,9 @@ import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
  */
 public class FormColorAdapter extends EContentAdapter {
 
+    private static final String TRANSPARENT = "transparent";
+
+    private static final String TEXT_PRIMARY = "theme.palette.text.primary";
 
     private FormStyleSwitch formStyleSwitch;
 
@@ -149,7 +153,7 @@ public class FormColorAdapter extends EContentAdapter {
         @Override
         public Void caseLabelDescriptionStyle(LabelDescriptionStyle object) {
             if (object.getColor() == null) {
-                object.setColor(this.colorPaletteService.getColorFromPalette(object, "theme.palette.text.primary"));
+                object.setColor(this.colorPaletteService.getColorFromPalette(object, TEXT_PRIMARY));
             }
             return null;
         }
@@ -157,7 +161,7 @@ public class FormColorAdapter extends EContentAdapter {
         @Override
         public Void caseLinkDescriptionStyle(LinkDescriptionStyle object) {
             if (object.getColor() == null) {
-                object.setColor(this.colorPaletteService.getColorFromPalette(object, "theme.palette.text.primary"));
+                object.setColor(this.colorPaletteService.getColorFromPalette(object, TEXT_PRIMARY));
             }
             return null;
         }
@@ -165,7 +169,7 @@ public class FormColorAdapter extends EContentAdapter {
         @Override
         public Void caseListDescriptionStyle(ListDescriptionStyle object) {
             if (object.getColor() == null) {
-                object.setColor(this.colorPaletteService.getColorFromPalette(object, "theme.palette.text.primary"));
+                object.setColor(this.colorPaletteService.getColorFromPalette(object, TEXT_PRIMARY));
             }
             return null;
         }
@@ -173,10 +177,10 @@ public class FormColorAdapter extends EContentAdapter {
         @Override
         public Void caseMultiSelectDescriptionStyle(MultiSelectDescriptionStyle object) {
             if (object.getBackgroundColor() == null) {
-                object.setBackgroundColor(this.colorPaletteService.getColorFromPalette(object, "transparent"));
+                object.setBackgroundColor(this.colorPaletteService.getColorFromPalette(object, TRANSPARENT));
             }
             if (object.getForegroundColor() == null) {
-                object.setForegroundColor(this.colorPaletteService.getColorFromPalette(object, "theme.palette.text.primary"));
+                object.setForegroundColor(this.colorPaletteService.getColorFromPalette(object, TEXT_PRIMARY));
             }
             return null;
         }
@@ -192,10 +196,10 @@ public class FormColorAdapter extends EContentAdapter {
         @Override
         public Void caseSelectDescriptionStyle(SelectDescriptionStyle object) {
             if (object.getBackgroundColor() == null) {
-                object.setBackgroundColor(this.colorPaletteService.getColorFromPalette(object, "transparent"));
+                object.setBackgroundColor(this.colorPaletteService.getColorFromPalette(object, TRANSPARENT));
             }
             if (object.getForegroundColor() == null) {
-                object.setForegroundColor(this.colorPaletteService.getColorFromPalette(object, "theme.palette.text.primary"));
+                object.setForegroundColor(this.colorPaletteService.getColorFromPalette(object, TEXT_PRIMARY));
             }
             return null;
         }
@@ -203,10 +207,10 @@ public class FormColorAdapter extends EContentAdapter {
         @Override
         public Void caseTextareaDescriptionStyle(TextareaDescriptionStyle object) {
             if (object.getBackgroundColor() == null) {
-                object.setBackgroundColor(this.colorPaletteService.getColorFromPalette(object, "transparent"));
+                object.setBackgroundColor(this.colorPaletteService.getColorFromPalette(object, TRANSPARENT));
             }
             if (object.getForegroundColor() == null) {
-                object.setForegroundColor(this.colorPaletteService.getColorFromPalette(object, "theme.palette.text.primary"));
+                object.setForegroundColor(this.colorPaletteService.getColorFromPalette(object, TEXT_PRIMARY));
             }
             return null;
         }
@@ -214,10 +218,21 @@ public class FormColorAdapter extends EContentAdapter {
         @Override
         public Void caseTextfieldDescriptionStyle(TextfieldDescriptionStyle object) {
             if (object.getBackgroundColor() == null) {
-                object.setBackgroundColor(this.colorPaletteService.getColorFromPalette(object, "transparent"));
+                object.setBackgroundColor(this.colorPaletteService.getColorFromPalette(object, TRANSPARENT));
             }
             if (object.getForegroundColor() == null) {
-                object.setForegroundColor(this.colorPaletteService.getColorFromPalette(object, "theme.palette.text.primary"));
+                object.setForegroundColor(this.colorPaletteService.getColorFromPalette(object, TEXT_PRIMARY));
+            }
+            return null;
+        }
+
+        @Override
+        public Void caseDateTimeDescriptionStyle(DateTimeDescriptionStyle object) {
+            if (object.getBackgroundColor() == null) {
+                object.setBackgroundColor(this.colorPaletteService.getColorFromPalette(object, TRANSPARENT));
+            }
+            if (object.getForegroundColor() == null) {
+                object.setForegroundColor(this.colorPaletteService.getColorFromPalette(object, TEXT_PRIMARY));
             }
             return null;
         }
