@@ -248,14 +248,16 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
           data-testid={`representation-${item.label}`}>
           {item.label}
         </Typography>
-        <IconButton
-          aria-label="deleteListItem"
-          onClick={(event) => onDelete(event, item)}
-          disabled={readOnly || !item.deletable || widget.readOnly}
-          size="small"
-          data-testid={`delete-representation-${item.label}`}>
-          <DeleteIcon />
-        </IconButton>
+        {item.deletable && (
+          <IconButton
+            aria-label="deleteListItem"
+            onClick={(event) => onDelete(event, item)}
+            disabled={readOnly || widget.readOnly}
+            size="small"
+            data-testid={`delete-representation-${item.label}`}>
+            <DeleteIcon />
+          </IconButton>
+        )}
       </>
     );
   };
