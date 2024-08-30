@@ -81,6 +81,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3899[#3899] [diagram] Fix an issue when using alt-tab shortcut and trying to drag a node afterwards
 - https://github.com/eclipse-sirius/sirius-web/issues/3911[#3911] [diagram] Fix overflow issue with labels, ensuring proper wrapping and ellipsis.
 - https://github.com/eclipse-sirius/sirius-web/issues/3933[#3933] [vs-code] Fix explorer in vscode extension
+- https://github.com/eclipse-sirius/sirius-web/issues/3920[#3920] [form] Fix DateTime widget default style not set
 
 === New Features
 
