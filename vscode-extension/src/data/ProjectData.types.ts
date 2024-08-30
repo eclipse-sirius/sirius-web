@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,3 +40,35 @@ export interface GQLGetRepresentationMetadataRepresentationMetadata {
   label: string;
   kind: string;
 }
+
+export interface GQLStyledString {
+  styledStringFragments: GQLStyledStringFragment[];
+}
+export interface GQLStyledStringFragment {
+  text: string;
+  styledStringFragmentStyle: GQLStyledStringFragmentStyle;
+}
+export interface GQLStyledStringFragmentStyle {
+  font: string;
+  backgroundColor: string;
+  foregroundColor: string;
+  isStruckOut: boolean;
+  strikeoutColor: string;
+  underlineColor: string;
+  borderColor: string;
+  borderStyle: GQLBorderStyle;
+  underlineStyle: GQLUnderLineStyle;
+}
+export type GQLUnderLineStyle = 'NONE' | 'SOLID' | 'DOUBLE' | 'DOTTED' | 'DASHED' | 'WAVY';
+
+export type GQLBorderStyle =
+  | 'NONE'
+  | 'HIDDEN'
+  | 'DOTTED'
+  | 'DASHED'
+  | 'SOLID'
+  | 'DOUBLE'
+  | 'GROOVE'
+  | 'RIDGE'
+  | 'INSET'
+  | 'OUTSET';

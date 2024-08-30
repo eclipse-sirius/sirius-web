@@ -10,15 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import { commands, window } from 'vscode';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import { ModelData } from './ModelData';
-import { GQLGetRepresentationMetadataResponse } from './ProjectData.types';
+import { GQLGetRepresentationMetadataResponse, GQLStyledString } from './ProjectData.types';
 import { RepresentationData } from './RepresentationData';
 import { getTreeEventSubscription } from './getTreeEventSubscription';
+
+const getTextFromStyledString = (styledString: GQLStyledString): string => {
+  return styledString.styledStringFragments.map((fragments) => fragments.text).join();
+};
 
 export class ProjectData {
   private modelsData: ModelData[];
@@ -104,9 +107,16 @@ export class ProjectData {
   private buildModelData(elements: []): ModelData[] {
     const modelsData: ModelData[] = [];
     elements.forEach(
-      (element: { id: string; label: string; kind: string; imageURL: string; hasChildren: boolean; children: [] }) => {
+      (element: {
+        id: string;
+        label: GQLStyledString;
+        kind: string;
+        imageURL: string;
+        hasChildren: boolean;
+        children: [];
+      }) => {
         if (!this.isHandledRepresentation(element)) {
-          let elementLabel = element.label;
+          let elementLabel = getTextFromStyledString(element.label);
           if (elementLabel === undefined || elementLabel.length === 0) {
             elementLabel = String(element.kind.split('::').pop());
           }
