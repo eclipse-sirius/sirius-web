@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProv
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.components.graphql.ws.api.IGraphQLWebSocketHandlerListener;
 import org.eclipse.sirius.components.web.concurrent.DelegatingRequestContextExecutorService;
+import org.eclipse.sirius.web.application.viewer.services.api.IViewerProvider;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -76,6 +77,12 @@ public class SiriusWebStarterConfiguration {
 
     public SiriusWebStarterConfiguration(List<IRepresentationEventProcessorFluxCustomizer> representationEventProcessorFluxCustomizers) {
         this.representationEventProcessorFluxCustomizers = Objects.requireNonNull(representationEventProcessorFluxCustomizers);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(IViewerProvider.class)
+    public IViewerProvider getViewer() {
+        return () -> new Object();
     }
 
     @Bean
