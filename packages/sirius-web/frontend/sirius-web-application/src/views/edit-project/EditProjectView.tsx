@@ -14,9 +14,9 @@ import {
   RepresentationMetadata,
   Selection,
   SelectionContextProvider,
+  useData,
   Workbench,
 } from '@eclipse-sirius/sirius-components-core';
-import { useMachine } from '@xstate/react';
 import {
   TreeToolBarContext,
   TreeToolBarContextValue,
@@ -24,18 +24,20 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
+import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
+import { makeStyles } from 'tss-react/mui';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
 import { EditProjectViewParams, TreeToolBarProviderProps } from './EditProjectView.types';
+import { editProjectViewReadOnlyPredicateExtensionPoint } from './EditProjectViewExtensionPoints';
 import {
   EditProjectViewContext,
   EditProjectViewEvent,
+  editProjectViewMachine,
   HandleFetchedProjectEvent,
   SelectRepresentationEvent,
-  editProjectViewMachine,
 } from './EditProjectViewMachine';
 import { ProjectContext } from './ProjectContext';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
@@ -107,6 +109,8 @@ export const EditProjectView = () => {
     );
   }
 
+  const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);
+
   if (value === 'loaded' && context.project) {
     const initialSelection: Selection = {
       entries: context.representation
@@ -127,7 +131,7 @@ export const EditProjectView = () => {
               editingContextId={context.project.currentEditingContext.id}
               initialRepresentationSelected={context.representation}
               onRepresentationSelected={onRepresentationSelected}
-              readOnly={false}
+              readOnly={readOnlyPredicate(context.project)}
             />
           </TreeToolBarProvider>
         </SelectionContextProvider>

@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLProject } from './useProjectAndRepresentationMetadata.types';
+
 export interface EditProjectViewParams {
   projectId: string;
   representationId: string;
@@ -27,3 +29,5 @@ export interface TreeToolBarProviderProps {
 export interface DiagramPaletteToolProviderProps {
   children: React.ReactNode;
 }
+
+export type ProjectReadOnlyPredicate = (project: GQLProject) => boolean;

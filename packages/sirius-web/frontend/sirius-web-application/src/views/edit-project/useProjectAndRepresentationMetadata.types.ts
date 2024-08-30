@@ -43,7 +43,7 @@ export interface GQLNature {
 
 export interface GQLEditingContext {
   id: string;
-  representation: GQLRepresentationMetadata | undefined;
+  representation?: GQLRepresentationMetadata;
 }
 
 export type GQLRepresentationMetadata = {
