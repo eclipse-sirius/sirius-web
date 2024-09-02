@@ -1,0 +1,48 @@
+= ADR-157 - Have the multiple selection on the Selection Dialog
+
+== Context
+
+Currently, the Selection Dialog defined on a NodeTool just allows one element to select.
+In some cases where it makes sense, we would like to let the end-user select several elements.
+
+== Decision
+
+=== View model
+
+The org.eclipse.sirius.components.view.diagram.SelectionDialogDescription will have a new boolean attribute called "multiple" as defined in the Sirius Desktop Selection Wizard.
+
+=== GraphQL API
+
+The SelectionDescription type will have a new boolean field "multiple":
+
+```
+type SelectionDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
+  message(variables: [SelectionDialogVariable!]!): String!
+  multiple: Boolean!
+  treeDescription: TreeDescription!
+}
+```
+
+=== Frontend
+
+The frontend SelectionDialog component will request the `multiple` value information to know if it should authorize the multi-selection on the `TreeView` and change the variable returned to backend:
+
+* In case of simple selection, the frontend will continue to send a variable "selectedObject" with the type "OBJECT_ID"
+* In case of multiple selection, the frontend will send a variable "selectedObjects" with the type "OBJECT_ID_ARRAY"
+
+=== Backend
+
+There is nothing else to change in the backend since it already handles the three variables types : STRING, OBJECT_ID and OBJECT_ID_ARRAY.
+
+== Status
+
+Work in progress
+
+== Consequences
+
+There are no particular consequences as this ADR is very specific to the Selection dialog.
+
+== References
+
