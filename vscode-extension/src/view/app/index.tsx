@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,13 @@
 import { ApolloClient, ApolloProvider, DefaultOptions, HttpLink, InMemoryCache, split } from '@apollo/client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { ExtensionProvider, ServerContext } from '@eclipse-sirius/sirius-components-core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { App } from './App';
 import './index.css';
+import { defaultExtensionRegistry } from './registry/DefaultExtensionRegistry';
+import { referenceWidgetDocumentTransform } from './registry/ReferenceWidgetDocumentTransform';
 import { ToastProvider } from './toast/ToastProvider';
 
 declare global {
@@ -79,23 +81,26 @@ const ApolloGraphQLClient = new ApolloClient({
   link: splitLink,
   cache: new InMemoryCache({ addTypename: true }),
   defaultOptions,
+  documentTransform: referenceWidgetDocumentTransform,
 });
 
 ReactDOM.render(
-  <ServerContext.Provider value={value}>
-    <ApolloProvider client={ApolloGraphQLClient}>
-      <ToastProvider>
-        <App
-          serverAddress={window.serverAddress}
-          username={window.username}
-          password={window.password}
-          editingContextId={window.editingContextId}
-          representationId={window.representationId}
-          representationLabel={window.representationLabel}
-          representationKind={window.representationKind}
-        />
-      </ToastProvider>
-    </ApolloProvider>
-  </ServerContext.Provider>,
+  <ExtensionProvider registry={defaultExtensionRegistry}>
+    <ServerContext.Provider value={value}>
+      <ApolloProvider client={ApolloGraphQLClient}>
+        <ToastProvider>
+          <App
+            serverAddress={window.serverAddress}
+            username={window.username}
+            password={window.password}
+            editingContextId={window.editingContextId}
+            representationId={window.representationId}
+            representationLabel={window.representationLabel}
+            representationKind={window.representationKind}
+          />
+        </ToastProvider>
+      </ApolloProvider>
+    </ServerContext.Provider>
+  </ExtensionProvider>,
   document.getElementById('root')
 );
