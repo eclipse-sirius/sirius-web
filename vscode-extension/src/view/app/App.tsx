@@ -17,6 +17,7 @@ import {
   SelectionContextProvider,
 } from '@eclipse-sirius/sirius-components-core';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
+import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
 import { DetailsView } from '@eclipse-sirius/sirius-web-application';
 import { Theme, ThemeProvider } from '@mui/material';
@@ -118,6 +119,14 @@ export const App = ({
   if (representationKind.startsWith('siriusComponents://representation?type=Diagram')) {
     component = (
       <DiagramRepresentation
+        editingContextId={state.editingContextId}
+        representationId={state.representationId}
+        readOnly={false}
+      />
+    );
+  } else if (representationKind.startsWith('siriusComponents://representation?type=FormDescriptionEditor')) {
+    component = (
+      <FormDescriptionEditorRepresentation
         editingContextId={state.editingContextId}
         representationId={state.representationId}
         readOnly={false}

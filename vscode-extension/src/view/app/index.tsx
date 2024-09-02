@@ -15,12 +15,12 @@ import { ApolloClient, ApolloProvider, DefaultOptions, HttpLink, InMemoryCache, 
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { ExtensionProvider, ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { referenceWidgetDocumentTransform } from '@eclipse-sirius/sirius-web-application';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { App } from './App';
 import './index.css';
 import { defaultExtensionRegistry } from './registry/DefaultExtensionRegistry';
-import { referenceWidgetDocumentTransform } from './registry/ReferenceWidgetDocumentTransform';
 import { ToastProvider } from './toast/ToastProvider';
 
 declare global {
