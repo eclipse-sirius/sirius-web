@@ -128,6 +128,8 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3927[#3927] [sirius-web] Make the viewer object configurable
 - https://github.com/eclipse-sirius/sirius-web/issues/3928[#3928] [sirius-web] Derive the read-only state from the project GraphQL query
 - https://github.com/eclipse-sirius/sirius-web/issues/3932[#3932] [forms] Do not display the 'Delete' button (even disabled) for non-deletable lists
+- https://github.com/eclipse-sirius/sirius-web/issues/3951[#3951] [sirius-web] Provide an error page to redirect users in case of error
+
 
 == v2024.7.0
 

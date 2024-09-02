@@ -17,8 +17,8 @@ import Link from '@mui/material/Link';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import { emphasize } from '@mui/material/styles';
-import { makeStyles } from 'tss-react/mui';
 import { Link as RouterLink } from 'react-router-dom';
+import { makeStyles } from 'tss-react/mui';
 import { NavigationBarProps } from './NavigationBar.types';
 import {
   navigationBarIconExtensionPoint,

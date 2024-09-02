@@ -53,11 +53,6 @@ const createProjectMutation = gql`
 `;
 
 const useNewProjectViewStyles = makeStyles()((theme) => ({
-  newProjectViewContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingTop: theme.spacing(8),
-  },
   newProjectView: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -67,6 +62,11 @@ const useNewProjectViewStyles = makeStyles()((theme) => ({
   main: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
+  },
+  newProjectViewContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingTop: theme.spacing(8),
   },
   titleContainer: {
     display: 'flex',

@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
+import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -96,6 +97,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
 
     private GanttDescription createGanttDescription() {
         CreateTaskTool createTaskTool = this.createCreateTaskTool();
+        EditTaskTool editTaskTool = this.createEditTaskTool();
         DeleteTaskTool deleteTaskTool = this.createDeleteTaskTool();
         CreateTaskDependencyTool createTaskDependencyTool = this.createCreateTaskDependencyTool();
         DeleteTaskDependencyTool deleteTaskDependencyTool = this.createDeleteTaskDependencyTool();
@@ -106,6 +108,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
                 .domainType("papaya:Project")
                 .taskElementDescriptions(this.createTaskDescriptionInProject())
                 .createTool(createTaskTool)
+                .editTool(editTaskTool)
                 .deleteTool(deleteTaskTool)
                 .createTaskDependencyTool(createTaskDependencyTool)
                 .deleteTaskDependencyTool(deleteTaskDependencyTool)
@@ -122,8 +125,8 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
                 .domainType("papaya::Iteration")
                 .semanticCandidatesExpression("aql:self.iterations")
                 .nameExpression("aql:self.name")
-                .startTimeExpression("aql:self.startTime")
-                .endTimeExpression("aql:self.endTime")
+                .startTimeExpression("aql:self.startDate")
+                .endTimeExpression("aql:self.endDate")
                 .subTaskElementDescriptions(taskDescriptionInTask)
                 .build();
     }
@@ -135,10 +138,11 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
                 .semanticCandidatesExpression("aql:self.tasks")
                 .nameExpression("aql:self.name")
                 .descriptionExpression("aql:self.description")
-                .startTimeExpression("aql:self.startTime")
-                .endTimeExpression("aql:self.endTime")
+                .startTimeExpression("aql:self.startDate")
+                .endTimeExpression("aql:self.endDate")
                 .progressExpression("aql:self.progress")
                 .taskDependenciesExpression("aql:self.dependencies")
+                .computeStartEndDynamicallyExpression("aql:true")
                 .build();
 
         taskDescription.getReusedTaskElementDescriptions().add(taskDescription);
@@ -174,6 +178,32 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
                         .referenceName("tasks")
                         .children(newInstanceChangeContext)
                         .build())
+                .build();
+    }
+
+    private EditTaskTool createEditTaskTool() {
+        ViewBuilders viewBuilders = new ViewBuilders();
+
+        SetValue setNameValue = viewBuilders.newSetValue()
+                .featureName("name")
+                .valueExpression("aql:newName")
+                .build();
+        SetValue setDescriptionValue = viewBuilders.newSetValue()
+                .featureName("description")
+                .valueExpression("aql:newDescription")
+                .build();
+        SetValue setStartDateValue = viewBuilders.newSetValue()
+                .featureName("startDate")
+                .valueExpression("aql:newStartTime")
+                .build();
+        SetValue setEndDateValue = viewBuilders.newSetValue()
+                .featureName("endDate")
+                .valueExpression("aql:newEndTime")
+                .build();
+
+        return new GanttBuilders().newEditTaskTool()
+                .name("Edit Task")
+                .body(setNameValue, setDescriptionValue, setStartDateValue, setEndDateValue)
                 .build();
     }
 
