@@ -58,7 +58,6 @@ const labelStyle = (theme: Theme, style: React.CSSProperties, faded: Boolean): R
     alignItems: 'center',
     justifyContent: 'flex-start',
     whiteSpace: 'pre-line',
-    maxWidth: '100%',
     ...style,
     color: style.color ? getCSSColor(String(style.color), theme) : undefined,
   };

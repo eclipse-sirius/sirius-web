@@ -43,7 +43,7 @@ export const convertInsideLabel = (
       justifyContent: 'center',
       padding,
       textAlign: convertLabelTextAlign(gqlInsideLabel.textAlign),
-      maxWidth: gqlInsideLabel.overflowStrategy === 'NONE' ? undefined : labelStyle.maxWidth,
+      maxWidth: '100%',
       ...convertLabelStyle(labelStyle),
     },
     contentStyle: {
@@ -87,6 +87,13 @@ export const convertInsideLabel = (
     if (alignement.secondaryAlignment === 'RIGHT' || alignement.secondaryAlignment === 'CENTER') {
       insideLabel.style = { ...insideLabel.style, marginLeft: 'auto' };
     }
+  }
+
+  if (labelStyle.maxWidth) {
+    insideLabel.style = {
+      ...insideLabel.style,
+      maxWidth: gqlInsideLabel.overflowStrategy === 'NONE' ? undefined : labelStyle.maxWidth,
+    };
   }
   return insideLabel;
 };
