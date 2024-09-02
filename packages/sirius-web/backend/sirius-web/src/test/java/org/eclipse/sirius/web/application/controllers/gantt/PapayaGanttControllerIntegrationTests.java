@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -31,6 +32,8 @@ import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTa
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTaskDetailInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTaskInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.tests.graphql.ChangeColumnMutationRunner;
@@ -39,6 +42,7 @@ import org.eclipse.sirius.components.gantt.tests.graphql.CreateTaskDependencyMut
 import org.eclipse.sirius.components.gantt.tests.graphql.CreateTaskMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskDependencyMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskMutationRunner;
+import org.eclipse.sirius.components.gantt.tests.graphql.EditTaskMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.navigation.GanttNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -79,6 +83,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private CreateTaskMutationRunner createTaskMutationRunner;
+
+    @Autowired
+    private EditTaskMutationRunner editTaskMutationRunner;
 
     @Autowired
     private DeleteTaskMutationRunner deleteTaskMutationRunner;
@@ -135,14 +142,15 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
-    @DisplayName("Given a gantt representation, when we create a task, then the new task is visible")
+    @DisplayName("Given a gantt representation, when we create/edit a task, then the new task is created/edited")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenGanttRepresentationWhenWeCreateTaskThenTheNewTaskIsVisible() {
+    public void givenGanttRepresentationWhenWeCreateEditTaskThenTheTaskIsAsExpected() {
         var flux = this.givenSubscriptionToGantt();
 
         var ganttId = new AtomicReference<String>();
         var taskId = new AtomicReference<String>();
+        var createdTaskId = new AtomicReference<String>();
         Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
                 .filter(GanttRefreshedEventPayload.class::isInstance)
                 .map(GanttRefreshedEventPayload.class::cast)
@@ -175,12 +183,38 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks()).hasSize(3);
+                    createdTaskId.set(gantt.tasks().get(0).subTasks().get(0).subTasks().get(2).id());
+                }, () -> fail(MISSING_GANTT));
+
+        Runnable editGanttTask = () -> {
+            EditGanttTaskDetailInput editGanttTaskDetailInput = new EditGanttTaskDetailInput(null, null, Instant.parse("2023-12-15T09:00:00Z"), null, 0);
+            var editGanttTaskInput = new EditGanttTaskInput(UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    ganttId.get(),
+                    createdTaskId.get(),
+                    editGanttTaskDetailInput);
+            var result = this.editTaskMutationRunner.run(editGanttTaskInput);
+
+            String typename = JsonPath.read(result, "$.data.editGanttTask.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> editGanttTaskConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks().get(2).detail())
+                            .hasFieldOrPropertyWithValue("name", "")
+                            .hasFieldOrPropertyWithValue("startTime", Instant.parse("2023-12-15T09:00:00Z"));
                 }, () -> fail(MISSING_GANTT));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialGanttContentConsumer)
                 .then(createGanttTask)
                 .consumeNextWith(createGanttTaskConsumer)
+                .then(editGanttTask)
+                .consumeNextWith(editGanttTaskConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

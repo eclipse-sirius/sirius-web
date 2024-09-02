@@ -11,14 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import Link from '@mui/material/Link';
-import { makeStyles } from 'tss-react/mui';
 import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 import { FooterProps } from './Footer.types';
 
 const useFooterStyles = makeStyles()((theme) => ({
   footer: {
     display: 'flex',
     justifyContent: 'center',
+    gap: theme.spacing(0.5),
     margin: theme.spacing(2),
     '& > *': {
       marginLeft: theme.spacing(0.5),
@@ -31,7 +32,7 @@ export const SiriusWebFooter = ({}: FooterProps) => {
   const { classes } = useFooterStyles();
   return (
     <footer className={classes.footer}>
-      <Typography variant="caption">&copy; {new Date().getFullYear()} Obeo. Powered by </Typography>
+      <Typography variant="caption">&copy; {new Date().getFullYear()} Obeo. Powered by</Typography>
       <Link variant="caption" href="https://www.eclipse.dev/sirius" rel="noopener noreferrer" target="_blank">
         Sirius Web
       </Link>
