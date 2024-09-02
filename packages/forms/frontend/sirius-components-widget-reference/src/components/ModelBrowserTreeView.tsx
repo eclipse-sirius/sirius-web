@@ -83,6 +83,8 @@ export const ModelBrowserTreeView = ({
             markedItemIds={markedItemIds}
             treeItemActionRender={(props) => <WidgetReferenceTreeItemAction {...props} />}
             onExpandedElementChange={onExpandedElementChange}
+            expanded={state.expanded}
+            maxDepth={state.maxDepth}
           />
         ) : null}
       </div>

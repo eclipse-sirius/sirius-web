@@ -24,7 +24,10 @@ import { Theme } from '@mui/material/styles';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ExplorerViewState } from './ExplorerView.types';
+import { TreeDescriptionsMenu } from './TreeDescriptionsMenu';
+import { useExplorerDescriptions } from './useExplorerDescriptions';
 import { useExplorerSubscription } from './useExplorerSubscription';
+import { GQLTreeEventPayload, GQLTreeRefreshedEventPayload } from './useExplorerSubscription.types';
 
 const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
@@ -38,6 +41,9 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
 }));
 
+const isTreeRefreshedEventPayload = (payload: GQLTreeEventPayload): payload is GQLTreeRefreshedEventPayload =>
+  payload && payload.__typename === 'TreeRefreshedEventPayload';
+
 export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const { classes: styles } = useStyles();
 
@@ -47,8 +53,10 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     filterBarText: '',
     filterBarTreeFiltering: false,
     treeFilters: [],
-    expanded: [],
-    maxDepth: 1,
+    activeTreeDescriptionId: null,
+    expanded: {},
+    maxDepth: {},
+    tree: null,
   };
   const [state, setState] = useState<ExplorerViewState>(initialState);
   const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
@@ -56,9 +64,29 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
   );
   const activeTreeFilterIds = state.treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
 
-  const { tree } = useExplorerSubscription(editingContextId, activeTreeFilterIds, state.expanded, state.maxDepth);
+  const { payload } = useExplorerSubscription(
+    editingContextId,
+    state.activeTreeDescriptionId,
+    activeTreeFilterIds,
+    state.expanded[state.activeTreeDescriptionId] ?? [],
+    state.maxDepth[state.activeTreeDescriptionId] ?? 1
+  );
+
+  useEffect(() => {
+    if (isTreeRefreshedEventPayload(payload)) {
+      setState((prevState) => ({ ...prevState, tree: payload.tree }));
+    }
+  }, [payload]);
 
   const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
+
+  const { explorerDescriptions } = useExplorerDescriptions(editingContextId);
+
+  useEffect(() => {
+    if (explorerDescriptions && explorerDescriptions.length > 0) {
+      setState((prevState) => ({ ...prevState, activeTreeDescriptionId: explorerDescriptions[0].id }));
+    }
+  }, [explorerDescriptions]);
 
   useEffect(() => {
     if (!loading) {
@@ -119,8 +147,32 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     );
   }
   const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
-    setState((prevState) => ({ ...prevState, expanded, maxDepth }));
+    setState((prevState) => ({
+      ...prevState,
+      expanded: {
+        ...prevState.expanded,
+        [prevState.activeTreeDescriptionId]: expanded,
+      },
+      maxDepth: {
+        ...prevState.maxDepth,
+        [prevState.activeTreeDescriptionId]: maxDepth,
+      },
+    }));
   };
+
+  const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (
+    <TreeDescriptionsMenu
+      treeDescriptions={explorerDescriptions}
+      activeTreeDescriptionId={state.activeTreeDescriptionId}
+      onTreeDescriptionChange={(treeDescription) =>
+        setState((prevState) => ({
+          ...prevState,
+          activeTreeDescriptionId: treeDescription.id,
+          tree: null,
+        }))
+      }
+    />
+  );
 
   return (
     <div className={styles.treeView} ref={treeElement}>
@@ -139,21 +191,24 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
             return { ...prevState, treeFilters };
           })
         }
-        treeToolBarContributionComponents={treeToolBarContributionComponents}
-      />
+        treeToolBarContributionComponents={treeToolBarContributionComponents}>
+        {treeDescriptionSelector}
+      </TreeToolBar>
       <div className={styles.treeContent}>
         {filterBar}
-        {tree !== null ? (
+        {state.tree !== null ? (
           <TreeView
             editingContextId={editingContextId}
             readOnly={readOnly}
             treeId={'explorer://'}
-            tree={tree}
+            tree={state.tree}
             enableMultiSelection={true}
             synchronizedWithSelection={state.synchronizedWithSelection}
             textToHighlight={state.filterBarText}
             textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
             onExpandedElementChange={onExpandedElementChange}
+            expanded={state.expanded[state.activeTreeDescriptionId] ?? []}
+            maxDepth={state.maxDepth[state.activeTreeDescriptionId] ?? 1}
           />
         ) : null}
       </div>

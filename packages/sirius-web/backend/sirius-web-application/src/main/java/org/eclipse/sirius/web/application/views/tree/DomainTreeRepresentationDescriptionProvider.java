@@ -52,7 +52,7 @@ import org.springframework.stereotype.Service;
  * @author Jerome Gout
  */
 @Service
-public class DomainTreeDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
+public class DomainTreeRepresentationDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
     public static final String DESCRIPTION_ID = "domain_tree_description";
 
@@ -70,7 +70,7 @@ public class DomainTreeDescriptionProvider implements IEditingContextRepresentat
 
     private final IRepresentationDataSearchService representationDataSearchService;
 
-    public DomainTreeDescriptionProvider(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationDataSearchService representationDataSearchService, IRepresentationMetadataSearchService representationMetadataSearchService) {
+    public DomainTreeRepresentationDescriptionProvider(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationDataSearchService representationDataSearchService, IRepresentationMetadataSearchService representationMetadataSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);

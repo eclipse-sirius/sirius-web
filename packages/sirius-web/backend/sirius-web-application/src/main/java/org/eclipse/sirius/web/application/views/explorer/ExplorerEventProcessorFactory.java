@@ -29,7 +29,6 @@ import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
-import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -68,15 +67,16 @@ public class ExplorerEventProcessorFactory implements IRepresentationEventProces
 
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
+        Map<String, List<String>> parameters = new URLParser().getParameterValues(representationId);
+        var treeDescriptionId = parameters.get("treeDescriptionId").get(0);
         Optional<TreeDescription> optionalTreeDescription = this.representationDescriptionSearchService
-                .findById(editingContext, ExplorerDescriptionProvider.DESCRIPTION_ID)
+                .findById(editingContext, treeDescriptionId)
                 .filter(TreeDescription.class::isInstance)
                 .map(TreeDescription.class::cast);
 
         if (optionalTreeDescription.isPresent()) {
             var treeDescription = optionalTreeDescription.get();
 
-            Map<String, List<String>> parameters = new URLParser().getParameterValues(representationId);
             String activeFilterIdsParam = parameters.get("activeFilterIds").get(0);
             var activeFilterIds = new URLParser().getParameterEntries(activeFilterIdsParam);
 

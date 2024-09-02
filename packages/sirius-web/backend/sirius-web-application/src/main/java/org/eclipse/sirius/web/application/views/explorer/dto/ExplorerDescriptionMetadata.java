@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TreeFilter, GQLTree } from '@eclipse-sirius/sirius-components-trees';
+package org.eclipse.sirius.web.application.views.explorer.dto;
 
-export interface ExplorerViewState {
-  synchronizedWithSelection: boolean;
-  filterBar: boolean;
-  filterBarText: string | null;
-  filterBarTreeFiltering: boolean;
-  treeFilters: TreeFilter[];
-  activeTreeDescriptionId: string | null;
-  expanded: { [key: string]: string[] };
-  maxDepth: { [key: string]: number };
-  tree: GQLTree | null;
-}
+import jakarta.validation.constraints.NotNull;
+
+/**
+ * The metadata of an explorer description.
+ *
+ * @author Jerome Gout
+ */
+public record ExplorerDescriptionMetadata(@NotNull String id, @NotNull String label) { }

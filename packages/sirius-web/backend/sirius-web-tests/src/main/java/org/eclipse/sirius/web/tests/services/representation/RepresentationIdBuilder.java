@@ -29,7 +29,7 @@ public class RepresentationIdBuilder {
     private static final String EXPANDED_IDS = "&expandedIds=[";
 
     @SuppressWarnings("checkstyle:MultipleStringLiterals")
-    public String buildExplorerRepresentationId(List<String> expandedObjects, List<String> activatedFilters) {
+    public String buildExplorerRepresentationId(String treeDescriptionId, List<String> expandedObjects, List<String> activatedFilters) {
         List<String> expandedObjectIds = expandedObjects.stream()
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
@@ -38,7 +38,7 @@ public class RepresentationIdBuilder {
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
 
-        return "explorer://?expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
+        return "explorer://?treeDescriptionId=" + treeDescriptionId + "&expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
     }
 
     public String buildSelectionRepresentationId(String treeDescriptionId, String targetObjectId, List<String> expandedObjectIds) {

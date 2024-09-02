@@ -89,6 +89,10 @@ public final class TreeDescription implements IRepresentationDescription {
         return new Builder(id);
     }
 
+    public static Builder newTreeDescription(TreeDescription treeDescription) {
+        return new Builder(treeDescription);
+    }
+
     @Override
     public String getId() {
         return this.id;
@@ -182,7 +186,7 @@ public final class TreeDescription implements IRepresentationDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private final String id;
+        private String id;
 
         private String label;
 
@@ -222,6 +226,33 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        private Builder(TreeDescription treeDescription) {
+            this.id = treeDescription.getId();
+            this.label = treeDescription.getLabel();
+            this.idProvider = treeDescription.getIdProvider();
+            this.treeItemIdProvider = treeDescription.getTreeItemIdProvider();
+            this.kindProvider = treeDescription.getKindProvider();
+            this.labelProvider = treeDescription.getLabelProvider();
+            this.targetObjectIdProvider = treeDescription.getTargetObjectIdProvider();
+            this.parentObjectProvider = treeDescription.getParentObjectProvider();
+            this.iconURLProvider = treeDescription.getIconURLProvider();
+            this.editableProvider = treeDescription.getEditableProvider();
+            this.deletableProvider = treeDescription.getDeletableProvider();
+            this.selectableProvider = treeDescription.getSelectableProvider();
+            this.elementsProvider = treeDescription.getElementsProvider();
+            this.childrenProvider = treeDescription.getChildrenProvider();
+            this.hasChildrenProvider = treeDescription.getHasChildrenProvider();
+            this.canCreatePredicate = treeDescription.getCanCreatePredicate();
+            this.deleteHandler = treeDescription.getDeleteHandler();
+            this.renameHandler = treeDescription.getRenameHandler();
+            this.treeItemObjectProvider = treeDescription.getTreeItemObjectProvider();
+        }
+
+        public Builder id(String id) {
+            this.id = Objects.requireNonNull(id);
+            return this;
         }
 
         public Builder label(String label) {

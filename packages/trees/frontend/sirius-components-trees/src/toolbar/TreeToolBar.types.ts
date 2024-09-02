@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
 import { TreeFilter } from '../views/TreeFiltersMenu.types';
+import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
 
 export interface TreeToolBarProps {
   editingContextId: string;
@@ -21,6 +21,7 @@ export interface TreeToolBarProps {
   onTreeFilterMenuItemClick: (filters: TreeFilter[]) => void;
   treeToolBarContributionComponents: ((props: TreeToolBarContributionComponentProps) => JSX.Element)[];
   readOnly: boolean;
+  children: React.ReactNode;
 }
 
 export interface TreeToolBarState {
