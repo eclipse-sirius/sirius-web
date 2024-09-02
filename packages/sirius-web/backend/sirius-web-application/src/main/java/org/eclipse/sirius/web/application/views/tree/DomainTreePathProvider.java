@@ -43,7 +43,8 @@ public class DomainTreePathProvider implements ITreePathProvider {
 
     @Override
     public boolean canHandle(Tree tree) {
-        return tree.getDescriptionId().equals(DomainTreeDescriptionProvider.DESCRIPTION_ID);
+        return tree.getDescriptionId().equals(DomainTreeRepresentationDescriptionProvider.DESCRIPTION_ID) ||
+                tree.getDescriptionId().equals(DomainExplorerRepresentationDescriptionProvider.DESCRIPTION_ID);
     }
 
     @Override

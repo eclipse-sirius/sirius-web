@@ -41,6 +41,8 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
           textToFilter={''}
           textToHighlight={''}
           onExpandedElementChange={onExpandedElementChange}
+          expanded={state.expanded}
+          maxDepth={state.maxDepth}
         />
       ) : null}
     </div>

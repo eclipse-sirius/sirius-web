@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { SelectionDialogTreeViewProps, SelectionDialogTreeViewState } from './SelectionDialogTreeView.types';
 import { useSelectionDialogTreeSubscription } from './useSelectionDialogTreeSubscription';
+
 export const SELECTION_DIALOG_TYPE: string = 'selectionDialogDescription';
 
 const useTreeStyle = makeStyles()((theme) => ({
@@ -65,6 +66,8 @@ export const SelectionDialogTreeView = ({
           textToHighlight={''}
           treeItemActionRender={(props) => <SelectionDialogTreeItemAction {...props} />}
           onExpandedElementChange={onExpandedElementChange}
+          expanded={state.expanded}
+          maxDepth={state.maxDepth}
         />
       ) : null}
     </div>

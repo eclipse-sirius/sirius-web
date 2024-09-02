@@ -81,6 +81,7 @@ never, always and if_children (to display the separator only if children exist).
 + Make possible to register view models in the loading editing context when the "test" profile is active.
 + To activate the test profile add the value _test_ to the `SPRING_PROFILES_ACTIVE` environment variable.
 - https://github.com/eclipse-sirius/sirius-web/issues/3882[#3882] [sirius-web] Add a new tree event to handle tree description which are not explorer-related
+- https://github.com/eclipse-sirius/sirius-web/issues/3961[#3961] [sirius-web] Extend the explorer to support multiple presentations
 
 == v2024.9.0
 

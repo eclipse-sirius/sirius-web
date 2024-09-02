@@ -62,7 +62,7 @@ public class DomainExpandAllTreePathProvider implements IExpandAllTreePathProvid
 
     @Override
     public boolean canHandle(Tree tree) {
-        return tree.getDescriptionId().equals(DomainTreeDescriptionProvider.DESCRIPTION_ID);
+        return tree.getDescriptionId().equals(DomainTreeRepresentationDescriptionProvider.DESCRIPTION_ID);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class DomainExpandAllTreePathProvider implements IExpandAllTreePathProvid
 
         Set<String> treeItemIdsToExpand = new LinkedHashSet<>();
         var object = this.getTreeItemObject(editingContext, tree, treeItemId);
-        if (object instanceof EObject || treeItemId.startsWith(DomainTreeDescriptionProvider.SETTING)) {
+        if (object instanceof EObject || treeItemId.startsWith(DomainTreeRepresentationDescriptionProvider.SETTING)) {
             // We need to get the current depth of the tree item
             var itemAncestors = this.explorerNavigationService.getAncestors(editingContext, tree, treeItemId);
             maxDepth = itemAncestors.size();
@@ -84,7 +84,7 @@ public class DomainExpandAllTreePathProvider implements IExpandAllTreePathProvid
     private int addAllContents(IEditingContext editingContext, String treeItemId, int depth, Set<String> treeItemIdsToExpand, Tree tree) {
         var depthConsidered = depth;
         var object = this.getTreeItemObject(editingContext, tree, treeItemId);
-        if (treeItemId.startsWith(DomainTreeDescriptionProvider.SETTING) && object instanceof List<?> list) {
+        if (treeItemId.startsWith(DomainTreeRepresentationDescriptionProvider.SETTING) && object instanceof List<?> list) {
             treeItemIdsToExpand.add(treeItemId);
             for (var child : list) {
                 String childId = this.identityService.getId(child);
@@ -96,7 +96,7 @@ public class DomainExpandAllTreePathProvider implements IExpandAllTreePathProvid
         } else if (object instanceof EObject eObject) {
             if (object instanceof Entity entity) {
                 // an Entity has a virtual node for its super types, this node should be a child of the Entity
-                var id = DomainTreeDescriptionProvider.SETTING + this.identityService.getId(entity) + DomainTreeDescriptionProvider.SETTING_ID_SEPARATOR + "superTypes";
+                var id = DomainTreeRepresentationDescriptionProvider.SETTING + this.identityService.getId(entity) + DomainTreeRepresentationDescriptionProvider.SETTING_ID_SEPARATOR + "superTypes";
                 treeItemIdsToExpand.add(id);
                 var superTypes = entity.getSuperTypes();
                 if (superTypes.size() > 0) {

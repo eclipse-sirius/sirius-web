@@ -26,6 +26,8 @@ export interface TreeViewProps {
   markedItemIds?: string[];
   treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
   onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
+  expanded: string[];
+  maxDepth: number;
 }
 
 export interface TreeViewState {

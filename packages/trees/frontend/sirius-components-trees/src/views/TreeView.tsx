@@ -65,10 +65,12 @@ export const TreeView = ({
   markedItemIds = [],
   treeItemActionRender,
   onExpandedElementChange,
+  expanded,
+  maxDepth,
 }: TreeViewProps) => {
   const [state, setState] = useState<TreeViewState>({
-    expanded: [],
-    maxDepth: 1,
+    expanded: expanded,
+    maxDepth: maxDepth,
   });
   const { selection } = useSelection();
 

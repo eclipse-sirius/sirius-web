@@ -47,12 +47,13 @@ import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryR
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.PapayaViewInjector;
 import org.eclipse.sirius.web.services.TaskViewInjector;
-import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -74,6 +75,8 @@ import reactor.test.StepVerifier;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
+
+    private static final String DEFAULT_TREE_ID = ExplorerDescriptionProvider.PREFIX + "?treeDescriptionId=" + ExplorerDescriptionProvider.DESCRIPTION_ID;
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -121,7 +124,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
     }
 
     public void givenStudioWhenWeAskForTheTreePathOfAnObjectThenItsPathInTheExplorerIsReturned(BiFunction<IEditingContext, IInput, IPayload> objectInjector) {
-        var explorerReprsentationId = representationIdBuilder.buildExplorerRepresentationId(List.of(), List.of());
+        var explorerReprsentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), explorerReprsentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
@@ -196,7 +199,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        var explorerExpendedReprsentationId = representationIdBuilder.buildExplorerRepresentationId(treeItemIds.get(), List.of());
+        var explorerExpendedReprsentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, treeItemIds.get(), List.of());
         var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), explorerExpendedReprsentationId);
         var expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
 

@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventP
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.application.views.tree.DomainTreeDescriptionProvider;
+import org.eclipse.sirius.web.application.views.tree.DomainTreeRepresentationDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTreeSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -88,7 +88,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
-                DomainTreeDescriptionProvider.DESCRIPTION_ID,
+                DomainTreeRepresentationDescriptionProvider.DESCRIPTION_ID,
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "Tree"
         );
@@ -120,7 +120,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
             var result = this.expandAllTreePathQueryRunner.run(variables);
             List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
-            assertThat(treeItemIdsToExpand.stream().filter(id -> id.startsWith(DomainTreeDescriptionProvider.SETTING)).toList()).hasSize(1);
+            assertThat(treeItemIdsToExpand.stream().filter(id -> id.startsWith(DomainTreeRepresentationDescriptionProvider.SETTING)).toList()).hasSize(1);
         };
 
         Runnable getTreePath = () -> {
@@ -132,7 +132,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
             var result = this.expandAllTreePathQueryRunner.run(variables);
             List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
-            assertThat(treeItemIdsToExpand.stream().filter(id -> id.startsWith(DomainTreeDescriptionProvider.SETTING)).toList()).hasSize(3);
+            assertThat(treeItemIdsToExpand.stream().filter(id -> id.startsWith(DomainTreeRepresentationDescriptionProvider.SETTING)).toList()).hasSize(3);
         };
 
         StepVerifier.create(flux)
@@ -152,7 +152,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren().get(0).getChildren()).hasSize(4);
             assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren()).hasSize(3);
-            assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren().get(0).getId()).startsWith(DomainTreeDescriptionProvider.SETTING);
+            assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren().get(0).getId()).startsWith(DomainTreeRepresentationDescriptionProvider.SETTING);
         });
 
         StepVerifier.create(expandedTreeFlux)

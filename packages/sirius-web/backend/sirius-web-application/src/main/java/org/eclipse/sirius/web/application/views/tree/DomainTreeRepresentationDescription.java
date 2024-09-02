@@ -30,7 +30,7 @@ public class DomainTreeRepresentationDescription implements IRepresentationDescr
 
     @Override
     public boolean canHandle(IRepresentationDescription representationDescription) {
-        return representationDescription.getId().equals(DomainTreeDescriptionProvider.DESCRIPTION_ID);
+        return representationDescription.getId().equals(DomainTreeRepresentationDescriptionProvider.DESCRIPTION_ID);
     }
 
     @Override

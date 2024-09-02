@@ -14,13 +14,12 @@ import { GQLTree } from '@eclipse-sirius/sirius-components-trees';
 
 export interface UseExplorerSubscriptionValue {
   loading: boolean;
-  tree: GQLTree | null;
+  payload: GQLTreeEventPayload | null;
   complete: boolean;
 }
 
 export interface UseExplorerSubscriptionState {
   id: string;
-  tree: GQLTree | null;
   complete: boolean;
 }
 

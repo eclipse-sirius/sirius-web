@@ -13,8 +13,8 @@
 
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import IconButton from '@mui/material/IconButton';
-import { makeStyles } from 'tss-react/mui';
 import React from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { TreeFiltersMenu } from '../views/TreeFiltersMenu';
 import { TreeToolBarProps } from './TreeToolBar.types';
 import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
@@ -42,6 +42,7 @@ export const TreeToolBar = ({
   onTreeFilterMenuItemClick,
   treeToolBarContributionComponents,
   readOnly,
+  children,
 }: TreeToolBarProps) => {
   const { classes } = useTreeToolbarStyles();
 
@@ -66,6 +67,7 @@ export const TreeToolBar = ({
           return element;
         })}
         {treeFiltersMenu}
+        {children}
         <IconButton
           color="inherit"
           size="small"

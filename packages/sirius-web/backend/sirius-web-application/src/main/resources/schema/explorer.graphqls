@@ -7,3 +7,12 @@ input ExplorerEventInput {
   editingContextId: ID!
   representationId: String!
 }
+
+extend type EditingContext {
+  explorerDescriptions: [ExplorerDescriptionMetadata!]!
+}
+
+type ExplorerDescriptionMetadata {
+  id: ID!
+  label: String!
+}

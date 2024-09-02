@@ -44,10 +44,11 @@ import org.eclipse.sirius.components.trees.tests.graphql.InitialDirectEditTreeIt
 import org.eclipse.sirius.components.trees.tests.graphql.RenameTreeItemMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.TestIdentifiers;
-import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -158,7 +159,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenWeSubscribeToTreeEventsOfItsExplorerThenTheTreeOfTheExplorerIsSent() {
-        var treeRepresentationId = representationIdBuilder.buildExplorerRepresentationId(List.of(), List.of());
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
@@ -181,11 +182,11 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenExplorerOfProjectWhenWeDeleteTreeItemsThenTheTreeIsRefreshed() {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
-        var treeRepresentationId = representationIdBuilder.buildExplorerRepresentationId(expandedIds, List.of());
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
-        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, ePackageTreeItemIsStyled, this.representationIsAPortal));
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageTreeItemIsStyled, this.representationIsAPortal));
         var hasNoMoreRepresentation = this.getTreeRefreshedEventPayloadMatcher(List.of(this.ePackageHasNoRepresentation));
         var hasNoMoreObject = this.getTreeRefreshedEventPayloadMatcher(List.of(this.documentHasNoObject));
 
@@ -217,12 +218,12 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenExplorerOfProjectWhenWeTriggerATreeItemRenameThenTheInitialDirectEditTreeItemLabelIsExecuted() {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
-        var treeRepresentationId = representationIdBuilder.buildExplorerRepresentationId(expandedIds, List.of());
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
 
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId);
         var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
 
-        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, ePackageTreeItemIsStyled));
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageTreeItemIsStyled));
 
         StepVerifier.create(treeFlux)
                 .expectNextMatches(hasProjectContent)
@@ -248,12 +249,12 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
                     .isPresent();
         };
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
-        var treeRepresentationId = representationIdBuilder.buildExplorerRepresentationId(expandedIds, List.of());
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
 
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId);
         var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
 
-        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, ePackageTreeItemIsStyled, this.representationIsAPortal));
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageTreeItemIsStyled, this.representationIsAPortal));
         var hasObjectNewLabel = this.getTreeRefreshedEventPayloadMatcher(List.of(this.ePackageIsNamedSampleRenamed));
         var hasDocumentNewLabel = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcoreRenamed));
 
