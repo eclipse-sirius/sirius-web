@@ -32,7 +32,7 @@ export const useHandleChange = (): UseHandleChangeValue => {
     (changes: NodeChange[], nodes: Node<NodeData, DiagramNodeType>[]): Node<NodeData, DiagramNodeType>[] => {
       const nodeId2ConnectionHandles = new Map<string, ConnectionHandle[]>();
       changes.filter(isNodePositionChange).forEach((nodeDraggingChange) => {
-        const movingNode = nodes.find((node) => nodeDraggingChange.id === node.id);
+        const movingNode = nodes.find((node) => nodeDraggingChange.id === node.id && !node.data.pinned);
         if (movingNode) {
           const connectedEdges = getConnectedEdges([movingNode], getEdges());
           connectedEdges.forEach((edge) => {
