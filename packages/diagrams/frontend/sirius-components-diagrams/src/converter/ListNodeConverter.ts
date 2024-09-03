@@ -151,12 +151,13 @@ const adaptChildrenBorderNodes = (nodes: Node[], gqlChildrenNodes: GQLNode<GQLNo
     )
     .filter((child) => !child.hidden);
   visibleChildrenNodes.forEach((child, index) => {
-    // Hide children node borders to prevent a 'bold' aspect.
+    // Hide children node borders to prevent a 'bold' aspect, except for the bottom one to mark the separation between child
     child.data.style = {
       ...child.data.style,
       borderTopWidth: '0',
       borderLeftWidth: '0',
       borderRightWidth: '0',
+      borderBottomWidth: child.data.style.borderWidth,
     };
 
     if (index === visibleChildrenNodes.length - 1) {
