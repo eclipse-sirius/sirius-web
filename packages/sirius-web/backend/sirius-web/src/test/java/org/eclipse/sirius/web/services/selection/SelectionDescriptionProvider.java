@@ -94,6 +94,10 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
         return this.diagramIdProvider.getId(this.selectionDialog);
     }
 
+    public SelectionDialogDescription getSelectionDialog() {
+        return this.selectionDialog;
+    }
+
     private View createView() {
         ViewBuilder viewBuilder = new ViewBuilder();
         View unsynchronizedView = viewBuilder.build();

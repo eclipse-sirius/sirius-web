@@ -75,6 +75,7 @@ description (optional).
 ** deleteProject (`POST /api/rest/projects/{projectId}`): Delete the project with the given id (projectId).
 ** updateProject (`PUT /projects/{projectId}`): Update the project with the given id (projectId).
 - https://github.com/eclipse-sirius/sirius-web/issues/3873[#3873] [diagram] Make the Selection Dialog available for the EdgeTool
+- https://github.com/eclipse-sirius/sirius-web/issues/3950[#3950] [diagram] Have the multiple selection on the Selection Dialog
 
 === Improvements
 

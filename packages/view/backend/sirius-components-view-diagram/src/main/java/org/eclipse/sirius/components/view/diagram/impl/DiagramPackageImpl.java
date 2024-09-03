@@ -2097,6 +2097,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getSelectionDialogDescription_Multiple() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getToolSection() {
         return this.toolSectionEClass;
     }
@@ -2583,6 +2593,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.selectionDialogDescriptionEClass = this.createEClass(SELECTION_DIALOG_DESCRIPTION);
         this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE);
         this.createEReference(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__MULTIPLE);
 
         this.toolSectionEClass = this.createEClass(TOOL_SECTION);
         this.createEAttribute(this.toolSectionEClass, TOOL_SECTION__NAME);
@@ -3002,6 +3013,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getSelectionDialogDescription_SelectionDialogTreeDescription(), this.getSelectionDialogTreeDescription(), null, "selectionDialogTreeDescription", null, 0, 1,
                 SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_Multiple(), this.ecorePackage.getEBoolean(), "multiple", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.toolSectionEClass, ToolSection.class, "ToolSection", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getToolSection_Name(), theViewPackage.getIdentifier(), "name", "Tool Section", 1, 1, ToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,

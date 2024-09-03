@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
-import { DiagramDialogComponentProps } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramDialogComponentProps, GQLToolVariable } from '@eclipse-sirius/sirius-components-diagrams';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -44,15 +44,23 @@ export const SelectionDialog = ({
 
   const message: string = selectionDescription?.message ?? '';
   const treeDescriptionId: string | null = selectionDescription?.treeDescription.id ?? null;
+  const multiple: boolean = selectionDescription?.multiple ?? false;
 
   const setDialogSelection = (selection: Selection) => {
     setState((prevState) => ({ ...prevState, selectedObjects: [...selection.entries] }));
   };
 
   const handleClick = () => {
+    let variables: GQLToolVariable[] = [];
     if (state.selectedObjects.length > 0) {
-      const selectedObjectId = state.selectedObjects[0]?.id ?? '';
-      onFinish([{ name: 'selectedObject', value: selectedObjectId, type: 'OBJECT_ID' }]);
+      if (multiple) {
+        const selectedObjectIds = state.selectedObjects.map((selectedObject) => selectedObject.id).join(',');
+        variables = [{ name: 'selectedObjects', value: selectedObjectIds, type: 'OBJECT_ID_ARRAY' }];
+      } else {
+        const selectedObjectId = state.selectedObjects[0]?.id ?? '';
+        variables = [{ name: 'selectedObject', value: selectedObjectId, type: 'OBJECT_ID' }];
+      }
+      onFinish(variables);
     }
   };
 
@@ -63,6 +71,7 @@ export const SelectionDialog = ({
         editingContextId={editingContextId}
         variables={variables}
         treeDescriptionId={treeDescriptionId}
+        enableMultiSelection={multiple}
       />
     );
   }

@@ -32,6 +32,8 @@ import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription
  * <em>Selection Message</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl#getSelectionDialogTreeDescription
  * <em>Selection Dialog Tree Description</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl#isMultiple
+ * <em>Multiple</em>}</li>
  * </ul>
  *
  * @generated
@@ -66,6 +68,26 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
      * @ordered
      */
     protected SelectionDialogTreeDescription selectionDialogTreeDescription;
+
+    /**
+     * The default value of the '{@link #isMultiple() <em>Multiple</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isMultiple()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean MULTIPLE_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isMultiple() <em>Multiple</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isMultiple()
+     * @generated
+     * @ordered
+     */
+    protected boolean multiple = MULTIPLE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -167,6 +189,29 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
      * @generated
      */
     @Override
+    public boolean isMultiple() {
+        return this.multiple;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMultiple(boolean newMultiple) {
+        boolean oldMultiple = this.multiple;
+        this.multiple = newMultiple;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE, oldMultiple, this.multiple));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION:
@@ -187,6 +232,8 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
                 return this.getSelectionMessage();
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION:
                 return this.getSelectionDialogTreeDescription();
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE:
+                return this.isMultiple();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -204,6 +251,9 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
                 return;
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION:
                 this.setSelectionDialogTreeDescription((SelectionDialogTreeDescription) newValue);
+                return;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE:
+                this.setMultiple((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -223,6 +273,9 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION:
                 this.setSelectionDialogTreeDescription((SelectionDialogTreeDescription) null);
                 return;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE:
+                this.setMultiple(MULTIPLE_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -239,6 +292,8 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
                 return SELECTION_MESSAGE_EDEFAULT == null ? this.selectionMessage != null : !SELECTION_MESSAGE_EDEFAULT.equals(this.selectionMessage);
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION:
                 return this.selectionDialogTreeDescription != null;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE:
+                return this.multiple != MULTIPLE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -256,6 +311,8 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (selectionMessage: ");
         result.append(this.selectionMessage);
+        result.append(", multiple: ");
+        result.append(this.multiple);
         result.append(')');
         return result.toString();
     }
