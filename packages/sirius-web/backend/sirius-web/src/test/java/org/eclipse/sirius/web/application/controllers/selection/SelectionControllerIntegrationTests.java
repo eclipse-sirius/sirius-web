@@ -30,11 +30,14 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogTreeEventInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.selection.SelectionDescriptionProvider;
@@ -74,6 +77,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                           treeDescription {
                             id
                           }
+                          multiple
                         }
                     }
                   }
@@ -117,6 +121,9 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;
+
+    @Autowired
+    private IObjectService objectService;
 
     @BeforeEach
     public void beforeEach() {
@@ -403,6 +410,24 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 .consumeNextWith(treeContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("given a selectionDescription then the image and the label are the expected ones")
+    @Sql(scripts = { "/scripts/papaya.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenASelectionDescriptionThenTheImageAndLabelAreTheExpectedOnes() {
+        SelectionDialogDescription selectionDRialogDescription = this.selectionDescriptionProvider.getSelectionDialog();
+        String selectionDialogLabel = this.objectService.getLabel(selectionDRialogDescription);
+        assertThat(selectionDialogLabel).isEqualTo(selectionDRialogDescription.getSelectionMessage());
+        List<String> imagePath = this.objectService.getImagePath(selectionDRialogDescription);
+        assertThat(imagePath).hasSize(1).first().isEqualTo("/icons/full/obj16/SelectionDialogDescription.svg");
+
+        SelectionDialogTreeDescription selectionDialogTreeDescription = selectionDRialogDescription.getSelectionDialogTreeDescription();
+        String selectionDialogTreeDescriptionLabel = this.objectService.getLabel(selectionDialogTreeDescription);
+        assertThat(selectionDialogTreeDescriptionLabel).isEqualTo(selectionDialogTreeDescription.getElementsExpression());
+        List<String> selectionDialogTreeDescriptionImagePath = this.objectService.getImagePath(selectionDialogTreeDescription);
+        assertThat(selectionDialogTreeDescriptionImagePath).hasSize(1).first().isEqualTo("/icons/full/obj16/SelectionDialogTreeDescription.svg");
     }
 
     private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {

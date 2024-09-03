@@ -3150,13 +3150,21 @@ public interface DiagramPackage extends EPackage {
     int SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION = DIALOG_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Multiple</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__MULTIPLE = DIALOG_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Selection Dialog Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SELECTION_DIALOG_DESCRIPTION_FEATURE_COUNT = DIALOG_DESCRIPTION_FEATURE_COUNT + 2;
+    int SELECTION_DIALOG_DESCRIPTION_FEATURE_COUNT = DIALOG_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Selection Dialog Description</em>' class. <!-- begin-user-doc --> <!--
@@ -5317,6 +5325,18 @@ public interface DiagramPackage extends EPackage {
     EReference getSelectionDialogDescription_SelectionDialogTreeDescription();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isMultiple <em>Multiple</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Multiple</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isMultiple()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_Multiple();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ToolSection <em>Tool
      * Section</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6947,6 +6967,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION = eINSTANCE.getSelectionDialogDescription_SelectionDialogTreeDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Multiple</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__MULTIPLE = eINSTANCE.getSelectionDialogDescription_Multiple();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl

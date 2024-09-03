@@ -53,6 +53,7 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
             super.getPropertyDescriptors(object);
 
             this.addSelectionMessagePropertyDescriptor(object);
+            this.addMultiplePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -67,6 +68,18 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
                 this.getString("_UI_SelectionDialogDescription_selectionMessage_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_selectionMessage_feature", "_UI_SelectionDialogDescription_type"),
                 DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Multiple feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addMultiplePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_multiple_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_multiple_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__MULTIPLE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -143,6 +156,7 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
 
         switch (notification.getFeatureID(SelectionDialogDescription.class)) {
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION:

@@ -33,6 +33,7 @@ export interface GetSelectionDescriptionVariables {
 export interface GQLSelectionDescription {
   message: string;
   treeDescription: GQLTreeDescription;
+  multiple: boolean;
 }
 
 export interface GQLTreeDescription {

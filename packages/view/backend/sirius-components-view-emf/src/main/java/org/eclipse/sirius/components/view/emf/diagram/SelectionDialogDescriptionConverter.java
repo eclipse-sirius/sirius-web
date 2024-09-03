@@ -120,6 +120,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                 .label("Selection Description")
                 .canCreatePredicate(variableManager -> false)
                 .treeDescription(treeDescription)
+                .multiple(selectionDescription.isMultiple())
                 .build();
     }
 
