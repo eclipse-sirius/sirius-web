@@ -13,6 +13,7 @@ type SelectionDescription implements RepresentationDescription {
   label: String!
   message(variables: [SelectionDialogVariable!]!): String!
   treeDescription: TreeDescription!
+  multiple: Boolean!
 }
 
 input SelectionDialogVariable {

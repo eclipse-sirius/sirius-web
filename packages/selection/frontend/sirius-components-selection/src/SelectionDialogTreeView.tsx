@@ -39,6 +39,7 @@ export const SelectionDialogTreeView = ({
   editingContextId,
   treeDescriptionId,
   variables,
+  enableMultiSelection,
 }: SelectionDialogTreeViewProps) => {
   const { classes } = useTreeStyle();
   const [state, setState] = useState<SelectionDialogTreeViewState>(initialState);
@@ -57,7 +58,7 @@ export const SelectionDialogTreeView = ({
           editingContextId={editingContextId}
           readOnly={true}
           treeId={treeId}
-          enableMultiSelection={false}
+          enableMultiSelection={enableMultiSelection}
           synchronizedWithSelection={true}
           tree={tree}
           textToFilter={''}

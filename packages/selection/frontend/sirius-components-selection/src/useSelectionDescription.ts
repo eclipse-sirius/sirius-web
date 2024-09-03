@@ -35,6 +35,7 @@ const getSelectionDescription = gql`
               treeDescription {
                 id
               }
+              multiple
             }
           }
         }
