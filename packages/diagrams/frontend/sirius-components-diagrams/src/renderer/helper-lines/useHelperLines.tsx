@@ -309,8 +309,9 @@ export const useHelperLines = (): UseHelperLinesValue => {
         const nodePositionChanges = changes.map((change) => change as NodePositionChange);
         const movingNodes: Node[] = nodePositionChanges
           .map((change) => nodeInternal.get(change.id))
-          .filter((node): node is NonNullable<typeof node> => node !== undefined);
-        if (movingNodes) {
+          .filter((node): node is NonNullable<typeof node> => node !== undefined)
+          .filter((node) => !node.data.pinned);
+        if (movingNodes && movingNodes.length > 0) {
           const movingNodesBounds = getRectangularBounds(nodePositionChanges, movingNodes);
           const helperLines: HelperLines = getHelperLinesForMove(
             movingNodesBounds,
