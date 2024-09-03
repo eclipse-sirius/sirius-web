@@ -4,6 +4,8 @@
 
 === Shapes
 
+- Add support for a table widget in form representations
+
 
 === Architectural decision records
 

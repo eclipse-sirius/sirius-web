@@ -1,0 +1,58 @@
+= Add table widget in form representations
+
+== Problem
+
+We want to have a table widget in forms.
+
+== Key Result
+
+A developper is able to contribute a `FormDescription` containing a Table widget.
+The user is able to create a form representation containing table widgets.
+The user is able to edit data with the table widget.
+
+== Solution
+
+Sirius-Web will provide the API so that the developper will be able to provide a `FormDescription` containing some `TableWidget`.
+The table widget will be part of a form representation.
+
+A table is made of lines and columns.
+It also contains a text area to filter the lines.
+A line and a column can be associated with a semantic element.
+A cell, which is the intersection between a line and a column, is also associated with a semantic element.
+
+
+In this table, it is possible to:
+
+* *Order*: When clicking/clicking again on the column header, order the lines based on alphanumerical/inverse alphanumerical value.
+* *Filter*: When entering a string in the filter area, to filter lines.
+A line is displayed if any of its cell contains the filtering string be it alpha or numeric.
+* *Resize* columns(not persisted)
+* *Export* the content in a csv format
+* *Select*: When selecting a line, a column or a cell, the selection is changed with the semantic element associated with the line, the column or the cell.
+* *Edit a cell*: When clicking inside the cell, it is possible to change the content. 
+The change is sent to the server when focussing out.
+** drop down list for mono-valued feature
+** list with check buttons for multi-valued feature
+** text field for string or number
+
+=== Scenario : define the TableWidgetDescription
+
+As a developper
+
+* Create a spring @Service implementing `IEditingContextRepresentationDescriptionProvider` 
+* Define a `FormDescription` that contains a `TableWidgetDescription`
+
+=== Scenario : play with the table
+
+As a user
+
+* Create the form that will contain the `TableWidget`
+* Assuming we have many lines and columns
+* Click on column header to order the line and click again to inverse order
+* Write something down the filter field and check that the table is properly updated
+* Click in the cell to edit the semantic object attributes and check that the change is displayed in `Details`
+
+== No-gos
+
+The specifier is not able to define a `TableWidgetDescription` in the `View model`.
+The `TableWidgetDescription` can only be defined as a developper contribution.
