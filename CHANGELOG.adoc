@@ -94,6 +94,7 @@ Introduce new `IRewriteProxiesResourceFilter` interface, to register resource fi
 - https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService` that can be used to display styled string in the explorer for example.
 +
 image:doc/screenshots/treeItemLabelStyled.jpg[StyledString, 70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/3963[#3963] [core] Add support for optional GraphQLCodeRegistry post-processing/transformation.
 
 === Improvements
 

@@ -74,18 +74,20 @@ public class GraphQLConfiguration {
     }
 
     @Bean
-    public GraphQLSchema graphQLSchema(ResourcePatternResolver resourcePatternResolver, GraphQLWiringFactory graphQLWiringFactory, List<IDataFetcherWithFieldCoordinates<?>> dataFetchersWithCoordinates) {
+    public GraphQLSchema graphQLSchema(ResourcePatternResolver resourcePatternResolver, GraphQLWiringFactory graphQLWiringFactory, List<IDataFetcherWithFieldCoordinates<?>> dataFetchersWithCoordinates, List<IGraphQLCodeRegistryTransformer> transformers) {
         GraphQLCodeRegistry.Builder builder = GraphQLCodeRegistry.newCodeRegistry();
         dataFetchersWithCoordinates.forEach(dataFetcherWithCoordinates -> {
             dataFetcherWithCoordinates.getFieldCoordinates().forEach(fieldCoordinates -> builder.dataFetcher(fieldCoordinates, dataFetcherWithCoordinates));
         });
         var graphQLCodeRegistry = builder.build();
+        if (!transformers.isEmpty()) {
+            graphQLCodeRegistry = graphQLCodeRegistry.transform(registry ->  transformers.forEach(transformer -> transformer.transform(registry)));
+        }
 
         try {
             TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
 
             SchemaParser schemaParser = new SchemaParser();
-            SchemaGenerator schemaGenerator = new SchemaGenerator();
 
             Resource[] resources = resourcePatternResolver.getResources("classpath*:/schema/**/*.graphqls");
             this.logger.info("{} GraphQL schemas found", resources.length);
@@ -104,7 +106,7 @@ public class GraphQLConfiguration {
                     .scalar(InstantScalarType.INSTANCE)
                     .build();
 
-            return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
+            return new SchemaGenerator().makeExecutableSchema(typeRegistry, runtimeWiring);
         } catch (IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
