@@ -78,6 +78,12 @@ export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onE
     );
   }
 
+  const onMouseEnter = () => {
+    if (tools.length > 1) {
+      onExpand(toolSection.id);
+    }
+  };
+
   const checkLastToolInvoked = (): GQLTool | undefined => {
     const lastToolInvoked = getLastToolInvoked(toolSection.id);
     if (lastToolInvoked && tools.some((tool) => tool.id === lastToolInvoked.id)) {
@@ -91,7 +97,7 @@ export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onE
   return (
     <>
       {defaultTool && (
-        <div className={classes.toolSection} data-testid={toolSection.label}>
+        <div className={classes.toolSection} data-testid={toolSection.label} onMouseEnter={onMouseEnter}>
           <Tool tool={defaultTool} onClick={() => onToolClick(defaultTool)} thumbnail />
           {caretContent}
         </div>

@@ -36,6 +36,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2604[#2604] [diagram] Expand a tool section when the mouse is over it
 
 
 == v2024.9.0
