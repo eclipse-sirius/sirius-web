@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -65,6 +66,8 @@ public final class DiagramDescription implements IRepresentationDescription {
     private Function<VariableManager, IStatus> dropHandler;
 
     private Function<VariableManager, IStatus> dropNodeHandler;
+
+    private Function<VariableManager, DiagramStyle> styleProvider;
 
     private DiagramDescription() {
         // Prevent instantiation
@@ -129,6 +132,10 @@ public final class DiagramDescription implements IRepresentationDescription {
         return this.dropNodeHandler;
     }
 
+    public Function<VariableManager, DiagramStyle> getStyleProvider() {
+        return this.styleProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, nodeDescriptionCount: {3}, edgeDescriptionCount: {4}'}'";
@@ -167,6 +174,8 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private Function<VariableManager, IStatus> dropNodeHandler;
 
+        private Function<VariableManager, DiagramStyle> styleProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -184,6 +193,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             this.edgeDescriptions = diagramDescription.getEdgeDescriptions();
             this.dropHandler = diagramDescription.getDropHandler();
             this.dropNodeHandler = diagramDescription.getDropNodeHandler();
+            this.styleProvider = diagramDescription.getStyleProvider();
         }
 
         public Builder label(String label) {
@@ -241,6 +251,11 @@ public final class DiagramDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder styleProvider(Function<VariableManager, DiagramStyle> styleProvider) {
+            this.styleProvider = Objects.requireNonNull(styleProvider);
+            return this;
+        }
+
         public DiagramDescription build() {
             DiagramDescription diagramDescription = new DiagramDescription();
             diagramDescription.id = Objects.requireNonNull(this.id);
@@ -255,6 +270,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             diagramDescription.edgeDescriptions = Objects.requireNonNull(this.edgeDescriptions);
             diagramDescription.dropHandler = Objects.requireNonNull(this.dropHandler);
             diagramDescription.dropNodeHandler = this.dropNodeHandler; // Optional on purpose.
+            diagramDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             return diagramDescription;
         }
     }

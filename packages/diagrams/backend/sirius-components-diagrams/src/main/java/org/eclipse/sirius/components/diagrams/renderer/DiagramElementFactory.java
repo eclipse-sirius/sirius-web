@@ -79,6 +79,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .size(diagramElementProps.getSize())
                     .nodes(nodes)
                     .edges(edges)
+                    .style(diagramElementProps.getStyle())
                     .build();
         }
         return null;

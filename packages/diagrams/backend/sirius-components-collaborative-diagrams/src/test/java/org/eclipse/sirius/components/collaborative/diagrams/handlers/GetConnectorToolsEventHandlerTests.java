@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
@@ -171,6 +172,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .edgeDescriptions(new ArrayList<>())
                 .palettes(List.of(palette))
                 .dropHandler(variableManager -> new Failure(""))
+                .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .build();
 
         Node sourceNode = this.getNode(SOURCE_NODE_ID, SOURCE_NODE_TARGET_ID);
@@ -237,6 +239,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .size(Size.UNDEFINED)
                 .nodes(nodes)
                 .edges(List.of())
+                .style(DiagramStyle.newDiagramStyle().build())
                 .build();
     }
 }

@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { useTheme } from '@mui/material/styles';
-import { useContext, useMemo } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { useStore } from '../../representation/useStore';
 import { DropNodeContext } from './DropNodeContext';
 import { DropNodeContextValue } from './DropNodeContext.types';
@@ -22,6 +23,7 @@ export const useDropDiagramStyle = (): useDropDiagramStyleValue => {
   const { droppableOnDiagram } = useContext<DropNodeContextValue>(DropNodeContext);
   const { getNodes } = useStore();
   const theme = useTheme();
+  const [background, setBackground] = useState<string>(theme.palette.background.default);
 
   const targetNode = getNodes().find((node) => node.data.isDropNodeTarget);
   const draggedNode = getNodes().find((node) => node.dragging);
@@ -29,15 +31,23 @@ export const useDropDiagramStyle = (): useDropDiagramStyleValue => {
   const diagramTargeted: boolean =
     !!draggedNode && !targetNode && !!draggedNode?.parentNode && !draggedNode.data.isBorderNode;
   const diagramForbidden: boolean = diagramTargeted && !!draggedNode?.id !== null && !droppableOnDiagram;
-  const backgroundColor = diagramForbidden ? theme.palette.action.disabledBackground : theme.palette.background.default;
+  const backgroundColor = diagramForbidden ? theme.palette.action.disabledBackground : background;
+
+  const setBackgroundAfterTransformation = useCallback(
+    (newBackground: string) => {
+      setBackground(getCSSColor(newBackground, theme));
+    },
+    [setBackground]
+  );
 
   const memoizedStyle = useMemo(() => {
     return {
-      backgroundColor,
-      smallGridColor: diagramForbidden ? backgroundColor : '#f1f1f1',
-      largeGridColor: diagramForbidden ? backgroundColor : '#cccccc',
+      background: backgroundColor,
+      smallGridColor: diagramForbidden ? 'transparent' : '#f1f1f1',
+      largeGridColor: diagramForbidden ? 'transparent' : '#cccccc',
+      setBackground: setBackgroundAfterTransformation,
     };
-  }, [diagramForbidden]);
+  }, [diagramForbidden, backgroundColor]);
 
   return memoizedStyle;
 };

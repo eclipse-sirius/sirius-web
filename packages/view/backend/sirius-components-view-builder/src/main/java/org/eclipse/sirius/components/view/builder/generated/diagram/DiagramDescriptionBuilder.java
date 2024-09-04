@@ -130,5 +130,28 @@ public class DiagramDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for Style.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder style(org.eclipse.sirius.components.view.diagram.DiagramStyleDescription value) {
+        this.getDiagramDescription().setStyle(value);
+        return this;
+    }
+
+    /**
+     * Setter for ConditionalStyles.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle ... values) {
+        for (org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle value : values) {
+            this.getDiagramDescription().getConditionalStyles().add(value);
+        }
+        return this;
+    }
+
+
 }
 

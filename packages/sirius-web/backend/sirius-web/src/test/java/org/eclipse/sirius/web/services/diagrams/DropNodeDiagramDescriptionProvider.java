@@ -155,6 +155,7 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                 .edgeDescriptions(edgeDescription)
                 .palette(diagramPalette)
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 
         return this.diagramDescription;

@@ -19,6 +19,7 @@ import java.util.UUID;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
@@ -62,7 +63,12 @@ public class TestDiagramBuilder {
                 .size(Size.UNDEFINED)
                 .nodes(List.of())
                 .edges(List.of())
+                .style(this.getDiagramStyle())
                 .build();
+    }
+
+    public DiagramStyle getDiagramStyle() {
+        return DiagramStyle.newDiagramStyle().build();
     }
 
     public RectangularNodeStyle getRectangularNodeStyle() {

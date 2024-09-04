@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.compatibility.emf.modeloperations.ChildMode
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.CreateViewOperationHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
@@ -88,6 +89,7 @@ public class CreateViewOperationHandlerTests {
                 .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID().toString())))
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))
+                .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .build();
 
         Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())
@@ -98,6 +100,7 @@ public class CreateViewOperationHandlerTests {
                 .size(Size.of(100, 100))
                 .nodes(new ArrayList<>())
                 .edges(List.of())
+                .style(DiagramStyle.newDiagramStyle().build())
                 .build();
 
         IDiagramContext diagramContext = new IDiagramContext.NoOp() {

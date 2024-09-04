@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  */
 @Immutable
 public final class Diagram implements IRepresentation {
+
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Diagram";
 
     private String id;
@@ -49,6 +50,8 @@ public final class Diagram implements IRepresentation {
     private List<Edge> edges;
 
     private DiagramLayoutData layoutData;
+
+    private DiagramStyle style;
 
     private Diagram() {
         // Prevent instantiation
@@ -99,6 +102,10 @@ public final class Diagram implements IRepresentation {
         return this.layoutData;
     }
 
+    public DiagramStyle getStyle() {
+        return this.style;
+    }
+
     public static Builder newDiagram(String id) {
         return new Builder(id);
     }
@@ -120,9 +127,10 @@ public final class Diagram implements IRepresentation {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
 
-        private String kind = KIND;
+        private final String id;
+
+        private final String kind = KIND;
 
         private String targetObjectId;
 
@@ -137,6 +145,8 @@ public final class Diagram implements IRepresentation {
         private List<Node> nodes;
 
         private List<Edge> edges;
+
+        private DiagramStyle style;
 
         private DiagramLayoutData layoutData = new DiagramLayoutData(Map.of(), Map.of(), Map.of());
 
@@ -153,6 +163,7 @@ public final class Diagram implements IRepresentation {
             this.size = diagram.getSize();
             this.nodes = diagram.getNodes();
             this.edges = diagram.getEdges();
+            this.style = diagram.getStyle();
             this.layoutData = diagram.getLayoutData();
         }
 
@@ -191,6 +202,11 @@ public final class Diagram implements IRepresentation {
             return this;
         }
 
+        public Builder style(DiagramStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder layoutData(DiagramLayoutData layoutData) {
             this.layoutData = Objects.requireNonNull(layoutData);
             return this;
@@ -207,6 +223,7 @@ public final class Diagram implements IRepresentation {
             diagram.size = Objects.requireNonNull(this.size);
             diagram.nodes = Objects.requireNonNull(this.nodes);
             diagram.edges = Objects.requireNonNull(this.edges);
+            diagram.style = Objects.requireNonNull(this.style);
             diagram.layoutData = Objects.requireNonNull(this.layoutData);
             return diagram;
         }

@@ -53,7 +53,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 
 * The `String` attribute `org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by the attribute `variables` of type `List<ToolVariable>`
 - https://github.com/eclipse-sirius/sirius-web/issues/3437[#3437] [core] Migrate frontend to MUI 5, if you contributed React componenent that use MUI, you should upgrade them to use MUI 5.
-- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService`, you must implement this method if you have custom implementation of these interface. 
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core] Add `getStyledLabel` in `IDefaultLabelService` and `IObjectService`, you must implement this method if you have custom implementation of these interface. 
 - https://github.com/eclipse-sirius/sirius-web/issues/3815[#3815] [core] Make child creation descriptions locale independent
 
 === Dependency update
@@ -91,9 +91,11 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3821[#3821] [sirius-web] Allow to filter resources in `RewriteProxiesEventHandler`.
 Introduce new `IRewriteProxiesResourceFilter` interface, to register resource filter for `RewriteProxiesEventHandler`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3570[#3570] [diagram] Add max width expression in the View DSL for labels
-- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService` that can be used to display styled string in the explorer for example.
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core] Add `getStyledLabel` in `IDefaultLabelService` and `IObjectService` that can be used to display styled string in the explorer for example.
 +
 image:doc/screenshots/treeItemLabelStyled.jpg[StyledString, 70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/3647[#3647] [diagram] Add support for diagram style with background customization
+
 
 === Improvements
 
@@ -195,8 +197,7 @@ More existing APIs will be migrated to this new common pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/3616[#3616] [diagram] Fix potential exceptions due to duplicate keys in diagram event processing
 - https://github.com/eclipse-sirius/sirius-web/issues/3624[#3624] [diagram] Fix an issue where the header separator does not fill the entire width of the node
 - https://github.com/eclipse-sirius/sirius-web/issues/3531[#3531] [diagram] Fix unnecessary edges label re render
-- https://github.com/eclipse-sirius/sirius-web/issues/3650[#3650] [diagram] Fix potential NPE in DiagramNavigator and Node toString method
-- https://github.com/eclipse-sirius/sirius-web/issues/3649[#3649] [sirius-web] Restore support for Related elements view icons
+- https://github.com/eclipse-sirius/sirius-web/issues/3650[#3650] [diagram] Fix potential NPE in DiagramNavigator and Node toString method- https://github.com/eclipse-sirius/sirius-web/issues/3649[#3649] [sirius-web] Restore support for Related elements view icons
 - https://github.com/eclipse-sirius/sirius-web/issues/3630[#3630] [sirius-web] Restore support for the deletion of dangling representations
 - https://github.com/eclipse-sirius/sirius-web/issues/3666[#3666] [core] Enable EMF's intrinsicIDToEObjectMap for JSON resources to support languages which use modeled identifiers (e.g. SysMLv2).
 - https://github.com/eclipse-sirius/sirius-web/issues/3664[#3664] [core] The Default.svg image is no longer displayed with the new architecture.

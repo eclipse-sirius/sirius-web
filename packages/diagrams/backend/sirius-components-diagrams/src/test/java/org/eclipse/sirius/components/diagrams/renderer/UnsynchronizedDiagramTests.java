@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -306,55 +307,22 @@ public class UnsynchronizedDiagramTests {
 
         Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> new FreeFormLayoutStrategy();
 
-        NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription("subUnsynchronized")
+        NodeDescription subUnsynchronizedNodeDescription = this.getCommonNodeDescriptionBuilder("subUnsynchronized", insideLabelDescription, styleProvider, childrenLayoutStrategyProvider)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(semanticElementsProvider)
-                .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
-                .targetObjectKindProvider(variableManager -> "")
-                .targetObjectLabelProvider(variableManager -> "")
-                .insideLabelDescription(insideLabelDescription)
-                .styleProvider(styleProvider)
-                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
-                .sizeProvider(variableManager -> Size.UNDEFINED)
-                .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
-                .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
                 .build();
 
-        NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription("unsynchronized")
+        NodeDescription unsynchronizedNodeDescription = this.getCommonNodeDescriptionBuilder("unsynchronized", insideLabelDescription, styleProvider, childrenLayoutStrategyProvider)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(semanticElementsProvider)
-                .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
-                .targetObjectKindProvider(variableManager -> "")
-                .targetObjectLabelProvider(variableManager -> "")
-                .insideLabelDescription(insideLabelDescription)
-                .styleProvider(styleProvider)
-                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
-                .sizeProvider(variableManager -> Size.UNDEFINED)
-                .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(List.of(subUnsynchronizedNodeDescription))
-                .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
                 .build();
 
-        NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription("synchronized")
+        NodeDescription synchronizedNodeDescription = this.getCommonNodeDescriptionBuilder("synchronized", insideLabelDescription, styleProvider, childrenLayoutStrategyProvider)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
-                .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
-                .targetObjectKindProvider(variableManager -> "")
-                .targetObjectLabelProvider(variableManager -> "")
-                .insideLabelDescription(insideLabelDescription)
-                .styleProvider(styleProvider)
-                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
-                .sizeProvider(variableManager -> Size.UNDEFINED)
-                .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
-                .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success())
                 .build();
 
         return DiagramDescription.newDiagramDescription("diagram")
@@ -366,6 +334,24 @@ public class UnsynchronizedDiagramTests {
                 .edgeDescriptions(List.of())
                 .palettes(List.of())
                 .dropHandler(variableManager -> new Failure(""))
+                .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .build();
+    }
+
+    private NodeDescription.Builder getCommonNodeDescriptionBuilder(String id,
+            InsideLabelDescription insideLabelDescription, Function<VariableManager, INodeStyle> styleProvider, Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider) {
+
+        return NodeDescription.newNodeDescription(id)
+                .typeProvider(variableManager -> NODE_TYPE)
+                .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
+                .insideLabelDescription(insideLabelDescription)
+                .styleProvider(styleProvider)
+                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
+                .sizeProvider(variableManager -> Size.UNDEFINED)
+                .borderNodeDescriptions(new ArrayList<>())
+                .labelEditHandler((variableManager, newLabel) -> new Success())
+                .deleteHandler(variableManager -> new Success());
     }
 }

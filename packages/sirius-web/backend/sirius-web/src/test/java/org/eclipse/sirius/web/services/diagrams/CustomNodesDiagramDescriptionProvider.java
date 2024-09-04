@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.customnodes.EllipseNodeStyleDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
@@ -103,6 +104,8 @@ public class CustomNodesDiagramDescriptionProvider implements IEditingContextPro
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription()
+                        .build())
                 .build();
 
         return this.diagramDescription;

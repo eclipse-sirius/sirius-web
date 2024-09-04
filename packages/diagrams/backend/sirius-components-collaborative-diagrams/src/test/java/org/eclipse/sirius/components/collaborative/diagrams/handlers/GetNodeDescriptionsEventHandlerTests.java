@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -83,6 +84,7 @@ public class GetNodeDescriptionsEventHandlerTests {
                 }
                 return desc;
             }
+
             @Override
             public Map<String, IRepresentationDescription> findAll(IEditingContext editingContext) {
                 var descriptions = new HashMap<String, IRepresentationDescription>();
@@ -114,6 +116,7 @@ public class GetNodeDescriptionsEventHandlerTests {
                         .nodes(List.of())
                         .size(Size.UNDEFINED)
                         .targetObjectId("")
+                        .style(DiagramStyle.newDiagramStyle().build())
                         .build();
             }
         };

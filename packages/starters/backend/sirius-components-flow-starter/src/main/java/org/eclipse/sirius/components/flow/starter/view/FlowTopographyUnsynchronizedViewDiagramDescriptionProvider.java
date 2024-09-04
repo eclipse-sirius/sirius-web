@@ -52,7 +52,9 @@ public class FlowTopographyUnsynchronizedViewDiagramDescriptionProvider implemen
                 .autoLayout(false)
                 .domainType("flow::System")
                 .name("Topography unsynchronized")
-                .titleExpression("Topography unsynchronized").build();
+                .titleExpression("Topography unsynchronized")
+                .style(this.diagramBuilderHelper.newDiagramStyleDescription().build())
+                .build();
 
 
         var cache = new ViewDiagramElementFinder();

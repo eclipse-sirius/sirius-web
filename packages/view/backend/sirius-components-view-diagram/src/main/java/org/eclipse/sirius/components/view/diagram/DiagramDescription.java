@@ -30,11 +30,14 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange Layout
  * Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getConditionalStyles <em>Conditional
+ * Styles</em>}</li>
  * </ul>
  *
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
  * @model
  * @generated
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
  */
 public interface DiagramDescription extends RepresentationDescription {
 
@@ -42,10 +45,10 @@ public interface DiagramDescription extends RepresentationDescription {
      * Returns the value of the '<em><b>Auto Layout</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Auto Layout</em>' attribute.
-     * @see #setAutoLayout(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_AutoLayout()
      * @model required="true"
      * @generated
+     * @see #setAutoLayout(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_AutoLayout()
      */
     boolean isAutoLayout();
 
@@ -54,9 +57,9 @@ public interface DiagramDescription extends RepresentationDescription {
      * Layout</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Auto Layout</em>' attribute.
-     * @see #isAutoLayout()
+     *         the new value of the '<em>Auto Layout</em>' attribute.
      * @generated
+     * @see #isAutoLayout()
      */
     void setAutoLayout(boolean value);
 
@@ -65,10 +68,10 @@ public interface DiagramDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Palette</em>' containment reference.
-     * @see #setPalette(DiagramPalette)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Palette()
      * @model containment="true"
      * @generated
+     * @see #setPalette(DiagramPalette)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Palette()
      */
     DiagramPalette getPalette();
 
@@ -77,9 +80,9 @@ public interface DiagramDescription extends RepresentationDescription {
      * <em>Palette</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Palette</em>' containment reference.
-     * @see #getPalette()
+     *         the new value of the '<em>Palette</em>' containment reference.
      * @generated
+     * @see #getPalette()
      */
     void setPalette(DiagramPalette value);
 
@@ -89,9 +92,9 @@ public interface DiagramDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Node Descriptions</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_NodeDescriptions()
      * @model containment="true" keys="name"
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_NodeDescriptions()
      */
     EList<NodeDescription> getNodeDescriptions();
 
@@ -101,9 +104,9 @@ public interface DiagramDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Edge Descriptions</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_EdgeDescriptions()
      * @model containment="true" keys="name"
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_EdgeDescriptions()
      */
     EList<EdgeDescription> getEdgeDescriptions();
 
@@ -114,11 +117,11 @@ public interface DiagramDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Arrange Layout Direction</em>' attribute.
+     * @model default="UNDEFINED" required="true"
+     * @generated
      * @see org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection
      * @see #setArrangeLayoutDirection(ArrangeLayoutDirection)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_ArrangeLayoutDirection()
-     * @model default="UNDEFINED" required="true"
-     * @generated
      */
     ArrangeLayoutDirection getArrangeLayoutDirection();
 
@@ -128,11 +131,46 @@ public interface DiagramDescription extends RepresentationDescription {
      * Layout Direction</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Arrange Layout Direction</em>' attribute.
+     *         the new value of the '<em>Arrange Layout Direction</em>' attribute.
+     * @generated
      * @see org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection
      * @see #getArrangeLayoutDirection()
-     * @generated
      */
     void setArrangeLayoutDirection(ArrangeLayoutDirection value);
+
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @model containment="true"
+     * @generated
+     * @see #setStyle(DiagramStyleDescription)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Style()
+     */
+    DiagramStyleDescription getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle
+     * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Style</em>' containment reference.
+     * @generated
+     * @see #getStyle()
+     */
+    void setStyle(DiagramStyleDescription value);
+
+    /**
+     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @model containment="true"
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_ConditionalStyles()
+     */
+    EList<ConditionalDiagramStyle> getConditionalStyles();
 
 } // DiagramDescription

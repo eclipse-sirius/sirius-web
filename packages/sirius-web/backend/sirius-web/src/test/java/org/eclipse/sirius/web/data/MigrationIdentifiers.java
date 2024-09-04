@@ -53,7 +53,9 @@ public final class MigrationIdentifiers {
 
     public static final String MIGRATION_SELECTION_DIALOG_DESCRIPTION_SELECTION_CANDIDATES_EXPRESSION_STUDIO_DIAGRAM = "SelectionDialogDescription#selectionCandidatesExpression migration";
 
+    public static final UUID MIGRATION_DIAGRAM_STYLE_DESCRIPTION = UUID.fromString("14df1eb9-0915-4a62-ba83-b26ce5e2cfe1");
 
+    public static final String MIGRATION_DIAGRAM_STYLE_DESCRIPTION_DIAGRAM = "NodeStyleDescription#color migration";
 
     private MigrationIdentifiers() {
         // Prevent instantiation

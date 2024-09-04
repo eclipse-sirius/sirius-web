@@ -109,4 +109,13 @@ public class DiagramServices implements IDiagramServices {
         }
         return isFaded;
     }
+
+    @Override
+    public boolean isDiagramEmpty(IDiagramService diagramService) {
+        if (diagramService.getDiagramContext() != null) {
+            return diagramService.getDiagramContext().getDiagram().getNodes().isEmpty() && diagramService.getDiagramContext().getViewCreationRequests().isEmpty() ||
+                    diagramService.getDiagramContext().getDiagram().getNodes().size() == 1 && !diagramService.getDiagramContext().getViewDeletionRequests().isEmpty();
+        }
+        return false;
+    }
 }

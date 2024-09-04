@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
@@ -31,6 +32,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramStyleDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
@@ -73,8 +75,8 @@ import org.eclipse.sirius.components.view.diagram.ToolSection;
  * starting with the actual class of the object and proceeding up the inheritance hierarchy until a non-null result is
  * returned, which is the result of the switch. <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage
  * @generated
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage
  */
 public class DiagramSwitch<T> extends Switch<T> {
 
@@ -100,7 +102,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * Checks whether this is a switch for the given package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param ePackage
-     *            the package in question.
+     *         the package in question.
      * @return whether this is a switch for the given package.
      * @generated
      */
@@ -263,11 +265,27 @@ public class DiagramSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case DiagramPackage.DIAGRAM_STYLE_DESCRIPTION: {
+                DiagramStyleDescription diagramStyleDescription = (DiagramStyleDescription) theEObject;
+                T result = this.caseDiagramStyleDescription(diagramStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             case DiagramPackage.CONDITIONAL_NODE_STYLE: {
                 ConditionalNodeStyle conditionalNodeStyle = (ConditionalNodeStyle) theEObject;
                 T result = this.caseConditionalNodeStyle(conditionalNodeStyle);
                 if (result == null)
                     result = this.caseConditional(conditionalNodeStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.CONDITIONAL_DIAGRAM_STYLE: {
+                ConditionalDiagramStyle conditionalDiagramStyle = (ConditionalDiagramStyle) theEObject;
+                T result = this.caseConditionalDiagramStyle(conditionalDiagramStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalDiagramStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -551,10 +569,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Description</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseDiagramDescription(DiagramDescription object) {
         return null;
@@ -566,7 +584,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Element Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -581,7 +599,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Node Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -596,7 +614,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Edge Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -611,7 +629,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Layout Strategy Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -626,7 +644,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>List Layout Strategy Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -641,10 +659,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Free Form Layout Strategy Description</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseFreeFormLayoutStrategyDescription(FreeFormLayoutStrategyDescription object) {
         return null;
@@ -656,7 +674,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Label Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -671,7 +689,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Inside Label Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -686,7 +704,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Outside Label Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -700,10 +718,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseStyle(Style object) {
         return null;
@@ -714,10 +732,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Border Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseBorderStyle(BorderStyle object) {
         return null;
@@ -729,7 +747,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Inside Label Style</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -744,7 +762,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Outside Label Style</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -759,7 +777,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Node Label Style</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -774,7 +792,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Node Style Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -784,12 +802,27 @@ public class DiagramSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Style Description</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *         the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Style Description</em>'.
+     * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     */
+    public T caseDiagramStyleDescription(DiagramStyleDescription object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Conditional Node Style</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Conditional Node Style</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -799,12 +832,27 @@ public class DiagramSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Diagram Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *         the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Diagram Style</em>'.
+     * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     */
+    public T caseConditionalDiagramStyle(ConditionalDiagramStyle object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Conditional Inside Label Style</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Conditional Inside Label Style</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -819,7 +867,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Conditional Outside Label Style</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -834,10 +882,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Rectangular Node Style Description</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseRectangularNodeStyleDescription(RectangularNodeStyleDescription object) {
         return null;
@@ -849,7 +897,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Image Node Style Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -864,10 +912,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Icon Label Node Style Description</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseIconLabelNodeStyleDescription(IconLabelNodeStyleDescription object) {
         return null;
@@ -878,10 +926,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Edge Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseEdgeStyle(EdgeStyle object) {
         return null;
@@ -893,7 +941,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Conditional Edge Style</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -907,10 +955,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Palette</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseDiagramPalette(DiagramPalette object) {
         return null;
@@ -921,10 +969,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Node Palette</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseNodePalette(NodePalette object) {
         return null;
@@ -935,10 +983,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Edge Palette</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseEdgePalette(EdgePalette object) {
         return null;
@@ -949,10 +997,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Tool</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseTool(Tool object) {
         return null;
@@ -963,10 +1011,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Delete Tool</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseDeleteTool(DeleteTool object) {
         return null;
@@ -977,10 +1025,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Drop Tool</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseDropTool(DropTool object) {
         return null;
@@ -991,10 +1039,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Edge Tool</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseEdgeTool(EdgeTool object) {
         return null;
@@ -1006,7 +1054,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Edge Reconnection Tool</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1021,7 +1069,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Label Edit Tool</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1035,10 +1083,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Node Tool</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseNodeTool(NodeTool object) {
         return null;
@@ -1050,10 +1098,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Source Edge End Reconnection Tool</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseSourceEdgeEndReconnectionTool(SourceEdgeEndReconnectionTool object) {
         return null;
@@ -1065,10 +1113,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Target Edge End Reconnection Tool</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseTargetEdgeEndReconnectionTool(TargetEdgeEndReconnectionTool object) {
         return null;
@@ -1079,10 +1127,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Create View</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseCreateView(CreateView object) {
         return null;
@@ -1093,10 +1141,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Delete View</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseDeleteView(DeleteView object) {
         return null;
@@ -1108,13 +1156,13 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch. <<<<<<< HEAD
+     *         the target of the switch. <<<<<<< HEAD
      * @return the result of interpreting the object as an instance of '<em>Selection Description</em>'.
-     * @generated =======
      * @return the result of interpreting the object as an instance of '<em>Selection Dialog Description</em>'. >>>>>>>
-     *         e444ba2ad ([2759] Reactivate the SelectionDialog)
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * e444ba2ad ([2759] Reactivate the SelectionDialog)
+     * @generated =======
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseSelectionDialogDescription(SelectionDialogDescription object) {
         return null;
@@ -1125,10 +1173,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Tool Section</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseToolSection(ToolSection object) {
         return null;
@@ -1139,10 +1187,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Tool Section</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseDiagramToolSection(DiagramToolSection object) {
         return null;
@@ -1154,7 +1202,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Node Tool Section</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1169,7 +1217,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Edge Tool Section</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1184,7 +1232,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Drop Node Tool</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1199,10 +1247,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Dialog Description</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseDialogDescription(DialogDescription object) {
         return null;
@@ -1214,10 +1262,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Selection Dialog Tree Description</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseSelectionDialogTreeDescription(SelectionDialogTreeDescription object) {
         return null;
@@ -1229,7 +1277,7 @@ public class DiagramSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Representation Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1243,10 +1291,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Label Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseLabelStyle(LabelStyle object) {
         return null;
@@ -1257,10 +1305,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Conditional</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseConditional(Conditional object) {
         return null;
@@ -1271,10 +1319,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Operation</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseOperation(Operation object) {
         return null;
@@ -1286,10 +1334,10 @@ public class DiagramSwitch<T> extends Switch<T> {
      * anyway. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject)
      */
     @Override
     public T defaultCase(EObject object) {

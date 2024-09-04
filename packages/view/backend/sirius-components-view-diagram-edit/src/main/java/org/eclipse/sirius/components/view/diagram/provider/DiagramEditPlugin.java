@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.provider.ViewEditPlugin;
  * @generated
  */
 public final class DiagramEditPlugin extends EMFPlugin {
+
     /**
      * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -82,7 +83,7 @@ public final class DiagramEditPlugin extends EMFPlugin {
      * Computes the file extension to be used with the key to specify an image resource.
      *
      * @param key
-     *            the key for the imagine.
+     *         the key for the imagine.
      * @return the file extension to be used with the key to specify an image resource.
      */
     protected static String extensionFor(String key) {
@@ -90,15 +91,8 @@ public final class DiagramEditPlugin extends EMFPlugin {
         int index = key.lastIndexOf('.');
         if (index != -1) {
             String extension = key.substring(index + 1);
-            if ("png".equalsIgnoreCase(extension)
-                    || "gif".equalsIgnoreCase(extension)
-                    || "bmp".equalsIgnoreCase(extension)
-                    || "ico".equalsIgnoreCase(extension)
-                    || "jpg".equalsIgnoreCase(extension)
-                    || "jpeg".equalsIgnoreCase(extension)
-                    || "tif".equalsIgnoreCase(extension)
-                    || "tiff".equalsIgnoreCase(extension)
-                    || "svg".equalsIgnoreCase(extension)) {
+            if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension) || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension) || "jpg".equalsIgnoreCase(extension)
+                    || "jpeg".equalsIgnoreCase(extension) || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension) || "svg".equalsIgnoreCase(extension)) {
                 result = "";
             }
         }
@@ -111,6 +105,7 @@ public final class DiagramEditPlugin extends EMFPlugin {
      * @generated
      */
     public static class Implementation extends EclipsePlugin {
+
         /**
          * Creates an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
          *

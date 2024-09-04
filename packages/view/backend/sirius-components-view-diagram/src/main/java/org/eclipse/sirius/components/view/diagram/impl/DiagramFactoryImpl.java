@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
@@ -31,6 +32,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramStyleDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
@@ -137,8 +139,12 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createInsideLabelStyle();
             case DiagramPackage.OUTSIDE_LABEL_STYLE:
                 return this.createOutsideLabelStyle();
+            case DiagramPackage.DIAGRAM_STYLE_DESCRIPTION:
+                return this.createDiagramStyleDescription();
             case DiagramPackage.CONDITIONAL_NODE_STYLE:
                 return this.createConditionalNodeStyle();
+            case DiagramPackage.CONDITIONAL_DIAGRAM_STYLE:
+                return this.createConditionalDiagramStyle();
             case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE:
                 return this.createConditionalInsideLabelStyle();
             case DiagramPackage.CONDITIONAL_OUTSIDE_LABEL_STYLE:
@@ -369,9 +375,31 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      * @generated
      */
     @Override
+    public DiagramStyleDescription createDiagramStyleDescription() {
+        DiagramStyleDescriptionImpl diagramStyleDescription = new DiagramStyleDescriptionImpl();
+        return diagramStyleDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public ConditionalNodeStyle createConditionalNodeStyle() {
         ConditionalNodeStyleImpl conditionalNodeStyle = new ConditionalNodeStyleImpl();
         return conditionalNodeStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalDiagramStyle createConditionalDiagramStyle() {
+        ConditionalDiagramStyleImpl conditionalDiagramStyle = new ConditionalDiagramStyleImpl();
+        return conditionalDiagramStyle;
     }
 
     /**

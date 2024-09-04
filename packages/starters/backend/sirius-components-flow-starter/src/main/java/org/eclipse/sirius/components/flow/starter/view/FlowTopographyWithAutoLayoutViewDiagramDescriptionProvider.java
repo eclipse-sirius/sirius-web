@@ -51,7 +51,9 @@ public class FlowTopographyWithAutoLayoutViewDiagramDescriptionProvider implemen
                 .autoLayout(true)
                 .domainType("flow::System")
                 .name("Topography with auto layout")
-                .titleExpression("Topography with auto layout").build();
+                .titleExpression("Topography with auto layout")
+                .style(this.diagramBuilderHelper.newDiagramStyleDescription().build())
+                .build();
 
 
         var cache = new ViewDiagramElementFinder();

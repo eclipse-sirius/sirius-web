@@ -41,4 +41,6 @@ public interface IDiagramServices {
     boolean isHidden(IDiagramElement diagramElement);
 
     boolean isFaded(IDiagramElement diagramElement);
+
+    boolean isDiagramEmpty(IDiagramService diagramService);
 }

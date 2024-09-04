@@ -155,6 +155,8 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .nodeTools(newEntityNodeTool)
                 .build();
 
+        var style = new DiagramBuilders().newDiagramStyleDescription().build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name("Domain")
@@ -162,6 +164,7 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .titleExpression("aql:'Domain'")
                 .palette(palette)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
+                .style(style)
                 .build();
     }
 

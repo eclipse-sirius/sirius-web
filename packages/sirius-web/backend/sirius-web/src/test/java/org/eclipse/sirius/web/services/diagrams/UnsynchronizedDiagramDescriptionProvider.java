@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.diagram.CreateViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramPaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DropToolBuilder;
@@ -188,6 +189,8 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 .edgeDescriptions()
                 .palette(diagramPalette)
                 .autoLayout(false)
+                .style(new DiagramBuilders().newDiagramStyleDescription()
+                        .build())
                 .build();
 
         return this.diagramDescription;

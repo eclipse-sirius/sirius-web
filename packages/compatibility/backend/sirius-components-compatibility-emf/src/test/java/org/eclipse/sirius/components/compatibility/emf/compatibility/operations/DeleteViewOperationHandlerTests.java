@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.compatibility.emf.modeloperations.DeleteVie
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
@@ -91,6 +92,7 @@ public class DeleteViewOperationHandlerTests {
                 .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID().toString())))
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))
+                .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .build();
 
         Node node = Node.newNode(UUID.randomUUID().toString())
@@ -135,6 +137,7 @@ public class DeleteViewOperationHandlerTests {
                 .size(Size.of(100, 100))
                 .nodes(List.of(node))
                 .edges(List.of())
+                .style(DiagramStyle.newDiagramStyle().build())
                 .build();
 
         IDiagramContext diagramContext = new IDiagramContext.NoOp() {

@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.junit.jupiter.api.Test;
@@ -56,6 +57,7 @@ public class DiagramEventProcessorTests {
             .size(Size.UNDEFINED)
             .nodes(List.of())
             .edges(List.of())
+            .style(DiagramStyle.newDiagramStyle().build())
             .build();
 
     private final IDiagramCreationService diagramCreationService = new MockDiagramCreationService(INITIAL_TEST_DIAGRAM);

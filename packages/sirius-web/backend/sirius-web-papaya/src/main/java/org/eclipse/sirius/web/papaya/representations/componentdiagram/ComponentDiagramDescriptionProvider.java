@@ -29,6 +29,7 @@ import org.eclipse.sirius.web.papaya.representations.componentdiagram.edgedescri
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.nodedescriptions.ComponentNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.tools.ComponentDiagramDropToolProvider;
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.tools.CreateComponentNodeToolProvider;
+import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
  * Used to provide the view model used to create component diagrams.
@@ -47,6 +48,17 @@ public class ComponentDiagramDescriptionProvider implements IRepresentationDescr
         componentDiagramDescription.setTitleExpression("aql:self.name + ' component diagram'");
         componentDiagramDescription.setAutoLayout(false);
         componentDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.DOWN);
+        componentDiagramDescription.setStyle(new DiagramBuilders().newDiagramStyleDescription()
+                .background(colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
+                .build());
+
+        var emptyDiagramStyle = new DiagramBuilders().newConditionalDiagramStyle()
+                .condition("aql:diagramServices.isDiagramEmpty()")
+                .style(new DiagramBuilders().newDiagramStyleDescription()
+                        .background(colorProvider.getColor(PapayaColorPaletteProvider.EMPTY_DIAGRAM_BACKGROUND))
+                        .build())
+                .build();
+        componentDiagramDescription.getConditionalStyles().add(emptyDiagramStyle);
 
         var cache = new DefaultViewDiagramElementFinder();
 

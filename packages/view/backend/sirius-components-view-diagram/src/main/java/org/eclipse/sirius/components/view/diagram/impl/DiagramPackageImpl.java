@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
@@ -34,6 +35,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramStyleDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
@@ -210,7 +212,21 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      *
      * @generated
      */
+    private EClass diagramStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass conditionalNodeStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalDiagramStyleEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -621,6 +637,26 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EAttribute getDiagramDescription_ArrangeLayoutDirection() {
         return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDiagramDescription_Style() {
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDiagramDescription_ConditionalStyles() {
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -1369,6 +1405,26 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EClass getDiagramStyleDescription() {
+        return this.diagramStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDiagramStyleDescription_Background() {
+        return (EReference) this.diagramStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getConditionalNodeStyle() {
         return this.conditionalNodeStyleEClass;
     }
@@ -1381,6 +1437,26 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EReference getConditionalNodeStyle_Style() {
         return (EReference) this.conditionalNodeStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalDiagramStyle() {
+        return this.conditionalDiagramStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getConditionalDiagramStyle_Style() {
+        return (EReference) this.conditionalDiagramStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2371,6 +2447,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
         this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION);
+        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__STYLE);
+        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES);
 
         this.diagramElementDescriptionEClass = this.createEClass(DIAGRAM_ELEMENT_DESCRIPTION);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__NAME);
@@ -2461,8 +2539,14 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.nodeStyleDescriptionEClass = this.createEClass(NODE_STYLE_DESCRIPTION);
 
+        this.diagramStyleDescriptionEClass = this.createEClass(DIAGRAM_STYLE_DESCRIPTION);
+        this.createEReference(this.diagramStyleDescriptionEClass, DIAGRAM_STYLE_DESCRIPTION__BACKGROUND);
+
         this.conditionalNodeStyleEClass = this.createEClass(CONDITIONAL_NODE_STYLE);
         this.createEReference(this.conditionalNodeStyleEClass, CONDITIONAL_NODE_STYLE__STYLE);
+
+        this.conditionalDiagramStyleEClass = this.createEClass(CONDITIONAL_DIAGRAM_STYLE);
+        this.createEReference(this.conditionalDiagramStyleEClass, CONDITIONAL_DIAGRAM_STYLE__STYLE);
 
         this.conditionalInsideLabelStyleEClass = this.createEClass(CONDITIONAL_INSIDE_LABEL_STYLE);
         this.createEReference(this.conditionalInsideLabelStyleEClass, CONDITIONAL_INSIDE_LABEL_STYLE__STYLE);
@@ -2629,6 +2713,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.nodeLabelStyleEClass.getESuperTypes().add(this.getBorderStyle());
         this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getBorderStyle());
         this.conditionalNodeStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
+        this.conditionalDiagramStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalInsideLabelStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalOutsideLabelStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.rectangularNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
@@ -2669,6 +2754,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.getDiagramDescription_EdgeDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
         this.initEAttribute(this.getDiagramDescription_ArrangeLayoutDirection(), this.getArrangeLayoutDirection(), "arrangeLayoutDirection", "UNDEFINED", 1, 1, DiagramDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDiagramDescription_Style(), this.getDiagramStyleDescription(), null, "style", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDiagramDescription_ConditionalStyles(), this.getConditionalDiagramStyle(), null, "conditionalStyles", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.diagramElementDescriptionEClass, DiagramElementDescription.class, "DiagramElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getDiagramElementDescription_Name(), theViewPackage.getIdentifier(), "name", "NewRepresentationDescription", 0, 1, DiagramElementDescription.class, !IS_TRANSIENT,
@@ -2821,9 +2910,17 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.initEClass(this.nodeStyleDescriptionEClass, NodeStyleDescription.class, "NodeStyleDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+        this.initEClass(this.diagramStyleDescriptionEClass, DiagramStyleDescription.class, "DiagramStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getDiagramStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, DiagramStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.conditionalNodeStyleEClass, ConditionalNodeStyle.class, "ConditionalNodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getConditionalNodeStyle_Style(), this.getNodeStyleDescription(), null, "style", null, 0, 1, ConditionalNodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.conditionalDiagramStyleEClass, ConditionalDiagramStyle.class, "ConditionalDiagramStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getConditionalDiagramStyle_Style(), this.getDiagramStyleDescription(), null, "style", null, 0, 1, ConditionalDiagramStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalInsideLabelStyleEClass, ConditionalInsideLabelStyle.class, "ConditionalInsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getConditionalInsideLabelStyle_Style(), this.getInsideLabelStyle(), null, "style", null, 0, 1, ConditionalInsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
