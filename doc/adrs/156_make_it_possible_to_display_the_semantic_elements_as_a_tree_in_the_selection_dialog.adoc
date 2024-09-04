@@ -2,7 +2,8 @@
 
 == Context
 
-We have restored the previous deactivated Selection Dialog in the context of the ADR: _[ADR-152] Reactivate the Selection Dialog Tool_.
+We have restored the previous deactivated Selection Dialog in the context of the ADR: _[ADR-153] Restore the Selection Dialog support in diagrams
+_.
 
 We want now to improve this Selection Dialog.
 
@@ -10,7 +11,7 @@ The Selection dialog displayed the candidates elements (returned by the `candida
 
 Since the selection dialog is intended to be used to select semantic elements, it will be necessary to have the ability to display them as they are in their structure (as a tree).
 
-image:images/153/currentSelectionDialog.png[Current Selection Dialog, 50%]
+image:images/156/currentSelectionDialog.png[Current Selection Dialog, 50%]
 
 === Current behavior
 
@@ -48,26 +49,20 @@ type SelectionObject {
 
 The specifier will choose whether the objects returned by the candidates expression will be displayed as a tree or as a flat list. 
 
-The `SelectionDialogDescription` from the Diagram View model will have two additional boolean attributes:
+The `SelectionDialogDescription` from the Diagram View model will have an additional boolean attributes:
 
  * `displayedAsTree`: to indicate whether the dialog layout should be a tree.
- * `expandedAtOpening`: to indicate if the tree should be expanded by default (that means all tree items are expanded at opening)
+
 
 ==== Backend and GraphQL API
 
-In addition, the Selection computed by the `SelectionRender` by the server will now return the containment information.
+If the displayedAsTree is true, we will rely on the TreeRepresentation instead of the current SelectionRepresentation.
 
-Since the tree depth is not known by the frontend beforehand, the backend needs to return the whole tree items in a flat way.
+We will need to contribute a new `IEditingContextRepresentationDescriptionProvider` as the `ModelBrowsersDescriptionProvider` for the Reference widget.
 
-The GraphQL subscription query will thus have a fixed depth. The containment information will be owned by a field called `parentId`.
+This `DescriptionProvider` will rely on the `SelectionDialogDescription` to compute the `TreeDescription`. 
 
-To do so, we will keep the same GraphQL structure but with the following changes:
-
- * A `SelectionObject` will have a `parentId` field (optional), that will be a reference to another `SelectionObject#id` field.
- * A `SelectionObject` will contain the information whether it can be selected or not in order to differentiate elements from the candidatesExpression to the hierarchical nodes.
- * The `Selection` will also contains the information whether the dialog should be displayed as a tree or not and if we should expand all nodes at opening.
-
-Thus, the GraphQL API will evolved as following:
+The GraphQL API will evolve to handle the layout information:
 
 ```
 type Selection implements Representation {
@@ -75,19 +70,11 @@ type Selection implements Representation {
   metadata: RepresentationMetadata!
   targetObjectId: String!
   message: String
-  objects: [SelectionObject!]!
   displayedAsTree: Boolean!
-  expandedAtOpening: Boolean!
-}
-
-type SelectionObject {
-  id: ID!
-  label: String!
-  iconURL: [String!]!
-  parentId: String
-  isSelectable: Boolean!
+  objects: [SelectionObject!]!
 }
 ```
+
 
 ==== Tree computation Algorithm
 
@@ -122,59 +109,49 @@ Root
 
 Elements that are not selectable (out of the computed candidates set) will by faded in the same way than the reference widget semantic browser do:
 
-image:images/153/referenceWidgetSemanticBrowser.png[Reference Widget Semantic Browser, 50%]
+image:images/156/referenceWidgetSemanticBrowser.png[Reference Widget Semantic Browser, 50%]
 
 The frontend `SelectionDialog` component will be modified to handle both flat and tree layouts.
 
 If the value of `displayedAsTree` is false, then we keep the current behavior.
 
-If the value of `displayedAsTree` is true, then we will represent the structure returned by the backend in a similar way than the `TreePropertySection` component.
-
-We will rely on the MaterialUI `TreeItem` and `TreeView` in the same way than the internal `TreeItem` component from the `TreePropertySection`:
+If the value of `displayedAsTree` is true, then we will use the `TreeView` component to display the content. We will have something similar to the following code:
 
 ```
- const childNodes = nodes.filter((childNode) => childNode.parentId === node.id);
-  return (
-    <MuiTreeItem nodeId={node.id} label={label}>
-      {childNodes.map((childNode) => (
-        <TreeItem
-          node={childNode}
-          nodes={nodes}
-          key={childNode.id}
-          readOnly={readOnly}
-          aria-role="treeitem"
-          editingContextId={editingContextId}
-          formId={formId}
-          widgetId={widgetId}
-        />
-      ))}
-    </MuiTreeItem>
-  );
+  <SelectionContext.Provider
+    value={{
+      selection: [],
+      setSelection: setDialogSelection,
+    }}>
+      <TreeView
+        editingContextId={editingContextId}
+        readOnly={true}
+        treeId={`selectionDialog://?targetObjectId=${encodeURIComponent(targetObjectId}&descriptionId=${encodeURIComponent(descriptionId)}`}
+        enableMultiSelection={enableMultiSelection}
+        synchronizedWithSelection={true}
+        activeFilterIds={[]}
+      />
+  </SelectionContext.Provider>
 ```
 
-If the Selection is refreshed by the backend, following a semantic change from another client for instance, a new Selection from the subscription will be received by the SelectionDialog and trigger the component rerendering.
+We need to provide a `SelectionContext` to capture the selection from the `TreeView`.
 
-If the end-user has changed the expanded state, we want to keep them expanded in that situation. 
+We need the layout information (tree or flat) and the message in both case. In the case of the tree layout, we will have two subscriptions:
+* The one two retrieve the SelectionDialog (to have the message)
+* The one for the Tree representation.
 
-To do so, We will modify the SelectionDialog state machine as follow:
-
- * A new `expandedSelectionObjectIds : string[]` will be added in the `SelectionDialogContext`.
- * A new event `HandleExpandUpdatedEvent` = { type: 'HANDLE_EXPAND_UPDATED'; expandedObjectId: string }; This event will add or remove the expandedObjectId from the expandedSelectionObjectIds array.
-
-A TreeItem will be expanded if:
-
- * The expandedAtOpening is activated: in that case, the `expandedSelectionObjectIds` will be initialized with all selectedObject ids.
- * The user expanded the item manually.
+Note that for now, the message is not interpreted but the `SelectionDescription#messageProvider` is already returning a function taking the variableManager as parameter. 
+That why we can't provide the message directly from the graphQL query (by modifying the `SingleClickOnDiagramElementTool` GraphQL API for instance)
 
 === Second option
 
-The second option but not the preferred one, consists in relying on the TreeRepresentation.
+The second option would consist in changing the current Selection Dialog representation to handle both flat and tree layout. 
 
-With this option, we would need to contribute a new `IEditingContextRepresentationDescriptionProvider` as the `ModelBrowsersDescriptionProvider` for the Reference widget.
+That would mean computing the tree structure in the backend and providing it to the frontend with the containment information.
 
-This DescriptionProvider would rely on the SelectionDialogDescription to compute the TreeDescription. 
+The frontend would handle both the flat and tree layout.
 
-This option appears to be more complicated to implement. In addition, the first option seems to be a good answer to the Selection dialog need.
+The option has finally not been retained to reuse the existing `TreeView`.
 
 
 == Status
