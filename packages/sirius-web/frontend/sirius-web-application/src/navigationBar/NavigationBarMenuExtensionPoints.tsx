@@ -12,7 +12,20 @@
  *******************************************************************************/
 import { ComponentExtensionPoint, DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
 import { Help } from './Help';
-import { NavigationBarMenuIconProps, NavigationBarMenuItemProps } from './NavigationBarMenu.types';
+import {
+  NavigationBarMenuContainerProps,
+  NavigationBarMenuIconProps,
+  NavigationBarMenuItemProps,
+} from './NavigationBarMenu.types';
+
+const FallbackNavigationBarMenuContainer = ({ children }: NavigationBarMenuContainerProps) => {
+  return <div>{children}</div>;
+};
+
+export const navigationBarMenuContainerExtensionPoint: ComponentExtensionPoint<NavigationBarMenuContainerProps> = {
+  identifier: 'navigationBarMenu#container',
+  FallbackComponent: FallbackNavigationBarMenuContainer,
+};
 
 export const navigationBarMenuIconExtensionPoint: ComponentExtensionPoint<NavigationBarMenuIconProps> = {
   identifier: 'navigationBarMenu#icon',

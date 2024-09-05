@@ -22,3 +22,7 @@ export interface NavigationBarMenuIconProps {
 }
 
 export interface NavigationBarMenuItemProps {}
+
+export interface NavigationBarMenuContainerProps {
+  children?: React.ReactNode;
+}
