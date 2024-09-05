@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,8 @@ import java.util.Map;
 public interface IURLParser {
     Map<String, List<String>> getParameterValues(String url);
 
+    List<String> getParameterEntries(String value);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -32,6 +34,11 @@ public interface IURLParser {
         @Override
         public Map<String, List<String>> getParameterValues(String url) {
             return Map.of();
+        }
+
+        @Override
+        public List<String> getParameterEntries(String value) {
+            return List.of();
         }
     }
 }

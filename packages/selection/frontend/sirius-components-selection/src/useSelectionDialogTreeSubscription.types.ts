@@ -26,9 +26,8 @@ export interface UseSelectionDialogTreeSubscriptionState {
 
 export interface GQLSelectionDialogTreeEventInput {
   id: string;
-  treeId: string;
+  representationId: string;
   editingContextId: string;
-  expanded: string[];
 }
 
 export interface GQLSelectionDialogTreeEventVariables {

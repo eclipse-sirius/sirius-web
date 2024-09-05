@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinate
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
-import org.eclipse.sirius.web.application.diagram.services.filter.api.DiagramFilterConfiguration;
 import org.reactivestreams.Publisher;
 
 import graphql.execution.DataFetcherResult;
@@ -57,13 +56,12 @@ public class SubscriptionDiagramFilterEventDataFetcher implements IDataFetcherWi
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DiagramFilterEventInput.class);
-        var diagramFilterConfiguration = new DiagramFilterConfiguration(input.id().toString(), input.objectIds());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
-        localContext.put(LocalContextConstants.REPRESENTATION_ID, diagramFilterConfiguration.getId());
+        localContext.put(LocalContextConstants.REPRESENTATION_ID, input.representationId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), diagramFilterConfiguration, input), input)
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), input.representationId(), input), input)
                 .map(payload ->  DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)

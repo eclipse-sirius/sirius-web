@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
@@ -42,11 +41,11 @@ public class RepresentationEventProcessorComposedFactory implements IRepresentat
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
         return this.factories.stream()
-                .filter(factory -> factory.canHandle(configuration))
+                .filter(factory -> factory.canHandle(editingContext, representationId))
                 .findFirst()
-                .flatMap(factory -> factory.createRepresentationEventProcessor(configuration, editingContext));
+                .flatMap(factory -> factory.createRepresentationEventProcessor(editingContext, representationId));
     }
 
 }

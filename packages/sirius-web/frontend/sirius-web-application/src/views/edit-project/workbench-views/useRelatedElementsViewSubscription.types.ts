@@ -27,7 +27,7 @@ export interface UseRelatedElementsViewSubscriptionState {
 export interface GQLRelatedElementsEventInput {
   id: string;
   editingContextId: string;
-  objectIds: string[];
+  representationId: string;
 }
 
 export interface GQLRelatedElementsEventVariables {

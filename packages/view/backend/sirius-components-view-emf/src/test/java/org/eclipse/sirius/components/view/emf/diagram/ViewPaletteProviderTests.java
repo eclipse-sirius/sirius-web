@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
@@ -194,7 +195,12 @@ public class ViewPaletteProviderTests {
     }
 
     private ViewPaletteProvider createViewPaletteProvider() {
-        IURLParser urlParser = url -> Map.of(IDiagramIdProvider.SOURCE_ELEMENT_ID, List.of("sourceElementId"));
+        IURLParser urlParser = new URLParser() {
+            @Override
+            public Map<String, List<String>> getParameterValues(String kind) {
+                return Map.of(IDiagramIdProvider.SOURCE_ELEMENT_ID, List.of("sourceElementId"));
+            }
+        };
 
         IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService = new IViewDiagramDescriptionSearchService() {
 

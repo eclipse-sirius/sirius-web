@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.relatedelements.services;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +21,6 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.forms.api.IRelatedElementsDescriptionProvider;
-import org.eclipse.sirius.components.collaborative.forms.api.RelatedElementsConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
@@ -88,7 +89,9 @@ public class RelatedElementsDescriptionProvider implements IRelatedElementsDescr
         List<String> selectedObjectIds = selectedObjects.stream()
                 .map(this.objectService::getId)
                 .toList();
-        return new RelatedElementsConfiguration(selectedObjectIds).getId();
+
+        var encodedIds = selectedObjectIds.stream().map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8)).toList();
+        return "relatedElements://?objectIds=[" + String.join(",", encodedIds) + "]";
     }
 
     private GroupDescription getGroupDescription() {

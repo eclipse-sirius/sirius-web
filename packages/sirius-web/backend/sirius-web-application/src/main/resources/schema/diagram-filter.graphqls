@@ -5,7 +5,7 @@ extend type Subscription {
 input DiagramFilterEventInput {
   id: ID!
   editingContextId: ID!
-  objectIds: [ID!]!
+  representationId: String!
 }
 
 union DiagramFilterEventPayload = ErrorPayload | FormRefreshedEventPayload

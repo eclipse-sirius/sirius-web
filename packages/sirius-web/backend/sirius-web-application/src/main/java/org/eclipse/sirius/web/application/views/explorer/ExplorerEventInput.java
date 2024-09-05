@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IInput;
@@ -22,5 +21,5 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author sbegaudeau
  */
-public record ExplorerEventInput(UUID id, String editingContextId, String treeId, List<String> expanded, List<String> activeFilterIds) implements IInput {
+public record ExplorerEventInput(UUID id, String editingContextId, String representationId) implements IInput {
 }

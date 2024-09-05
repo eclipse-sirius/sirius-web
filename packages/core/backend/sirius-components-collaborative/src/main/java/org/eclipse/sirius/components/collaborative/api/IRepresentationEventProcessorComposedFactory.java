@@ -22,5 +22,5 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
  * @author sbegaudeau
  */
 public interface IRepresentationEventProcessorComposedFactory {
-    Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext);
+    Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId);
 }

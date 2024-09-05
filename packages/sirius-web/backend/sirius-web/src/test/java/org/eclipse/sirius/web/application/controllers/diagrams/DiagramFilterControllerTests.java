@@ -60,6 +60,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.diagram.dto.DiagramFilterEventInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.graphql.DiagramFilterEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -115,6 +116,9 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private DiagramFilterEventSubscriptionRunner diagramFilterEventSubscriptionRunner;
+
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
 
     @BeforeEach
     public void beforeEach() {
@@ -229,7 +233,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(diagramReference.get().getId()));
+        var diagramFilterRepresentationId = representationIdBuilder.buildDiagramFilterRepresentationId(List.of(diagramReference.get().getId()));
+        var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramFilterRepresentationId);
         var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput);
 
         Predicate<Object> formContentMatcher = object -> this.refreshedForm(object)
@@ -356,7 +361,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), List.of(diagramReference.get().getId()));
+        var diagramFilterRepresentationId = representationIdBuilder.buildDiagramFilterRepresentationId(List.of(diagramReference.get().getId()));
+        var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramFilterRepresentationId);
         var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput);
 
         AtomicReference<String> formId = new AtomicReference<>();
@@ -409,7 +415,6 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
         Predicate<Object> updatedDiagramContentMatcher = object -> this.refreshedDiagram(object)
                 .filter(diagram -> isDiagramUpdatedPredicate.apply(diagram, nodeId.get()))
                 .isPresent();
-
         Predicate<Object> revertedDiagramContentMatcher = object -> this.refreshedDiagram(object)
                 .filter(Predicate.not(diagram -> isDiagramUpdatedPredicate.apply(diagram, nodeId.get())))
                 .isPresent();
@@ -480,4 +485,5 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram);
     }
+
 }

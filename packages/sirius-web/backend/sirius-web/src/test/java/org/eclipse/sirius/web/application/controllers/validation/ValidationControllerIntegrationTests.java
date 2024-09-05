@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.collaborative.validation.dto.ValidationRefr
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
@@ -82,6 +83,9 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
     @Autowired
     private EditTextfieldMutationRunner editTextfieldMutationRunner;
 
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -92,7 +96,7 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnEditingContextWhenWeSubscribeToItsValidationEventsThenTheValidationDataAreSent() {
-        var input = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
+        var input = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationIdBuilder.buildValidationRepresentationId());
         var flux = this.graphQLRequestor.subscribe(GET_VALIDATION_EVENT_SUBSCRIPTION, input)
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
@@ -117,10 +121,11 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenValidationRepresentationWhenWeEditTheDetailsOfAnObjectThenItsValidationStatusIsUpdated() {
-        var validationEventInput = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
+        var validationEventInput = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationIdBuilder.buildValidationRepresentationId());
         var validationFlux = this.graphQLRequestor.subscribe(GET_VALIDATION_EVENT_SUBSCRIPTION, validationEventInput);
 
-        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()));
+        var detailsRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()));
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailsRepresentationId);
         var detailsFlux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
 
         var formId = new AtomicReference<String>();

@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.FormDescriptionEditorConfiguration;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -65,13 +64,12 @@ public class SubscriptionFormDescriptionEditorEventDataFetcher implements IDataF
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, FormDescriptionEditorEventInput.class);
-        var formDescriptionEditorConfiguration = new FormDescriptionEditorConfiguration(input.formDescriptionEditorId());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
         localContext.put(LocalContextConstants.REPRESENTATION_ID, input.formDescriptionEditorId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), formDescriptionEditorConfiguration, input), input)
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), input.formDescriptionEditorId(), input), input)
                 .map(payload ->  DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)

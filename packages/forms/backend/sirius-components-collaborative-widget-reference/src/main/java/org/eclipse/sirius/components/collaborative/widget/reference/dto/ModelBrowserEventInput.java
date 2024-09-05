@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.widget.reference.dto;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IInput;
@@ -22,5 +21,5 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author Jerome Gout
  */
-public record ModelBrowserEventInput(UUID id, String editingContextId, String treeId, List<String> expanded) implements IInput {
+public record ModelBrowserEventInput(UUID id, String editingContextId, String representationId) implements IInput {
 }

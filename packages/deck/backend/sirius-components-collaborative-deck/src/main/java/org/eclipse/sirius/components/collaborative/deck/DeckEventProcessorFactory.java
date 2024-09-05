@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
@@ -56,25 +55,23 @@ public class DeckEventProcessorFactory implements IRepresentationEventProcessorF
     }
 
     @Override
-    public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof DeckConfiguration;
+    public boolean canHandle(IEditingContext editingContext, String representationId) {
+        return this.representationSearchService.existByIdAndKind(representationId, List.of(Deck.KIND));
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        if (configuration instanceof DeckConfiguration deckConfiguration) {
-            var optionalDeck = this.representationSearchService.findById(editingContext, deckConfiguration.getId(), Deck.class);
-            if (optionalDeck.isPresent()) {
-                Deck deck = optionalDeck.get();
-                DeckContext deckContext = new DeckContext(deck);
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
+        var optionalDeck = this.representationSearchService.findById(editingContext, representationId, Deck.class);
+        if (optionalDeck.isPresent()) {
+            Deck deck = optionalDeck.get();
+            DeckContext deckContext = new DeckContext(deck);
 
-                IRepresentationEventProcessor deckEventProcessor = new DeckEventProcessor(editingContext, this.subscriptionManagerFactory.create(), this.deckCreationService, this.deckEventHandlers,
-                        deckContext, this.representationPersistenceService, this.representationSearchService);
+            IRepresentationEventProcessor deckEventProcessor = new DeckEventProcessor(editingContext, this.subscriptionManagerFactory.create(), this.deckCreationService, this.deckEventHandlers,
+                    deckContext, this.representationPersistenceService, this.representationSearchService);
 
-                return Optional.of(deckEventProcessor);
-            }
+            return Optional.of(deckEventProcessor);
         }
+
         return Optional.empty();
     }
 }

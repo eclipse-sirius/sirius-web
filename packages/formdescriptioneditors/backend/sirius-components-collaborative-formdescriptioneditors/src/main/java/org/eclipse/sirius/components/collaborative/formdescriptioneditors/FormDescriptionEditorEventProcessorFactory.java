@@ -16,14 +16,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.FormDescriptionEditorConfiguration;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorCreationService;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -62,35 +60,32 @@ public class FormDescriptionEditorEventProcessorFactory implements IRepresentati
     }
 
     @Override
-    public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof FormDescriptionEditorConfiguration;
+    public boolean canHandle(IEditingContext editingContext, String representationId) {
+        return this.representationSearchService.existByIdAndKind(representationId, List.of(FormDescriptionEditor.KIND));
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        if (configuration instanceof FormDescriptionEditorConfiguration formDescriptionEditorConfiguration) {
-            Optional<FormDescriptionEditor> optionalFormDescriptionEditor = this.representationSearchService.findById(editingContext, formDescriptionEditorConfiguration.getId(),
-                    FormDescriptionEditor.class);
-            if (optionalFormDescriptionEditor.isPresent()) {
-                FormDescriptionEditor formDescriptionEditor = optionalFormDescriptionEditor.get();
-                FormDescriptionEditorContext formDescriptionEditorContext = new FormDescriptionEditorContext(formDescriptionEditor);
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
+        Optional<FormDescriptionEditor> optionalFormDescriptionEditor = this.representationSearchService.findById(editingContext, representationId, FormDescriptionEditor.class);
+        if (optionalFormDescriptionEditor.isPresent()) {
+            FormDescriptionEditor formDescriptionEditor = optionalFormDescriptionEditor.get();
+            FormDescriptionEditorContext formDescriptionEditorContext = new FormDescriptionEditorContext(formDescriptionEditor);
 
-                var parameters = FormDescriptionEditorEventProcessorParameters.newFormDescriptionEditorEventProcessorParameters()
-                        .editingContext(editingContext)
-                        .formDescriptionEditorContext(formDescriptionEditorContext)
-                        .formDescriptionEditorEventHandlers(this.formDescriptionEditorEventHandlers)
-                        .subscriptionManager(this.subscriptionManagerFactory.create())
-                        .formDescriptionEditorCreationService(this.formDescriptionEditorCreationService)
-                        .representationDescriptionSearchService(this.representationDescriptionSearchService)
-                        .representationSearchService(this.representationSearchService)
-                        .representationRefreshPolicyRegistry(this.representationRefreshPolicyRegistry)
-                        .build();
-                IRepresentationEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(parameters);
+            var parameters = FormDescriptionEditorEventProcessorParameters.newFormDescriptionEditorEventProcessorParameters()
+                    .editingContext(editingContext)
+                    .formDescriptionEditorContext(formDescriptionEditorContext)
+                    .formDescriptionEditorEventHandlers(this.formDescriptionEditorEventHandlers)
+                    .subscriptionManager(this.subscriptionManagerFactory.create())
+                    .formDescriptionEditorCreationService(this.formDescriptionEditorCreationService)
+                    .representationDescriptionSearchService(this.representationDescriptionSearchService)
+                    .representationSearchService(this.representationSearchService)
+                    .representationRefreshPolicyRegistry(this.representationRefreshPolicyRegistry)
+                    .build();
+            IRepresentationEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(parameters);
 
-                return Optional.of(formDescriptionEditorEventProcessor);
-            }
+            return Optional.of(formDescriptionEditorEventProcessor);
         }
+
         return Optional.empty();
     }
 }

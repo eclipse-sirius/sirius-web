@@ -36,7 +36,6 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandl
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -340,8 +339,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     private void handleRepresentationInput(One<IPayload> payloadSink, IRepresentationInput representationInput) {
-        Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(representationInput.representationId()))
-                .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor);
+        Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor = this.acquireRepresentationEventProcessor(representationInput.representationId(), representationInput);
 
         if (optionalRepresentationEventProcessor.isPresent()) {
             IRepresentationEventProcessor representationEventProcessor = optionalRepresentationEventProcessor.get();
@@ -352,14 +350,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input) {
+    public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(String representationId, IInput input) {
         var getRepresentationEventProcessorSample = Timer.start(this.meterRegistry);
 
-        var optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(configuration.getId()))
+        var optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(representationId))
                 .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor);
 
-        if (!optionalRepresentationEventProcessor.isPresent()) {
-            optionalRepresentationEventProcessor = this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(configuration, this.editingContext);
+        if (optionalRepresentationEventProcessor.isEmpty()) {
+            optionalRepresentationEventProcessor = this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(this.editingContext, representationId);
             if (optionalRepresentationEventProcessor.isPresent()) {
                 var representationEventProcessor = optionalRepresentationEventProcessor.get();
 
@@ -368,21 +366,18 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                         .publishOn(Schedulers.fromExecutorService(this.executorService))
                         .subscribe(canBeDisposed -> {
                             if (canBeDisposed.booleanValue() && representationEventProcessor.getSubscriptionManager().isEmpty()) {
-                                this.disposeRepresentation(configuration.getId());
+                                this.disposeRepresentation(representationId);
                             } else {
-                                this.logger.trace("Stopping the disposal of the representation event processor {}", configuration.getId());
+                                this.logger.trace("Stopping the disposal of the representation event processor {}", representationId);
                             }
                         }, throwable -> this.logger.warn(throwable.getMessage(), throwable));
 
                 var representationEventProcessorEntry = new RepresentationEventProcessorEntry(representationEventProcessor, subscription);
-                this.representationEventProcessors.put(configuration.getId(), representationEventProcessorEntry);
+                this.representationEventProcessors.put(representationId, representationEventProcessorEntry);
             } else {
-                this.logger.debug("The representation with the id {} does not exist", configuration.getId());
+                this.logger.debug("The representation with the id {} does not exist", representationId);
             }
-        }
-
-        if (optionalRepresentationEventProcessor.isPresent()) {
-            var representationId = optionalRepresentationEventProcessor.get().getRepresentation().getId();
+        } else {
             var timer = this.meterRegistry.timer(Monitoring.TIMER_CREATE_REPRESENATION_EVENT_PROCESSOR,
                     "editingContext", this.editingContext.getId(),
                     "input", input.getClass().getSimpleName(),

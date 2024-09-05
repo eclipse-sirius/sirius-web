@@ -49,7 +49,7 @@ export const useDetailsViewSubscription = (
   const input: GQLDetailsEventInput = {
     id: state.id,
     editingContextId,
-    objectIds,
+    representationId: `details://?objectIds=[${objectIds.join(',')}]`,
   };
 
   const variables: GQLDetailsEventVariables = { input };

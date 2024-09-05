@@ -56,13 +56,12 @@ public class SubscriptionExplorerEventDataFetcher implements IDataFetcherWithFie
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, ExplorerEventInput.class);
-        var treeConfiguration = new ExplorerConfiguration(input.editingContextId(), input.treeId(), input.expanded(), input.activeFilterIds());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
-        localContext.put(LocalContextConstants.REPRESENTATION_ID, treeConfiguration.getId());
+        localContext.put(LocalContextConstants.REPRESENTATION_ID, input.representationId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), treeConfiguration, input), input)
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), input.representationId(), input), input)
                 .map(payload ->  DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)

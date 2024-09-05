@@ -16,14 +16,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
-import org.eclipse.sirius.components.collaborative.forms.api.FormConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
@@ -74,44 +72,42 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
     }
 
     @Override
-    public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof FormConfiguration;
+    public boolean canHandle(IEditingContext editingContext, String representationId) {
+        return this.representationSearchService.existByIdAndKind(representationId, List.of(Form.KIND));
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
-        if (configuration instanceof FormConfiguration formConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
+        Optional<Form> optionalForm = this.representationSearchService.findById(editingContext, representationId, Form.class);
+        if (optionalForm.isPresent()) {
+            Form form = optionalForm.get();
+            Optional<FormDescription> optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId())
+                    .filter(FormDescription.class::isInstance)
+                    .map(FormDescription.class::cast);
+            Optional<Object> optionalObject = this.objectService.getObject(editingContext, form.getTargetObjectId());
+            if (optionalFormDescription.isPresent() && optionalObject.isPresent()) {
+                FormDescription formDescription = optionalFormDescription.get();
+                Object object = optionalObject.get();
 
-            Optional<Form> optionalForm = this.representationSearchService.findById(editingContext, formConfiguration.getId(), Form.class);
-            if (optionalForm.isPresent()) {
-                Form form = optionalForm.get();
-                Optional<FormDescription> optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId())
-                        .filter(FormDescription.class::isInstance)
-                        .map(FormDescription.class::cast);
-                Optional<Object> optionalObject = this.objectService.getObject(editingContext, form.getTargetObjectId());
-                if (optionalFormDescription.isPresent() && optionalObject.isPresent()) {
-                    FormDescription formDescription = optionalFormDescription.get();
-                    Object object = optionalObject.get();
+                FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationId)
+                        .editingContext(editingContext)
+                        .formDescription(formDescription)
+                        .object(object)
+                        .label(form.getLabel())
+                        .selection(List.of())
+                        .build();
 
-                    FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(formConfiguration.getId())
-                            .editingContext(editingContext)
-                            .formDescription(formDescription)
-                            .object(object)
-                            .label(form.getLabel())
-                            .selection(List.of())
-                            .build();
+                IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
+                        new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers),
+                        this.subscriptionManagerFactory.create(),
+                        this.representationSearchService,
+                        this.representationRefreshPolicyRegistry,
+                        this.formPostProcessor);
 
-                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
-                            new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers),
-                            this.subscriptionManagerFactory.create(),
-                            this.representationSearchService,
-                            this.representationRefreshPolicyRegistry,
-                            this.formPostProcessor);
-
-                    return Optional.of(formEventProcessor);
-                }
+                return Optional.of(formEventProcessor);
             }
         }
+
         return Optional.empty();
     }
 

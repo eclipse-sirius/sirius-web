@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
  * @author sbegaudeau
  */
 public interface IRepresentationEventProcessorFactory {
-    boolean canHandle(IRepresentationConfiguration configuration);
+    boolean canHandle(IEditingContext editingContext, String representationId);
 
-    Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext);
+    Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId);
 }

@@ -45,6 +45,11 @@ public class RepresentationDataSearchService implements IRepresentationDataSearc
     }
 
     @Override
+    public boolean existsByIdAndKind(UUID id, List<String> kinds) {
+        return this.representationDataRepository.existByIdAndKind(id, kinds);
+    }
+
+    @Override
     public Optional<RepresentationDataContentOnly> findContentById(UUID id) {
         return this.representationDataRepository.findContentById(id);
     }

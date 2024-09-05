@@ -33,6 +33,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,6 +67,9 @@ public class ExplorerNonSemanticElementControllerTests extends AbstractIntegrati
     @Autowired
     private ExpandAllTreePathQueryRunner expandAllTreePathQueryRunner;
 
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -76,7 +80,8 @@ public class ExplorerNonSemanticElementControllerTests extends AbstractIntegrati
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenWeAskForTheTreePathOfPapayaViewObjectThenItsPathInTheExplorerIsReturned() {
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, List.of(), List.of());
+        var treeRepresentationId = representationIdBuilder.buildExplorerRepresentationId(List.of(), List.of());
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         var treeId = new AtomicReference<String>();
@@ -117,8 +122,8 @@ public class ExplorerNonSemanticElementControllerTests extends AbstractIntegrati
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-
-        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, treeItemIds.get(), List.of());
+        var treeExpendedRepresentationId = representationIdBuilder.buildExplorerRepresentationId(treeItemIds.get(), List.of());
+        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), treeExpendedRepresentationId);
         var expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
         var rootTreeItemId = new AtomicReference<String>();
 

@@ -28,8 +28,8 @@ import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
-import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -74,6 +74,9 @@ public class TreeIconURLControllerTests extends AbstractIntegrationTests {
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -84,7 +87,8 @@ public class TreeIconURLControllerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSemanticObjectWhenWeSubscribeToItsTreeEventsThenTheURLOfItsObjectsIsValid() {
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, List.of(), List.of());
+        var treeRepresentationId = representationIdBuilder.buildExplorerRepresentationId(List.of(), List.of());
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), treeRepresentationId);
         var flux = this.graphQLRequestor.subscribeToSpecification(GET_EXPLORER_EVENT_SUBSCRIPTION, input);
 
         Consumer<String> treeContentConsumer = payload -> Optional.of(payload)

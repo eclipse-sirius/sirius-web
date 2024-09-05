@@ -13,10 +13,10 @@
 package org.eclipse.sirius.web.application.diagram.services.filter;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
@@ -29,11 +29,11 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
+import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
-import org.eclipse.sirius.web.application.diagram.services.filter.api.DiagramFilterConfiguration;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterDescriptionProvider;
 import org.springframework.stereotype.Service;
 
@@ -75,21 +75,25 @@ public class DiagramFilterEventProcessorFactory implements IRepresentationEventP
     }
 
     @Override
-    public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof DiagramFilterConfiguration;
+    public boolean canHandle(IEditingContext editingContext, String representationId) {
+        return representationId.startsWith("diagramFilter://");
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration,
-            IEditingContext editingContext) {
-        if (configuration instanceof DiagramFilterConfiguration diagramFilterConfiguration && this.diagramFilterDescriptionProvider != null) {
-            var objects = diagramFilterConfiguration.getObjectIds().stream()
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
+        if (this.diagramFilterDescriptionProvider != null) {
+            Map<String, List<String>> parameters = new URLParser().getParameterValues(representationId);
+            String objectIdsParam = parameters.get("objectIds").get(0);
+
+            var objectIds = new URLParser().getParameterEntries(objectIdsParam);
+            var objects = objectIds.stream()
                     .map(objectId -> this.objectService.getObject(editingContext, objectId))
                     .flatMap(Optional::stream)
                     .toList();
+
             if (!objects.isEmpty()) {
                 FormDescription formDescription = this.diagramFilterDescriptionProvider.getFormDescription();
-                FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(diagramFilterConfiguration.getId())
+                FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationId)
                         .editingContext(editingContext)
                         .formDescription(formDescription)
                         .object(objects.get(0))

@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.representations;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFluxCustomizer;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -31,12 +30,12 @@ import reactor.core.publisher.Flux;
 @Conditional(OnCustomizedRepresentationEventProcessor.class)
 public class TestRepresentationEventProcessorFluxCustomizer implements IRepresentationEventProcessorFluxCustomizer {
     @Override
-    public boolean canHandle(String editingContextId, IRepresentationConfiguration configuration, IInput input, IRepresentationEventProcessor representationEventProcessor) {
+    public boolean canHandle(String editingContextId, String representationId, IInput input, IRepresentationEventProcessor representationEventProcessor) {
         return true;
     }
 
     @Override
-    public Flux<IPayload> customize(String editingContextId, IRepresentationConfiguration configuration, IInput input, IRepresentationEventProcessor representationEventProcessor, Flux<IPayload> outputEvents) {
+    public Flux<IPayload> customize(String editingContextId, String representationId, IInput input, IRepresentationEventProcessor representationEventProcessor, Flux<IPayload> outputEvents) {
         return Flux.merge(
                 outputEvents,
                 Flux.just(new TestPayload(input.id()))

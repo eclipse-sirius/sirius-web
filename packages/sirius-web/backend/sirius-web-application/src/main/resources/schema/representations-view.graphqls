@@ -5,7 +5,7 @@ extend type Subscription {
 input RepresentationsEventInput {
   id: ID!
   editingContextId: ID!
-  objectIds: [ID!]!
+  representationId: String!
 }
 
 union RepresentationsEventPayload = ErrorPayload | FormRefreshedEventPayload

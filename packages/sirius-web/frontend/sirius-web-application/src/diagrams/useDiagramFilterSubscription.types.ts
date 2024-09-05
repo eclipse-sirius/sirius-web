@@ -27,7 +27,7 @@ export interface UseDiagramFilterSubscriptionState {
 export interface GQLDiagramFilterEventInput {
   id: string;
   editingContextId: string;
-  objectIds: string[];
+  representationId: string;
 }
 
 export interface GQLDiagramFilterEventVariables {

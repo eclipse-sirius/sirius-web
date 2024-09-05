@@ -13,11 +13,11 @@
 package org.eclipse.sirius.web.application.views.details.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
@@ -30,9 +30,9 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDescriptionService;
-import org.eclipse.sirius.components.collaborative.forms.api.PropertiesConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
+import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
@@ -82,42 +82,45 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
     }
 
     @Override
-    public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof PropertiesConfiguration;
+    public boolean canHandle(IEditingContext editingContext, String representationId) {
+        return representationId.startsWith("details://");
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
-        if (configuration instanceof PropertiesConfiguration propertiesConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
+        List<PageDescription> pageDescriptions = this.propertiesDescriptionService.getPropertiesDescriptions();
 
-            List<PageDescription> pageDescriptions = this.propertiesDescriptionService.getPropertiesDescriptions();
-            var objects = propertiesConfiguration.getObjectIds().stream()
-                    .map(objectId -> this.objectService.getObject(editingContext, objectId))
-                    .flatMap(Optional::stream)
-                    .toList();
-            if (!objects.isEmpty()) {
-                Optional<FormDescription> optionalFormDescription = Optional.empty();
-                if (!pageDescriptions.isEmpty()) {
-                    optionalFormDescription = new DetailsViewFormDescriptionAggregator().aggregate(pageDescriptions, objects, this.objectService);
-                }
-                FormDescription formDescription = optionalFormDescription.orElse(this.propertiesDefaultDescriptionProvider.getFormDescription());
+        Map<String, List<String>> parameters = new URLParser().getParameterValues(representationId);
+        String objectIdsParam = parameters.get("objectIds").get(0);
 
-                FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(propertiesConfiguration.getId())
-                        .editingContext(editingContext)
-                        .formDescription(formDescription)
-                        .object(objects.get(0))
-                        .selection(objects)
-                        .build();
+        var objectIds = new URLParser().getParameterEntries(objectIdsParam);
+        var objects = objectIds.stream()
+                .map(objectId -> this.objectService.getObject(editingContext, objectId))
+                .flatMap(Optional::stream)
+                .toList();
 
-                IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
-                        new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers),
-                        this.subscriptionManagerFactory.create(),
-                        this.representationSearchService,
-                        this.representationRefreshPolicyRegistry,
-                        this.formPostProcessor);
-
-                return Optional.of(formEventProcessor);
+        if (!objects.isEmpty()) {
+            Optional<FormDescription> optionalFormDescription = Optional.empty();
+            if (!pageDescriptions.isEmpty()) {
+                optionalFormDescription = new DetailsViewFormDescriptionAggregator().aggregate(pageDescriptions, objects, this.objectService);
             }
+            FormDescription formDescription = optionalFormDescription.orElse(this.propertiesDefaultDescriptionProvider.getFormDescription());
+
+            FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationId)
+                    .editingContext(editingContext)
+                    .formDescription(formDescription)
+                    .object(objects.get(0))
+                    .selection(objects)
+                    .build();
+
+            IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
+                    new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers),
+                    this.subscriptionManagerFactory.create(),
+                    this.representationSearchService,
+                    this.representationRefreshPolicyRegistry,
+                    this.formPostProcessor);
+
+            return Optional.of(formEventProcessor);
         }
         return Optional.empty();
     }

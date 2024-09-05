@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.diagram.dto;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IInput;
@@ -22,5 +21,5 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author sbegaudeau
  */
-public record DiagramFilterEventInput(UUID id, String editingContextId, List<String> objectIds) implements IInput {
+public record DiagramFilterEventInput(UUID id, String editingContextId, String representationId) implements IInput {
 }
