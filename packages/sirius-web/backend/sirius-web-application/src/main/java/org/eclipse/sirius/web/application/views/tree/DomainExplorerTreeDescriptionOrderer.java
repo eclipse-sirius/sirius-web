@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.tree;
 
+
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.sirius.web.application.studio.services.representations.DomainViewTreeDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.dto.ExplorerDescriptionMetadata;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeDescriptionOrderer;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ public class DomainExplorerTreeDescriptionOrderer implements IExplorerTreeDescri
 
     @Override
     public void order(List<ExplorerDescriptionMetadata> explorerDescriptionMetadataList) {
-        if (explorerDescriptionMetadataList.stream().map(ExplorerDescriptionMetadata::id).anyMatch(id -> id.equals(DomainExplorerRepresentationDescriptionProvider.DESCRIPTION_ID))) {
+        if (explorerDescriptionMetadataList.stream().map(ExplorerDescriptionMetadata::label).anyMatch(label -> label.equals(DomainViewTreeDescriptionProvider.DOMAIN_EXPLORER_DESCRIPTION_NAME))) {
             Collections.reverse(explorerDescriptionMetadataList);
         }
     }

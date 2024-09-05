@@ -76,13 +76,11 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
 
-    private static final String DEFAULT_TREE_ID = ExplorerDescriptionProvider.PREFIX + "?treeDescriptionId=" + ExplorerDescriptionProvider.DESCRIPTION_ID;
-
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private ExplorerEventSubscriptionRunner treeEventSubscriptionRunner;
+    private ExplorerEventSubscriptionRunner explorerEventSubscriptionRunner;
 
     @Autowired
     private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
@@ -126,7 +124,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
     public void givenStudioWhenWeAskForTheTreePathOfAnObjectThenItsPathInTheExplorerIsReturned(BiFunction<IEditingContext, IInput, IPayload> objectInjector) {
         var explorerReprsentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), explorerReprsentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
 
         var treeId = new AtomicReference<String>();
         var objectId = new AtomicReference<String>();
@@ -201,7 +199,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
 
         var explorerExpendedReprsentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, treeItemIds.get(), List.of());
         var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), explorerExpendedReprsentationId);
-        var expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
+        var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
 
         Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
             assertThat(tree).isNotNull();

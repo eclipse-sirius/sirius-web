@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.provider.DiagramItemProviderAd
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.provider.FormItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.gantt.provider.GanttItemProviderAdapterFactory;
+import org.eclipse.sirius.components.view.tree.provider.TreeItemProviderAdapterFactory;
 import org.eclipse.sirius.components.widgets.reference.provider.ReferenceItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,6 +52,11 @@ public class EMFChildExtenderProviderConfiguration {
     @Bean
     public ChildExtenderProvider ganttChildExtenderProvider() {
         return new ChildExtenderProvider(ViewPackage.eNS_URI, GanttItemProviderAdapterFactory.ViewChildCreationExtender::new);
+    }
+
+    @Bean
+    public ChildExtenderProvider treeChildExtenderProvider() {
+        return new ChildExtenderProvider(ViewPackage.eNS_URI, TreeItemProviderAdapterFactory.ViewChildCreationExtender::new);
     }
 
     @Bean

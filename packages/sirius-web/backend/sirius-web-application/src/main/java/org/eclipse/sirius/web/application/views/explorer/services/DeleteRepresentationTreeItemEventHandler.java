@@ -17,13 +17,13 @@ import java.util.Map;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
+import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
-import org.eclipse.sirius.web.application.views.explorer.services.api.IDeleteTreeItemHandler;
 import org.springframework.stereotype.Service;
 
 /**

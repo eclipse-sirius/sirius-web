@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Test;
  * @author pcdavid
  */
 public class DefaultIdentityServiceTests {
+
     @Test
     public void testGetIdOnEMFProxy() {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
@@ -61,5 +62,16 @@ public class DefaultIdentityServiceTests {
 
         assertThat(identityService.getId(editingContext)).isEqualTo("editingContextId");
         assertThat(identityService.getKind(editingContext)).isEqualTo("siriusComponents://editingContext");
+    }
+
+    @Test
+    public void testGetIdFromURIFragment() {
+        DefaultIdentityService identityService = new DefaultIdentityService(new IEMFKindService.NoOp());
+
+        Resource resource = new XMIResourceImpl();
+        resource.setURI(URI.createURI("test.xmi"));
+        EObject eObject = EcoreFactory.eINSTANCE.createEClass();
+        resource.getContents().add(eObject);
+        assertThat(identityService.getId(eObject)).isEqualTo("test.xmi#/");
     }
 }

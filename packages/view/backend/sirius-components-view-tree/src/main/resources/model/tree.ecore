@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="tree" nsURI="http://www.eclipse.org/sirius-web/tree" nsPrefix="tree">
+  <eClassifiers xsi:type="ecore:EClass" name="TreeDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kindExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="iconURLExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="treeItemIdExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="treeItemLabelExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="treeItemObjectExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementsExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hasChildrenExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="childrenExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="parentExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="editableExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectableExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="deletableExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+  </eClassifiers>
+</ecore:EPackage>

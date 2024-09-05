@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -88,6 +89,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
+                .treeItemLabelProvider(this::getLabel)
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .iconURLProvider(this::getImageURL)
                 .editableProvider(variableManager -> false)
@@ -115,6 +117,8 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         String id = null;
         if (self instanceof RepresentationMetadata representationMetadata) {
             id = representationMetadata.getId();
+        } else if (self instanceof Resource resource) {
+            id = resource.getURI().path().substring(1);
         } else if (self instanceof EObject) {
             id = this.objectService.getId(self);
         } else if (self instanceof Setting setting) {
@@ -292,6 +296,9 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                 semanticContainer = eObject.eResource();
             }
             result = semanticContainer;
+        } else if (self instanceof Setting setting) {
+            // the parent of the superTypes node is the object associated to this Setting
+            result = setting.getEObject();
         }
         return result;
     }

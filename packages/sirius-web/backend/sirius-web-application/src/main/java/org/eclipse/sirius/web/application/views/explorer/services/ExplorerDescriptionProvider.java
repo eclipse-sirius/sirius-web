@@ -23,6 +23,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
+import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHandler;
+import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -43,10 +45,8 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.application.views.explorer.services.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
-import org.eclipse.sirius.web.application.views.explorer.services.api.IRenameTreeItemHandler;
 import org.eclipse.sirius.web.application.views.explorer.services.configuration.ExplorerDescriptionProviderConfiguration;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
@@ -59,6 +59,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExplorerDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
+
+    public static final String TREE_DESCRIPTION_ID_PARAMETER = "treeDescriptionId";
 
     public static final String DESCRIPTION_ID = "explorer_tree_description";
 
@@ -83,6 +85,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     private final List<IDeleteTreeItemHandler> deleteTreeItemHandlers;
 
     private final IRepresentationDataSearchService representationDataSearchService;
+
 
     public ExplorerDescriptionProvider(ExplorerDescriptionProviderConfiguration explorerDescriptionProviderConfiguration, List<IRepresentationImageProvider> representationImageProviders, IExplorerElementsProvider explorerElementsProvider, IExplorerChildrenProvider explorerChildrenProvider, List<IRenameTreeItemHandler> renameTreeItemHandlers, List<IDeleteTreeItemHandler> deleteTreeItemHandlers) {
         this.objectService = explorerDescriptionProviderConfiguration.getObjectService();
@@ -118,6 +121,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
                 .treeItemObjectProvider(this::getTreeItemObject)
+                .treeItemLabelProvider(this::getLabel)
                 .build();
         return List.of(explorerTreeDescription);
     }
@@ -141,7 +145,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
 
-        return "explorer://?treeDescriptionId=" + DESCRIPTION_ID + "&expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
+        return PREFIX + "?" + TREE_DESCRIPTION_ID_PARAMETER + "=" + URLEncoder.encode(DESCRIPTION_ID, StandardCharsets.UTF_8) + "&expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
     }
 
     private String getTreeItemId(VariableManager variableManager) {

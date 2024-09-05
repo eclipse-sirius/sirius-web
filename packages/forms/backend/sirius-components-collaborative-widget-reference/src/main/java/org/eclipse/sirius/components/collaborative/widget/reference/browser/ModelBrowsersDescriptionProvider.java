@@ -139,6 +139,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
                 .renameHandler(this::getRenameHandler)
                 .treeItemObjectProvider(this::getTreeItemObject)
                 .parentObjectProvider(this::getParentObject)
+                .treeItemLabelProvider(this::getLabel)
                 .build();
     }
 

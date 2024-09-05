@@ -105,6 +105,10 @@ public class BuilderGenerator {
         Resource ganttResource = resourceSet.getResource(ganttURI, true);
         allViewContent.addAll(ganttResource.getContents());
 
+        URI treeURI = URI.createFileURI(args[1] + "/../sirius-components-view-tree/src/main/resources/model/tree.genmodel");
+        Resource treeResource = resourceSet.getResource(treeURI, true);
+        allViewContent.addAll(treeResource.getContents());
+
         URI referenceURI = URI.createFileURI(args[1] + "/../sirius-components-widget-reference-view/src/main/resources/model/reference.genmodel");
         Resource referenceResource = resourceSet.getResource(referenceURI, true);
         allViewContent.addAll(referenceResource.getContents());
