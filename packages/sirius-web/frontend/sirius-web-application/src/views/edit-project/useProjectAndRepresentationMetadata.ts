@@ -24,19 +24,7 @@ const getProjectQuery = gql`
   query getProjectAndRepresentation($projectId: ID!, $representationId: ID!, $includeRepresentation: Boolean!) {
     viewer {
       project(projectId: $projectId) {
-        id
-        name
-        natures {
-          name
-        }
-        currentEditingContext {
-          id
-          representation(representationId: $representationId) @include(if: $includeRepresentation) {
-            id
-            label
-            kind
-          }
-        }
+        ...ProjectAndRepresentationFragment
       }
     }
   }
