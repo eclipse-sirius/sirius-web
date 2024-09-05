@@ -71,7 +71,7 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
 
-    private static final String DEFAULT_TREE_ID = ExplorerDescriptionProvider.PREFIX + "?treeDescriptionId=" + ExplorerDescriptionProvider.DESCRIPTION_ID;
+    private static final String DEFAULT_TREE_ID = ExplorerDescriptionProvider.PREFIX + "?" + ExplorerDescriptionProvider.TREE_DESCRIPTION_ID_PARAMETER + "=" + ExplorerDescriptionProvider.DESCRIPTION_ID;
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;

@@ -87,6 +87,7 @@ public class ExplorerEventProcessorFactory implements IRepresentationEventProces
                     .treeDescription(treeDescription)
                     .activeFilterIds(activeFilterIds)
                     .expanded(expanded)
+                    .targetObject(editingContext)
                     .editingContext(editingContext)
                     .build();
 

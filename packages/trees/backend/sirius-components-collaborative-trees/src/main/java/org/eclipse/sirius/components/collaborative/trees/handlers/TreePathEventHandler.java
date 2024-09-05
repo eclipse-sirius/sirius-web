@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.trees.handlers;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -25,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.trees.api.ITreePathProvider;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePath;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePathInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePathSuccessPayload;
+import org.eclipse.sirius.components.collaborative.trees.services.api.ITreeNavigationService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -49,9 +52,12 @@ public class TreePathEventHandler implements ITreeEventHandler {
 
     private final Logger logger = LoggerFactory.getLogger(TreePathEventHandler.class);
 
+    private final ITreeNavigationService treeNavigationService;
+
     private final List<ITreePathProvider> treePathProviders;
 
-    public TreePathEventHandler(List<ITreePathProvider> treePathProviders) {
+    public TreePathEventHandler(List<ITreePathProvider> treePathProviders, ITreeNavigationService treeNavigationService) {
+        this.treeNavigationService = Objects.requireNonNull(treeNavigationService);
         this.treePathProviders = Objects.requireNonNull(treePathProviders);
     }
 
@@ -68,17 +74,28 @@ public class TreePathEventHandler implements ITreeEventHandler {
         if (treeInput instanceof TreePathInput input) {
             Optional<ITreePathProvider> optionalPathProvider = this.treePathProviders.stream().filter(treePathProvider -> treePathProvider.canHandle(tree)).findFirst();
             if (optionalPathProvider.isPresent()) {
-                IPayload resultPayload = optionalPathProvider.get().handle(editingContext, tree, input);
-                if (resultPayload instanceof TreePathSuccessPayload) {
-                    payload = resultPayload;
-                } else if (resultPayload instanceof ErrorPayload errorPayload) {
-                    this.logger.warn(errorPayload.messages().stream().map(Message::body).collect(Collectors.joining("; ")));
-                }
+                payload = optionalPathProvider.get().handle(editingContext, tree, input);
+            } else {
+                payload = this.handleDefaultTreePath(editingContext, tree, input);
+            }
+            if (payload instanceof ErrorPayload errorPayload) {
+                this.logger.warn(errorPayload.messages().stream().map(Message::body).collect(Collectors.joining("; ")));
             }
         }
 
         changeDescriptionSink.tryEmitNext(changeDescription);
         payloadSink.tryEmitValue(payload);
+    }
+
+    private IPayload handleDefaultTreePath(IEditingContext editingContext, Tree tree, TreePathInput input) {
+        int maxDepth = 0;
+        Set<String> allAncestors = new LinkedHashSet<>();
+        for (String selectionEntryId : input.selectionEntryIds()) {
+            List<String> itemAncestors = this.treeNavigationService.getAncestors(editingContext, tree, selectionEntryId);
+            allAncestors.addAll(itemAncestors);
+            maxDepth = Math.max(maxDepth, itemAncestors.size());
+        }
+        return new TreePathSuccessPayload(input.id(), new TreePath(allAncestors.stream().toList(), maxDepth));
     }
 
 }

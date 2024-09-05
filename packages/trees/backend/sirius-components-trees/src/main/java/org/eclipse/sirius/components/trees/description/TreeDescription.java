@@ -43,6 +43,8 @@ public final class TreeDescription implements IRepresentationDescription {
      */
     public static final String TREE = "tree";
 
+    public static final String LABEL = "label";
+
     private String id;
 
     private String label;
@@ -80,6 +82,8 @@ public final class TreeDescription implements IRepresentationDescription {
     private BiFunction<VariableManager, String, IStatus> renameHandler;
 
     private Function<VariableManager, Object> treeItemObjectProvider;
+
+    private Function<VariableManager, StyledString> treeItemLabelProvider;
 
     private TreeDescription() {
         // Prevent instantiation
@@ -172,6 +176,10 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.treeItemObjectProvider;
     }
 
+    public Function<VariableManager, StyledString> getTreeItemLabelProvider() {
+        return this.treeItemLabelProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -224,6 +232,8 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Function<VariableManager, Object> treeItemObjectProvider;
 
+        private Function<VariableManager, StyledString> treeItemLabelProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -248,6 +258,7 @@ public final class TreeDescription implements IRepresentationDescription {
             this.deleteHandler = treeDescription.getDeleteHandler();
             this.renameHandler = treeDescription.getRenameHandler();
             this.treeItemObjectProvider = treeDescription.getTreeItemObjectProvider();
+            this.treeItemLabelProvider = treeDescription.getTreeItemLabelProvider();
         }
 
         public Builder id(String id) {
@@ -345,6 +356,11 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder treeItemLabelProvider(Function<VariableManager, StyledString> treeItemLabelProvider) {
+            this.treeItemLabelProvider = Objects.requireNonNull(treeItemLabelProvider);
+            return this;
+        }
+
         public TreeDescription build() {
             TreeDescription treeDescription = new TreeDescription();
             treeDescription.id = Objects.requireNonNull(this.id);
@@ -366,6 +382,7 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
             treeDescription.renameHandler = Objects.requireNonNull(this.renameHandler);
             treeDescription.treeItemObjectProvider = Objects.requireNonNull(this.treeItemObjectProvider);
+            treeDescription.treeItemLabelProvider = Objects.requireNonNull(this.treeItemLabelProvider);
             return treeDescription;
         }
     }

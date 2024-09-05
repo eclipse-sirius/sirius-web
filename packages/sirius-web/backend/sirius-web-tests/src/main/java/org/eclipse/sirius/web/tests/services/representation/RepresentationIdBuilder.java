@@ -38,7 +38,7 @@ public class RepresentationIdBuilder {
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
 
-        return "explorer://?treeDescriptionId=" + treeDescriptionId + "&expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
+        return "explorer://?treeDescriptionId=" + URLEncoder.encode(treeDescriptionId, StandardCharsets.UTF_8) + "&expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
     }
 
     public String buildSelectionRepresentationId(String treeDescriptionId, String targetObjectId, List<String> expandedObjectIds) {

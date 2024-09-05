@@ -45,16 +45,33 @@ public class ExplorerDescriptionsControllerTests extends AbstractIntegrationTest
     private ExplorerDescriptionsQueryRunner explorerDescriptionsQueryRunner;
 
     @Test
-    @DisplayName("Given a studio, when the explorer descriptions are requested, then default explorer is found")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenStudioWhenDomainsAreRequestedThenDomainAndEPackageBasedDomainsAreAvailable() {
+    @DisplayName("Given an empty studio, when the explorer descriptions are requested, then only the default explorer description id is received")
+    @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenAnEmpyStudioWhenTheExplorerDescriptionsAreRequestedThenOnlyTheDefaultExplorerDescriptionIdIsReceived() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString()
         );
         var result = this.explorerDescriptionsQueryRunner.run(variables);
 
-        List<String> explorersIds = JsonPath.read(result, "$.data.viewer.editingContext.explorerDescriptions[*].id");
-        assertThat(explorersIds).isNotEmpty().contains(ExplorerDescriptionProvider.DESCRIPTION_ID);
+        List<String> explorerIds = JsonPath.read(result, "$.data.viewer.editingContext.explorerDescriptions[*].id");
+        assertThat(explorerIds).isNotEmpty().hasSize(1);
+        assertThat(explorerIds.get(0)).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
+    }
+
+    @Test
+    @DisplayName("Given a studio, when the explorer descriptions are requested, then a view tree description is received in addition of the default explorer one")
+    @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenAStudioWhenTheExplorerDescriptionsAreRequestedThenAViewTreeDescriptionIsReceivedInAdditionOfTheDefaultExplorerOne() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString()
+        );
+        var result = this.explorerDescriptionsQueryRunner.run(variables);
+
+        List<String> explorerIds = JsonPath.read(result, "$.data.viewer.editingContext.explorerDescriptions[*].id");
+        assertThat(explorerIds).isNotEmpty().hasSize(2);
+        assertThat(explorerIds.get(0)).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
+        assertThat(explorerIds.get(1)).startsWith("siriusComponents://representationDescription?kind=treeDescription");
     }
 }

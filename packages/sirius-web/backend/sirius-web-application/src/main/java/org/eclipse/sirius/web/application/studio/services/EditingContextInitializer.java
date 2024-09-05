@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.deck.DeckPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
+import org.eclipse.sirius.components.view.tree.TreePackage;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
@@ -89,6 +90,7 @@ public class EditingContextInitializer implements IEditingContextProcessor {
                 resourceSet.getPackageRegistry().put(DiagramPackage.eNS_URI, DiagramPackage.eINSTANCE);
                 resourceSet.getPackageRegistry().put(FormPackage.eNS_URI, FormPackage.eINSTANCE);
                 resourceSet.getPackageRegistry().put(GanttPackage.eNS_URI, GanttPackage.eINSTANCE);
+                resourceSet.getPackageRegistry().put(TreePackage.eNS_URI, TreePackage.eINSTANCE);
                 this.studioColorPalettesLoader.loadStudioColorPalettes(resourceSet);
 
                 semanticData.getDocuments().forEach(document -> this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent(),

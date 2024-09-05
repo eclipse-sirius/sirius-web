@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.collaborative.trees.api.ITreePathProvider;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePathInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePathSuccessPayload;
 import org.eclipse.sirius.components.collaborative.trees.handlers.TreePathEventHandler;
+import org.eclipse.sirius.components.collaborative.trees.services.api.ITreeNavigationService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -41,7 +42,7 @@ public class TreePathEventHandlerTests {
 
     @Test
     public void testTreePathWithEmptyProviders() {
-        var handler = new TreePathEventHandler(List.of());
+        var handler = new TreePathEventHandler(List.of(), new ITreeNavigationService.NoOp());
         TreePathInput input = new TreePathInput(UUID.randomUUID(), "editingContextId", "representationId", List.of());
 
         assertThat(handler.canHandle(input)).isTrue();
@@ -68,7 +69,7 @@ public class TreePathEventHandlerTests {
             }
         };
 
-        var handler = new TreePathEventHandler(List.of(errorProvider));
+        var handler = new TreePathEventHandler(List.of(errorProvider), new ITreeNavigationService.NoOp());
         TreePathInput input = new TreePathInput(UUID.randomUUID(), "editingContextId", "representationId", List.of());
 
         assertThat(handler.canHandle(input)).isTrue();
@@ -79,7 +80,6 @@ public class TreePathEventHandlerTests {
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), null, null, input);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(TreePathSuccessPayload.class);
-        assertThat(((TreePathSuccessPayload) payload).treePath().toString()).isEqualTo("TreePath {treeItemIdsToExpand: [], maxDepth: 0}");
+        assertThat(payload).isInstanceOf(ErrorPayload.class);
     }
 }

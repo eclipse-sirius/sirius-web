@@ -200,6 +200,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                 .selectableProvider(isSelectableProvider)
                 .treeItemObjectProvider(this::getTreeItemObject)
                 .parentObjectProvider(this::getParentObject)
+                .treeItemLabelProvider(labelProvider)
                 .build();
     }
 

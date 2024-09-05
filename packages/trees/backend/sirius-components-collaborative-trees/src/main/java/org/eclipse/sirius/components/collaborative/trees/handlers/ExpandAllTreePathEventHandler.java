@@ -48,8 +48,11 @@ public class ExpandAllTreePathEventHandler implements ITreeEventHandler {
 
     private final List<IExpandAllTreePathProvider> expandAllTreePathsProviders;
 
-    public ExpandAllTreePathEventHandler(List<IExpandAllTreePathProvider> treePathProviders) {
+    private final DefaultExpandAllTreePathHandler defaultExpandAllTreePathHandler;
+
+    public ExpandAllTreePathEventHandler(List<IExpandAllTreePathProvider> treePathProviders, DefaultExpandAllTreePathHandler defaultExpandAllTreePathHandler) {
         this.expandAllTreePathsProviders = Objects.requireNonNull(treePathProviders);
+        this.defaultExpandAllTreePathHandler = Objects.requireNonNull(defaultExpandAllTreePathHandler);
     }
 
     @Override
@@ -65,12 +68,12 @@ public class ExpandAllTreePathEventHandler implements ITreeEventHandler {
         if (treeInput instanceof ExpandAllTreePathInput input) {
             Optional<IExpandAllTreePathProvider> optionalPathsProvider = this.expandAllTreePathsProviders.stream().filter(expandAllTreePathsProvider -> expandAllTreePathsProvider.canHandle(tree)).findFirst();
             if (optionalPathsProvider.isPresent()) {
-                IPayload resultPayload = optionalPathsProvider.get().handle(editingContext, tree, input);
-                if (resultPayload instanceof ExpandAllTreePathSuccessPayload) {
-                    payload = resultPayload;
-                } else if (resultPayload instanceof ErrorPayload errorPayload) {
-                    this.logger.warn(errorPayload.message());
-                }
+                payload = optionalPathsProvider.get().handle(editingContext, tree, input);
+            } else {
+                payload = this.defaultExpandAllTreePathHandler.handle(editingContext, tree, input);
+            }
+            if (payload instanceof ErrorPayload errorPayload) {
+                this.logger.warn(errorPayload.message());
             }
         }
 

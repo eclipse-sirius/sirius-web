@@ -21,6 +21,9 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
+import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.view.emf.tree.ITreeIdProvider;
+import org.eclipse.sirius.web.application.studio.services.representations.DomainViewTreeDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeDescriptionProvider;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +37,11 @@ public class DomainExplorerTreeDescriptionProvider implements IExplorerTreeDescr
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    public DomainExplorerTreeDescriptionProvider(IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+    private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
+
+    public DomainExplorerTreeDescriptionProvider(IRepresentationDescriptionSearchService representationDescriptionSearchService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
     }
 
     @Override
@@ -48,9 +54,11 @@ public class DomainExplorerTreeDescriptionProvider implements IExplorerTreeDescr
     private Optional<TreeDescription> getDomainExplorerTreeDescription(IEditingContext editingContext) {
         if (this.isContainingDomainElement(editingContext)) {
             return this.representationDescriptionSearchService
-                    .findById(editingContext, DomainExplorerRepresentationDescriptionProvider.DESCRIPTION_ID)
+                    .findAll(editingContext).values().stream()
                     .filter(TreeDescription.class::isInstance)
-                    .map(TreeDescription.class::cast);
+                    .map(TreeDescription.class::cast)
+                    .filter(td -> this.isDomainExplorerViewTreeDescription(td, editingContext))
+                    .findFirst();
         }
         return Optional.empty();
     }
@@ -64,4 +72,14 @@ public class DomainExplorerTreeDescriptionProvider implements IExplorerTreeDescr
         return false;
     }
 
+    private boolean isDomainExplorerViewTreeDescription(TreeDescription treeDescription, IEditingContext editingContext) {
+        if (treeDescription.getId().startsWith(ITreeIdProvider.TREE_DESCRIPTION_KIND)) {
+            // this tree description comes from a tree DSL
+            var optionalViewTreeDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, treeDescription.getId());
+            if (optionalViewTreeDescription.isPresent()) {
+                return optionalViewTreeDescription.get().getName().equals(DomainViewTreeDescriptionProvider.DOMAIN_EXPLORER_DESCRIPTION_NAME);
+            }
+        }
+        return false;
+    }
 }
