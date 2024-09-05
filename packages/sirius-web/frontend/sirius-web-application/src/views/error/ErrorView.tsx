@@ -106,7 +106,7 @@ export const ErrorView = () => {
               {message}
             </Typography>
           </Paper>
-          <Link variant="body1" component={RouterLink} to="/projects">
+          <Link variant="body1" component={RouterLink} to="/">
             Back to the homepage
           </Link>
         </div>

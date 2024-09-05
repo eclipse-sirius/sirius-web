@@ -22,11 +22,9 @@ import {
   TreeToolBarContextValue,
   TreeToolBarContribution,
 } from '@eclipse-sirius/sirius-components-trees';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
+import { generatePath, Redirect, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
@@ -97,16 +95,7 @@ export const EditProjectView = () => {
   }
 
   if (value === 'missing') {
-    content = (
-      <>
-        <NavigationBar />
-        <Grid container justifyContent="center" alignItems="center">
-          <Typography variant="h4" align="center" gutterBottom>
-            The project does not exist
-          </Typography>
-        </Grid>
-      </>
-    );
+    return <Redirect to="/errors/404" />;
   }
 
   const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);

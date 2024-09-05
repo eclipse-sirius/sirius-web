@@ -145,7 +145,7 @@ export const ProjectSettingsView = () => {
     return null;
   }
   if (!project) {
-    return <Redirect to="/" />;
+    return <Redirect to="/errors/404" />;
   }
 
   const { id, name } = project;

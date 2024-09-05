@@ -28,6 +28,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { useData } from '@eclipse-sirius/sirius-components-core';
 import { useMemo } from 'react';
 import { EditingContextStereotypesFragment, StereotypeFragment } from '../modals/new-document/useStereotypes.fragments';
+import { ProjectAndRepresentationFragment } from '../views/edit-project/useProjectAndRepresentationMetadata.fragment';
 import {
   ProjectFragment,
   ViewerProjectsFragment,
@@ -64,6 +65,7 @@ export const useCreateApolloClient = (httpOrigin: string, wsOrigin: string): Apo
   fragmentRegistry.register(
     ViewerProjectsFragment,
     ProjectFragment,
+    ProjectAndRepresentationFragment,
     EditingContextStereotypesFragment,
     StereotypeFragment
   );
