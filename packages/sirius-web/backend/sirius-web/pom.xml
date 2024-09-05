@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web</artifactId>
-	<version>2024.7.12</version>
+	<version>2024.7.13</version>
 	<name>sirius-web</name>
 	<description>Sirius Web</description>
 
@@ -43,29 +43,29 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-starter</artifactId>
-			<version>2024.7.12</version>
+			<version>2024.7.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-frontend</artifactId>
-			<version>2024.7.12</version>
+			<version>2024.7.13</version>
 		</dependency>
 
 		<!-- Sirius Web Specific Dependencies -->
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-papaya</artifactId>
-			<version>2024.7.12</version>
+			<version>2024.7.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-flow-starter</artifactId>
-			<version>2024.7.12</version>
+			<version>2024.7.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-task-starter</artifactId>
-			<version>2024.7.12</version>
+			<version>2024.7.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -102,37 +102,37 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>2024.7.12</version>
+			<version>2024.7.13</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-tests</artifactId>
-			<version>2024.7.12</version>
+			<version>2024.7.13</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms-tests</artifactId>
-			<version>2024.7.12</version>
+			<version>2024.7.13</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-gantt-tests</artifactId>
-			<version>2024.7.12</version>
+			<version>2024.7.13</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-trees-tests</artifactId>
-			<version>2024.7.12</version>
+			<version>2024.7.13</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-portals-tests</artifactId>
-			<version>2024.7.12</version>
+			<version>2024.7.13</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
