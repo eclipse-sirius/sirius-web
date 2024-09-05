@@ -23,5 +23,6 @@ import org.eclipse.sirius.web.application.editingcontext.services.DocumentData;
  * @author sbegaudeau
  */
 public interface IResourceToDocumentService {
-    Optional<DocumentData> toDocument(Resource resource);
+
+    Optional<DocumentData> toDocument(Resource resource, boolean applyMigrationParticipants);
 }

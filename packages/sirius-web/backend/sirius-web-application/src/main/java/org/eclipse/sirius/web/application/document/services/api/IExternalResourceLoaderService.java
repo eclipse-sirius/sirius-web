@@ -28,6 +28,6 @@ public interface IExternalResourceLoaderService {
 
     boolean canHandle(InputStream inputStream, URI resourceURI, ResourceSet resourceSet);
 
-    Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet);
+    Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants);
 
 }

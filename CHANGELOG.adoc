@@ -40,6 +40,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3887[#3887] [diagram] Memoize diagram representation (improve performance when selecting an element on large diagram)
 - https://github.com/eclipse-sirius/sirius-web/issues/3987[#3987] [sirius-web] Transform `widgetFields` fragment to retrieve custom widget fields
 - https://github.com/eclipse-sirius/sirius-web/issues/3875[#3875] [sirius-web] Move explorer related code from `sirius-components-trees` to `sirius-web-application`
+- https://github.com/eclipse-sirius/sirius-web/issues/3806[#3806] [sirius-web] Add an API to condition the application of migration participants
 
 
 == v2024.9.0
@@ -174,7 +175,6 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3932[#3932] [forms] Do not display the 'Delete' button (even disabled) for non-deletable lists
 - https://github.com/eclipse-sirius/sirius-web/issues/3951[#3951] [sirius-web] Provide an error page to redirect users in case of error
 - https://github.com/eclipse-sirius/sirius-web/issues/3974[#3974] [diagram] Add support for `<` and `>` to trigger direct edit
-
 
 == v2024.7.0
 

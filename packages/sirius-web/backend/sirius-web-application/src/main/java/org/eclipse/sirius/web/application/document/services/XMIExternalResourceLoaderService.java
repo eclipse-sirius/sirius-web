@@ -57,7 +57,7 @@ public class XMIExternalResourceLoaderService implements IExternalResourceLoader
     }
 
     @Override
-    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {
+    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants) {
         Resource resource = null;
         try {
             var xmiResource = new XMIResourceImpl(resourceURI);

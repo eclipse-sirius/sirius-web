@@ -10,19 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.services.api;
+package org.eclipse.sirius.web.application.document.services.api;
 
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.graphql.api.UploadFile;
 
 /**
- * Used to load data as EMF resources.
+ * Use to load a file receive in an upload document event.
  *
- * @author sbegaudeau
+ * @author frouene
  */
-public interface IResourceLoader {
+public interface IUploadFileLoader {
 
-    Optional<Resource> toResource(ResourceSet resourceSet, String id, String name, String content, boolean applyMigrationParticipants);
+    Optional<Resource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file);
+
 }
