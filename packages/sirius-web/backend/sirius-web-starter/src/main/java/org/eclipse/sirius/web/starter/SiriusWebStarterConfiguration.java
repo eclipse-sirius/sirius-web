@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.concurrent.Executors;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFluxCustomizer;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
@@ -137,20 +136,20 @@ public class SiriusWebStarterConfiguration {
     public IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
         return new IEventProcessorSubscriptionProvider() {
             @Override
-            public Flux<IPayload> getSubscription(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input) {
+            public Flux<IPayload> getSubscription(String editingContextId, String representationId, IInput input) {
                 return editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(editingContextId)
-                        .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationConfiguration, input))
-                        .map(representationEventProcessor -> customizeFlux(editingContextId, representationConfiguration, input, representationEventProcessor))
+                        .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationId, input))
+                        .map(representationEventProcessor -> customizeFlux(editingContextId, representationId, input, representationEventProcessor))
                         .orElse(Flux.empty());
             }
         };
     }
 
-    private Flux<IPayload> customizeFlux(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input, IRepresentationEventProcessor representationEventProcessor) {
+    private Flux<IPayload> customizeFlux(String editingContextId, String representationId, IInput input, IRepresentationEventProcessor representationEventProcessor) {
         Flux<IPayload> flux = representationEventProcessor.getOutputEvents(input);
         for (IRepresentationEventProcessorFluxCustomizer representationEventProcessorFluxCustomizer : this.representationEventProcessorFluxCustomizers) {
-            if (representationEventProcessorFluxCustomizer.canHandle(editingContextId, representationConfiguration, input, representationEventProcessor)) {
-                flux = representationEventProcessorFluxCustomizer.customize(editingContextId, representationConfiguration, input, representationEventProcessor, flux);
+            if (representationEventProcessorFluxCustomizer.canHandle(editingContextId, representationId, input, representationEventProcessor)) {
+                flux = representationEventProcessorFluxCustomizer.customize(editingContextId, representationId, input, representationEventProcessor, flux);
             }
         }
         return flux;

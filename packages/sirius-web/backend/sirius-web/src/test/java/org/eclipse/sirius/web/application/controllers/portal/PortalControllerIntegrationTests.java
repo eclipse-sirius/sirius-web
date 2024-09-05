@@ -23,16 +23,19 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import com.jayway.jsonpath.JsonPath;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.portals.dto.AddPortalViewInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.LayoutPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalViewLayoutDataInput;
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -43,6 +46,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.reposito
 import org.eclipse.sirius.web.services.portals.GivenCreatedPortalSubscription;
 import org.eclipse.sirius.web.services.portals.LayoutPortalMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
+import org.eclipse.sirius.web.tests.services.portal.AddPortalViewMutationRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,9 +67,8 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
-
-    private static final String SAMPLE_PORTAL = "Sample Portal";
 
     @Autowired
     private PortalEventSubscriptionRunner portalEventSubscriptionRunner;
@@ -84,6 +87,9 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private LayoutPortalMutationRunner layoutPortalMutationRunner;
+
+    @Autowired
+    private AddPortalViewMutationRunner addPortalViewMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -106,9 +112,9 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 .isPresent();
 
         StepVerifier.create(flux)
-                    .expectNextMatches(portalRefreshedEventPayloadMatcher)
-                    .thenCancel()
-                    .verify(Duration.ofSeconds(10));
+                .expectNextMatches(portalRefreshedEventPayloadMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @Test
@@ -117,7 +123,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnArbitrarySemanticElementWhenCreatingPortalOnItThenEmptyPortalIsCreated() {
         var input = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), PortalDescriptionProvider.DESCRIPTION_ID,
-                TestIdentifiers.EPACKAGE_OBJECT.toString(), SAMPLE_PORTAL);
+                TestIdentifiers.EPACKAGE_OBJECT.toString(), "Sample Portal");
         var flux = this.givenCreatedPortalSubscription.createAndSubscribe(input);
 
         Consumer<Object> initialPortalContentConsumer = payload -> Optional.of(payload)
@@ -125,15 +131,69 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 .map(PortalRefreshedEventPayload.class::cast)
                 .map(PortalRefreshedEventPayload::portal)
                 .ifPresentOrElse(portal -> {
-                    assertThat(portal.getLabel()).isEqualTo(SAMPLE_PORTAL);
+                    assertThat(portal.getLabel()).isEqualTo("Sample Portal");
                     assertThat(portal.getViews()).isEmpty();
                     assertThat(portal.getLayoutData()).isEmpty();
-                }, () -> fail("Missing portal"));
+                }, () -> fail("Missing Portal"));
 
         StepVerifier.create(flux)
-                    .consumeNextWith(initialPortalContentConsumer)
-                    .thenCancel()
-                    .verify(Duration.ofSeconds(10));
+                .consumeNextWith(initialPortalContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given an arbitrary semantic element, when creating a portal, then we can move an existing one inside it")
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenAnArbitrarySemanticElementWhenCreatingAPortalThenWeCanMoveAnExistingOneInsideIt() {
+        var representationId = new AtomicReference<String>();
+
+        Runnable addViewRunner = () -> this.addView(representationId.get(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+
+        var input = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), PortalDescriptionProvider.DESCRIPTION_ID,
+                TestIdentifiers.EPACKAGE_OBJECT.toString(), "Sample Portal");
+
+
+        var flux = this.givenCreatedPortalSubscription.createAndSubscribe(input);
+
+        Consumer<Object> initialPortalContentConsumer = payload -> Optional.of(payload)
+                .filter(PortalRefreshedEventPayload.class::isInstance)
+                .map(PortalRefreshedEventPayload.class::cast)
+                .map(PortalRefreshedEventPayload::portal)
+                .ifPresentOrElse(portal -> {
+                    representationId.set(portal.getId());
+                    assertThat(portal.getLabel()).isEqualTo("Sample Portal");
+                    assertThat(portal.getViews()).isEmpty();
+                    assertThat(portal.getLayoutData()).isEmpty();
+                }, () -> fail("Missing Portal"));
+
+        Consumer<Object> secontPortalContentConsumer = payload -> Optional.of(payload)
+                .filter(PortalRefreshedEventPayload.class::isInstance)
+                .map(PortalRefreshedEventPayload.class::cast)
+                .map(PortalRefreshedEventPayload::portal)
+                .ifPresentOrElse(portal -> {
+                    assertThat(portal.getLabel()).isEqualTo("Sample Portal");
+                    assertThat(portal.getViews().size()).isEqualTo(1);
+                    assertThat(portal.getLayoutData().size()).isEqualTo(1);
+                }, () -> fail("Missing Portal"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialPortalContentConsumer)
+                .then(addViewRunner)
+                .consumeNextWith(secontPortalContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    private void addView(String representationId, String viewRepresentationId) {
+        var addPortalViewMutationInput = new AddPortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                representationId, viewRepresentationId, 0, 0, 100, 100);
+
+        String result = this.addPortalViewMutationRunner.run(addPortalViewMutationInput);
+        this.givenCommittedTransaction.commit();
+        String typename = JsonPath.read(result, "$.data.addPortalView.__typename");
+        assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
     }
 
     @Test
@@ -224,6 +284,6 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 .filter(PortalRefreshedEventPayload.class::isInstance)
                 .map(PortalRefreshedEventPayload.class::cast)
                 .map(PortalRefreshedEventPayload::portal)
-                .ifPresentOrElse(portalConsumer, () -> fail("Missing portal"));
+                .ifPresentOrElse(portalConsumer, () -> fail("Missing Portal"));
     }
 }

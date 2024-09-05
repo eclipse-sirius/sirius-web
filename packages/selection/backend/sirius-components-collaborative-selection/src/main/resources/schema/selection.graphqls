@@ -4,9 +4,8 @@ extend type Subscription {
 
 input SelectionDialogTreeEventInput {
   id: ID!
-  treeId: String!
   editingContextId: ID!
-  expanded: [String!]!
+  representationId: String!
 }
 
 type SelectionDescription implements RepresentationDescription {

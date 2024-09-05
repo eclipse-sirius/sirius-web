@@ -28,16 +28,16 @@ const useTreeStyle = makeStyles()((theme) => ({
   },
 }));
 
+const initialState: SelectionDialogTreeViewState = {
+  expanded: [],
+  maxDepth: 1,
+};
+
 export const SelectionDialogTreeView = ({
   editingContextId,
   treeDescriptionId,
   targetObjectId,
 }: SelectionDialogTreeViewProps) => {
-  const initialState: SelectionDialogTreeViewState = {
-    expanded: [],
-    maxDepth: 1,
-  };
-
   const { classes } = useTreeStyle();
   const [state, setState] = useState<SelectionDialogTreeViewState>(initialState);
 

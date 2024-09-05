@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventP
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.representations.dto.RepresentationsEventInput;
 import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.graphql.RepresentationsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,6 +55,9 @@ public class RepresentationsViewControllerIntegrationTests extends AbstractInteg
     @Autowired
     private RepresentationsEventSubscriptionRunner representationsEventSubscriptionRunner;
 
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -64,7 +68,8 @@ public class RepresentationsViewControllerIntegrationTests extends AbstractInteg
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSemanticObjectWhenWeSubscribeToItsRepresentationsEventsThenTheFormIsSent() {
-        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
+        var representationId = representationIdBuilder.buildRepresentationViewRepresentationId(List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
+        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), representationId);
         var flux = this.representationsEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialformContentConsumer = object -> Optional.of(object)
@@ -89,7 +94,8 @@ public class RepresentationsViewControllerIntegrationTests extends AbstractInteg
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenPortalWhenWeSubscribeToItsRepresentationsEventsThenTheFormIsSent() {
-        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+        var representationId = representationIdBuilder.buildRepresentationViewRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), representationId);
         var flux = this.representationsEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialformContentConsumer = object -> Optional.of(object)

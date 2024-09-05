@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.details.dto;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IInput;
@@ -22,5 +21,5 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author hmarchadour
  */
-public record DetailsEventInput(UUID id, String editingContextId, List<String> objectIds) implements IInput {
+public record DetailsEventInput(UUID id, String editingContextId, String representationId) implements IInput {
 }

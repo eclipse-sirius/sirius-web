@@ -33,6 +33,7 @@ import org.eclipse.sirius.web.application.studio.services.StudioExplorerTreeFilt
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,6 +66,9 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     @Autowired
     private TreeFiltersQueryRunner treeFiltersQueryRunner;
 
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -92,7 +96,8 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenFilterToHideDefaultPaletteIsActiveThenTheDefaultPaletteIsHidden() {
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, List.of(), List.of(StudioExplorerTreeFilterProvider.HIDE_STUDIO_COLOR_PALETTES_TREE_FILTER_ID));
+        var treeRepresentationId = representationIdBuilder.buildExplorerRepresentationId(List.of(), List.of(StudioExplorerTreeFilterProvider.HIDE_STUDIO_COLOR_PALETTES_TREE_FILTER_ID));
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Consumer<Object> projectContentConsumer = object -> Optional.of(object)
@@ -117,7 +122,8 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenFilterToHideDefaultPaletteIsInactiveThenTheDefaultPaletteIsHidden() {
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, List.of(), List.of());
+        var treeRepresentationId = representationIdBuilder.buildExplorerRepresentationId(List.of(), List.of());
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         var defaultPaletteTreeItemId = ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI.substring((IEMFEditingContext.RESOURCE_SCHEME + ":///").length());

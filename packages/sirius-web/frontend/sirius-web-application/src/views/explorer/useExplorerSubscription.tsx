@@ -43,9 +43,7 @@ export const useExplorerSubscription = (
   const input: GQLExplorerEventInput = {
     id: state.id,
     editingContextId,
-    treeId: 'explorer://',
-    activeFilterIds,
-    expanded,
+    representationId: `explorer://?expandedIds=[${expanded.join(',')}]&activeFilterIds=[${activeFilterIds.join(',')}]`,
   };
 
   const variables: GQLExplorerEventVariables = { input };

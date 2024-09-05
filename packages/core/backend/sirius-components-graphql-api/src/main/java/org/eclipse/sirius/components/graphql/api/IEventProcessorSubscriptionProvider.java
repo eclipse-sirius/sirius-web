@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.graphql.api;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 
@@ -24,7 +23,7 @@ import reactor.core.publisher.Flux;
  * @author sbegaudeau
  */
 public interface IEventProcessorSubscriptionProvider {
-    Flux<IPayload> getSubscription(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input);
+    Flux<IPayload> getSubscription(String editingContextId, String representationId, IInput input);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -34,7 +33,7 @@ public interface IEventProcessorSubscriptionProvider {
     class NoOp implements IEventProcessorSubscriptionProvider {
 
         @Override
-        public Flux<IPayload> getSubscription(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input) {
+        public Flux<IPayload> getSubscription(String editingContextId, String representationId, IInput input) {
             return Flux.empty();
         }
 

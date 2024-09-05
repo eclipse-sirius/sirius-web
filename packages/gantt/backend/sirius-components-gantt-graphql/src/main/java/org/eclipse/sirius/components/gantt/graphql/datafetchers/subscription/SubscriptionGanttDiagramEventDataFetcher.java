@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.gantt.GanttConfiguration;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.GanttEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -57,13 +56,12 @@ public class SubscriptionGanttDiagramEventDataFetcher implements IDataFetcherWit
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, GanttEventInput.class);
-        var ganttConfiguration = new GanttConfiguration(input.ganttId());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
         localContext.put(LocalContextConstants.REPRESENTATION_ID, input.ganttId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), ganttConfiguration, input), input)
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), input.ganttId().toString(), input), input)
                 .map(payload ->  DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)

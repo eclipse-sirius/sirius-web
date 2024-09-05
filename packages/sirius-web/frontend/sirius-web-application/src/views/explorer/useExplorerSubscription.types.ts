@@ -26,10 +26,8 @@ export interface UseExplorerSubscriptionState {
 
 export interface GQLExplorerEventInput {
   id: string;
-  treeId: string;
   editingContextId: string;
-  expanded: string[];
-  activeFilterIds: string[];
+  representationId: string;
 }
 
 export interface GQLExplorerEventVariables {

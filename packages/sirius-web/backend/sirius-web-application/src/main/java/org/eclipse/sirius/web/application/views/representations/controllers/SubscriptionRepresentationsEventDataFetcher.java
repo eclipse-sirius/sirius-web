@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.forms.api.RepresentationsConfiguration;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
@@ -57,13 +56,12 @@ public class SubscriptionRepresentationsEventDataFetcher implements IDataFetcher
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, RepresentationsEventInput.class);
-        var representationsConfiguration = new RepresentationsConfiguration(input.objectIds());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
-        localContext.put(LocalContextConstants.REPRESENTATION_ID, representationsConfiguration.getId());
+        localContext.put(LocalContextConstants.REPRESENTATION_ID, input.representationId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), representationsConfiguration, input), input)
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), input.representationId(), input), input)
                 .map(payload ->  DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)

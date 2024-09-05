@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddPageInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -47,6 +48,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormDescriptionEditorSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.formdescriptioneditors.AddPageMutationRunner;
 import org.eclipse.sirius.web.tests.services.formdescriptioneditors.AddWidgetMutationRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -78,6 +80,9 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
 
     @Autowired
     private AddWidgetMutationRunner addWidgetMutationRunner;
+
+    @Autowired
+    private AddPageMutationRunner addPageMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -288,6 +293,56 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormDescriptionEditorContentConsumer)
                 .then(addWidget)
+                .consumeNextWith(addedWidgetConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a form description editor, when we add a page, then the representation is updated")
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenFormDescriptionEditorWhenWeAddPageThenTheRepresentationIsUpdated() {
+        var flux = this.givenSubscriptionToFormDescriptionEditor();
+
+        var formDescriptionEditorId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormDescriptionEditorContentConsumer = payload -> Optional.of(payload)
+                .filter(FormDescriptionEditorRefreshedEventPayload.class::isInstance)
+                .map(FormDescriptionEditorRefreshedEventPayload.class::cast)
+                .map(FormDescriptionEditorRefreshedEventPayload::formDescriptionEditor)
+                .ifPresentOrElse(formDescriptionEditor -> {
+                    assertThat(formDescriptionEditor).isNotNull();
+                    var pages = formDescriptionEditor.getPages();
+                    assertThat(pages).hasSize(1);
+
+                    formDescriptionEditorId.set(formDescriptionEditor.getId());
+                }, () -> fail("Missing form description editor"));
+
+        Runnable addPage = () -> {
+            var addPageInput = new AddPageInput(
+                    UUID.randomUUID(),
+                    StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    formDescriptionEditorId.get(),
+                    0
+            );
+            var result = this.addPageMutationRunner.run(addPageInput);
+            String typename = JsonPath.read(result, "$.data.addPage.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> addedWidgetConsumer = payload -> Optional.of(payload)
+                .filter(FormDescriptionEditorRefreshedEventPayload.class::isInstance)
+                .map(FormDescriptionEditorRefreshedEventPayload.class::cast)
+                .map(FormDescriptionEditorRefreshedEventPayload::formDescriptionEditor)
+                .ifPresentOrElse(formDescriptionEditor -> {
+                    var pages = formDescriptionEditor.getPages();
+                    assertThat(pages).hasSize(2);
+                }, () -> fail("Missing form description editor"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormDescriptionEditorContentConsumer)
+                .then(addPage)
                 .consumeNextWith(addedWidgetConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

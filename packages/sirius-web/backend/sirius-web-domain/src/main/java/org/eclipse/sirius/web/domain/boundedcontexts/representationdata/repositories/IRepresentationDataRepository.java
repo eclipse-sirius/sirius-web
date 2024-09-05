@@ -72,4 +72,12 @@ public interface IRepresentationDataRepository extends ListPagingAndSortingRepos
         WHERE representationData.target_object_id = :targetObjectId
         """)
     boolean existAnyRepresentationForTargetObjectId(String targetObjectId);
+
+    @Query("""
+        SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+        FROM representation_data representationData
+        WHERE representationData.id = :representationId
+        AND representationData.kind IN (:kinds)
+        """)
+    boolean existByIdAndKind(UUID representationId, List<String> kinds);
 }

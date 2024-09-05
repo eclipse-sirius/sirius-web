@@ -48,7 +48,7 @@ export const useRelatedElementsViewSubscription = (
   const input: GQLRelatedElementsEventInput = {
     id: state.id,
     editingContextId,
-    objectIds,
+    representationId: `relatedElements://?objectIds=[${objectIds.join(',')}]`,
   };
 
   const variables: GQLRelatedElementsEventVariables = { input };

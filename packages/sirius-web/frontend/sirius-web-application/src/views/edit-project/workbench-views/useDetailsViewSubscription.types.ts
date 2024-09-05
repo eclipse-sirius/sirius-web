@@ -28,7 +28,7 @@ export interface UseDetailsViewSubscriptionState {
 export interface GQLDetailsEventInput {
   id: string;
   editingContextId: string;
-  objectIds: string[];
+  representationId: string;
 }
 
 export interface GQLDetailsEventVariables {

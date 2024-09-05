@@ -12,16 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.charts;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.representations.IRepresentation;
 import org.springframework.stereotype.Service;
 
 /**
@@ -46,24 +47,27 @@ public class HierarchyEventProcessorFactory implements IRepresentationEventProce
     }
 
     @Override
-    public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof HierarchyConfiguration;
+    public boolean canHandle(IEditingContext editingContext, String representationId) {
+        return this.representationSearchService.existByIdAndKind(representationId, List.of(
+                IRepresentation.KIND_PREFIX + "?type=ForceDirectedTree",
+                IRepresentation.KIND_PREFIX + "?type=TreeMap",
+                IRepresentation.KIND_PREFIX + "?type=ZoomableCirclePacking")
+        );
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
-        if (configuration instanceof HierarchyConfiguration hierarchyConfiguration) {
-            var optionalHierarchy = this.representationSearchService.findById(editingContext, hierarchyConfiguration.getId(), Hierarchy.class);
-            if (optionalHierarchy.isPresent()) {
-                Hierarchy hierarchy = optionalHierarchy.get();
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
+        var optionalHierarchy = this.representationSearchService.findById(editingContext, representationId, Hierarchy.class);
+        if (optionalHierarchy.isPresent()) {
+            Hierarchy hierarchy = optionalHierarchy.get();
 
-                HierarchyContext hierarchyContext = new HierarchyContext(hierarchy);
-                IRepresentationEventProcessor hierarchyEventProcessor = new HierarchyEventProcessor(editingContext, hierarchyContext,
-                        this.subscriptionManagerFactory.create(), this.hierarchyCreationService, this.representationSearchService);
+            HierarchyContext hierarchyContext = new HierarchyContext(hierarchy);
+            IRepresentationEventProcessor hierarchyEventProcessor = new HierarchyEventProcessor(editingContext, hierarchyContext,
+                    this.subscriptionManagerFactory.create(), this.hierarchyCreationService, this.representationSearchService);
 
-                return Optional.of(hierarchyEventProcessor);
-            }
+            return Optional.of(hierarchyEventProcessor);
         }
+
         return Optional.empty();
     }
 }

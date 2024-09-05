@@ -75,7 +75,8 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTextfieldForAnExpressionWhenWeAskForItsCompletionProposalsThenTheProposalsAreReturned() {
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()));
+        var detailRepresentationId =  "details://?objectIds=[" + String.join(",", StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()) + "]";
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         var formId = new AtomicReference<String>();

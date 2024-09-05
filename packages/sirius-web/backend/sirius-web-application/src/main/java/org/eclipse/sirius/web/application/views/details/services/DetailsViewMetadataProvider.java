@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.application.views.details.services;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.forms.api.PropertiesConfiguration;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.forms.Form;
@@ -30,7 +29,7 @@ public class DetailsViewMetadataProvider implements IRepresentationMetadataProvi
 
     @Override
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
-        if (representationId.startsWith(PropertiesConfiguration.PROPERTIES_PREFIX)) {
+        if (representationId.startsWith("details://")) {
             return Optional.of(new RepresentationMetadata(representationId, Form.KIND, "Properties", PropertiesEventProcessorFactory.DETAILS_VIEW_ID));
         }
         return Optional.empty();

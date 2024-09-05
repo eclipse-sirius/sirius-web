@@ -44,6 +44,11 @@ public class PortalServicesTests {
         public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
             return Optional.empty();
         }
+
+        @Override
+        public boolean existByIdAndKind(String representationId, List<String> kinds) {
+            return false;
+        }
     };
 
     private static final String PORTAL_ID = "portal";
@@ -130,6 +135,11 @@ public class PortalServicesTests {
             public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
                 return Optional.of(representationClass.cast(portal));
             }
+
+            @Override
+            public boolean existByIdAndKind(String representationId, List<String> kinds) {
+                return true;
+            }
         };
         Optional<Portal> newPortal = new PortalServices(mockSearchService, NOOP_EDITING_CONTEXT).addView(portal, PORTAL_ID, 0, 0, 0, 0);
         assertThat(newPortal).isEmpty();
@@ -148,6 +158,11 @@ public class PortalServicesTests {
             @Override
             public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
                 return portalsRepository.stream().filter(portal -> portal.getId().equals(representationId)).findFirst().map(representationClass::cast);
+            }
+
+            @Override
+            public boolean existByIdAndKind(String representationId, List<String> kinds) {
+                return true;
             }
         };
 

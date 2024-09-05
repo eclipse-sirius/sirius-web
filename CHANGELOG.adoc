@@ -130,6 +130,9 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3437[#3437] [core] Migrate frontend to MUI 5, if you contributed React componenent that use MUI, you should upgrade them to use MUI 5.
 - https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService`, you must implement this method if you have custom implementation of these interface. 
 - https://github.com/eclipse-sirius/sirius-web/issues/3815[#3815] [core] Make child creation descriptions locale independent
+- https://github.com/eclipse-sirius/sirius-web/issues/3976[#3976] [core] Remove the configuration object used to create representation event processors.
+
+The ids used to create a subscription is also changed, refer to [ADR-159] for more details on how to migrate existing API.
 
 === Dependency update
 

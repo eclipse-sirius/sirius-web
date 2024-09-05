@@ -13,19 +13,19 @@
 package org.eclipse.sirius.components.collaborative.selection.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
-import org.eclipse.sirius.components.collaborative.selection.configurations.SelectionDialogTreeConfiguration;
 import org.eclipse.sirius.components.collaborative.trees.TreeEventProcessor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeCreationParameters;
+import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
@@ -62,36 +62,38 @@ public class SelectionDialogTreeEventProcessorFactory implements IRepresentation
     }
 
     @Override
-    public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof SelectionDialogTreeConfiguration;
+    public boolean canHandle(IEditingContext editingContext, String representationId) {
+        return representationId.startsWith("selection://");
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
-        if (configuration instanceof SelectionDialogTreeConfiguration selectionDialogTreeConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
+        Optional<TreeDescription> optionalTreeDescription = this.findTreeDescription(editingContext, representationId);
+        if (optionalTreeDescription.isPresent()) {
+            var treeDescription = optionalTreeDescription.get();
 
-            Optional<TreeDescription> optionalTreeDescription = this.findTreeDescription(editingContext, selectionDialogTreeConfiguration);
-            if (optionalTreeDescription.isPresent()) {
-                var treeDescription = optionalTreeDescription.get();
+            Map<String, List<String>> parameters = new URLParser().getParameterValues(representationId);
+            String expandedIds = parameters.get("expandedIds").get(0);
+            var expanded = new URLParser().getParameterEntries(expandedIds);
 
-                TreeCreationParameters treeCreationParameters = TreeCreationParameters.newTreeCreationParameters(selectionDialogTreeConfiguration.getId())
-                        .treeDescription(treeDescription)
-                        .activeFilterIds(List.of())
-                        .expanded(selectionDialogTreeConfiguration.getExpanded())
-                        .editingContext(editingContext)
-                        .build();
+            TreeCreationParameters treeCreationParameters = TreeCreationParameters.newTreeCreationParameters(representationId)
+                    .treeDescription(treeDescription)
+                    .activeFilterIds(List.of())
+                    .expanded(expanded)
+                    .editingContext(editingContext)
+                    .build();
 
-                IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(editingContext, this.treeService, treeCreationParameters, this.treeEventHandlers,
-                        this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
-                return Optional.of(treeEventProcessor);
-            }
+            IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(editingContext, this.treeService, treeCreationParameters, this.treeEventHandlers,
+                    this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
+            return Optional.of(treeEventProcessor);
         }
+
         return Optional.empty();
     }
 
-    private Optional<TreeDescription> findTreeDescription(IEditingContext editingContext, SelectionDialogTreeConfiguration treeConfiguration) {
+    private Optional<TreeDescription> findTreeDescription(IEditingContext editingContext, String representationId) {
         VariableManager variableManager = new VariableManager();
-        variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, treeConfiguration.getId());
+        variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, representationId);
         return this.representationDescriptionSearchService
                 .findAll(editingContext).values().stream()
                 .filter(TreeDescription.class::isInstance)

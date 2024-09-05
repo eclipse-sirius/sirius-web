@@ -49,7 +49,7 @@ export const useRepresentationsViewSubscription = (
   const input: GQLRepresentationsEventInput = {
     id: state.id,
     editingContextId,
-    objectIds,
+    representationId: `representations://?objectIds=[${objectIds.join(',')}]`,
   };
 
   const variables: GQLRepresentationsEventVariables = { input };

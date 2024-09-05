@@ -13,11 +13,10 @@
 package org.eclipse.sirius.web.application.views.explorer;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
@@ -26,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.trees.TreeEventProcessor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeCreationParameters;
+import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
@@ -41,8 +41,6 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  */
 @Service
 public class ExplorerEventProcessorFactory implements IRepresentationEventProcessorFactory {
-
-    public static final String TREE_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString();
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
@@ -64,32 +62,37 @@ public class ExplorerEventProcessorFactory implements IRepresentationEventProces
     }
 
     @Override
-    public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof ExplorerConfiguration;
+    public boolean canHandle(IEditingContext editingContext, String representationId) {
+        return representationId.startsWith("explorer://");
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
-        if (configuration instanceof ExplorerConfiguration treeConfiguration) {
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
+        Optional<TreeDescription> optionalTreeDescription = this.representationDescriptionSearchService
+                .findById(editingContext, ExplorerDescriptionProvider.DESCRIPTION_ID)
+                .filter(TreeDescription.class::isInstance)
+                .map(TreeDescription.class::cast);
 
-            Optional<TreeDescription> optionalTreeDescription = this.representationDescriptionSearchService
-                    .findById(editingContext, ExplorerDescriptionProvider.DESCRIPTION_ID)
-                    .filter(TreeDescription.class::isInstance)
-                    .map(TreeDescription.class::cast);
-            if (optionalTreeDescription.isPresent()) {
-                var treeDescription = optionalTreeDescription.get();
+        if (optionalTreeDescription.isPresent()) {
+            var treeDescription = optionalTreeDescription.get();
 
-                TreeCreationParameters treeCreationParameters = TreeCreationParameters.newTreeCreationParameters(treeConfiguration.getId())
-                        .treeDescription(treeDescription)
-                        .activeFilterIds(treeConfiguration.getActiveFilterIds())
-                        .expanded(treeConfiguration.getExpanded())
-                        .editingContext(editingContext)
-                        .build();
+            Map<String, List<String>> parameters = new URLParser().getParameterValues(representationId);
+            String activeFilterIdsParam = parameters.get("activeFilterIds").get(0);
+            var activeFilterIds = new URLParser().getParameterEntries(activeFilterIdsParam);
 
-                IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(editingContext, this.treeService, treeCreationParameters, this.treeEventHandlers,
-                        this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
-                return Optional.of(treeEventProcessor);
-            }
+            String expandedIdsParam = parameters.get("expandedIds").get(0);
+            var expanded = new URLParser().getParameterEntries(expandedIdsParam);
+
+            TreeCreationParameters treeCreationParameters = TreeCreationParameters.newTreeCreationParameters(representationId)
+                    .treeDescription(treeDescription)
+                    .activeFilterIds(activeFilterIds)
+                    .expanded(expanded)
+                    .editingContext(editingContext)
+                    .build();
+
+            IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(editingContext, this.treeService, treeCreationParameters, this.treeEventHandlers,
+                    this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
+            return Optional.of(treeEventProcessor);
         }
         return Optional.empty();
     }

@@ -10,49 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useSubscription } from '@apollo/client';
-import { Toast, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { useMachine } from '@xstate/react';
-import React, { useEffect } from 'react';
-import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
-import { GQLValidationEventSubscription, GQLValidationEventVariables } from './ValidationView.types';
-import {
-  HandleCompleteEvent,
-  HandleSubscriptionResultEvent,
-  HideToastEvent,
-  SchemaValue,
-  ShowToastEvent,
-  ValidationViewContext,
-  ValidationViewEvent,
-  validationViewMachine,
-  ValidationViewStateSchema,
-} from './ValidationViewMachine';
 
-const validationEventSubscription = gql`
-  subscription validationEvent($input: ValidationEventInput!) {
-    validationEvent(input: $input) {
-      __typename
-      ... on ValidationRefreshedEventPayload {
-        id
-        validation {
-          id
-          diagnostics {
-            id
-            kind
-            message
-          }
-        }
-      }
-    }
-  }
-`;
+import { ReactNode, useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
+import { useValidationViewSubscription } from './useValidationViewSubscription';
+import {
+  Category,
+  GQLValidationEventPayload,
+  GQLValidationRefreshedEventPayload,
+  Validation,
+} from './useValidationViewSubscription.types';
+import { ValidationRepresentationState } from './Validation.types';
 
 const useValidationViewStyle = makeStyles()((theme) => ({
   root: {
@@ -76,51 +51,49 @@ const useValidationViewStyle = makeStyles()((theme) => ({
   },
 }));
 
+const isValidationRefreshedEventPayload = (
+  payload: GQLValidationEventPayload | null
+): payload is GQLValidationRefreshedEventPayload =>
+  !!payload && payload.__typename === 'ValidationRefreshedEventPayload';
+
 export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps) => {
   const { classes } = useValidationViewStyle();
-  const [{ value, context }, dispatch] =
-    useMachine<StateMachine<ValidationViewContext, ValidationViewStateSchema, ValidationViewEvent>>(
-      validationViewMachine
-    );
-  const { toast, validationView } = value as SchemaValue;
-  const { id, validation, message } = context;
+  const { payload, complete } = useValidationViewSubscription(editingContextId);
 
-  const { error } = useSubscription<GQLValidationEventSubscription, GQLValidationEventVariables>(
-    validationEventSubscription,
-    {
-      variables: {
-        input: {
-          id,
-          editingContextId,
-        },
-      },
-      fetchPolicy: 'no-cache',
-      onData: ({ data }) => {
-        const handleDataEvent: HandleSubscriptionResultEvent = {
-          type: 'HANDLE_SUBSCRIPTION_RESULT',
-          result: data,
-        };
-        dispatch(handleDataEvent);
-      },
-      onComplete: () => {
-        const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-        dispatch(completeEvent);
-      },
-    }
-  );
+  const [state, setState] = useState<ValidationRepresentationState>({
+    validationPayload: null,
+  });
 
   useEffect(() => {
-    if (error) {
-      const { message } = error;
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-      dispatch(showToastEvent);
+    if (isValidationRefreshedEventPayload(payload)) {
+      setState((prevState) => ({ ...prevState, validationPayload: payload.validation }));
     }
-  }, [error, dispatch]);
+  }, [payload]);
 
-  let content: JSX.Element | null = null;
+  const categories: Category[] = [];
+  const processedValidation: Validation = { categories };
 
-  if (validationView === 'ready' && validation) {
-    const accordions = validation.categories.map((category) => {
+  let noDiagnostic: ReactNode = (
+    <div className={classes.idle}>
+      <Typography variant="subtitle2">No diagnostic available</Typography>
+    </div>
+  );
+
+  if (state.validationPayload && !complete) {
+    state.validationPayload.diagnostics.forEach((diagnostic) => {
+      let category: Category | undefined = categories.find((category) => category.kind === diagnostic.kind);
+      if (!category) {
+        category = {
+          kind: diagnostic.kind,
+          diagnostics: [],
+        };
+        categories.push(category);
+      }
+
+      category.diagnostics.push({ id: diagnostic.id, message: diagnostic.message });
+    });
+
+    const accordions = processedValidation.categories.map((category) => {
       const details = category.diagnostics
         .map<React.ReactNode>((diagnostic) => {
           return <Typography key={diagnostic.id}>{diagnostic.message}</Typography>;
@@ -143,24 +116,11 @@ export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps
     });
 
     if (accordions.length > 0) {
-      content = <div className={classes.root}>{accordions}</div>;
+      return <div className={classes.root}>{accordions}</div>;
     } else {
-      content = (
-        <div className={classes.idle}>
-          <Typography variant="subtitle2">No diagnostic available</Typography>
-        </div>
-      );
+      return noDiagnostic;
     }
+  } else {
+    return noDiagnostic;
   }
-
-  return (
-    <>
-      {content}
-      <Toast
-        message={message ?? ''}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
-    </>
-  );
 };

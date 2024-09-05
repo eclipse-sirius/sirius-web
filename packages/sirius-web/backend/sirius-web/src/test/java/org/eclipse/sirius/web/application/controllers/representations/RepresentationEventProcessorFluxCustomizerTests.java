@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
@@ -50,6 +51,9 @@ public class RepresentationEventProcessorFluxCustomizerTests extends AbstractInt
     @Autowired
     private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
 
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -60,7 +64,8 @@ public class RepresentationEventProcessorFluxCustomizerTests extends AbstractInt
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormRepresentationWhenWeCustomizeItsOuputEventsThenAdditionalPayloadsAreReceived() {
-        var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
+        var detailsRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)

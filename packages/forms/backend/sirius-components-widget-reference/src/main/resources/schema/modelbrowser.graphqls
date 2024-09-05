@@ -4,7 +4,6 @@ extend type Subscription {
 
 input ModelBrowserEventInput {
   id: ID!
-  treeId: String!
   editingContextId: ID!
-  expanded: [String!]!
+  representationId: String!
 }

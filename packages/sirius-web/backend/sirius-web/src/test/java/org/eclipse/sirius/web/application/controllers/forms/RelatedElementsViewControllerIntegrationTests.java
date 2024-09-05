@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.relatedelements.dto.RelatedElementsEventInput;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.graphql.RelatedElementsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,6 +58,9 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
     @Autowired
     private RelatedElementsEventSubscriptionRunner relatedElementsEventSubscriptionRunner;
 
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -67,7 +71,8 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnEntityWhenWeSubscribeToItsRelatedElementsEventsThenTheFormIsSent() {
-        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
+        var relatedElementRepresentationId = representationIdBuilder.buildRelatedElementsRepresentationId(List.of(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
+        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), relatedElementRepresentationId);
         var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
@@ -112,7 +117,8 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenNodeDescriptionWhenWeSubscribeToItsRelatedElementsEventsThenTheFormIsSent() {
-        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString()));
+        var relatedElementRepresentationId = representationIdBuilder.buildRelatedElementsRepresentationId(List.of(StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString()));
+        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), relatedElementRepresentationId);
         var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {

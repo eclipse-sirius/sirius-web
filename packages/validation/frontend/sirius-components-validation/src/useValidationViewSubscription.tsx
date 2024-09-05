@@ -13,53 +13,58 @@
 
 import { gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
 import { useEffect, useState } from 'react';
 import {
-  GQLDiagramFilterEventInput,
-  GQLDiagramFilterEventSubscription,
-  GQLDiagramFilterEventVariables,
-  UseDiagramFilterSubscriptionState,
-  UseDiagramFilterSubscriptionValue,
-} from './useDiagramFilterSubscription.types';
+  GQLValidationEventInput,
+  GQLValidationEventSubscription,
+  GQLValidationEventVariables,
+  UseValidationViewSubscriptionState,
+  UseValidationViewSubscriptionValue,
+} from './useValidationViewSubscription.types';
 
-export const getDiagramFilterEventSubscription = `
-  subscription diagramFilterEvent($input: DiagramFilterEventInput!) {
-    diagramFilterEvent(input: $input) {
+const getValidationViewEventSubscription = `
+  subscription validationEvent($input: ValidationEventInput!) {
+    validationEvent(input: $input) {
       __typename
-      ... on FormRefreshedEventPayload {
-        ...formRefreshedEventPayloadFragment
+      ... on ValidationRefreshedEventPayload {
+        id
+        validation {
+          id
+          diagnostics {
+            id
+            kind
+            message
+          }
+        }
       }
     }
   }
-  ${formRefreshedEventPayloadFragment}
-  `;
+`;
 
-export const useDiagramFilterSubscription = (
+export const useValidationViewSubscription = (
   editingContextId: string,
-  objectIds: string[],
   skip?: boolean
-): UseDiagramFilterSubscriptionValue => {
-  const [state, setState] = useState<UseDiagramFilterSubscriptionState>({
+): UseValidationViewSubscriptionValue => {
+  const [state, setState] = useState<UseValidationViewSubscriptionState>({
     id: crypto.randomUUID(),
     complete: false,
   });
 
-  const input: GQLDiagramFilterEventInput = {
+  const input: GQLValidationEventInput = {
     id: state.id,
     editingContextId,
-    representationId: `diagramFilter://?objectIds=[${objectIds.join(',')}]`,
+    representationId: 'validation://',
   };
 
-  const variables: GQLDiagramFilterEventVariables = { input };
+  const variables: GQLValidationEventVariables = { input };
 
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const onData = ({}: OnDataOptions<GQLDiagramFilterEventSubscription>) =>
+  const onData = ({}: OnDataOptions<GQLValidationEventSubscription>) =>
     setState((prevState) => ({ ...prevState, complete: false }));
 
-  const { data, error, loading } = useSubscription<GQLDiagramFilterEventSubscription, GQLDiagramFilterEventVariables>(
-    gql(getDiagramFilterEventSubscription),
+  const { data, error, loading } = useSubscription<GQLValidationEventSubscription, GQLValidationEventVariables>(
+    gql(getValidationViewEventSubscription),
     {
       variables,
       fetchPolicy: 'no-cache',
@@ -78,7 +83,7 @@ export const useDiagramFilterSubscription = (
 
   return {
     loading,
-    payload: data?.diagramFilterEvent ?? null,
+    payload: data?.validationEvent ?? null,
     complete: state.complete,
   };
 };

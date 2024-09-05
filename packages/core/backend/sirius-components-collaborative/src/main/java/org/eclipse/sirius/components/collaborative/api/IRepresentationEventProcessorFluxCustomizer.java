@@ -24,8 +24,8 @@ import reactor.core.publisher.Flux;
  */
 public interface IRepresentationEventProcessorFluxCustomizer {
 
-    boolean canHandle(String editingContextId, IRepresentationConfiguration configuration, IInput input, IRepresentationEventProcessor representationEventProcessor);
+    boolean canHandle(String editingContextId, String representationId, IInput input, IRepresentationEventProcessor representationEventProcessor);
     
-    Flux<IPayload> customize(String editingContextId, IRepresentationConfiguration configuration, IInput input, IRepresentationEventProcessor representationEventProcessor, Flux<IPayload> outputEvents);
+    Flux<IPayload> customize(String editingContextId, String representationId, IInput input, IRepresentationEventProcessor representationEventProcessor, Flux<IPayload> outputEvents);
 
 }

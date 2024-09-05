@@ -5,6 +5,7 @@ extend type Subscription {
 input ValidationEventInput {
   id: ID!
   editingContextId: ID!
+  representationId: String!
 }
 
 union ValidationEventPayload = ErrorPayload | ValidationRefreshedEventPayload

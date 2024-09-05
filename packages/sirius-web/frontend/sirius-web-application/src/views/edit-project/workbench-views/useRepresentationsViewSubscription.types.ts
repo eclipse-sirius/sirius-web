@@ -28,7 +28,7 @@ export interface UseRepresentationsViewSubscriptionState {
 export interface GQLRepresentationsEventInput {
   id: string;
   editingContextId: string;
-  objectIds: string[];
+  representationId: string;
 }
 
 export interface GQLRepresentationsEventVariables {

@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
 public interface IEditingContextEventProcessor extends IDisposablePublisher {
     String getEditingContextId();
 
-    Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input);
+    Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(String representationId, IInput input);
 
     List<IRepresentationEventProcessor> getRepresentationEventProcessors();
 
@@ -59,7 +59,7 @@ public interface IEditingContextEventProcessor extends IDisposablePublisher {
         }
 
         @Override
-        public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input) {
+        public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(String representationId, IInput input) {
             return Optional.empty();
         }
 

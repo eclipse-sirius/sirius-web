@@ -76,6 +76,12 @@ public class RenameDiagramEventHandlerTests {
             public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
                 return Optional.of(diagram).map(representationClass::cast);
             }
+
+            @Override
+            public boolean existByIdAndKind(String representationId, List<String> kinds) {
+                return true;
+            }
+
         };
 
         RenameDiagramEventHandler handler = new RenameDiagramEventHandler(representationSearchService, new IRepresentationPersistenceService.NoOp(), new ICollaborativeDiagramMessageService.NoOp(),

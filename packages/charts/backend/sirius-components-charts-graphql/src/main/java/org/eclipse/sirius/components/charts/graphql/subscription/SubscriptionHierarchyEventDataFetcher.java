@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.charts.HierarchyConfiguration;
 import org.eclipse.sirius.components.collaborative.charts.HierarchyEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -53,8 +52,7 @@ public class SubscriptionHierarchyEventDataFetcher implements IDataFetcherWithFi
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, HierarchyEventInput.class);
-        var hierarchyConfiguration = new HierarchyConfiguration(input.hierarchyId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), hierarchyConfiguration, input), input);
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), input.hierarchyId().toString(), input), input);
     }
 }

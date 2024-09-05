@@ -26,9 +26,8 @@ export interface UseModelBrowserSubscriptionState {
 
 export interface GQLModelBrowserEventInput {
   id: string;
-  treeId: string;
   editingContextId: string;
-  expanded: string[];
+  representationId: string;
 }
 
 export interface GQLModelBrowserEventVariables {

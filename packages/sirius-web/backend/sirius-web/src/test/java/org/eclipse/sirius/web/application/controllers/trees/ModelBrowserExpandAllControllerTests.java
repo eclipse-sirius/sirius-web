@@ -77,7 +77,8 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
     @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenReferenceWidgetWhenWeAskForTheTreePathToExpandAllThenItsPathInTheExplorerIsReturned() {
-        var input = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), TREE_ID, List.of());
+        var representationId = TREE_ID + "&expandedIds=[]";
+        var input = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         var treeId = new AtomicReference<String>();
@@ -85,7 +86,7 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
 
         Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getChildren()).hasSize(1);
+            assertThat(tree.getChildren()).hasSize(5);
             assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
 
             treeId.set(tree.getId());
@@ -97,7 +98,7 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
                     "treeId", treeId.get(),
                     "treeItemId", objectId.get()
             );
@@ -115,12 +116,14 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        var expandedTreeInput = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), TREE_ID, treeItemIds.get());
+        var expandedRepresentationId = TREE_ID + "&expandedIds=[" + String.join(",", treeItemIds.get()) + "]";
+        var expandedTreeInput = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), expandedRepresentationId);
         var expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
 
         Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getChildren()).hasSize(1);
+            assertThat(tree.getChildren()).hasSize(5);
+            assertThat(tree.getChildren().get(0).isExpanded()).isTrue();
             assertThat(tree.getChildren()).anySatisfy(treeItem -> assertThat(treeItem.getChildren()).isNotEmpty());
 
             treeId.set(tree.getId());

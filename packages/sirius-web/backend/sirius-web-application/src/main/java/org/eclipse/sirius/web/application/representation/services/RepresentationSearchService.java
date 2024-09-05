@@ -15,8 +15,10 @@ package org.eclipse.sirius.web.application.representation.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -61,6 +63,11 @@ public class RepresentationSearchService implements IRepresentationSearchService
                 .map(representationClass::cast);
     }
 
+    @Override
+    public boolean existByIdAndKind(String representationId, List<String> kinds) {
+        Optional<UUID> uuid =  new UUIDParser().parse(representationId);
+        return uuid.filter(value -> this.representationDataSearchService.existsByIdAndKind(value, kinds)).isPresent();
+    }
 
     private Optional<IRepresentation> toRepresentation(String content) {
         Optional<IRepresentation> optionalRepresentation = Optional.empty();

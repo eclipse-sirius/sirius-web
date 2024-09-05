@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.assertions.FormAssertions;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
@@ -58,6 +59,9 @@ public class LabelStyleDetailsViewControllerTests extends AbstractIntegrationTes
     @Autowired
     private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
 
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -68,7 +72,8 @@ public class LabelStyleDetailsViewControllerTests extends AbstractIntegrationTes
     @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenInsideLabelStyleDescriptionWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.HUMAN_INSIDE_LABEL_STYLE_OBJECT.toString()));
+        var detailRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.HUMAN_INSIDE_LABEL_STYLE_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {

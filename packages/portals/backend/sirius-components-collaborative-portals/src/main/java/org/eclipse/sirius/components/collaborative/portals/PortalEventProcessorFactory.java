@@ -16,14 +16,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalEventHandler;
-import org.eclipse.sirius.components.collaborative.portals.api.PortalConfiguration;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.portals.Portal;
 import org.springframework.stereotype.Service;
@@ -52,20 +50,19 @@ public class PortalEventProcessorFactory implements IRepresentationEventProcesso
     }
 
     @Override
-    public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof PortalConfiguration;
+    public boolean canHandle(IEditingContext editingContext, String representationId) {
+        return this.representationSearchService.existByIdAndKind(representationId , List.of(Portal.KIND));
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
-        if (configuration instanceof PortalConfiguration portalConfiguration) {
-            var optionalPortal = this.representationSearchService.findById(editingContext, portalConfiguration.getId(), Portal.class);
-            if (optionalPortal.isPresent()) {
-                Portal portal = optionalPortal.get();
-                var portalEventProcessor = new PortalEventProcessor(editingContext, this.representationSearchService, this.representationPersistenceService, this.portalEventHandlers, this.subscriptionManagerFactory.create(), portal);
-                return Optional.of(portalEventProcessor);
-            }
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
+        var optionalPortal = this.representationSearchService.findById(editingContext, representationId, Portal.class);
+        if (optionalPortal.isPresent()) {
+            Portal portal = optionalPortal.get();
+            var portalEventProcessor = new PortalEventProcessor(editingContext, this.representationSearchService, this.representationPersistenceService, this.portalEventHandlers, this.subscriptionManagerFactory.create(), portal);
+            return Optional.of(portalEventProcessor);
         }
+
         return Optional.empty();
     }
 

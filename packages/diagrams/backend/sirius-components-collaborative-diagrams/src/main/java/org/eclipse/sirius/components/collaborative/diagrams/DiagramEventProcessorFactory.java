@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
@@ -24,7 +23,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPol
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
-import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramConfiguration;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
@@ -70,35 +68,33 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
     }
 
     @Override
-    public boolean canHandle(IRepresentationConfiguration configuration) {
-        return configuration instanceof DiagramConfiguration;
+    public boolean canHandle(IEditingContext editingContext, String representationId) {
+        return this.representationSearchService.existByIdAndKind(representationId, List.of(Diagram.KIND));
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IRepresentationConfiguration configuration, IEditingContext editingContext) {
-        if (configuration instanceof DiagramConfiguration diagramConfiguration) {
-            var optionalDiagram = this.representationSearchService.findById(editingContext, diagramConfiguration.getId(), Diagram.class);
-            if (optionalDiagram.isPresent()) {
-                Diagram diagram = optionalDiagram.get();
-                DiagramContext diagramContext = new DiagramContext(diagram);
+    public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
+        var optionalDiagram = this.representationSearchService.findById(editingContext, representationId, Diagram.class);
+        if (optionalDiagram.isPresent()) {
+            Diagram diagram = optionalDiagram.get();
+            DiagramContext diagramContext = new DiagramContext(diagram);
 
-                var parameters = DiagramEventProcessorParameters.newDiagramEventProcessorParameters()
-                        .editingContext(editingContext)
-                        .diagramContext(diagramContext)
-                        .diagramEventHandlers(this.diagramEventHandlers)
-                        .subscriptionManager(this.subscriptionManagerFactory.create())
-                        .diagramCreationService(this.diagramCreationService)
-                        .representationDescriptionSearchService(this.representationDescriptionSearchService)
-                        .representationRefreshPolicyRegistry(this.representationRefreshPolicyRegistry)
-                        .representationPersistenceService(this.representationPersistenceService)
-                        .representationSearchService(this.representationSearchService)
-                        .diagramInputReferencePositionProviders(this.diagramInputReferencePositionProviders)
-                        .build();
+            var parameters = DiagramEventProcessorParameters.newDiagramEventProcessorParameters()
+                    .editingContext(editingContext)
+                    .diagramContext(diagramContext)
+                    .diagramEventHandlers(this.diagramEventHandlers)
+                    .subscriptionManager(this.subscriptionManagerFactory.create())
+                    .diagramCreationService(this.diagramCreationService)
+                    .representationDescriptionSearchService(this.representationDescriptionSearchService)
+                    .representationRefreshPolicyRegistry(this.representationRefreshPolicyRegistry)
+                    .representationPersistenceService(this.representationPersistenceService)
+                    .representationSearchService(this.representationSearchService)
+                    .diagramInputReferencePositionProviders(this.diagramInputReferencePositionProviders)
+                    .build();
 
-                IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
+            IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
 
-                return Optional.of(diagramEventProcessor);
-            }
+            return Optional.of(diagramEventProcessor);
         }
         return Optional.empty();
     }

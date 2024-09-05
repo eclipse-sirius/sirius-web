@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.assertions.FormAssertions;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -70,6 +71,9 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
     @Autowired
     private EditTextfieldMutationRunner editTextfieldMutationRunner;
 
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -80,7 +84,8 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
     @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenEllipseNodeStyleDescriptionWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
+        var detailRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
@@ -114,7 +119,8 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
     @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenEllipseNodeStyleDescriptionWhenBorderSizeIsEditedThenItsValueIsUpdated() {
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
+        var detailRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)

@@ -30,6 +30,8 @@ public interface IRepresentationDataSearchService {
 
     boolean existsById(UUID id);
 
+    boolean existsByIdAndKind(UUID id, List<String> kinds);
+
     Optional<RepresentationDataContentOnly> findContentById(UUID id);
 
     Optional<RepresentationDataMetadataOnly> findMetadataById(UUID id);
