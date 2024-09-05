@@ -20,6 +20,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import { NavigationBarMenuItemProps, NavigationBarMenuProps, NavigationBarMenuState } from './NavigationBarMenu.types';
 import {
+  navigationBarMenuContainerExtensionPoint,
   navigationBarMenuEntryExtensionPoint,
   navigationBarMenuHelpURLExtensionPoint,
   navigationBarMenuIconExtensionPoint,
@@ -30,6 +31,7 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
     menuAnchor: null,
   });
 
+  const { Component: NavigationBarMenuContainer } = useComponent(navigationBarMenuContainerExtensionPoint);
   const { Component: MenuIcon } = useComponent(navigationBarMenuIconExtensionPoint);
   const { data: url } = useData(navigationBarMenuHelpURLExtensionPoint);
   const menuItemComponentExtensions: ComponentExtension<NavigationBarMenuItemProps>[] = useComponents(
@@ -41,7 +43,7 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
   const handleClose = () => setState((prevState) => ({ ...prevState, menuAnchor: null }));
 
   return (
-    <>
+    <NavigationBarMenuContainer>
       <MenuIcon onClick={handleClick} />
 
       <Menu
@@ -59,6 +61,6 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
           <ListItemText primary="Help" />
         </MenuItem>
       </Menu>
-    </>
+    </NavigationBarMenuContainer>
   );
 };

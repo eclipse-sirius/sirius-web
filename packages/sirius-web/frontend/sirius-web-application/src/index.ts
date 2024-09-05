@@ -44,10 +44,12 @@ export {
   navigationBarRightContributionExtensionPoint,
 } from './navigationBar/NavigationBarExtensionPoints';
 export {
+  type NavigationBarMenuContainerProps,
   type NavigationBarMenuIconProps,
   type NavigationBarMenuItemProps,
 } from './navigationBar/NavigationBarMenu.types';
 export {
+  navigationBarMenuContainerExtensionPoint,
   navigationBarMenuEntryExtensionPoint,
   navigationBarMenuHelpURLExtensionPoint,
   navigationBarMenuIconExtensionPoint,
