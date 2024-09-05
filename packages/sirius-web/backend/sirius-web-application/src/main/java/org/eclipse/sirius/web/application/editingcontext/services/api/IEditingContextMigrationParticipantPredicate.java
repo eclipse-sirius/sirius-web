@@ -12,17 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services.api;
 
-import java.util.Optional;
+import java.util.function.Predicate;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 
 /**
- * Used to load data as EMF resources.
+ * Used to indicate if the editing context is concern by the migration participants.
  *
- * @author sbegaudeau
+ * @author frouene
  */
-public interface IResourceLoader {
+public interface IEditingContextMigrationParticipantPredicate extends Predicate<IEditingContext> {
 
-    Optional<Resource> toResource(ResourceSet resourceSet, String id, String name, String content, boolean applyMigrationParticipants);
 }

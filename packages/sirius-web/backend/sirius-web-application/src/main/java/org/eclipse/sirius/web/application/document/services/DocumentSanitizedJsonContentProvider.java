@@ -55,11 +55,11 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
     }
 
     @Override
-    public Optional<String> getContent(ResourceSet resourceSet, String name, InputStream inputStream) {
+    public Optional<String> getContent(ResourceSet resourceSet, String name, InputStream inputStream, boolean applyMigrationParticipants) {
         Optional<String> optionalContent = Optional.empty();
 
         URI resourceURI = new JSONResourceFactory().createResourceURI(name);
-        Optional<Resource> optionalInputResource = this.getResource(resourceSet, resourceURI, inputStream);
+        Optional<Resource> optionalInputResource = this.getResource(resourceSet, resourceURI, inputStream, applyMigrationParticipants);
         if (optionalInputResource.isPresent()) {
             Resource inputResource = optionalInputResource.get();
 
@@ -68,13 +68,15 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
             ouputResource.getContents().addAll(inputResource.getContents());
 
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                var migrationExtendedMetaData = new MigrationService(this.migrationParticipants);
                 Map<String, Object> saveOptions = new HashMap<>();
                 saveOptions.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
                 saveOptions.put(JsonResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
                 saveOptions.put(JsonResource.OPTION_ID_MANAGER, new EObjectRandomIDManager());
-                saveOptions.put(JsonResource.OPTION_EXTENDED_META_DATA, migrationExtendedMetaData);
-                saveOptions.put(JsonResource.OPTION_JSON_RESSOURCE_PROCESSOR, migrationExtendedMetaData);
+                if (applyMigrationParticipants) {
+                    var migrationExtendedMetaData = new MigrationService(this.migrationParticipants);
+                    saveOptions.put(JsonResource.OPTION_EXTENDED_META_DATA, migrationExtendedMetaData);
+                    saveOptions.put(JsonResource.OPTION_JSON_RESSOURCE_PROCESSOR, migrationExtendedMetaData);
+                }
 
                 ouputResource.save(outputStream, saveOptions);
 
@@ -91,14 +93,14 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
      * Returns the {@link Resource} with the given {@link URI} or {@link Optional#empty()}.
      *
      * @param resourceSet
-     *            The {@link ResourceSet} used to store the loaded resource
+     *         The {@link ResourceSet} used to store the loaded resource
      * @param resourceURI
-     *            The {@link URI} to use to create the {@link Resource}
+     *         The {@link URI} to use to create the {@link Resource}
      * @param inputStream
-     *            The {@link InputStream} used to determine which {@link Resource} to create
+     *         The {@link InputStream} used to determine which {@link Resource} to create
      * @return a {@link Resource} or {@link Optional#empty()}
      */
-    private Optional<Resource> getResource(ResourceSet resourceSet, URI resourceURI, InputStream inputStream) {
+    private Optional<Resource> getResource(ResourceSet resourceSet, URI resourceURI, InputStream inputStream, boolean applyMigrationParticipants) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             inputStream.transferTo(baos);
@@ -108,6 +110,6 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
         return this.externalResourceLoaderServices.stream()
                 .filter(loader -> loader.canHandle(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet))
                 .findFirst()
-                .flatMap(loader -> loader.getResource(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet));
+                .flatMap(loader -> loader.getResource(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet, applyMigrationParticipants));
     }
 }

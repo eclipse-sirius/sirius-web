@@ -69,13 +69,15 @@ public class JSONExternalResourceLoaderService implements IExternalResourceLoade
     }
 
     @Override
-    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {
+    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants) {
         Resource resource = null;
         try {
-            var migrationService = new MigrationService(this.migrationParticipants);
             Map<String, Object> options = new HashMap<>();
-            options.put(JsonResource.OPTION_JSON_RESSOURCE_PROCESSOR, migrationService);
-            options.put(JsonResource.OPTION_EXTENDED_META_DATA, migrationService);
+            if (applyMigrationParticipants) {
+                var migrationService = new MigrationService(this.migrationParticipants);
+                options.put(JsonResource.OPTION_JSON_RESSOURCE_PROCESSOR, migrationService);
+                options.put(JsonResource.OPTION_EXTENDED_META_DATA, migrationService);
+            }
 
             var jsonResource = new JSONResourceFactory().createResource(resourceURI);
             resourceSet.getResources().add(jsonResource);

@@ -12,17 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services.api;
 
-import java.util.Optional;
+import java.util.UUID;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 
 /**
- * Used to load data as EMF resources.
+ * Used to load an editing context.
  *
- * @author sbegaudeau
+ * @author frouene
  */
-public interface IResourceLoader {
+public interface IEditingContextLoader {
 
-    Optional<Resource> toResource(ResourceSet resourceSet, String id, String name, String content, boolean applyMigrationParticipants);
+    void load(EditingContext editingContext, UUID projectId);
+
 }

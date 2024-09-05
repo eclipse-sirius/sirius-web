@@ -23,5 +23,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  * @author sbegaudeau
  */
 public interface IDocumentSanitizedJsonContentProvider {
-    Optional<String> getContent(ResourceSet resourceSet, String name, InputStream inputStream);
+
+    Optional<String> getContent(ResourceSet resourceSet, String name, InputStream inputStream, boolean applyMigrationParticipants);
 }
