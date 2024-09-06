@@ -114,9 +114,15 @@ type InsideLabel {
   insideLabelLocation: InsideLabelLocation!
   style: LabelStyle!
   isHeader: Boolean!
-  displayHeaderSeparator: Boolean!
+  headerSeparatorDisplayMode: HeaderSeparatorDisplayMode!
   overflowStrategy: LabelOverflowStrategy!
   textAlign: LabelTextAlign!
+}
+
+enum HeaderSeparatorDisplayMode {
+  NEVER
+  ALWAYS
+  IF_CHILDREN
 }
 
 enum InsideLabelLocation {

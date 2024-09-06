@@ -17,6 +17,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -126,18 +127,18 @@ public class FlowViewBuilder {
 
 
     public InsideLabelDescription getInsideLabelDescription(IColorProvider colorProvider, String labelExpression) {
-        return this.getInsideLabelDescription(colorProvider, labelExpression, false, false, false);
+        return this.getInsideLabelDescription(colorProvider, labelExpression, false, false, HeaderSeparatorDisplayMode.NEVER);
     }
 
 
-    public InsideLabelDescription getInsideLabelDescription(IColorProvider colorProvider, String labelExpression, boolean bold, boolean withHeader, boolean displayHeaderSeparator) {
+    public InsideLabelDescription getInsideLabelDescription(IColorProvider colorProvider, String labelExpression, boolean bold, boolean withHeader, HeaderSeparatorDisplayMode headerSeparatorDisplayMode) {
         return this.diagramBuilderHelper.newInsideLabelDescription()
                 .labelExpression(labelExpression)
                 .style(this.diagramBuilderHelper.newInsideLabelStyle()
                         .labelColor(colorProvider.getColor("Flow_Black"))
                         .bold(bold)
                         .withHeader(withHeader)
-                        .displayHeaderSeparator(displayHeaderSeparator)
+                        .headerSeparatorDisplayMode(headerSeparatorDisplayMode)
                         .borderSize(0)
                         .build())
                 .position(InsideLabelPosition.TOP_CENTER)

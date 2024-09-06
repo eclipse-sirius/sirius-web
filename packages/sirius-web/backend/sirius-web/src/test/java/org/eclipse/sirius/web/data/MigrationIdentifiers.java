@@ -53,7 +53,11 @@ public final class MigrationIdentifiers {
 
     public static final String MIGRATION_SELECTION_DIALOG_DESCRIPTION_SELECTION_CANDIDATES_EXPRESSION_STUDIO_DIAGRAM = "SelectionDialogDescription#selectionCandidatesExpression migration";
 
+    public static final UUID MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO = UUID.fromString("590949b9-5d48-46ba-b206-29ad2473e5a5");
 
+    public static final String MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_DIAGRAM = "InsideLabelStyle#displayHeaderSeparator migration";
+    
+    public static final String MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_NODE_1 = "migration Node 1";
 
     private MigrationIdentifiers() {
         // Prevent instantiation

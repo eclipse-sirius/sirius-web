@@ -35,7 +35,7 @@ export const convertInsideLabel = (
     id: gqlInsideLabel.id,
     text: gqlInsideLabel.text,
     isHeader: gqlInsideLabel.isHeader,
-    displayHeaderSeparator: gqlInsideLabel.displayHeaderSeparator,
+    displayHeaderSeparator: false,
     style: {
       display: 'flex',
       flexDirection: 'row',
@@ -63,8 +63,12 @@ export const convertInsideLabel = (
       if (insideLabel.isHeader) {
         insideLabel.headerPosition = 'TOP';
       }
-      if (insideLabel.displayHeaderSeparator && hasVisibleChild) {
+      if (
+        (hasVisibleChild && gqlInsideLabel.headerSeparatorDisplayMode === 'IF_CHILDREN') ||
+        gqlInsideLabel.headerSeparatorDisplayMode === 'ALWAYS'
+      ) {
         insideLabel.headerSeparatorStyle.borderBottom = borderStyle;
+        insideLabel.displayHeaderSeparator = true;
       }
       data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
     }
@@ -72,8 +76,12 @@ export const convertInsideLabel = (
       if (insideLabel.isHeader) {
         insideLabel.headerPosition = 'BOTTOM';
       }
-      if (insideLabel.displayHeaderSeparator && hasVisibleChild) {
+      if (
+        (hasVisibleChild && gqlInsideLabel.headerSeparatorDisplayMode === 'IF_CHILDREN') ||
+        gqlInsideLabel.headerSeparatorDisplayMode === 'ALWAYS'
+      ) {
         insideLabel.headerSeparatorStyle.borderTop = borderStyle;
+        insideLabel.displayHeaderSeparator = true;
       }
       data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' };
     }

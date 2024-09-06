@@ -74,6 +74,11 @@
     <eLiterals name="VERTICAL" value="2"/>
     <eLiterals name="NONE" value="3"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="HeaderSeparatorDisplayMode">
+    <eLiterals name="NEVER"/>
+    <eLiterals name="ALWAYS" value="1"/>
+    <eLiterals name="IF_CHILDREN" value="2"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoLayout" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -213,8 +218,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InsideLabelStyle" eSuperTypes="#//NodeLabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="withHeader" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="displayHeaderSeparator"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="headerSeparatorDisplayMode"
+        lowerBound="1" eType="#//HeaderSeparatorDisplayMode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OutsideLabelStyle" eSuperTypes="#//NodeLabelStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="NodeLabelStyle" abstract="true" interface="true"

@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProv
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
@@ -299,7 +300,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .labelColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BLACK_COLOR))
                 .showIconExpression("aql:true")
                 .withHeader(true)
-                .displayHeaderSeparator(true)
+                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN)
                 .borderSize(0)
                 .build();
 
@@ -308,7 +309,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .labelColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BLACK_COLOR))
                 .showIconExpression("aql:true")
                 .withHeader(true)
-                .displayHeaderSeparator(true)
+                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN)
                 .italic(true)
                 .borderSize(0)
                 .build();

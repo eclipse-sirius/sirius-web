@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwo
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
@@ -255,7 +256,7 @@ public class ViewPaletteProviderTests {
                 .textProvider(variableManager -> "")
                 .styleDescriptionProvider(variableManager -> styleDescription)
                 .isHeaderProvider(vm -> false)
-                .displayHeaderSeparatorProvider(vm -> false)
+                .headerSeparatorDisplayModeProvider(vm -> HeaderSeparatorDisplayMode.NEVER)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)

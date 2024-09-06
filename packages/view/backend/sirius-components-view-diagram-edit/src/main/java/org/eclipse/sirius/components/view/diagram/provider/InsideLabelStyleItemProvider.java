@@ -62,7 +62,7 @@ public class InsideLabelStyleItemProvider extends LabelStyleItemProvider {
             this.addLabelIconPropertyDescriptor(object);
             this.addMaxWidthExpressionPropertyDescriptor(object);
             this.addWithHeaderPropertyDescriptor(object);
-            this.addDisplayHeaderSeparatorPropertyDescriptor(object);
+            this.addHeaderSeparatorDisplayModePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -182,16 +182,16 @@ public class InsideLabelStyleItemProvider extends LabelStyleItemProvider {
     }
 
     /**
-     * This adds a property descriptor for the Display Header Separator feature. <!-- begin-user-doc --> <!--
+     * This adds a property descriptor for the Header Separator Display Mode feature. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      */
-    protected void addDisplayHeaderSeparatorPropertyDescriptor(Object object) {
+    protected void addHeaderSeparatorDisplayModePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_InsideLabelStyle_displayHeaderSeparator_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_InsideLabelStyle_displayHeaderSeparator_feature", "_UI_InsideLabelStyle_type"),
-                DiagramPackage.Literals.INSIDE_LABEL_STYLE__DISPLAY_HEADER_SEPARATOR, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+                this.getString("_UI_InsideLabelStyle_headerSeparatorDisplayMode_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_InsideLabelStyle_headerSeparatorDisplayMode_feature", "_UI_InsideLabelStyle_type"),
+                DiagramPackage.Literals.INSIDE_LABEL_STYLE__HEADER_SEPARATOR_DISPLAY_MODE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -245,7 +245,7 @@ public class InsideLabelStyleItemProvider extends LabelStyleItemProvider {
             case DiagramPackage.INSIDE_LABEL_STYLE__LABEL_ICON:
             case DiagramPackage.INSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
             case DiagramPackage.INSIDE_LABEL_STYLE__WITH_HEADER:
-            case DiagramPackage.INSIDE_LABEL_STYLE__DISPLAY_HEADER_SEPARATOR:
+            case DiagramPackage.INSIDE_LABEL_STYLE__HEADER_SEPARATOR_DISPLAY_MODE:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

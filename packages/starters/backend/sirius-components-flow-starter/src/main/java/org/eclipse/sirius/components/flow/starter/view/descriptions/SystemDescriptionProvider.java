@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -65,7 +66,7 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
                 .domainType("flow::System")
                 .semanticCandidatesExpression("feature:elements")
                 .childrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())
-                .insideLabel(this.flowViewBuilder.getInsideLabelDescription(this.colorProvider, "aql:self.name", true, true, false))
+                .insideLabel(this.flowViewBuilder.getInsideLabelDescription(this.colorProvider, "aql:self.name", true, true, HeaderSeparatorDisplayMode.NEVER))
                 .defaultHeightExpression("70")
                 .defaultWidthExpression("150")
                 .keepAspectRatio(false)
@@ -261,7 +262,7 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
                 .domainType("flow::CompositeProcessor")
                 .semanticCandidatesExpression("aql:self")
                 .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().areChildNodesDraggableExpression("aql:false").build())
-                .insideLabel(this.flowViewBuilder.getInsideLabelDescription(this.colorProvider, "Description", false, true, true))
+                .insideLabel(this.flowViewBuilder.getInsideLabelDescription(this.colorProvider, "Description", false, true, HeaderSeparatorDisplayMode.IF_CHILDREN))
                 .defaultHeightExpression("50")
                 .defaultWidthExpression("120")
                 .keepAspectRatio(false)

@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
@@ -42,7 +43,7 @@ public final class InsideLabelElementProps implements IProps {
 
     private boolean isHeader;
 
-    private boolean displayHeaderSeparator;
+    private HeaderSeparatorDisplayMode headerSeparatorDisplayMode;
 
     private LabelOverflowStrategy overflowStrategy;
 
@@ -76,8 +77,8 @@ public final class InsideLabelElementProps implements IProps {
         return this.isHeader;
     }
 
-    public boolean isDisplayHeaderSeparator() {
-        return this.displayHeaderSeparator;
+    public HeaderSeparatorDisplayMode getHeaderSeparatorDisplayMode() {
+        return this.headerSeparatorDisplayMode;
     }
 
     public LabelOverflowStrategy getOverflowStrategy() {
@@ -112,7 +113,7 @@ public final class InsideLabelElementProps implements IProps {
 
         private boolean isHeader;
 
-        private boolean displayHeaderSeparator;
+        private HeaderSeparatorDisplayMode headerSeparatorDisplayMode;
 
         private LabelOverflowStrategy overflowStrategy;
 
@@ -142,8 +143,8 @@ public final class InsideLabelElementProps implements IProps {
             return this;
         }
 
-        public Builder displayHeaderSeparator(boolean displayHeaderSeparator) {
-            this.displayHeaderSeparator = displayHeaderSeparator;
+        public Builder headerSeparatorDisplayMode(HeaderSeparatorDisplayMode headerSeparatorDisplayMode) {
+            this.headerSeparatorDisplayMode = Objects.requireNonNull(headerSeparatorDisplayMode);
             return this;
         }
 
@@ -164,7 +165,7 @@ public final class InsideLabelElementProps implements IProps {
             insideLabelElementProps.insideLabelLocation = Objects.requireNonNull(this.insideLabelLocation);
             insideLabelElementProps.style = Objects.requireNonNull(this.style);
             insideLabelElementProps.isHeader = this.isHeader;
-            insideLabelElementProps.displayHeaderSeparator = this.displayHeaderSeparator;
+            insideLabelElementProps.headerSeparatorDisplayMode = Objects.requireNonNull(this.headerSeparatorDisplayMode);
             insideLabelElementProps.overflowStrategy = Objects.requireNonNull(this.overflowStrategy);
             insideLabelElementProps.textAlign = Objects.requireNonNull(this.textAlign);
             return insideLabelElementProps;

@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
@@ -404,20 +405,21 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return false;
         };
 
-        Function<VariableManager, Boolean> displayHeaderSeparatorProvider = variableManager -> {
+        Function<VariableManager, HeaderSeparatorDisplayMode> headerSeparatorDisplayModeProvider = variableManager -> {
             var effectiveStyle = this.findEffectiveInsideLabelStyle(viewInsideLabelDescription, interpreter, variableManager);
             if (effectiveStyle != null) {
-                return effectiveStyle.isDisplayHeaderSeparator();
+                return HeaderSeparatorDisplayMode.valueOf(effectiveStyle.getHeaderSeparatorDisplayMode().getLiteral());
             }
-            return false;
+            return HeaderSeparatorDisplayMode.NEVER;
         };
+
 
         return InsideLabelDescription.newInsideLabelDescription(EcoreUtil.getURI(viewNodeDescription).toString() + InsideLabelDescription.INSIDE_LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
                 .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewInsideLabelDescription.getLabelExpression()))
                 .styleDescriptionProvider(styleDescriptionProvider)
                 .isHeaderProvider(isHeaderProvider)
-                .displayHeaderSeparatorProvider(displayHeaderSeparatorProvider)
+                .headerSeparatorDisplayModeProvider(headerSeparatorDisplayModeProvider)
                 .insideLabelLocation(InsideLabelLocation.valueOf(viewInsideLabelDescription.getPosition().getLiteral()))
                 .overflowStrategy(LabelOverflowStrategy.valueOf(viewInsideLabelDescription.getOverflowStrategy().getLiteral()))
                 .textAlign(LabelTextAlign.valueOf(viewInsideLabelDescription.getTextAlign().getLiteral()))

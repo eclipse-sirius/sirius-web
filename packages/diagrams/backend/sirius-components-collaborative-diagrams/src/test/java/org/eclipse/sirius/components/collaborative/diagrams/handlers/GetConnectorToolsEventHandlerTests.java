@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
@@ -110,7 +111,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .style(labelStyle)
                 .isHeader(false)
-                .displayHeaderSeparator(false)
+                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)
                 .build();

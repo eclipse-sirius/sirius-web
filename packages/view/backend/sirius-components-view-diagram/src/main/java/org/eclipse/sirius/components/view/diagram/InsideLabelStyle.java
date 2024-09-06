@@ -36,10 +36,10 @@ public interface InsideLabelStyle extends NodeLabelStyle {
      * Returns the value of the '<em><b>With Header</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>With Header</em>' attribute.
-     * @see #setWithHeader(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelStyle_WithHeader()
      * @model
      * @generated
+     * @see #setWithHeader(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelStyle_WithHeader()
      */
     boolean isWithHeader();
 
@@ -48,34 +48,37 @@ public interface InsideLabelStyle extends NodeLabelStyle {
      * Header</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>With Header</em>' attribute.
-     * @see #isWithHeader()
+     *         the new value of the '<em>With Header</em>' attribute.
      * @generated
+     * @see #isWithHeader()
      */
     void setWithHeader(boolean value);
 
     /**
-     * Returns the value of the '<em><b>Display Header Separator</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * Returns the value of the '<em><b>Header Separator Display Mode</b></em>' attribute. The literals are from the
+     * enumeration {@link org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Display Header Separator</em>' attribute.
-     * @see #setDisplayHeaderSeparator(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelStyle_DisplayHeaderSeparator()
-     * @model
+     * @return the value of the '<em>Header Separator Display Mode</em>' attribute.
+     * @model required="true"
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode
+     * @see #setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getInsideLabelStyle_HeaderSeparatorDisplayMode()
      */
-    boolean isDisplayHeaderSeparator();
+    HeaderSeparatorDisplayMode getHeaderSeparatorDisplayMode();
 
     /**
      * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.InsideLabelStyle#isDisplayHeaderSeparator <em>Display Header
-     * Separator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.diagram.InsideLabelStyle#getHeaderSeparatorDisplayMode <em>Header
+     * Separator Display Mode</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Display Header Separator</em>' attribute.
-     * @see #isDisplayHeaderSeparator()
+     *         the new value of the '<em>Header Separator Display Mode</em>' attribute.
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode
+     * @see #getHeaderSeparatorDisplayMode()
      */
-    void setDisplayHeaderSeparator(boolean value);
+    void setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode value);
 
 } // InsideLabelStyle

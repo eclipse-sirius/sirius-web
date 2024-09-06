@@ -53,14 +53,4 @@ public class InsideLabelAssert extends AbstractObjectAssert<InsideLabelAssert, I
         assertThat(this.actual.isIsHeader()).isFalse();
         return this;
     }
-
-    public InsideLabelAssert isDisplayHeaderSeparator() {
-        assertThat(this.actual.isDisplayHeaderSeparator()).isTrue();
-        return this;
-    }
-
-    public InsideLabelAssert isNotDisplayHeaderSeparator() {
-        assertThat(this.actual.isDisplayHeaderSeparator()).isFalse();
-        return this;
-    }
 }
