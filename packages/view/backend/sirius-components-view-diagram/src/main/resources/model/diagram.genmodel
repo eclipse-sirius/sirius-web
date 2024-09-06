@@ -87,6 +87,11 @@
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//UserResizableDirection/VERTICAL"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//UserResizableDirection/NONE"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//HeaderSeparatorDisplayMode">
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//HeaderSeparatorDisplayMode/NEVER"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//HeaderSeparatorDisplayMode/ALWAYS"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//HeaderSeparatorDisplayMode/IF_CHILDREN"/>
+    </genEnums>
     <genClasses ecoreClass="diagram.ecore#//DiagramDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/autoLayout"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/palette"/>
@@ -168,7 +173,7 @@
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//InsideLabelStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//InsideLabelStyle/withHeader"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//InsideLabelStyle/displayHeaderSeparator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//InsideLabelStyle/headerSeparatorDisplayMode"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//OutsideLabelStyle"/>
     <genClasses image="false" ecoreClass="diagram.ecore#//NodeLabelStyle">

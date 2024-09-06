@@ -1018,3 +1018,173 @@ INSERT INTO document (
   '2024-07-18 15:00:0.000',
   '2024-07-18 15:00:0.000'
 );
+
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '590949b9-5d48-46ba-b206-29ad2473e5a5',
+  'Migration InsideLabelStyle#displayHeaderSeparator Studio',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO nature (
+  project_id,
+  name
+) VALUES (
+  '590949b9-5d48-46ba-b206-29ad2473e5a5',
+  'siriusComponents://nature?kind=studio'
+);
+INSERT INTO semantic_data (
+  id,
+  project_id,
+  created_on,
+  last_modified_on
+) VALUES (
+  'dc9643f8-b1ce-4c93-a176-379063d42b32',
+  '590949b9-5d48-46ba-b206-29ad2473e5a5',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  'dc9643f8-b1ce-4c93-a176-379063d42b32',
+  'http://www.eclipse.org/sirius-web/view'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  'dc9643f8-b1ce-4c93-a176-379063d42b32',
+  'http://www.eclipse.org/sirius-web/diagram'
+);
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '6ab70d4b-f771-483f-aae6-566c6eb23b10',
+  'dc9643f8-b1ce-4c93-a176-379063d42b32',
+  'InsideLabelStyle#displayHeaderSeparator migration',
+  '{
+     "json": { "version": "1.0", "encoding": "utf-8" },
+     "ns": {
+       "diagram": "http://www.eclipse.org/sirius-web/diagram",
+       "view": "http://www.eclipse.org/sirius-web/view"
+     },
+     "content": [
+       {
+         "id": "9674f8f7-ff1a-4061-bb32-a4a235a9c2ca",
+         "eClass": "view:View",
+         "data": {
+           "colorPalettes": [
+             {
+               "data": {
+                 "colors": [
+                   {
+                     "data": {
+                       "name": "color_empty",
+                       "value": ""
+                     },
+                     "eClass": "view:FixedColor",
+                     "id": "63184ddc-74c4-4888-bb65-418361689e2b"
+                   }
+                 ]
+               },
+               "eClass": "view:ColorPalette",
+               "id": "d315989f-826f-490d-b898-d94200b0caa2"
+             }
+           ],
+           "descriptions": [
+             {
+               "id": "22fb1f4d-109d-4e73-bff0-f7cd96fb5fbb",
+               "eClass": "diagram:DiagramDescription",
+               "data": {
+                 "name": "InsideLabelStyle#displayHeaderSeparator migration",
+                 "domainType": "flow::System",
+                 "nodeDescriptions": [
+                    {
+                      "id": "6b69cc8b-b1e8-4aed-9195-539351ac34d9",
+                      "eClass": "diagram:NodeDescription",
+                      "data": {
+                        "name": "migration Node 1",
+                        "domainType": "flow::CompositeProcessor",
+                        "childrenLayoutStrategy": {
+                          "id": "50b48332-c97e-4638-9912-feed821df798",
+                          "eClass": "diagram:FreeFormLayoutStrategyDescription"
+                        },
+                        "style": {
+                          "id": "e35c8df3-8286-47e4-8bba-b7e8342bdca2",
+                          "eClass": "diagram:RectangularNodeStyleDescription"
+                        },
+                        "insideLabel": {
+                          "id": "bd646979-6305-478d-9ab4-afeba966c4be",
+                          "eClass": "diagram:InsideLabelDescription",
+                          "data": {
+                            "style": {
+                              "id": "4a519202-e33a-4c9d-9f4d-be101165c7f3",
+                              "eClass": "diagram:InsideLabelStyle",
+                              "data": {
+                                "borderSize": "0",
+                                "displayHeaderSeparator": true,
+                                "withHeader": true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "id": "6c5106eb-27fc-473a-bc55-461c7fcca989",
+                      "eClass": "diagram:NodeDescription",
+                      "data": {
+                        "name": "migration Node 2",
+                        "domainType": "flow::CompositeProcessor",
+                        "childrenLayoutStrategy": {
+                          "id": "bb2bef9c-17c3-43bd-9062-a9fa664be36b",
+                          "eClass": "diagram:FreeFormLayoutStrategyDescription"
+                        },
+                        "style": {
+                          "id": "be7cd982-20f6-429b-bd10-bae995ec8fb6",
+                          "eClass": "diagram:RectangularNodeStyleDescription",
+                          "data": {
+                            "borderColor": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#//@colorPalettes.1/@colors.0",
+                            "background": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#//@colorPalettes.1/@colors.1"
+                          }
+                        },
+                        "insideLabel": {
+                          "id": "9738edfc-29db-49ae-bd43-ef3b4556eaaf",
+
+                          "eClass": "diagram:InsideLabelDescription",
+                          "data": {
+                            "style": {
+                              "id": "ac093a41-a0d6-412e-8dab-b12550fa7bf6",
+                              "eClass": "diagram:InsideLabelStyle",
+                              "data": {
+                                "borderSize": "0",
+                                "displayHeaderSeparator": false,
+                                "withHeader": true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+               }
+             }
+           ]
+         }
+       }
+     ]
+   }',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);

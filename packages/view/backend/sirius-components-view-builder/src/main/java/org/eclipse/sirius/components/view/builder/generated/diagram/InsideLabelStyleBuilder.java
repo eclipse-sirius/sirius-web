@@ -22,12 +22,14 @@ public class InsideLabelStyleBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.InsideLabelStyle.
+     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.InsideLabelStyle insideLabelStyle = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createInsideLabelStyle();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.InsideLabelStyle.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.InsideLabelStyle getInsideLabelStyle() {
@@ -36,6 +38,7 @@ public class InsideLabelStyleBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.InsideLabelStyle.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.InsideLabelStyle build() {
@@ -51,6 +54,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setFontSize(value);
         return this;
     }
+
     /**
      * Setter for Italic.
      *
@@ -60,6 +64,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setItalic(value);
         return this;
     }
+
     /**
      * Setter for Bold.
      *
@@ -69,6 +74,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setBold(value);
         return this;
     }
+
     /**
      * Setter for Underline.
      *
@@ -78,6 +84,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setUnderline(value);
         return this;
     }
+
     /**
      * Setter for StrikeThrough.
      *
@@ -87,6 +94,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setStrikeThrough(value);
         return this;
     }
+
     /**
      * Setter for BorderColor.
      *
@@ -96,6 +104,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setBorderColor(value);
         return this;
     }
+
     /**
      * Setter for BorderRadius.
      *
@@ -105,6 +114,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setBorderRadius(value);
         return this;
     }
+
     /**
      * Setter for BorderSize.
      *
@@ -114,6 +124,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setBorderSize(value);
         return this;
     }
+
     /**
      * Setter for BorderLineStyle.
      *
@@ -123,6 +134,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setBorderLineStyle(value);
         return this;
     }
+
     /**
      * Setter for LabelColor.
      *
@@ -132,6 +144,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setLabelColor(value);
         return this;
     }
+
     /**
      * Setter for Background.
      *
@@ -141,6 +154,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setBackground(value);
         return this;
     }
+
     /**
      * Setter for ShowIconExpression.
      *
@@ -150,6 +164,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setShowIconExpression(value);
         return this;
     }
+
     /**
      * Setter for LabelIcon.
      *
@@ -159,6 +174,7 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setLabelIcon(value);
         return this;
     }
+
     /**
      * Setter for MaxWidthExpression.
      *
@@ -178,13 +194,14 @@ public class InsideLabelStyleBuilder {
         this.getInsideLabelStyle().setWithHeader(value);
         return this;
     }
+
     /**
-     * Setter for DisplayHeaderSeparator.
+     * Setter for HeaderSeparatorDisplayMode.
      *
      * @generated
      */
-    public InsideLabelStyleBuilder displayHeaderSeparator(java.lang.Boolean value) {
-        this.getInsideLabelStyle().setDisplayHeaderSeparator(value);
+    public InsideLabelStyleBuilder headerSeparatorDisplayMode(org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode value) {
+        this.getInsideLabelStyle().setHeaderSeparatorDisplayMode(value);
         return this;
     }
 

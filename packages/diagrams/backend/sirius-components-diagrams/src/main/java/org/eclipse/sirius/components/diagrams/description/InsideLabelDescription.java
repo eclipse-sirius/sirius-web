@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
@@ -51,7 +52,7 @@ public final class InsideLabelDescription {
 
     private Function<VariableManager, Boolean> isHeaderProvider;
 
-    private Function<VariableManager, Boolean> displayHeaderSeparatorProvider;
+    private Function<VariableManager, HeaderSeparatorDisplayMode> headerSeparatorDisplayModeProvider;
 
     private InsideLabelLocation insideLabelLocation;
 
@@ -87,8 +88,8 @@ public final class InsideLabelDescription {
         return this.isHeaderProvider;
     }
 
-    public Function<VariableManager, Boolean> getDisplayHeaderSeparatorProvider() {
-        return this.displayHeaderSeparatorProvider;
+    public Function<VariableManager, HeaderSeparatorDisplayMode> getHeaderSeparatorDisplayModeProvider() {
+        return this.headerSeparatorDisplayModeProvider;
     }
 
     public InsideLabelLocation getInsideLabelLocation() {
@@ -127,7 +128,7 @@ public final class InsideLabelDescription {
 
         private Function<VariableManager, Boolean> isHeaderProvider;
 
-        private Function<VariableManager, Boolean> displayHeaderSeparatorProvider;
+        private Function<VariableManager, HeaderSeparatorDisplayMode> headerSeparatorDisplayModeProvider;
 
         private InsideLabelLocation insideLabelLocation;
 
@@ -159,8 +160,8 @@ public final class InsideLabelDescription {
             return this;
         }
 
-        public Builder displayHeaderSeparatorProvider(Function<VariableManager, Boolean> displayHeaderSeparatorProvider) {
-            this.displayHeaderSeparatorProvider = Objects.requireNonNull(displayHeaderSeparatorProvider);
+        public Builder headerSeparatorDisplayModeProvider(Function<VariableManager, HeaderSeparatorDisplayMode> headerSeparatorDisplayModeProvider) {
+            this.headerSeparatorDisplayModeProvider = Objects.requireNonNull(headerSeparatorDisplayModeProvider);
             return this;
         }
 
@@ -187,7 +188,7 @@ public final class InsideLabelDescription {
             labelDescription.styleDescriptionProvider = Objects.requireNonNull(this.styleDescriptionProvider);
             labelDescription.isHeaderProvider = Objects.requireNonNull(this.isHeaderProvider);
             labelDescription.insideLabelLocation = Objects.requireNonNull(this.insideLabelLocation);
-            labelDescription.displayHeaderSeparatorProvider = Objects.requireNonNull(this.displayHeaderSeparatorProvider);
+            labelDescription.headerSeparatorDisplayModeProvider = Objects.requireNonNull(this.headerSeparatorDisplayModeProvider);
             labelDescription.overflowStrategy = Objects.requireNonNull(this.overflowStrategy);
             labelDescription.textAlign = Objects.requireNonNull(this.textAlign);
             return labelDescription;

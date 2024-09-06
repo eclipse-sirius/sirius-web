@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.Label;
@@ -467,7 +468,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .style(labelStyle)
                 .isHeader(false)
-                .displayHeaderSeparator(false)
+                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)
                 .build();
@@ -513,7 +514,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .styleDescriptionProvider(vm -> styleDescription)
                 .textProvider(vm -> "")
                 .isHeaderProvider(vm -> false)
-                .displayHeaderSeparatorProvider(vm -> false)
+                .headerSeparatorDisplayModeProvider(vm -> HeaderSeparatorDisplayMode.NEVER)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)

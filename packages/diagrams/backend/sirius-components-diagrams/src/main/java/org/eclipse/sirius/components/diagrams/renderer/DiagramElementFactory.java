@@ -208,7 +208,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .insideLabelLocation(insideLabelElementProps.getInsideLabelLocation())
                     .style(insideLabelElementProps.getStyle())
                     .isHeader(insideLabelElementProps.isIsHeader())
-                    .displayHeaderSeparator(insideLabelElementProps.isDisplayHeaderSeparator())
+                    .headerSeparatorDisplayMode(insideLabelElementProps.getHeaderSeparatorDisplayMode())
                     .overflowStrategy(insideLabelElementProps.getOverflowStrategy())
                     .textAlign(insideLabelElementProps.getTextAlign())
                     .build();

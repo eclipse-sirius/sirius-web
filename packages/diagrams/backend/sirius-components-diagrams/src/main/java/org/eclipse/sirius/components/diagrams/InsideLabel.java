@@ -35,7 +35,7 @@ public final class InsideLabel {
 
     private boolean isHeader;
 
-    private boolean displayHeaderSeparator;
+    private HeaderSeparatorDisplayMode headerSeparatorDisplayMode;
 
     private LabelOverflowStrategy overflowStrategy;
 
@@ -73,8 +73,8 @@ public final class InsideLabel {
         return this.isHeader;
     }
 
-    public boolean isDisplayHeaderSeparator() {
-        return this.displayHeaderSeparator;
+    public HeaderSeparatorDisplayMode getHeaderSeparatorDisplayMode() {
+        return this.headerSeparatorDisplayMode;
     }
 
     public LabelOverflowStrategy getOverflowStrategy() {
@@ -109,7 +109,7 @@ public final class InsideLabel {
 
         private boolean isHeader;
 
-        private boolean displayHeaderSeparator;
+        private HeaderSeparatorDisplayMode headerSeparatorDisplayMode = HeaderSeparatorDisplayMode.NEVER;
 
         private LabelOverflowStrategy overflowStrategy;
 
@@ -125,7 +125,7 @@ public final class InsideLabel {
             this.insideLabelLocation = insideLabel.getInsideLabelLocation();
             this.style = insideLabel.getStyle();
             this.isHeader = insideLabel.isIsHeader();
-            this.displayHeaderSeparator = insideLabel.isDisplayHeaderSeparator();
+            this.headerSeparatorDisplayMode = insideLabel.getHeaderSeparatorDisplayMode();
             this.overflowStrategy = insideLabel.getOverflowStrategy();
         }
 
@@ -149,8 +149,8 @@ public final class InsideLabel {
             return this;
         }
 
-        public Builder displayHeaderSeparator(boolean displayHeaderSeparator) {
-            this.displayHeaderSeparator = displayHeaderSeparator;
+        public Builder headerSeparatorDisplayMode(HeaderSeparatorDisplayMode headerSeparatorDisplayMode) {
+            this.headerSeparatorDisplayMode = Objects.requireNonNull(headerSeparatorDisplayMode);
             return this;
         }
 
@@ -171,7 +171,7 @@ public final class InsideLabel {
             label.insideLabelLocation = Objects.requireNonNull(this.insideLabelLocation);
             label.style = Objects.requireNonNull(this.style);
             label.isHeader = this.isHeader;
-            label.displayHeaderSeparator = this.displayHeaderSeparator;
+            label.headerSeparatorDisplayMode = Objects.requireNonNull(this.headerSeparatorDisplayMode);
             label.overflowStrategy = Objects.requireNonNull(this.overflowStrategy);
             label.textAlign = Objects.requireNonNull(this.textAlign);
             return label;

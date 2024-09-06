@@ -39,7 +39,7 @@ fragment insideLabelFragment on InsideLabel {
   text
   insideLabelLocation
   isHeader
-  displayHeaderSeparator
+  headerSeparatorDisplayMode
   overflowStrategy
   textAlign
   style {

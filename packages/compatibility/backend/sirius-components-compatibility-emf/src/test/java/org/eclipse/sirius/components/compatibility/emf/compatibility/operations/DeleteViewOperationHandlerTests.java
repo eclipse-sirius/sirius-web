@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
@@ -113,7 +114,7 @@ public class DeleteViewOperationHandlerTests {
                                 .borderStyle(LineStyle.Solid)
                                 .build())
                         .isHeader(false)
-                        .displayHeaderSeparator(false)
+                        .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                         .overflowStrategy(LabelOverflowStrategy.NONE)
                         .textAlign(LabelTextAlign.CENTER)
                         .build())
@@ -202,7 +203,7 @@ public class DeleteViewOperationHandlerTests {
                 .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)
-                .displayHeaderSeparatorProvider(vm -> false)
+                .headerSeparatorDisplayModeProvider(vm -> HeaderSeparatorDisplayMode.NEVER)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)

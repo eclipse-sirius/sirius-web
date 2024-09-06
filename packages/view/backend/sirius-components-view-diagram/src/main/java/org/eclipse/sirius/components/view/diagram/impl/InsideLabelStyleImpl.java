@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
@@ -122,14 +123,14 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      */
     protected static final boolean WITH_HEADER_EDEFAULT = false;
     /**
-     * The default value of the '{@link #isDisplayHeaderSeparator() <em>Display Header Separator</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getHeaderSeparatorDisplayMode() <em>Header Separator Display Mode</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
-     * @see #isDisplayHeaderSeparator()
+     * @see #getHeaderSeparatorDisplayMode()
      */
-    protected static final boolean DISPLAY_HEADER_SEPARATOR_EDEFAULT = false;
+    protected static final HeaderSeparatorDisplayMode HEADER_SEPARATOR_DISPLAY_MODE_EDEFAULT = HeaderSeparatorDisplayMode.NEVER;
     /**
      * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -221,14 +222,14 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      */
     protected boolean withHeader = WITH_HEADER_EDEFAULT;
     /**
-     * The cached value of the '{@link #isDisplayHeaderSeparator() <em>Display Header Separator</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getHeaderSeparatorDisplayMode() <em>Header Separator Display Mode</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
-     * @see #isDisplayHeaderSeparator()
+     * @see #getHeaderSeparatorDisplayMode()
      */
-    protected boolean displayHeaderSeparator = DISPLAY_HEADER_SEPARATOR_EDEFAULT;
+    protected HeaderSeparatorDisplayMode headerSeparatorDisplayMode = HEADER_SEPARATOR_DISPLAY_MODE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -536,8 +537,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      * @generated
      */
     @Override
-    public boolean isDisplayHeaderSeparator() {
-        return this.displayHeaderSeparator;
+    public HeaderSeparatorDisplayMode getHeaderSeparatorDisplayMode() {
+        return this.headerSeparatorDisplayMode;
     }
 
     /**
@@ -546,11 +547,12 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      * @generated
      */
     @Override
-    public void setDisplayHeaderSeparator(boolean newDisplayHeaderSeparator) {
-        boolean oldDisplayHeaderSeparator = this.displayHeaderSeparator;
-        this.displayHeaderSeparator = newDisplayHeaderSeparator;
+    public void setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode newHeaderSeparatorDisplayMode) {
+        HeaderSeparatorDisplayMode oldHeaderSeparatorDisplayMode = this.headerSeparatorDisplayMode;
+        this.headerSeparatorDisplayMode = newHeaderSeparatorDisplayMode == null ? HEADER_SEPARATOR_DISPLAY_MODE_EDEFAULT : newHeaderSeparatorDisplayMode;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.INSIDE_LABEL_STYLE__DISPLAY_HEADER_SEPARATOR, oldDisplayHeaderSeparator, this.displayHeaderSeparator));
+            this.eNotify(
+                    new ENotificationImpl(this, Notification.SET, DiagramPackage.INSIDE_LABEL_STYLE__HEADER_SEPARATOR_DISPLAY_MODE, oldHeaderSeparatorDisplayMode, this.headerSeparatorDisplayMode));
     }
 
     /**
@@ -587,8 +589,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
                 return this.getMaxWidthExpression();
             case DiagramPackage.INSIDE_LABEL_STYLE__WITH_HEADER:
                 return this.isWithHeader();
-            case DiagramPackage.INSIDE_LABEL_STYLE__DISPLAY_HEADER_SEPARATOR:
-                return this.isDisplayHeaderSeparator();
+            case DiagramPackage.INSIDE_LABEL_STYLE__HEADER_SEPARATOR_DISPLAY_MODE:
+                return this.getHeaderSeparatorDisplayMode();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -631,8 +633,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
             case DiagramPackage.INSIDE_LABEL_STYLE__WITH_HEADER:
                 this.setWithHeader((Boolean) newValue);
                 return;
-            case DiagramPackage.INSIDE_LABEL_STYLE__DISPLAY_HEADER_SEPARATOR:
-                this.setDisplayHeaderSeparator((Boolean) newValue);
+            case DiagramPackage.INSIDE_LABEL_STYLE__HEADER_SEPARATOR_DISPLAY_MODE:
+                this.setHeaderSeparatorDisplayMode((HeaderSeparatorDisplayMode) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -676,8 +678,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
             case DiagramPackage.INSIDE_LABEL_STYLE__WITH_HEADER:
                 this.setWithHeader(WITH_HEADER_EDEFAULT);
                 return;
-            case DiagramPackage.INSIDE_LABEL_STYLE__DISPLAY_HEADER_SEPARATOR:
-                this.setDisplayHeaderSeparator(DISPLAY_HEADER_SEPARATOR_EDEFAULT);
+            case DiagramPackage.INSIDE_LABEL_STYLE__HEADER_SEPARATOR_DISPLAY_MODE:
+                this.setHeaderSeparatorDisplayMode(HEADER_SEPARATOR_DISPLAY_MODE_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -711,8 +713,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
                 return !Objects.equals(MAX_WIDTH_EXPRESSION_EDEFAULT, this.maxWidthExpression);
             case DiagramPackage.INSIDE_LABEL_STYLE__WITH_HEADER:
                 return this.withHeader != WITH_HEADER_EDEFAULT;
-            case DiagramPackage.INSIDE_LABEL_STYLE__DISPLAY_HEADER_SEPARATOR:
-                return this.displayHeaderSeparator != DISPLAY_HEADER_SEPARATOR_EDEFAULT;
+            case DiagramPackage.INSIDE_LABEL_STYLE__HEADER_SEPARATOR_DISPLAY_MODE:
+                return this.headerSeparatorDisplayMode != HEADER_SEPARATOR_DISPLAY_MODE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -789,8 +791,8 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
                 this.maxWidthExpression +
                 ", withHeader: " +
                 this.withHeader +
-                ", displayHeaderSeparator: " +
-                this.displayHeaderSeparator +
+                ", headerSeparatorDisplayMode: " +
+                this.headerSeparatorDisplayMode +
                 ')';
         return result;
     }

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
@@ -48,9 +49,9 @@ public class InsideLabelComponent implements IComponent {
         String text = insideLabelDescription.getTextProvider().apply(variableManager);
 
         boolean isHeader = insideLabelDescription.getIsHeaderProvider().apply(variableManager);
-        boolean displayHeaderSeparator = false;
+        HeaderSeparatorDisplayMode headerSeparatorDisplayMode = HeaderSeparatorDisplayMode.NEVER;
         if (isHeader) {
-            displayHeaderSeparator = insideLabelDescription.getDisplayHeaderSeparatorProvider().apply(variableManager);
+            headerSeparatorDisplayMode = insideLabelDescription.getHeaderSeparatorDisplayModeProvider().apply(variableManager);
         }
 
         LabelStyleDescription labelStyleDescription = insideLabelDescription.getStyleDescriptionProvider().apply(variableManager);
@@ -92,7 +93,7 @@ public class InsideLabelComponent implements IComponent {
                 .insideLabelLocation(insideLabelLocation)
                 .style(labelStyle)
                 .isHeader(isHeader)
-                .displayHeaderSeparator(displayHeaderSeparator)
+                .headerSeparatorDisplayMode(headerSeparatorDisplayMode)
                 .overflowStrategy(insideLabelDescription.getOverflowStrategy())
                 .textAlign(insideLabelDescription.getTextAlign())
                 .build();

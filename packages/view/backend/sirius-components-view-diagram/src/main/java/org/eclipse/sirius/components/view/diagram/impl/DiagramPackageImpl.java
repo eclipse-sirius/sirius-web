@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
@@ -497,6 +498,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      *
      * @generated
      */
+    private EEnum headerSeparatorDisplayModeEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private boolean isCreated = false;
 
     /**
@@ -531,10 +539,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
-     * @generated
      */
     public static DiagramPackage init() {
         if (isInited)
@@ -1279,7 +1287,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getInsideLabelStyle_DisplayHeaderSeparator() {
+    public EAttribute getInsideLabelStyle_HeaderSeparatorDisplayMode() {
         return (EAttribute) this.insideLabelStyleEClass.getEStructuralFeatures().get(1);
     }
 
@@ -2349,6 +2357,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EEnum getHeaderSeparatorDisplayMode() {
+        return this.headerSeparatorDisplayModeEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public DiagramFactory getDiagramFactory() {
         return (DiagramFactory) this.getEFactoryInstance();
     }
@@ -2448,7 +2466,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.insideLabelStyleEClass = this.createEClass(INSIDE_LABEL_STYLE);
         this.createEAttribute(this.insideLabelStyleEClass, INSIDE_LABEL_STYLE__WITH_HEADER);
-        this.createEAttribute(this.insideLabelStyleEClass, INSIDE_LABEL_STYLE__DISPLAY_HEADER_SEPARATOR);
+        this.createEAttribute(this.insideLabelStyleEClass, INSIDE_LABEL_STYLE__HEADER_SEPARATOR_DISPLAY_MODE);
 
         this.outsideLabelStyleEClass = this.createEClass(OUTSIDE_LABEL_STYLE);
 
@@ -2590,6 +2608,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.arrangeLayoutDirectionEEnum = this.createEEnum(ARRANGE_LAYOUT_DIRECTION);
         this.labelTextAlignEEnum = this.createEEnum(LABEL_TEXT_ALIGN);
         this.userResizableDirectionEEnum = this.createEEnum(USER_RESIZABLE_DIRECTION);
+        this.headerSeparatorDisplayModeEEnum = this.createEEnum(HEADER_SEPARATOR_DISPLAY_MODE);
     }
 
     /**
@@ -2802,8 +2821,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEClass(this.insideLabelStyleEClass, InsideLabelStyle.class, "InsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getInsideLabelStyle_WithHeader(), this.ecorePackage.getEBoolean(), "withHeader", null, 0, 1, InsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getInsideLabelStyle_DisplayHeaderSeparator(), this.ecorePackage.getEBoolean(), "displayHeaderSeparator", null, 0, 1, InsideLabelStyle.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getInsideLabelStyle_HeaderSeparatorDisplayMode(), this.getHeaderSeparatorDisplayMode(), "headerSeparatorDisplayMode", null, 1, 1, InsideLabelStyle.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.outsideLabelStyleEClass, OutsideLabelStyle.class, "OutsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3080,6 +3099,11 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.addEEnumLiteral(this.userResizableDirectionEEnum, UserResizableDirection.HORIZONTAL);
         this.addEEnumLiteral(this.userResizableDirectionEEnum, UserResizableDirection.VERTICAL);
         this.addEEnumLiteral(this.userResizableDirectionEEnum, UserResizableDirection.NONE);
+
+        this.initEEnum(this.headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.class, "HeaderSeparatorDisplayMode");
+        this.addEEnumLiteral(this.headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.NEVER);
+        this.addEEnumLiteral(this.headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.ALWAYS);
+        this.addEEnumLiteral(this.headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.IF_CHILDREN);
 
         // Create resource
         this.createResource(eNS_URI);

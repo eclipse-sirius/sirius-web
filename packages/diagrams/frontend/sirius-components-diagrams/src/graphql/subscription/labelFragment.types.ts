@@ -23,10 +23,12 @@ export interface GQLInsideLabel {
   insideLabelLocation: GQLInsideLabelLocation;
   style: GQLLabelStyle;
   isHeader: boolean;
-  displayHeaderSeparator: boolean;
+  headerSeparatorDisplayMode: GQLHeaderSeparatorDisplayMode;
   overflowStrategy: GQLLabelOverflowStrategy;
   textAlign: GQLLabelTextAlign;
 }
+
+export type GQLHeaderSeparatorDisplayMode = 'NEVER' | 'ALWAYS' | 'IF_CHILDREN';
 
 export type GQLInsideLabelLocation =
   | 'TOP_CENTER'

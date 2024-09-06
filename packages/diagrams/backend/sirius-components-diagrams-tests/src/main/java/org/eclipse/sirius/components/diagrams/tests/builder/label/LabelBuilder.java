@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.Label;
@@ -79,7 +80,7 @@ public final class LabelBuilder {
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .style(labelStyle)
                 .isHeader(isHeader)
-                .displayHeaderSeparator(isHeader)
+                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN)
                 .build();
     }
 

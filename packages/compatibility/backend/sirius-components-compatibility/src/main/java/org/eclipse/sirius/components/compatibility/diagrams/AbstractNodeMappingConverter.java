@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwi
 import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
@@ -83,27 +84,28 @@ public class AbstractNodeMappingConverter {
         Function<VariableManager, String> labelExpressionProvider = this.getLabelExpressionProvider(interpreter, abstractNodeMappingDescriptionProvider);
         Function<VariableManager, LabelStyleDescription> labelStyleDescriptionProvider = this.getLabelStyleDescriptionProvider(labelStyleDescriptionConverter, abstractNodeMappingDescriptionProvider);
         Function<VariableManager, Boolean> isHeaderProvider = new AbstractNodeMappingIsHeaderProvider(interpreter, abstractNodeMapping);
+        Function<VariableManager, HeaderSeparatorDisplayMode> headerSeparatorDisplayModeProvider = variableManager -> {
+            var isHeader = isHeaderProvider.apply(variableManager);
+            if (isHeader) {
+                return HeaderSeparatorDisplayMode.IF_CHILDREN;
+            }
+            return HeaderSeparatorDisplayMode.NEVER;
+        };
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription(this.identifierProvider.getIdentifier(abstractNodeMapping) + InsideLabelDescription.INSIDE_LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
                 .textProvider(labelExpressionProvider)
                 .styleDescriptionProvider(labelStyleDescriptionProvider)
                 .isHeaderProvider(isHeaderProvider)
-                .displayHeaderSeparatorProvider(isHeaderProvider)
+                .headerSeparatorDisplayModeProvider(headerSeparatorDisplayModeProvider)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)
                 .build();
 
-        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
-        };
-        Function<VariableManager, String> semanticTargetKindProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getKind).orElse(null);
-        };
-        Function<VariableManager, String> semanticTargetLabelProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
-        };
+        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
+        Function<VariableManager, String> semanticTargetKindProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getKind).orElse(null);
+        Function<VariableManager, String> semanticTargetLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
 
         Function<VariableManager, INodeStyle> styleProvider = new AbstractNodeMappingStyleProvider(interpreter, abstractNodeMapping);
         Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = new AbstractNodeMappingChildrenLayoutStrategyProvider(abstractNodeMapping);
