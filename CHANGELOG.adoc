@@ -8,6 +8,7 @@
 === Architectural decision records
 
 - [ADR-158] Support delegating representation event handling
+- [ADR-159] Create event processor only using the representation id
 
 === Deprecation warning
 
