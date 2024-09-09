@@ -16,6 +16,7 @@
 - [ADR-154] Add support for finding parent in tree representation
 - [ADR-155] Add max-width expression for diagram labels
 - [ADR-156] Make it possible to display the semantic elements as a tree in the Selection Dialog
+- [ADR-157] Improve React component representations rendering
 
 === Deprecation warning
 

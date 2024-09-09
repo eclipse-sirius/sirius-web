@@ -1,0 +1,175 @@
+= [ADR-157] Improve React component representations rendering
+
+
+== Context
+
+
+When we want to access a representation we have to subscribe to it.
+
+
+Each time a representation changes, a new payload is sent to the subscribers of this representation.
+
+
+This guarantee that all subscribers of a representation are in synch with the actual data of the representation
+
+
+== The issue
+
+
+Our front-end is based on React, we have a main React Component for each representation and then a smaller React Component for parts of the representation.
+
+
+For a diagram based Representation we have the main component ```DiagramRenderer``` and as children we have ```nodes``` and ```edges```.
+
+
+With the actual implementation, when we receive a new payload to update the representation we also update all the components under it.
+
+
+This causes a noticeable impact on performance with representation rendering lots of elements and particularly with the ones where every user interaction results in a refresh of that representation.
+
+
+== Example with a diagram
+
+
+Taking for example the case where we open an existing diagram.
+
+
+When opening a diagram synchronized for the first time, we have the following steps :
+
+
+* Receive a payload and converting the Diagram
+* Layout the resulted diagram
+* Pass the result to ReactFlow renderer
+* Send the resulted layouted diagram to the back end (synchronizeLayoutData)
+* Receive a payload and converting the Diagram
+* Pass the result to ReactFlow renderer
+
+
+=== Subscription / query
+
+
+==== Comparing the payloads when the client receive it
+
+
+We would compare the 2 received payloads with the former one and update only the components that need to be updated.
+
+
+This would make the ```ReactFlow renderer``` to only re render the components that actually need to be rerendered.
+
+
+==== Separate the subscription
+
+
+We can see that since the diagram has been layouted once and sent to the back-end.
+
+
+Note that we have to redo the layout step every time we open the diagram because a semantic change or a change on the view could result in a change of the resulting layout.
+
+
+But we should not receive 2 times the diagram if the content of the payload is the same.
+
+
+We could fetch the ```representation initial state``` with a query and then send only ```small incremental changes``` that would concern a specific subset of the representation.
+
+
+This will give the same benefits as the solution above but also reduce the amount of data transmitted.
+
+
+This would need more work as we would need to identify what part of the payload is relevant for the subscriber.
+
+
+===== Incremental changes structure
+
+
+The changes sended by the back-end could look like the changes used by the ```ReactFlow renderer``` meaning for the nodes :
+
+
+NodeChange = NodeDimensionChange | NodePositionChange | NodeSelectionChange | NodeRemoveChange | NodeAddChange | NodeResetChange;
+
+
+We already use this approach a bit in ```handleNodesChange``` where we take an array of changes (given by ReactFlow when interacting with the diagram) and then we modify this array of changes in order to finally ```update only the concerned nodes```.
+
+
+So the idea would be to send to the back-end (step 4) only the nodes that have been changed, the back-end would then propagate the results to others client subscribed to the representation.
+
+
+We don't have to use as many types of changes as the one used in ReactFlow of course and could just send only the list of nodes concerned by a change, I'm using the ones from ReactFlow to highlight the fact that we are already manipulating only the concerned nodes in some cases.
+
+
+===== Live incremental changes
+
+
+When two users are working on a diagram, if a user is moving a node the others are not seeing the node moving.
+
+
+By sending events given by ReactFlow (like ```NodePositionChange```) when dragging a node to the back-end, these changes could then be propagated to the other users subscribed to the diagram.
+
+
+This would allow more feedback when working with several users on the same diagram.
+
+
+But these changes might be invalidated if the user is dropping the node into a wrong position, in this case it might be harder to keep the diagrams in sync.
+
+
+=== Layout
+
+
+One thing to also note is that we have an ```initial layouting phase``` that does a lot of things that we already do in ```handleNodesChange``` like setting the side of the handles.
+
+
+== Explorer representation
+
+
+The only representation that I think would also benefit from a similar approach is the explorer.
+
+
+Since the explorer can have thousands of elements, changing the name of a ```TreeItem``` should not result in a rerender of all ```TreeItem```.
+
+
+For that, 2 approaches can be used
+
+
+=== Store TreeItems data in a store.
+
+
+With a ```store``` each component TreeItem would ```subscribe``` with a ```selector``` to the corresponding data object, if the ```reference``` to the object changed in the store then the treeItem would rerender.
+
+
+We could send an event like ```TreeItemReset``` that would change only a specific treeItem in the store and thus re-render only this treeItem (since it would be the only one subscribed to this change with the selector).
+
+
+In the same idea, ```TreeItemExpended``` event would only send the child of the expended TreeItem.
+
+
+Adding a store would be a big change, but we already use the ```internal store of ReactFlow``` and it has proven very useful to re-render specific components.
+
+
+=== Store TreeItems in a state (like we already do).
+
+
+We could do a similar approach without a store by keeping the Tree in a ```state``` and only modify the concerned TreeItem, this would reduce re-render a lot for big trees but all the parent elements of a TreeItem concerned by a change would have to be rerendered.
+
+
+We should start without a store and see if also re rendering parents impacts performance a lot or not.
+
+
+== Decision
+
+
+We should start by comparing the payloads when the client receives and update only the revelant React Component.
+
+Then measure the performance improvements before trying a more complex approach.
+
+
+== Status
+
+
+Work in progress
+
+
+== Consequences
+
+
+
+
+
