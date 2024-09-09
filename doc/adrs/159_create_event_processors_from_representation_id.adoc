@@ -1,0 +1,81 @@
+= [ADR-159] Create event processor from representation id
+
+== Context
+
+Some fields retrieved by GraphQL queries need the correct event processor to be initialized in order to work properly.
+
+
+=== Current behavior
+
+We don't always initialize the needed representation event processor when needed on the back-end.
+The current workaround is to create a subscription before executing the request because the subscription will create the needed representation event processor.
+The user interface of Sirius Web is currently making sure that we cannot start sending request requiring a representation event processor before a subscription.
+
+
+== Decision
+
+We will ensure that the correct representation event processor will be initialized when executing a GraphQL query.
+The method in charge of processing the input is located in `EditingContextEventProcessor`.
+We're looking for the existing event processors here but we don't create it if it's not found.
+
+
+[source,java]
+----
+private void handleRepresentationInput(One<IPayload> payloadSink, IRepresentationInput representationInput) {
+    Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(representationInput.representationId()))
+            .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor);
+
+
+    if (optionalRepresentationEventProcessor.isPresent()) {
+        IRepresentationEventProcessor representationEventProcessor = optionalRepresentationEventProcessor.get();
+        representationEventProcessor.handle(payloadSink, this.changeDescriptionSink, representationInput);
+    } else {
+        this.logger.warn("No representation event processor found for event: {}", representationInput);
+    }
+}
+----
+
+We should call `acquireRepresentationEventProcessor` to be able to create the event processor if it does not exist.
+
+[source,java]
+----
+Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor = this.acquireRepresentationEventProcessor(representationInput.representationId(), representationInput);
+----
+
+This is the current signature of `acquireRepresentationEventProcessor` :
+
+[source,java]
+----
+Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input)
+----
+
+Since we don't have the configuration object in `handleRepresentationInput`, we are replacing this parameter with the `representationId`.
+As such, we will be able to create any representation event processor only with the id of the representation.
+
+
+=== Consequences
+
+Every `subscription` will need to have a field `representationId` that will be a well formed url with the old fields now represented as parameters of the url.
+This decision follows what was implemented in `ADR-137 Use a common identification strategy for transient representations`.
+These are all the representations affected and how the representationId field will need to be formed.
+
+
+- Explorer: `explorer://?expandedIds=[]&activeFilterIds=[]`
+- Details: `details://?objectIds=[]`
+- Validation: `validation://`
+- RelatedElements: `relatedElements://?objectIds=[]`
+- Representations: `representations://?objectIds=[]`
+- DiagramFiler: `diagramFilter:?objectIds=[]//`
+- Selection: `selection://?dialogDescriptionId="${dialogDescriptionId}"&targetObjectId="${targetObjectId}"`
+
+
+For serialized representation, we're still using the id of the representation since we'll check if the representation exists in the database in order to know which event processor to instantiate.
+
+== Status
+
+Work in progress
+
+
+== Consequences
+
+This will bring a breaking change : all subsciptions now have a `representationId` field and all configuration objects will be removed.
