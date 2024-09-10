@@ -22,6 +22,7 @@ import {
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
+import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { ListNodeData } from '../renderer/node/ListNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
@@ -138,6 +139,9 @@ const toListNode = (
       width: `${node.width}px`,
       height: `${node.height}px`,
     };
+  } else {
+    node.height = data.defaultHeight ?? defaultHeight;
+    node.width = data.defaultWidth ?? defaultWidth;
   }
 
   return node;
