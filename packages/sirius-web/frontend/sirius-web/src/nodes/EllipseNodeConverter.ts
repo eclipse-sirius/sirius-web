@@ -28,6 +28,8 @@ import {
   convertLineStyle,
   convertOutsideLabels,
   isListLayoutStrategy,
+  defaultHeight,
+  defaultWidth,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from 'reactflow';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
@@ -126,6 +128,9 @@ const toEllipseNode = (
       width: `${node.width}px`,
       height: `${node.height}px`,
     };
+  } else {
+    node.height = data.defaultHeight ?? defaultHeight;
+    node.width = data.defaultWidth ?? defaultWidth;
   }
 
   return node;
