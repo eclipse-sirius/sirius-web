@@ -18,6 +18,7 @@
 - [ADR-159] Create event processor only using the representation id
 - [ADR-160] Persist label position in diagram
 - [ADR-161] Add support for undo redo on semantic changes
+- [ADR-162] Add support for styled labels in view model for trees
 
 === Deprecation warning
 

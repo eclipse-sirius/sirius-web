@@ -1,0 +1,178 @@
+= ADR-162 - Add support for styled labels in view model for trees
+
+== Context
+
+Currently, the tree description supports the `StyledString` in tree item label but no styles are given through the view model definition of trees.
+
+== Decision
+
+We need to update the tree view DSL to allow specifiers to express how labels should be stylized.
+We need also to enhance the way the italic and bold style is managed because it is suitable to be used in the view DSL.
+
+=== Tree view DSL
+
+Currently, the tree view DSL, `TreeDescription` only has the `treeItemLabelExpression` that returns the string to display regarding the given `self` element.
+We will replace this property by a new property to hold styled label descriptions.
+
+```
+TreeDescription {
+  ...
+  treeItemLabelDescriptions: TreeItemLabelDescription [0..*]
+  ...
+}
+
+TreeItemLabelDescription {
+  name: Identifier
+  preconditionExpression: InterpretedExpression<boolean>
+  children: TreeItemLabelElementDescription[1..*]
+}
+
+IfTreeItemLabelElementDescription extends TreeItemLabelElementDescription {
+  predicateExpression: InterpretedExpression<boolean>
+  children: TreeItemLabelElementDescription[1..*]
+}
+
+ForTreeItemLabelElementDescription extends TreeItemLabelElementDescription {
+  iterator: String
+  iterableExpression: InterpretedExpression<List<Object>>
+  children: TreeItemLabelElementDescription[1..*]
+}
+
+ReusedTreeItemLabelElementDescription extends TreeItemLabelElementDescription {
+  elements: TreeItemLabelElementDescription[0..*] (non containment reference)
+}
+
+TreeItemLabelFragmentDescription extends TreeItemLabelElementDescription {
+  labelExpression: String
+  style: TextStyleDescription [0..1] (non containment reference)
+}
+
+TextStyleDescription {
+  name: Identifier
+  foregroundColorExpression: InterpretedExpression<String>
+  backgroundColorExpression: InterpretedExpression<String>
+  isUnderlineExpression: InterpretedExpression<boolean>
+  isBoldExpression: InterpretedExpression<boolean>
+  isItalicExpression: InterpretedExpression<boolean>
+}
+```
+
+The class `TreeItemLabelElementDescription` is an abstract class that allows to handle the partitioning control flow.
+For instance, optional fragments could be handled by the `IfTreeItemLabelElementDescription` subclass and repeated fragments could be handled by `ForTreeItemLabelElementDescription`.
+The `ReusedTreeItemLabelElementDescription` will handle recursive usage same fragments.
+In this case, references fragment descriptions are not contained and should be defined in other part of the description.
+Ultimately, the fragment description class holds both the label and its text style to compose the styled text part.
+The style property is a non containment reference of a `TextStyleDescription`.
+
+The above style description class `TextStyleDescription`, allows to specify a set of text style details.
+It is named for clarity sake and referenced by the `style` property of the `TreeItemLabelFragmentDescription` class.
+All style descriptions are stored in a new container in the root of the View model called `TextStylePalette`. +
+The `fontNameExpression` should return the name of the font to use.
+The color of the label fragment is specified through both `foregroundColorExpression` and `backgroundColorExpression`.
+The string returned by those expressions should be compliant with a CSS color (e.g. `#rrggbb`).
+The `isUnderlineExpression` should return whether this fragment is underlined or not.
+By design, we narrow the expressivity of the underline style to a solid line with the same color as expressed by the `foregroundColorExpression` expression.
+The `isBoldExpression` and `isItalicExpression` expressions respectively control the bold and italic style of this fragment.
+Those three last expressions should be evaluated in a boolean.
+
+=== Usage example
+
+The following style description handles the operation with argument and returned types in blue.
+
+``
+View {
+  textStylePalette: [
+    TextStylePalette: {
+      name: "Papaya text styles"
+      styles: [
+        TextStyleDescription {
+          name: "blackTextStyle"
+          foregroundColorExpression: "black"
+        },
+        TextStyleDescription {
+          name: "greyTextStyle"
+          foregroundColorExpression: "grey"
+        },
+        TextStyleDescription {
+          name: "blueTextStyle"
+          foregroundColorExpression: "blue"
+        }
+      ]
+    }
+  ]
+}
+
+
+TreeDescription {
+  treeItemLabelDescriptions: [
+    TreeItemLabelDescription {
+      name: "Operation"
+      preconditionExpression: "aql:self.eClass() = papaya::Operation"
+      children: [
+        TreeItemLabelFragmentDescription {
+          labelExpression: "aql:self.name"
+          style: #BlackTextStyle
+        },
+
+        TreeItemLabelFragmentDescription {
+          labelExpression: "("
+          style: #GreyTextStyle
+        },
+
+        ForTreeItemLabelElementDescription {
+          iterator: "parameter"
+          iterableExpression: "aql:self.parameters"
+          children: [
+            TreeItemLabelFragmentDescription {
+              labelExpression: "aql:parameter.name + ': '",
+              style: #BlackTextStyle
+            },
+            TreeItemLabelFragmentDescription {
+              labelExpression: "aql:parameter.type.name",
+              style: #BlueTextStyle
+            },
+            IfTreeItemLabelElementDescription {
+              predicateExpression: "aql:self.parameters.indexOf(parameter) <> (self.parameters.size() -1))
+              children: [
+                TreeItemLabelFragmentDescription {
+                  labelExpression: ", "
+                  style: #BlackTextStyle
+                }
+              ]
+            },
+          ]
+        },
+
+        TreeItemLabelFragmentDescription {
+          labelExpression: ")"
+          style: #GreyTextStyle
+        },
+
+        TreeItemLabelFragmentDescription {
+          labelExpression: ":"
+          style: #BlackTextStyle
+        },
+
+        TreeItemLabelFragmentDescription {
+          labelExpression: "aql:self.type.name"
+          style: #BlueTextStyle
+        },
+      ]
+    }
+  ]
+}
+``
+
+Here is the result of this style applied to an operation that has five parameters:
+
+image:images/160/simple_operation_style.png["operation style result", 70%]
+
+== Status
+
+Work in progress
+
+== Consequences
+
+The `org.eclipse.sirius.components.emf.services.StyledStringConverter` class which is in charge of converting an EMF style into a Sirius web one might have to be updated in the future.
+We suspect that the URI of the font may contain flags for expressing the bold or italic style.
+If this is verified, extraction of that information from the URI to the new flags should have to be made.
