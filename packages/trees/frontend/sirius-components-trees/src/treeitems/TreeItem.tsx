@@ -95,7 +95,7 @@ const useTreeItemStyle = makeStyles()((theme) => ({
   },
 }));
 
-const getString = (styledString: GQLStyledString): string => {
+export const getString = (styledString: GQLStyledString): string => {
   return styledString.styledStringFragments.map((fragments) => fragments.text).join();
 };
 

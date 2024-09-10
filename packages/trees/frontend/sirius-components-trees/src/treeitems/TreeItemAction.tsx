@@ -14,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import { makeStyles } from 'tss-react/mui';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
+import { getString } from './TreeItem';
 import { TreeItemActionProps, TreeItemActionState } from './TreeItemAction.types';
 import { TreeItemContextMenu } from './TreeItemContextMenu';
 
@@ -91,7 +92,11 @@ export const TreeItemAction = ({
 
   return (
     <>
-      <IconButton className={classes.more} size="small" onClick={openContextMenu} data-testid={`${item.label}-more`}>
+      <IconButton
+        className={classes.more}
+        size="small"
+        onClick={openContextMenu}
+        data-testid={`${getString(item.label)}-more`}>
         <MoreVertIcon style={{ fontSize: 12 }} />
       </IconButton>
       {contextMenu}
