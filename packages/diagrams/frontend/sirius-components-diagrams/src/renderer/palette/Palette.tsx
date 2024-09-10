@@ -21,11 +21,14 @@ import {
 import AdjustIcon from '@mui/icons-material/Adjust';
 import DirectionsOffIcon from '@mui/icons-material/DirectionsOff';
 import TonalityIcon from '@mui/icons-material/Tonality';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
 import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
 import { useCallback, useContext, useEffect, useState } from 'react';
+import Draggable from 'react-draggable';
 import { makeStyles } from 'tss-react/mui';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -76,12 +79,19 @@ const usePaletteStyle = makeStyles()((theme) => ({
     borderRadius: '2px',
     zIndex: 5,
     position: 'fixed',
+    maxWidth: theme.spacing(45.25),
+  },
+  paletteHeader: {
+    cursor: 'move',
+    width: '100%',
+    height: '24px',
+  },
+  quickAccessTools: {
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    maxWidth: theme.spacing(45.25),
   },
   toolIcon: {
     width: theme.spacing(4.5),
@@ -486,42 +496,44 @@ export const Palette = ({
   }
 
   return (
-    <Paper
-      className={classes.palette}
-      style={{ position: 'absolute', left: paletteX, top: paletteY }}
-      data-testid="Palette">
-      {palette?.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
-        <Tool tool={tool} onClick={handleToolClick} thumbnail key={tool.id} />
-      ))}
-      {palette?.toolSections.map((toolSection) => (
-        <ToolSection
-          toolSection={toolSection}
-          onToolClick={handleToolClick}
-          key={toolSection.id}
-          onExpand={handleToolSectionExpand}
-          toolSectionExpandId={state.expandedToolSectionId}
-        />
-      ))}
-      {paletteToolComponents.map(({ Component: PaletteToolComponent }, index) => (
-        <PaletteToolComponent x={x} y={y} diagramElementId={diagramElementId} key={index} />
-      ))}
-      {hideableDiagramElement ? (
-        <>
-          <Tooltip title="Fade element">
-            <IconButton
-              className={classes.toolIcon}
-              size="small"
-              aria-label="Fade element"
-              onClick={invokeFadeDiagramElementTool}
-              data-testid="Fade-element">
-              <TonalityIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          {pinUnpinTool}
-          {adjustSizeTool}
-          {resetEditedEdgePath}
-        </>
-      ) : null}
-    </Paper>
+    <Draggable handle="#tool-palette-header" defaultPosition={{ x: paletteX, y: paletteY }}>
+      <Paper className={classes.palette} data-testid="Palette">
+        <Box id="tool-palette-header" className={classes.paletteHeader}></Box>
+        <Divider />
+        <Box className={classes.quickAccessTools}>
+          {palette?.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
+            <Tool tool={tool} onClick={handleToolClick} thumbnail key={tool.id} />
+          ))}
+          {palette?.toolSections.map((toolSection) => (
+            <ToolSection
+              toolSection={toolSection}
+              onToolClick={handleToolClick}
+              key={toolSection.id}
+              onExpand={handleToolSectionExpand}
+              toolSectionExpandId={state.expandedToolSectionId}
+            />
+          ))}
+          {paletteToolComponents.map(({ Component: PaletteToolComponent }, index) => (
+            <PaletteToolComponent x={x} y={y} diagramElementId={diagramElementId} key={index} />
+          ))}
+          {hideableDiagramElement ? (
+            <>
+              <Tooltip title="Fade element">
+                <IconButton
+                  className={classes.toolIcon}
+                  size="small"
+                  aria-label="Fade element"
+                  onClick={invokeFadeDiagramElementTool}
+                  data-testid="Fade-element">
+                  <TonalityIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              {pinUnpinTool}
+              {adjustSizeTool}
+            </>
+          ) : null}
+        </Box>
+      </Paper>
+    </Draggable>
   );
 };
