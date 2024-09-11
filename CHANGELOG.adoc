@@ -6,6 +6,7 @@
 
 - Add support for a table widget in form representations
 - Automatically select newly created nodes on diagrams
+- Add undo/redo support
 
 
 === Architectural decision records
