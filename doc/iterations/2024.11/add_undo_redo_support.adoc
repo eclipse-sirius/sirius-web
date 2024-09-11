@@ -1,0 +1,55 @@
+= Add undo redo support
+
+== Problem
+
+Currently, a user can't undo redo actions performed on representations.
+
+
+== Key Result
+
+The user can undo/redo an action he performed on a representation (he can't undo/redo actions performed by another user).
+
+
+== Solution
+
+Pressing ctrl+z will undo the last action performed on a representation.
+Pressing ctrl+y will redo the action that was previously undone.
+
+
+=== Scenario
+
+1. Given only one user working on a representation, the user can undo/redo the actions performed
+- An user renames an element from "Paul" to "Bernard"
+- An user press ctrl+z
+- *Expected*: the element is renamed back to "Paul" and all elements that were impacted by the change also revert back to their previous state.
+- An user press ctrl+y
+- *Expected*: the element is renamed back to "Bernard" and all elements that were impacted by the change also revert back to their previous state.
+
+
+2. Several users are working on the same representation
+- An user u1 renames an element from "Paul" to "Bernard"
+- An user u2 delete the element
+- If An user u1 press ctrl+z
+- *Expected*: nothing will change since it would create a conflict with the change from u2
+
+
+- If An user u2 press ctrl+z
+- *Expected*: the semantic elements are reverted back to when the element was "Bernard"
+
+This should work regardless of the representation.
+
+=== Cutting backs
+
+The undo redo will revert all semantic changes at first.
+Other changes likes layout on a diagram will be taken care of later.
+The undo/redo stack is lost when a user closes the web page.
+
+
+== Rabbit holes
+
+Nothing identified
+
+
+== No-gos
+
+Nothing identified
