@@ -16,6 +16,8 @@
 
 === Dependency update
 
+- [releng] Switch to Spring Boot 3.3.3
+
 
 === Bug fixes
 
