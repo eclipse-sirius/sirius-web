@@ -1,0 +1,51 @@
+= [ADR-158] Support delegating representation event handling
+
+== Context
+
+The support for Table is expected to be used as a Table representation and also as Table widget in the Form representation.
+We already have an example of such representation composition with Charts in the Form representation and more will follow.
+
+The behavior associated to any user action in a representation is executed thanks to the `MutationxxDataFectcher` then the `IRepresentationEventProcessor` and one `IXxxEventHandler`.
+The aim of this ADR is to be able to execute, in our case, table-specific behavior whether the table is used as a representation or used as a part of a form.
+In both situations, we want to be able to reuse both the GraphQL schema, datafetchers and the event handlers used to execute the behavior.
+
+
+=== Current behavior
+
+`EditingContextEventProcessor#handleRepresentationInput` receives all representation inputs and its role is to delegate to the right `IRepresentationEventProcessor` thanks to the identifier `IRepresentationInput#representationId`.
+Each concrete `IRepresentationEventProcessor` will then delegate most of the behavior to the right `IXxxEventHandler`.
+
+For a better understanding, let's focus on Table example.
+Table (wich is yet to come) will be used (at least) for two use cases:
+
+* as `TableRepresentation` 
+* as `TableWidget` in form representation.
+
+A table contains rows, columns and cells.
+The user will trigger mutations when editing the content of a cell.
+
+Considering both use cases, how to define the behavior in a single place knowing that in the first case the behavior should be handled by `TableEventProcessor` which will contain the `Table` and the second case by `FormEventProcessor` which will contain the `Form` containing the `Table`?
+
+
+== Decision
+
+`EditingContextEventProcessor#handleRepresentationInput` still have to delegate to the right `IRepresentationEventProcessor` regardless of the situation. 
+This part of the code will not change.
+
+On the other hand, the `IRepresentationEventProcessor` which is responsible for finding the the right `IxxxEventHandler` may be updated.
+For the moment, since only the Form representation is impacted, we will update `FormEventProcessor` to consider other type of `IRepresentationInput`.
+
+ * If it is an instance of `IFormInput` it will delegate to the right `IFormEventHandler`
+ * If it is an instance of `ITableInput` it will delegate to the right `ITableEventHandler`
+
+In order to find the right table inside of a form, since a specifier could add multiple table in a single form, another identifier, `TableInput#tableId` will be added to all table inputs.
+When a table will be used as a table representation `ITableInput#tableId` and `IRepresentationInput#representationId` will have the same value.
+When the table will be part of a form representation, `IRepresentationInput#representationId` will have the identifier of the form representation, while `ITableInput#tableId` will have the identifier of the table within the form.
+
+
+== Status
+
+Work in progress
+
+== Consequences
+

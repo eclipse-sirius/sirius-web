@@ -7,6 +7,7 @@
 
 === Architectural decision records
 
+- [ADR-158] Support delegating representation event handling
 
 === Deprecation warning
 
