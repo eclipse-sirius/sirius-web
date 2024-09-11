@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuild
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -94,6 +95,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
 
         var insideLabel = new DiagramBuilders().newInsideLabelDescription()
                 .labelExpression("aql:self.label()")
+                .position(InsideLabelPosition.MIDDLE_LEFT)
                 .style(insideLabelStyle)
                 .build();
 

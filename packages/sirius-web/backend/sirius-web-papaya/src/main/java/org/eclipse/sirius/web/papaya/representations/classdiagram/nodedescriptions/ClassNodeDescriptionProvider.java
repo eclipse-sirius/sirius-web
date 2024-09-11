@@ -144,6 +144,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
         var insideLabel = new DiagramBuilders().newInsideLabelDescription()
                 .labelExpression("aql:self.label()")
+                .position(InsideLabelPosition.MIDDLE_LEFT)
                 .style(insideLabelStyle)
                 .build();
 
@@ -209,13 +210,13 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
     private NodeDescription attributeNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
                 .showIconExpression("aql:true")
-
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
                 .borderSize(0)
                 .build();
 
         var insideLabel = new DiagramBuilders().newInsideLabelDescription()
                 .labelExpression("aql:self.label()")
+                .position(InsideLabelPosition.MIDDLE_LEFT)
                 .style(insideLabelStyle)
                 .build();
 
@@ -287,6 +288,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
         var insideLabel = new DiagramBuilders().newInsideLabelDescription()
                 .labelExpression("aql:self.label()")
+                .position(InsideLabelPosition.MIDDLE_LEFT)
                 .style(insideLabelStyle)
                 .build();
 
