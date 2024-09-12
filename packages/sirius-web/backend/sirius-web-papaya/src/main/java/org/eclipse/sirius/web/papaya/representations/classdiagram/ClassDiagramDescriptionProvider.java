@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptio
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.InterfaceNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.RecordNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.ClassDiagramDropToolProvider;
+import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.ImportExistingTypesToolProvider;
 
 /**
  * Used to provide the view model used to create class diagrams.
@@ -79,8 +80,11 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
     }
 
     private DiagramPalette diagramPalette(IViewDiagramElementFinder cache) {
+        var importExistingTypesTool = new ImportExistingTypesToolProvider().getNodeTool(cache);
         var dropTool = new ClassDiagramDropToolProvider().getDropTool(cache);
+
         return new DiagramBuilders().newDiagramPalette()
+                .nodeTools(importExistingTypesTool)
                 .dropTool(dropTool)
                 .build();
     }
