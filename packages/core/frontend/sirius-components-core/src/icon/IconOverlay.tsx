@@ -25,7 +25,7 @@ export const IconOverlay = memo(
     return (
       <>
         {iconURL?.length > 0 && (
-          <div style={{ position: 'relative', width: iconWidth, height: iconHeight, ...customIconStyle }}>
+          <div style={{ position: 'relative', minWidth: iconWidth, minHeight: iconHeight, ...customIconStyle }}>
             {iconURL.map((url: string, index) => (
               <Tooltip title={title || ''} key={'tooltip_' + index}>
                 <img

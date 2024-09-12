@@ -32,6 +32,7 @@ Both `IInput` and `IDomainEvent` implement `ICause` and will thus be used to ind
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3954[#3954] [diagram] Ensure separator bar is displayed immediately after dynamically adding list child
+- https://github.com/eclipse-sirius/sirius-web/issues/4001[#4001] [diagram] Fix an issue with label text overlapped by icon
 
 === New Features
 
