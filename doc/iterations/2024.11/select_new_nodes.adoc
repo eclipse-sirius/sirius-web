@@ -1,0 +1,37 @@
+= (S) Automatically select newly created nodes on diagrams
+
+== Problem
+
+When a user invokes a tool on a diagram the current selection does not change.
+This is confusing users, in particular for tools whose purpose is to create new elements that appear on the diagram.
+In this case, users expect the newly created element(s) to be selected after the tool execution.
+
+== Key Result
+
+It will be possible for diagram tools to indicate which elements should be selected after their execution.
+
+== Solution
+
+For "standard" diagram elements creation tools this new behavior will be automatic without requiring changes in the tool definition from the sutdio maker.
+Whet "standard" means exactly will be defined more precisely in the followup ADR depending on the technical constraints allowing Sirius to detect newly created semantic elements.
+
+All diagram tools will support a new (optional) setting to configure more precisely the elements to select.
+This will be usefull when the default detection can not work (depending on the tool's internals), does not produce the expected result (from the user point of view) or if it makes sense for the tool to select other elements than the newly created ones.
+
+=== Breadboarding
+
+No particular UI except for a new field in the _Details_ view for diagram tool descriptions to configure non-default selection behavior.
+
+=== Cutting backs
+
+* Support for the "selected element" to be a representation instead of an actual semantic element, in which case the effect of the tool will be to navigate to the representation in question.
+
+== Rabbit holes
+
+* Tools behavior can be opaque to Sirius. Unless they use explicit operations like _Create Instance_ or other services *we* provide to create the semantic elements, it will be difficult to automatically detect which semantic elements have been created by a tool.
+* Some/all of the newly created _semantic_ elements may not actually be rendered/visible on the diagram.
+If we force the selection to change in this case it may select/reveal the elements in question in the _Explorer_ but not on the diagram, which may be confusing to users.
+* The current structure of how tools are evaluated (e.g. `CanonicalServices.defaultCreateNode` and `OperationInterpreterViewSwitch`) may need to evolve to allow for tracking of this information without requiring explicit customization for most common tools/patterns.
+
+== No-gos
+
