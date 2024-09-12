@@ -377,7 +377,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                 var representationEventProcessorEntry = new RepresentationEventProcessorEntry(representationEventProcessor, subscription);
                 this.representationEventProcessors.put(configuration.getId(), representationEventProcessorEntry);
             } else {
-                this.logger.warn("The representation with the id {} does not exist", configuration.getId());
+                this.logger.debug("The representation with the id {} does not exist", configuration.getId());
             }
         }
 
