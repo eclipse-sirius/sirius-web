@@ -12,11 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -50,5 +53,25 @@ public class PapayaRepresentationServices {
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast)
                 .toList();
+    }
+
+    public ResourceSet getResourceSet(Resource resource) {
+        return resource.getResourceSet();
+    }
+
+    public List<Resource> getResources(ResourceSet resourceSet) {
+        return resourceSet.getResources();
+    }
+
+    public List<Object> getChildren(Object object) {
+        List<Object> children = new ArrayList<>();
+
+        if (object instanceof Resource resource) {
+            children.addAll(resource.getContents());
+        } else if (object instanceof EObject eObject) {
+            children.addAll(eObject.eContents());
+        }
+
+        return children;
     }
 }
