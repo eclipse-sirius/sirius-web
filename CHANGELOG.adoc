@@ -20,6 +20,7 @@
 - [ADR-161] Add support for undo redo on semantic changes
 - [ADR-162] Add support for styled labels in view model for trees
 - [ADR-163] Adapt the Diagram Palette API to the new palette design
+- [ADR-164] Add the ability to select newly created diagram elements
 
 === Deprecation warning
 
