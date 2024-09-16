@@ -7,6 +7,7 @@
 - Add support for a table widget in form representations
 - Automatically select newly created nodes on diagrams
 - Add undo/redo support
+- Add support for drag and drop in the explorer
 
 
 === Architectural decision records

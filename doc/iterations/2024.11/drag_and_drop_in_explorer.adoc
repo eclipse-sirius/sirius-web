@@ -1,0 +1,36 @@
+= (M) Add support for drag and drop in the explorer
+
+== Problem
+
+The current approach allows drag-and-drop (DnD) operations from the explorer to a diagram representation.
+The goal is to enable DnD functionality within the explorer, with the resulting behavior being customizable through a specifier.
+
+== Key Result
+
+Enable users to drag and drop items inside the explorer, with the resulting behavior being customizable through a specifier.
+We want to be able to drop tree items on another tree item and between other tree items in order to reorganize them.
+
+== Solution
+
+To achieve the desired functionality, the following steps will be implemented:
+
+- **Enable DnD within the Explorer**: Allow drag-and-drop (DnD) operations within the explorer by declaring the `treeItem` as a valid source.
+- **Trigger Mutation on DnD**: Trigger a mutation upon DnD, including the IDs of the dragged tree item and the targeted tree item.
+- **Invoke Provider in `TreeDescription`**: Call the provider implemented in the `TreeDescription` with the appropriate variables (e.g., `draggedTreeItemId`,
+`targetedTreeItemId`, etc.).
+
+=== Breadboarding
+
+The only change to the UI will be the addition of a small space (1px) before each tree element, so that user can drop elements at a specific position.
+
+=== Cutting backs
+
+
+
+== Rabbit holes
+
+- The description of the provider should be implemented in the API but will not be propagated to the View DSL.
+- An example of implementation will be added to the sirius web explorer, based on basic EMF actions.
+
+== No-gos
+
