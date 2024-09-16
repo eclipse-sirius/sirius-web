@@ -29,6 +29,8 @@ import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SetValue;
+import org.eclipse.sirius.components.view.TextStyleDescription;
+import org.eclipse.sirius.components.view.TextStylePalette;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
@@ -163,6 +165,16 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseFor(For object) {
             return ViewAdapterFactory.this.createForAdapter();
+        }
+
+        @Override
+        public Adapter caseTextStylePalette(TextStylePalette object) {
+            return ViewAdapterFactory.this.createTextStylePaletteAdapter();
+        }
+
+        @Override
+        public Adapter caseTextStyleDescription(TextStyleDescription object) {
+            return ViewAdapterFactory.this.createTextStyleDescriptionAdapter();
         }
 
         @Override
@@ -392,6 +404,34 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createForAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.TextStylePalette <em>Text
+     * Style Palette</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.TextStylePalette
+     * @generated
+     */
+    public Adapter createTextStylePaletteAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.TextStyleDescription
+     * <em>Text Style Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.TextStyleDescription
+     * @generated
+     */
+    public Adapter createTextStyleDescriptionAdapter() {
         return null;
     }
 

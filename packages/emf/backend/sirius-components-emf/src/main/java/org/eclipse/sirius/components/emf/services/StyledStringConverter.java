@@ -43,15 +43,15 @@ public class StyledStringConverter implements IStyledStringConverter {
     }
 
     private StyledStringFragment convertStyledStringFragment(org.eclipse.emf.edit.provider.StyledString.Fragment styledStringFragment) {
-        String backgroundColor = convertEmfColorToCss(styledStringFragment.getStyle().getBackgoundColor());
-        String foregroundColor = convertEmfColorToCss(styledStringFragment.getStyle().getForegroundColor());
-        String strikeoutColor = convertEmfColorToCss(styledStringFragment.getStyle().getStrikeoutColor());
-        String underlineColor = convertEmfColorToCss(styledStringFragment.getStyle().getUnderlineColor());
-        String borderColor = convertEmfColorToCss(styledStringFragment.getStyle().getBorderColor());
+        String backgroundColor = this.convertEmfColorToCss(styledStringFragment.getStyle().getBackgoundColor());
+        String foregroundColor = this.convertEmfColorToCss(styledStringFragment.getStyle().getForegroundColor());
+        String strikeoutColor = this.convertEmfColorToCss(styledStringFragment.getStyle().getStrikeoutColor());
+        String underlineColor = this.convertEmfColorToCss(styledStringFragment.getStyle().getUnderlineColor());
+        String borderColor = this.convertEmfColorToCss(styledStringFragment.getStyle().getBorderColor());
         String font = Optional.ofNullable(styledStringFragment.getStyle().getFont()).map(URI::toString).orElse("Arial");
         boolean struckOut = styledStringFragment.getStyle().isStrikedout();
-        UnderLineStyle underLineStyle = convertEmfUnderLineToCss(styledStringFragment.getStyle().getUnderlineStyle());
-        BorderStyle borderStyle = convertEmfUnderLineToCss(styledStringFragment.getStyle().getBorderStyle());
+        UnderLineStyle underLineStyle = this.convertEmfUnderLineToCss(styledStringFragment.getStyle().getUnderlineStyle());
+        BorderStyle borderStyle = this.convertEmfUnderLineToCss(styledStringFragment.getStyle().getBorderStyle());
 
         StyledStringFragmentStyle styledStringFragmentStyle = StyledStringFragmentStyle.newStyledStringFragmentStyle()
                 .font(font)
@@ -63,6 +63,8 @@ public class StyledStringConverter implements IStyledStringConverter {
                 .struckOut(struckOut)
                 .underlineStyle(underLineStyle)
                 .borderStyle(borderStyle)
+                .bold(false)
+                .italic(false)
                 .build();
 
         return new StyledStringFragment(styledStringFragment.getString(), styledStringFragmentStyle);

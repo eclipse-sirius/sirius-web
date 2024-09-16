@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.ColorPalette;
+import org.eclipse.sirius.components.view.TextStylePalette;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -77,6 +78,7 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.VIEW__DESCRIPTIONS);
             this.childrenFeatures.add(ViewPackage.Literals.VIEW__COLOR_PALETTES);
+            this.childrenFeatures.add(ViewPackage.Literals.VIEW__TEXT_STYLE_PALETTES);
         }
         return this.childrenFeatures;
     }
@@ -138,6 +140,7 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
         switch (notification.getFeatureID(View.class)) {
             case ViewPackage.VIEW__DESCRIPTIONS:
             case ViewPackage.VIEW__COLOR_PALETTES:
+            case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -157,7 +160,9 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
         ColorPalette newColorPalette = ViewFactory.eINSTANCE.createColorPalette();
         newColorPalette.setName("New Color Palette");
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__COLOR_PALETTES, newColorPalette));
-
+        TextStylePalette newTextStylePalette = ViewFactory.eINSTANCE.createTextStylePalette();
+        newTextStylePalette.setName("New Text Style Palette");
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__TEXT_STYLE_PALETTES, newTextStylePalette));
     }
 
     /**

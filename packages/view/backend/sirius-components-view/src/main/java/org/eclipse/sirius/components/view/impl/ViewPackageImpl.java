@@ -31,6 +31,8 @@ import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SetValue;
+import org.eclipse.sirius.components.view.TextStyleDescription;
+import org.eclipse.sirius.components.view.TextStylePalette;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
@@ -160,6 +162,20 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      *
      * @generated
      */
+    private EClass textStylePaletteEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass textStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EDataType identifierEDataType = null;
 
     /**
@@ -279,6 +295,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EReference getView_ColorPalettes() {
         return (EReference) this.viewEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getView_TextStylePalettes() {
+        return (EReference) this.viewEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -717,6 +743,106 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getTextStylePalette() {
+        return this.textStylePaletteEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTextStylePalette_Name() {
+        return (EAttribute) this.textStylePaletteEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getTextStylePalette_Styles() {
+        return (EReference) this.textStylePaletteEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getTextStyleDescription() {
+        return this.textStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTextStyleDescription_Name() {
+        return (EAttribute) this.textStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTextStyleDescription_ForegroundColorExpression() {
+        return (EAttribute) this.textStyleDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTextStyleDescription_BackgroundColorExpression() {
+        return (EAttribute) this.textStyleDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTextStyleDescription_IsBoldExpression() {
+        return (EAttribute) this.textStyleDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTextStyleDescription_IsItalicExpression() {
+        return (EAttribute) this.textStyleDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTextStyleDescription_IsUnderlineExpression() {
+        return (EAttribute) this.textStyleDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EDataType getIdentifier() {
         return this.identifierEDataType;
     }
@@ -793,6 +919,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.viewEClass = this.createEClass(VIEW);
         this.createEReference(this.viewEClass, VIEW__DESCRIPTIONS);
         this.createEReference(this.viewEClass, VIEW__COLOR_PALETTES);
+        this.createEReference(this.viewEClass, VIEW__TEXT_STYLE_PALETTES);
 
         this.colorPaletteEClass = this.createEClass(COLOR_PALETTE);
         this.createEAttribute(this.colorPaletteEClass, COLOR_PALETTE__NAME);
@@ -852,6 +979,18 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.forEClass, FOR__EXPRESSION);
         this.createEAttribute(this.forEClass, FOR__ITERATOR_NAME);
 
+        this.textStylePaletteEClass = this.createEClass(TEXT_STYLE_PALETTE);
+        this.createEAttribute(this.textStylePaletteEClass, TEXT_STYLE_PALETTE__NAME);
+        this.createEReference(this.textStylePaletteEClass, TEXT_STYLE_PALETTE__STYLES);
+
+        this.textStyleDescriptionEClass = this.createEClass(TEXT_STYLE_DESCRIPTION);
+        this.createEAttribute(this.textStyleDescriptionEClass, TEXT_STYLE_DESCRIPTION__NAME);
+        this.createEAttribute(this.textStyleDescriptionEClass, TEXT_STYLE_DESCRIPTION__FOREGROUND_COLOR_EXPRESSION);
+        this.createEAttribute(this.textStyleDescriptionEClass, TEXT_STYLE_DESCRIPTION__BACKGROUND_COLOR_EXPRESSION);
+        this.createEAttribute(this.textStyleDescriptionEClass, TEXT_STYLE_DESCRIPTION__IS_BOLD_EXPRESSION);
+        this.createEAttribute(this.textStyleDescriptionEClass, TEXT_STYLE_DESCRIPTION__IS_ITALIC_EXPRESSION);
+        this.createEAttribute(this.textStyleDescriptionEClass, TEXT_STYLE_DESCRIPTION__IS_UNDERLINE_EXPRESSION);
+
         // Create data types
         this.identifierEDataType = this.createEDataType(IDENTIFIER);
         this.interpretedExpressionEDataType = this.createEDataType(INTERPRETED_EXPRESSION);
@@ -906,6 +1045,9 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEReference(this.getView_ColorPalettes(), this.getColorPalette(), null, "colorPalettes", null, 0, -1, View.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getView_ColorPalettes().getEKeys().add(this.getColorPalette_Name());
+        this.initEReference(this.getView_TextStylePalettes(), this.getTextStylePalette(), null, "textStylePalettes", null, 0, -1, View.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getView_TextStylePalettes().getEKeys().add(this.getTextStylePalette_Name());
 
         this.initEClass(this.colorPaletteEClass, ColorPalette.class, "ColorPalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getColorPalette_Name(), this.getIdentifier(), "name", null, 1, 1, ColorPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
@@ -993,6 +1135,27 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getFor_IteratorName(), this.ecorePackage.getEString(), "iteratorName", null, 1, 1, For.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.textStylePaletteEClass, TextStylePalette.class, "TextStylePalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getTextStylePalette_Name(), this.getIdentifier(), "name", null, 1, 1, TextStylePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTextStylePalette_Styles(), this.getTextStyleDescription(), null, "styles", null, 0, -1, TextStylePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getTextStylePalette_Styles().getEKeys().add(this.getTextStyleDescription_Name());
+
+        this.initEClass(this.textStyleDescriptionEClass, TextStyleDescription.class, "TextStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getTextStyleDescription_Name(), this.getIdentifier(), "name", null, 1, 1, TextStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTextStyleDescription_ForegroundColorExpression(), this.getInterpretedExpression(), "foregroundColorExpression", "", 0, 1, TextStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTextStyleDescription_BackgroundColorExpression(), this.getInterpretedExpression(), "backgroundColorExpression", "", 0, 1, TextStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTextStyleDescription_IsBoldExpression(), this.getInterpretedExpression(), "isBoldExpression", "aql:\'false\'", 0, 1, TextStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTextStyleDescription_IsItalicExpression(), this.getInterpretedExpression(), "isItalicExpression", "aql:\'false\'", 0, 1, TextStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTextStyleDescription_IsUnderlineExpression(), this.getInterpretedExpression(), "isUnderlineExpression", "aql:\'false\'", 0, 1, TextStyleDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize data types
         this.initEDataType(this.identifierEDataType, String.class, "Identifier", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

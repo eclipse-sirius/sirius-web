@@ -38,6 +38,23 @@ public interface TreeFactory extends EFactory {
     TreeDescription createTreeDescription();
 
     /**
+     * Returns a new object of class '<em>Item Label Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Item Label Description</em>'.
+     * @generated
+     */
+    TreeItemLabelDescription createTreeItemLabelDescription();
+
+    /**
+     * Returns a new object of class '<em>Item Label Fragment Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Item Label Fragment Description</em>'.
+     * @generated
+     */
+    TreeItemLabelFragmentDescription createTreeItemLabelFragmentDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

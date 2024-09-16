@@ -63,6 +63,8 @@ type StyledStringFragmentStyle {
   strikeoutColor: String
   underlineColor: String
   borderColor: String
+  isBold: Boolean
+  isItalic: Boolean
 }
 
 enum UnderLineStyle {

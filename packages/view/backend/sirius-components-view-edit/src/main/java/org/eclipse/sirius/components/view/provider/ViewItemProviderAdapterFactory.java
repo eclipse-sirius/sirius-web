@@ -344,6 +344,52 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.TextStylePalette}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected TextStylePaletteItemProvider textStylePaletteItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.TextStylePalette}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createTextStylePaletteAdapter() {
+        if (this.textStylePaletteItemProvider == null) {
+            this.textStylePaletteItemProvider = new TextStylePaletteItemProvider(this);
+        }
+
+        return this.textStylePaletteItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.TextStyleDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected TextStyleDescriptionItemProvider textStyleDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.TextStyleDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createTextStyleDescriptionAdapter() {
+        if (this.textStyleDescriptionItemProvider == null) {
+            this.textStyleDescriptionItemProvider = new TextStyleDescriptionItemProvider(this);
+        }
+
+        return this.textStyleDescriptionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -494,6 +540,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.ifItemProvider.dispose();
         if (this.forItemProvider != null)
             this.forItemProvider.dispose();
+        if (this.textStylePaletteItemProvider != null)
+            this.textStylePaletteItemProvider.dispose();
+        if (this.textStyleDescriptionItemProvider != null)
+            this.textStyleDescriptionItemProvider.dispose();
     }
 
 }

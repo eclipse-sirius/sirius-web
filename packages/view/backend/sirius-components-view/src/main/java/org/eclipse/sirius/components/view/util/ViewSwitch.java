@@ -28,6 +28,8 @@ import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SetValue;
+import org.eclipse.sirius.components.view.TextStyleDescription;
+import org.eclipse.sirius.components.view.TextStylePalette;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
@@ -210,6 +212,20 @@ public class ViewSwitch<T> extends Switch<T> {
                 T result = this.caseFor(for_);
                 if (result == null)
                     result = this.caseOperation(for_);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.TEXT_STYLE_PALETTE: {
+                TextStylePalette textStylePalette = (TextStylePalette) theEObject;
+                T result = this.caseTextStylePalette(textStylePalette);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.TEXT_STYLE_DESCRIPTION: {
+                TextStyleDescription textStyleDescription = (TextStyleDescription) theEObject;
+                T result = this.caseTextStyleDescription(textStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -444,6 +460,36 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseFor(For object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Text Style Palette</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Text Style Palette</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTextStylePalette(TextStylePalette object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Text Style Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Text Style Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTextStyleDescription(TextStyleDescription object) {
         return null;
     }
 

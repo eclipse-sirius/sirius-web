@@ -49,6 +49,8 @@ fragment treeItemFields on TreeItem {
         strikeoutColor
         underlineColor
         borderColor
+        isBold
+        isItalic
       }
     }
   }

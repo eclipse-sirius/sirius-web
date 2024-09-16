@@ -106,15 +106,6 @@ public class TreeDescriptionBuilder {
         return this;
     }
     /**
-     * Setter for TreeItemLabelExpression.
-     *
-     * @generated
-     */
-    public TreeDescriptionBuilder treeItemLabelExpression(java.lang.String value) {
-        this.getTreeDescription().setTreeItemLabelExpression(value);
-        return this;
-    }
-    /**
      * Setter for TreeItemObjectExpression.
      *
      * @generated
@@ -184,6 +175,18 @@ public class TreeDescriptionBuilder {
      */
     public TreeDescriptionBuilder deletableExpression(java.lang.String value) {
         this.getTreeDescription().setDeletableExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for TreeItemLabelDescriptions.
+     *
+     * @generated
+     */
+    public TreeDescriptionBuilder treeItemLabelDescriptions(org.eclipse.sirius.components.view.tree.TreeItemLabelDescription ... values) {
+        for (org.eclipse.sirius.components.view.tree.TreeItemLabelDescription value : values) {
+            this.getTreeDescription().getTreeItemLabelDescriptions().add(value);
+        }
         return this;
     }
 

@@ -20,6 +20,7 @@
     <genClasses ecoreClass="view.ecore#//View">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/descriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/colorPalettes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/textStylePalettes"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ColorPalette">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ColorPalette/name"/>
@@ -77,6 +78,18 @@
     <genClasses ecoreClass="view.ecore#//For">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//For/expression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//For/iteratorName"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//TextStylePalette">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextStylePalette/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextStylePalette/styles"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//TextStyleDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextStyleDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextStyleDescription/foregroundColorExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextStyleDescription/backgroundColorExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextStyleDescription/isBoldExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextStyleDescription/isItalicExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextStyleDescription/isUnderlineExpression"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

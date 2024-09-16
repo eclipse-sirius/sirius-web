@@ -18,6 +18,9 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
@@ -77,6 +80,21 @@ public class TreeAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseTreeItemLabelDescription(TreeItemLabelDescription object) {
+            return TreeAdapterFactory.this.createTreeItemLabelDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseTreeItemLabelFragmentDescription(TreeItemLabelFragmentDescription object) {
+            return TreeAdapterFactory.this.createTreeItemLabelFragmentDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseTreeItemLabelElementDescription(TreeItemLabelElementDescription object) {
+            return TreeAdapterFactory.this.createTreeItemLabelElementDescriptionAdapter();
+        }
+
+        @Override
         public Adapter caseRepresentationDescription(RepresentationDescription object) {
             return TreeAdapterFactory.this.createRepresentationDescriptionAdapter();
         }
@@ -111,6 +129,48 @@ public class TreeAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTreeDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.tree.TreeItemLabelDescription <em>Item Label Description</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.tree.TreeItemLabelDescription
+     * @generated
+     */
+    public Adapter createTreeItemLabelDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription <em>Item Label Fragment
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription
+     * @generated
+     */
+    public Adapter createTreeItemLabelFragmentDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription <em>Item Label Element
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription
+     * @generated
+     */
+    public Adapter createTreeItemLabelElementDescriptionAdapter() {
         return null;
     }
 

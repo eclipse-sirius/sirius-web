@@ -118,6 +118,22 @@ public interface ViewFactory extends EFactory {
     For createFor();
 
     /**
+     * Returns a new object of class '<em>Text Style Palette</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Text Style Palette</em>'.
+     * @generated
+     */
+    TextStylePalette createTextStylePalette();
+
+    /**
+     * Returns a new object of class '<em>Text Style Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Text Style Description</em>'.
+     * @generated
+     */
+    TextStyleDescription createTextStyleDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

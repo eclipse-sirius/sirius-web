@@ -27,6 +27,8 @@ import org.eclipse.sirius.components.view.For;
 import org.eclipse.sirius.components.view.If;
 import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.SetValue;
+import org.eclipse.sirius.components.view.TextStyleDescription;
+import org.eclipse.sirius.components.view.TextStylePalette;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -94,6 +96,10 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.createIf();
             case ViewPackage.FOR:
                 return this.createFor();
+            case ViewPackage.TEXT_STYLE_PALETTE:
+                return this.createTextStylePalette();
+            case ViewPackage.TEXT_STYLE_DESCRIPTION:
+                return this.createTextStyleDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -264,6 +270,28 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public For createFor() {
         ForImpl for_ = new ForImpl();
         return for_;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public TextStylePalette createTextStylePalette() {
+        TextStylePaletteImpl textStylePalette = new TextStylePaletteImpl();
+        return textStylePalette;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public TextStyleDescription createTextStyleDescription() {
+        TextStyleDescriptionImpl textStyleDescription = new TextStyleDescriptionImpl();
+        return textStyleDescription;
     }
 
     /**

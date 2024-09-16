@@ -99,6 +99,22 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory
      * @generated
      */
     protected TreeDescriptionItemProvider treeDescriptionItemProvider;
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.tree.TreeItemLabelDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected TreeItemLabelDescriptionItemProvider treeItemLabelDescriptionItemProvider;
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected TreeItemLabelFragmentDescriptionItemProvider treeItemLabelFragmentDescriptionItemProvider;
 
     /**
      * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -127,6 +143,38 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory
         }
 
         return this.treeDescriptionItemProvider;
+    }
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.sirius.components.view.tree.TreeItemLabelDescription}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createTreeItemLabelDescriptionAdapter() {
+        if (this.treeItemLabelDescriptionItemProvider == null) {
+            this.treeItemLabelDescriptionItemProvider = new TreeItemLabelDescriptionItemProvider(this);
+        }
+
+        return this.treeItemLabelDescriptionItemProvider;
+    }
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createTreeItemLabelFragmentDescriptionAdapter() {
+        if (this.treeItemLabelFragmentDescriptionItemProvider == null) {
+            this.treeItemLabelFragmentDescriptionItemProvider = new TreeItemLabelFragmentDescriptionItemProvider(this);
+        }
+
+        return this.treeItemLabelFragmentDescriptionItemProvider;
     }
 
     /**
@@ -263,6 +311,10 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory
     public void dispose() {
         if (this.treeDescriptionItemProvider != null)
             this.treeDescriptionItemProvider.dispose();
+        if (this.treeItemLabelDescriptionItemProvider != null)
+            this.treeItemLabelDescriptionItemProvider.dispose();
+        if (this.treeItemLabelFragmentDescriptionItemProvider != null)
+            this.treeItemLabelFragmentDescriptionItemProvider.dispose();
     }
 
     /**

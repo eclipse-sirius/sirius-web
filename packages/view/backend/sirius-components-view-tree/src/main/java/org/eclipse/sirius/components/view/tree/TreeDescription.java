@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.tree;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 
 /**
@@ -25,8 +26,6 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * <li>{@link org.eclipse.sirius.components.view.tree.TreeDescription#getIconURLExpression <em>Icon URL
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.TreeDescription#getTreeItemIdExpression <em>Tree Item Id
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.TreeDescription#getTreeItemLabelExpression <em>Tree Item Label
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.TreeDescription#getTreeItemObjectExpression <em>Tree Item Object
  * Expression</em>}</li>
@@ -44,6 +43,8 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.TreeDescription#getDeletableExpression <em>Deletable
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.TreeDescription#getTreeItemLabelDescriptions <em>Tree Item Label
+ * Descriptions</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription()
@@ -119,29 +120,6 @@ public interface TreeDescription extends RepresentationDescription {
      * @generated
      */
     void setTreeItemIdExpression(String value);
-
-    /**
-     * Returns the value of the '<em><b>Tree Item Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Tree Item Label Expression</em>' attribute.
-     * @see #setTreeItemLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_TreeItemLabelExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
-    String getTreeItemLabelExpression();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.tree.TreeDescription#getTreeItemLabelExpression
-     * <em>Tree Item Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Tree Item Label Expression</em>' attribute.
-     * @see #getTreeItemLabelExpression()
-     * @generated
-     */
-    void setTreeItemLabelExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Tree Item Object Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -326,5 +304,17 @@ public interface TreeDescription extends RepresentationDescription {
      * @generated
      */
     void setDeletableExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Tree Item Label Descriptions</b></em>' containment reference list. The list
+     * contents are of type {@link org.eclipse.sirius.components.view.tree.TreeItemLabelDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Tree Item Label Descriptions</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_TreeItemLabelDescriptions()
+     * @model containment="true"
+     * @generated
+     */
+    EList<TreeItemLabelDescription> getTreeItemLabelDescriptions();
 
 } // TreeDescription

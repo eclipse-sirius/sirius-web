@@ -37,6 +37,10 @@ public final class StyledStringFragmentStyle {
 
     private boolean struckOut;
 
+    private boolean bold;
+
+    private boolean italic;
+
     private UnderLineStyle underlineStyle;
 
     private BorderStyle borderStyle;
@@ -73,6 +77,14 @@ public final class StyledStringFragmentStyle {
         return this.struckOut;
     }
 
+    public boolean isBold() {
+        return this.bold;
+    }
+
+    public boolean isItalic() {
+        return this.italic;
+    }
+
     public static Builder newStyledStringFragmentStyle() {
         return new Builder();
     }
@@ -86,6 +98,8 @@ public final class StyledStringFragmentStyle {
                 .underlineColor("")
                 .borderColor("")
                 .struckOut(false)
+                .bold(false)
+                .italic(false)
                 .underlineStyle(UnderLineStyle.NONE)
                 .borderStyle(BorderStyle.NONE);
     }
@@ -118,6 +132,10 @@ public final class StyledStringFragmentStyle {
         private String borderColor;
 
         private boolean struckOut;
+
+        private boolean bold;
+
+        private boolean italic;
 
         private UnderLineStyle underlineStyle;
 
@@ -162,6 +180,16 @@ public final class StyledStringFragmentStyle {
             return this;
         }
 
+        public Builder bold(boolean bold) {
+            this.bold = bold;
+            return this;
+        }
+
+        public Builder italic(boolean italic) {
+            this.italic = italic;
+            return this;
+        }
+
         public Builder underlineStyle(UnderLineStyle underlineStyle) {
             this.underlineStyle = Objects.requireNonNull(underlineStyle);
             return this;
@@ -183,6 +211,8 @@ public final class StyledStringFragmentStyle {
             styledStringFragmentStyle.struckOut = Objects.requireNonNull(this.struckOut);
             styledStringFragmentStyle.underlineStyle = Objects.requireNonNull(this.underlineStyle);
             styledStringFragmentStyle.borderStyle = Objects.requireNonNull(this.borderStyle);
+            styledStringFragmentStyle.bold = Objects.requireNonNull(this.bold);
+            styledStringFragmentStyle.italic = Objects.requireNonNull(this.italic);
             return styledStringFragmentStyle;
         }
 

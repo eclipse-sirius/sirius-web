@@ -15,10 +15,14 @@ package org.eclipse.sirius.components.view.tree.impl;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
 import org.eclipse.sirius.components.view.tree.TreeFactory;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
@@ -33,6 +37,27 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     private EClass treeDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass treeItemLabelDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass treeItemLabelFragmentDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass treeItemLabelElementDescriptionEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -144,7 +169,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public EAttribute getTreeDescription_TreeItemLabelExpression() {
+    public EAttribute getTreeDescription_TreeItemObjectExpression() {
         return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
@@ -154,7 +179,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public EAttribute getTreeDescription_TreeItemObjectExpression() {
+    public EAttribute getTreeDescription_ElementsExpression() {
         return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
@@ -164,7 +189,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public EAttribute getTreeDescription_ElementsExpression() {
+    public EAttribute getTreeDescription_HasChildrenExpression() {
         return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
@@ -174,7 +199,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public EAttribute getTreeDescription_HasChildrenExpression() {
+    public EAttribute getTreeDescription_ChildrenExpression() {
         return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
@@ -184,7 +209,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public EAttribute getTreeDescription_ChildrenExpression() {
+    public EAttribute getTreeDescription_ParentExpression() {
         return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
@@ -194,7 +219,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public EAttribute getTreeDescription_ParentExpression() {
+    public EAttribute getTreeDescription_EditableExpression() {
         return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(8);
     }
 
@@ -204,7 +229,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public EAttribute getTreeDescription_EditableExpression() {
+    public EAttribute getTreeDescription_SelectableExpression() {
         return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(9);
     }
 
@@ -214,7 +239,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public EAttribute getTreeDescription_SelectableExpression() {
+    public EAttribute getTreeDescription_DeletableExpression() {
         return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(10);
     }
 
@@ -224,8 +249,88 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public EAttribute getTreeDescription_DeletableExpression() {
-        return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(11);
+    public EReference getTreeDescription_TreeItemLabelDescriptions() {
+        return (EReference) this.treeDescriptionEClass.getEStructuralFeatures().get(11);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getTreeItemLabelDescription() {
+        return this.treeItemLabelDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTreeItemLabelDescription_Name() {
+        return (EAttribute) this.treeItemLabelDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTreeItemLabelDescription_PreconditionExpression() {
+        return (EAttribute) this.treeItemLabelDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getTreeItemLabelDescription_Children() {
+        return (EReference) this.treeItemLabelDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getTreeItemLabelFragmentDescription() {
+        return this.treeItemLabelFragmentDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTreeItemLabelFragmentDescription_LabelExpression() {
+        return (EAttribute) this.treeItemLabelFragmentDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getTreeItemLabelFragmentDescription_Style() {
+        return (EReference) this.treeItemLabelFragmentDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getTreeItemLabelElementDescription() {
+        return this.treeItemLabelElementDescriptionEClass;
     }
 
     /**
@@ -261,7 +366,6 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__KIND_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__ICON_URL_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION);
-        this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_LABEL_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__ELEMENTS_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__HAS_CHILDREN_EXPRESSION);
@@ -270,6 +374,18 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__EDITABLE_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__SELECTABLE_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__DELETABLE_EXPRESSION);
+        this.createEReference(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS);
+
+        this.treeItemLabelDescriptionEClass = this.createEClass(TREE_ITEM_LABEL_DESCRIPTION);
+        this.createEAttribute(this.treeItemLabelDescriptionEClass, TREE_ITEM_LABEL_DESCRIPTION__NAME);
+        this.createEAttribute(this.treeItemLabelDescriptionEClass, TREE_ITEM_LABEL_DESCRIPTION__PRECONDITION_EXPRESSION);
+        this.createEReference(this.treeItemLabelDescriptionEClass, TREE_ITEM_LABEL_DESCRIPTION__CHILDREN);
+
+        this.treeItemLabelFragmentDescriptionEClass = this.createEClass(TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION);
+        this.createEAttribute(this.treeItemLabelFragmentDescriptionEClass, TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION);
+        this.createEReference(this.treeItemLabelFragmentDescriptionEClass, TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE);
+
+        this.treeItemLabelElementDescriptionEClass = this.createEClass(TREE_ITEM_LABEL_ELEMENT_DESCRIPTION);
     }
 
     /**
@@ -304,6 +420,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
 
         // Add supertypes to classes
         this.treeDescriptionEClass.getESuperTypes().add(theViewPackage.getRepresentationDescription());
+        this.treeItemLabelFragmentDescriptionEClass.getESuperTypes().add(this.getTreeItemLabelElementDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.treeDescriptionEClass, TreeDescription.class, "TreeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -312,8 +429,6 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.initEAttribute(this.getTreeDescription_IconURLExpression(), theViewPackage.getInterpretedExpression(), "iconURLExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTreeDescription_TreeItemIdExpression(), theViewPackage.getInterpretedExpression(), "treeItemIdExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTreeDescription_TreeItemLabelExpression(), theViewPackage.getInterpretedExpression(), "treeItemLabelExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTreeDescription_TreeItemObjectExpression(), theViewPackage.getInterpretedExpression(), "treeItemObjectExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -331,6 +446,26 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTreeDescription_DeletableExpression(), theViewPackage.getInterpretedExpression(), "deletableExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTreeDescription_TreeItemLabelDescriptions(), this.getTreeItemLabelDescription(), null, "treeItemLabelDescriptions", null, 0, -1, TreeDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getTreeDescription_TreeItemLabelDescriptions().getEKeys().add(this.getTreeItemLabelDescription_Name());
+
+        this.initEClass(this.treeItemLabelDescriptionEClass, TreeItemLabelDescription.class, "TreeItemLabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getTreeItemLabelDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, TreeItemLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTreeItemLabelDescription_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, TreeItemLabelDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTreeItemLabelDescription_Children(), this.getTreeItemLabelElementDescription(), null, "children", null, 0, -1, TreeItemLabelDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.treeItemLabelFragmentDescriptionEClass, TreeItemLabelFragmentDescription.class, "TreeItemLabelFragmentDescription", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getTreeItemLabelFragmentDescription_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", null, 0, 1,
+                TreeItemLabelFragmentDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTreeItemLabelFragmentDescription_Style(), theViewPackage.getTextStyleDescription(), null, "style", null, 0, 1, TreeItemLabelFragmentDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.treeItemLabelElementDescriptionEClass, TreeItemLabelElementDescription.class, "TreeItemLabelElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         this.createResource(eNS_URI);
