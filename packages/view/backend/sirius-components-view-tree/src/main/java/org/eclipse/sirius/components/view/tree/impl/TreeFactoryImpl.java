@@ -19,6 +19,8 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
 import org.eclipse.sirius.components.view.tree.TreeFactory;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
@@ -63,6 +65,10 @@ public class TreeFactoryImpl extends EFactoryImpl implements TreeFactory {
         switch (eClass.getClassifierID()) {
             case TreePackage.TREE_DESCRIPTION:
                 return this.createTreeDescription();
+            case TreePackage.TREE_ITEM_LABEL_DESCRIPTION:
+                return this.createTreeItemLabelDescription();
+            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION:
+                return this.createTreeItemLabelFragmentDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -77,6 +83,28 @@ public class TreeFactoryImpl extends EFactoryImpl implements TreeFactory {
     public TreeDescription createTreeDescription() {
         TreeDescriptionImpl treeDescription = new TreeDescriptionImpl();
         return treeDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public TreeItemLabelDescription createTreeItemLabelDescription() {
+        TreeItemLabelDescriptionImpl treeItemLabelDescription = new TreeItemLabelDescriptionImpl();
+        return treeItemLabelDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public TreeItemLabelFragmentDescription createTreeItemLabelFragmentDescription() {
+        TreeItemLabelFragmentDescriptionImpl treeItemLabelFragmentDescription = new TreeItemLabelFragmentDescriptionImpl();
+        return treeItemLabelFragmentDescription;
     }
 
     /**

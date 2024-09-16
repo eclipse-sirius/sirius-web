@@ -91,12 +91,21 @@ public interface ViewPackage extends EPackage {
     int VIEW__COLOR_PALETTES = 1;
 
     /**
+     * The feature id for the '<em><b>Text Style Palettes</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int VIEW__TEXT_STYLE_PALETTES = 2;
+
+    /**
      * The number of structural features of the '<em>View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int VIEW_FEATURE_COUNT = 2;
+    int VIEW_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -822,13 +831,139 @@ public interface ViewPackage extends EPackage {
     int FOR_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextStylePaletteImpl <em>Text Style
+     * Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.TextStylePaletteImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextStylePalette()
+     * @generated
+     */
+    int TEXT_STYLE_PALETTE = 16;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_PALETTE__NAME = 0;
+
+    /**
+     * The feature id for the '<em><b>Styles</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_PALETTE__STYLES = 1;
+
+    /**
+     * The number of structural features of the '<em>Text Style Palette</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_PALETTE_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Text Style Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_PALETTE_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextStyleDescriptionImpl <em>Text
+     * Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.TextStyleDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextStyleDescription()
+     * @generated
+     */
+    int TEXT_STYLE_DESCRIPTION = 17;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_DESCRIPTION__NAME = 0;
+
+    /**
+     * The feature id for the '<em><b>Foreground Color Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_DESCRIPTION__FOREGROUND_COLOR_EXPRESSION = 1;
+
+    /**
+     * The feature id for the '<em><b>Background Color Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_DESCRIPTION__BACKGROUND_COLOR_EXPRESSION = 2;
+
+    /**
+     * The feature id for the '<em><b>Is Bold Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_DESCRIPTION__IS_BOLD_EXPRESSION = 3;
+
+    /**
+     * The feature id for the '<em><b>Is Italic Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_DESCRIPTION__IS_ITALIC_EXPRESSION = 4;
+
+    /**
+     * The feature id for the '<em><b>Is Underline Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_DESCRIPTION__IS_UNDERLINE_EXPRESSION = 5;
+
+    /**
+     * The number of structural features of the '<em>Text Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_DESCRIPTION_FEATURE_COUNT = 6;
+
+    /**
+     * The number of operations of the '<em>Text Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_STYLE_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see java.lang.String
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIdentifier()
      * @generated
      */
-    int IDENTIFIER = 16;
+    int IDENTIFIER = 18;
 
     /**
      * The meta object id for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -838,7 +973,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
      * @generated
      */
-    int INTERPRETED_EXPRESSION = 17;
+    int INTERPRETED_EXPRESSION = 19;
 
     /**
      * The meta object id for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -847,7 +982,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
      * @generated
      */
-    int DOMAIN_TYPE = 18;
+    int DOMAIN_TYPE = 20;
 
     /**
      * The meta object id for the '<em>Color</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -856,7 +991,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColor()
      * @generated
      */
-    int COLOR = 19;
+    int COLOR = 21;
 
     /**
      * The meta object id for the '<em>Length</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -864,7 +999,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLength()
      * @generated
      */
-    int LENGTH = 20;
+    int LENGTH = 22;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -899,6 +1034,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getView_ColorPalettes();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.View#getTextStylePalettes <em>Text Style Palettes</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Text Style Palettes</em>'.
+     * @see org.eclipse.sirius.components.view.View#getTextStylePalettes()
+     * @see #getView()
+     * @generated
+     */
+    EReference getView_TextStylePalettes();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ColorPalette <em>Color
@@ -1368,6 +1515,120 @@ public interface ViewPackage extends EPackage {
     EAttribute getFor_IteratorName();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.TextStylePalette <em>Text Style
+     * Palette</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Text Style Palette</em>'.
+     * @see org.eclipse.sirius.components.view.TextStylePalette
+     * @generated
+     */
+    EClass getTextStylePalette();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.TextStylePalette#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.TextStylePalette#getName()
+     * @see #getTextStylePalette()
+     * @generated
+     */
+    EAttribute getTextStylePalette_Name();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.TextStylePalette#getStyles <em>Styles</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Styles</em>'.
+     * @see org.eclipse.sirius.components.view.TextStylePalette#getStyles()
+     * @see #getTextStylePalette()
+     * @generated
+     */
+    EReference getTextStylePalette_Styles();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.TextStyleDescription <em>Text Style
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Text Style Description</em>'.
+     * @see org.eclipse.sirius.components.view.TextStyleDescription
+     * @generated
+     */
+    EClass getTextStyleDescription();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.TextStyleDescription#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.TextStyleDescription#getName()
+     * @see #getTextStyleDescription()
+     * @generated
+     */
+    EAttribute getTextStyleDescription_Name();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.TextStyleDescription#getForegroundColorExpression <em>Foreground Color
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Foreground Color Expression</em>'.
+     * @see org.eclipse.sirius.components.view.TextStyleDescription#getForegroundColorExpression()
+     * @see #getTextStyleDescription()
+     * @generated
+     */
+    EAttribute getTextStyleDescription_ForegroundColorExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.TextStyleDescription#getBackgroundColorExpression <em>Background Color
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Background Color Expression</em>'.
+     * @see org.eclipse.sirius.components.view.TextStyleDescription#getBackgroundColorExpression()
+     * @see #getTextStyleDescription()
+     * @generated
+     */
+    EAttribute getTextStyleDescription_BackgroundColorExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.TextStyleDescription#getIsBoldExpression <em>Is Bold
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Bold Expression</em>'.
+     * @see org.eclipse.sirius.components.view.TextStyleDescription#getIsBoldExpression()
+     * @see #getTextStyleDescription()
+     * @generated
+     */
+    EAttribute getTextStyleDescription_IsBoldExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.TextStyleDescription#getIsItalicExpression <em>Is Italic
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Italic Expression</em>'.
+     * @see org.eclipse.sirius.components.view.TextStyleDescription#getIsItalicExpression()
+     * @see #getTextStyleDescription()
+     * @generated
+     */
+    EAttribute getTextStyleDescription_IsItalicExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.TextStyleDescription#getIsUnderlineExpression <em>Is Underline
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Underline Expression</em>'.
+     * @see org.eclipse.sirius.components.view.TextStyleDescription#getIsUnderlineExpression()
+     * @see #getTextStyleDescription()
+     * @generated
+     */
+    EAttribute getTextStyleDescription_IsUnderlineExpression();
+
+    /**
      * Returns the meta object for data type '{@link java.lang.String <em>Identifier</em>}'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -1467,6 +1728,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference VIEW__COLOR_PALETTES = eINSTANCE.getView_ColorPalettes();
+
+        /**
+         * The meta object literal for the '<em><b>Text Style Palettes</b></em>' containment reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference VIEW__TEXT_STYLE_PALETTES = eINSTANCE.getView_TextStylePalettes();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ColorPaletteImpl <em>Color
@@ -1841,6 +2110,90 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute FOR__ITERATOR_NAME = eINSTANCE.getFor_IteratorName();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.TextStylePaletteImpl <em>Text
+         * Style Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.TextStylePaletteImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextStylePalette()
+         * @generated
+         */
+        EClass TEXT_STYLE_PALETTE = eINSTANCE.getTextStylePalette();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXT_STYLE_PALETTE__NAME = eINSTANCE.getTextStylePalette_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference TEXT_STYLE_PALETTE__STYLES = eINSTANCE.getTextStylePalette_Styles();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.TextStyleDescriptionImpl
+         * <em>Text Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.TextStyleDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextStyleDescription()
+         * @generated
+         */
+        EClass TEXT_STYLE_DESCRIPTION = eINSTANCE.getTextStyleDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXT_STYLE_DESCRIPTION__NAME = eINSTANCE.getTextStyleDescription_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Foreground Color Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXT_STYLE_DESCRIPTION__FOREGROUND_COLOR_EXPRESSION = eINSTANCE.getTextStyleDescription_ForegroundColorExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Background Color Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXT_STYLE_DESCRIPTION__BACKGROUND_COLOR_EXPRESSION = eINSTANCE.getTextStyleDescription_BackgroundColorExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Is Bold Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXT_STYLE_DESCRIPTION__IS_BOLD_EXPRESSION = eINSTANCE.getTextStyleDescription_IsBoldExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Is Italic Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXT_STYLE_DESCRIPTION__IS_ITALIC_EXPRESSION = eINSTANCE.getTextStyleDescription_IsItalicExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Is Underline Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXT_STYLE_DESCRIPTION__IS_UNDERLINE_EXPRESSION = eINSTANCE.getTextStyleDescription_IsUnderlineExpression();
 
         /**
          * The meta object literal for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc

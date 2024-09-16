@@ -17,7 +17,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/kindExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/iconURLExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/treeItemIdExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/treeItemLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/treeItemObjectExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/elementsExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/hasChildrenExpression"/>
@@ -26,6 +25,17 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/editableExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/selectableExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/deletableExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//TreeDescription/treeItemLabelDescriptions"/>
     </genClasses>
+    <genClasses ecoreClass="tree.ecore#//TreeItemLabelDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemLabelDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemLabelDescription/preconditionExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//TreeItemLabelDescription/children"/>
+    </genClasses>
+    <genClasses ecoreClass="tree.ecore#//TreeItemLabelFragmentDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemLabelFragmentDescription/labelExpression"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference tree.ecore#//TreeItemLabelFragmentDescription/style"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="tree.ecore#//TreeItemLabelElementDescription"/>
   </genPackages>
 </genmodel:GenModel>

@@ -12,11 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.tree.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
@@ -31,8 +39,6 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemIdExpression <em>Tree Item Id
  * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemLabelExpression <em>Tree Item
- * Label Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemObjectExpression <em>Tree Item
  * Object Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getElementsExpression <em>Elements
@@ -49,6 +55,8 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getDeletableExpression <em>Deletable
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemLabelDescriptions <em>Tree
+ * Item Label Descriptions</em>}</li>
  * </ul>
  *
  * @generated
@@ -113,26 +121,6 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
      * @ordered
      */
     protected String treeItemIdExpression = TREE_ITEM_ID_EXPRESSION_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getTreeItemLabelExpression() <em>Tree Item Label Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getTreeItemLabelExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String TREE_ITEM_LABEL_EXPRESSION_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getTreeItemLabelExpression() <em>Tree Item Label Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getTreeItemLabelExpression()
-     * @generated
-     * @ordered
-     */
-    protected String treeItemLabelExpression = TREE_ITEM_LABEL_EXPRESSION_EDEFAULT;
 
     /**
      * The default value of the '{@link #getTreeItemObjectExpression() <em>Tree Item Object Expression</em>}' attribute.
@@ -295,6 +283,16 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
     protected String deletableExpression = DELETABLE_EXPRESSION_EDEFAULT;
 
     /**
+     * The cached value of the '{@link #getTreeItemLabelDescriptions() <em>Tree Item Label Descriptions</em>}'
+     * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getTreeItemLabelDescriptions()
+     * @generated
+     * @ordered
+     */
+    protected EList<TreeItemLabelDescription> treeItemLabelDescriptions;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -380,29 +378,6 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
         this.treeItemIdExpression = newTreeItemIdExpression;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION, oldTreeItemIdExpression, this.treeItemIdExpression));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getTreeItemLabelExpression() {
-        return this.treeItemLabelExpression;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setTreeItemLabelExpression(String newTreeItemLabelExpression) {
-        String oldTreeItemLabelExpression = this.treeItemLabelExpression;
-        this.treeItemLabelExpression = newTreeItemLabelExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_EXPRESSION, oldTreeItemLabelExpression, this.treeItemLabelExpression));
     }
 
     /**
@@ -595,6 +570,33 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
      * @generated
      */
     @Override
+    public EList<TreeItemLabelDescription> getTreeItemLabelDescriptions() {
+        if (this.treeItemLabelDescriptions == null) {
+            this.treeItemLabelDescriptions = new EObjectContainmentEList<>(TreeItemLabelDescription.class, this, TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS);
+        }
+        return this.treeItemLabelDescriptions;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
+                return ((InternalEList<?>) this.getTreeItemLabelDescriptions()).basicRemove(otherEnd, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
@@ -603,8 +605,6 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
                 return this.getIconURLExpression();
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
                 return this.getTreeItemIdExpression();
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_EXPRESSION:
-                return this.getTreeItemLabelExpression();
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
                 return this.getTreeItemObjectExpression();
             case TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION:
@@ -621,6 +621,8 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
                 return this.getSelectableExpression();
             case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
                 return this.getDeletableExpression();
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
+                return this.getTreeItemLabelDescriptions();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -630,6 +632,7 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
      *
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
@@ -641,9 +644,6 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
                 return;
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
                 this.setTreeItemIdExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_EXPRESSION:
-                this.setTreeItemLabelExpression((String) newValue);
                 return;
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
                 this.setTreeItemObjectExpression((String) newValue);
@@ -669,6 +669,10 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
             case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
                 this.setDeletableExpression((String) newValue);
                 return;
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
+                this.getTreeItemLabelDescriptions().clear();
+                this.getTreeItemLabelDescriptions().addAll((Collection<? extends TreeItemLabelDescription>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -689,9 +693,6 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
                 return;
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
                 this.setTreeItemIdExpression(TREE_ITEM_ID_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_EXPRESSION:
-                this.setTreeItemLabelExpression(TREE_ITEM_LABEL_EXPRESSION_EDEFAULT);
                 return;
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
                 this.setTreeItemObjectExpression(TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT);
@@ -717,6 +718,9 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
             case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
                 this.setDeletableExpression(DELETABLE_EXPRESSION_EDEFAULT);
                 return;
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
+                this.getTreeItemLabelDescriptions().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -735,8 +739,6 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
                 return ICON_URL_EXPRESSION_EDEFAULT == null ? this.iconURLExpression != null : !ICON_URL_EXPRESSION_EDEFAULT.equals(this.iconURLExpression);
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
                 return TREE_ITEM_ID_EXPRESSION_EDEFAULT == null ? this.treeItemIdExpression != null : !TREE_ITEM_ID_EXPRESSION_EDEFAULT.equals(this.treeItemIdExpression);
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_EXPRESSION:
-                return TREE_ITEM_LABEL_EXPRESSION_EDEFAULT == null ? this.treeItemLabelExpression != null : !TREE_ITEM_LABEL_EXPRESSION_EDEFAULT.equals(this.treeItemLabelExpression);
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
                 return TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT == null ? this.treeItemObjectExpression != null : !TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT.equals(this.treeItemObjectExpression);
             case TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION:
@@ -753,6 +755,8 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
                 return SELECTABLE_EXPRESSION_EDEFAULT == null ? this.selectableExpression != null : !SELECTABLE_EXPRESSION_EDEFAULT.equals(this.selectableExpression);
             case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
                 return DELETABLE_EXPRESSION_EDEFAULT == null ? this.deletableExpression != null : !DELETABLE_EXPRESSION_EDEFAULT.equals(this.deletableExpression);
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
+                return this.treeItemLabelDescriptions != null && !this.treeItemLabelDescriptions.isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -774,8 +778,6 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
         result.append(this.iconURLExpression);
         result.append(", treeItemIdExpression: ");
         result.append(this.treeItemIdExpression);
-        result.append(", treeItemLabelExpression: ");
-        result.append(this.treeItemLabelExpression);
         result.append(", treeItemObjectExpression: ");
         result.append(this.treeItemObjectExpression);
         result.append(", elementsExpression: ");

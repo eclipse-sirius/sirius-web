@@ -66,6 +66,18 @@ public class ViewBuilder {
         return this;
     }
 
+    /**
+     * Setter for TextStylePalettes.
+     *
+     * @generated
+     */
+    public ViewBuilder textStylePalettes(org.eclipse.sirius.components.view.TextStylePalette ... values) {
+        for (org.eclipse.sirius.components.view.TextStylePalette value : values) {
+            this.getView().getTextStylePalettes().add(value);
+        }
+        return this;
+    }
+
 
 }
 

@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.View#getDescriptions <em>Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.View#getColorPalettes <em>Color Palettes</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.View#getTextStylePalettes <em>Text Style Palettes</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getView()
@@ -53,5 +54,17 @@ public interface View extends EObject {
      * @generated
      */
     EList<ColorPalette> getColorPalettes();
+
+    /**
+     * Returns the value of the '<em><b>Text Style Palettes</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.TextStylePalette}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Text Style Palettes</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getView_TextStylePalettes()
+     * @model containment="true" keys="name"
+     * @generated
+     */
+    EList<TextStylePalette> getTextStylePalettes();
 
 } // View

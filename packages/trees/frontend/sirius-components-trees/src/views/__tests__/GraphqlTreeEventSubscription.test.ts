@@ -53,6 +53,8 @@ const getDocumentSubscription = gql`
           strikeoutColor
           underlineColor
           borderColor
+          isBold
+          isItalic
         }
       }
     }

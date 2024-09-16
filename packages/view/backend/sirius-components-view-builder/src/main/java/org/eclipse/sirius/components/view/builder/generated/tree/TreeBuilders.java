@@ -29,5 +29,25 @@ public class TreeBuilders {
         return new TreeDescriptionBuilder();
     }
 
+    /**
+     * Instantiate a TreeItemLabelDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public TreeItemLabelDescriptionBuilder newTreeItemLabelDescription() {
+        return new TreeItemLabelDescriptionBuilder();
+    }
+
+    /**
+     * Instantiate a TreeItemLabelFragmentDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public TreeItemLabelFragmentDescriptionBuilder newTreeItemLabelFragmentDescription() {
+        return new TreeItemLabelFragmentDescriptionBuilder();
+    }
+
 
 }

@@ -40,6 +40,8 @@ export interface GQLStyledStringFragmentStyle {
   borderColor: string;
   borderStyle: GQLBorderStyle;
   underlineStyle: GQLUnderLineStyle;
+  isBold: boolean;
+  isItalic: boolean;
 }
 
 export type GQLUnderLineStyle = 'NONE' | 'SOLID' | 'DOUBLE' | 'DOTTED' | 'DASHED' | 'WAVY';

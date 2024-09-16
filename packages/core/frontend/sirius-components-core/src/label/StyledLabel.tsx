@@ -77,7 +77,7 @@ export const getTextFromStyledString = (styledString: GQLStyledString): string =
 
 const styledLabelStyle = (gqlLabelStyle: GQLStyledStringFragmentStyle): React.CSSProperties => {
   let textDecorations: String[] = [];
-  if (gqlLabelStyle.underlineStyle) {
+  if (gqlLabelStyle.underlineStyle !== 'NONE') {
     textDecorations.push('underline');
     textDecorations.push(gqlLabelStyle.underlineStyle.toString());
     if (gqlLabelStyle.underlineColor) {
@@ -102,6 +102,8 @@ const styledLabelStyle = (gqlLabelStyle: GQLStyledStringFragmentStyle): React.CS
     color: gqlLabelStyle.foregroundColor,
     textDecoration: textDecorations.join(' '),
     border: border.join(' '),
+    fontWeight: gqlLabelStyle.isBold ? 'bold' : 'normal',
+    fontStyle: gqlLabelStyle.isItalic ? 'italic' : 'normal',
   };
   return style;
 };

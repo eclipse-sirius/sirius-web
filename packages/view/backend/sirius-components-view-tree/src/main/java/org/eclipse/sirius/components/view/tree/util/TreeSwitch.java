@@ -17,6 +17,9 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
@@ -79,6 +82,29 @@ public class TreeSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case TreePackage.TREE_ITEM_LABEL_DESCRIPTION: {
+                TreeItemLabelDescription treeItemLabelDescription = (TreeItemLabelDescription) theEObject;
+                T result = this.caseTreeItemLabelDescription(treeItemLabelDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION: {
+                TreeItemLabelFragmentDescription treeItemLabelFragmentDescription = (TreeItemLabelFragmentDescription) theEObject;
+                T result = this.caseTreeItemLabelFragmentDescription(treeItemLabelFragmentDescription);
+                if (result == null)
+                    result = this.caseTreeItemLabelElementDescription(treeItemLabelFragmentDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case TreePackage.TREE_ITEM_LABEL_ELEMENT_DESCRIPTION: {
+                TreeItemLabelElementDescription treeItemLabelElementDescription = (TreeItemLabelElementDescription) theEObject;
+                T result = this.caseTreeItemLabelElementDescription(treeItemLabelElementDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -95,6 +121,51 @@ public class TreeSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseTreeDescription(TreeDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Item Label Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Item Label Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTreeItemLabelDescription(TreeItemLabelDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Item Label Fragment Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Item Label Fragment Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTreeItemLabelFragmentDescription(TreeItemLabelFragmentDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Item Label Element Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Item Label Element Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTreeItemLabelElementDescription(TreeItemLabelElementDescription object) {
         return null;
     }
 

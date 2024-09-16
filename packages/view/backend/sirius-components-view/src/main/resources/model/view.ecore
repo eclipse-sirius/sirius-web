@@ -11,6 +11,8 @@
         eType="#//RepresentationDescription" containment="true" eKeys="#//RepresentationDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="colorPalettes" upperBound="-1"
         eType="#//ColorPalette" containment="true" eKeys="#//ColorPalette/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="textStylePalettes" upperBound="-1"
+        eType="#//TextStylePalette" containment="true" eKeys="#//TextStylePalette/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ColorPalette">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="#//Identifier"/>
@@ -93,5 +95,23 @@
         eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="iteratorName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TextStylePalette">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="#//Identifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="styles" upperBound="-1"
+        eType="#//TextStyleDescription" containment="true" eKeys="#//TextStyleDescription/name"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TextStyleDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="#//Identifier"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColorExpression"
+        eType="#//InterpretedExpression" defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColorExpression"
+        eType="#//InterpretedExpression" defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isBoldExpression" eType="#//InterpretedExpression"
+        defaultValueLiteral="aql:'false'"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isItalicExpression" eType="#//InterpretedExpression"
+        defaultValueLiteral="aql:'false'"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnderlineExpression"
+        eType="#//InterpretedExpression" defaultValueLiteral="aql:'false'"/>
   </eClassifiers>
 </ecore:EPackage>

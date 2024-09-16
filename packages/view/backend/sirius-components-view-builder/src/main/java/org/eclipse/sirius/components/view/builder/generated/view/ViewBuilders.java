@@ -129,5 +129,25 @@ public class ViewBuilders {
         return new ForBuilder();
     }
 
+    /**
+     * Instantiate a TextStylePaletteBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public TextStylePaletteBuilder newTextStylePalette() {
+        return new TextStylePaletteBuilder();
+    }
+
+    /**
+     * Instantiate a TextStyleDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public TextStyleDescriptionBuilder newTextStyleDescription() {
+        return new TextStyleDescriptionBuilder();
+    }
+
 
 }

@@ -81,7 +81,7 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
                 .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .treeItemIdProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewTreeDescription.getTreeItemIdExpression()))
                 .treeItemObjectProvider(variableManager -> this.evaluateObject(interpreter, variableManager, viewTreeDescription.getTreeItemObjectExpression()))
-                .treeItemLabelProvider(variableManager -> StyledString.of(this.evaluateString(interpreter, variableManager, viewTreeDescription.getTreeItemLabelExpression())))
+                .treeItemLabelProvider(variableManager -> this.getTreeItemLabel(interpreter, variableManager, viewTreeDescription))
                 .iconURLProvider(variableManager -> this.evaluateStringList(interpreter, variableManager, viewTreeDescription.getIconURLExpression()))
                 .editableProvider(variableManager -> this.evaluateBoolean(interpreter, variableManager, viewTreeDescription.getEditableExpression()))
                 .deletableProvider(variableManager -> this.evaluateBoolean(interpreter, variableManager, viewTreeDescription.getDeletableExpression()))
@@ -91,8 +91,7 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
                 .childrenProvider(variableManager -> this.evaluateObjectList(interpreter, variableManager, viewTreeDescription.getChildrenExpression()))
                 .parentObjectProvider(variableManager -> this.evaluateObject(interpreter, variableManager, viewTreeDescription.getParentExpression()))
                 .deleteHandler(this::getDeleteHandler)
-                .renameHandler(this::getRenameHandler)
-                ;
+                .renameHandler(this::getRenameHandler);
 
         return builder.build();
     }
@@ -207,5 +206,17 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
             }
         }
         return new Failure("");
+    }
+
+    private StyledString getTreeItemLabel(AQLInterpreter interpreter, VariableManager variableManager, org.eclipse.sirius.components.view.tree.TreeDescription viewTreeDescription) {
+        TreeItemStyleConverter styleConverter = new TreeItemStyleConverter(interpreter, variableManager.getVariables());
+        StyledString result = StyledString.of("");
+        var optionalTreeItemLabelDescription = viewTreeDescription.getTreeItemLabelDescriptions().stream()
+                .filter(description -> this.evaluateBoolean(interpreter, variableManager, description.getPreconditionExpression()))
+                .findFirst();
+        if (optionalTreeItemLabelDescription.isPresent()) {
+            result = styleConverter.convert(optionalTreeItemLabelDescription.get());
+        }
+        return result;
     }
 }

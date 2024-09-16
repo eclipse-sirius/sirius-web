@@ -28,105 +28,104 @@ import org.eclipse.sirius.components.view.provider.ViewEditPlugin;
  */
 public final class TreeEditPlugin extends EMFPlugin {
 
-    /**
-     * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public static final TreeEditPlugin INSTANCE = new TreeEditPlugin();
+	/**
+	 * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	public static final TreeEditPlugin INSTANCE = new TreeEditPlugin();
 
-    /**
-     * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private static Implementation plugin;
+	/**
+	 * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	private static Implementation plugin;
 
-    /**
-     * Create the instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public TreeEditPlugin() {
-        super(new ResourceLocator[] { ViewEditPlugin.INSTANCE, });
-    }
+	/**
+	 * Create the instance. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	public TreeEditPlugin() {
+		super(new ResourceLocator[] { ViewEditPlugin.INSTANCE, });
+	}
 
-    /**
-     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the singleton instance.
-     * @generated
-     */
-    @Override
-    public ResourceLocator getPluginResourceLocator() {
-        return plugin;
-    }
+	/**
+	 * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 *
+	 * @return the singleton instance.
+	 * @generated
+	 */
+	@Override
+	public ResourceLocator getPluginResourceLocator() {
+		return plugin;
+	}
 
-    /**
-     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the singleton instance.
-     * @generated
-     */
-    public static Implementation getPlugin() {
-        return plugin;
-    }
+	/**
+	 * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 *
+	 * @return the singleton instance.
+	 * @generated
+	 */
+	public static Implementation getPlugin() {
+		return plugin;
+	}
 
-    @Override
-    protected Object doGetImage(String key) throws IOException {
-        URL url = new URL(this.getBaseURL() + "icons/" + key + extensionFor(key));
-        InputStream inputStream = url.openStream();
-        inputStream.close();
-        return url;
-    }
+	@Override
+	protected Object doGetImage(String key) throws IOException {
+		URL url = new URL(this.getBaseURL() + "icons/" + key + extensionFor(key));
+		InputStream inputStream = url.openStream();
+		inputStream.close();
+		return url;
+	}
 
-    /**
-     * Computes the file extension to be used with the key to specify an image
-     * resource.
-     *
-     * @param key
-     *         the key for the imagine.
-     * @return the file extension to be used with the key to specify an image
-     * resource.
-     */
-    protected static String extensionFor(String key) {
-        String result = ".gif";
-        int index = key.lastIndexOf('.');
-        if (index != -1) {
-            String extension = key.substring(index + 1);
-            if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension)
-                    || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension)
-                    || "jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)
-                    || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension)
-                    || "svg".equalsIgnoreCase(extension)) {
-                result = "";
-            }
-        }
-        return result;
-    }
+	/**
+	 * Computes the file extension to be used with the key to specify an image
+	 * resource.
+	 *
+	 * @param key the key for the imagine.
+	 * @return the file extension to be used with the key to specify an image
+	 *         resource.
+	 */
+	protected static String extensionFor(String key) {
+		String result = ".gif";
+		int index = key.lastIndexOf('.');
+		if (index != -1) {
+			String extension = key.substring(index + 1);
+			if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension)
+					|| "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension)
+					|| "jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)
+					|| "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension)
+					|| "svg".equalsIgnoreCase(extension)) {
+				result = "";
+			}
+		}
+		return result;
+	}
 
-    /**
-     * The actual implementation of the Eclipse <b>Plugin</b>. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public static class Implementation extends EclipsePlugin {
+	/**
+	 * The actual implementation of the Eclipse <b>Plugin</b>. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	public static class Implementation extends EclipsePlugin {
 
-        /**
-         * Creates an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        public Implementation() {
-            super();
+		/**
+		 * Creates an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 *
+		 * @generated
+		 */
+		public Implementation() {
+			super();
 
-            // Remember the static instance.
-            //
-            plugin = this;
-        }
-    }
+			// Remember the static instance.
+			//
+			plugin = this;
+		}
+	}
 
 }

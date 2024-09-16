@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.TextStylePalette;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 
@@ -34,6 +35,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.impl.ViewImpl#getDescriptions <em>Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.ViewImpl#getColorPalettes <em>Color Palettes</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.ViewImpl#getTextStylePalettes <em>Text Style Palettes</em>}</li>
  * </ul>
  *
  * @generated
@@ -58,6 +60,16 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
      * @ordered
      */
     protected EList<ColorPalette> colorPalettes;
+
+    /**
+     * The cached value of the '{@link #getTextStylePalettes() <em>Text Style Palettes</em>}' containment reference
+     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getTextStylePalettes()
+     * @generated
+     * @ordered
+     */
+    protected EList<TextStylePalette> textStylePalettes;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -110,12 +122,27 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
      * @generated
      */
     @Override
+    public EList<TextStylePalette> getTextStylePalettes() {
+        if (this.textStylePalettes == null) {
+            this.textStylePalettes = new EObjectContainmentEList<>(TextStylePalette.class, this, ViewPackage.VIEW__TEXT_STYLE_PALETTES);
+        }
+        return this.textStylePalettes;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ViewPackage.VIEW__DESCRIPTIONS:
                 return ((InternalEList<?>) this.getDescriptions()).basicRemove(otherEnd, msgs);
             case ViewPackage.VIEW__COLOR_PALETTES:
                 return ((InternalEList<?>) this.getColorPalettes()).basicRemove(otherEnd, msgs);
+            case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
+                return ((InternalEList<?>) this.getTextStylePalettes()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -132,6 +159,8 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
                 return this.getDescriptions();
             case ViewPackage.VIEW__COLOR_PALETTES:
                 return this.getColorPalettes();
+            case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
+                return this.getTextStylePalettes();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -153,6 +182,10 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
                 this.getColorPalettes().clear();
                 this.getColorPalettes().addAll((Collection<? extends ColorPalette>) newValue);
                 return;
+            case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
+                this.getTextStylePalettes().clear();
+                this.getTextStylePalettes().addAll((Collection<? extends TextStylePalette>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -171,6 +204,9 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
             case ViewPackage.VIEW__COLOR_PALETTES:
                 this.getColorPalettes().clear();
                 return;
+            case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
+                this.getTextStylePalettes().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -187,6 +223,8 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
                 return this.descriptions != null && !this.descriptions.isEmpty();
             case ViewPackage.VIEW__COLOR_PALETTES:
                 return this.colorPalettes != null && !this.colorPalettes.isEmpty();
+            case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
+                return this.textStylePalettes != null && !this.textStylePalettes.isEmpty();
         }
         return super.eIsSet(featureID);
     }
