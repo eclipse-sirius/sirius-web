@@ -29,7 +29,6 @@ export interface TreeViewProps {
 }
 
 export interface TreeViewState {
-  autoExpandToRevealSelection: boolean;
   expanded: string[];
   maxDepth: number;
 }

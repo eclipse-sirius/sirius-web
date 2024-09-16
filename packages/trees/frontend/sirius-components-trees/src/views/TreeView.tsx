@@ -67,7 +67,6 @@ export const TreeView = ({
   onExpandedElementChange,
 }: TreeViewProps) => {
   const [state, setState] = useState<TreeViewState>({
-    autoExpandToRevealSelection: synchronizedWithSelection,
     expanded: [],
     maxDepth: 1,
   });
@@ -89,7 +88,7 @@ export const TreeView = ({
     .sort()
     .join(':');
   useEffect(() => {
-    if (state.autoExpandToRevealSelection) {
+    if (synchronizedWithSelection) {
       const variables: GQLGetTreePathVariables = {
         editingContextId,
         treeId: tree.id,
@@ -97,7 +96,7 @@ export const TreeView = ({
       };
       getTreePath({ variables });
     }
-  }, [editingContextId, tree, selectionKey, state.autoExpandToRevealSelection, getTreePath]);
+  }, [editingContextId, tree, selectionKey, synchronizedWithSelection, getTreePath]);
 
   useEffect(() => {
     if (!treePathLoading) {
@@ -165,10 +164,8 @@ export const TreeView = ({
       const newExpanded = [...expanded];
       newExpanded.splice(newExpanded.indexOf(id), 1);
 
-      // Disable synchronize mode on collapse
       setState((prevState) => ({
         ...prevState,
-        autoExpandToRevealSelection: false,
         expanded: newExpanded,
         maxDepth: Math.max(maxDepth, depth),
       }));
