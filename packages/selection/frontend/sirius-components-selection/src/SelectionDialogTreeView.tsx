@@ -13,7 +13,7 @@
 import { TreeItemActionProps, TreeView } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { SelectionDialogTreeViewProps, SelectionDialogTreeViewState } from './SelectionDialogTreeView.types';
 import { useSelectionDialogTreeSubscription } from './useSelectionDialogTreeSubscription';
@@ -47,9 +47,9 @@ export const SelectionDialogTreeView = ({
 
   const { tree } = useSelectionDialogTreeSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
 
-  const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
+  const onExpandedElementChange = useCallback((expanded: string[], maxDepth: number) => {
     setState((prevState) => ({ ...prevState, expanded, maxDepth }));
-  };
+  }, []);
 
   return (
     <div className={classes.borderStyle}>

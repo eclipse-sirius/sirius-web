@@ -14,7 +14,7 @@
 import { TreeItemActionProps, TreeView } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
-import { useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ModelBrowserFilterBar } from './ModelBrowserFilterBar';
 import { ModelBrowserTreeViewProps, ModelBrowserTreeViewState } from './ModelBrowserTreeView.types';
@@ -57,9 +57,9 @@ export const ModelBrowserTreeView = ({
   }&descriptionId=${encodeURIComponent(widget.descriptionId)}&isContainment=${widget.reference.containment}`;
   const { tree } = useModelBrowserSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
 
-  const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
+  const onExpandedElementChange = useCallback((expanded: string[], maxDepth: number) => {
     setState((prevState) => ({ ...prevState, expanded, maxDepth }));
-  };
+  }, []);
 
   return (
     <>
@@ -90,7 +90,7 @@ export const ModelBrowserTreeView = ({
   );
 };
 
-const WidgetReferenceTreeItemAction = ({ onExpandAll, item, isHovered }: TreeItemActionProps) => {
+const WidgetReferenceTreeItemAction = memo(({ onExpandAll, item, isHovered }: TreeItemActionProps) => {
   if (!onExpandAll || !item || !item.hasChildren || !isHovered) {
     return null;
   }
@@ -105,4 +105,4 @@ const WidgetReferenceTreeItemAction = ({ onExpandAll, item, isHovered }: TreeIte
       <UnfoldMoreIcon style={{ fontSize: 12 }} />
     </IconButton>
   );
-};
+});

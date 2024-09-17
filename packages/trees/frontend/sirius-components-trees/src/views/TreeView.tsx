@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useLazyQuery } from '@apollo/client';
 import { DataExtension, useData, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Tree } from '../trees/Tree';
 import {
   GQLGetExpandAllTreePathData,
@@ -62,7 +62,7 @@ export const TreeView = ({
   synchronizedWithSelection,
   textToHighlight,
   textToFilter,
-  markedItemIds = [],
+  markedItemIds,
   treeItemActionRender,
   onExpandedElementChange,
 }: TreeViewProps) => {
@@ -158,7 +158,7 @@ export const TreeView = ({
     }
   }, [treePathError]);
 
-  const onExpand = (id: string, depth: number) => {
+  const onExpand = useCallback((id: string, depth: number) => {
     const { expanded, maxDepth } = state;
 
     if (expanded.includes(id)) {
@@ -175,33 +175,36 @@ export const TreeView = ({
     } else {
       setState((prevState) => ({ ...prevState, expanded: [...expanded, id], maxDepth: Math.max(maxDepth, depth) }));
     }
-  };
+  }, []);
 
   useEffect(() => {
     onExpandedElementChange(state.expanded, state.maxDepth);
   }, [state.expanded, state.maxDepth]);
 
-  const onExpandAll = (treeItem: GQLTreeItem) => {
+  const onExpandAll = useCallback((treeItem: GQLTreeItem) => {
     const variables: GQLGetExpandAllTreePathVariables = {
       editingContextId,
       treeId: tree.id,
       treeItemId: treeItem.id,
     };
     getExpandAllTreePath({ variables });
-  };
+  }, []);
 
   const { data: treeConverters }: DataExtension<TreeConverter[]> = useData(treeViewTreeConverterExtensionPoint);
 
-  let convertedTree: GQLTree = tree;
-  treeConverters.forEach((treeConverter) => {
-    convertedTree = treeConverter.convert(editingContextId, convertedTree);
-  });
+  let renderedTree: GQLTree = useMemo(() => {
+    let convertedTree: GQLTree = tree;
+    treeConverters.forEach((treeConverter) => {
+      convertedTree = treeConverter.convert(editingContextId, convertedTree);
+    });
+    return convertedTree;
+  }, [tree]);
 
   return (
     <div data-testid={treeId}>
       <Tree
         editingContextId={editingContextId}
-        tree={convertedTree}
+        tree={renderedTree}
         onExpand={onExpand}
         onExpandAll={onExpandAll}
         readOnly={readOnly}

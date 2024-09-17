@@ -21,7 +21,7 @@ import {
   useTreeFilters,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ExplorerViewState } from './ExplorerView.types';
 import { useExplorerSubscription } from './useExplorerSubscription';
@@ -38,18 +38,21 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
 }));
 
-export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
+const initialState: ExplorerViewState = {
+  synchronizedWithSelection: true,
+  filterBar: false,
+  filterBarText: '',
+  filterBarTreeFiltering: false,
+  treeFilters: [],
+  expanded: [],
+  maxDepth: 1,
+};
+
+const TREE_ID = 'explorer://';
+
+export const ExplorerView = memo(({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const { classes: styles } = useStyles();
 
-  const initialState: ExplorerViewState = {
-    synchronizedWithSelection: true,
-    filterBar: false,
-    filterBarText: '',
-    filterBarTreeFiltering: false,
-    treeFilters: [],
-    expanded: [],
-    maxDepth: 1,
-  };
   const [state, setState] = useState<ExplorerViewState>(initialState);
   const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
     (contribution) => contribution.props.component
@@ -118,9 +121,9 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       />
     );
   }
-  const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
+  const onExpandedElementChange = useCallback((expanded: string[], maxDepth: number) => {
     setState((prevState) => ({ ...prevState, expanded, maxDepth }));
-  };
+  }, []);
 
   return (
     <div className={styles.treeView} ref={treeElement}>
@@ -147,7 +150,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
           <TreeView
             editingContextId={editingContextId}
             readOnly={readOnly}
-            treeId={'explorer://'}
+            treeId={TREE_ID}
             tree={tree}
             enableMultiSelection={true}
             synchronizedWithSelection={state.synchronizedWithSelection}
@@ -159,4 +162,4 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       </div>
     </div>
   );
-};
+});
