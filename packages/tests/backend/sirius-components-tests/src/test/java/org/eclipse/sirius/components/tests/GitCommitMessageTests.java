@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -115,7 +115,7 @@ public class GitCommitMessageTests {
         int beginIndex = title.indexOf(START);
         int endIndex = title.indexOf(END);
         assertThat(beginIndex).isLessThan(endIndex);
-        
+
         assertThat(title.length()).isGreaterThan(endIndex + 3);
         assertThat(title.substring(endIndex + 1, endIndex + 2)).isBlank();
         assertThat(title.substring(endIndex + 2, endIndex + 3)).isUpperCase();
@@ -127,14 +127,12 @@ public class GitCommitMessageTests {
             try {
                 Integer.valueOf(tag);
 
-                // @formatter:off
                 assertThat(lines)
                     .withFailMessage(MISSING_ISSUE_URL_FOOTER)
                     .filteredOn(line -> line.trim().startsWith(ISSUE_URL_PREFIX) && line.endsWith(tag))
                     .hasSize(1);
-                // @formatter:on
             } catch (NumberFormatException exception) {
-                fail(INVALID_GIT_MESSAGE_TITLE);
+                fail(INVALID_GIT_MESSAGE_TITLE + ": \"" + title + "\"");
             }
         }
 

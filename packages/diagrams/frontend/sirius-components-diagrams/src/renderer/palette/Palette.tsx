@@ -17,6 +17,7 @@ import {
   useComponents,
   useDeletionConfirmationDialog,
   useMultiToast,
+  useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import AdjustIcon from '@mui/icons-material/Adjust';
 import TonalityIcon from '@mui/icons-material/Tonality';
@@ -229,6 +230,7 @@ export const Palette = ({
   const { addErrorMessage, addMessages } = useMultiToast();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { showDialog } = useDialog();
+  const { setSelection } = useSelection();
 
   const paletteToolComponents: ComponentExtension<DiagramPaletteToolComponentProps>[] = useComponents(
     diagramPaletteToolExtensionPoint
@@ -348,6 +350,10 @@ export const Palette = ({
         if (data) {
           const { invokeSingleClickOnDiagramElementTool } = data;
           if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
+            const { newSelection } = invokeSingleClickOnDiagramElementTool;
+            if (newSelection?.entries.length ?? 0 > 0) {
+              setSelection(newSelection);
+            }
             addMessages(invokeSingleClickOnDiagramElementTool.messages);
           }
           if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {
