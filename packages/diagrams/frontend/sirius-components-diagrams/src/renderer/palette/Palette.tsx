@@ -141,7 +141,6 @@ const invokeSingleClickOnDiagramElementToolMutation = gql`
         newSelection {
           entries {
             id
-            label
             kind
           }
         }

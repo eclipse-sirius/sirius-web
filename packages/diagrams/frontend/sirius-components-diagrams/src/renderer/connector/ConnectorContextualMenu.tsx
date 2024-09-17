@@ -81,7 +81,6 @@ export const invokeSingleClickOnTwoDiagramElementsToolMutation = gql`
         newSelection {
           entries {
             id
-            label
             kind
           }
         }
