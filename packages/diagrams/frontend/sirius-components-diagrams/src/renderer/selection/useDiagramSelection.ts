@@ -74,13 +74,12 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
         ...getEdges().map((edge) => edge.data?.targetObjectId ?? ''),
       ];
       const selectionEntries: SelectionEntry[] = [...nodes, ...edges].reduce((uniqueIds, node) => {
-        const { targetObjectId, targetObjectKind, targetObjectLabel } = node.data;
+        const { targetObjectId, targetObjectKind } = node.data;
         const existingEntry = uniqueIds.find((entry: SelectionEntry) => entry.id === targetObjectId);
         if (!existingEntry) {
           uniqueIds.push({
             id: targetObjectId,
             kind: targetObjectKind,
-            label: targetObjectLabel,
           });
         }
         return uniqueIds;
