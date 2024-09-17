@@ -33,10 +33,12 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
       .map((entry) => entry.id)
       .filter((id) => diagramElementIds.includes(id))
       .sort((id1: string, id2: string) => id1.localeCompare(id2));
-    const selectedDiagramElementIds = [...getNodes(), ...getEdges()]
-      .filter((element) => element.selected)
-      .map((element) => element.data?.targetObjectId ?? '')
-      .sort((id1: string, id2: string) => id1.localeCompare(id2));
+    const selectedDiagramElementIds = new Set(
+      [...getNodes(), ...getEdges()]
+        .filter((element) => element.selected)
+        .map((element) => element.data?.targetObjectId ?? '')
+        .sort((id1: string, id2: string) => id1.localeCompare(id2))
+    );
     if (JSON.stringify(selectionDiagramEntryIds) !== JSON.stringify(selectedDiagramElementIds)) {
       const newNodeSelection = getNodes().map((node) => {
         return { ...node, selected: selectionDiagramEntryIds.includes(node.data.targetObjectId) };
@@ -68,14 +70,19 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
       ];
       const selectionEntries: SelectionEntry[] = [...nodes, ...edges]
         .filter((element) => element.selected)
-        .map((node) => {
+        .reduce((uniqueIds, node) => {
           const { targetObjectId, targetObjectKind, targetObjectLabel } = node.data;
-          return {
-            id: targetObjectId,
-            kind: targetObjectKind,
-            label: targetObjectLabel,
-          };
-        });
+          const existingEntry = uniqueIds.find((entry: SelectionEntry) => entry.id === targetObjectId);
+          if (!existingEntry) {
+            uniqueIds.push({
+              id: targetObjectId,
+              kind: targetObjectKind,
+              label: targetObjectLabel,
+            });
+          }
+          return uniqueIds;
+        }, []);
+
       const selectionDiagramEntryIds = selection.entries
         .map((selectionEntry) => selectionEntry.id)
         .filter((id) => diagramElementIds.includes(id))
