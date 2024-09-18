@@ -122,14 +122,16 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
-                .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                        .map(IEditingContext::getId)
+                        .orElse(null))
                 .iconURLProvider(this::getImageURL)
                 .editableProvider(this::isEditable)
                 .deletableProvider(this::isDeletable)
                 .selectableProvider(isSelectableProvider)
                 .elementsProvider(elementsProvider)
-                .hasChildrenProvider(variableManager -> this.hasChildren(variableManager, isSelectableProvider))
-                .childrenProvider(variableManager -> this.getChildren(variableManager, isSelectableProvider))
+                .hasChildrenProvider(variableManager -> this.hasChildren(variableManager))
+                .childrenProvider(variableManager -> this.getChildren(variableManager))
                 // This predicate will NOT be used while creating the model browser, but we don't want to see the description of the
                 // model browser in the list of representations that can be created. Thus, we will return false all the time.
                 .canCreatePredicate(variableManager -> false)
@@ -146,11 +148,14 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
         if (self instanceof Resource) {
             isSelectable = true;
         } else if (self instanceof EObject selfEObject && referenceKind != null) {
-            var optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class).map(IEMFEditingContext::getDomain);
+            var optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+                    .map(IEMFEditingContext::getDomain);
             if (optionalEditingDomain.isPresent()) {
                 Collection<?> newChildDescriptors = optionalEditingDomain.get().getNewChildDescriptors(selfEObject, null);
 
-                isSelectable = newChildDescriptors.stream().filter(CommandParameter.class::isInstance).map(CommandParameter.class::cast)
+                isSelectable = newChildDescriptors.stream()
+                        .filter(CommandParameter.class::isInstance)
+                        .map(CommandParameter.class::cast)
                         .anyMatch(commandParameter -> referenceKind.isInstance(commandParameter.getValue()));
             }
         }
@@ -174,7 +179,9 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
             String ownerId = parameters.get("ownerId").get(0);
 
-            return this.objectService.getObject(optionalEditingContext.get(), ownerId).filter(EObject.class::isInstance).map(EObject.class::cast);
+            return this.objectService.getObject(optionalEditingContext.get(), ownerId)
+                    .filter(EObject.class::isInstance)
+                    .map(EObject.class::cast);
         } else {
             return Optional.empty();
         }
@@ -191,7 +198,10 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
             String ePackageName = this.emfKindService.getEPackageName(refContainer);
             String eClassName = this.emfKindService.getEClassName(refContainer);
 
-            return this.findEPackage(ePackageRegistry, ePackageName).map(ePackage -> ePackage.getEClassifier(eClassName)).filter(EClass.class::isInstance).map(EClass.class::cast);
+            return this.findEPackage(ePackageRegistry, ePackageName)
+                    .map(ePackage -> ePackage.getEClassifier(eClassName))
+                    .filter(EClass.class::isInstance)
+                    .map(EClass.class::cast);
         } else {
             return Optional.empty();
         }
@@ -208,7 +218,10 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
             String ePackageName = this.emfKindService.getEPackageName(kind);
             String eClassName = this.emfKindService.getEClassName(kind);
 
-            return this.findEPackage(ePackageRegistry, ePackageName).map(ePackage -> ePackage.getEClassifier(eClassName)).filter(EClass.class::isInstance).map(EClass.class::cast);
+            return this.findEPackage(ePackageRegistry, ePackageName)
+                    .map(ePackage -> ePackage.getEClassifier(eClassName))
+                    .filter(EClass.class::isInstance)
+                    .map(EClass.class::cast);
         } else {
             return Optional.empty();
         }
@@ -337,26 +350,18 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
         return List.of();
     }
 
-    private boolean hasChildren(VariableManager variableManager, Function<VariableManager, Boolean> isSelectableProvider) {
+    private boolean hasChildren(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         boolean hasChildren = false;
         if (self instanceof Resource resource) {
             hasChildren = !resource.getContents().isEmpty();
         } else if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
-            hasChildren = hasChildren && this.hasCompatibleDescendants(variableManager, eObject, false, isSelectableProvider);
         }
         return hasChildren;
     }
 
-    private boolean hasCompatibleDescendants(VariableManager variableManager, EObject eObject, boolean isDescendant, Function<VariableManager, Boolean> isSelectableProvider) {
-        VariableManager childVariableManager = variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, eObject);
-        return isDescendant && isSelectableProvider.apply(childVariableManager)
-                || eObject.eContents().stream().anyMatch(eContent -> this.hasCompatibleDescendants(childVariableManager, eContent, true, isSelectableProvider));
-    }
-
-    private List<Object> getChildren(VariableManager variableManager, Function<VariableManager, Boolean> isSelectableProvider) {
+    private List<Object> getChildren(VariableManager variableManager) {
         List<Object> result = new ArrayList<>();
 
         List<String> expandedIds = new ArrayList<>();
@@ -380,15 +385,6 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
                 }
             }
         }
-        result.removeIf(object -> {
-            if (object instanceof EObject eObject) {
-                VariableManager childVariableManager = variableManager.createChild();
-                childVariableManager.put(VariableManager.SELF, eObject);
-                return !isSelectableProvider.apply(childVariableManager) && !this.hasChildren(childVariableManager, isSelectableProvider);
-            } else {
-                return false;
-            }
-        });
         return result;
     }
 

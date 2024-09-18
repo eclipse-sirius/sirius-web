@@ -57,6 +57,7 @@ Both `IInput` and `IDomainEvent` implement `ICause` and will thus be used to ind
 - https://github.com/eclipse-sirius/sirius-web/issues/3155[#3155] [core] Propagate the cause of the events in Sirius Web.
 The interfaces `IInput` and `IDomainEvent` are now both extending `ICause` which let us capture the causes of a domain event recursively.
 An event may have been caused by another event or caused by an input received from the frontend for example.
+- https://github.com/eclipse-sirius/sirius-web/issues/4014[#4014] [forms] Improve the performance of the reference widget and let end users view all they can need to create new references
 
 == v2024.9.0
 
