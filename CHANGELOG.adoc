@@ -135,6 +135,7 @@ See `ProjectDownloadMenuItemExtension` for an example.
 _Warning:_ make sure all contributions return an actual MUI `MenuItem` component.
 ** `projectContextMenuContainerExtensionPoint`: can be used to wrap the menu inside a custom container, for example to add more context for the items or to completely replace the context menu.
 - https://github.com/eclipse-sirius/sirius-web/issues/3980[#3980] [diagram] Add _Elements to Select Expression_ on _NodeTool_ and _EdgeTool_ to control which semantic elements should be selected after the tool's successful execution
+- https://github.com/eclipse-sirius/sirius-web/issues/4048[#4048] [core] Add the ability to undo/redo only semantic changes after a mutation with crtl+z or ctrl+y on the edit project view (this does not include deleting a resource)
 
 === Improvements
 

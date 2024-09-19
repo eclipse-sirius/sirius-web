@@ -1,0 +1,20 @@
+extend type Mutation {
+    undo(input : UndoInput!) : UndoPayload!
+    redo(input : RedoInput!) : UndoPayload!
+}
+
+input RedoInput {
+    id: ID!
+    editingContextId: ID!
+    mutationId: ID!
+}
+
+input UndoInput {
+    id: ID!
+    editingContextId: ID!
+    mutationId: ID!
+}
+
+union UndoPayload = ErrorPayload | SuccessPayload
+
+union RedoPayload = ErrorPayload | SuccessPayload
