@@ -109,12 +109,13 @@ export const Tree = ({
     <>
       <div ref={treeElement}>
         <ul className={classes.ul} data-testid="tree-root-elements">
-          {tree.children.map((item) => (
+          {tree.children.map((item, index) => (
             <li key={item.id}>
               <TreeItem
                 editingContextId={editingContextId}
                 treeId={tree.id}
                 item={item}
+                itemIndex={index}
                 depth={1}
                 onExpand={onExpand}
                 onExpandAll={onExpandAll}

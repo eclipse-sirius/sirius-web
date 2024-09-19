@@ -41,6 +41,12 @@ public interface IMessageService {
 
     String unpinSelectedElements();
 
+    String unavailableFeature();
+
+    String alreadySetFeature();
+
+    String invalidDroppedObject();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -100,6 +106,21 @@ public interface IMessageService {
 
         @Override
         public String unpinSelectedElements() {
+            return "";
+        }
+
+        @Override
+        public String unavailableFeature() {
+            return "";
+        }
+
+        @Override
+        public String alreadySetFeature() {
+            return "";
+        }
+
+        @Override
+        public String invalidDroppedObject() {
             return "";
         }
     }

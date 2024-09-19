@@ -87,4 +87,19 @@ public class MessageService implements IMessageService {
     public String unpinSelectedElements() {
         return this.messageSourceAccessor.getMessage("UNPIN_SELECTED_ELEMENTS");
     }
+
+    @Override
+    public String unavailableFeature() {
+        return this.messageSourceAccessor.getMessage("UNAVAILABLE_FEATURE");
+    }
+
+    @Override
+    public String alreadySetFeature() {
+        return this.messageSourceAccessor.getMessage("ALREADY_SET_FEATURE");
+    }
+
+    @Override
+    public String invalidDroppedObject() {
+        return this.messageSourceAccessor.getMessage("INVALID_DROPPED_OBJECT");
+    }
 }

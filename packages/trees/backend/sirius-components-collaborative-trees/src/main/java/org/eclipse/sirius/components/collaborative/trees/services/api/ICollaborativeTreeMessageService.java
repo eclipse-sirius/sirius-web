@@ -23,6 +23,8 @@ public interface ICollaborativeTreeMessageService {
 
     String noSingleClickTreeItemExecutor();
 
+    String noDropHandler();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -37,6 +39,11 @@ public interface ICollaborativeTreeMessageService {
 
         @Override
         public String noSingleClickTreeItemExecutor() {
+            return "";
+        }
+
+        @Override
+        public String noDropHandler() {
             return "";
         }
 

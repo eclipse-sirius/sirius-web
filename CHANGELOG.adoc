@@ -42,7 +42,7 @@ The new option ALWAYS allows the separator to be displayed in every case.
 - https://github.com/eclipse-sirius/sirius-web/issues/3678[#3678] [core] Remove `IRepresentationMetadataSearchService#findByRepresentation`, use `IRepresentationMetadataSearchService#findByRepresentationId` instead.
 - https://github.com/eclipse-sirius/sirius-web/issues/4050[#4050] [sirius-web] `IUploadFileLoader` must now return an `IResult`.
 This allows an error to be displayed when there is a problem during uploading
-- https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [trees] The tree item id passed to `ITreeQueryService.findTreeItem` is no longer a UUID but is now a String.
+- https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [tree] The tree item id passed to `ITreeQueryService.findTreeItem` is no longer a UUID but is now a String.
 - https://github.com/eclipse-sirius/sirius-web/issues/4077[#4077] [charts] Remove `interface RepresentationMetadata` from `BarChart.types.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3840[#3840] [diagram] Migrate to ReactFlow 12, if you have components that uses the library then you'll need to update them.
 - https://github.com/eclipse-sirius/sirius-web/issues/2399[#2399] [core] When executing successive model operations inside a tool, the execution context (variables, in particular `self`) of all sibling operations now stays the same.
@@ -51,6 +51,7 @@ This is much more natural and closer to the behavior of usual languages, but cha
 + Remove `org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService` and its implementation.
 + Use `org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService#findAllMetadataByTargetObjectId` instead of `org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService#findAllByTargetObjectId`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3679[#3679] [sirius-web] The service `hasChildren` requires the editing context like the aql service `getChildren`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3983[#3983] [tree] The `TreeDescription` must now implement a `dropTreeItemHandler`.
 
 
 === Dependency update
@@ -70,12 +71,12 @@ This is much more natural and closer to the behavior of usual languages, but cha
 - https://github.com/eclipse-sirius/sirius-web/issues/4005[#4005] [diagram] Fix a problem synchronizing explorer with current selection
 - https://github.com/eclipse-sirius/sirius-web/issues/4008[#4008] [diagram] Prevent `detailsEvent` to be triggered twice when selecting a multi-represented element in the diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/4032[#4032] [diagram] Fix an issue where separator list compartment is missing
-- https://github.com/eclipse-sirius/sirius-web/issues/4028[#4028] [trees] Fixed an issue where special characters (e.g. #) could not be used in the treeId due to URL parsing limitations.
+- https://github.com/eclipse-sirius/sirius-web/issues/4028[#4028] [tree] Fixed an issue where special characters (e.g. #) could not be used in the treeId due to URL parsing limitations.
 - https://github.com/eclipse-sirius/sirius-web/issues/3958[#3958] [tree] Partial fix of a StackOverflow when expanding an item contained in rendering loop cycle
 - https://github.com/eclipse-sirius/sirius-web/issues/4050[#4050] [sirius-web] Display error message on failed upload document action
 - https://github.com/eclipse-sirius/sirius-web/issues/4051[#4051] Error when deleting Resource that use EReference.isContainer feature
-- https://github.com/eclipse-sirius/sirius-web/issues/3958[#3958] [trees] Prevent expand all action to loop indefinitely.
-- https://github.com/eclipse-sirius/sirius-web/issues/4073[#4073] [trees] Add missing variables `ancestorIds` and `index` to variable manager used in the default expand all handler.
+- https://github.com/eclipse-sirius/sirius-web/issues/3958[#3958] [tree] Prevent expand all action to loop indefinitely.
+- https://github.com/eclipse-sirius/sirius-web/issues/4073[#4073] [tree] Add missing variables `ancestorIds` and `index` to variable manager used in the default expand all handler.
 - https://github.com/eclipse-sirius/sirius-web/issues/4077[#4077] [charts] Remove metadata from Charts widgets.
 Charts' metadata is only relevant when Charts are used as Representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/3904[#3904] [form] Fix an issue where textfield did not update to reflect backend-set value when it matched the initial value.
@@ -97,6 +98,7 @@ description (optional).
 - https://github.com/eclipse-sirius/sirius-web/issues/3873[#3873] [diagram] Make the Selection Dialog available for the EdgeTool
 - https://github.com/eclipse-sirius/sirius-web/issues/3950[#3950] [diagram] Have the multiple selection on the Selection Dialog
 - https://github.com/eclipse-sirius/sirius-web/issues/3982[#3982] [core] Add support for the command palette.
+- https://github.com/eclipse-sirius/sirius-web/issues/3983[#3983] [tree] Add drag and drop support for explorer
 
 
 === Improvements
@@ -121,9 +123,9 @@ never, always and if_children (to display the separator only if children exist).
 + To activate the test profile add the value _test_ to the `SPRING_PROFILES_ACTIVE` environment variable.
 - https://github.com/eclipse-sirius/sirius-web/issues/3882[#3882] [sirius-web] Add a new tree event to handle tree description which are not explorer-related
 - https://github.com/eclipse-sirius/sirius-web/issues/3961[#3961] [sirius-web] Extend the explorer to support multiple presentations
-- https://github.com/eclipse-sirius/sirius-web/issues/3856[#3856] [trees] Add tree representation in the view DSL
-- https://github.com/eclipse-sirius/sirius-web/issues/4000[#4000] [trees] Add support for styled labels in view model for trees
-- https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [trees] Add mechanism to define actions in tree item context menu
+- https://github.com/eclipse-sirius/sirius-web/issues/3856[#3856] [tree] Add tree representation in the view DSL
+- https://github.com/eclipse-sirius/sirius-web/issues/4000[#4000] [tree] Add support for styled labels in view model for trees
+- https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [tree] Add mechanism to define actions in tree item context menu
 - https://github.com/eclipse-sirius/sirius-web/issues/4064[#4064] [sirius-web] Ensure that project template images fill the whole content part of the card.
 Project template images will now have a predictable size of 150px by 110px.
 This will allow specifier to create images that fir perfectly in the project template card.
@@ -211,11 +213,11 @@ The ids used to create a subscription is also changed, refer to [ADR-159] for mo
 - https://github.com/eclipse-sirius/sirius-web/issues/3784[#3784] [sirius-web] Fix the click on a representation which is already selected in the explorer.
 - https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Reactivate the Selection Dialog
 - https://github.com/eclipse-sirius/sirius-web/issues/3766[#3766] [sirius-web] Fix a potential NPE in RewriteProxiesEventHandler#rewriteProxyURIs
-- https://github.com/eclipse-sirius/sirius-web/issues/3808[#3808] [trees] Fix interactions with `TreeItemContextMenu` modal
+- https://github.com/eclipse-sirius/sirius-web/issues/3808[#3808] [tree] Fix interactions with `TreeItemContextMenu` modal
 - https://github.com/eclipse-sirius/sirius-web/issues/3811[#3811] [forms] Fix issue with Reference widget not working when placed in a flexbox container
-- https://github.com/eclipse-sirius/sirius-web/issues/3776[#3776] [trees] Restore expand all functionality for ref widget trees
+- https://github.com/eclipse-sirius/sirius-web/issues/3776[#3776] [tree] Restore expand all functionality for ref widget trees
 - https://github.com/eclipse-sirius/sirius-web/issues/3824[#3824] [core] Fix representation migration participant execution which was failing when there were many representation migration participant to apply.
-- https://github.com/eclipse-sirius/sirius-web/issues/3851[#3851] [trees] Fix an issue where the tree filters menu items were not displayed anymore after a click on the filters menu.
+- https://github.com/eclipse-sirius/sirius-web/issues/3851[#3851] [tree] Fix an issue where the tree filters menu items were not displayed anymore after a click on the filters menu.
 - https://github.com/eclipse-sirius/sirius-web/issues/3849[#3849] [form] Fix the tree representation in form support the display of the same referenced element many times in the tree.
 - https://github.com/eclipse-sirius/sirius-web/issues/3878[#3878] [diagram] Unmount ReactFlowProvider after layout
 - https://github.com/eclipse-sirius/sirius-web/issues/3869[#3869] [form] Close form-based views when the underlying element no longer exists.
@@ -261,7 +263,7 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3782[#3782] [sirius-web] Add an extension point to contribute custom widgets
 - https://github.com/eclipse-sirius/sirius-web/issues/3801[#3801] Add an equivalent of IViewDiagramDescriptionSearchService for Form descriptions
 - https://github.com/eclipse-sirius/sirius-web/issues/3557[#3550] [sirius-web] Add an extension point to contribute setting pages
-- https://github.com/eclipse-sirius/sirius-web/issues/3776[#3776] [trees] Remove unwanted dependency from the reference widget in the explorer
+- https://github.com/eclipse-sirius/sirius-web/issues/3776[#3776] [tree] Remove unwanted dependency from the reference widget in the explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/3777[#3777] [sirius-web] Add support for any kind of object as semantic element in the tree representation
 - https://github.com/eclipse-sirius/sirius-web/issues/3392[#3392] [diagram] Prevent edge from passing through another node
 - https://github.com/eclipse-sirius/sirius-web/issues/3763[#3763] [diagram] Split the SelectionDialogDescription to prepare the Tree support
@@ -550,7 +552,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3354[#3354] [diagram] Add support for overlapping nodes in arrangeAll and distribute elements
 - https://github.com/eclipse-sirius/sirius-web/issues/3389[#3389] [form] Add support for DateTime widget
 - https://github.com/eclipse-sirius/sirius-web/issues/3307[#3307] [representation] Add support for the migration of representation
-- https://github.com/eclipse-sirius/sirius-web/issues/3503[#3503] [trees] Add tree item renaming support to the new architecture
+- https://github.com/eclipse-sirius/sirius-web/issues/3503[#3503] [tree] Add tree item renaming support to the new architecture
 
 
 === Improvements
@@ -771,7 +773,7 @@ Form variables declared in a form description will thus be added in the FormDesc
 - https://github.com/eclipse-sirius/sirius-web/issues/3050[#3050] [sirius-web] Contributes a first version of the new Sirius Web architecture
 - https://github.com/eclipse-sirius/sirius-web/issues/1844[#1844] [emf] Unload resources by default when the EMF based editing context is disposed
 - https://github.com/eclipse-sirius/sirius-web/issues/3020[#3020] [sirius-web] Improve the creation of the Apollo GraphQL client.
-- https://github.com/eclipse-sirius/sirius-web/issues/3056[#3056] [trees] Expand the clickable/draggable zone for tree items
+- https://github.com/eclipse-sirius/sirius-web/issues/3056[#3056] [tree] Expand the clickable/draggable zone for tree items
 - [forms] Avoid creating a new subscription when re-selecting the same element
 - [tree] Avoid sending treePath query if the selection does not actually change
 - [core] Ignore empty changes of kind ChangeKind.NOTHING
@@ -897,7 +899,7 @@ It allows to execute operations before/after the load of an `IEditingContext` in
 
 === Bug fixes
 
-- https://github.com/eclipse-sirius/sirius-web/issues/2812[#2812] [trees] Fix an issue that prevents icon to be displayed in treeNodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/2812[#2812] [tree] Fix an issue that prevents icon to be displayed in treeNodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/2580[#2580] [diagram] Cancel direct edit on 'Esc'.
 - https://github.com/eclipse-sirius/sirius-web/issues/2778[#2778] [diagram] Authorize empty string for direct edit.
 - https://github.com/eclipse-sirius/sirius-web/issues/2579[#2579] [diagram] Fix the invalid text cursor position when editing a label by typing text directly.
@@ -1154,7 +1156,7 @@ That includes the support during the direct edit.
 The user can use 'shift+enter' to insert a line break.
 - https://github.com/eclipse-sirius/sirius-web/issues/2522[#2522] [diagram] Add the support for rotatable border node.
 - https://github.com/eclipse-sirius/sirius-web/issues/2255[#2255] [diagram] Add the possibility to specify a ratio on node to guarantee its appearance.
-- https://github.com/eclipse-sirius/sirius-web/issues/2568[#2568] [trees] Allow developers to modify the content of the explorer view
+- https://github.com/eclipse-sirius/sirius-web/issues/2568[#2568] [tree] Allow developers to modify the content of the explorer view
 - https://github.com/eclipse-sirius/sirius-web/issues/2570[#2570] [form] Allow developers to modify the content of the details view
 - https://github.com/eclipse-sirius/sirius-web/issues/2618[#2618] [core] Add an API to provide pre-process and post-process around input handling.
 
@@ -1941,7 +1943,7 @@ By default, new nodes, edges and tools are explicitly configured to invoke the d
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [form] The components related to forms have been extracted to `@eclipse-sirius/sirius-components-forms`. The views and representations have adopted the suffix `View` and `Representation` respectively. As an example, the component `FormWebSocketContainer` is now named `FormRepresentation`
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [formdescriptioneditors] The components related to formdescriptioneditors have been extracted to `@eclipse-sirius/sirius-components-formdescriptioneditors`. The representation has been renamed `FormDescriptionEditorRepresentation`.
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [core] Since the core parts of Sirius Components cannot possibly known the components of the representations installed in a project, the context `RepresentationContext` will not provide a default value anymore. In a similar fashion, the `ServerContext` from `@eclipse-sirius/sirius-components-core` will now be required in order to let Sirius Components retrieve the URL of the backend.
-- https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [trees] The trees related components and the explorer have been extracted to `@eclipse-sirius/sirius-components-trees`. The `ExplorerWebSocketContainer` has also been renamed `ExplorerView` to match the naming convention of the other views. The components migrated have also been fully converted to XState and MaterialUI
+- https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [tree] The trees related components and the explorer have been extracted to `@eclipse-sirius/sirius-components-trees`. The `ExplorerWebSocketContainer` has also been renamed `ExplorerView` to match the naming convention of the other views. The components migrated have also been fully converted to XState and MaterialUI
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [workbench] The workbench was depending on some tree components in order to compute the list of `TreeItemContextMenuContribution` to use in the explorer. This dependency has been removed and as a result, users of the workbench component will have to rely on the `TreeItemContextMenuContext` to provide the contributions
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [workbench] Move the workbench related code to `@eclipse-sirius/sirius-components-core`. This move includes components such as `Workbench`, `RepresentationContext`, `WorkbenchViewContribution` for example
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [diagram] Move the code of the diagram and the selection wizard in the packages `@eclipse-sirius/sirius-components-diagrams` and `@eclipse-sirius/sirius-components-selection`

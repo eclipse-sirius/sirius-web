@@ -42,4 +42,9 @@ public class CollaborativeTreeMessageService implements ICollaborativeTreeMessag
     public String noSingleClickTreeItemExecutor() {
         return this.messageSourceAccessor.getMessage("NO_SINGLE_CLICK_TREE_ITEM_EXECUTOR");
     }
+
+    @Override
+    public String noDropHandler() {
+        return this.messageSourceAccessor.getMessage("NO_DROP_HANDLER");
+    }
 }

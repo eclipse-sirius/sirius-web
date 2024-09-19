@@ -33,6 +33,10 @@ public final class StudioIdentifiers {
 
     public static final UUID NAMED_ELEMENT_ENTITY_OBJECT = UUID.fromString("c6fdba07-dea5-4a53-99c7-7eefc1bfdfcc");
 
+    public static final UUID DESCRIPTION_ATTRIBUTE_OBJECT = UUID.fromString("d51d676c-0cb7-414b-8358-bacbc5d33942");
+
+    public static final UUID NAME_ATTRIBUTE_OBJECT = UUID.fromString("520bb7c9-5f28-40f7-bda0-b35dd593876d");
+
     public static final UUID HUMAN_ENTITY_OBJECT = UUID.fromString("1731ffb5-bfb0-46f3-a23d-0c0650300005");
 
     public static final UUID VIEW_DOCUMENT = UUID.fromString("ed2a5355-991d-458f-87f1-ea3a18b1f104");

@@ -244,7 +244,14 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                               "data":{
                                 "name":"label"
                               }
-                            }
+                            },
+                           {
+                             "id":"d51d676c-0cb7-414b-8358-bacbc5d33942",
+                             "eClass":"domain:Attribute",
+                             "data":{
+                               "name":"description"
+                             }
+                           }
                           ],
                           "relations":[
                             {
