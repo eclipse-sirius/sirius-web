@@ -50,7 +50,14 @@ The new option ALWAYS allows the separator to be displayed in every case.
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3763[#3763] [diagram] Make it possible to display semantic candidates in the selection dialog using a tree
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3979[#3979] [core] Add Project related REST APIs.
+The new endpoints are:
+** getProjects (`GET /api/rest/projects`): Get all projects. 
+** getProjectById (`GET /api/rest/projects/{projectId}`): Get project with the given id (projectId).
+** createProject (`POST /projects`): Create a new project with the given name and
+description (optional).
+** deleteProject (`POST /api/rest/projects/{projectId}`): Delete the project with the given id (projectId).
+** updateProject (`PUT /projects/{projectId}`): Update the project with the given id (projectId).
 
 === Improvements
 
