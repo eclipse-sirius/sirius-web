@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer.services;
 
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -337,4 +338,5 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
         }
         return result;
     }
+
 }
