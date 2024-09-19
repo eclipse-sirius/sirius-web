@@ -151,7 +151,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren().get(0).getChildren()).hasSize(4);
-            assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren()).hasSize(3);
+            assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren()).hasSize(4);
             assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren().get(0).getId()).startsWith(DomainTreeRepresentationDescriptionProvider.SETTING);
         });
 

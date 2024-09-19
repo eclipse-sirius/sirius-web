@@ -81,6 +81,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.urlParser = Objects.requireNonNull(urlParser);
     }
+
     @Override
     public List<IRepresentationDescription> convert(DialogDescription dialogDescription, AQLInterpreter interpreter) {
         List<IRepresentationDescription> representationDescriptions = new ArrayList<>();
@@ -128,9 +129,9 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
      * Create the TreeDescription attached to the SelectionDescription.
      *
      * @param selectionDescription
-     *            the SelectionDialogDescription.
+     *         the SelectionDialogDescription.
      * @param interpreter
-     *            the AQL interpreter.
+     *         the AQL interpreter.
      * @return The {@link TreeDescription}
      */
     private TreeDescription createTreeDescription(SelectionDialogDescription selectionDescription, AQLInterpreter interpreter) {

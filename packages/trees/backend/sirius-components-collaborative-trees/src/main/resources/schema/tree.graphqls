@@ -52,7 +52,7 @@ type StyledStringFragment {
   text: String!
   styledStringFragmentStyle : StyledStringFragmentStyle
 }
- 
+
 type StyledStringFragmentStyle {
   isStruckOut: Boolean
   underlineStyle: UnderLineStyle
@@ -117,7 +117,18 @@ extend type Mutation {
   deleteTreeItem(input: DeleteTreeItemInput!): DeleteTreeItemPayload
   renameTreeItem(input: RenameTreeItemInput!): RenameTreeItemPayload
   invokeSingleClickTreeItemContextMenuEntry(input: InvokeSingleClickTreeItemContextMenuEntryInput!): InvokeSingleClickTreeItemContextMenuEntryPayload!
-  
+  dropTreeItem(input: DropTreeItemInput!): DropTreeItemPayload
+}
+
+union DropTreeItemPayload = ErrorPayload | SuccessPayload
+
+input DropTreeItemInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  droppedElementIds: [ID!]!
+  targetElementId: ID!
+  index: Int!
 }
 
 input DeleteTreeItemInput {

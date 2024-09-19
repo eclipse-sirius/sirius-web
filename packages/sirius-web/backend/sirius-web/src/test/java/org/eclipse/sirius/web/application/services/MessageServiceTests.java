@@ -48,6 +48,9 @@ public class MessageServiceTests extends AbstractIntegrationTests {
         assertThat(this.messageService.showSelectedElements()).isNotBlank();
         assertThat(this.messageService.unexpectedError()).isNotBlank();
         assertThat(this.messageService.unpinSelectedElements()).isNotBlank();
+        assertThat(this.messageService.unavailableFeature()).isNotBlank();
+        assertThat(this.messageService.alreadySetFeature()).isNotBlank();
+        assertThat(this.messageService.invalidDroppedObject()).isNotBlank();
     }
 
 
