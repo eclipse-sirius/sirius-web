@@ -44,6 +44,7 @@
     "lexical": "0.8.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-i18next": "14.1.1",
     "tss-react": "4.9.7",
     "xstate": "4.32.1"
   },
@@ -69,6 +70,7 @@
     "rollup-plugin-peer-deps-external": "2.2.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-i18next": "14.1.1",
     "xstate": "4.32.1",
     "typescript": "5.4.5",
     "tss-react": "4.9.7",

@@ -26,6 +26,7 @@ import Typography from '@mui/material/Typography';
 import { emphasize } from '@mui/material/styles';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navigate, Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
@@ -92,6 +93,7 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
 export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
   const { project } = useCurrentProject();
   const { classes } = useEditProjectViewNavbarStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [{ value, context }, dispatch] = useMachine<
@@ -217,7 +219,7 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
           <ListItemIcon>
             <EditIcon />
           </ListItemIcon>
-          <ListItemText primary="Rename" />
+          <ListItemText primary={t('rename')} />
         </MenuItem>
         <MenuItem
           component="a"
@@ -228,7 +230,7 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
           <ListItemIcon>
             <GetAppIcon />
           </ListItemIcon>
-          <ListItemText primary="Download" />
+          <ListItemText primary={t('download')} />
         </MenuItem>
         <MenuItem
           divider
@@ -239,7 +241,7 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
           <ListItemIcon>
             <SettingsIcon />
           </ListItemIcon>
-          <ListItemText primary="Settings" />
+          <ListItemText primary={t('settings')} />
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -254,7 +256,7 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
           <ListItemIcon>
             <DeleteIcon />
           </ListItemIcon>
-          <ListItemText primary="Delete" />
+          <ListItemText primary={t('delete')} />
         </MenuItem>
       </Menu>
       <Toast

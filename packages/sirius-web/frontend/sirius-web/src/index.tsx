@@ -22,6 +22,7 @@ import {
 import { papayaExtensionRegistry } from '@eclipse-sirius/sirius-web-papaya';
 import { createRoot } from 'react-dom/client';
 import { httpOrigin, wsOrigin } from './core/URL';
+import './i18n';
 import { EllipseNode } from './nodes/EllipseNode';
 import { EllipseNodeConverter } from './nodes/EllipseNodeConverter';
 import { EllipseNodeLayoutHandler } from './nodes/EllipseNodeLayoutHandler';

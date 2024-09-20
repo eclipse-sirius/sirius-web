@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo and others.
+ * Copyright (c) 2022, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,3 +11,5 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 export * from './ValidationView';
+export { default as siriusComponentsValidationEn } from './locales/en.json';
+export { default as siriusComponentsValidationRu } from './locales/ru.json';

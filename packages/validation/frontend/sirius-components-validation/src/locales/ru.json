@@ -1,0 +1,8 @@
+{
+  "siriusComponentsValidation": {
+    "diagnosticCount": "{{count}} ошибок",
+    "diagnosticCount_one": "{{count}} ошибка",
+    "diagnosticCount_few": "{{count}} ошибки",
+    "noDiagnostic": "Нет ошибок"
+  }
+}

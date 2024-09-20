@@ -23,6 +23,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { Fragment, memo, useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Node, OnSelectionChangeFunc, useOnSelectionChange, useReactFlow } from 'reactflow';
 import { makeStyles } from 'tss-react/mui';
 import { AlignHorizontalCenterIcon } from '../../../icons/AlignHorizontalCenterIcon';
@@ -95,6 +96,7 @@ const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'li
 const canSelectedNodesBeDistributed = (selectedNodes: Node[]) => selectedNodes.length > 1;
 
 export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }: GroupPaletteProps) => {
+  const { t } = useTranslation('siriusComponentsDiagrams', { keyPrefix: 'palette' });
   const { hideDiagramElements } = useHideDiagramElements();
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { pinDiagramElements } = usePinDiagramElements();
@@ -159,19 +161,19 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
         [
           {
             id: 'align-left',
-            title: 'Align left',
+            title: t('alignLeft'),
             action: () => distributeAlignLeft(state.selectedElementIds, refElementId),
             icon: <AlignHorizontalLeftIcon fontSize="small" />,
           },
           {
             id: 'align-center',
-            title: 'Align center',
+            title: t('alignCenter'),
             action: () => distributeAlignCenter(state.selectedElementIds, refElementId),
             icon: <AlignHorizontalCenterIcon fontSize="small" />,
           },
           {
             id: 'align-right',
-            title: 'Align right',
+            title: t('alignRight'),
             action: () => distributeAlignRight(state.selectedElementIds, refElementId),
             icon: <AlignHorizontalRightIcon fontSize="small" />,
           },
@@ -179,19 +181,19 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
         [
           {
             id: 'align-top',
-            title: 'Align top',
+            title: t('alignTop'),
             action: () => distributeAlignTop(state.selectedElementIds, refElementId),
             icon: <AlignVerticalTopIcon fontSize="small" />,
           },
           {
             id: 'align-middle',
-            title: 'Align middle',
+            title: t('alignMiddle'),
             action: () => distributeAlignMiddle(state.selectedElementIds, refElementId),
             icon: <AlignVerticalCenterIcon fontSize="small" />,
           },
           {
             id: 'align-bottom',
-            title: 'Align bottom',
+            title: t('alignBottom'),
             action: () => distributeAlignBottom(state.selectedElementIds, refElementId),
             icon: <AlignVerticalBottomIcon fontSize="small" />,
           },
@@ -199,19 +201,19 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
         [
           {
             id: 'arrange-in-row',
-            title: 'Arrange in row',
+            title: t('arrangeInRow'),
             action: () => arrangeInRow(state.selectedElementIds),
             icon: <ViewColumnIcon fontSize="small" />,
           },
           {
             id: 'arrange-in-column',
-            title: 'Arrange in column',
+            title: t('arrangeInColumn'),
             action: () => arrangeInColumn(state.selectedElementIds),
             icon: <ViewStreamIcon fontSize="small" />,
           },
           {
             id: 'arrange-in-grid',
-            title: 'Arrange in grid',
+            title: t('arrangeInGrid'),
             action: () => arrangeInGrid(state.selectedElementIds),
             icon: <ViewModuleIcon fontSize="small" />,
           },
@@ -219,13 +221,13 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
         [
           {
             id: 'distribute-horizontal-spacing',
-            title: 'Distribute horizontal spacing',
+            title: t('distributeHorizontal'),
             action: () => distributeGapHorizontally(state.selectedElementIds),
             icon: <VerticalAlignCenterIcon style={{ transform: 'rotate(90deg)' }} fontSize="small" />,
           },
           {
             id: 'distribute-vertical-spacing',
-            title: 'Distribute vertical spacing',
+            title: t('distributeVertical'),
             action: () => distributeGapVertically(state.selectedElementIds),
             icon: <VerticalAlignCenterIcon fontSize="small" />,
           },
@@ -233,13 +235,13 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
         [
           {
             id: 'justify-horizontally',
-            title: 'Justify horizontally',
+            title: t('justifyHorizontally'),
             action: () => justifyHorizontally(state.selectedElementIds, refElementId),
             icon: <JustifyHorizontalIcon fontSize="small" />,
           },
           {
             id: 'justify-vertically',
-            title: 'Justify vertically',
+            title: t('justifyVertically'),
             action: () => justifyVertically(state.selectedElementIds, refElementId),
             icon: <JustifyVerticalIcon fontSize="small" />,
           },
@@ -247,7 +249,7 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
         [
           {
             id: 'make-same-size',
-            title: 'Make same size',
+            title: t('makeSameSize'),
             action: () => makeNodesSameSize(state.selectedElementIds, refElementId),
             icon: <PhotoSizeSelectSmallIcon fontSize="small" />,
           },
@@ -339,14 +341,14 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
             </ClickAwayListener>
           </Paper>
         </Popper>
-        <PaletteTool toolName={'Hide elements'} onClick={() => hideDiagramElements(state.selectedElementIds, true)}>
+        <PaletteTool toolName={t('hideElements')} onClick={() => hideDiagramElements(state.selectedElementIds, true)}>
           <VisibilityOffIcon fontSize="small" />
         </PaletteTool>
-        <PaletteTool toolName={'Fade elements'} onClick={() => fadeDiagramElements(state.selectedElementIds, true)}>
+        <PaletteTool toolName={t('fadeElements')} onClick={() => fadeDiagramElements(state.selectedElementIds, true)}>
           <TonalityIcon fontSize="small" />
         </PaletteTool>
         {!state.isMinimalPalette && (
-          <PaletteTool toolName={'Pin elements'} onClick={() => pinDiagramElements(state.selectedElementIds, true)}>
+          <PaletteTool toolName={t('pinElements')} onClick={() => pinDiagramElements(state.selectedElementIds, true)}>
             <PinIcon fontSize="small" />
           </PaletteTool>
         )}
