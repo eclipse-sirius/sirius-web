@@ -54,6 +54,7 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/3958[#3958] [tree] Partial fix of a StackOverflow when expanding an item contained in rendering loop cycle
 - https://github.com/eclipse-sirius/sirius-web/issues/4050[#4050] [sirius-web] Display error message on failed upload document action
 - https://github.com/eclipse-sirius/sirius-web/issues/4051[#4051] Error when deleting Resource that use EReference.isContainer feature
+- https://github.com/eclipse-sirius/sirius-web/issues/3958[#3958] [trees] Prevent expand all action to loop indefinitely.
 
 === New Features
 
