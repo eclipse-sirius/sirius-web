@@ -42,7 +42,7 @@ export const useDeleteProject = (): UseDeleteProjectValue => {
     GQLDeleteProjectMutationVariables
   >(deleteProjectMutation);
 
-  const { addErrorMessage, addMessages } = useMultiToast();
+  const { addErrorMessage } = useMultiToast();
   useEffect(() => {
     if (error) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
@@ -50,7 +50,7 @@ export const useDeleteProject = (): UseDeleteProjectValue => {
     if (data) {
       const { deleteProject } = data;
       if (isErrorPayload(deleteProject)) {
-        addMessages(deleteProject.messages);
+        addErrorMessage(deleteProject.message);
       }
     }
   }, [data, error]);

@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
-
 export interface UseDeleteProjectValue {
   deleteProject: (projectId: string) => void;
   loading: boolean;
@@ -28,7 +26,7 @@ export interface GQLDeleteProjectPayload {
 }
 
 export interface GQLErrorPayload extends GQLDeleteProjectPayload {
-  messages: GQLMessage[];
+  message: string;
 }
 
 export interface GQLDeleteProjectMutationVariables {
