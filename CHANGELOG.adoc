@@ -27,7 +27,9 @@ Both `IInput` and `IDomainEvent` implement `ICause` and will thus be used to ind
 ** The `org.eclipse.sirius.components.emf.services.DefaultIdentityService#getId(Object object)` Can now provides the Id if the Object is of type `org.eclipse.emf.ecore.resource.Resource`. Before this change, it would have returned null.
 ** The `org.eclipse.sirius.components.emf.services.DefaultLabelService` Can now provides the label if the Object is of type `org.eclipse.emf.ecore.resource.Resource`. Before this change, it would have returned an empty string.
 ** The `org.eclipse.sirius.components.emf.services.DefaultContentService#getContents(Object)` Can now provides the content if the Object is of type `org.eclipse.emf.ecore.resource.Resource`. Before this change, it would have returned an empty list.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3972[#3972] [diagram] The `InsideLabelStyle#displayHeaderSeparator` has been renamed to `headerSeparatorDisplayMode` and is no longer a boolean but an enum with three possible values: NEVER, ALWAYS, and IF-CHILDREN.
+Previously, the value false was equivalent to NEVER, and true to IF-CHILDREN.
+The new option ALWAYS allows the separator to be displayed in every case.
 
 === Dependency update
 
