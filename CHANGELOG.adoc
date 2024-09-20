@@ -48,13 +48,14 @@ The new option ALWAYS allows the separator to be displayed in every case.
 - https://github.com/eclipse-sirius/sirius-web/issues/4008[#4008] [diagram] Prevent `detailsEvent` to be triggered twice when selecting a multi-represented element in the diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/4032[#4032] [diagram] Fix an issue where separator list compartment is missing
 - https://github.com/eclipse-sirius/sirius-web/issues/4028[#4028] [trees] Fixed an issue where special characters (e.g. #) could not be used in the treeId due to URL parsing limitations.
+- https://github.com/eclipse-sirius/sirius-web/issues/3958[#3958] [tree] Partial fix of a StackOverflow when expanding an item contained in rendering loop cycle
 
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3763[#3763] [diagram] Make it possible to display semantic candidates in the selection dialog using a tree
 - https://github.com/eclipse-sirius/sirius-web/issues/3979[#3979] [core] Add Project related REST APIs.
 The new endpoints are:
-** getProjects (`GET /api/rest/projects`): Get all projects. 
+** getProjects (`GET /api/rest/projects`): Get all projects.
 ** getProjectById (`GET /api/rest/projects/{projectId}`): Get project with the given id (projectId).
 ** createProject (`POST /projects`): Create a new project with the given name and
 description (optional).
