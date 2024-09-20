@@ -38,6 +38,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DefaultExpandAllTreePathHandler {
+
+    private static final int MAX_EXPAND_DEPTH_INCREASE = 100;
+
     private final ITreeNavigationService treeNavigationService;
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
@@ -55,76 +58,60 @@ public class DefaultExpandAllTreePathHandler {
         // We need to get the current depth of the tree item
         var itemAncestors = this.treeNavigationService.getAncestors(editingContext, tree, treeItemId);
         maxDepth = itemAncestors.size();
-        maxDepth = this.addAllContents(editingContext, treeItemId, maxDepth, treeItemIdsToExpand, tree);
+        var optionalTreeDescription = this.getTreeDescription(editingContext, tree.getDescriptionId());
+        if (optionalTreeDescription.isPresent()) {
+            maxDepth = this.addAllContents(editingContext, optionalTreeDescription.get(), treeItemId, maxDepth, treeItemIdsToExpand, maxDepth);
+        }
         return new ExpandAllTreePathSuccessPayload(input.id(), new TreePath(treeItemIdsToExpand.stream().toList(), maxDepth));
     }
 
-    private int addAllContents(IEditingContext editingContext, String treeItemId, int depth, Set<String> treeItemIdsToExpand, Tree tree) {
+    private int addAllContents(IEditingContext editingContext, TreeDescription treeDescription, String treeItemId, int depth, Set<String> treeItemIdsToExpand, int startingDepth) {
         var depthConsidered = depth;
-        var optionalObject = this.getTreeItemObject(editingContext, tree, treeItemId);
-        treeItemIdsToExpand.add(treeItemId);
-        if (optionalObject.isPresent() && this.hasChildren(editingContext, tree, optionalObject.get())) {
-            List<?> children = this.getChildren(editingContext, tree, optionalObject.get(), treeItemId);
-            for (var child: children) {
-                var optionalChildId = this.getTreeItemId(editingContext, tree, child);
-                if (optionalChildId.isPresent()) {
-                    var childTreePathMaxDepth = depth + 1;
-                    childTreePathMaxDepth = this.addAllContents(editingContext, optionalChildId.get(), childTreePathMaxDepth, treeItemIdsToExpand, tree);
-                    depthConsidered = Math.max(depthConsidered, childTreePathMaxDepth);
+        if (depthConsidered - startingDepth < MAX_EXPAND_DEPTH_INCREASE) {
+            var optionalObject = this.getTreeItemObject(editingContext, treeDescription, treeItemId);
+            treeItemIdsToExpand.add(treeItemId);
+            if (optionalObject.isPresent() && this.hasChildren(treeDescription, optionalObject.get())) {
+                List<?> children = this.getChildren(editingContext, treeDescription, optionalObject.get(), treeItemId);
+                for (var child : children) {
+                    var optionalChildId = this.getTreeItemId(treeDescription, child);
+                    if (optionalChildId.isPresent()) {
+                        var childTreePathMaxDepth = depth + 1;
+                        childTreePathMaxDepth = this.addAllContents(editingContext, treeDescription, optionalChildId.get(), childTreePathMaxDepth, treeItemIdsToExpand, startingDepth);
+                        depthConsidered = Math.max(depthConsidered, childTreePathMaxDepth);
+                    }
                 }
+            } else {
+                depthConsidered = Math.max(depthConsidered, depth + 1);
             }
-        } else {
-            depthConsidered = Math.max(depthConsidered, depth + 1);
         }
         return depthConsidered;
     }
 
-    private boolean hasChildren(IEditingContext editingContext, Tree tree, Object object) {
-        boolean result = false;
-        var optionalTreeDescription = this.getTreeDescription(editingContext, tree.getDescriptionId());
-        if (optionalTreeDescription.isPresent()) {
-            var variableManager = new VariableManager();
-            variableManager.put(VariableManager.SELF, object);
-            result = optionalTreeDescription.get().getHasChildrenProvider().apply(variableManager);
-        }
-        return result;
+    private boolean hasChildren(TreeDescription treeDescription, Object object) {
+        var variableManager = new VariableManager();
+        variableManager.put(VariableManager.SELF, object);
+        return treeDescription.getHasChildrenProvider().apply(variableManager);
     }
 
-    private List<?> getChildren(IEditingContext editingContext, Tree tree, Object object, String treeItemId) {
-        List<?> result = List.of();
-        var optionalTreeDescription = this.getTreeDescription(editingContext, tree.getDescriptionId());
-
-        if (optionalTreeDescription.isPresent()) {
-            var variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-            variableManager.put(VariableManager.SELF, object);
-            variableManager.put(TreeRenderer.EXPANDED, List.of(treeItemId)); // getChildren only returns children if self is expanded
-            result = optionalTreeDescription.get().getChildrenProvider().apply(variableManager);
-        }
-        return result;
+    private List<?> getChildren(IEditingContext editingContext, TreeDescription treeDescription, Object object, String treeItemId) {
+        var variableManager = new VariableManager();
+        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(VariableManager.SELF, object);
+        variableManager.put(TreeRenderer.EXPANDED, List.of(treeItemId)); // getChildren only returns children if self is expanded
+        return treeDescription.getChildrenProvider().apply(variableManager);
     }
 
-    private Optional<String> getTreeItemId(IEditingContext editingContext, Tree tree, Object object) {
-        Optional<String> result = Optional.empty();
-        var optionalTreeDescription = this.getTreeDescription(editingContext, tree.getDescriptionId());
-        if (optionalTreeDescription.isPresent()) {
-            var variableManager = new VariableManager();
-            variableManager.put(VariableManager.SELF, object);
-            result = Optional.of(optionalTreeDescription.get().getTreeItemIdProvider().apply(variableManager));
-        }
-        return result;
+    private Optional<String> getTreeItemId(TreeDescription treeDescription, Object object) {
+        var variableManager = new VariableManager();
+        variableManager.put(VariableManager.SELF, object);
+        return Optional.of(treeDescription.getTreeItemIdProvider().apply(variableManager));
     }
 
-    private Optional<Object> getTreeItemObject(IEditingContext editingContext, Tree tree, String id) {
-        var optionalTreeDescription = this.getTreeDescription(editingContext, tree.getDescriptionId());
-
-        if (optionalTreeDescription.isPresent()) {
-            var variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-            variableManager.put(TreeDescription.ID, id);
-            return Optional.ofNullable(optionalTreeDescription.get().getTreeItemObjectProvider().apply(variableManager));
-        }
-        return Optional.empty();
+    private Optional<Object> getTreeItemObject(IEditingContext editingContext, TreeDescription treeDescription, String id) {
+        var variableManager = new VariableManager();
+        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(TreeDescription.ID, id);
+        return Optional.ofNullable(treeDescription.getTreeItemObjectProvider().apply(variableManager));
     }
 
     private Optional<TreeDescription> getTreeDescription(IEditingContext editingContext, String descriptionId) {
