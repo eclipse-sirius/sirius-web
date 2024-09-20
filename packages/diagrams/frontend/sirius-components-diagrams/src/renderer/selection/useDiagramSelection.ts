@@ -33,12 +33,14 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
       .map((entry) => entry.id)
       .filter((id) => diagramElementIds.includes(id))
       .sort((id1: string, id2: string) => id1.localeCompare(id2));
-    const selectedDiagramElementIds = new Set(
-      [...getNodes(), ...getEdges()]
-        .filter((element) => element.selected)
-        .map((element) => element.data?.targetObjectId ?? '')
-        .sort((id1: string, id2: string) => id1.localeCompare(id2))
-    );
+    const selectedDiagramElementIds = [
+      ...new Set(
+        [...getNodes(), ...getEdges()]
+          .filter((element) => element.selected)
+          .map((element) => element.data?.targetObjectId ?? '')
+      ),
+    ];
+    selectedDiagramElementIds.sort((id1: string, id2: string) => id1.localeCompare(id2));
     if (JSON.stringify(selectionDiagramEntryIds) !== JSON.stringify(selectedDiagramElementIds)) {
       const newNodeSelection = getNodes().map((node) => {
         return { ...node, selected: selectionDiagramEntryIds.includes(node.data.targetObjectId) };
