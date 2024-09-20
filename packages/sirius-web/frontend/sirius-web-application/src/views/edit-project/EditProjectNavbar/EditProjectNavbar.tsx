@@ -28,13 +28,12 @@ import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect } from 'react';
 import { Navigate, Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+import { StateMachine } from 'xstate';
 import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
-import { EditProjectNavbarProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
-
-import { StateMachine } from 'xstate';
 import { useCurrentProject } from '../useCurrentProject';
+import { EditProjectNavbarProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
 import { editProjectNavbarSubtitleExtensionPoint } from './EditProjectNavbarExtensionPoints';
 import {
   EditProjectNavbarContext,
@@ -90,7 +89,7 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
+export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
   const { project } = useCurrentProject();
   const { classes } = useEditProjectViewNavbarStyles();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
@@ -213,6 +212,7 @@ export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
             };
             dispatch(showModal);
           }}
+          disabled={readOnly}
           data-testid="rename">
           <ListItemIcon>
             <EditIcon />
@@ -249,6 +249,7 @@ export const EditProjectNavbar = ({}: EditProjectNavbarProps) => {
             };
             dispatch(showModal);
           }}
+          disabled={readOnly}
           data-testid="delete">
           <ListItemIcon>
             <DeleteIcon />

@@ -117,16 +117,17 @@ export const EditProjectView = () => {
           ]
         : [],
     };
+    const readOnly = readOnlyPredicate(context.project);
     content = (
       <ProjectContext.Provider value={{ project: context.project }}>
         <SelectionContextProvider initialSelection={initialSelection}>
-          <EditProjectNavbar />
+          <EditProjectNavbar readOnly={readOnly} />
           <TreeToolBarProvider>
             <Workbench
               editingContextId={context.project.currentEditingContext.id}
               initialRepresentationSelected={context.representation}
               onRepresentationSelected={onRepresentationSelected}
-              readOnly={readOnlyPredicate(context.project)}
+              readOnly={readOnly}
             />
           </TreeToolBarProvider>
         </SelectionContextProvider>
