@@ -16,14 +16,11 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.DefaultViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
-import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.edgedescriptions.ClassExtendsEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.edgedescriptions.ClassImplementsEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.edgedescriptions.InterfaceExtendsEdgeDescriptionProvider;
@@ -33,8 +30,7 @@ import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptio
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.EnumNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.InterfaceNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.RecordNodeDescriptionProvider;
-import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.ClassDiagramDropToolProvider;
-import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.ImportExistingTypesToolProvider;
+import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.diagram.DiagramPaletteProvider;
 
 /**
  * Used to provide the view model used to create class diagrams.
@@ -74,18 +70,8 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
         });
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(classDiagramDescription, cache));
 
-        classDiagramDescription.setPalette(this.diagramPalette(cache));
+        classDiagramDescription.setPalette(new DiagramPaletteProvider().getDiagramPalette(cache));
 
         return classDiagramDescription;
-    }
-
-    private DiagramPalette diagramPalette(IViewDiagramElementFinder cache) {
-        var importExistingTypesTool = new ImportExistingTypesToolProvider().getNodeTool(cache);
-        var dropTool = new ClassDiagramDropToolProvider().getDropTool(cache);
-
-        return new DiagramBuilders().newDiagramPalette()
-                .nodeTools(importExistingTypesTool)
-                .dropTool(dropTool)
-                .build();
     }
 }

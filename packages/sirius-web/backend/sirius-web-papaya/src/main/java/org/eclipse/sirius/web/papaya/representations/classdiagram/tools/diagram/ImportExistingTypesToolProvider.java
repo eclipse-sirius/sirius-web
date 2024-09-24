@@ -10,84 +10,103 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.representations.classdiagram.tools;
+package org.eclipse.sirius.web.papaya.representations.classdiagram.tools.diagram;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
-import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.ClassNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.EnumNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.InterfaceNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.RecordNodeDescriptionProvider;
 
 /**
- * Used to create the import all interface implementations tool.
+ * Used to provide the tool used to import existing types.
  *
  * @author sbegaudeau
  */
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-public class ImportAllInterfaceSubtypesNodeToolProvider implements INodeToolProvider {
+public class ImportExistingTypesToolProvider {
 
-    @Override
-    public NodeTool create(IViewDiagramElementFinder cache) {
+    public NodeTool getNodeTool(IViewDiagramElementFinder cache) {
         var classNodeDescription = cache.getNodeDescription(ClassNodeDescriptionProvider.NAME).orElse(null);
         var interfaceNodeDescription = cache.getNodeDescription(InterfaceNodeDescriptionProvider.NAME).orElse(null);
+        var enumNodeDescription = cache.getNodeDescription(EnumNodeDescriptionProvider.NAME).orElse(null);
         var recordNodeDescription = cache.getNodeDescription(RecordNodeDescriptionProvider.NAME).orElse(null);
 
-        var ifClassCreateView = new ViewBuilders().newIf()
-                .conditionExpression("aql:type.eClass() = papaya::Class")
+        var treeDescription = new DiagramBuilders().newSelectionDialogTreeDescription()
+                .elementsExpression("aql:self.eResource().getResourceSet().getResources()")
+                .childrenExpression("aql:self.getChildren()")
+                .isSelectableExpression("aql:self.oclIsKindOf(papaya::Type)")
+                .build();
+
+        var dialogDescription = new DiagramBuilders().newSelectionDialogDescription()
+                .selectionMessage("Select the types to import")
+                .selectionDialogTreeDescription(treeDescription)
+                .build();
+
+        var ifClass = new ViewBuilders().newIf()
+                .conditionExpression("aql:selectedObject.eClass() = papaya::Class")
                 .children(
                         new DiagramBuilders().newCreateView()
                                 .elementDescription(classNodeDescription)
-                                .semanticElementExpression("aql:type")
-                                .parentViewExpression("aql:null")
+                                .semanticElementExpression("aql:selectedObject")
+                                .parentViewExpression("aql:selectedNode")
                                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                                 .build()
                 )
                 .build();
 
-        var ifInterfaceCreateView = new ViewBuilders().newIf()
-                .conditionExpression("aql:type.eClass() = papaya::Interface")
+        var ifInterface = new ViewBuilders().newIf()
+                .conditionExpression("aql:selectedObject.eClass() = papaya::Interface")
                 .children(
                         new DiagramBuilders().newCreateView()
                                 .elementDescription(interfaceNodeDescription)
-                                .semanticElementExpression("aql:type")
-                                .parentViewExpression("aql:null")
+                                .semanticElementExpression("aql:selectedObject")
+                                .parentViewExpression("aql:selectedNode")
                                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                                 .build()
                 )
                 .build();
 
-        var ifRecordCreateView = new ViewBuilders().newIf()
-                .conditionExpression("aql:type.eClass() = papaya::Record")
+        var ifRecord = new ViewBuilders().newIf()
+                .conditionExpression("aql:selectedObject.eClass() = papaya::Record")
                 .children(
                         new DiagramBuilders().newCreateView()
                                 .elementDescription(recordNodeDescription)
-                                .semanticElementExpression("aql:type")
-                                .parentViewExpression("aql:null")
+                                .semanticElementExpression("aql:selectedObject")
+                                .parentViewExpression("aql:selectedNode")
+                                .containmentKind(NodeContainmentKind.CHILD_NODE)
+                                .build()
+                )
+                .build();
+
+        var ifEnum = new ViewBuilders().newIf()
+                .conditionExpression("aql:selectedObject.eClass() = papaya::Enum")
+                .children(
+                        new DiagramBuilders().newCreateView()
+                                .elementDescription(enumNodeDescription)
+                                .semanticElementExpression("aql:selectedObject")
+                                .parentViewExpression("aql:selectedNode")
                                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                                 .build()
                 )
                 .build();
 
         return new DiagramBuilders().newNodeTool()
-                .name("Import all subtypes")
-                .iconURLsExpression("/icons/full/obj16/Interface.svg")
+                .name("Import existing types")
+                .iconURLsExpression("/icons/full/obj16/Class.svg")
+                .dialogDescription(dialogDescription)
                 .body(
                         new ViewBuilders().newChangeContext()
                                 .expression("aql:self")
                                 .children(
-                                        new ViewBuilders().newFor()
-                                                .expression("aql:self.allSubtypes")
-                                                .iteratorName("type")
-                                                .children(
-                                                        ifClassCreateView,
-                                                        ifInterfaceCreateView,
-                                                        ifRecordCreateView
-                                                )
-                                                .build()
+                                        ifClass,
+                                        ifInterface,
+                                        ifRecord,
+                                        ifEnum
                                 )
                                 .build()
                 )

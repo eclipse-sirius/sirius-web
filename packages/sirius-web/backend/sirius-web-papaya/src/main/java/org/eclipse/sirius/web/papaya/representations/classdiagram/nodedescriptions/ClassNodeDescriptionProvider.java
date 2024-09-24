@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.classnode.ClassNodePaletteProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
@@ -132,7 +133,6 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .childrenLayoutStrategy(childrenLayoutStrategy)
                 .childrenDescriptions(constructorNodeDescription)
-                .isCollapsedByDefaultExpression("aql:self.constructors->size() = 0")
                 .build();
     }
 
@@ -204,7 +204,6 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .childrenLayoutStrategy(childrenLayoutStrategy)
                 .childrenDescriptions(attributeNodeDescription)
-                .isCollapsedByDefaultExpression("aql:self.attributes->size() = 0")
                 .build();
     }
 
@@ -276,7 +275,6 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .childrenLayoutStrategy(childrenLayoutStrategy)
                 .childrenDescriptions(operationNodeDescription)
-                .isCollapsedByDefaultExpression("aql:self.operations->size() = 0")
                 .build();
     }
 
@@ -316,6 +314,10 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var optionalClassNodeDescription = cache.getNodeDescription(NAME);
         if (optionalClassNodeDescription.isPresent()) {
             var classNodeDescription = optionalClassNodeDescription.get();
+
+            var palette = new ClassNodePaletteProvider().getNodePalette(cache);
+            classNodeDescription.setPalette(palette);
+
             diagramDescription.getNodeDescriptions().add(classNodeDescription);
         }
     }
