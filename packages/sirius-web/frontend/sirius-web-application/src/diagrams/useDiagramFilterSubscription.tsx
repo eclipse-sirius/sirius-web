@@ -48,7 +48,7 @@ export const useDiagramFilterSubscription = (
   const input: GQLDiagramFilterEventInput = {
     id: state.id,
     editingContextId,
-    representationId: `diagramFilter://?objectIds=[${objectIds.join(',')}]`,
+    representationId: `diagramFilter://?objectIds=[${objectIds.map(encodeURIComponent).join(',')}]`,
   };
 
   const variables: GQLDiagramFilterEventVariables = { input };

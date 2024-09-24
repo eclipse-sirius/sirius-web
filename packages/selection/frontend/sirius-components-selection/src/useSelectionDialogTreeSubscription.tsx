@@ -43,7 +43,7 @@ export const useSelectionDialogTreeSubscription = (
   const input: GQLSelectionDialogTreeEventInput = {
     id: state.id,
     editingContextId,
-    representationId: `${treeId}&expandedIds=[${expanded.join(',')}]`,
+    representationId: `${treeId}&expandedIds=[${expanded.map(encodeURIComponent).join(',')}]`,
   };
 
   const variables: GQLSelectionDialogTreeEventVariables = { input };

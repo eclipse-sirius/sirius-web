@@ -47,6 +47,7 @@ The new option ALWAYS allows the separator to be displayed in every case.
 - https://github.com/eclipse-sirius/sirius-web/issues/4005[#4005] [diagram] Fix a problem synchronizing explorer with current selection
 - https://github.com/eclipse-sirius/sirius-web/issues/4008[#4008] [diagram] Prevent `detailsEvent` to be triggered twice when selecting a multi-represented element in the diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/4032[#4032] [diagram] Fix an issue where separator list compartment is missing
+- https://github.com/eclipse-sirius/sirius-web/issues/4028[#4028] [trees] Fixed an issue where special characters (e.g. #) could not be used in the treeId due to URL parsing limitations.
 
 === New Features
 
