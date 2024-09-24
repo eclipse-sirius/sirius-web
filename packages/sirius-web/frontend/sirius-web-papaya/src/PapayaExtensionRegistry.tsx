@@ -13,6 +13,7 @@
 
 import { ComponentExtension, DataExtension, ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import {
+  DiagramPaletteToolContributionProps,
   EdgeData,
   NodeData,
   ReactFlowPropsCustomizer,
@@ -70,10 +71,17 @@ const papayaDiagramPanelExtension: DataExtension<Array<ReactFlowPropsCustomizer>
   data: [reactFlowPropsCustomizer],
 };
 papayaExtensionRegistry.putData(diagramRendererReactFlowPropsCustomizerExtensionPoint, papayaDiagramPanelExtension);
-
-papayaExtensionRegistry.addComponent(diagramPaletteToolExtensionPoint, {
+const diagramPaletteToolContributions: DiagramPaletteToolContributionProps[] = [
+  {
+    canHandle: (node: Node<NodeData>) => {
+      return node.data.targetObjectKind.startsWith('siriusComponents://semantic?domain=papaya&entity=Component');
+    },
+    component: PapayaComponentLabelDetailToolContribution,
+  },
+];
+papayaExtensionRegistry.putData<DiagramPaletteToolContributionProps[]>(diagramPaletteToolExtensionPoint, {
   identifier: `papaya_${diagramPaletteToolExtensionPoint.identifier}`,
-  Component: PapayaComponentLabelDetailToolContribution,
+  data: diagramPaletteToolContributions,
 });
 
 export { papayaExtensionRegistry };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import { Node } from '@xyflow/react';
-import { NodeData } from '../DiagramRenderer.types';
+import java.util.Objects;
 
-export interface DiagramPaletteToolContributionProps {
-  canHandle: (node: Node<NodeData>) => boolean;
-  component: React.ComponentType<DiagramPaletteToolContributionComponentProps>;
-}
+/**
+ * Represents a divider between tools or tool sections in the palette.
+ * @author fbarbin
+ */
+public record PaletteDivider(String id) implements IPaletteEntry {
 
-export interface DiagramPaletteToolContributionComponentProps {
-  x: number;
-  y: number;
-  diagramElementId: string;
-  key: string;
+    public PaletteDivider {
+        Objects.requireNonNull(id);
+    }
 }
