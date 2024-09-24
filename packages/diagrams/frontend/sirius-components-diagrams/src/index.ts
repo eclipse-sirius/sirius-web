@@ -58,10 +58,13 @@ export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
 export type { DiagramNodeType } from './renderer/node/NodeTypes.types';
 export { DiagramElementPalette } from './renderer/palette/DiagramElementPalette';
-export type { DiagramPaletteToolContributionComponentProps } from './renderer/palette/DiagramPaletteToolContribution.types';
-export type { GQLToolVariable, GQLToolVariableType } from './renderer/palette/Palette.types';
-export type { DiagramPaletteToolComponentProps } from './renderer/palette/tool/DiagramPaletteTool.types';
-export { diagramPaletteToolExtensionPoint } from './renderer/palette/tool/DiagramPaletteToolExtensionPoints';
+export type { DiagramPaletteToolComponentProps } from './renderer/palette/extensions/DiagramPaletteTool.types';
+export type {
+  DiagramPaletteToolContributionComponentProps,
+  DiagramPaletteToolContributionProps,
+} from './renderer/palette/extensions/DiagramPaletteToolContribution.types';
+export { diagramPaletteToolExtensionPoint } from './renderer/palette/extensions/DiagramPaletteToolExtensionPoints';
+export type { GQLToolVariable, GQLToolVariableType } from './renderer/palette/usePalette.types';
 export type { DiagramPanelActionProps } from './renderer/panel/DiagramPanel.types';
 export { diagramPanelActionExtensionPoint } from './renderer/panel/DiagramPanelExtensionPoints';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';

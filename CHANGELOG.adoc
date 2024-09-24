@@ -31,6 +31,8 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [form] Add layout capabilities for form widgets
 - https://github.com/eclipse-sirius/sirius-web/issues/4177[#4177] [table] Add table representation support
+- https://github.com/eclipse-sirius/sirius-web/issues/3990[#3990] [diagram] The palette can now be dragged
+- https://github.com/eclipse-sirius/sirius-web/issues/3981[#3981] [diagram] The palette palette sections are showed as list
 
 === Improvements
 
@@ -363,7 +365,6 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3932[#3932] [forms] Do not display the 'Delete' button (even disabled) for non-deletable lists
 - https://github.com/eclipse-sirius/sirius-web/issues/3951[#3951] [sirius-web] Provide an error page to redirect users in case of error
 - https://github.com/eclipse-sirius/sirius-web/issues/3974[#3974] [diagram] Add support for `<` and `>` to trigger direct edit
-- https://github.com/eclipse-sirius/sirius-web/issues/3990[#3990] [diagram] Make the diagram contextual palette draggable
 
 
 == v2024.7.0

@@ -13,8 +13,8 @@
 
 import { XYPosition, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
-import { DiagramPaletteContext } from './DiagramPaletteContext';
-import { DiagramPaletteContextValue } from './DiagramPaletteContext.types';
+import { DiagramPaletteContext } from './contexts/DiagramPaletteContext';
+import { DiagramPaletteContextValue } from './contexts/DiagramPaletteContext.types';
 import { UseDiagramPaletteValue } from './useDiagramPalette.types';
 
 const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds?: DOMRect): XYPosition => {

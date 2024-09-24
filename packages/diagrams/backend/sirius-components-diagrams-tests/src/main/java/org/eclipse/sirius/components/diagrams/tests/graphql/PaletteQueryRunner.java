@@ -36,15 +36,18 @@ public class PaletteQueryRunner implements IQueryRunner {
                       ... on DiagramDescription {
                         palette(diagramElementId: $diagramElementId) {
                           id
-                          tools {
+                          quickAccessTools {
                             ...ToolFields
                           }
-                          toolSections {
-                            id
-                            label
-                            iconURL
-                            tools {
-                              ...ToolFields
+                          paletteEntries {
+                            ...ToolFields
+                            ... on ToolSection {
+                              id
+                              label
+                              iconURL
+                              tools {
+                                ...ToolFields
+                              }
                             }
                           }
                         }

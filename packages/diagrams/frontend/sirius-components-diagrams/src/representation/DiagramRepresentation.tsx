@@ -30,8 +30,8 @@ import { DropNodeContextProvider } from '../renderer/dropNode/DropNodeContext';
 import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
 import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenContext';
 import { NodeContextProvider } from '../renderer/node/NodeContext';
-import { DiagramElementPaletteContextProvider } from '../renderer/palette/DiagramElementPaletteContext';
-import { DiagramPaletteContextProvider } from '../renderer/palette/DiagramPaletteContext';
+import { DiagramElementPaletteContextProvider } from '../renderer/palette/contexts/DiagramElementPaletteContext';
+import { DiagramPaletteContextProvider } from '../renderer/palette/contexts/DiagramPaletteContext';
 import {
   DiagramRepresentationState,
   GQLDiagramDescription,

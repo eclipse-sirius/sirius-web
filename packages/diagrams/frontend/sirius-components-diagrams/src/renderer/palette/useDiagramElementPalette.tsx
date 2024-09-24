@@ -15,8 +15,8 @@ import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, XYPosition, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { DiagramElementPaletteContext } from './DiagramElementPaletteContext';
-import { DiagramElementPaletteContextValue } from './DiagramElementPaletteContext.types';
+import { DiagramElementPaletteContext } from './contexts/DiagramElementPaletteContext';
+import { DiagramElementPaletteContextValue } from './contexts/DiagramElementPaletteContext.types';
 import { UseDiagramElementPaletteValue } from './useDiagramElementPalette.types';
 
 const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DOMRect | undefined): XYPosition => {

@@ -41,8 +41,8 @@ import { useDistributeElements } from '../../layout/useDistributeElements';
 import { ListNodeData } from '../../node/ListNode.types';
 import { usePinDiagramElements } from '../../pin/usePinDiagramElements';
 import { PalettePortal } from '../PalettePortal';
-import { PaletteTool } from '../PaletteTool';
 import { GroupPaletteProps, GroupPaletteSectionTool, GroupPaletteState } from './GroupPalette.types';
+import { PaletteTool } from './PaletteTool';
 
 const usePaletteStyle = makeStyles()((theme) => ({
   palette: {
