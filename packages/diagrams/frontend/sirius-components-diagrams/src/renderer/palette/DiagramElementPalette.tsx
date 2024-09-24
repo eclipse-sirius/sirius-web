@@ -52,7 +52,6 @@ export const DiagramElementPalette = memo(
           diagramElementId={diagramElementId}
           targetObjectId={targetObjectId}
           onDirectEditClick={handleDirectEditClick}
-          hideableDiagramElement
         />
       </PalettePortal>
     ) : null;

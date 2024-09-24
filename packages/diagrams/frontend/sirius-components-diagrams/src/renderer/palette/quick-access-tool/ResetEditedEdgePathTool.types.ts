@@ -10,10 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { DiagramPaletteToolComponentProps } from './DiagramPaletteTool.types';
-
-export const diagramPaletteToolExtensionPoint: ComponentExtensionPoint<DiagramPaletteToolComponentProps> = {
-  identifier: 'diagramPalette#tool',
-  FallbackComponent: () => null,
-};
+export interface ResetEditedEdgePathToolProps {
+  diagramElementId: string;
+}

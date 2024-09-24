@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import java.util.Objects;
  *
  * @author mcharfadi
  */
-public record ToolSection(String id, String label, List<String> iconURL, List<ITool> tools) {
+public record ToolSection(String id, String label, List<String> iconURL, List<ITool> tools) implements IPaletteEntry {
 
     public ToolSection {
         Objects.requireNonNull(id);

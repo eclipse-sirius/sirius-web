@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,12 +20,12 @@ import java.util.Objects;
  *
  * @author frouene
  */
-public record Palette(String id, List<ITool> tools, List<ToolSection> toolSections) {
+public record Palette(String id, List<ITool> quickAccessTools, List<IPaletteEntry> paletteEntries) {
 
     public Palette {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(tools);
-        Objects.requireNonNull(toolSections);
+        Objects.requireNonNull(quickAccessTools);
+        Objects.requireNonNull(paletteEntries);
     }
 
     public static Builder newPalette(String id) {
@@ -43,26 +43,26 @@ public record Palette(String id, List<ITool> tools, List<ToolSection> toolSectio
 
         private final String id;
 
-        private List<ITool> tools;
+        private List<ITool> quickAccessTools;
 
-        private List<ToolSection> toolSections;
+        private List<IPaletteEntry> paletteEntries;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder tools(List<ITool> tools) {
-            this.tools = Objects.requireNonNull(tools);
+        public Builder quickAccessTools(List<ITool> quickAccessTools) {
+            this.quickAccessTools = Objects.requireNonNull(quickAccessTools);
             return this;
         }
 
-        public Builder toolSections(List<ToolSection> toolSections) {
-            this.toolSections = Objects.requireNonNull(toolSections);
+        public Builder paletteEntries(List<IPaletteEntry> paletteEntries) {
+            this.paletteEntries = Objects.requireNonNull(paletteEntries);
             return this;
         }
 
         public Palette build() {
-            return new Palette(this.id, this.tools, this.toolSections);
+            return new Palette(this.id, this.quickAccessTools, this.paletteEntries);
         }
     }
 

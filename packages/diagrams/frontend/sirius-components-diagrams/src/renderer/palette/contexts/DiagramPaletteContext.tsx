@@ -12,13 +12,13 @@
  *******************************************************************************/
 
 import React, { useCallback, useState } from 'react';
+import { GQLTool } from '../Palette.types';
 import {
   DiagramPaletteContextProviderProps,
   DiagramPaletteContextProviderState,
   DiagramPaletteContextValue,
   ToolSectionWithLastTool,
 } from './DiagramPaletteContext.types';
-import { GQLTool } from './Palette.types';
 
 const defaultValue: DiagramPaletteContextValue = {
   x: null,

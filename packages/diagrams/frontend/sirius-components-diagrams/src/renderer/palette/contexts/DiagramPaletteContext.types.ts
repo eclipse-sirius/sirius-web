@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLTool } from './Palette.types';
+import { GQLTool } from '../Palette.types';
 
 export interface DiagramPaletteContextValue {
   x: number | null;

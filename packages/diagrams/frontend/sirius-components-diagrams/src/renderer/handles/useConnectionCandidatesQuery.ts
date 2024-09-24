@@ -19,11 +19,12 @@ import {
   GQLGetToolSectionsData,
   GQLGetToolSectionsVariables,
   GQLNodeDescription,
+  GQLPaletteEntry,
   GQLRepresentationDescription,
   GQLSingleClickOnTwoDiagramElementsTool,
+  GQLToolSection,
 } from '../connector/useConnector.types';
 import { NodeData } from '../DiagramRenderer.types';
-import { GQLTool } from '../palette/Palette.types';
 
 const getToolSectionsQuery = gql`
   query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
@@ -33,12 +34,12 @@ const getToolSectionsQuery = gql`
           description {
             ... on DiagramDescription {
               palette(diagramElementId: $diagramElementId) {
-                tools {
+                paletteEntries {
                   ...ToolFields
-                }
-                toolSections {
-                  tools {
-                    ...ToolFields
+                  ... on ToolSection {
+                    tools {
+                      ...ToolFields
+                    }
                   }
                 }
               }
@@ -68,9 +69,10 @@ const getToolSectionsQuery = gql`
 const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
-const isSingleClickOnTwoDiagramElementsTool = (tool: GQLTool): tool is GQLSingleClickOnTwoDiagramElementsTool =>
-  tool.__typename === 'SingleClickOnTwoDiagramElementsTool';
-
+const isSingleClickOnTwoDiagramElementsTool = (
+  entry: GQLPaletteEntry
+): entry is GQLSingleClickOnTwoDiagramElementsTool => entry.__typename === 'SingleClickOnTwoDiagramElementsTool';
+const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection => entry.__typename === 'ToolSection';
 export const useConnectionCandidatesQuery = (
   editingContextId: string,
   diagramId: string,
@@ -90,17 +92,24 @@ export const useConnectionCandidatesQuery = (
   const diagramDescription: GQLRepresentationDescription | null =
     data?.viewer.editingContext.representation.description ?? null;
 
+  const collectConnectionToolsFromPaletteEntry = (entry: GQLPaletteEntry): GQLNodeDescription[] => {
+    const candidates: GQLNodeDescription[] = [];
+    if (isSingleClickOnTwoDiagramElementsTool(entry)) {
+      entry.candidates.forEach((candidate) => candidates.push(...candidate.targets));
+    } else if (isToolSection(entry)) {
+      entry.tools.filter(isSingleClickOnTwoDiagramElementsTool).forEach((tool) => {
+        tool.candidates.forEach((candidate) => candidates.push(...candidate.targets));
+      });
+    }
+    return candidates;
+  };
+
   const nodeCandidates: GQLNodeDescription[] = useMemo(() => {
     const candidates: GQLNodeDescription[] = [];
     if (diagramDescription && isDiagramDescription(diagramDescription)) {
-      diagramDescription.palette.tools.filter(isSingleClickOnTwoDiagramElementsTool).forEach((tool) => {
-        tool.candidates.forEach((candidate) => candidates.push(...candidate.targets));
-      });
-      diagramDescription.palette.toolSections.forEach((toolSection) => {
-        toolSection.tools.filter(isSingleClickOnTwoDiagramElementsTool).forEach((tool) => {
-          tool.candidates.forEach((candidate) => candidates.push(...candidate.targets));
-        });
-      });
+      diagramDescription.palette.paletteEntries.forEach((entry) =>
+        candidates.push(...collectConnectionToolsFromPaletteEntry(entry))
+      );
     }
 
     return candidates;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,16 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import java.util.List;
+import java.util.Objects;
 
 /**
- * Interface implemented by all tools.
+ * Represents a divider between tools or tool sections in the palette.
  *
- * @author mcharfadi
+ * @author fbarbin
  */
-public interface ITool extends IPaletteEntry {
+public record PaletteDivider(String id) implements IPaletteEntry {
 
-    String label();
-
-    List<String> iconURL();
+    public PaletteDivider {
+        Objects.requireNonNull(id);
+    }
 }

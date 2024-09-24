@@ -20,7 +20,12 @@ import java.util.Objects;
  *
  * @author mcharfadi
  */
-public record SingleClickOnTwoDiagramElementsTool(String id, String label, List<String> iconURL, List<SingleClickOnTwoDiagramElementsCandidate> candidates, String dialogDescriptionId) implements ITool {
+public record SingleClickOnTwoDiagramElementsTool(
+        String id,
+        String label,
+        List<String> iconURL,
+        List<SingleClickOnTwoDiagramElementsCandidate> candidates,
+        String dialogDescriptionId) implements ITool {
 
     public SingleClickOnTwoDiagramElementsTool {
         Objects.requireNonNull(id);

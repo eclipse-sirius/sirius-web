@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTool, GQLToolSection } from '../Palette.types';
 
-export interface ToolSectionProps {
-  toolSection: GQLToolSection;
+import { GQLTool } from '../Palette.types';
+
+export interface PaletteQuickAccessToolBarProps {
+  x: number;
+  y: number;
+  diagramElementId: string;
   onToolClick: (tool: GQLTool) => void;
-  toolSectionExpandId: string | null;
-  onExpand: (toolSectionId: string | null) => void;
-}
-
-export interface ToolSectionState {
-  expanded: boolean;
+  quickAccessTools: GQLTool[];
 }
