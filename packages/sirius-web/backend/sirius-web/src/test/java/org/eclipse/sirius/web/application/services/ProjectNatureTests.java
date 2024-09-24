@@ -14,8 +14,6 @@ package org.eclipse.sirius.web.application.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
@@ -27,7 +25,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,10 +61,11 @@ public class ProjectNatureTests extends AbstractIntegrationTests {
         var projectId = optionalProject.map(Project::getId).orElseThrow(IllegalStateException::new);
         this.projectUpdateService.addNature(null, projectId, "new nature");
 
-        var projects = this.projectSearchService.findAllById(List.of(TestIdentifiers.SYSML_SAMPLE_PROJECT), PageRequest.of(0, 20));
-        assertThat(projects.stream().toList())
-                .isNotEmpty()
-                .anySatisfy(project -> assertThat(project.getNatures()).hasSize(2));
+        optionalProject = this.projectSearchService.findById(TestIdentifiers.SYSML_SAMPLE_PROJECT);
+        assertThat(optionalProject)
+                .isPresent()
+                .get()
+                .satisfies(project -> assertThat(project.getNatures()).hasSize(2));
     }
 
     @Test

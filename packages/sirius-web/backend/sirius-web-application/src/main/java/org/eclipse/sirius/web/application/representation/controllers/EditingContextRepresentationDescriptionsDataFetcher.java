@@ -22,8 +22,8 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsInput;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsPayload;
+import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.dto.PageInfoWithCount;
 
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;

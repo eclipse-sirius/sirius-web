@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,7 +20,6 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -52,12 +50,5 @@ public class ProjectSearchService implements IProjectSearchService {
     @Override
     public Page<Project> findAll(Pageable pageable) {
         return this.projectRepository.findAll(pageable);
-    }
-
-    @Override
-    public Page<Project> findAllById(List<UUID> projectIds, Pageable pageable) {
-        var projects = this.projectRepository.findAllById(projectIds, pageable.getPageNumber() * pageable.getPageSize(), pageable.getPageSize());
-        var count = this.projectRepository.countAllById(projectIds);
-        return new PageImpl<>(projects, pageable, count);
     }
 }

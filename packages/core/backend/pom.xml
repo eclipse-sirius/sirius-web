@@ -37,6 +37,7 @@
 		<module>sirius-components-representations</module>
 		<module>sirius-components-events</module>
 		<module>sirius-components-core</module>
+		<module>sirius-components-core-graphql</module>
 		<module>sirius-components-collaborative</module>
 		<module>sirius-components-graphql-api</module>
 	</modules>
