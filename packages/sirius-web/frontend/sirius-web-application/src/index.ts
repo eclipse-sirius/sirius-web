@@ -74,6 +74,10 @@ export { type ProjectActionButtonProps } from './views/project-browser/list-proj
 export { projectActionButtonMenuItemExtensionPoint } from './views/project-browser/list-projects-area/ProjectActionButtonExtensionPoints';
 export { type ProjectRowProps } from './views/project-browser/list-projects-area/ProjectRow.types';
 export { projectsTableRowExtensionPoint } from './views/project-browser/list-projects-area/ProjectsTableExtensionPoints';
+export { type ProjectImagesSettingsModal } from './views/project-settings/images/ProjectImagesSettings.types';
+export { UploadImageModal } from './views/project-settings/images/upload-image/UploadImageModal';
+export { useProjectImages } from './views/project-settings/images/useProjectImages';
+export { type GQLImageMetadata } from './views/project-settings/images/useProjectImages.types';
 export {
   type ProjectSettingTabContribution,
   type ProjectSettingTabProps,
