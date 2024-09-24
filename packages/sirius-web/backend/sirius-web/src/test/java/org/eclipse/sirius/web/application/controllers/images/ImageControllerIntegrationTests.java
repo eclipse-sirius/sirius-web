@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -186,6 +187,25 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
         } catch (IOException exception) {
             fail(exception.getMessage());
         }
+    }
+
+    @Test
+    @DisplayName("Given an invalid image, when it is uploaded, then an error is returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenAnInvalidImageWhenItIsUploadedThenAnErrorIsReturned() {
+        this.givenCommittedTransaction.commit();
+
+        var content = "";
+        var file = new UploadFile("", new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
+
+        var input = new UploadImageInput(UUID.randomUUID(), TestIdentifiers.SYSML_SAMPLE_PROJECT, "New image", file);
+        var result = this.uploadImageMutationRunner.run(input);
+        var typename = JsonPath.read(result, "$.data.uploadImage.__typename");
+        assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
     }
 
     @Test

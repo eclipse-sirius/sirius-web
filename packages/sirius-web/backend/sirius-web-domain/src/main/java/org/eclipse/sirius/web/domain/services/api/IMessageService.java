@@ -19,6 +19,8 @@ package org.eclipse.sirius.web.domain.services.api;
  */
 public interface IMessageService {
 
+    String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
+
     String revealSelectedFadedElements();
 
     String collapseSelectedElements();
@@ -53,6 +55,11 @@ public interface IMessageService {
      * @author arichard
      */
     class NoOp implements IMessageService {
+
+        @Override
+        public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
+            return "";
+        }
 
         @Override
         public String revealSelectedFadedElements() {

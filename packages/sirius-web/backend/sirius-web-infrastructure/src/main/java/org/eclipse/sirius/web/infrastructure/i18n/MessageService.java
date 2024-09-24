@@ -34,6 +34,11 @@ public class MessageService implements IMessageService {
     }
 
     @Override
+    public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
+        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName });
+    }
+
+    @Override
     public String revealSelectedFadedElements() {
         return this.messageSourceAccessor.getMessage("REVEAL_SELECTED_FADED_ELEMENTS");
     }

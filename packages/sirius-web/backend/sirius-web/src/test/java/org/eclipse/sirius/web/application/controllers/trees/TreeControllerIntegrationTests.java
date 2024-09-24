@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
@@ -107,7 +108,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     private final TreeItemMatcher ePackageHasNoRepresentation = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0),
-            treeItem -> !treeItem.isHasChildren()
+            treeItem -> treeItem.isHasChildren() && treeItem.getChildren().size() == 1 && treeItem.getChildren().get(0).getKind().startsWith(SemanticKindConstants.PREFIX)
     );
 
     private final TreeItemMatcher documentHasNoObject = new TreeItemMatcher(

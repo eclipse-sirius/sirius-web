@@ -249,6 +249,32 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     }
 
     @Test
+    @DisplayName("Given an existing project to rename, when the mutation is performed with an invalid name, then an error is returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenExistingProjectToRenameWhenMutationIsPerformedWithInvalidNameThenAnErrorIsReturned() {
+        assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isTrue();
+
+        var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.UML_SAMPLE_PROJECT, "");
+        var result = this.renameProjectMutationRunner.run(input);
+        String typename = JsonPath.read(result, "$.data.renameProject.__typename");
+        assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Given an invalid project to rename, when the mutation is performed, then an error is returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenInvalidProjectToRenameWhenMutationIsPerformedThenAnErrorIsReturned() {
+        assertThat(this.projectSearchService.existsById(TestIdentifiers.INVALID_PROJECT)).isFalse();
+
+        var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.INVALID_PROJECT, "New Name");
+        var result = this.renameProjectMutationRunner.run(input);
+        String typename = JsonPath.read(result, "$.data.renameProject.__typename");
+        assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+    }
+
+    @Test
     @DisplayName("Given an invalid project to delete, when the mutation is performed, then an error is returned")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))

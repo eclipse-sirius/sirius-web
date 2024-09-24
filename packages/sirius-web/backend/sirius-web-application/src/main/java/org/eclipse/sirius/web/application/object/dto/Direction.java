@@ -10,20 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.project.data.versioning.dto;
-
-import java.time.OffsetDateTime;
-
-import org.eclipse.sirius.web.application.dto.IRestRecord;
+package org.eclipse.sirius.web.application.object.dto;
 
 /**
- * Interface for the REST CommitReference DTO.
+ * Used to indicate the direction of the relationships to retrieve when calling "getRelationshipsByRelatedElement" REST API.
  *
  * @author arichard
  */
-public interface IRestCommitReference extends IRestRecord {
-
-    OffsetDateTime created();
-
-    String name();
+public enum Direction {
+    IN, OUT, BOTH
 }

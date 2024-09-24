@@ -76,7 +76,7 @@ public class HierarchyLifecycleControllerTests extends AbstractIntegrationTests 
                 .map(HierarchyRefreshedEventPayload.class::cast)
                 .map(HierarchyRefreshedEventPayload::hierarchy)
                 .ifPresentOrElse(hierarchy -> {
-                    assertThat(hierarchy.getChildNodes()).isEmpty();
+                    assertThat(hierarchy.getChildNodes()).isNotEmpty();
                 }, () -> fail("Missing hierarchy"));
         };
 
