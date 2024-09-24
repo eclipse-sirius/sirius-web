@@ -23,10 +23,8 @@ import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.ImportAllInterfaceSubtypesNodeToolProvider;
-import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.ImportInterfaceImplementationsNodeToolProvider;
+import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.interfacenode.InterfaceNodePaletteProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
@@ -120,23 +118,15 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var palette = this.palette(cache);
-
         var optionalInterfaceNodeDescription = cache.getNodeDescription(NAME);
         if (optionalInterfaceNodeDescription.isPresent()) {
             var interfaceNodeDescription = optionalInterfaceNodeDescription.get();
+
+            var palette = new InterfaceNodePaletteProvider().getNodePalette(cache);
             interfaceNodeDescription.setPalette(palette);
 
             diagramDescription.getNodeDescriptions().add(interfaceNodeDescription);
         }
     }
 
-    private NodePalette palette(IViewDiagramElementFinder cache) {
-        return new DiagramBuilders().newNodePalette()
-                .nodeTools(
-                        new ImportInterfaceImplementationsNodeToolProvider().create(cache),
-                        new ImportAllInterfaceSubtypesNodeToolProvider().create(cache)
-                )
-                .build();
-    }
 }
