@@ -165,7 +165,7 @@ TreeDescription {
 
 Here is the result of this style applied to an operation that has five parameters:
 
-image:images/160/simple_operation_style.png["operation style result", 70%]
+image:images/162/simple_operation_style.png["operation style result", 70%]
 
 == Status
 
