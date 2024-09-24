@@ -46,7 +46,7 @@ The new option ALWAYS allows the separator to be displayed in every case.
 - https://github.com/eclipse-sirius/sirius-web/issues/3965[#3965] [diagram] Fix an issue where the label height was not evaluated to define the node size on the first layout
 - https://github.com/eclipse-sirius/sirius-web/issues/4005[#4005] [diagram] Fix a problem synchronizing explorer with current selection
 - https://github.com/eclipse-sirius/sirius-web/issues/4008[#4008] [diagram] Prevent `detailsEvent` to be triggered twice when selecting a multi-represented element in the diagram
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4032[#4032] [diagram] Fix an issue where separator list compartment is missing
 
 === New Features
 
