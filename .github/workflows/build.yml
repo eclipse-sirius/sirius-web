@@ -97,6 +97,7 @@ jobs:
           npx yalc add @eclipse-sirius/sirius-components-formdescriptioneditors
           npx yalc add @eclipse-sirius/sirius-components-forms
           npx yalc add @eclipse-sirius/sirius-components-gantt
+          npx yalc add @eclipse-sirius/sirius-components-omnibox
           npx yalc add @eclipse-sirius/sirius-components-portals
           npx yalc add @eclipse-sirius/sirius-components-widget-reference
           npx yalc add @eclipse-sirius/sirius-components-selection

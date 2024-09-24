@@ -20,8 +20,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
-import org.eclipse.sirius.web.application.dto.PageInfoWithCount;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.starter.ExceptionWrapper;
 import org.junit.jupiter.api.DisplayName;

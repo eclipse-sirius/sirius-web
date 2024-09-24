@@ -21,9 +21,9 @@ import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher
 import org.eclipse.sirius.components.collaborative.dto.EditingContextAction;
 import org.eclipse.sirius.components.collaborative.dto.GetEditingContextActionsInput;
 import org.eclipse.sirius.components.collaborative.dto.GetEditingContextActionsSuccessPayload;
+import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
-import org.eclipse.sirius.web.application.dto.PageInfoWithCount;
 
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;

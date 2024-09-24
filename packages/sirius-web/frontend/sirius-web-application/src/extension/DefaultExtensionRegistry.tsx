@@ -34,6 +34,7 @@ import {
   widgetContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
+import { OmniboxButton } from '@eclipse-sirius/sirius-components-omnibox';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import { TreeRepresentation, treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
@@ -50,9 +51,12 @@ import ImageIcon from '@mui/icons-material/Image';
 import LinkIcon from '@mui/icons-material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import WarningIcon from '@mui/icons-material/Warning';
+import { useMatch } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { ApolloClientOptionsConfigurer } from '../graphql/useCreateApolloClient.types';
 import { apolloClientOptionsConfigurersExtensionPoint } from '../graphql/useCreateApolloClientExtensionPoints';
+import { NavigationBarRightContributionProps } from '../navigationBar/NavigationBar.types';
+import { navigationBarRightContributionExtensionPoint } from '../navigationBar/NavigationBarExtensionPoints';
 import { OnboardArea } from '../onboarding/OnboardArea';
 import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/DocumentTreeItemContextMenuContribution';
@@ -162,6 +166,27 @@ defaultExtensionRegistry.putData(representationFactoryExtensionPoint, {
 
 /*******************************************************************************
  *
+ * NavigationBar contributions
+ *
+ * Used to register actions in the navigation bar
+ *
+ *******************************************************************************/
+
+export const OmniboxButtonContribution = ({}: NavigationBarRightContributionProps) => {
+  const match = useMatch('/projects/:projectId/edit/:representationId?/*');
+  if (match) {
+    return <OmniboxButton size="small" />;
+  }
+  return null;
+};
+
+defaultExtensionRegistry.addComponent(navigationBarRightContributionExtensionPoint, {
+  identifier: `siriusweb_${navigationBarRightContributionExtensionPoint.identifier}_omnibox`,
+  Component: OmniboxButtonContribution,
+});
+
+/*******************************************************************************
+ *
  * Create project area cards
  *
  * Used to register all the type of cards in the create project area
@@ -169,15 +194,15 @@ defaultExtensionRegistry.putData(representationFactoryExtensionPoint, {
  *******************************************************************************/
 
 defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint}_newProjectCard`,
+  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_newProjectCard`,
   Component: NewProjectCard,
 });
 defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint}_uploadProjectCard`,
+  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_uploadProjectCard`,
   Component: UploadProjectCard,
 });
 defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint}_showAllProjectTemplatesCard`,
+  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_showAllProjectTemplatesCard`,
   Component: ShowAllProjectTemplatesCard,
 });
 
@@ -236,6 +261,7 @@ defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
 });
 
 /*******************************************************************************
+ *
  * Apollo client options configurer
  *
  * Used to register new options configurer in the apollo client

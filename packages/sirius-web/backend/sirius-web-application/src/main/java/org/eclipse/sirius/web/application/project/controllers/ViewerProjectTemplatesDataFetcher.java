@@ -16,8 +16,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.dto.PageInfoWithCount;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateApplicationService;
 import org.springframework.data.domain.Page;
