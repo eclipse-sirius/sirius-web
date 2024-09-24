@@ -19,10 +19,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IURLParser;
@@ -36,10 +37,8 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.Success;
-import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
@@ -125,40 +124,40 @@ public class ViewPaletteProviderTests {
 
         DiagramDescription diagramDescription = this.createDiagramDescription();
 
-        VariableManager variableManager = new VariableManager();
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
         var diagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
         var result = viewPaletteProvider.handle(null, diagram, diagramDescription, diagramDescription, new IEditingContext.NoOp());
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://diagramPalette?diagramId=sourceElementId");
-        assertThat(result.tools()).hasSize(1);
-        assertThat(result.tools().get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
-        assertThat(((SingleClickOnDiagramElementTool) result.tools().get(0)).appliesToDiagramRoot()).isTrue();
-        assertThat(result.toolSections()).hasSize(1);
-        assertThat(result.toolSections().get(0).tools()).hasSize(1);
-        assertThat(result.toolSections().get(0).tools().get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
-        assertThat(((SingleClickOnDiagramElementTool) result.toolSections().get(0).tools().get(0)).appliesToDiagramRoot()).isTrue();
+        assertThat(result.paletteEntries()).filteredOn(ITool.class::isInstance).hasSize(1);
+        var tools = result.paletteEntries().stream().filter(ITool.class::isInstance).map(ITool.class::cast).toList();
+        assertThat(tools.get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
+        assertThat(((SingleClickOnDiagramElementTool) tools.get(0)).appliesToDiagramRoot()).isTrue();
+        assertThat(result.paletteEntries()).filteredOn(ToolSection.class::isInstance).hasSize(1);
+        var toolSections = result.paletteEntries().stream().filter(ToolSection.class::isInstance).map(ToolSection.class::cast).toList();
+        assertThat(toolSections.get(0).tools()).hasSize(1);
+        assertThat(toolSections.get(0).tools().get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
+        assertThat(((SingleClickOnDiagramElementTool) toolSections.get(0).tools().get(0)).appliesToDiagramRoot()).isTrue();
     }
 
     @Test
     public void getNodePaletteTest() {
         ViewPaletteProvider viewPaletteProvider = this.createViewPaletteProvider();
 
-        VariableManager variableManager = new VariableManager();
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
         var node = new TestDiagramBuilder().getNode(UUID.randomUUID().toString(), true);
         var result = viewPaletteProvider.handle(null, node, this.createNodeDescription(), this.createDiagramDescription(), new IEditingContext.NoOp());
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://nodePalette?nodeId=sourceElementId");
-        assertThat(result.tools()).hasSize(2);
-        assertThat(result.tools().get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
-        assertThat(((SingleClickOnDiagramElementTool) result.tools().get(0)).appliesToDiagramRoot()).isFalse();
-        assertThat(result.tools().get(1)).isInstanceOf(SingleClickOnTwoDiagramElementsTool.class);
-        assertThat(((SingleClickOnTwoDiagramElementsTool) result.tools().get(1)).candidates()).isNotEmpty();
-        assertThat(result.toolSections()).hasSize(3);
-        assertThat(result.toolSections().get(0).tools()).hasSize(2);
+        assertThat(result.paletteEntries()).filteredOn(ITool.class::isInstance).hasSize(2);
+        var tools = result.paletteEntries().stream().filter(ITool.class::isInstance).map(ITool.class::cast).toList();
+        assertThat(tools.get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
+        assertThat(((SingleClickOnDiagramElementTool) tools.get(0)).appliesToDiagramRoot()).isFalse();
+        assertThat(tools.get(1)).isInstanceOf(SingleClickOnTwoDiagramElementsTool.class);
+        assertThat(((SingleClickOnTwoDiagramElementsTool) tools.get(1)).candidates()).isNotEmpty();
+        assertThat(result.paletteEntries()).filteredOn(ToolSection.class::isInstance).hasSize(2);
+        var toolSections = result.paletteEntries().stream().filter(ToolSection.class::isInstance).map(ToolSection.class::cast).toList();
+        assertThat(toolSections.get(0).tools()).hasSize(2);
     }
 
     @Test
@@ -179,18 +178,18 @@ public class ViewPaletteProviderTests {
                         .targetObjectLabelProvider(vm -> "")
                         .build();
 
-        VariableManager variableManager = new VariableManager();
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
         var edge = new TestDiagramBuilder().getEdge(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
         var result = viewPaletteProvider.handle(null, edge, edgeDescription, this.createDiagramDescription(), new IEditingContext.NoOp());
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://edgePalette?edgeId=sourceElementId");
-        assertThat(result.tools()).hasSize(1);
-        assertThat(result.tools().get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
-        assertThat(((SingleClickOnDiagramElementTool) result.tools().get(0)).appliesToDiagramRoot()).isFalse();
-        assertThat(result.toolSections()).hasSize(2);
-        assertThat(result.toolSections().get(0).tools()).hasSize(1);
+        assertThat(result.paletteEntries()).filteredOn(ITool.class::isInstance).hasSize(1);
+        var tool = result.paletteEntries().stream().filter(ITool.class::isInstance).map(ITool.class::cast).findFirst().orElse(null);
+        assertThat(tool).isInstanceOf(SingleClickOnDiagramElementTool.class);
+        assertThat(((SingleClickOnDiagramElementTool) tool).appliesToDiagramRoot()).isFalse();
+        assertThat(result.paletteEntries()).filteredOn(ToolSection.class::isInstance).hasSize(2);
+        var toolSection = result.paletteEntries().stream().filter(ToolSection.class::isInstance).map(ToolSection.class::cast).findFirst().orElse(null);
+        assertThat(toolSection.tools()).hasSize(1);
     }
 
     private ViewPaletteProvider createViewPaletteProvider() {
