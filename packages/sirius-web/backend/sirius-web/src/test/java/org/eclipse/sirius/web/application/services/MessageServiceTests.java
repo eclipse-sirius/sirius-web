@@ -37,6 +37,7 @@ public class MessageServiceTests extends AbstractIntegrationTests {
     @Test
     @DisplayName("Given the message service, when asked for a value, then the english value is returned")
     public void givenTheMessageServiceWhenAskedForValueThenTheEnglishValueIsReturned() {
+        assertThat(this.messageService.invalidInput("", "")).isNotBlank();
         assertThat(this.messageService.revealSelectedFadedElements()).isNotBlank();
         assertThat(this.messageService.collapseSelectedElements()).isNotBlank();
         assertThat(this.messageService.expandSelectedElements()).isNotBlank();

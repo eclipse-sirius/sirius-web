@@ -137,6 +137,19 @@ public abstract class AbstractCodingRulesTests {
     }
 
     @Test
+    public void noClassesShouldUseEclipseCoreRuntime() {
+        var rule = ArchRuleDefinition.noClasses()
+                .that()
+                .resideInAPackage(this.getProjectRootPackage())
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage("org.eclipse.core.runtime")
+                .allowEmptyShould(true);
+
+        rule.check(this.getClasses());
+    }
+
+    @Test
     public void noClassesShouldUseJacksonAnnotations() {
         var rule = ArchRuleDefinition.noClasses()
                 .that()

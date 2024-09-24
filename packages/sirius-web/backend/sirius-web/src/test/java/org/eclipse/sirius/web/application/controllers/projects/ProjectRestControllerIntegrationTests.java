@@ -14,11 +14,9 @@ package org.eclipse.sirius.web.application.controllers.projects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.RestProject;
 import org.eclipse.sirius.web.data.TestIdentifiers;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,18 +35,12 @@ import org.springframework.transaction.annotation.Transactional;
  * @author arichard
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String API_REST_PROJECTS = "/api/rest/projects";
-
-    private static final String PARAM_NAME = "name";
-
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @LocalServerPort
     private String port;
@@ -63,19 +55,18 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
-    @DisplayName("Test the GET '/projects' REST API, should return all known projects")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("Given the Sirius Web REST API, when we ask for all projects, then it should return all projects")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void restAPIgetProjects() {
-        this.givenCommittedTransaction.commit();
-
+    public void givenSiriusWebRestAPIWhenWeAskForAllProjectsThenItShouldReturnAllProjects() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
+        var uri = "/api/rest/projects";
         var response = webTestClient
                 .get()
-                .uri(API_REST_PROJECTS)
+                .uri(uri)
                 .exchange();
 
         response.expectStatus().isOk();
@@ -83,128 +74,161 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
-    @DisplayName("Test the GET '/projects/{projectId}' REST API, should return the project corresponding to the given projectId")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("Given the Sirius Web REST API, when we ask for a project, then it should return the project")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void restAPIgetProjectFromProjectId() {
-        this.givenCommittedTransaction.commit();
-
+    public void givenSiriusWebRestAPIWhenWeAskForProjectThenItShouldReturnTheProject() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
+        var uri = String.format("/api/rest/projects/%s", TestIdentifiers.UML_SAMPLE_PROJECT);
         var response = webTestClient
                 .get()
-                .uri(API_REST_PROJECTS + IPath.SEPARATOR + TestIdentifiers.UML_SAMPLE_PROJECT)
-                .exchange();
-
-        response.expectStatus().isOk();
-        response.expectBody(RestProject.class).consumeWith(result -> {
-            var restProject = result.getResponseBody();
-            assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restProject.id());
-            assertEquals("UML Sample", restProject.name());
-        });
-
-        response = webTestClient
-                .get()
-                .uri(API_REST_PROJECTS + IPath.SEPARATOR + TestIdentifiers.INVALID_PROJECT)
-                .exchange();
-        response.expectStatus().isNotFound();
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(RestProject.class)
+                .consumeWith(result -> {
+                    var restProject = result.getResponseBody();
+                    assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restProject.id());
+                    assertEquals("UML Sample", restProject.name());
+                });
     }
 
     @Test
-    @DisplayName("Test the POST '/projects' REST API, should create a project with the given name")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("Given the Sirius Web REST API, when we ask for an unknown project, then it should return an error")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void restAPIcreateProjectFromName() {
-        this.givenCommittedTransaction.commit();
+    public void givenSiriusWebRestAPIWhenWeAskForUnknownProjectThenItShouldReturnAnError() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
 
+        var uri = String.format("/api/rest/projects/%s", TestIdentifiers.INVALID_PROJECT);
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isNotFound();
+    }
+
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we create a new project, then it should be created successfully")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeCreateNewProjectThenItShouldBeCreatedSuccessfully() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
         String projectName = "NewProjectFromRestAPI";
 
-        var response = webTestClient
+        var uri = String.format("/api/rest/projects?name=%s", projectName);
+        webTestClient
                 .post()
-                .uri(uriBuilder -> uriBuilder
-                        .path(API_REST_PROJECTS)
-                        .queryParam(PARAM_NAME, projectName)
-                        .build())
-                .exchange();
-
-        response.expectStatus().isCreated();
-        response.expectBody(RestProject.class).consumeWith(result -> {
-            var restProject = result.getResponseBody();
-            assertEquals(projectName, restProject.name());
-        });
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isCreated()
+                .expectBody(RestProject.class)
+                .consumeWith(result -> {
+                    var restProject = result.getResponseBody();
+                    assertEquals(projectName, restProject.name());
+                });
     }
 
     @Test
-    @DisplayName("Test the PUT '/projects/{projectId}' REST API, should update the project with the given projectId")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("Given the Sirius Web REST API, when we update the name of a project, then it should be updated")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void restAPIupdateProject() {
-        this.givenCommittedTransaction.commit();
-
+    public void givenSiriusWebRestAPIWhenWeUpdateTheNameOfProjectTheItShouldBeUpdated() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
         String updatedProjectName = "UML Sample Renamed";
 
-        var response = webTestClient
+        var uri = String.format("/api/rest/projects/%s?name=%s", TestIdentifiers.UML_SAMPLE_PROJECT, updatedProjectName);
+        webTestClient
                 .put()
-                .uri(uriBuilder -> uriBuilder
-                        .path(API_REST_PROJECTS + IPath.SEPARATOR + TestIdentifiers.UML_SAMPLE_PROJECT)
-                        .queryParam(PARAM_NAME, updatedProjectName)
-                        .build())
-                .exchange();
-
-        response.expectStatus().isOk();
-        response.expectBody(RestProject.class).consumeWith(result -> {
-            var restProject = result.getResponseBody();
-            assertEquals(updatedProjectName, restProject.name());
-        });
-
-        response = webTestClient
-                .put()
-                .uri(uriBuilder -> uriBuilder
-                        .path(API_REST_PROJECTS + IPath.SEPARATOR + TestIdentifiers.INVALID_PROJECT)
-                        .queryParam(PARAM_NAME, updatedProjectName)
-                        .build())
-                .exchange();
-
-        response.expectStatus().isNotFound();
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(RestProject.class)
+                .consumeWith(result -> {
+                    var restProject = result.getResponseBody();
+                    assertEquals(updatedProjectName, restProject.name());
+                });
     }
 
     @Test
-    @DisplayName("Test the DELETE '/projects/{projectId}' REST API, should delete and return the project corresponding to the given projectId")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("Given the Sirius Web REST API, when we update the name of an unknown project, then it should return an error")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void restAPIdeleteProjectFromProjectId() {
-        this.givenCommittedTransaction.commit();
-
+    public void givenSiriusWebRestAPIWhenWeUpdateTheNameOfUnknownProjectTheItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var response = webTestClient
-                .delete()
-                .uri(API_REST_PROJECTS + IPath.SEPARATOR + TestIdentifiers.UML_SAMPLE_PROJECT)
-                .exchange();
+        String updatedProjectName = "UML Sample Renamed";
 
-        response.expectStatus().isOk();
-        response.expectBody(RestProject.class).consumeWith(result -> {
-            var restProject = result.getResponseBody();
-            assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restProject.id());
-            assertEquals("UML Sample", restProject.name());
-        });
+        var uri = String.format("/api/rest/projects/%s?name=%s", TestIdentifiers.UML_SAMPLE_PROJECT, updatedProjectName);
+        webTestClient
+                .put()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(RestProject.class)
+                .consumeWith(result -> {
+                    var restProject = result.getResponseBody();
+                    assertEquals(updatedProjectName, restProject.name());
+                });
+    }
 
-        response = webTestClient
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we delete a project, then it should be deleted")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeDeleteProjectThenItShouldBeDeleted() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        var uri = String.format("/api/rest/projects/%s", TestIdentifiers.UML_SAMPLE_PROJECT);
+        webTestClient
                 .delete()
-                .uri(API_REST_PROJECTS + IPath.SEPARATOR + TestIdentifiers.INVALID_PROJECT)
-                .exchange();
-        response.expectStatus().isNoContent();
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(RestProject.class)
+                .consumeWith(result -> {
+                    var restProject = result.getResponseBody();
+                    assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restProject.id());
+                    assertEquals("UML Sample", restProject.name());
+                });
+    }
+
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we delete an unknown project, then it should return an error")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeDeleteAnUnknownProjectThenItShouldReturnAnError() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        var uri = String.format("/api/rest/projects/%s", TestIdentifiers.INVALID_PROJECT);
+        webTestClient
+                .delete()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isNoContent();
     }
 }

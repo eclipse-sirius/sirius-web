@@ -62,7 +62,7 @@ public class HierarchyDescriptionProvider implements IEditingContextProcessor  {
                 .orElse(null);
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(HierarchyDescription.LABEL, String.class)
-                .orElse(null);
+                .orElse("label");
 
         Function<VariableManager, List<Object>> childSemanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, EObject.class)
                 .map(eObject -> {
@@ -72,7 +72,6 @@ public class HierarchyDescriptionProvider implements IEditingContextProcessor  {
                 })
                 .orElse(List.of());
 
-        // @formatter:on
         return new HierarchyDescription(HIERARCHY_DESCRIPTION_ID, "Sample Hierarchy Description", KIND, canCreatePredicate, targetObjectIdProvider, labelProvider, childSemanticElementsProvider);
     }
 }
