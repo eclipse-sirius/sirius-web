@@ -43,7 +43,7 @@ export const useModelBrowserSubscription = (
   const input: GQLModelBrowserEventInput = {
     id: state.id,
     editingContextId,
-    representationId: `${treeId}&expandedIds=[${expanded.join(',')}]`,
+    representationId: `${treeId}&expandedIds=[${expanded.map(encodeURIComponent).join(',')}]`,
   };
 
   const variables: GQLModelBrowserEventVariables = { input };
