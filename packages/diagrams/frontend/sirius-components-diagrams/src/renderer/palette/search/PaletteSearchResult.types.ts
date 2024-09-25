@@ -10,10 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTool, GQLToolSection } from '../Palette.types';
 
-export interface PaletteToolSectionListProps {
+import { GQLPalette, GQLTool } from '../Palette.types';
+export interface PaletteSearchResultProps {
   onToolClick: (tool: GQLTool) => void;
-  onBackToMainList: () => void;
-  toolSection: GQLToolSection;
+  palette: GQLPalette;
+  searchToolValue: string;
+}
+
+export interface HighlightedLabelProps {
+  label: string;
+  textToHighlight: string;
 }

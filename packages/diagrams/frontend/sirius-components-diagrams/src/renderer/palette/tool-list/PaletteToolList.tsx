@@ -64,9 +64,6 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
 
   const [state, setState] = useState<PaletteToolListStateValue>(defaultValue);
 
-  const tooltipDelay = 750;
-  const tooltipPlacement = 'left';
-
   const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSection: GQLToolSection) => {
     event.stopPropagation();
     setState((prevState) => ({ ...prevState, toolSection }));
@@ -82,15 +79,12 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
   };
 
   const { classes } = useStyle();
+
   const convertPaletteEntry = (paletteEntry: GQLPaletteEntry): JSX.Element | null => {
     let jsxElement: JSX.Element | null = null;
     if (isSingleClickOnDiagramElementTool(paletteEntry)) {
       jsxElement = (
-        <Tooltip
-          enterDelay={tooltipDelay}
-          placement={tooltipPlacement}
-          title={paletteEntry.label}
-          key={'tooltip_' + paletteEntry.id}>
+        <Tooltip title={paletteEntry.label} key={'tooltip_' + paletteEntry.id}>
           <ListItemButton
             className={classes.listItemButton}
             onClick={(event) => handleToolClick(event, paletteEntry)}
@@ -109,11 +103,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
       );
     } else if (isToolSection(paletteEntry)) {
       jsxElement = (
-        <Tooltip
-          key={'tooltip_' + paletteEntry.id}
-          enterDelay={tooltipDelay}
-          placement={tooltipPlacement}
-          title={paletteEntry.label}>
+        <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label}>
           <ListItemButton
             className={classes.listItemButton}
             onClick={(event) => handleToolSectionClick(event, paletteEntry)}
@@ -145,8 +135,6 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
               toolSection={entry as GQLToolSection}
               onToolClick={onToolClick}
               onBackToMainList={onBackToMainList}
-              tooltipDelay={tooltipDelay}
-              tooltipPlacement={tooltipPlacement}
             />
           </div>
         </Slide>

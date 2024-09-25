@@ -66,21 +66,31 @@ export const PaletteQuickAccessToolBar = ({
   if (diagramElement) {
     if (isPinnable(diagramElement)) {
       quickAccessToolComponents.push(
-        <PinUnPinTool diagramElementId={diagramElementId} isPined={diagramElement.data.pinned}></PinUnPinTool>
+        <PinUnPinTool
+          diagramElementId={diagramElementId}
+          isPined={diagramElement.data.pinned}
+          key={'tool_pinUnPinTool'}></PinUnPinTool>
       );
     }
     if (isFadable(diagramElement)) {
       quickAccessToolComponents.push(
-        <FadeElementTool diagramElementId={diagramElementId} isFaded={diagramElement.data.faded}></FadeElementTool>
+        <FadeElementTool
+          diagramElementId={diagramElementId}
+          isFaded={diagramElement.data.faded}
+          key={'tool_fadeElementTool'}></FadeElementTool>
       );
     }
     if (isBendable(diagramElement)) {
       quickAccessToolComponents.push(
-        <ResetEditedEdgePathTool diagramElementId={diagramElementId}></ResetEditedEdgePathTool>
+        <ResetEditedEdgePathTool
+          diagramElementId={diagramElementId}
+          key={'tool_resetEditedEdgePathTool'}></ResetEditedEdgePathTool>
       );
     }
 
-    quickAccessToolComponents.push(<AdjustSizeTool diagramElementId={diagramElementId}></AdjustSizeTool>);
+    quickAccessToolComponents.push(
+      <AdjustSizeTool diagramElementId={diagramElementId} key={'tool_adjustSizeTool'}></AdjustSizeTool>
+    );
 
     const paletteToolData: DataExtension<DiagramPaletteToolContributionProps[]> = useData(
       diagramPaletteToolExtensionPoint

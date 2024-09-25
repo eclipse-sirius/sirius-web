@@ -27,9 +27,12 @@ import {
   GQLSingleClickOnDiagramElementTool,
   GQLToolSection,
   PaletteProps,
+  PaletteState,
   PaletteStyleProps,
 } from './Palette.types';
 import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
+import { PaletteSearchField } from './search/PaletteSearchField';
+import { PaletteSearchResult } from './search/PaletteSearchResult';
 import { PaletteToolList } from './tool-list/PaletteToolList';
 import { usePalette } from './usePalette';
 
@@ -101,13 +104,18 @@ export const Palette = ({
   diagramElementId,
   targetObjectId,
   onDirectEditClick,
+  onEscape,
 }: PaletteProps) => {
   const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { x: viewportWidth, y: viewportHeight } = computeDraggableBounds(domNode?.getBoundingClientRect());
 
+  const [state, setState] = useState<PaletteState>({
+    searchToolValue: '',
+    controlledPosition: { x: 0, y: 0 },
+  });
+
   const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
 
-  const [controlledPosition, setControlledPosition] = useState<XYPosition>({ x: 0, y: 0 });
   let x: number = 0;
   let y: number = 0;
   const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
@@ -119,7 +127,7 @@ export const Palette = ({
 
   useEffect(() => {
     const paletteLocation: XYPosition = computePaletteLocation(paletteX, paletteY, viewportWidth, viewportHeight);
-    setControlledPosition(paletteLocation);
+    setState((prevState) => ({ ...prevState, controlledPosition: paletteLocation }));
   }, [paletteX, paletteY, viewportWidth, viewportHeight]);
 
   const { classes } = usePaletteStyle({ paletteWidth: `${paletteWidth}px`, paletteHeight: `${paletteHeight}px` });
@@ -131,7 +139,7 @@ export const Palette = ({
   }
 
   const onPaletteDragStop = (_event, data: DraggableData) => {
-    setControlledPosition(data);
+    setState((prevState) => ({ ...prevState, controlledPosition: data }));
   };
 
   const nodeRef = React.createRef<HTMLDivElement>();
@@ -141,12 +149,17 @@ export const Palette = ({
     bottom: viewportHeight - paletteHeight,
     right: viewportWidth - paletteWidth,
   };
+
+  const onSearchFieldValueChanged = (newValue: string): void => {
+    setState((prevState) => ({ ...prevState, searchToolValue: newValue }));
+  };
+
   return (
     <Draggable
       nodeRef={nodeRef}
       bounds={draggableBounds}
       handle="#tool-palette-header"
-      position={controlledPosition}
+      position={state.controlledPosition}
       onStop={onPaletteDragStop}>
       <Paper
         ref={nodeRef}
@@ -158,6 +171,7 @@ export const Palette = ({
           <DragIndicatorIcon />
         </Box>
         <Divider />
+        <PaletteSearchField onValueChanged={onSearchFieldValueChanged} onEscape={onEscape} />
         <PaletteQuickAccessToolBar
           diagramElementId={diagramElementId}
           onToolClick={handleToolClick}
@@ -165,7 +179,15 @@ export const Palette = ({
           x={x}
           y={y}
         />
-        <PaletteToolList palette={palette} onToolClick={handleToolClick} />
+        {state.searchToolValue.length > 0 ? (
+          <PaletteSearchResult
+            searchToolValue={state.searchToolValue}
+            palette={palette}
+            onToolClick={handleToolClick}
+          />
+        ) : (
+          <PaletteToolList palette={palette} onToolClick={handleToolClick} />
+        )}
       </Paper>
     </Draggable>
   );

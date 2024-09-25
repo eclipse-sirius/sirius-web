@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { XYPosition } from '@xyflow/react';
+
 export interface ContextualPaletteStyleProps {
   toolCount: number;
 }
@@ -36,6 +38,12 @@ export interface PaletteProps {
   diagramElementId: string;
   targetObjectId: string;
   onDirectEditClick: () => void;
+  onEscape?: () => void;
+}
+
+export interface PaletteState {
+  searchToolValue: string;
+  controlledPosition: XYPosition;
 }
 
 export interface PaletteStyleProps {
@@ -64,6 +72,7 @@ export interface GQLPaletteEntry {
   id: string;
   __typename: string;
 }
+
 export interface GQLPaletteDivider extends GQLPaletteEntry {}
 
 export interface GQLToolSection extends GQLPaletteEntry {
