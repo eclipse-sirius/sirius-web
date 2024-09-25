@@ -51,7 +51,7 @@ public class ViewAQLInterpreterFactory implements IViewAQLInterpreterFactory {
     public ViewAQLInterpreterFactory(List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext) {
         this.javaServiceProviders = new ArrayList<>();
         this.javaServiceProviders.addAll(Objects.requireNonNull(javaServiceProviders));
-        IServiceProvider nodeServiceProvider = (IReadOnlyQueryEnvironment queryEnvironment) -> ServiceUtils.getReceiverServices(null, Node.class).stream().toList();
+        IServiceProvider nodeServiceProvider = (IReadOnlyQueryEnvironment queryEnvironment, boolean forWorkspace) -> ServiceUtils.getReceiverServices(null, Node.class).stream().toList();
         this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class, DiagramServices.class, nodeServiceProvider.getClass()));
         this.applicationContext = Objects.requireNonNull(applicationContext);
     }
