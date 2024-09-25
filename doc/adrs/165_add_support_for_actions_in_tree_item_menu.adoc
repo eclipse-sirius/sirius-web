@@ -1,0 +1,187 @@
+= ADR-165 Add support for actions in tree item menu
+
+== Context
+
+Currently, actions in tree item context menu are hard coded in the front end and one cannot add or remove an action without recompiling the front end code.
+
+== Decision
+
+We need to provide a general way to handle actions in tree item contextual menu that does not require front end code modification.
+
+=== GraphQL
+
+First we need to define a new query that returns the list of tree item contextual menu action.
+
+```graphql
+type TreeDescription implements RepresentationDescription {
+  ...
+  contextMenu(treeItemId: ID!): [TreeItemContextMenuEntry!]!
+  ...
+}
+
+interface TreeItemContextMenuEntry {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+}
+
+type SingleClickTreeItemContextMenuEntry implements TreeItemContextMenuEntry {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+}
+
+type FetchTreeItemContextMenuEntry implements TreeItemContextMenuEntry {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  urlToFetch : String!
+  fetchKind : FetchKind!
+}
+
+enum FetchKind {
+  DOWNLOAD
+  OPEN
+}
+```
+
+For executing a menu entry, due to the fact that fetch context menu actions are performed directly on the browser (front end side), we need to handle separately both kind of menu entries.
+As far as single click context menu entries are concerned, we need to add a mutation to invoke the handler associated to this entry.
+
+```graphql
+extend type Mutation {
+  ...
+  invokeSingleClickTreeItemContextMenuEntry(input: InvokeSingleClickTreeItemContextMenuEntryInput!): InvokeSingleClickTreeItemContextMenuEntryPayload!
+  ...
+}
+
+input InvokeSingleClickTreeItemContextMenuEntryInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  treeItemId: ID!
+  menuEntryId: ID!
+}
+```
+
+For fetch entries, we need a query to retrieve information that allow to perform the fetch operation.   
+
+```
+type TreeDescription implements RepresentationDescription {
+  ...
+  fetchTreeItemContextMenuEntryData(treeItemId: ID!, menuEntryId: ID!): FetchTreeItemContextMenuEntryData!
+  ...
+}
+
+type FetchTreeItemContextMenuEntryData {
+  urlToFetch : String!
+  fetchKind : FetchTreeItemContextMenuEntryKind!
+}
+
+enum FetchTreeItemContextMenuEntryKind {
+  DOWNLOAD
+  OPEN
+}
+```
+
+The query above is only called when the menu entry is clicked.
+Once data is retrieved depending on the kind the fetch is performed by the front end.
+
+=== Front end
+
+==== Menu 
+
+When the contextual menu of a tree item is open, the front end should request the menu entries to back end.
+The input of the query should contain both the tree id and the tree item id.
+The response should contain a sorted list of menu action metadata.
+This list is used to build the contextual menu of the current tree item.
+
+```typescript
+export interface GQLTreeItemContextMenuEntry {
+  __typename: string;
+  id: string;
+  label: string;
+  iconURL: string[];
+}
+```
+
+The `<TreeItemContextMenu>` react component should be updated to add menu entries using the response of the `contextMenu` query.
+According to the actual type of the context menu entry, it is handled by a mutation (for single click context menu entries) or a query (for fetch context menu entries)
+
+==== Launching a menu entry
+
+When a context menu entry is selected, according to its typename (`__typename`) if it is a single click context menu entry, a generic action mutation (`invokeSingleClickTreeItemContextMenuEntry`) is send to perform the chosen action.
+The input of the mutation should be:
+
+```
+export interface GQLInvokeSingleClickTreeItemContextMenuEntryInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  treeItemId: string;
+  menuEntryId: string;
+}
+```
+
+As far as fetch context menu entries are concerned, the query `fetchTreeItemContextMenuEntryData` is called with a following input object:
+
+```
+export interface GQLGetFetchTreeItemContextMenuEntryDataQueryVariables {
+  editingContextId: string;
+  representationId: string;
+  treeItemId: string;
+  menuEntryId: string;
+}
+```
+
+=== Back end
+
+The TreeDescription is updated to have a new property : 
+
+```java
+public final class TreeDescription implements IRepresentationDescription {
+  ...
+  private List<ITreeItemContextMenuEntry> contextMenuEntries;
+  ...
+}
+
+public interface ITreeItemContextMenuEntry {
+    String getId();
+    Function<VariableManager, String> getLabel();
+    Function<VariableManager, List<String>> getIconURL();
+    Function<VariableManager, Boolean> getPrecondition();
+}
+
+public final class SingleClickTreeItemContextMenuEntry implements ITreeItemContextMenuEntry {
+    private Function<VariableManager, IStatus> handler;
+}
+
+public final class FetchTreeItemContextMenuEntry implements ITreeItemContextMenuEntry {
+    private Function<VariableManager, String> urlToFetch;
+    private Function<VariableManager, FetchTreeItemContextMenuEntryKind> fetchKind;
+}
+
+public enum FetchTreeItemContextMenuEntryKind {
+    DOWNLOAD, OPEN
+}
+```
+
+In order to reply properly the contextual menu content of a given tree item, we need to define a new data fetcher associated to the GraphQL query `TreeDescriptionContextMenuDataFetcher`.
+This data fetcher creates a special input `TreeItemContextMenuInput` that holds:
+
+* an id 
+* the editing context id
+* the representation id (here is the tree id)
+* the tree item id
+
+A new handler implementing `IEditingContextEventHandler` should be introduced to handle this event.
+This handler, `TreeItemContextMenuEventHandler` retrieves all `ITreeItemContextMenuEntry` from the tree description according to their precondition and send them back as payload.
+
+As far as executing a context menu entry is concerned, there are two separate scenarios depending the nature of the context menu entry.
+For single click ones, a generic mutation data fetcher is in charge of calling the handler of the `SingleClickTreeItemContextMenuEntry`.
+For fetch context menu entries, we need to add a new data fetcher (`TreeDescriptionFetchTreeItemContextMenuEntryDataDataFetcher`) which is in charge of computing and returning the information needed to performed a fetch context menu entry. 
+
+== Future work
+
+For time constraint, the way context menu entries are handled inside the `TreeDescription` is the first step of this work.
+Once the work described in this adr is completed, we will release the containment constraint and introduce a provider pattern to handle all context menu contributions.

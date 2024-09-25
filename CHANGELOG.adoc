@@ -21,6 +21,7 @@
 - [ADR-162] Add support for styled labels in view model for trees
 - [ADR-163] Adapt the Diagram Palette API to the new palette design
 - [ADR-164] Add the ability to select newly created diagram elements
+- [ADR-165] Add support for actions in tree item menu
 
 === Deprecation warning
 
