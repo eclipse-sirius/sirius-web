@@ -14,7 +14,6 @@
 import AdjustIcon from '@mui/icons-material/Adjust';
 import TonalityIcon from '@mui/icons-material/Tonality';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
@@ -25,7 +24,10 @@ import { useAdjustSize } from '../../adjust-size/useAdjustSize';
 import { useFadeDiagramElements } from '../../fade/useFadeDiagramElements';
 import { usePinDiagramElements } from '../../pin/usePinDiagramElements';
 import { isSingleClickOnDiagramElementTool } from '../Palette';
-import { PaletteQuickAccessToolBarProps } from './PaletteQuickAccessToolBar.types';
+import {
+  UsePaletteQuickAccessToolBarProps,
+  UsePaletteQuickAccessToolBarValue,
+} from './usePaletteQuickAccessToolBar.types';
 
 const useStyle = makeStyles()((theme) => ({
   quickAccessTools: {
@@ -42,7 +44,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const PaletteQuickAccessToolBar = ({
+export const usePaletteQuickAccessToolBar = ({
   node,
   diagramElementId,
   palette,
@@ -51,7 +53,7 @@ export const PaletteQuickAccessToolBar = ({
   hideableDiagramElement,
   x,
   y,
-}: PaletteQuickAccessToolBarProps) => {
+}: UsePaletteQuickAccessToolBarProps): UsePaletteQuickAccessToolBarValue => {
   const { classes } = useStyle();
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { pinDiagramElements } = usePinDiagramElements();
@@ -137,14 +139,9 @@ export const PaletteQuickAccessToolBar = ({
       quickAccessToolComponents.push(adjustSizeTool);
     }
   }
+  let element: JSX.Element | null = null;
   if (quickAccessToolComponents.length > 0) {
-    return (
-      <>
-        <Box className={classes.quickAccessTools}>{quickAccessToolComponents}</Box>
-        <Divider />
-      </>
-    );
-  } else {
-    return null;
+    element = <Box className={classes.quickAccessTools}>{quickAccessToolComponents}</Box>;
   }
+  return { element };
 };
