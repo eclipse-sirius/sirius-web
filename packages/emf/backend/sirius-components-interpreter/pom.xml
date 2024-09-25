@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2019, 2023 Obeo.
+ Copyright (c) 2019, 2024 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -45,11 +45,8 @@
 			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
 		<repository>
-			<id>Eclipse-Acceleo-Snapshots</id>
-			<url>https://repo.eclipse.org/content/repositories/acceleo-snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
+			<id>Eclipse-Acceleo</id>
+			<url>https://download.eclipse.org/acceleo/updates/releases/4.0/R202407021157</url>
 		</repository>
 	</repositories>
 
@@ -86,13 +83,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.acceleo</groupId>
-			<artifactId>org.eclipse.acceleo.annotations</artifactId>
-			<version>8.0.2-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.acceleo</groupId>
-			<artifactId>org.eclipse.acceleo.query</artifactId>
-			<version>8.0.2-SNAPSHOT</version>
+			<artifactId>aql</artifactId>
+			<version>8.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
