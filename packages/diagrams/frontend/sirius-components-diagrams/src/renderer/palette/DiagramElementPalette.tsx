@@ -11,8 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useKeyPress } from '@xyflow/react';
-import { memo, useContext, useEffect } from 'react';
+import { memo, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
@@ -27,12 +26,10 @@ export const DiagramElementPalette = memo(
     const { isOpened, x, y, hideDiagramElementPalette } = useDiagramElementPalette();
     const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
 
-    const escapePressed = useKeyPress('Escape');
-    useEffect(() => {
-      if (escapePressed) {
-        hideDiagramElementPalette();
-      }
-    }, [escapePressed, hideDiagramElementPalette]);
+    //If the Palette search field has the focus on, the useKeyPress from reactflow ignore the key pressed event.
+    const onEscape = () => {
+      hideDiagramElementPalette();
+    };
 
     if (readOnly) {
       return null;
@@ -52,6 +49,7 @@ export const DiagramElementPalette = memo(
           diagramElementId={diagramElementId}
           targetObjectId={targetObjectId}
           onDirectEditClick={handleDirectEditClick}
+          onEscape={onEscape}
         />
       </PalettePortal>
     ) : null;

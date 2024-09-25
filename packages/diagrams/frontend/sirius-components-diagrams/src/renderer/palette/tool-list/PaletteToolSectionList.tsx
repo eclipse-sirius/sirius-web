@@ -51,13 +51,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const PaletteToolSectionList = ({
-  toolSection,
-  onToolClick,
-  onBackToMainList,
-  tooltipDelay,
-  tooltipPlacement,
-}: PaletteToolSectionListProps) => {
+export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainList }: PaletteToolSectionListProps) => {
   const { classes } = useStyle();
 
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
@@ -72,11 +66,7 @@ export const PaletteToolSectionList = ({
 
   return (
     <List className={classes.toolList} component="nav">
-      <Tooltip
-        enterDelay={tooltipDelay}
-        placement={tooltipPlacement}
-        title={toolSection.label}
-        key={'tooltip_' + toolSection.id}>
+      <Tooltip title={toolSection.label} key={'tooltip_' + toolSection.id}>
         <ListItemButton
           className={classes.toolListItemButton}
           onClick={handleBackToMainListClick}
@@ -86,7 +76,7 @@ export const PaletteToolSectionList = ({
         </ListItemButton>
       </Tooltip>
       {toolSection?.tools.map((tool) => (
-        <Tooltip enterDelay={tooltipDelay} placement={tooltipPlacement} title={tool.label} key={'tooltip_' + tool.id}>
+        <Tooltip title={tool.label} key={'tooltip_' + tool.id}>
           <ListItemButton
             className={classes.toolListItemButton}
             onClick={(event) => handleOnToolClick(event, tool)}

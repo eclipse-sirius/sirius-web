@@ -10,10 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTool, GQLToolSection } from '../Palette.types';
 
-export interface PaletteToolSectionListProps {
-  onToolClick: (tool: GQLTool) => void;
-  onBackToMainList: () => void;
-  toolSection: GQLToolSection;
+export interface PaletteSearchFieldProps {
+  onValueChanged: (newValue: string) => void;
+  onEscape?: () => void;
+}
+
+export interface PaletteSearchFieldState {
+  value: string;
 }
