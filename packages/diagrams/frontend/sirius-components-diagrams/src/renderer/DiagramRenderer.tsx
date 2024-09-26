@@ -122,47 +122,41 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const { fitToScreen } = useInitialFitToScreen();
-  const { setSelection } = useSelection();
+  const { selection, setSelection } = useSelection();
   const { edgeType, setEdgeType } = useEdgeType();
 
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
     const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription, edgeType);
 
-    const selectedNodeIds = nodes.filter((node) => node.selected).map((node) => node.id);
-    const selectedEdgeIds = edges.filter((edge) => edge.selected).map((edge) => edge.id);
-    if (cause === 'layout') {
-      convertedDiagram.nodes
-        .filter((node) => selectedNodeIds.includes(node.id))
-        .forEach((node) => (node.selected = true));
-      convertedDiagram.edges
-        .filter((edge) => selectedEdgeIds.includes(edge.id))
-        .forEach((edge) => (edge.selected = true));
+    const updateReactFlowDiagram = (diagram: Diagram) => {
+      const selectedSemanticElements = new Set(selection.entries.map((entry) => entry.id));
+      diagram.nodes.forEach((node) => (node.selected = selectedSemanticElements.has(node.data.targetObjectId)));
+      diagram.edges.forEach(
+        (edge) => (edge.selected = edge.data && selectedSemanticElements.has(edge.data.targetObjectId))
+      );
+      setEdges(diagram.edges);
+      setNodes(diagram.nodes);
+    };
 
-      setNodes(convertedDiagram.nodes);
-      setEdges(convertedDiagram.edges);
+    if (cause === 'layout') {
+      // Accept the new layout received from the backend
+      updateReactFlowDiagram(convertedDiagram);
       fitToScreen();
     } else if (cause === 'refresh') {
+      // Compute a new layout ourselves, use it and publish it to be applied by others
       const previousDiagram: RawDiagram = {
         nodes: nodes as Node<NodeData, DiagramNodeType>[],
         edges,
       };
+
       layout(previousDiagram, convertedDiagram, diagramRefreshedEventPayload.referencePosition, (laidOutDiagram) => {
-        laidOutDiagram.nodes
-          .filter((node) => selectedNodeIds.includes(node.id))
-          .forEach((node) => (node.selected = true));
-        laidOutDiagram.edges
-          .filter((edge) => selectedEdgeIds.includes(edge.id))
-          .forEach((edge) => (edge.selected = true));
-
-        setNodes(laidOutDiagram.nodes);
-        setEdges(laidOutDiagram.edges);
+        updateReactFlowDiagram(laidOutDiagram);
         closeAllPalettes();
-
         synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
       });
     }
-  }, [diagramRefreshedEventPayload, diagramDescription, edgeType]);
+  }, [diagramRefreshedEventPayload, diagramDescription, edgeType, selection]);
 
   useEffect(() => {
     setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, updatable: !!edge.selected })));
