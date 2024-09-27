@@ -32,9 +32,11 @@ import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultD
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDescriptionService;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
+import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
@@ -62,11 +64,15 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final List<IFormEventHandler> formEventHandlers;
 
+    private final List<ITableEventHandler> tableEventHandlers;
+
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
     private final IFormPostProcessor formPostProcessor;
+
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     public PropertiesEventProcessorFactory(IPropertiesDescriptionService propertiesDescriptionService, IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider, List<IWidgetDescriptor> widgetDescriptors,
             RepresentationEventProcessorFactoryConfiguration configuration, FormEventProcessorFactoryConfiguration formConfiguration) {
@@ -74,8 +80,10 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
         this.propertiesDefaultDescriptionProvider = Objects.requireNonNull(propertiesDefaultDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
+        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
+        this.tableEventHandlers = Objects.requireNonNull(formConfiguration.getTableEventHandlers());
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
@@ -114,9 +122,10 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
                     .build();
 
             IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
-                    new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers),
+                    new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
                     this.subscriptionManagerFactory.create(),
                     this.representationSearchService,
+                    this.representationDescriptionSearchService,
                     this.representationRefreshPolicyRegistry,
                     this.formPostProcessor);
 

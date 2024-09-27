@@ -17,17 +17,17 @@ import java.util.List;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
+import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 
 /**
- * Bundles the common dependencies that {@link IFormEventProcessor} implementations need
- * into a single object for convenience.
+ * Bundles the common dependencies that {@link IFormEventProcessor} implementations need into a single object for convenience.
  *
  * @author frouene
  */
-public record FormEventProcessorConfiguration(IEditingContext editingContext, IObjectService objectService, FormCreationParameters formCreationParameters,
-                                              List<IWidgetDescriptor> widgetDescriptors, List<IFormEventHandler> formEventHandlers) {
+public record FormEventProcessorConfiguration(IEditingContext editingContext, IObjectService objectService, FormCreationParameters formCreationParameters, List<IWidgetDescriptor> widgetDescriptors,
+        List<IFormEventHandler> formEventHandlers, List<ITableEventHandler> tableEventHandlers) {
 
 }

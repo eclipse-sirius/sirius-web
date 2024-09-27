@@ -1,0 +1,9 @@
+= sirius-component-tables
+
+== Goal
+
+This project contains the renderer, description and data structure to create tables.
+
+== Dependencies
+
+Tables from MUI
