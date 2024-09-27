@@ -48,6 +48,12 @@ import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreI
  * @author fbarbin
  */
 public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<VariableManager>> {
+    /**
+     * The name of the top-level Map<String, Object> used to collect all newly created instances during the execution of
+     * a tool.
+     */
+    public static final String NEW_INSTANCES_COLLECTOR = "__NEW_INSTANCES_COLLECTOR__";
+
     private final VariableManager variableManager;
 
     private final AQLInterpreter interpreter;
@@ -135,11 +141,19 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
         if (optionalSelf.isPresent() && editingDomain.isPresent()) {
             var optionalNewInstance = this.createSemanticInstance(editingDomain.get(), creatInstanceOperation.getTypeName());
             if (optionalNewInstance.isPresent()) {
-                Object container = this.ecore.eAdd(optionalSelf.get(), creatInstanceOperation.getReferenceName(), optionalNewInstance.get());
+                EObject newInstance = optionalNewInstance.get();
+                Object container = this.ecore.eAdd(optionalSelf.get(), creatInstanceOperation.getReferenceName(), newInstance);
                 if (container != null) {
                     VariableManager childVariableManager = this.variableManager.createChild();
-                    childVariableManager.put(creatInstanceOperation.getVariableName(), optionalNewInstance.get());
-                    return this.operationInterpreter.executeOperations(creatInstanceOperation.getChildren(), childVariableManager);
+                    childVariableManager.put(creatInstanceOperation.getVariableName(), newInstance);
+                    Optional<VariableManager> childrenResult = this.operationInterpreter.executeOperations(creatInstanceOperation.getChildren(), childVariableManager);
+                    childrenResult.ifPresent(result -> {
+                        // Record the newly created instance if NEW_INSTANCES_COLLECTOR is supplied by the execution context
+                        result.get(NEW_INSTANCES_COLLECTOR, Map.class).ifPresent(collector -> {
+                            collector.put(creatInstanceOperation.getVariableName(), newInstance);
+                        });
+                    });
+                    return childrenResult;
                 }
             }
         }
@@ -152,8 +166,9 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
         if (optionalSelf.isPresent()) {
             Result newValue = this.interpreter.evaluateExpression(this.variableManager.getVariables(), setValueOperation.getValueExpression());
             Object instance = null;
-            if (newValue.asObject().isPresent()) {
-                instance = this.ecore.eAdd(optionalSelf.get(), setValueOperation.getFeatureName(), newValue.asObject().get());
+            var newValueObject = newValue.asObject();
+            if (newValueObject.isPresent()) {
+                instance = this.ecore.eAdd(optionalSelf.get(), setValueOperation.getFeatureName(), newValueObject.get());
             } else {
                 instance = this.ecore.eClear(optionalSelf.get(), setValueOperation.getFeatureName());
             }
@@ -194,12 +209,10 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
         if (elementExpression != null && !elementExpression.isBlank()) {
             Optional<List<Object>> optionalObjectsToUnset = this.interpreter.evaluateExpression(variables, elementExpression).asObjects();
             if (optionalObjectsToUnset.isPresent()) {
-                // @formatter:off
                 elementsToUnset = optionalObjectsToUnset.get().stream()
                                       .filter(EObject.class::isInstance)
                                       .map(EObject.class::cast)
                                       .toList();
-                // @formatter:on
             }
         }
         return elementsToUnset;
@@ -230,7 +243,6 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
     private Optional<EClass> resolveType(EditingDomain editingDomain, String domainType) {
         String[] parts = domainType.split("(::?|\\.)");
         if (parts.length == 2) {
-            // @formatter:off
             return editingDomain.getResourceSet().getPackageRegistry().values().stream()
                          .filter(EPackage.class::isInstance)
                          .map(EPackage.class::cast)
@@ -239,7 +251,6 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
                          .filter(EClass.class::isInstance)
                          .map(EClass.class::cast)
                          .findFirst();
-            // @formatter:on
         } else {
             return Optional.empty();
         }

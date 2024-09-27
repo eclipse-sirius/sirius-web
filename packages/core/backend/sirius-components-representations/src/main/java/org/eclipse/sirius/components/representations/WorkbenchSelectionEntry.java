@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,26 +24,19 @@ public class WorkbenchSelectionEntry {
 
     private String id;
 
-    private String label;
-
     private String kind;
 
     public WorkbenchSelectionEntry() {
         // Used Jackson
     }
 
-    public WorkbenchSelectionEntry(String id, String label, String kind) {
+    public WorkbenchSelectionEntry(String id, String kind) {
         this.id = Objects.requireNonNull(id);
-        this.label = Objects.requireNonNull(label);
         this.kind = Objects.requireNonNull(kind);
     }
 
     public String getId() {
         return this.id;
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public String getKind() {
@@ -52,11 +45,8 @@ public class WorkbenchSelectionEntry {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof WorkbenchSelectionEntry) {
-            WorkbenchSelectionEntry entry = (WorkbenchSelectionEntry) obj;
-
+        if (obj instanceof WorkbenchSelectionEntry entry) {
             boolean isEqual = this.id.equals(entry.id);
-            isEqual = isEqual && this.label.equals(entry.label);
             isEqual = isEqual && this.kind.equals(entry.kind);
             return isEqual;
         }
@@ -65,12 +55,12 @@ public class WorkbenchSelectionEntry {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.label, this.kind);
+        return Objects.hash(this.id, this.kind);
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, kind: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.kind);
+        String pattern = "{0} '{'id: {1}, kind: {2}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.kind);
     }
 }

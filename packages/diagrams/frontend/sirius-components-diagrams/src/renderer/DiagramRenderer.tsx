@@ -27,6 +27,7 @@ import {
   ReactFlow,
   ReactFlowProps,
   applyNodeChanges,
+  useStoreApi,
 } from '@xyflow/react';
 import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
@@ -121,24 +122,41 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
-  const { setSelection } = useSelection();
+  const { selection, setSelection } = useSelection();
   const { edgeType, setEdgeType } = useEdgeType();
 
   useInitialFitToScreen();
 
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
     const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription, edgeType);
 
-    const selectedNodeIds = nodes.filter((node) => node.selected).map((node) => node.id);
-    const selectedEdgeIds = edges.filter((edge) => edge.selected).map((edge) => edge.id);
     if (cause === 'layout') {
-      convertedDiagram.nodes
-        .filter((node) => selectedNodeIds.includes(node.id))
-        .forEach((node) => (node.selected = true));
-      convertedDiagram.edges
-        .filter((edge) => selectedEdgeIds.includes(edge.id))
-        .forEach((edge) => (edge.selected = true));
+      const diagramElementIds: string[] = [
+        ...getNodes().map((node) => node.data.targetObjectId),
+        ...getEdges().map((edge) => edge.data?.targetObjectId ?? ''),
+      ];
+
+      const selectionDiagramEntryIds = selection.entries
+        .map((entry) => entry.id)
+        .filter((id) => diagramElementIds.includes(id))
+        .sort((id1: string, id2: string) => id1.localeCompare(id2));
+      const selectedDiagramElementIds = [
+        ...new Set(
+          [...getNodes(), ...getEdges()]
+            .filter((element) => element.selected)
+            .map((element) => element.data?.targetObjectId ?? '')
+        ),
+      ];
+      selectedDiagramElementIds.sort((id1: string, id2: string) => id1.localeCompare(id2));
+
+      convertedDiagram.nodes = convertedDiagram.nodes.map((node) => {
+        return { ...node, selected: selectionDiagramEntryIds.includes(node.data ? node.data.targetObjectId : '') };
+      });
+      convertedDiagram.edges = convertedDiagram.edges.map((edge) => {
+        return { ...edge, selected: selectionDiagramEntryIds.includes(edge.data ? edge.data.targetObjectId : '') };
+      });
 
       setEdges(convertedDiagram.edges);
       setNodes(convertedDiagram.nodes);
@@ -148,12 +166,27 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         edges,
       };
       layout(previousDiagram, convertedDiagram, diagramRefreshedEventPayload.referencePosition, (laidOutDiagram) => {
-        laidOutDiagram.nodes
-          .filter((node) => selectedNodeIds.includes(node.id))
-          .forEach((node) => (node.selected = true));
-        laidOutDiagram.edges
-          .filter((edge) => selectedEdgeIds.includes(edge.id))
-          .forEach((edge) => (edge.selected = true));
+        const { nodeLookup, edgeLookup } = store.getState();
+
+        laidOutDiagram.nodes = laidOutDiagram.nodes.map((node) => {
+          if (nodeLookup.get(node.id)) {
+            return {
+              ...node,
+              selected: !!nodeLookup.get(node.id)?.selected,
+            };
+          }
+          return node;
+        });
+
+        laidOutDiagram.edges = laidOutDiagram.edges.map((edge) => {
+          if (edgeLookup.get(edge.id)) {
+            return {
+              ...edge,
+              selected: !!edgeLookup.get(edge.id)?.selected,
+            };
+          }
+          return edge;
+        });
 
         setEdges(laidOutDiagram.edges);
         setNodes(laidOutDiagram.nodes);

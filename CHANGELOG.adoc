@@ -62,7 +62,7 @@ See `ProjectDownloadMenuItemExtension` for an example.
 _Warning:_ while more powerful, the new extension point should be used with care: make sure all contributions return an actual MUI `MenuItem` component.
 - https://github.com/eclipse-sirius/sirius-web/issues/3681[#3681] [sirius-web] Replace all representation specific rename event handlers by `RenameRepresentationEventHandler`.
 + It means that an application that only use sirius-components should provide its own means to rename a representation.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3980[#3980] [core] Removed the _label_ attribute from `WorkbenchSelectionEntry` (backend, GraphQL Schema and frontend).
 
 === Dependency update
 
@@ -134,6 +134,7 @@ They will be added at the end after the default hard-coded actions.
 See `ProjectDownloadMenuItemExtension` for an example.
 _Warning:_ make sure all contributions return an actual MUI `MenuItem` component.
 ** `projectContextMenuContainerExtensionPoint`: can be used to wrap the menu inside a custom container, for example to add more context for the items or to completely replace the context menu.
+- https://github.com/eclipse-sirius/sirius-web/issues/3980[#3980] [diagram] Add _Elements to Select Expression_ on _NodeTool_ and _EdgeTool_ to control which semantic elements should be selected after the tool's successful execution
 
 === Improvements
 

@@ -110,6 +110,8 @@ export interface GQLErrorPayload extends GQLInvokeSingleClickOnTwoDiagramElement
   messages: GQLMessage[];
 }
 
-export interface GQLSuccessPayload extends GQLInvokeSingleClickOnTwoDiagramElementsToolPayload {
+export interface GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload
+  extends GQLInvokeSingleClickOnTwoDiagramElementsToolPayload {
   messages: GQLMessage[];
+  newSelection: GQLWorkbenchSelection;
 }

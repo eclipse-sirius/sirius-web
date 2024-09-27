@@ -20,7 +20,6 @@ import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -42,8 +41,7 @@ public class NavigationOperationHandler implements IModelOperationHandler {
 
     private final Navigation navigation;
 
-    public NavigationOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider,
-            AQLInterpreter interpreter, Navigation navigation) {
+    public NavigationOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider, Navigation navigation) {
         this.objectService = Objects.requireNonNull(objectService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.navigation = Objects.requireNonNull(navigation);

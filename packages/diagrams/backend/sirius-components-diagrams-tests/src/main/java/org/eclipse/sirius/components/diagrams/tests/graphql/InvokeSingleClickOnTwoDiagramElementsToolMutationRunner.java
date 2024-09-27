@@ -35,7 +35,6 @@ public class InvokeSingleClickOnTwoDiagramElementsToolMutationRunner implements 
                   newSelection {
                     entries {
                       id
-                      label
                       kind
                       __typename
                     }

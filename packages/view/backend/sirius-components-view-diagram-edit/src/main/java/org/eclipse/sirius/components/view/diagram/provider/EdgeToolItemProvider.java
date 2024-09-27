@@ -56,6 +56,7 @@ public class EdgeToolItemProvider extends ToolItemProvider {
 
             this.addTargetElementDescriptionsPropertyDescriptor(object);
             this.addIconURLsExpressionPropertyDescriptor(object);
+            this.addElementsToSelectExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -83,6 +84,19 @@ public class EdgeToolItemProvider extends ToolItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_EdgeTool_iconURLsExpression_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeTool_iconURLsExpression_feature", "_UI_EdgeTool_type"),
                 DiagramPackage.Literals.EDGE_TOOL__ICON_UR_LS_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Elements To Select Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addElementsToSelectExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeTool_elementsToSelectExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeTool_elementsToSelectExpression_feature", "_UI_EdgeTool_type"),
+                DiagramPackage.Literals.EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -159,6 +173,7 @@ public class EdgeToolItemProvider extends ToolItemProvider {
 
         switch (notification.getFeatureID(EdgeTool.class)) {
             case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
+            case DiagramPackage.EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION:

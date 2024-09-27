@@ -157,7 +157,7 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
     }
 
     private Optional<IModelOperationHandler> caseNavigation(Navigation navigationOperation) {
-        return Optional.of(new NavigationOperationHandler(this.objectService, this.identifierProvider, this.interpreter, navigationOperation));
+        return Optional.of(new NavigationOperationHandler(this.objectService, this.identifierProvider, navigationOperation));
     }
 
     private Optional<IModelOperationHandler> caseRemoveElement(RemoveElement removeElementOperation) {

@@ -31,6 +31,8 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
  * Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolImpl#getIconURLsExpression <em>Icon UR Ls
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolImpl#getElementsToSelectExpression <em>Elements To
+ * Select Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -65,6 +67,26 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      * @ordered
      */
     protected String iconURLsExpression = ICON_UR_LS_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getElementsToSelectExpression() <em>Elements To Select Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getElementsToSelectExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getElementsToSelectExpression() <em>Elements To Select Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getElementsToSelectExpression()
+     * @generated
+     * @ordered
+     */
+    protected String elementsToSelectExpression = ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -162,6 +184,29 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      * @generated
      */
     @Override
+    public String getElementsToSelectExpression() {
+        return this.elementsToSelectExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setElementsToSelectExpression(String newElementsToSelectExpression) {
+        String oldElementsToSelectExpression = this.elementsToSelectExpression;
+        this.elementsToSelectExpression = newElementsToSelectExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION, oldElementsToSelectExpression, this.elementsToSelectExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:
@@ -182,6 +227,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
                 return this.getDialogDescription();
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
                 return this.getIconURLsExpression();
+            case DiagramPackage.NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
+                return this.getElementsToSelectExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -199,6 +246,9 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
                 return;
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
                 this.setIconURLsExpression((String) newValue);
+                return;
+            case DiagramPackage.NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
+                this.setElementsToSelectExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -218,6 +268,9 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
                 this.setIconURLsExpression(ICON_UR_LS_EXPRESSION_EDEFAULT);
                 return;
+            case DiagramPackage.NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
+                this.setElementsToSelectExpression(ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -234,6 +287,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
                 return this.dialogDescription != null;
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
                 return ICON_UR_LS_EXPRESSION_EDEFAULT == null ? this.iconURLsExpression != null : !ICON_UR_LS_EXPRESSION_EDEFAULT.equals(this.iconURLsExpression);
+            case DiagramPackage.NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
+                return ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT == null ? this.elementsToSelectExpression != null : !ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT.equals(this.elementsToSelectExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -251,6 +306,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (iconURLsExpression: ");
         result.append(this.iconURLsExpression);
+        result.append(", elementsToSelectExpression: ");
+        result.append(this.elementsToSelectExpression);
         result.append(')');
         return result.toString();
     }
