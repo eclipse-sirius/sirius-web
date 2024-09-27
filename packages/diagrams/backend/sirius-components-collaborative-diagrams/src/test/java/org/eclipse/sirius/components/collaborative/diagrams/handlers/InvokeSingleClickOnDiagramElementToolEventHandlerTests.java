@@ -356,11 +356,11 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         String selectionEntryId = "entryId";
         String selectionEntryLabel = "entry label";
         String selectionEntryKind = "entryKind";
-        var expectedSelectionEntry = new WorkbenchSelectionEntry(selectionEntryId, selectionEntryLabel, selectionEntryKind);
+        var expectedSelectionEntry = new WorkbenchSelectionEntry(selectionEntryId, selectionEntryKind);
         var expectedWorkbenchSelection = new WorkbenchSelection(List.of(expectedSelectionEntry));
 
         var tool = this.createTool(TOOL_ID, false, List.of(), null, variableManager -> {
-            var newSelectionEntry = new WorkbenchSelectionEntry(selectionEntryId, selectionEntryLabel, selectionEntryKind);
+            var newSelectionEntry = new WorkbenchSelectionEntry(selectionEntryId, selectionEntryKind);
             var newWorkbenchSelection = new WorkbenchSelection(List.of(newSelectionEntry));
             var success = new Success();
             success.getParameters().put(Success.NEW_SELECTION, newWorkbenchSelection);

@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.SelectionDialogTreeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
@@ -54,6 +55,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Conditional(OnStudioTests.class)
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ModelOperationDiagramDescriptionProvider implements IEditingContextProcessor {
 
     private final IDiagramIdProvider diagramIdProvider;
@@ -63,6 +65,8 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
     private DiagramDescription diagramDescription;
 
     private NodeTool createNodeTool;
+
+    private NodeTool createNodeToolWithComputedNewSelection;
 
     private NodeTool renameNodeTool;
 
@@ -84,6 +88,10 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
 
     public String getCreateNodeToolId() {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.createNodeTool).toString().getBytes()).toString();
+    }
+
+    public String getCreateNodeToolWithComputedNewSelectionId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.createNodeToolWithComputedNewSelection).toString().getBytes()).toString();
     }
 
     public String getRenameElementToolId() {
@@ -127,10 +135,11 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                 .build();
 
         this.createCreateNodeTool();
+        this.createCreateNodeToolWithComputedNewSelection();
         this.createRenameElementNodeTool();
 
         var diagramPalette = new DiagramPaletteBuilder()
-                .nodeTools(this.createNodeTool, this.renameNodeTool)
+                .nodeTools(this.createNodeTool, this.createNodeToolWithComputedNewSelection, this.renameNodeTool)
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()
@@ -147,22 +156,7 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
     }
 
     private void createCreateNodeTool() {
-        var createNewComponent = new CreateInstanceBuilder()
-                .typeName("papaya:Component")
-                .referenceName("components")
-                .variableName("newInstance")
-                .children(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:newInstance")
-                                .children(
-                                        new ViewBuilders().newSetValue()
-                                                .featureName("name")
-                                                .valueExpression("aql:newComponentName")
-                                                .build()
-                                )
-                                .build()
-                )
-                .build();
+        var createNewComponent = this.createCreateNewComponentOperation("newInstance", "aql:newComponentName");
 
         var createNewComponentForAllValues = new ViewBuilders().newLet()
                 .valueExpression("aql:Sequence{'a', 'b', 'c'}")
@@ -191,6 +185,51 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                                 )
                                 .build()
                 )
+                .build();
+    }
+
+    private CreateInstance createCreateNewComponentOperation(String variableName, String componentNameExpression) {
+        var createNewComponent = new CreateInstanceBuilder()
+                .typeName("papaya:Component")
+                .referenceName("components")
+                .variableName(variableName)
+                .children(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:" + variableName)
+                                .children(
+                                        new ViewBuilders().newSetValue()
+                                                .featureName("name")
+                                                .valueExpression(componentNameExpression)
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
+        return createNewComponent;
+    }
+
+    private void createCreateNodeToolWithComputedNewSelection() {
+        this.createNodeToolWithComputedNewSelection = new NodeToolBuilder()
+                .name("Create Components")
+                .body(
+                        new ChangeContextBuilder()
+                                .expression("aql:self")
+                                .children(
+                                        new ViewBuilders().newLet()
+                                            .variableName("project")
+                                            .valueExpression("aql:self")
+                                            .children(
+                                                    new ViewBuilders().newChangeContext().expression("aql:project").build(),
+                                                    this.createCreateNewComponentOperation("component1", "aql:'Component1'"),
+                                                    new ViewBuilders().newChangeContext().expression("aql:project").build(),
+                                                    this.createCreateNewComponentOperation("component2", "aql:'Component2'"),
+                                                    new ViewBuilders().newChangeContext().expression("aql:project").build(),
+                                                    this.createCreateNewComponentOperation("component3", "aql:'Component3'"))
+                                            .build()
+                                )
+                                .build()
+                )
+                .elementsToSelectExpression("aql:Sequence{component1, component2}") // Explicitly do not include component3
                 .build();
     }
 

@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -31,9 +31,9 @@ import {
   GQLInvokeSingleClickOnTwoDiagramElementsToolData,
   GQLInvokeSingleClickOnTwoDiagramElementsToolInput,
   GQLInvokeSingleClickOnTwoDiagramElementsToolPayload,
+  GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
   GQLRepresentationDescription,
-  GQLSuccessPayload,
   GQLTool,
   GQLToolVariable,
   GetConnectorToolsData,
@@ -81,7 +81,6 @@ export const invokeSingleClickOnTwoDiagramElementsToolMutation = gql`
         newSelection {
           entries {
             id
-            label
             kind
           }
         }
@@ -106,7 +105,9 @@ const isDiagramDescription = (
 
 const isErrorPayload = (payload: GQLInvokeSingleClickOnTwoDiagramElementsToolPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (payload: GQLInvokeSingleClickOnTwoDiagramElementsToolPayload): payload is GQLSuccessPayload =>
+const isSuccessPayload = (
+  payload: GQLInvokeSingleClickOnTwoDiagramElementsToolPayload
+): payload is GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload =>
   payload.__typename === 'InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload';
 
 const isSingleClickOnTwoDiagramElementsTool = (tool: GQLTool): tool is GQLSingleClickOnTwoDiagramElementsTool =>
@@ -117,6 +118,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
   const { connection, position, onConnectorContextualMenuClose, addTempConnectionLine, removeTempConnectionLine } =
     useConnector();
   const { addMessages, addErrorMessage } = useMultiToast();
+  const { setSelection } = useSelection();
 
   const { showDialog, isOpened } = useDialog();
 
@@ -225,6 +227,10 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
         addMessages(payload.messages);
       }
       if (isSuccessPayload(payload)) {
+        const { newSelection } = payload;
+        if (newSelection?.entries.length ?? 0 > 0) {
+          setSelection(newSelection);
+        }
         addMessages(payload.messages);
         onShouldConnectorContextualMenuClose();
       }
