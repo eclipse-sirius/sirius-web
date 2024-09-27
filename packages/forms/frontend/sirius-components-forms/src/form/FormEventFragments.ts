@@ -309,6 +309,47 @@ export const widgetFields = `
     }
   }
 
+  fragment tableWidgetFields on TableWidget {
+    label
+    iconURL
+    table {
+      id
+      columns {
+        id
+        label
+      }
+      lines {
+        id
+        targetObjectId
+        cells {
+          id
+          cellType
+          columnId
+          ... on CheckboxCell {
+            booleanValue: value
+          }
+          ... on SelectCell {
+            value
+            options {
+              id
+              label
+            }
+          }
+          ... on MultiSelectCell {
+            values
+            options {
+              id
+              label
+            }
+          }
+          ... on TextfieldCell {
+            stringValue: value
+          }
+        }
+      }
+    }
+  }
+
   fragment widgetFields on Widget {
     ...commonFields
     ... on Textfield {
@@ -364,6 +405,9 @@ export const widgetFields = `
     }
     ... on DateTime {
       ...dateTimeFields
+      }
+    ... on TableWidget {
+      ...tableWidgetFields
     }
   }
 `;

@@ -420,6 +420,16 @@ type DateTimeStyle {
   bold: Boolean
 }
 
+type TableWidget implements Widget {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
+  readOnly: Boolean!
+  table: Table
+}
+
 type FormDescription implements RepresentationDescription {
   id: ID!
   label: String!
