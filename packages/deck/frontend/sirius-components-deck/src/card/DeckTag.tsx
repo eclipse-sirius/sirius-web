@@ -10,10 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TagSpan } from '../styled/DeckCardStyledComponents';
+import { makeStyles } from 'tss-react/mui';
 import { DeckTagProps } from './DeckTag.types';
 
+const useStyles = makeStyles()(() => ({
+  tag: {
+    padding: '2px 3px',
+    borderRadius: '3px',
+    margin: '2px 5px',
+    fontSize: '70%',
+  },
+}));
+
 export const DeckTag = ({ title, color, bgcolor, tagStyle }: DeckTagProps) => {
+  const { classes } = useStyles();
   const style = { color: color || 'white', backgroundColor: bgcolor || 'orange', ...tagStyle };
-  return <TagSpan style={style}>{title}</TagSpan>;
+  return (
+    <span className={classes.tag} style={style}>
+      {title}
+    </span>
+  );
 };

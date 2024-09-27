@@ -1,0 +1,124 @@
+type Table {
+  id: ID!
+  metadata: RepresentationMetadata!
+  targetObjectId: ID!
+  targetObjectKind: String!
+  columns: [Column!]!
+  lines: [Line!]!
+}
+
+type Column {
+  id: ID!
+  targetObjectId: ID!
+  targetObjectKind: String!
+  label: String!
+}
+
+type Line {
+  id: ID!
+  targetObjectId: ID!
+  targetObjectKind: String!
+  cells: [Cell!]!
+}
+
+interface Cell {
+  id: ID!
+  columnId: ID!
+  targetObjectId: ID!
+  targetObjectKind: String!
+}
+
+type TextfieldCell implements Cell {
+  id: ID!
+  columnId: ID!
+  targetObjectId: ID!
+  targetObjectKind: String!
+  value: String!
+}
+
+type SelectCell implements Cell {
+  id: ID!
+  columnId: ID!
+  targetObjectId: ID!
+  targetObjectKind: String!
+  options: [SelectCellOption!]!
+  value: String!
+}
+
+type MultiSelectCell implements Cell {
+  id: ID!
+  columnId: ID!
+  targetObjectId: ID!
+  targetObjectKind: String!
+  options: [SelectCellOption!]!
+  values: [String]!
+}
+
+type SelectCellOption {
+  id: ID!
+  label: String!
+}
+
+type CheckboxCell implements Cell {
+  id: ID!
+  columnId: ID!
+  targetObjectId: ID!
+  targetObjectKind: String!
+  value: Boolean!
+}
+
+type TableDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
+}
+
+extend type Mutation {
+  editCheckboxCell(input: EditCheckboxCellInput!): EditCheckboxCellPayload!
+  editSelectCell(input: EditSelectCellInput!): EditSelectCellPayload!
+  editMultiSelectCell(input: EditMultiSelectCellInput!): EditMultiSelectCellPayload!
+  editTextfieldCell(input: EditTextfieldCellInput!): EditTextfieldCellPayload!
+}
+
+input EditCheckboxCellInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  cellId: ID!
+  newValue: Boolean!
+}
+
+union EditCheckboxCellPayload = ErrorPayload | SuccessPayload
+
+input EditSelectCellInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  cellId: ID!
+  newValue: String!
+}
+
+union EditSelectCellPayload = ErrorPayload | SuccessPayload
+
+input EditMultiSelectCellInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  cellId: ID!
+  newValues: [String]!
+}
+
+union EditMultiSelectCellPayload = ErrorPayload | SuccessPayload
+
+input EditTextfieldCellInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  cellId: ID!
+  newValue: String!
+}
+
+union EditTextfieldCellPayload = ErrorPayload | SuccessPayload

@@ -27,6 +27,7 @@ import {
   GQLSelect,
   GQLSlider,
   GQLSplitButton,
+  GQLTableWidget,
   GQLTextarea,
   GQLTextfield,
   GQLTree,
@@ -49,6 +50,7 @@ import { RichTextPropertySection } from './RichTextPropertySection';
 import { SelectPropertySection } from './SelectPropertySection';
 import { SliderPropertySection } from './SliderPropertySection';
 import { SplitButtonPropertySection } from './SplitButtonPropertySection';
+import { TableWidgetPropertySection } from './TableWidgetPropertySection';
 import { TextfieldPropertySection } from './TextfieldPropertySection';
 import { TreePropertySection } from './TreePropertySection';
 
@@ -71,6 +73,7 @@ const isFlexboxContainer = (widget: GQLWidget): widget is GQLFlexboxContainer =>
 const isTree = (widget: GQLWidget): widget is GQLTree => widget.__typename === 'TreeWidget';
 const isImage = (widget: GQLWidget): widget is GQLImage => widget.__typename === 'Image';
 const isRichText = (widget: GQLWidget): widget is GQLRichText => widget.__typename === 'RichText';
+const isTableWidget = (widget: GQLWidget): widget is GQLTableWidget => widget.__typename === 'TableWidget';
 
 export const PropertySection = ({ editingContextId, formId, widget, readOnly }: PropertySectionProps) => {
   const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
@@ -239,6 +242,16 @@ export const PropertySection = ({ editingContextId, formId, widget, readOnly }: 
   } else if (isDateTime(widget)) {
     propertySection = (
       <DateTimeWidgetPropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        key={widget.id}
+        readOnly={readOnly}
+      />
+    );
+  } else if (isTableWidget(widget)) {
+    propertySection = (
+      <TableWidgetPropertySection
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}

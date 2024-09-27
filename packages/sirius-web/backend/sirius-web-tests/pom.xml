@@ -67,6 +67,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-tables-tests</artifactId>
+			<version>2024.9.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-formdescriptioneditors</artifactId>
 			<version>2024.9.8</version>
 		</dependency>
