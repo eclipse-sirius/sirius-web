@@ -37,6 +37,7 @@ The new option ALWAYS allows the separator to be displayed in every case.
 
 - [releng] Switch to Spring Boot 3.3.3
 - https://github.com/eclipse-sirius/sirius-web/issues/3846[#3846] [core] Migrate the frontend to `react 18.3.1`, `react-dom 18.3.1`, `react-router-dom 6.26.0`, `@xstate/react: 3.0.0` and `@ObeoNetwork/gantt-task-react 0.6.0`
+- https://github.com/eclipse-sirius/sirius-web/issues/3829[#3829] [table] Add a dependency to `material-react-table "2.13.3"` and `export-to-csv "1.3.0"`
 
 
 === Bug fixes
@@ -60,6 +61,7 @@ The new endpoints are:
 description (optional).
 ** deleteProject (`POST /api/rest/projects/{projectId}`): Delete the project with the given id (projectId).
 ** updateProject (`PUT /projects/{projectId}`): Update the project with the given id (projectId).
+- https://github.com/eclipse-sirius/sirius-web/issues/3829[#3829] [form][table] Add table widget in form.
 
 === Improvements
 

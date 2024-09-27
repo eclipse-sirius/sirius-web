@@ -30,9 +30,11 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IRelatedElementsDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
+import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.springframework.stereotype.Service;
@@ -51,9 +53,13 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
 
     private final IRepresentationSearchService representationSearchService;
 
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
     private final List<IWidgetDescriptor> widgetDescriptors;
 
     private final List<IFormEventHandler> formEventHandlers;
+
+    private final List<ITableEventHandler> tableEventHandlers;
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
@@ -66,8 +72,10 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
         this.relatedElementsDescriptionProvider = Objects.requireNonNull(relatedElementsDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
+        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
+        this.tableEventHandlers = Objects.requireNonNull(formConfiguration.getTableEventHandlers());
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
@@ -99,9 +107,10 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
                     .build();
 
             IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
-                    new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers),
+                    new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
                     this.subscriptionManagerFactory.create(),
                     this.representationSearchService,
+                    this.representationDescriptionSearchService,
                     this.representationRefreshPolicyRegistry,
                     this.formPostProcessor);
 

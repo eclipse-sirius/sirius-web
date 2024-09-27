@@ -1,0 +1,65 @@
+{
+  "name": "@eclipse-sirius/sirius-components-tables",
+  "version": "2024.9.2",
+  "author": "Eclipse Sirius",
+  "license": "EPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-sirius/sirius-web"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "main": "./dist/sirius-components-tables.umd.js",
+  "module": "./dist/sirius-components-tables.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/sirius-components-tables.umd.js",
+      "import": "./dist/sirius-components-tables.es.js"
+    }
+  },
+  "scripts": {
+    "start": "vite build --mode 'development' && tsc",
+    "build": "vite build && tsc",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
+    "publish:local": "yalc push"
+  },
+  "peerDependencies": {
+    "@apollo/client": "3.10.4",
+    "@eclipse-sirius/sirius-components-core": "*",
+    "@mui/material": "5.15.19",
+    "@mui/icons-material": "5.15.19",
+    "export-to-csv": "1.3.0",
+    "graphql": "16.8.1",
+    "material-react-table": "2.13.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tss-react": "4.9.7"
+  },
+  "devDependencies": {
+    "@apollo/client": "3.10.4",
+    "@eclipse-sirius/sirius-components-core": "*",
+    "@eclipse-sirius/sirius-components-tsconfig": "*",
+    "@mui/material": "5.15.19",
+    "@mui/icons-material": "5.15.19",
+    "@types/react": "18.3.3",
+    "@vitejs/plugin-react": "4.3.0",
+    "@vitest/coverage-v8": "1.6.0",
+    "export-to-csv": "1.3.0",
+    "jsdom": "16.7.0",
+    "material-react-table": "2.13.3",
+    "graphql": "16.8.1",
+    "prettier": "2.7.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "rollup-plugin-peer-deps-external": "2.2.4",
+    "tss-react": "4.9.7",
+    "typescript": "5.4.5",
+    "vite": "5.2.11"
+  }
+}

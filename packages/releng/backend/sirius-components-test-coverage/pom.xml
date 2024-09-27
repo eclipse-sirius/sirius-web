@@ -147,6 +147,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-tables</artifactId>
+			<version>2024.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-selection</artifactId>
 			<version>2024.9.2</version>
 		</dependency>
@@ -202,6 +207,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-tables</artifactId>
+			<version>2024.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-trees</artifactId>
 			<version>2024.9.2</version>
 		</dependency>
@@ -248,6 +258,11 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-portals-graphql</artifactId>
+			<version>2024.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-tables-graphql</artifactId>
 			<version>2024.9.2</version>
 		</dependency>
 		<dependency>

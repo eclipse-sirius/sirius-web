@@ -62,6 +62,7 @@ import reactor.core.publisher.Flux;
     "org.eclipse.sirius.components.gantt",
     "org.eclipse.sirius.components.portals",
     "org.eclipse.sirius.components.selection",
+    "org.eclipse.sirius.components.tables",
     "org.eclipse.sirius.components.trees",
     "org.eclipse.sirius.components.validation",
     "org.eclipse.sirius.components.view.emf",

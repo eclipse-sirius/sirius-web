@@ -100,6 +100,7 @@ jobs:
           npx yalc add @eclipse-sirius/sirius-components-portals
           npx yalc add @eclipse-sirius/sirius-components-widget-reference
           npx yalc add @eclipse-sirius/sirius-components-selection
+          npx yalc add @eclipse-sirius/sirius-components-tables
           npx yalc add @eclipse-sirius/sirius-components-trees
           npx yalc add @eclipse-sirius/sirius-components-validation
           npx yalc add @eclipse-sirius/sirius-web-application
