@@ -17,6 +17,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="deletableExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="treeItemLabelDescriptions"
         upperBound="-1" eType="#//TreeItemLabelDescription" containment="true" eKeys="#//TreeItemLabelDescription/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextMenuEntries" upperBound="-1"
+        eType="#//TreeItemContextMenuEntry" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TreeItemLabelDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
@@ -30,4 +32,24 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//TextStyleDescription"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TreeItemLabelElementDescription" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TreeItemContextMenuEntry" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="iconURLExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleClickTreeItemContextMenuEntry"
+      eSuperTypes="#//TreeItemContextMenuEntry">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FetchTreeItemContextMenuEntry" eSuperTypes="#//TreeItemContextMenuEntry">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="urlExression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//FetchTreeItemContextMenuEntryKind"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="FetchTreeItemContextMenuEntryKind">
+    <eLiterals name="DOWNLOAD"/>
+    <eLiterals name="OPEN" value="1"/>
+  </eClassifiers>
 </ecore:EPackage>

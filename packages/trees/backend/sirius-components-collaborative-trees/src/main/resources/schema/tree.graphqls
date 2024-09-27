@@ -97,6 +97,8 @@ type TreeDescription implements RepresentationDescription {
   label: String!
   initialDirectEditTreeItemLabel(treeItemId: ID!): String!
   filters: [TreeFilter!]!
+  contextMenu(treeItemId: ID!): [TreeItemContextMenuEntry!]!
+  fetchTreeItemContextMenuEntryData(treeItemId: ID!, menuEntryId: ID!): FetchTreeItemContextMenuEntryData!
 }
 
 type TreeFilter {
@@ -105,9 +107,17 @@ type TreeFilter {
   defaultState: Boolean!
 }
 
+interface TreeItemContextMenuEntry {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+}
+
 extend type Mutation {
   deleteTreeItem(input: DeleteTreeItemInput!): DeleteTreeItemPayload
   renameTreeItem(input: RenameTreeItemInput!): RenameTreeItemPayload
+  invokeSingleClickTreeItemContextMenuEntry(input: InvokeSingleClickTreeItemContextMenuEntryInput!): InvokeSingleClickTreeItemContextMenuEntryPayload!
+  
 }
 
 input DeleteTreeItemInput {
@@ -128,3 +138,35 @@ input RenameTreeItemInput {
 }
 
 union RenameTreeItemPayload = SuccessPayload | ErrorPayload
+
+type SingleClickTreeItemContextMenuEntry implements TreeItemContextMenuEntry {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+}
+
+type FetchTreeItemContextMenuEntry implements TreeItemContextMenuEntry {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+}
+
+type FetchTreeItemContextMenuEntryData {
+  urlToFetch : String!
+  fetchKind : FetchTreeItemContextMenuEntryKind!
+}
+
+enum FetchTreeItemContextMenuEntryKind {
+  DOWNLOAD
+  OPEN
+}
+
+input InvokeSingleClickTreeItemContextMenuEntryInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  treeItemId: ID!
+  menuEntryId: ID!
+}
+
+union InvokeSingleClickTreeItemContextMenuEntryPayload = SuccessPayload | ErrorPayload

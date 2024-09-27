@@ -16,7 +16,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
+import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
@@ -105,6 +108,31 @@ public class TreeSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY: {
+                TreeItemContextMenuEntry treeItemContextMenuEntry = (TreeItemContextMenuEntry) theEObject;
+                T result = this.caseTreeItemContextMenuEntry(treeItemContextMenuEntry);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY: {
+                SingleClickTreeItemContextMenuEntry singleClickTreeItemContextMenuEntry = (SingleClickTreeItemContextMenuEntry) theEObject;
+                T result = this.caseSingleClickTreeItemContextMenuEntry(singleClickTreeItemContextMenuEntry);
+                if (result == null)
+                    result = this.caseTreeItemContextMenuEntry(singleClickTreeItemContextMenuEntry);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY: {
+                FetchTreeItemContextMenuEntry fetchTreeItemContextMenuEntry = (FetchTreeItemContextMenuEntry) theEObject;
+                T result = this.caseFetchTreeItemContextMenuEntry(fetchTreeItemContextMenuEntry);
+                if (result == null)
+                    result = this.caseTreeItemContextMenuEntry(fetchTreeItemContextMenuEntry);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -166,6 +194,52 @@ public class TreeSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseTreeItemLabelElementDescription(TreeItemLabelElementDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Item Context Menu Entry</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Item Context Menu Entry</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTreeItemContextMenuEntry(TreeItemContextMenuEntry object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Single Click Tree Item Context Menu
+     * Entry</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+     * the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Single Click Tree Item Context Menu
+     *         Entry</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSingleClickTreeItemContextMenuEntry(SingleClickTreeItemContextMenuEntry object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Fetch Tree Item Context Menu Entry</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Fetch Tree Item Context Menu Entry</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFetchTreeItemContextMenuEntry(FetchTreeItemContextMenuEntry object) {
         return null;
     }
 

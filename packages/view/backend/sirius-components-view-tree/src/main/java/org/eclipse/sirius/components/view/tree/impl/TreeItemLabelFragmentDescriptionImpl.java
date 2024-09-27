@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.tree.impl;
 
-import java.util.Objects;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -43,9 +41,9 @@ public class TreeItemLabelFragmentDescriptionImpl extends TreeItemLabelElementDe
      * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getLabelExpression()
      * @generated
      * @ordered
-     * @see #getLabelExpression()
      */
     protected static final String LABEL_EXPRESSION_EDEFAULT = null;
 
@@ -53,9 +51,9 @@ public class TreeItemLabelFragmentDescriptionImpl extends TreeItemLabelElementDe
      * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getLabelExpression()
      * @generated
      * @ordered
-     * @see #getLabelExpression()
      */
     protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
 
@@ -199,7 +197,7 @@ public class TreeItemLabelFragmentDescriptionImpl extends TreeItemLabelElementDe
                 this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
                 return;
             case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE:
-                this.setStyle(null);
+                this.setStyle((TextStyleDescription) null);
                 return;
         }
         super.eUnset(featureID);
@@ -214,7 +212,7 @@ public class TreeItemLabelFragmentDescriptionImpl extends TreeItemLabelElementDe
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION:
-                return !Objects.equals(LABEL_EXPRESSION_EDEFAULT, this.labelExpression);
+                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
             case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE:
                 return this.style != null;
         }
@@ -231,10 +229,11 @@ public class TreeItemLabelFragmentDescriptionImpl extends TreeItemLabelElementDe
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (labelExpression: " +
-                this.labelExpression +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (labelExpression: ");
+        result.append(this.labelExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // TreeItemLabelFragmentDescriptionImpl

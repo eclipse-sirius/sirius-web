@@ -190,5 +190,17 @@ public class TreeDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for ContextMenuEntries.
+     *
+     * @generated
+     */
+    public TreeDescriptionBuilder contextMenuEntries(org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry ... values) {
+        for (org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry value : values) {
+            this.getTreeDescription().getContextMenuEntries().add(value);
+        }
+        return this;
+    }
+
 }
 

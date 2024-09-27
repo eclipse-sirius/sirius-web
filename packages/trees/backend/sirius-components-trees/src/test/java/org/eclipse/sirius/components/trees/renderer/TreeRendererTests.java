@@ -144,7 +144,6 @@ public class TreeRendererTests {
     }
 
     private TreeDescription createDescription(TreeNode root) {
-        // @formatter:off
         return TreeDescription.newTreeDescription(FAKE_ID)
                 .canCreatePredicate(v -> true)
                 .childrenProvider(v -> this.getSelfNode(v).getChildren())
@@ -156,16 +155,16 @@ public class TreeRendererTests {
                 .idProvider(v -> FAKE_ID)
                 .kindProvider(v -> NODE_KIND)
                 .label("Fake tree")
-                .labelProvider(v ->  StyledString.of(v.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID)))
+                .labelProvider(v -> StyledString.of(v.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID)))
                 .parentObjectProvider(v -> this.getSelfNode(v).getParent())
                 .renameHandler((v, name) -> new Success())
                 .selectableProvider(v -> true)
                 .targetObjectIdProvider(v -> v.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID))
                 .treeItemIdProvider(v -> this.getSelfNode(v).getId())
                 .treeItemObjectProvider(v -> root.search(v.get("treeItemId", String.class).get(), new HashSet<>()))
-                .treeItemLabelProvider(v ->  StyledString.of(v.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID)))
+                .treeItemLabelProvider(v -> StyledString.of(v.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID)))
+                .contextMenuEntries(List.of())
                 .build();
-        // @formatter:on
 
     }
 

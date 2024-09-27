@@ -14,12 +14,17 @@ package org.eclipse.sirius.components.view.tree.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
+import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind;
+import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
 import org.eclipse.sirius.components.view.tree.TreeFactory;
+import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
@@ -31,6 +36,7 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * @generated
  */
 public class TreePackageImpl extends EPackageImpl implements TreePackage {
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -60,6 +66,52 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
     private EClass treeItemLabelElementDescriptionEClass = null;
 
     /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass treeItemContextMenuEntryEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass singleClickTreeItemContextMenuEntryEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass fetchTreeItemContextMenuEntryEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum fetchTreeItemContextMenuEntryKindEEnum = null;
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private static boolean isInited = false;
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private boolean isCreated = false;
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private boolean isInitialized = false;
+
+    /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
      * EPackage.Registry} by the package package URI value.
      * <p>
@@ -67,21 +119,14 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * performs initialization of the package, or returns the registered package, if one already exists. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @see org.eclipse.emf.ecore.EPackage.Registry
      * @see org.eclipse.sirius.components.view.tree.TreePackage#eNS_URI
      * @see #init()
-     * @generated
      */
     private TreePackageImpl() {
         super(eNS_URI, TreeFactory.eINSTANCE);
     }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private static boolean isInited = false;
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
@@ -91,10 +136,10 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
-     * @generated
      */
     public static TreePackage init() {
         if (isInited)
@@ -259,6 +304,16 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
+    public EReference getTreeDescription_ContextMenuEntries() {
+        return (EReference) this.treeDescriptionEClass.getEStructuralFeatures().get(12);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getTreeItemLabelDescription() {
         return this.treeItemLabelDescriptionEClass;
     }
@@ -339,8 +394,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public TreeFactory getTreeFactory() {
-        return (TreeFactory) this.getEFactoryInstance();
+    public EClass getTreeItemContextMenuEntry() {
+        return this.treeItemContextMenuEntryEClass;
     }
 
     /**
@@ -348,7 +403,110 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      *
      * @generated
      */
-    private boolean isCreated = false;
+    @Override
+    public EAttribute getTreeItemContextMenuEntry_Name() {
+        return (EAttribute) this.treeItemContextMenuEntryEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTreeItemContextMenuEntry_LabelExpression() {
+        return (EAttribute) this.treeItemContextMenuEntryEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTreeItemContextMenuEntry_IconURLExpression() {
+        return (EAttribute) this.treeItemContextMenuEntryEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTreeItemContextMenuEntry_PreconditionExpression() {
+        return (EAttribute) this.treeItemContextMenuEntryEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getSingleClickTreeItemContextMenuEntry() {
+        return this.singleClickTreeItemContextMenuEntryEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getSingleClickTreeItemContextMenuEntry_Body() {
+        return (EReference) this.singleClickTreeItemContextMenuEntryEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getFetchTreeItemContextMenuEntry() {
+        return this.fetchTreeItemContextMenuEntryEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFetchTreeItemContextMenuEntry_UrlExression() {
+        return (EAttribute) this.fetchTreeItemContextMenuEntryEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFetchTreeItemContextMenuEntry_Kind() {
+        return (EAttribute) this.fetchTreeItemContextMenuEntryEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EEnum getFetchTreeItemContextMenuEntryKind() {
+        return this.fetchTreeItemContextMenuEntryKindEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public TreeFactory getTreeFactory() {
+        return (TreeFactory) this.getEFactoryInstance();
+    }
 
     /**
      * Creates the meta-model objects for the package. This method is guarded to have no affect on any invocation but
@@ -375,6 +533,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__SELECTABLE_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__DELETABLE_EXPRESSION);
         this.createEReference(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS);
+        this.createEReference(this.treeDescriptionEClass, TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES);
 
         this.treeItemLabelDescriptionEClass = this.createEClass(TREE_ITEM_LABEL_DESCRIPTION);
         this.createEAttribute(this.treeItemLabelDescriptionEClass, TREE_ITEM_LABEL_DESCRIPTION__NAME);
@@ -386,14 +545,23 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.createEReference(this.treeItemLabelFragmentDescriptionEClass, TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE);
 
         this.treeItemLabelElementDescriptionEClass = this.createEClass(TREE_ITEM_LABEL_ELEMENT_DESCRIPTION);
-    }
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private boolean isInitialized = false;
+        this.treeItemContextMenuEntryEClass = this.createEClass(TREE_ITEM_CONTEXT_MENU_ENTRY);
+        this.createEAttribute(this.treeItemContextMenuEntryEClass, TREE_ITEM_CONTEXT_MENU_ENTRY__NAME);
+        this.createEAttribute(this.treeItemContextMenuEntryEClass, TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION);
+        this.createEAttribute(this.treeItemContextMenuEntryEClass, TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION);
+        this.createEAttribute(this.treeItemContextMenuEntryEClass, TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION);
+
+        this.singleClickTreeItemContextMenuEntryEClass = this.createEClass(SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY);
+        this.createEReference(this.singleClickTreeItemContextMenuEntryEClass, SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY);
+
+        this.fetchTreeItemContextMenuEntryEClass = this.createEClass(FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY);
+        this.createEAttribute(this.fetchTreeItemContextMenuEntryEClass, FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__URL_EXRESSION);
+        this.createEAttribute(this.fetchTreeItemContextMenuEntryEClass, FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND);
+
+        // Create enums
+        this.fetchTreeItemContextMenuEntryKindEEnum = this.createEEnum(FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY_KIND);
+    }
 
     /**
      * Complete the initialization of the package and its meta-model. This method is guarded to have no affect on any
@@ -421,6 +589,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         // Add supertypes to classes
         this.treeDescriptionEClass.getESuperTypes().add(theViewPackage.getRepresentationDescription());
         this.treeItemLabelFragmentDescriptionEClass.getESuperTypes().add(this.getTreeItemLabelElementDescription());
+        this.singleClickTreeItemContextMenuEntryEClass.getESuperTypes().add(this.getTreeItemContextMenuEntry());
+        this.fetchTreeItemContextMenuEntryEClass.getESuperTypes().add(this.getTreeItemContextMenuEntry());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.treeDescriptionEClass, TreeDescription.class, "TreeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -449,6 +619,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.initEReference(this.getTreeDescription_TreeItemLabelDescriptions(), this.getTreeItemLabelDescription(), null, "treeItemLabelDescriptions", null, 0, -1, TreeDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getTreeDescription_TreeItemLabelDescriptions().getEKeys().add(this.getTreeItemLabelDescription_Name());
+        this.initEReference(this.getTreeDescription_ContextMenuEntries(), this.getTreeItemContextMenuEntry(), null, "contextMenuEntries", null, 0, -1, TreeDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.treeItemLabelDescriptionEClass, TreeItemLabelDescription.class, "TreeItemLabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTreeItemLabelDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, TreeItemLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
@@ -466,6 +638,32 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.treeItemLabelElementDescriptionEClass, TreeItemLabelElementDescription.class, "TreeItemLabelElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.treeItemContextMenuEntryEClass, TreeItemContextMenuEntry.class, "TreeItemContextMenuEntry", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getTreeItemContextMenuEntry_Name(), theViewPackage.getIdentifier(), "name", null, 1, 1, TreeItemContextMenuEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTreeItemContextMenuEntry_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", null, 0, 1, TreeItemContextMenuEntry.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTreeItemContextMenuEntry_IconURLExpression(), theViewPackage.getInterpretedExpression(), "iconURLExpression", null, 0, 1, TreeItemContextMenuEntry.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTreeItemContextMenuEntry_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, TreeItemContextMenuEntry.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.singleClickTreeItemContextMenuEntryEClass, SingleClickTreeItemContextMenuEntry.class, "SingleClickTreeItemContextMenuEntry", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getSingleClickTreeItemContextMenuEntry_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, SingleClickTreeItemContextMenuEntry.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.fetchTreeItemContextMenuEntryEClass, FetchTreeItemContextMenuEntry.class, "FetchTreeItemContextMenuEntry", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getFetchTreeItemContextMenuEntry_UrlExression(), theViewPackage.getInterpretedExpression(), "urlExression", null, 0, 1, FetchTreeItemContextMenuEntry.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getFetchTreeItemContextMenuEntry_Kind(), this.getFetchTreeItemContextMenuEntryKind(), "kind", null, 0, 1, FetchTreeItemContextMenuEntry.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        // Initialize enums and add enum literals
+        this.initEEnum(this.fetchTreeItemContextMenuEntryKindEEnum, FetchTreeItemContextMenuEntryKind.class, "FetchTreeItemContextMenuEntryKind");
+        this.addEEnumLiteral(this.fetchTreeItemContextMenuEntryKindEEnum, FetchTreeItemContextMenuEntryKind.DOWNLOAD);
+        this.addEEnumLiteral(this.fetchTreeItemContextMenuEntryKindEEnum, FetchTreeItemContextMenuEntryKind.OPEN);
 
         // Create resource
         this.createResource(eNS_URI);

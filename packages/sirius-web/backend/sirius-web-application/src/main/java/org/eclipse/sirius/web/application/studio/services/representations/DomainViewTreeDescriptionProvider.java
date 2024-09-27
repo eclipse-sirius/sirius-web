@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services.representations;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,7 +28,9 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.tree.TreeBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.emf.tree.ITreeIdProvider;
+import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -55,7 +58,11 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
 
     private static final String AQL_TRUE = "aql:true";
 
+    private static final String AQL_SELF_IS_AN_ENTITY = "aql:self.oclIsKindOf(domain::Entity)";
+
     private final IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate;
+
+    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     private final View view;
 
@@ -123,6 +130,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .treeItemObjectExpression("aql:editingContext.getTreeItemObject(id)")
                 .preconditionExpression("aql:false") // -> set canCreate to false to avoid to be display in New representation menu
                 .treeItemLabelDescriptions(this.entityStyle(domainTextStylePalette), this.attributeStyle(domainTextStylePalette), this.defaultStyle())
+                .contextMenuEntries(this.getContextMenuEntries().toArray(TreeItemContextMenuEntry[] ::new))
                 .build();
         return this.viewDescription;
     }
@@ -149,7 +157,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
         return new TreeBuilders()
                 .newTreeItemLabelDescription()
                 .name("entity style")
-                .preconditionExpression("aql:self.oclIsKindOf(domain::Entity)")
+                .preconditionExpression(AQL_SELF_IS_AN_ENTITY)
                 .children(this.getEntityKeyFragment(textStylePalette), this.getEntityValueFragment(textStylePalette))
                 .build();
     }
@@ -223,5 +231,25 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .filter(tsd -> tsd.getName().equals(styleName))
                 .findFirst()
                 .orElse(null);
+    }
+
+    private List<TreeItemContextMenuEntry> getContextMenuEntries() {
+        var callService = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.toggleAbstractEntity()");
+
+        var helpMenuEntry = new TreeBuilders().newFetchTreeItemContextMenuEntry()
+                .labelExpression("Help")
+                .iconURLExpression("/img/DefaultEdgeIcon.svg")
+                .preconditionExpression(AQL_SELF_IS_AN_ENTITY)
+                .urlExression("https://eclipse.dev/sirius/sirius-web.html")
+                .kind(FetchTreeItemContextMenuEntryKind.OPEN)
+                .build();
+        var toggleAbstractMenuEntry = new TreeBuilders().newSingleClickTreeItemContextMenuEntry()
+                .labelExpression("Toggle abstract")
+                .preconditionExpression(AQL_SELF_IS_AN_ENTITY)
+                .body(callService.build())
+                .build();
+
+        return List.of(helpMenuEntry, toggleAbstractMenuEntry);
     }
 }

@@ -80,7 +80,7 @@ public class RenameTreeItemEventHandler implements ITreeEventHandler {
 
         if (treeInput instanceof RenameTreeItemInput input) {
 
-            var optionalTreeItem = this.treeQueryService.findTreeItem(tree, input.treeItemId());
+            var optionalTreeItem = this.treeQueryService.findTreeItem(tree, input.treeItemId().toString());
 
             if (optionalTreeItem.isPresent()) {
                 TreeItem treeItem = optionalTreeItem.get();

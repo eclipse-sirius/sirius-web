@@ -102,6 +102,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                 .deleteHandler(variableManager -> new Success())
                 .renameHandler((variableManager, newName) -> new Success())
                 .treeItemObjectProvider(this::getTreeItemObject)
+                .contextMenuEntries(List.of())
                 .build();
         return List.of(treeDescription);
     }
