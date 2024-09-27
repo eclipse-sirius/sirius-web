@@ -145,6 +145,12 @@
 			<version>2024.9.8</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-tables-tests</artifactId>
+			<version>2024.9.8</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -169,7 +175,8 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.4.0</version>
 				<configuration>
-					<configLocation>../../../releng/backend/sirius-components-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
+					<configLocation>
+						../../../releng/backend/sirius-components-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 					<failsOnError>true</failsOnError>
 					<consoleOutput>true</consoleOutput>
