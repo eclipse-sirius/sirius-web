@@ -10,20 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useMutation } from '@apollo/client';
+import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import {
-  Toast,
-  useDeletionConfirmationDialog,
-  useComponents,
   ComponentExtension,
+  IconOverlay,
+  useComponents,
+  useDeletionConfirmationDialog,
+  useMultiToast,
 } from '@eclipse-sirius/sirius-components-core';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import UnfoldMore from '@mui/icons-material/UnfoldMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import UnfoldMore from '@mui/icons-material/UnfoldMore';
 import { useEffect, useState } from 'react';
 import {
   GQLDeleteTreeItemData,
@@ -31,11 +32,18 @@ import {
   GQLDeleteTreeItemPayload,
   GQLDeleteTreeItemVariables,
   GQLErrorPayload,
+  GQLFetchTreeItemContextEntryDataData,
+  GQLGetFetchTreeItemContextMenuEntryDataQueryVariables,
+  GQLInvokeSingleClickTreeItemContextMenuEntryData,
+  GQLInvokeSingleClickTreeItemContextMenuEntryInput,
+  GQLInvokeSingleClickTreeItemContextMenuEntryVariables,
+  TreeItemContextMenuEntry,
   TreeItemContextMenuProps,
   TreeItemContextMenuState,
 } from './TreeItemContextMenu.types';
-import { treeItemContextMenuEntryExtensionPoint } from './TreeItemContextMenuEntryExtensionPoints';
 import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuEntry.types';
+import { treeItemContextMenuEntryExtensionPoint } from './TreeItemContextMenuEntryExtensionPoints';
+import { useContextMenuEntries } from './useContextMenuEntries';
 
 const deleteTreeItemMutation = gql`
   mutation deleteTreeItem($input: DeleteTreeItemInput!) {
@@ -43,6 +51,41 @@ const deleteTreeItemMutation = gql`
       __typename
       ... on ErrorPayload {
         message
+      }
+    }
+  }
+`;
+
+const invokeSingleClickTreeItemContextMenuEntryMutation = gql`
+  mutation invokeSingleClickTreeItemContextMenuEntry($input: InvokeSingleClickTreeItemContextMenuEntryInput!) {
+    invokeSingleClickTreeItemContextMenuEntry(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+const getFetchTreeItemContextMenuEntryDataQuery = gql`
+  query getFetchTreeItemContextMenuEntryDataQuery(
+    $editingContextId: ID!
+    $representationId: ID!
+    $treeItemId: ID!
+    $menuEntryId: ID!
+  ) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $representationId) {
+          description {
+            ... on TreeDescription {
+              fetchTreeItemContextMenuEntryData(treeItemId: $treeItemId, menuEntryId: $menuEntryId) {
+                urlToFetch
+                fetchKind
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -63,7 +106,11 @@ export const TreeItemContextMenu = ({
   enterEditingMode,
   onClose,
 }: TreeItemContextMenuProps) => {
-  const [state, setState] = useState<TreeItemContextMenuState>({ message: null });
+  const [state, setState] = useState<TreeItemContextMenuState>({
+    menuEntries: [],
+  });
+
+  const { addErrorMessage } = useMultiToast();
 
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
@@ -96,19 +143,99 @@ export const TreeItemContextMenu = ({
   useEffect(() => {
     if (!deleteTreeItemLoading) {
       if (deleteTreeItemError) {
-        setState({
-          message: 'An error has occurred while executing this action, please contact the server administrator',
-        });
+        addErrorMessage('An error has occurred while executing this action, please contact the server administrator');
       }
       if (deleteTreeItemData) {
         const { deleteTreeItem } = deleteTreeItemData;
         if (isErrorPayload(deleteTreeItem)) {
-          const { message } = deleteTreeItem;
-          setState({ message });
+          addErrorMessage(deleteTreeItem.message);
         }
       }
     }
   }, [deleteTreeItemLoading, deleteTreeItemError, deleteTreeItemData]);
+
+  const { contextMenuEntries } = useContextMenuEntries(editingContextId, treeId, item.id);
+
+  useEffect(() => {
+    if (contextMenuEntries) {
+      setState((prevState) => ({ ...prevState, menuEntries: contextMenuEntries }));
+    }
+  }, [contextMenuEntries]);
+
+  const [getFetchData, { loading, data, error }] = useLazyQuery<
+    GQLFetchTreeItemContextEntryDataData,
+    GQLGetFetchTreeItemContextMenuEntryDataQueryVariables
+  >(getFetchTreeItemContextMenuEntryDataQuery);
+  useEffect(() => {
+    if (!loading) {
+      if (error) {
+        addErrorMessage(error.message);
+      }
+
+      if (data) {
+        const { urlToFetch, fetchKind } =
+          data.viewer.editingContext.representation.description.fetchTreeItemContextMenuEntryData;
+        if (fetchKind === 'DOWNLOAD') {
+          window.location.href = urlToFetch;
+        } else if (fetchKind === 'OPEN') {
+          window.open(urlToFetch, '_blank', 'noopener,noreferrer');
+        }
+        onClose();
+      }
+    }
+  }, [loading, data, error]);
+
+  const invokeFetch = (menuEntryId: string) => {
+    const variables: GQLGetFetchTreeItemContextMenuEntryDataQueryVariables = {
+      editingContextId,
+      representationId: treeId,
+      treeItemId: item.id,
+      menuEntryId,
+    };
+    getFetchData({ variables });
+  };
+
+  const [
+    invokeSingleClickTreeItemContextMenuEntry,
+    { loading: invokeSingleClickLoading, data: invokeSingleClickData, error: invokeSingleClickError },
+  ] = useMutation<
+    GQLInvokeSingleClickTreeItemContextMenuEntryData,
+    GQLInvokeSingleClickTreeItemContextMenuEntryVariables
+  >(invokeSingleClickTreeItemContextMenuEntryMutation);
+
+  const invokeSingleClick = (menuEntryId: string) => {
+    const input: GQLInvokeSingleClickTreeItemContextMenuEntryInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId: treeId,
+      treeItemId: item.id,
+      menuEntryId,
+    };
+    invokeSingleClickTreeItemContextMenuEntry({ variables: { input } });
+  };
+
+  useEffect(() => {
+    if (!invokeSingleClickLoading) {
+      if (invokeSingleClickError) {
+        addErrorMessage('An error has occurred while executing this action, please contact the server administrator');
+      }
+      if (invokeSingleClickData) {
+        const { invokeSingleClickTreeItemContextMenuEntry } = invokeSingleClickData;
+        if (isErrorPayload(invokeSingleClickTreeItemContextMenuEntry)) {
+          addErrorMessage(invokeSingleClickTreeItemContextMenuEntry.message);
+        }
+      }
+    }
+  }, [invokeSingleClickLoading, invokeSingleClickError, invokeSingleClickData]);
+
+  const invokeContextMenuEntry = (menuEntry: TreeItemContextMenuEntry) => {
+    if (menuEntry.__typename === 'FetchTreeItemContextMenuEntry') {
+      invokeFetch(menuEntry.id);
+    } else if (menuEntry.__typename === 'SingleClickTreeItemContextMenuEntry') {
+      invokeSingleClick(menuEntry.id);
+      onClose();
+    }
+  };
 
   return (
     <>
@@ -172,8 +299,24 @@ export const TreeItemContextMenu = ({
             <ListItemText primary="Delete" />
           </MenuItem>
         ) : null}
+        {state.menuEntries.map((entry) => (
+          <MenuItem
+            key={entry.id}
+            onClick={(_) => invokeContextMenuEntry(entry)}
+            data-testid={`context-menu-entry-${entry.label}`}
+            disabled={readOnly}
+            aria-disabled>
+            <ListItemIcon>
+              {entry.iconURL.length > 0 ? (
+                <IconOverlay iconURL={entry.iconURL} alt={entry.label} title={entry.label} />
+              ) : (
+                <div style={{ marginRight: '16px' }} />
+              )}
+            </ListItemIcon>
+            <ListItemText primary={entry.label} />
+          </MenuItem>
+        ))}
       </Menu>
-      <Toast message={state.message} open={!!state.message} onClose={() => setState({ message: null })} />
     </>
   );
 };

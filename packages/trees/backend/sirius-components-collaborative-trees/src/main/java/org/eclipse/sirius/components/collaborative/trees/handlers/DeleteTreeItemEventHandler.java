@@ -79,7 +79,7 @@ public class DeleteTreeItemEventHandler implements ITreeEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, treeInput.representationId(), treeInput);
 
         if (treeInput instanceof DeleteTreeItemInput input) {
-            var optionalTreeItem = this.treeQueryService.findTreeItem(tree, input.treeItemId());
+            var optionalTreeItem = this.treeQueryService.findTreeItem(tree, input.treeItemId().toString());
 
             if (optionalTreeItem.isPresent()) {
                 TreeItem treeItem = optionalTreeItem.get();

@@ -34,7 +34,7 @@ The new option ALWAYS allows the separator to be displayed in every case.
 - https://github.com/eclipse-sirius/sirius-web/issues/3678[#3678] [core] Remove `IRepresentationMetadataSearchService#findByRepresentation`, use `IRepresentationMetadataSearchService#findByRepresentationId` instead.
 - https://github.com/eclipse-sirius/sirius-web/issues/4050[#4050] [sirius-web] `IUploadFileLoader` must now return an `IResult`.
 This allows an error to be displayed when there is a problem during uploading
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [trees] The tree item id passed to `ITreeQueryService.findTreeItem` is no longer a UUID but is now a String.
 
 === Dependency update
 
@@ -92,6 +92,7 @@ never, always and if_children (to display the separator only if children exist).
 - https://github.com/eclipse-sirius/sirius-web/issues/3961[#3961] [sirius-web] Extend the explorer to support multiple presentations
 - https://github.com/eclipse-sirius/sirius-web/issues/3856[#3856] [trees] Add tree representation in the view DSL
 - https://github.com/eclipse-sirius/sirius-web/issues/4000[#4000] [trees] Add support for styled labels in view model for trees
+- https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [trees] Add mechanism to define actions in tree item context menu
 
 == v2024.9.0
 

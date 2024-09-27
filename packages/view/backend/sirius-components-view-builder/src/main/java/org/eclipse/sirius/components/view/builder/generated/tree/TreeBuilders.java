@@ -49,5 +49,25 @@ public class TreeBuilders {
         return new TreeItemLabelFragmentDescriptionBuilder();
     }
 
+    /**
+     * Instantiate a SingleClickTreeItemContextMenuEntryBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public SingleClickTreeItemContextMenuEntryBuilder newSingleClickTreeItemContextMenuEntry() {
+        return new SingleClickTreeItemContextMenuEntryBuilder();
+    }
+
+    /**
+     * Instantiate a FetchTreeItemContextMenuEntryBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public FetchTreeItemContextMenuEntryBuilder newFetchTreeItemContextMenuEntry() {
+        return new FetchTreeItemContextMenuEntryBuilder();
+    }
+
 
 }

@@ -140,6 +140,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
                 .treeItemObjectProvider(this::getTreeItemObject)
                 .parentObjectProvider(this::getParentObject)
                 .treeItemLabelProvider(this::getLabel)
+                .contextMenuEntries(List.of())
                 .build();
     }
 

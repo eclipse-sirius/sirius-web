@@ -115,6 +115,22 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory
      * @generated
      */
     protected TreeItemLabelFragmentDescriptionItemProvider treeItemLabelFragmentDescriptionItemProvider;
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SingleClickTreeItemContextMenuEntryItemProvider singleClickTreeItemContextMenuEntryItemProvider;
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FetchTreeItemContextMenuEntryItemProvider fetchTreeItemContextMenuEntryItemProvider;
 
     /**
      * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -175,6 +191,38 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory
         }
 
         return this.treeItemLabelFragmentDescriptionItemProvider;
+    }
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSingleClickTreeItemContextMenuEntryAdapter() {
+        if (this.singleClickTreeItemContextMenuEntryItemProvider == null) {
+            this.singleClickTreeItemContextMenuEntryItemProvider = new SingleClickTreeItemContextMenuEntryItemProvider(this);
+        }
+
+        return this.singleClickTreeItemContextMenuEntryItemProvider;
+    }
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createFetchTreeItemContextMenuEntryAdapter() {
+        if (this.fetchTreeItemContextMenuEntryItemProvider == null) {
+            this.fetchTreeItemContextMenuEntryItemProvider = new FetchTreeItemContextMenuEntryItemProvider(this);
+        }
+
+        return this.fetchTreeItemContextMenuEntryItemProvider;
     }
 
     /**
@@ -315,6 +363,10 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory
             this.treeItemLabelDescriptionItemProvider.dispose();
         if (this.treeItemLabelFragmentDescriptionItemProvider != null)
             this.treeItemLabelFragmentDescriptionItemProvider.dispose();
+        if (this.singleClickTreeItemContextMenuEntryItemProvider != null)
+            this.singleClickTreeItemContextMenuEntryItemProvider.dispose();
+        if (this.fetchTreeItemContextMenuEntryItemProvider != null)
+            this.fetchTreeItemContextMenuEntryItemProvider.dispose();
     }
 
     /**

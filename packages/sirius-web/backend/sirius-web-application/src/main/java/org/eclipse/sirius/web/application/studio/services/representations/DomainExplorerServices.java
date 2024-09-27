@@ -287,6 +287,13 @@ public class DomainExplorerServices {
                 .orElse(resource.getURI().lastSegment());
     }
 
+    public Object toggleAbstractEntity(Object self) {
+        if (self instanceof Entity entity) {
+            entity.setAbstract(!entity.isAbstract());
+        }
+        return self;
+    }
+
     /**
      * Wrapper for {@link org.eclipse.emf.ecore.EStructuralFeature.Setting} to avoid AQL interpreter sees this element as an list.
      */

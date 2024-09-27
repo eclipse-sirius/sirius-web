@@ -18,10 +18,11 @@ import org.eclipse.emf.ecore.EFactory;
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each non-abstract class of
  * the model. <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.components.view.tree.TreePackage
  * @generated
+ * @see org.eclipse.sirius.components.view.tree.TreePackage
  */
 public interface TreeFactory extends EFactory {
+
     /**
      * The singleton instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -53,6 +54,24 @@ public interface TreeFactory extends EFactory {
      * @generated
      */
     TreeItemLabelFragmentDescription createTreeItemLabelFragmentDescription();
+
+    /**
+     * Returns a new object of class '<em>Single Click Tree Item Context Menu Entry</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Single Click Tree Item Context Menu Entry</em>'.
+     * @generated
+     */
+    SingleClickTreeItemContextMenuEntry createSingleClickTreeItemContextMenuEntry();
+
+    /**
+     * Returns a new object of class '<em>Fetch Tree Item Context Menu Entry</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Fetch Tree Item Context Menu Entry</em>'.
+     * @generated
+     */
+    FetchTreeItemContextMenuEntry createFetchTreeItemContextMenuEntry();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->

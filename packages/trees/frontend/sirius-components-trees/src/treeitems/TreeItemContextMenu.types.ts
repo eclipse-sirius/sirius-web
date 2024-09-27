@@ -33,14 +33,6 @@ export interface GQLDeleteTreeItemPayload {
   __typename: string;
 }
 
-export interface GQLSuccessPayload extends GQLDeleteTreeItemPayload {
-  id: string;
-}
-
-export interface GQLErrorPayload extends GQLDeleteTreeItemPayload {
-  message: string;
-}
-
 export interface GQLDeleteTreeItemVariables {
   input: GQLDeleteTreeItemInput;
 }
@@ -53,5 +45,81 @@ export interface GQLDeleteTreeItemInput {
 }
 
 export interface TreeItemContextMenuState {
-  message: string | null;
+  menuEntries: TreeItemContextMenuEntry[];
 }
+
+export interface TreeItemContextMenuEntry {
+  __typename: string;
+  id: string;
+  label: string;
+  iconURL: string[];
+}
+
+export interface FetchTreeItemContextMenuEntry {
+  urlToFetch: string;
+  fetchKind: GQLTreeItemFetchKind;
+}
+
+export interface GQLInvokeSingleClickTreeItemContextMenuEntryData {
+  invokeSingleClickTreeItemContextMenuEntry: GQLInvokeSingleClickTreeItemContextMenuEntryPayload;
+}
+
+export interface GQLInvokeSingleClickTreeItemContextMenuEntryVariables {
+  input: GQLInvokeSingleClickTreeItemContextMenuEntryInput;
+}
+
+export interface GQLInvokeSingleClickTreeItemContextMenuEntryInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  treeItemId: string;
+  menuEntryId: string;
+}
+
+export interface GQLInvokeSingleClickTreeItemContextMenuEntryPayload {
+  __typename: string;
+}
+
+export interface GQLSuccessPayload
+  extends GQLDeleteTreeItemPayload,
+    GQLInvokeSingleClickTreeItemContextMenuEntryPayload {
+  id: string;
+}
+
+export interface GQLErrorPayload extends GQLDeleteTreeItemPayload, GQLInvokeSingleClickTreeItemContextMenuEntryPayload {
+  message: string;
+}
+
+export interface GQLGetFetchTreeItemContextMenuEntryDataQueryVariables {
+  editingContextId: string;
+  representationId: string;
+  treeItemId: string;
+  menuEntryId: string;
+}
+
+export interface GQLFetchTreeItemContextEntryDataData {
+  viewer: GQLFetchTreeItemContextMenuEntryDataViewer;
+}
+
+export interface GQLFetchTreeItemContextMenuEntryDataViewer {
+  editingContext: GQLFetchTreeItemContextMenuEntryDataEditingContext;
+}
+
+export interface GQLFetchTreeItemContextMenuEntryDataEditingContext {
+  representation: GQLFetchTreeItemContextMenuEntryDataRepresentationMetadata;
+}
+
+export interface GQLFetchTreeItemContextMenuEntryDataRepresentationMetadata {
+  description: GQLFetchTreeItemContextMenuEntryDataRepresentationDescription;
+}
+
+export interface GQLFetchTreeItemContextMenuEntryDataRepresentationDescription {
+  fetchTreeItemContextMenuEntryData: GQLFetchTreeItemContextMenuEntryData;
+}
+
+export interface GQLFetchTreeItemContextMenuEntryData {
+  urlToFetch: string;
+  fetchKind: GQLTreeItemFetchKind;
+}
+
+export type GQLTreeItemFetchKind = 'DOWNLOAD' | 'OPEN';

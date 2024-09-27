@@ -13,6 +13,10 @@
   <foreignModel>tree.ecore</foreignModel>
   <genPackages prefix="Tree" basePackage="org.eclipse.sirius.components.view" disposableProviderFactory="true"
       extensibleProviderFactory="true" childCreationExtenders="true" ecorePackage="tree.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="tree.ecore#//FetchTreeItemContextMenuEntryKind">
+      <genEnumLiterals ecoreEnumLiteral="tree.ecore#//FetchTreeItemContextMenuEntryKind/DOWNLOAD"/>
+      <genEnumLiterals ecoreEnumLiteral="tree.ecore#//FetchTreeItemContextMenuEntryKind/OPEN"/>
+    </genEnums>
     <genClasses ecoreClass="tree.ecore#//TreeDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/kindExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/iconURLExpression"/>
@@ -25,7 +29,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/editableExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/selectableExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/deletableExpression"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//TreeDescription/treeItemLabelDescriptions"/>
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference tree.ecore#//TreeDescription/treeItemLabelDescriptions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//TreeDescription/contextMenuEntries"/>
     </genClasses>
     <genClasses ecoreClass="tree.ecore#//TreeItemLabelDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemLabelDescription/name"/>
@@ -37,5 +42,18 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference tree.ecore#//TreeItemLabelFragmentDescription/style"/>
     </genClasses>
     <genClasses image="false" ecoreClass="tree.ecore#//TreeItemLabelElementDescription"/>
+    <genClasses image="false" ecoreClass="tree.ecore#//TreeItemContextMenuEntry">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemContextMenuEntry/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemContextMenuEntry/labelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemContextMenuEntry/iconURLExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemContextMenuEntry/preconditionExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="tree.ecore#//SingleClickTreeItemContextMenuEntry">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//SingleClickTreeItemContextMenuEntry/body"/>
+    </genClasses>
+    <genClasses ecoreClass="tree.ecore#//FetchTreeItemContextMenuEntry">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//FetchTreeItemContextMenuEntry/urlExression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//FetchTreeItemContextMenuEntry/kind"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

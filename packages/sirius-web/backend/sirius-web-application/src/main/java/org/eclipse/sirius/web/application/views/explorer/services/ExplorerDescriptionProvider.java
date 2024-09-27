@@ -122,6 +122,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .renameHandler(this::getRenameHandler)
                 .treeItemObjectProvider(this::getTreeItemObject)
                 .treeItemLabelProvider(this::getLabel)
+                .contextMenuEntries(List.of())
                 .build();
         return List.of(explorerTreeDescription);
     }
