@@ -32,6 +32,8 @@ import org.eclipse.sirius.components.collaborative.forms.configuration.FormEvent
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
+import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterDescriptionProvider;
@@ -51,9 +53,13 @@ public class DiagramFilterEventProcessorFactory implements IRepresentationEventP
 
     private final IRepresentationSearchService representationSearchService;
 
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
     private final List<IWidgetDescriptor> widgetDescriptors;
 
     private final List<IFormEventHandler> formEventHandlers;
+
+    private final List<ITableEventHandler> tableEventHandlers;
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
@@ -63,14 +69,15 @@ public class DiagramFilterEventProcessorFactory implements IRepresentationEventP
 
     private final IURLParser urlParser;
 
-    public DiagramFilterEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationSearchService representationSearchService,
-            IDiagramFilterDescriptionProvider diagramFilterDescriptionProvider, List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration,
-            IURLParser urlParser) {
+    public DiagramFilterEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IDiagramFilterDescriptionProvider diagramFilterDescriptionProvider,
+                                              List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
         this.diagramFilterDescriptionProvider = Objects.requireNonNull(diagramFilterDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
+        this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
+        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
+        this.tableEventHandlers = Objects.requireNonNull(formConfiguration.getTableEventHandlers());
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
@@ -103,8 +110,9 @@ public class DiagramFilterEventProcessorFactory implements IRepresentationEventP
                         .selection(objects)
                         .build();
 
-                var formEventProcessorConfiguration = new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers);
-                IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(formEventProcessorConfiguration, this.subscriptionManagerFactory.create(), this.representationSearchService, this.representationRefreshPolicyRegistry, this.formPostProcessor);
+                var formEventProcessorConfiguration = new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers);
+                IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(formEventProcessorConfiguration, this.subscriptionManagerFactory.create(), this.representationSearchService,
+                        this.representationDescriptionSearchService, this.representationRefreshPolicyRegistry, this.formPostProcessor);
 
                 return Optional.of(formEventProcessor);
             }

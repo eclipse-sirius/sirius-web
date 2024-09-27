@@ -161,21 +161,26 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
 };
 
 const convertToLocalDateTimeString = (dateTimeType: string, dateTimeString: string): string => {
-  const dateTime = new Date(dateTimeString);
+  let formattedDateTimeString = '';
+  if (dateTimeString) {
+    const dateTime = new Date(dateTimeString);
 
-  // Get the local date and time components
-  const year = String(dateTime.getFullYear()).padStart(4, '0');
-  const month = String(dateTime.getMonth() + 1).padStart(2, '0');
-  const day = String(dateTime.getDate()).padStart(2, '0');
-  const hours = String(dateTime.getHours()).padStart(2, '0');
-  const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+    // Get the local date and time components
+    const year = String(dateTime.getFullYear()).padStart(4, '0');
+    const month = String(dateTime.getMonth() + 1).padStart(2, '0');
+    const day = String(dateTime.getDate()).padStart(2, '0');
+    const hours = String(dateTime.getHours()).padStart(2, '0');
+    const minutes = String(dateTime.getMinutes()).padStart(2, '0');
 
-  if (dateTimeType === 'DATE') {
-    return `${year}-${month}-${day}`;
-  } else if (dateTimeType === 'TIME') {
-    return `${hours}:${minutes}`;
+    if (dateTimeType === 'DATE') {
+      formattedDateTimeString = `${year}-${month}-${day}`;
+    } else if (dateTimeType === 'TIME') {
+      formattedDateTimeString = `${hours}:${minutes}`;
+    } else {
+      formattedDateTimeString = `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
   }
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
+  return formattedDateTimeString;
 };
 
 const convertToUTCDateTimeString = (dateTimeType: string, dateTimeString: string): string => {

@@ -65,6 +65,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-tables</artifactId>
+			<version>2024.9.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
 			<version>2024.9.8</version>
 			<scope>test</scope>

@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLTable } from '@eclipse-sirius/sirius-components-tables';
+
 export interface GQLFormEventSubscription {
   formEvent: GQLFormEventPayload;
 }
@@ -391,4 +393,8 @@ export interface GQLDateTimeStyle {
   backgroundColor: string | null;
   italic: boolean | null;
   bold: boolean | null;
+}
+
+export interface GQLTableWidget extends GQLWidget {
+  table: GQLTable;
 }
