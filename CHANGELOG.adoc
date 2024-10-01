@@ -32,8 +32,9 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [form] Add layout capabilities for form widgets
 - https://github.com/eclipse-sirius/sirius-web/issues/4177[#4177] [table] Add table representation support
 - https://github.com/eclipse-sirius/sirius-web/issues/3990[#3990] [diagram] The palette can now be dragged
-- https://github.com/eclipse-sirius/sirius-web/issues/3981[#3981] [diagram] The palette palette sections are showed as list
+- https://github.com/eclipse-sirius/sirius-web/issues/3981[#3981] [diagram] The palette sections are showed as list
 - https://github.com/eclipse-sirius/sirius-web/issues/4240[#4240] [diagram] Add a Search tool field in the Palette
+- https://github.com/eclipse-sirius/sirius-web/issues/4241[#4241] [diagram] Add the last used tool entry in the palette
 
 === Improvements
 

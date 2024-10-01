@@ -10,24 +10,30 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
-import { GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
+import { GQLPaletteEntry, GQLToolSection } from '../Palette.types';
+import { ToolListItem } from '../tool-list-item/ToolListItem';
+import { useDiagramPalette } from '../useDiagramPalette';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
 import { PaletteToolSectionList } from './PaletteToolSectionList';
 
 const useStyle = makeStyles()((theme) => ({
+  container: {
+    display: 'grid',
+    gridTemplateRows: `repeat(2,min-content) 1fr`,
+    overflowY: 'auto',
+    overflowX: 'hidden',
+  },
   toolListContainer: {
     display: 'grid',
     overflowY: 'auto',
@@ -57,52 +63,32 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) => {
-  const defaultValue: PaletteToolListStateValue = {
-    toolSection: null,
-  };
+const defaultStateValue: PaletteToolListStateValue = {
+  toolSection: null,
+};
 
-  const [state, setState] = useState<PaletteToolListStateValue>(defaultValue);
+export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) => {
+  const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
+
+  const { getLastToolInvoked } = useDiagramPalette();
+  const lastToolInvoked = getLastToolInvoked(palette.id);
+
+  const { classes } = useStyle();
 
   const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSection: GQLToolSection) => {
     event.stopPropagation();
     setState((prevState) => ({ ...prevState, toolSection }));
   };
 
-  const handleToolClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tool: GQLTool) => {
-    event.stopPropagation();
-    onToolClick(tool);
-  };
-
   const onBackToMainList = () => {
     setState((prevState) => ({ ...prevState, toolSection: null }));
   };
 
-  const { classes } = useStyle();
-
-  const convertPaletteEntry = (paletteEntry: GQLPaletteEntry): JSX.Element | null => {
-    let jsxElement: JSX.Element | null = null;
+  const listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
     if (isSingleClickOnDiagramElementTool(paletteEntry)) {
-      jsxElement = (
-        <Tooltip title={paletteEntry.label} key={'tooltip_' + paletteEntry.id}>
-          <ListItemButton
-            className={classes.listItemButton}
-            onClick={(event) => handleToolClick(event, paletteEntry)}
-            data-testid={`tool-${paletteEntry.label}`}>
-            <ListItemIcon className={classes.listItemIcon}>
-              <IconOverlay
-                iconURL={paletteEntry.iconURL}
-                alt={paletteEntry.label}
-                customIconHeight={16}
-                customIconWidth={16}
-              />
-            </ListItemIcon>
-            <ListItemText primary={paletteEntry.label} className={classes.listItemText} />
-          </ListItemButton>
-        </Tooltip>
-      );
+      return <ToolListItem onToolClick={onToolClick} tool={paletteEntry} key={'toolItem_' + paletteEntry.id} />;
     } else if (isToolSection(paletteEntry)) {
-      jsxElement = (
+      return (
         <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label}>
           <ListItemButton
             className={classes.listItemButton}
@@ -114,42 +100,52 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
         </Tooltip>
       );
     } else if (isPaletteDivider(paletteEntry)) {
-      jsxElement = <Divider key={'divider_' + paletteEntry.id} />;
+      return <Divider key={'divider_' + paletteEntry.id} />;
     }
-    return jsxElement;
-  };
+    return [];
+  });
+
+  const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
+    <>
+      <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} />
+      <Divider />
+    </>
+  ) : null;
 
   const containerRef = React.useRef<HTMLElement>(null);
   return (
-    <Box className={classes.toolListContainer} ref={containerRef}>
-      {palette.paletteEntries.filter(isToolSection).map((entry) => (
+    <Box className={classes.container}>
+      {lastUsedTool}
+      <Box className={classes.toolListContainer} ref={containerRef}>
+        {palette.paletteEntries.filter(isToolSection).map((entry) => (
+          <Slide
+            key={'slide_' + entry.id}
+            direction={'left'}
+            in={state.toolSection?.id === entry.id}
+            container={containerRef.current}
+            unmountOnExit
+            mountOnEnter>
+            <div className={classes.toolList}>
+              <PaletteToolSectionList
+                toolSection={entry}
+                onToolClick={onToolClick}
+                onBackToMainList={onBackToMainList}
+              />
+            </div>
+          </Slide>
+        ))}
         <Slide
-          key={'slide_' + entry.id}
-          direction={'left'}
-          in={state.toolSection?.id === entry.id}
+          direction={'right'}
+          in={state.toolSection === null}
           container={containerRef.current}
+          appear={false}
           unmountOnExit
           mountOnEnter>
-          <div className={classes.toolList}>
-            <PaletteToolSectionList
-              toolSection={entry as GQLToolSection}
-              onToolClick={onToolClick}
-              onBackToMainList={onBackToMainList}
-            />
-          </div>
+          <List className={classes.toolList} component="nav">
+            {listItemsRendered}
+          </List>
         </Slide>
-      ))}
-      <Slide
-        direction={'right'}
-        in={state.toolSection === null}
-        container={containerRef.current}
-        appear={false}
-        unmountOnExit
-        mountOnEnter>
-        <List className={classes.toolList} component="nav">
-          {palette?.paletteEntries.map(convertPaletteEntry)}
-        </List>
-      </Slide>
+      </Box>
     </Box>
   );
 };
