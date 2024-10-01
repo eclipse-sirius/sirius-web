@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -108,9 +108,8 @@ public class EditingContextCrossReferenceAdapter extends ECrossReferenceAdapter 
         Collection<Setting> nonContainmentReferences = new ArrayList<>();
         for (EStructuralFeature.Setting setting : inverseReferences) {
             EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();
-            if (eStructuralFeature instanceof EReference) {
-                EReference eReference = (EReference) eStructuralFeature;
-                if (!eReference.isContainment() && !eReference.isDerived()) {
+            if (eStructuralFeature instanceof EReference eReference) {
+                if (!eReference.isContainment() && !eReference.isDerived() && !eReference.isContainer()) {
                     nonContainmentReferences.add(setting);
                 }
             }
