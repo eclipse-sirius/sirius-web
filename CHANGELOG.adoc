@@ -9,6 +9,7 @@
 - Add undo/redo support
 - Add support for drag and drop in the explorer
 - Add custom bending points to edges
+- Add support for draggable labels
 
 
 === Architectural decision records
