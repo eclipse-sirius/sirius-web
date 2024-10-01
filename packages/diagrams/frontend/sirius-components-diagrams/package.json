@@ -40,8 +40,6 @@
     "pathfinding": "0.4.18",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "@types/react": "18.3.3",
-    "@types/react-dom": "18.3.0",
     "reactflow": "11.10.1",
     "tss-react": "4.9.7"
   },
