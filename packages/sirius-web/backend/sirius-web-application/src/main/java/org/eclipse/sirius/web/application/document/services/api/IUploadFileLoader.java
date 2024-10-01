@@ -12,12 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.document.services.api;
 
-import java.util.Optional;
-
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
+import org.eclipse.sirius.web.domain.services.IResult;
 
 /**
  * Use to load a file receive in an upload document event.
@@ -26,6 +25,6 @@ import org.eclipse.sirius.components.graphql.api.UploadFile;
  */
 public interface IUploadFileLoader {
 
-    Optional<Resource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file);
+    IResult<Resource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file);
 
 }

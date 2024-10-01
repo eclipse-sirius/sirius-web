@@ -29,6 +29,10 @@ import org.eclipse.sirius.web.application.document.services.api.IProxyValidator;
 import org.eclipse.sirius.web.application.document.services.api.IUploadFileLoader;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
+import org.eclipse.sirius.web.domain.services.Failure;
+import org.eclipse.sirius.web.domain.services.IResult;
+import org.eclipse.sirius.web.domain.services.Success;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,6 +47,8 @@ public class UploadFileLoader implements IUploadFileLoader {
 
     private final Logger logger = LoggerFactory.getLogger(UploadFileLoader.class);
 
+    private final IMessageService messageService;
+
     private final IProxyValidator proxyValidator;
 
     private final IResourceLoader resourceLoader;
@@ -51,7 +57,8 @@ public class UploadFileLoader implements IUploadFileLoader {
 
     private final List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates;
 
-    public UploadFileLoader(IProxyValidator proxyValidator, IResourceLoader resourceLoader, IDocumentSanitizedJsonContentProvider documentSanitizedJsonContentProvider, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates) {
+    public UploadFileLoader(IMessageService messageService, IProxyValidator proxyValidator, IResourceLoader resourceLoader, IDocumentSanitizedJsonContentProvider documentSanitizedJsonContentProvider, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates) {
+        this.messageService = Objects.requireNonNull(messageService);
         this.proxyValidator = Objects.requireNonNull(proxyValidator);
         this.resourceLoader = Objects.requireNonNull(resourceLoader);
         this.documentSanitizedJsonContentProvider = Objects.requireNonNull(documentSanitizedJsonContentProvider);
@@ -59,7 +66,7 @@ public class UploadFileLoader implements IUploadFileLoader {
     }
 
     @Override
-    public Optional<Resource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file) {
+    public IResult<Resource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file) {
         var fileName = file.getName();
         var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(emfEditingContext));
         var optionalContent = this.getContent(resourceSet, file, applyMigrationParticipants);
@@ -73,11 +80,14 @@ public class UploadFileLoader implements IUploadFileLoader {
             if (hasProxies) {
                 this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", file.getName());
             } else {
-                return this.resourceLoader.toResource(emfEditingContext.getDomain().getResourceSet(), UUID.randomUUID()
+                var optionalRessource = this.resourceLoader.toResource(emfEditingContext.getDomain().getResourceSet(), UUID.randomUUID()
                         .toString(), fileName, content, applyMigrationParticipants);
+                if (optionalRessource.isPresent()) {
+                    return new Success<>(optionalRessource.get());
+                }
             }
         }
-        return Optional.empty();
+        return new Failure<>(this.messageService.unexpectedError());
     }
 
     private Optional<String> getContent(ResourceSet resourceSet, UploadFile file, boolean applyMigrationParticipants) {

@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.document.services;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,6 +38,8 @@ import org.eclipse.sirius.web.application.document.dto.UploadDocumentSuccessPayl
 import org.eclipse.sirius.web.application.document.services.api.IUploadDocumentReportProvider;
 import org.eclipse.sirius.web.application.document.services.api.IUploadFileLoader;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
+import org.eclipse.sirius.web.domain.services.Failure;
+import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +65,9 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
     private final Counter counter;
 
-    public UploadDocumentEventHandler(IEditingContextSearchService editingContextSearchService, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, IMessageService messageService, IUploadFileLoader uploadDocumentLoader, MeterRegistry meterRegistry) {
+
+    public UploadDocumentEventHandler(IEditingContextSearchService editingContextSearchService, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, IMessageService messageService,
+            IUploadFileLoader uploadDocumentLoader, MeterRegistry meterRegistry) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.uploadDocumentReportProviders = Objects.requireNonNull(uploadDocumentReportProviders);
         this.messageService = Objects.requireNonNull(messageService);
@@ -90,26 +93,29 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         if (input instanceof UploadDocumentInput uploadDocumentInput && editingContext instanceof IEMFEditingContext emfEditingContext && optionalResourceSet.isPresent()) {
             var resourceSet = optionalResourceSet.get();
 
-            var newResource = this.uploadDocumentLoader.load(resourceSet, emfEditingContext, uploadDocumentInput.file());
+            var result = this.uploadDocumentLoader.load(resourceSet, emfEditingContext, uploadDocumentInput.file());
+            if (result instanceof Success<Resource> success) {
+                var newResource = success.data();
 
-            var optionalId = newResource.map(Resource::getURI)
-                    .map(uri -> uri.path().substring(1))
-                    .flatMap(new UUIDParser()::parse);
+                var optionalId = new UUIDParser().parse(newResource.getURI().path().substring(1));
 
-            var optionalName = newResource.map(Resource::eAdapters).stream()
-                    .flatMap(Collection::stream)
-                    .filter(ResourceMetadataAdapter.class::isInstance)
-                    .map(ResourceMetadataAdapter.class::cast)
-                    .findFirst()
-                    .map(ResourceMetadataAdapter::getName);
-            if (newResource.isPresent() && optionalId.isPresent() && optionalName.isPresent()) {
-                var uploadedResource = newResource.get();
-                var id = optionalId.get();
-                var name = optionalName.get();
+                var optionalName = newResource.eAdapters().stream()
+                        .filter(ResourceMetadataAdapter.class::isInstance)
+                        .map(ResourceMetadataAdapter.class::cast)
+                        .findFirst()
+                        .map(ResourceMetadataAdapter::getName);
 
-                String report = this.getReport(uploadedResource);
-                payload = new UploadDocumentSuccessPayload(input.id(), new DocumentDTO(id, name, ExplorerDescriptionProvider.DOCUMENT_KIND), report);
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+                if (optionalId.isPresent() && optionalName.isPresent()) {
+                    var id = optionalId.get();
+                    var name = optionalName.get();
+
+                    String report = this.getReport(newResource);
+                    payload = new UploadDocumentSuccessPayload(input.id(), new DocumentDTO(id, name, ExplorerDescriptionProvider.DOCUMENT_KIND), report);
+                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+                }
+
+            } else if (result instanceof Failure<Resource> failure) {
+                payload = new ErrorPayload(input.id(), failure.message());
             }
         }
 

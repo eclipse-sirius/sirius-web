@@ -32,6 +32,9 @@ Both `IInput` and `IDomainEvent` implement `ICause` and will thus be used to ind
 Previously, the value false was equivalent to NEVER, and true to IF-CHILDREN.
 The new option ALWAYS allows the separator to be displayed in every case.
 - https://github.com/eclipse-sirius/sirius-web/issues/3678[#3678] [core] Remove `IRepresentationMetadataSearchService#findByRepresentation`, use `IRepresentationMetadataSearchService#findByRepresentationId` instead.
+- https://github.com/eclipse-sirius/sirius-web/issues/4050[#4050] [sirius-web] `IUploadFileLoader` must now return an `IResult`.
+This allows an error to be displayed when there is a problem during uploading
+
 
 === Dependency update
 
@@ -49,6 +52,7 @@ The new option ALWAYS allows the separator to be displayed in every case.
 - https://github.com/eclipse-sirius/sirius-web/issues/4032[#4032] [diagram] Fix an issue where separator list compartment is missing
 - https://github.com/eclipse-sirius/sirius-web/issues/4028[#4028] [trees] Fixed an issue where special characters (e.g. #) could not be used in the treeId due to URL parsing limitations.
 - https://github.com/eclipse-sirius/sirius-web/issues/3958[#3958] [tree] Partial fix of a StackOverflow when expanding an item contained in rendering loop cycle
+- https://github.com/eclipse-sirius/sirius-web/issues/4050[#4050] [sirius-web] Display error message on failed upload document action
 
 === New Features
 
