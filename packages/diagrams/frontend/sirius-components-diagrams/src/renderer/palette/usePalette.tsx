@@ -21,6 +21,7 @@ import { useDialog } from '../../dialog/useDialog';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { GQLPalette, GQLSingleClickOnDiagramElementTool, GQLTool } from './Palette.types';
 
+import { useDiagramPalette } from './useDiagramPalette';
 import {
   GQLCollapsingState,
   GQLDeleteFromDiagramData,
@@ -300,6 +301,8 @@ export const usePalette = ({
     showDialog(tool.dialogDescriptionId, [{ name: 'targetObjectId', value: targetObjectId }], onConfirm, () => {});
   };
 
+  const { setLastToolInvoked } = useDiagramPalette();
+
   const handleToolClick = (tool: GQLTool) => {
     switch (tool.id) {
       case 'edit':
@@ -328,6 +331,9 @@ export const usePalette = ({
           }
         }
         break;
+    }
+    if (palette) {
+      setLastToolInvoked(palette.id, tool);
     }
   };
   return { handleToolClick, palette };

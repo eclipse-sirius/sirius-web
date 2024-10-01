@@ -10,15 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
-import { GQLTool } from '../Palette.types';
+import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { PaletteToolSectionListProps } from './PaletteToolSectionList.types';
 
 const useStyle = makeStyles()((theme) => ({
@@ -59,11 +57,6 @@ export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainL
     onBackToMainList();
   };
 
-  const handleOnToolClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tool: GQLTool): void => {
-    event.stopPropagation();
-    onToolClick(tool);
-  };
-
   return (
     <List className={classes.toolList} component="nav">
       <Tooltip title={toolSection.label} key={'tooltip_' + toolSection.id}>
@@ -75,18 +68,8 @@ export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainL
           <ListItemText className={classes.sectionTitleListItemText} primary={toolSection.label} />
         </ListItemButton>
       </Tooltip>
-      {toolSection?.tools.map((tool) => (
-        <Tooltip title={tool.label} key={'tooltip_' + tool.id}>
-          <ListItemButton
-            className={classes.toolListItemButton}
-            onClick={(event) => handleOnToolClick(event, tool)}
-            data-testid={`tool-${tool.label}`}>
-            <ListItemIcon className={classes.toolListItemIcon}>
-              <IconOverlay iconURL={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
-            </ListItemIcon>
-            <ListItemText className={classes.listItemText} primary={tool.label} />
-          </ListItemButton>
-        </Tooltip>
+      {toolSection.tools.map((tool) => (
+        <ToolListItem onToolClick={onToolClick} tool={tool} key={tool.id} />
       ))}
     </List>
   );

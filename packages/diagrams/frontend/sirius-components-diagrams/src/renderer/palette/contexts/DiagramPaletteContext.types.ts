@@ -19,8 +19,8 @@ export interface DiagramPaletteContextValue {
   isOpened: boolean;
   showDiagramPalette: (x: number, y: number) => void;
   hideDiagramPalette: () => void;
-  getLastToolInvoked: (toolSectionId: string) => GQLTool | null;
-  setLastToolInvoked: (toolSectionId: string, tool: GQLTool) => void;
+  getLastToolInvoked: (paletteId: string) => GQLTool | null;
+  setLastToolInvoked: (paletteId: string, tool: GQLTool) => void;
 }
 
 export interface DiagramPaletteContextProviderProps {
@@ -31,10 +31,10 @@ export interface DiagramPaletteContextProviderState {
   x: number | null;
   y: number | null;
   isOpened: boolean;
-  lastToolsInvoked: ToolSectionWithLastTool[];
+  lastToolsInvoked: PaletteWithLastTool[];
 }
 
-export interface ToolSectionWithLastTool {
-  toolSectionId: string;
+export interface PaletteWithLastTool {
+  paletteId: string;
   lastTool: GQLTool;
 }
