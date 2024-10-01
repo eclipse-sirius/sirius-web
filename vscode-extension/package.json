@@ -140,8 +140,6 @@
     "@mui/material": "5.15.19",
     "@ObeoNetwork/gantt-task-react": "0.6.0",
     "@ObeoNetwork/react-trello": "2.4.11",
-    "@types/react": "18.3.3",
-    "@types/react-router-dom": "5.3.3",
     "@xstate/react": "3.0.0",
     "d3": "7.0.0",
     "elkjs": "0.8.2",
