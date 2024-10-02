@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2024 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,7 +71,7 @@ public class NumberIfDescriptionProvider {
     private Function<VariableManager, Boolean> getPredicate() {
         return variableManager -> {
             var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
-            return optionalEAttribute.filter(eAttribute -> eAttribute.getEType().equals(this.eDataType)).isPresent();
+            return optionalEAttribute.filter(eAttribute -> !eAttribute.isMany() && eAttribute.getEType().equals(this.eDataType)).isPresent();
         };
     }
 
@@ -85,7 +85,16 @@ public class NumberIfDescriptionProvider {
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
+                .isReadOnlyProvider(this.getIsReadOnlyProvider())
                 .build();
+    }
+
+    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
+        return variableManager -> {
+            return variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
+                    .map(attr -> !attr.isChangeable())
+                    .orElse(false);
+        };
     }
 
     private Function<VariableManager, String> getIdProvider() {
@@ -115,7 +124,9 @@ public class NumberIfDescriptionProvider {
                 EAttribute eAttribute = optionalEAttribute.get();
 
                 Object value = eObject.eGet(eAttribute);
-                return EcoreUtil.convertToString(this.eDataType, value);
+                if (value != null) {
+                    return EcoreUtil.convertToString(this.eDataType, value);
+                }
             }
 
             return "";
@@ -132,12 +143,17 @@ public class NumberIfDescriptionProvider {
                 EObject eObject = optionalEObject.get();
                 EAttribute eAttribute = optionalEAttribute.get();
 
-                try {
-                    Object value = EcoreUtil.createFromString(this.eDataType, newValue);
-                    eObject.eSet(eAttribute, value);
+                if (newValue == null || newValue.isBlank()) {
+                    eObject.eUnset(eAttribute);
                     result = new Success();
-                } catch (NumberFormatException nfe) {
-                    result = new Failure(this.emfMessageService.invalidNumber(newValue));
+                } else {
+                    try {
+                        Object value = EcoreUtil.createFromString(this.eDataType, newValue);
+                        eObject.eSet(eAttribute, value);
+                        result = new Success();
+                    } catch (NumberFormatException nfe) {
+                        result = new Failure(this.emfMessageService.invalidNumber(newValue));
+                    }
                 }
             }
             return result;

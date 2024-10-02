@@ -164,8 +164,7 @@ INSERT INTO document (
                "data":{
                  "name":"Improve some features of the diagram",
                  "priority":"P1",
-                 "cost":1,
-                 "done":true
+                 "cost":1
                }
              },
              {
@@ -175,7 +174,7 @@ INSERT INTO document (
                  "name":"Improve the code of the new architecture",
                  "priority":"P1",
                  "cost":5,
-                 "done":true
+                 "isDone":true
                }
              },
              {
