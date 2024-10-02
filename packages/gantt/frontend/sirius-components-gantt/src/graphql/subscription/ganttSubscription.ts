@@ -68,6 +68,7 @@ export const ganttEventSubscription = gql`
       description
       startTime
       endTime
+      temporalType
       progress
       computeStartEndDynamically
       collapsed

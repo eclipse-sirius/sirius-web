@@ -13,6 +13,9 @@
 package org.eclipse.sirius.components.collaborative.gantt.service;
 
 import java.text.MessageFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,6 +41,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.Task;
+import org.eclipse.sirius.components.gantt.TemporalType;
 import org.eclipse.sirius.components.gantt.description.GanttDescription;
 import org.eclipse.sirius.components.gantt.renderer.events.ChangeGanttColumnEvent;
 import org.eclipse.sirius.components.gantt.renderer.events.ChangeGanttTaskCollapseStateEvent;
@@ -129,8 +133,8 @@ public class GanttTaskService implements IGanttTaskService {
                 variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 variableManager.put(GanttDescription.NEW_NAME, editGanttTaskInput.newDetail().name());
                 variableManager.put(GanttDescription.NEW_DESCRIPTION, editGanttTaskInput.newDetail().description());
-                variableManager.put(GanttDescription.NEW_START_TIME, editGanttTaskInput.newDetail().startTime());
-                variableManager.put(GanttDescription.NEW_END_TIME, editGanttTaskInput.newDetail().endTime());
+                variableManager.put(GanttDescription.NEW_START_TIME, getTemporal(editGanttTaskInput.newDetail().startTime(), editGanttTaskInput.newDetail().temporalType()));
+                variableManager.put(GanttDescription.NEW_END_TIME, getTemporal(editGanttTaskInput.newDetail().endTime(), editGanttTaskInput.newDetail().temporalType()));
                 variableManager.put(GanttDescription.NEW_PROGRESS, editGanttTaskInput.newDetail().progress());
                 ganttDescriptionOpt.get().editTaskProvider().accept(variableManager);
 
@@ -139,6 +143,19 @@ public class GanttTaskService implements IGanttTaskService {
         }
 
         return payload;
+    }
+
+    private Temporal getTemporal(String temporalString, TemporalType temporalType) {
+        Temporal temporal = null;
+        if (temporalString != null) {
+            if (TemporalType.DATE.equals(temporalType)) {
+                temporal = LocalDate.parse(temporalString);
+            } else if (TemporalType.DATE_TIME.equals(temporalType)) {
+                temporal = Instant.parse(temporalString);
+            }
+        }
+
+        return temporal;
     }
 
     private IPayload getPayload(UUID payloadId) {
