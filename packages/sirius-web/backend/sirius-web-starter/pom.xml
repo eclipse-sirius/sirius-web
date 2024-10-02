@@ -101,6 +101,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-tables-graphql</artifactId>
+			<version>2024.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-trees-graphql</artifactId>
 			<version>2024.9.3</version>
 		</dependency>

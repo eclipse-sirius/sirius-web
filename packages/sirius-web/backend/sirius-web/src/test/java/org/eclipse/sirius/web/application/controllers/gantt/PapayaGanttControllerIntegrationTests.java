@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
