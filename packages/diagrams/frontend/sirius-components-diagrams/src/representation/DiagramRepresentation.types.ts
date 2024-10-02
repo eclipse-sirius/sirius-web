@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,16 +12,10 @@
  *******************************************************************************/
 
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
-import {
-  GQLDiagramEventPayload,
-  GQLDiagramRefreshedEventPayload,
-} from '../graphql/subscription/diagramEventSubscription.types';
+import { GQLDiagramEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 
 export interface DiagramRepresentationState {
   id: string;
-  diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload | null;
-  payload: GQLDiagramEventPayload | null;
-  complete: boolean;
   message: string | null;
 }
 
