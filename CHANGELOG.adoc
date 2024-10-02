@@ -91,6 +91,7 @@ page[size]=3` will ask for the 3 projects following the one identified by the UR
 Note that you can retrieve the URL of a page in the response header of `GET /api/rest/projects`.
 Note that you may need to encode special characters like `[`(by `%5B`) and `]` (by `%5D`) in your requests.
 - https://github.com/eclipse-sirius/sirius-web/issues/4381[#4381] [trees] Set activeFilterIds variable in DefaultExpandAllTreePathHandler.
+- https://github.com/eclipse-sirius/sirius-web/issues/3533[#3553] [diagram] Add a dedicated component to handle diagram subscription
 
 
 == v2025.1.0
