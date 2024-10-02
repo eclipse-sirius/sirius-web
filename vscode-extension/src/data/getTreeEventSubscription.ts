@@ -14,8 +14,8 @@
 export const getTreeEventSubscription = (depth: number) => {
   const treeChildren = recursiveGetChildren(depth);
   const subscription = `
-subscription treeEvent($input: TreeEventInput!) {
-  treeEvent(input: $input) {
+subscription explorerEvent($input: ExplorerEventInput!) {
+  explorerEvent(input: $input) {
     __typename
     ... on TreeRefreshedEventPayload {
       id
