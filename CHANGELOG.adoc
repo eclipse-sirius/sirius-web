@@ -36,6 +36,7 @@ This may have some consequences for downstream applications which are embedding 
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3533[#3553] [diagram] Add a dedicated component to handle diagram subscription
 
 
 == v2025.1.0
