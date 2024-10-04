@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.application.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
@@ -61,11 +63,10 @@ public class ProjectNatureTests extends AbstractIntegrationTests {
         var projectId = optionalProject.map(Project::getId).orElseThrow(IllegalStateException::new);
         this.projectUpdateService.addNature(null, projectId, "new nature");
 
-        optionalProject = this.projectSearchService.findById(TestIdentifiers.SYSML_SAMPLE_PROJECT);
-        assertThat(optionalProject)
-                .isPresent()
-                .get()
-                .satisfies(project -> assertThat(project.getNatures()).hasSize(2));
+        var projects = this.projectSearchService.findAllByIds(List.of(TestIdentifiers.SYSML_SAMPLE_PROJECT));
+        assertThat(projects)
+                .isNotEmpty()
+                .anySatisfy(project -> assertThat(project.getNatures()).hasSize(2));
     }
 
     @Test

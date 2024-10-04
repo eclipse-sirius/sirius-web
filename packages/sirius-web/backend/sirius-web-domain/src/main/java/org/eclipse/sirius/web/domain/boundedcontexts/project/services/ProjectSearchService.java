@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -50,5 +51,10 @@ public class ProjectSearchService implements IProjectSearchService {
     @Override
     public Page<Project> findAll(Pageable pageable) {
         return this.projectRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Project> findAllByIds(List<UUID> projectIds) {
+        return this.projectRepository.findAllById(projectIds);
     }
 }

@@ -27,12 +27,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class PapayaProjectTemplateProvider implements IProjectTemplateProvider {
 
-    public static final String SIRIUS_WEB_PROJECT_TEMPLATE_ID = "sirius-web";
+    public static final String EMPTY_PROJECT_TEMPLATE_ID = "papaya-empty";
+
+    public static final String SIRIUS_WEB_PROJECT_TEMPLATE_ID = "papaya-sirius-web";
+
+    public static final String BENCHMARK_PROJECT_TEMPLATE_ID = "papaya-benchmark";
 
     public static final String PAPAYA_NATURE = "siriusComponents://nature?kind=papaya";
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        return List.of(new ProjectTemplate(SIRIUS_WEB_PROJECT_TEMPLATE_ID, "Sirius Web", "/project-templates/SiriusWeb-Template.png", List.of(new ProjectTemplateNature(PAPAYA_NATURE))));
+        return List.of(
+                new ProjectTemplate(EMPTY_PROJECT_TEMPLATE_ID, "Papaya - Blank", "/project-templates/Retro-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE))),
+                new ProjectTemplate(SIRIUS_WEB_PROJECT_TEMPLATE_ID, "Papaya - Example", "/project-templates/Smart-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE))),
+                new ProjectTemplate(BENCHMARK_PROJECT_TEMPLATE_ID, "Papaya - Performance", "/project-templates/Cosmic-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE)))
+        );
     }
 }

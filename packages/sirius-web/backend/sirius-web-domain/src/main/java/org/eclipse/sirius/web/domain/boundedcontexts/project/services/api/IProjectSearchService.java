@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,4 +32,6 @@ public interface IProjectSearchService {
     Optional<Project> findById(UUID projectId);
 
     Page<Project> findAll(Pageable pageable);
+
+    List<Project> findAllByIds(List<UUID> projectIds);
 }

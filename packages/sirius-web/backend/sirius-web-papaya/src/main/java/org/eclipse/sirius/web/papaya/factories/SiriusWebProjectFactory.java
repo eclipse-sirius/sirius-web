@@ -378,11 +378,12 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         var siriusWebApplication = new ComponentInitializer().initialize("sirius-web-application", "org.eclipse.sirius.web.application", packageName -> packageName.startsWith("org.eclipse.sirius.web.application"));
         var siriusWebInfrastructure = new ComponentInitializer().initialize("sirius-web-infrastructure", "org.eclipse.sirius.web.infrastructure", packageName -> packageName.startsWith("org.eclipse.sirius.web.infrastructure"));
         var siriusWebStarter = new ComponentInitializer().initialize("sirius-web-starter", "org.eclipse.sirius.web.starter", packageName -> packageName.startsWith("org.eclipse.sirius.web.starter"));
+        var siriusWebPapaya = new ComponentInitializer().initialize("sirius-web-papaya", "org.eclipse.sirius.web.papaya", packageName -> packageName.startsWith("org.eclipse.sirius.web.papaya"));
         var siriusWeb = new ComponentInitializer().initialize("sirius-web", "org.eclipse.sirius.web", packageName -> packageName.equals("org.eclipse.sirius.web"));
 
         var siriusWebBackend = PapayaFactory.eINSTANCE.createProject();
         siriusWebBackend.setName("backend");
-        siriusWebBackend.getComponents().addAll(List.of(siriusWebDomain, siriusWebApplication, siriusWebInfrastructure, siriusWebStarter, siriusWeb));
+        siriusWebBackend.getComponents().addAll(List.of(siriusWebDomain, siriusWebApplication, siriusWebInfrastructure, siriusWebStarter, siriusWebPapaya, siriusWeb));
 
         var resource = this.createResource(editingContext, "Sirius Web");
         resource.getContents().add(siriusWebBackend);
@@ -453,6 +454,15 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         var siriusComponentsViewDiagram = new ComponentInitializer().initialize("sirius-components-view-diagram", "org.eclipse.sirius.components.view.diagram", siriusComponentsViewDiagramPackages::contains);
         var siriusComponentsViewDiagramEdit = new ComponentInitializer().initialize("sirius-components-view-diagram-edit", "org.eclipse.sirius.components.view.diagram.provider", packageName -> packageName.startsWith("org.eclipse.sirius.components.view.diagram.provider"));
 
+        var siriusComponentsWidgetReferenceViewPackages = List.of(
+                "org.eclipse.sirius.components.vuew.widget.reference",
+                "org.eclipse.sirius.components.vuew.widget.reference.adapters",
+                "org.eclipse.sirius.components.vuew.widget.reference.impl",
+                "org.eclipse.sirius.components.vuew.widget.reference.util"
+        );
+        var siriusComponentsWidgetReferenceView = new ComponentInitializer().initialize("sirius-components-widget-reference-view", "org.eclipse.sirius.components.view.widget.reference", siriusComponentsWidgetReferenceViewPackages::contains);
+        var siriusComponentsWidgetReferenceViewEdit = new ComponentInitializer().initialize("sirius-components-widget-reference-view-edit", "org.eclipse.sirius.components.view.widget.reference.provider", packageName -> packageName.startsWith("org.eclipse.sirius.components.view.widget.reference.provider"));
+
         var siriusComponentsViewFormPackages = List.of(
                 "org.eclipse.sirius.components.view.form",
                 "org.eclipse.sirius.components.view.form.adapters",
@@ -498,6 +508,8 @@ public class SiriusWebProjectFactory implements IObjectFactory {
                 siriusComponentsViewDiagramEdit,
                 siriusComponentsViewForm,
                 siriusComponentsViewFormEdit,
+                siriusComponentsWidgetReferenceView,
+                siriusComponentsWidgetReferenceViewEdit,
                 siriusComponentsViewGantt,
                 siriusComponentsViewGanttEdit,
                 siriusComponentsViewEMF
@@ -925,8 +937,10 @@ public class SiriusWebProjectFactory implements IObjectFactory {
                 siriusComponentsValidationGraphQL
         ));
 
+        var siriusWebPapaya = eObjectIndexer.getComponent("sirius-web-papaya");
+
         var siriusWeb = eObjectIndexer.getComponent("sirius-web");
-        siriusWeb.getDependencies().addAll(List.of(siriusWebStarter));
+        siriusWeb.getDependencies().addAll(List.of(siriusWebStarter, siriusWebPapaya));
     }
 
     private void linkTrees(IEObjectIndexer eObjectIndexer) {
@@ -1001,6 +1015,15 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         siriusComponentsViewFormEdit.getDependencies().addAll(List.of(
                 siriusComponentsViewEdit,
                 siriusComponentsViewForm
+        ));
+
+        var siriusComponentsWidgetReferenceView = eObjectIndexer.getComponent("sirius-components-widget-reference-view");
+        siriusComponentsWidgetReferenceView.getDependencies().add(siriusComponentsViewForm);
+        var siriusComponentsWidgetReferenceViewEdit = eObjectIndexer.getComponent("sirius-components-widget-reference-view-edit");
+        siriusComponentsWidgetReferenceViewEdit.getDependencies().addAll(List.of(
+                siriusComponentsViewForm,
+                siriusComponentsViewFormEdit,
+                siriusComponentsWidgetReferenceView
         ));
 
         var siriusComponentsViewGantt = eObjectIndexer.getComponent("sirius-components-view-gantt");
