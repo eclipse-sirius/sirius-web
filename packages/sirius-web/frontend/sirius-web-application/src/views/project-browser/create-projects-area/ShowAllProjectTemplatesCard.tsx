@@ -13,53 +13,25 @@
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { CreateProjectAreaCard } from './CreateProjectAreaCard';
 import { ProjectTemplatesModal } from './ProjectTemplatesModal';
 import { ShowAllProjectTemplatesCardState } from './ShowAllProjectTemplatesCard.types';
 
 const useShowAllProjectTemplatesCardStyles = makeStyles()((theme) => ({
-  projectCard: {
-    width: theme.spacing(30),
-    height: theme.spacing(18),
-    display: 'grid',
-    gridTemplateRows: '1fr min-content',
+  button: {
+    padding: '0px',
+    margin: '0px',
   },
-  projectCardActions: {
-    minWidth: 0,
-  },
-  projectCardLabel: {
-    textTransform: 'none',
-    fontWeight: 400,
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
+  projectCardContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.palette.divider,
   },
   projectCardIcon: {
     fontSize: theme.spacing(8),
-  },
-  blankProjectCard: {
-    backgroundColor: theme.palette.primary.main,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  uploadProjectCard: {
-    backgroundColor: theme.palette.divider,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  showAllTemplatesCardContent: {
-    backgroundColor: theme.palette.divider,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 }));
 
@@ -73,19 +45,12 @@ export const ShowAllProjectTemplatesCard = () => {
 
   return (
     <>
-      <Button onClick={showAllTemplatesModal} data-testid="show-all-templates">
-        <Card className={classes.projectCard}>
-          <CardContent className={classes.showAllTemplatesCardContent}>
+      <Button onClick={showAllTemplatesModal} className={classes.button} data-testid="show-all-templates">
+        <CreateProjectAreaCard title="Show all templates" description="Show all templates">
+          <div className={classes.projectCardContent}>
             <MoreHorizIcon className={classes.projectCardIcon} htmlColor="white" />
-          </CardContent>
-          <CardActions className={classes.projectCardActions}>
-            <Tooltip title="Show all templates">
-              <Typography variant="body1" className={classes.projectCardLabel}>
-                Show all templates
-              </Typography>
-            </Tooltip>
-          </CardActions>
-        </Card>
+          </div>
+        </CreateProjectAreaCard>
       </Button>
 
       {state.modalDisplayed === 'SHOW_ALL_TEMPLATES' ? <ProjectTemplatesModal onClose={closeModal} /> : null}

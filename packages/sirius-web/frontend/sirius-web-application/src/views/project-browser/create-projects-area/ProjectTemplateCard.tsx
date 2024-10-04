@@ -12,63 +12,50 @@
  *******************************************************************************/
 
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { useContext } from 'react';
+import { makeStyles } from 'tss-react/mui';
+import { CreateProjectAreaCard } from './CreateProjectAreaCard';
 import { ProjectTemplateCardProps } from './ProjectTemplateCard.types';
 
-const useProjectTemplateStyles = makeStyles()((theme) => ({
-  projectTemplateCard: {
-    width: theme.spacing(30),
-    height: theme.spacing(18),
-    display: 'grid',
-    gridTemplateRows: '1fr min-content',
+const useProjectTemplateStyles = makeStyles()(() => ({
+  button: {
+    padding: '0px',
+    margin: '0px',
   },
-  templateCardContent: {
+  projectCardContent: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 0,
-  },
-  templateCardActions: {
-    minWidth: 0,
-  },
-  projectTemplateLabel: {
-    textTransform: 'none',
-    fontWeight: 400,
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
   },
 }));
 
 export const ProjectTemplateCard = ({ template, running, disabled, onCreateProject }: ProjectTemplateCardProps) => {
   const { classes } = useProjectTemplateStyles();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+
   return (
-    <Button disabled={disabled} onClick={onCreateProject} data-testid={`create-template-${template.label}`}>
-      <Card className={classes.projectTemplateCard}>
-        <CardContent className={classes.templateCardContent}>
-          {running ? (
+    <Button
+      disabled={disabled}
+      onClick={onCreateProject}
+      className={classes.button}
+      data-testid={`create-template-${template.label}`}>
+      <CreateProjectAreaCard title={'+ ' + template.label} description={template.label}>
+        {running ? (
+          <div className={classes.projectCardContent}>
             <CircularProgress />
-          ) : (
-            <img height="80px" alt={`New ${template.label}`} src={httpOrigin + template.imageURL} />
-          )}
-        </CardContent>
-        <CardActions className={classes.templateCardActions}>
-          <Tooltip title={template.label}>
-            <Typography variant="body1" className={classes.projectTemplateLabel}>
-              + {template.label}
-            </Typography>
-          </Tooltip>
-        </CardActions>
-      </Card>
+          </div>
+        ) : (
+          <Box
+            sx={{
+              backgroundImage: `url('${httpOrigin + template.imageURL}')`,
+              backgroundSize: 'cover',
+            }}
+          />
+        )}
+      </CreateProjectAreaCard>
     </Button>
   );
 };
