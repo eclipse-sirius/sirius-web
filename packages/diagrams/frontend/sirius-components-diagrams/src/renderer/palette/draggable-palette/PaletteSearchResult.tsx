@@ -22,25 +22,24 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useEffect, useMemo, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
-import { GQLPaletteEntry, GQLSingleClickOnDiagramElementTool, GQLTool } from '../Palette.types';
-import { usePaletteEntryTooltip } from '../usePaletteEntryTooltip';
+import { isToolSection } from '../Palette';
+import { isTool } from './DraggablePalette';
+import { PaletteEntry, Tool } from './DraggablePalette.types';
 import { HighlightedLabelProps, PaletteSearchResultProps } from './PaletteSearchResult.types';
+import { usePaletteEntryTooltip } from './usePaletteEntryTooltip';
 
-const convertToToolList = (entry: GQLPaletteEntry): GQLSingleClickOnDiagramElementTool[] => {
-  if (isSingleClickOnDiagramElementTool(entry)) {
+const convertToToolList = (entry: PaletteEntry): Tool[] => {
+  if (isTool(entry)) {
     return [entry];
   } else if (isToolSection(entry)) {
-    return entry.tools.filter(isSingleClickOnDiagramElementTool);
+    return entry.tools.filter(isTool);
   } else {
     return [];
   }
 };
 
-const flatToolsFromPaletteEntries = (paletteEntries: GQLPaletteEntry[]): GQLSingleClickOnDiagramElementTool[] => {
-  return paletteEntries
-    .filter((entry) => isToolSection(entry) || isSingleClickOnDiagramElementTool(entry))
-    .flatMap(convertToToolList);
+const flatToolsFromPaletteEntries = (paletteEntries: PaletteEntry[]): Tool[] => {
+  return paletteEntries.filter((entry) => isToolSection(entry) || isTool(entry)).flatMap(convertToToolList);
 };
 
 const useLabelStyles = makeStyles()((theme: Theme) => ({
@@ -85,7 +84,7 @@ const HighlightedLabel = ({ label, textToHighlight }: HighlightedLabelProps) => 
   }
   return <Typography className={classes.itemText}>{itemLabel}</Typography>;
 };
-const filterFromSearchValue = (tool: GQLTool, searchToolValue: string): boolean => {
+const filterFromSearchValue = (tool: Tool, searchToolValue: string): boolean => {
   return tool.label.toLocaleLowerCase().includes(searchToolValue.toLocaleLowerCase());
 };
 const useStyle = makeStyles()((theme) => ({
@@ -117,21 +116,16 @@ const useStyle = makeStyles()((theme) => ({
     marginRight: theme.spacing(2),
   },
 }));
-export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: PaletteSearchResultProps) => {
+export const PaletteSearchResult = ({ paletteEntries, onToolClick, searchToolValue }: PaletteSearchResultProps) => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   const { tooltipEnterDelay, tooltipPlacement } = usePaletteEntryTooltip();
 
   const { classes } = useStyle();
 
-  const toolList: GQLSingleClickOnDiagramElementTool[] = useMemo(
-    () => flatToolsFromPaletteEntries(palette.paletteEntries),
-    [palette]
-  );
+  const toolList: Tool[] = useMemo(() => flatToolsFromPaletteEntries(paletteEntries), [paletteEntries]);
 
-  const filteredToolList: GQLSingleClickOnDiagramElementTool[] = toolList.filter((tool) =>
-    filterFromSearchValue(tool, searchToolValue)
-  );
+  const filteredToolList: Tool[] = toolList.filter((tool) => filterFromSearchValue(tool, searchToolValue));
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -156,7 +150,7 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
     };
   }, [selectedIndex, filteredToolList]);
 
-  const convertToListItem = (tool: GQLSingleClickOnDiagramElementTool, index: number): JSX.Element | null => {
+  const convertToListItem = (tool: Tool, index: number): JSX.Element | null => {
     return (
       <Tooltip enterDelay={tooltipEnterDelay} placement={tooltipPlacement} title={tool.label} key={tool.id}>
         <ListItemButton
@@ -164,6 +158,7 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
           onClick={() => onToolClick(tool)}
           selected={index === selectedIndex}>
           <ListItemIcon className={classes.listItemIcon}>
+            {tool.iconElement ?? null}
             <IconOverlay iconURL={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
           </ListItemIcon>
           <ListItemText primary={<HighlightedLabel label={tool.label} textToHighlight={searchToolValue} />} />

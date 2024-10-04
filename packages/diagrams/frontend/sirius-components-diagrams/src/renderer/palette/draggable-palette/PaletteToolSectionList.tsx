@@ -16,8 +16,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
-import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { PaletteToolSectionListProps } from './PaletteToolSectionList.types';
+import { ToolListItem } from './tool-list-item/ToolListItem';
 
 const useStyle = makeStyles()((theme) => ({
   toolListItemIcon: {
