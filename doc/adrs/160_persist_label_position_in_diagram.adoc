@@ -1,4 +1,4 @@
-= [ADR-XXX] Persist label position in diagram
+= [ADR-160] Persist label position in diagram
 
 == Context
 

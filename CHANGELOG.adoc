@@ -16,7 +16,8 @@
 
 - [ADR-158] Support delegating representation event handling
 - [ADR-159] Create event processor only using the representation id
-- [ADR-XXX] Persist label position in diagram
+- [ADR-160] Persist label position in diagram
+- [ADR-161] Add support for undo redo on semantic changes
 
 === Deprecation warning
 
