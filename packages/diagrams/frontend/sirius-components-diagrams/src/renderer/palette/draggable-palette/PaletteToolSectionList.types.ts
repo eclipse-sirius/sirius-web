@@ -10,9 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Tool, ToolSection } from './DraggablePalette.types';
 
-import { GQLTool } from '../Palette.types';
-export interface ToolListItemProps {
-  tool: GQLTool;
-  onToolClick: (tool: GQLTool) => void;
+export interface PaletteToolSectionListProps {
+  onToolClick: (tool: Tool) => void;
+  onBackToMainList: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  toolSection: ToolSection;
+  tooltipDelay?: number;
+  tooltipPlacement?:
+    | 'bottom-end'
+    | 'bottom-start'
+    | 'bottom'
+    | 'left-end'
+    | 'left-start'
+    | 'left'
+    | 'right-end'
+    | 'right-start'
+    | 'right'
+    | 'top-end'
+    | 'top-start'
+    | 'top';
 }
