@@ -31,6 +31,7 @@ import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { FreeFormNodeData } from './FreeFormNode.types';
 import { NodeComponentsMap } from './NodeTypes';
 import { Resizer } from './Resizer';
+import { DraggableOutsideLabel } from './DraggableOutsideLabel';
 
 const freeFormNodeStyle = (
   theme: Theme,
@@ -166,6 +167,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
             ...connectionLineActiveNodeStyle,
           }}
           data-svg="rect"
+          className="custom-drag-handle"
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
@@ -188,7 +190,12 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
           <ConnectionHandles connectionHandles={data.connectionHandles} />
         </div>
         {data.outsideLabels.BOTTOM_MIDDLE && (
-          <Label diagramElementId={id} label={data.outsideLabels.BOTTOM_MIDDLE} faded={data.faded} />
+          <DraggableOutsideLabel
+            id={id}
+            label={data.outsideLabels.BOTTOM_MIDDLE}
+            faded={data.faded}
+            highlighted={selected || data.isHovered}
+          />
         )}
       </>
     );
