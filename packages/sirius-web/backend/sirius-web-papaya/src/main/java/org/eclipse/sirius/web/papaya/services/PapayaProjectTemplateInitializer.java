@@ -20,7 +20,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
+import org.eclipse.sirius.web.papaya.factories.ApacheProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.EMFProjectFactory;
+import org.eclipse.sirius.web.papaya.factories.FasterXMLProjectFactory;
+import org.eclipse.sirius.web.papaya.factories.GraphQLJavaProjectFactory;
+import org.eclipse.sirius.web.papaya.factories.GoogleProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.JavaProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.ReactiveStreamsProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.ReactorProjectFactory;
@@ -40,7 +44,10 @@ public class PapayaProjectTemplateInitializer implements IProjectTemplateInitial
 
     @Override
     public boolean canHandle(String projectTemplateId) {
-        return List.of(PapayaProjectTemplateProvider.SIRIUS_WEB_PROJECT_TEMPLATE_ID).contains(projectTemplateId);
+        return List.of(
+                PapayaProjectTemplateProvider.SIRIUS_WEB_PROJECT_TEMPLATE_ID,
+                PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID
+        ).contains(projectTemplateId);
     }
 
     @Override
@@ -53,6 +60,13 @@ public class PapayaProjectTemplateInitializer implements IProjectTemplateInitial
             new EMFProjectFactory().create(emfEditingContext);
             new SiriusWebProjectFactory().create(emfEditingContext);
 
+            if (PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID.equals(projectTemplateId)) {
+                new GoogleProjectFactory().create(emfEditingContext);
+                new GraphQLJavaProjectFactory().create(emfEditingContext);
+                new FasterXMLProjectFactory().create(emfEditingContext);
+                new ApacheProjectFactory().create(emfEditingContext);
+            }
+
             var eObjectIndexer = new EObjectIndexer();
             eObjectIndexer.index(emfEditingContext.getDomain().getResourceSet());
 
@@ -62,6 +76,13 @@ public class PapayaProjectTemplateInitializer implements IProjectTemplateInitial
             new SpringProjectFactory().link(eObjectIndexer);
             new EMFProjectFactory().link(eObjectIndexer);
             new SiriusWebProjectFactory().link(eObjectIndexer);
+
+            if (PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID.equals(projectTemplateId)) {
+                new GoogleProjectFactory().link(eObjectIndexer);
+                new GraphQLJavaProjectFactory().link(eObjectIndexer);
+                new FasterXMLProjectFactory().link(eObjectIndexer);
+                new ApacheProjectFactory().link(eObjectIndexer);
+            }
 
             var eObjectInitializer = new EObjectInitializer(eObjectIndexer);
             eObjectInitializer.initialize(emfEditingContext.getDomain().getResourceSet());
