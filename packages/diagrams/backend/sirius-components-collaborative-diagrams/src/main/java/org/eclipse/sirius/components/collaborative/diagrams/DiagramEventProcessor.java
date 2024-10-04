@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.collaborative.diagrams;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -33,6 +32,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
@@ -46,6 +46,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
@@ -148,7 +149,14 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                                 (oldValue, newValue) -> newValue
                         ));
 
-                var layoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, Map.of());
+                var labelLayoutData = layoutDiagramInput.diagramLayoutData().labelLayoutData().stream()
+                        .collect(Collectors.toMap(
+                                LabelLayoutDataInput::id,
+                                labelLayoutDataInput -> new LabelLayoutData(labelLayoutDataInput.id(), labelLayoutDataInput.position()),
+                                (oldValue, newValue) -> newValue
+                        ));
+
+                var layoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData);
                 var laidOutDiagram = Diagram.newDiagram(diagram)
                         .layoutData(layoutData)
                         .build();
