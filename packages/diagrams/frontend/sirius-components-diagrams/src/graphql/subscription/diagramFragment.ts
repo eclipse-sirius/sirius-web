@@ -30,6 +30,10 @@ fragment diagramFragment on Diagram {
       size { width height }
       resizedByUser
     }
+    labelLayoutData {
+      id
+      position { x y }
+    }
   }
   nodes {
     ...nodeFragment
