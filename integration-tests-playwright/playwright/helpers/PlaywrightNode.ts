@@ -18,11 +18,20 @@ export class PlaywrightNode {
 
   constructor(page: Page, name: string) {
     this.page = page;
-    this.nodeLocator = page.locator(`[data-testid$="- ${name}"]`).first().locator('..').filter({ hasText: name });
+    this.nodeLocator = this.page.locator(`[data-testid$="- ${name}"]`).first().locator('..').filter({ hasText: name });
   }
 
   async click() {
     await this.nodeLocator.click({ position: { x: 10, y: 10 } });
+  }
+
+  async openPalette() {
+    await this.nodeLocator.click({ button: 'right', position: { x: 10, y: 10 } });
+  }
+
+  async resetNodeLabelPosition() {
+    this.openPalette();
+    await this.page.locator(`[data-testid="reset-label-position"]`).first().click();
   }
 
   async getDOMXYPosition() {
