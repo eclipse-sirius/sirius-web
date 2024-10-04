@@ -22,7 +22,7 @@ import { UseDiagramDirectEditValue } from './useDiagramDirectEdit.types';
 const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»<>’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
 
 export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
-  const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } =
+  const { currentlyEditedLabelId, editingInput, setCurrentlyEditedLabelId, resetDirectEdit } =
     useContext<DiagramDirectEditContextValue>(DiagramDirectEditContext);
   const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -39,6 +39,8 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
       event.preventDefault();
       const validFirstInputChar =
         !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
+
+      const isPasteFromClipboard = (event.ctrlKey || event.metaKey) && key === 'v';
 
       let currentlyEditedLabelId: string | undefined | null;
       let isLabelEditable: boolean = false;
@@ -60,6 +62,10 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
           setCurrentlyEditedLabelId('keyDown', currentlyEditedLabelId, key);
         } else if (key === 'F2') {
           setCurrentlyEditedLabelId('F2', currentlyEditedLabelId, null);
+        } else if (isPasteFromClipboard) {
+          navigator.clipboard
+            .readText()
+            .then((text) => setCurrentlyEditedLabelId('paste', currentlyEditedLabelId, text));
         }
       }
     },
@@ -68,7 +74,7 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
 
   return {
     currentlyEditedLabelId,
-    editingKey,
+    editingInput,
     setCurrentlyEditedLabelId,
     resetDirectEdit,
     onDirectEdit,

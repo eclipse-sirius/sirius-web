@@ -13,17 +13,17 @@
 
 export interface DiagramDirectEditContextValue {
   currentlyEditedLabelId: string | null;
-  editingKey: string | null;
+  editingInput: string | null;
   directEditTrigger: DirectEditTrigger | null;
   setCurrentlyEditedLabelId: (
     directEditTrigger: DirectEditTrigger,
     currentlyEditedLabelId: string,
-    editingKey: string | null
+    editingInput: string | null
   ) => void;
   resetDirectEdit: () => void;
 }
 
-export type DirectEditTrigger = 'keyDown' | 'F2' | 'palette' | 'doubleClick';
+export type DirectEditTrigger = 'keyDown' | 'F2' | 'palette' | 'doubleClick' | 'paste';
 
 export interface DiagramDirectEditContextProviderProps {
   children?: React.ReactNode;
@@ -31,6 +31,6 @@ export interface DiagramDirectEditContextProviderProps {
 
 export interface DiagramDirectEditContextProviderState {
   currentlyEditedLabelId: string | null;
-  editingKey: string | null;
+  editingInput: string | null;
   directEditTrigger: DirectEditTrigger | null;
 }

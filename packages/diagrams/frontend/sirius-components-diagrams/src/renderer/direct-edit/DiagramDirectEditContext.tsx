@@ -21,7 +21,7 @@ import {
 const defaultValue: DiagramDirectEditContextValue = {
   currentlyEditedLabelId: null,
   directEditTrigger: null,
-  editingKey: null,
+  editingInput: null,
   setCurrentlyEditedLabelId: () => {},
   resetDirectEdit: () => {},
 };
@@ -32,12 +32,12 @@ export const DiagramDirectEditContextProvider = ({ children }: DiagramDirectEdit
   const [state, setState] = useState<DiagramDirectEditContextProviderState>({
     currentlyEditedLabelId: null,
     directEditTrigger: null,
-    editingKey: null,
+    editingInput: null,
   });
 
   const setCurrentlyEditedLabelId = useCallback(
-    (directEditTrigger: DirectEditTrigger, currentlyEditedLabelId: string, editingKey: string | null) => {
-      setState((prevState) => ({ ...prevState, currentlyEditedLabelId, directEditTrigger, editingKey }));
+    (directEditTrigger: DirectEditTrigger, currentlyEditedLabelId: string, editingInput: string | null) => {
+      setState((prevState) => ({ ...prevState, currentlyEditedLabelId, directEditTrigger, editingInput }));
     },
     []
   );
@@ -48,7 +48,7 @@ export const DiagramDirectEditContextProvider = ({ children }: DiagramDirectEdit
         ...prevState,
         currentlyEditedLabelId: null,
         directEditTrigger: null,
-        editingKey: null,
+        editingInput: null,
       })),
     []
   );
@@ -58,7 +58,7 @@ export const DiagramDirectEditContextProvider = ({ children }: DiagramDirectEdit
       value={{
         currentlyEditedLabelId: state.currentlyEditedLabelId,
         directEditTrigger: state.directEditTrigger,
-        editingKey: state.editingKey,
+        editingInput: state.editingInput,
         setCurrentlyEditedLabelId,
         resetDirectEdit,
       }}>

@@ -14,7 +14,7 @@ import { GQLMessage } from '../Tool.types';
 
 export interface DiagramDirectEditInputProps {
   labelId: string;
-  editingKey: string | null;
+  editingInput: string | null;
   onClose: () => void;
 }
 

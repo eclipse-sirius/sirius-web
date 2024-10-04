@@ -110,7 +110,7 @@ const labelOverflowStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): Reac
 
 export const Label = memo(({ diagramElementId, label, faded }: LabelProps) => {
   const theme: Theme = useTheme();
-  const { currentlyEditedLabelId, editingKey, resetDirectEdit } = useDiagramDirectEdit();
+  const { currentlyEditedLabelId, editingInput, resetDirectEdit } = useDiagramDirectEdit();
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
   const handleClose = () => {
@@ -123,7 +123,7 @@ export const Label = memo(({ diagramElementId, label, faded }: LabelProps) => {
 
   const content: JSX.Element =
     label.id === currentlyEditedLabelId && !readOnly ? (
-      <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} />
+      <DiagramDirectEditInput editingInput={editingInput} onClose={handleClose} labelId={label.id} />
     ) : (
       <div
         data-id={`${label.id}-content`}

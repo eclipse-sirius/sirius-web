@@ -16,11 +16,11 @@ import { DirectEditTrigger } from './DiagramDirectEditContext.types';
 export interface UseDiagramDirectEditValue {
   onDirectEdit: (event: React.KeyboardEvent<Element>) => void;
   currentlyEditedLabelId: string | null;
-  editingKey: string | null;
+  editingInput: string | null;
   setCurrentlyEditedLabelId: (
     directEditTrigger: DirectEditTrigger,
     currentlyEditedLabelId: string,
-    editingKey: string | null
+    editingInput: string | null
   ) => void;
   resetDirectEdit: () => void;
 }

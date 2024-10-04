@@ -73,8 +73,8 @@ const isErrorPayload = (payload: GQLRenameElementPayload): payload is GQLErrorPa
 const isSuccessPayload = (payload: GQLRenameElementPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'EditLabelSuccessPayload';
 
-export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: DiagramDirectEditInputProps) => {
-  const initialLabel = editingKey === null || editingKey === '' ? '' : editingKey;
+export const DiagramDirectEditInput = ({ labelId, editingInput, onClose }: DiagramDirectEditInputProps) => {
+  const initialLabel = editingInput === null || editingInput === '' ? '' : editingInput;
   const [state, setState] = useState<DiagramDirectEditInputState>({
     newLabel: initialLabel,
   });
@@ -132,7 +132,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: Diagram
     if (initialLabelItemData?.viewer.editingContext.representation.description.initialDirectEditElementLabel) {
       const initialLabel =
         initialLabelItemData?.viewer.editingContext.representation.description.initialDirectEditElementLabel;
-      if (!editingKey) {
+      if (!editingInput) {
         setState((prevState) => {
           return { ...prevState, newLabel: initialLabel };
         });
