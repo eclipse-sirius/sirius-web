@@ -40,6 +40,7 @@
     "graphql": "16.8.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-draggable": "4.4.6",
     "tss-react": "4.9.7",
     "xstate": "4.32.1"
   },
@@ -58,6 +59,7 @@
     "prettier": "2.7.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-draggable": "4.4.6",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "xstate": "4.32.1",
     "tss-react": "4.9.7",

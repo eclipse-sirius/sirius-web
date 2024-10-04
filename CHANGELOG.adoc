@@ -64,7 +64,7 @@ This is much more natural and closer to the behavior of usual languages, but cha
 - https://github.com/eclipse-sirius/sirius-web/issues/3840[#3840] [diagram] Migrate to ReactFlow 12
 - [releng] Switch to the final release version of AQL 8.0.2
 - https://github.com/eclipse-sirius/sirius-web/issues/3836[#3836] [gantt] Switch to @ObeoNetwork/gantt-task-react 0.6.1 to benefit for enhancements
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4065[#4065] [diagram] Add dependency to `react-draggable 4.4.6`
 
 === Bug fixes
 
@@ -103,7 +103,7 @@ description (optional).
 - https://github.com/eclipse-sirius/sirius-web/issues/3950[#3950] [diagram] Have the multiple selection on the Selection Dialog
 - https://github.com/eclipse-sirius/sirius-web/issues/3982[#3982] [core] Add support for the command palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/3983[#3983] [tree] Add drag and drop support for explorer
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4065[#4065] Make outside and edge labels draggable in diagrams
 
 === Improvements
 

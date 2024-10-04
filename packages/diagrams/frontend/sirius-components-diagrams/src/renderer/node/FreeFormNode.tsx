@@ -13,8 +13,9 @@
 
 import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
-import { Node, NodeProps } from '@xyflow/react';
+import { Node, NodeProps, useViewport } from '@xyflow/react';
 import React, { memo, useContext, useMemo } from 'react';
+import Draggable, { DraggableData } from 'react-draggable';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
@@ -24,6 +25,7 @@ import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles'
 import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
+import { useLabelMove } from '../move/useLabelMove';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { FreeFormNodeData } from './FreeFormNode.types';
 import { NodeComponentsMap } from './NodeTypes';
@@ -96,6 +98,8 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
 
     const theme = useTheme();
     const { onDrop, onDragOver } = useDrop();
+    const { onNodeLabelMoveStop } = useLabelMove();
+    const { zoom } = useViewport();
 
     const rotation = useMemo(
       () => computeBorderRotation(data),
@@ -121,6 +125,12 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
       onDrop(event, id);
     };
 
+    const onStop = (_e, eventData: DraggableData) => {
+      onNodeLabelMoveStop(eventData, id);
+    };
+
+    const nodeRef = React.useRef<HTMLInputElement | null>(null);
+
     useRefreshConnectionHandles(id, data.connectionHandles);
 
     const getLabelId = (data: FreeFormNodeData): string | null => {
@@ -142,6 +152,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}
+          className="custom-drag-handle"
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
@@ -159,7 +170,20 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
           <ConnectionHandles connectionHandles={data.connectionHandles} />
         </div>
         {data.outsideLabels.BOTTOM_MIDDLE && (
-          <Label diagramElementId={id} label={data.outsideLabels.BOTTOM_MIDDLE} faded={data.faded} />
+          <Draggable
+            position={data.outsideLabels.BOTTOM_MIDDLE.position}
+            onStop={onStop}
+            scale={zoom}
+            nodeRef={nodeRef}>
+            <div ref={nodeRef}>
+              <Label
+                diagramElementId={id}
+                label={data.outsideLabels.BOTTOM_MIDDLE}
+                faded={data.faded}
+                highlighted={selected || data.isHovered}
+              />
+            </div>
+          </Draggable>
         )}
       </>
     );

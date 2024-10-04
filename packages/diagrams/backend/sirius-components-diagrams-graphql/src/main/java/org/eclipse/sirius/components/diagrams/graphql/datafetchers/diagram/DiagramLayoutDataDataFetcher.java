@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @QueryDataFetcher(type = "Diagram", field = "layoutData")
 public class DiagramLayoutDataDataFetcher implements IDataFetcherWithFieldCoordinates<DiagramLayoutDataPayload> {
+
     @Override
     public DiagramLayoutDataPayload get(DataFetchingEnvironment environment) throws Exception {
         Diagram diagram = environment.getSource();
@@ -34,6 +35,11 @@ public class DiagramLayoutDataDataFetcher implements IDataFetcherWithFieldCoordi
                 .values()
                 .stream()
                 .toList();
-        return new DiagramLayoutDataPayload(nodeLayoutData);
+        var labelLayoutData = diagram.getLayoutData()
+                .labelLayoutData()
+                .values()
+                .stream()
+                .toList();
+        return new DiagramLayoutDataPayload(nodeLayoutData, labelLayoutData);
     }
 }
