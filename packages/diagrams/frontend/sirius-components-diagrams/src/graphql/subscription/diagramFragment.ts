@@ -46,6 +46,10 @@ fragment diagramFragment on Diagram {
         type
       }
     }
+    labelLayoutData {
+      id
+      position { x y }
+    }
   }
   nodes {
     ...nodeFragment

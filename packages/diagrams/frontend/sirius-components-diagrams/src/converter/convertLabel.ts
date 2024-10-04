@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLLabelLayoutData } from '../graphql/subscription/diagramFragment.types';
 import {
   GQLInsideLabel,
   GQLLabelStyle,
@@ -110,7 +111,10 @@ export const convertInsideLabel = (
   return insideLabel;
 };
 
-export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): OutsideLabels => {
+export const convertOutsideLabels = (
+  gqlOutsideLabels: GQLOutsideLabel[],
+  gqlLabelLayoutData: GQLLabelLayoutData[]
+): OutsideLabels => {
   const outsideLabels: OutsideLabels = {};
   const reducer = (allOutsideLabels: OutsideLabels, gqlOutsideLabel: GQLOutsideLabel): OutsideLabels => {
     const {
@@ -139,6 +143,7 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
         customizedStyleProperties: gqlOutsideLabel.customizedStyleProperties,
         gqlStyle: gqlOutsideLabel.style,
       },
+      position: gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === id)?.position ?? { x: 0, y: 0 },
     };
 
     return allOutsideLabels;

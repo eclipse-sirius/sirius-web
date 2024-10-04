@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layoutdata;
+import { DraggableData } from 'react-draggable';
 
-/**
- * The layout data of a label.
- *
- * @author sbegaudeau
- */
-public record LabelLayoutData(
-        String id,
-        Position position
-) {
-
+export interface UseLabelMoveValue {
+  onNodeLabelMoveStop: (eventData: DraggableData, nodeId: string) => void;
+  onEdgeLabelMoveStop: (eventData: DraggableData, edgeId: string, labelPosition: 'begin' | 'center' | 'end') => void;
 }

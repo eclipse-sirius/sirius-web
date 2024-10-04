@@ -10,9 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { test, expect } from '@playwright/test';
-import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { expect, test } from '@playwright/test';
 import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
+import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { PlaywrightNodeLabel } from '../helpers/PlaywrightNodeLabel';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
 test.describe('diagram', () => {
@@ -79,5 +80,31 @@ test.describe('diagram', () => {
 
     expect(reactFlowSizeAfter.height).toBeGreaterThan(reactFlowSizeBefore.height);
     expect(reactFlowSizeAfter.width).toBeGreaterThan(reactFlowSizeBefore.width);
+  });
+
+  test('moving an outside node label by click', async ({ page }) => {
+    const dataSourceLabel = new PlaywrightNodeLabel(page, 'DataSource1');
+    await dataSourceLabel.click();
+
+    const positionOnLabelToStartDragging = { x: 10, y: 10 };
+    const initialBox = await dataSourceLabel.labelLocator.boundingBox();
+    if (initialBox) {
+      await dataSourceLabel.move({ x: initialBox.x + 50, y: initialBox.y + 150 }, positionOnLabelToStartDragging);
+
+      const boxAfterMove = await dataSourceLabel.labelLocator.boundingBox();
+      if (boxAfterMove) {
+        expect(boxAfterMove.x).toEqual(initialBox.x + 50 - positionOnLabelToStartDragging.x);
+        expect(boxAfterMove.y).toEqual(initialBox.y + 150 - positionOnLabelToStartDragging.y);
+      }
+
+      const playwrightNode = new PlaywrightNode(page, 'DataSource1');
+      await playwrightNode.resetNodeLabelPosition();
+
+      const boxAfterReset = await dataSourceLabel.labelLocator.boundingBox();
+      if (boxAfterReset) {
+        expect(boxAfterReset.x).toEqual(initialBox.x);
+        expect(boxAfterReset.y).toEqual(initialBox.y);
+      }
+    }
   });
 });

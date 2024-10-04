@@ -13,13 +13,13 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
-import { BaseEdge, Edge, EdgeLabelRenderer, Position, XYPosition } from '@xyflow/react';
+import { BaseEdge, Edge, XYPosition } from '@xyflow/react';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../../representation/useStore';
 import { useConnectorEdgeStyle } from '../../connector/useConnectorEdgeStyle';
-import { Label } from '../../Label';
 import { DiagramElementPalette } from '../../palette/DiagramElementPalette';
 import { BendPoint, TemporaryMovingLine } from '../BendPoint';
+import { DraggableEdgeLabels } from '../DraggableEdgeLabels';
 import { EdgeCreationHandle } from '../EdgeCreationHandle';
 import { MultiLabelEdgeData } from '../MultiLabelEdge.types';
 import { MultiLabelEditableEdgeProps } from './MultiLabelRectilinearEditableEdge.types';
@@ -44,28 +44,6 @@ const multiLabelEdgeStyle = (
   }
 
   return multiLabelEdgeStyle;
-};
-
-const getTranslateFromHandlePositon = (position: Position) => {
-  switch (position) {
-    case Position.Right:
-      return 'translate(2%, -100%)';
-    case Position.Left:
-      return 'translate(-102%, -100%)';
-    case Position.Top:
-      return 'translate(2%, -100%)';
-    case Position.Bottom:
-      return 'translate(2%, 0%)';
-  }
-};
-
-const labelContainerStyle = (transform: string): React.CSSProperties => {
-  return {
-    transform,
-    position: 'absolute',
-    padding: 5,
-    zIndex: 1001,
-  };
 };
 
 function isMultipleOfTwo(num: number): boolean {
@@ -93,7 +71,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
     targetNode,
     targetHandleId,
   }: MultiLabelEditableEdgeProps<Edge<MultiLabelEdgeData>>) => {
-    const { beginLabel, endLabel, label, faded } = data || {};
+    const { label, faded } = data || {};
     const { setEdges } = useStore();
     const theme = useTheme();
 
@@ -143,9 +121,6 @@ export const MultiLabelRectilinearEditableEdge = memo(
 
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
     const { style: connectionFeedbackStyle } = useConnectorEdgeStyle(data ? data.descriptionId : '', !!data?.isHovered);
-
-    const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
-    const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
 
     const edgeCenter: XYPosition | undefined = useMemo(() => {
       let pointsSource = bendingPoints.map((bendingPoint) => ({ x: bendingPoint.x, y: bendingPoint.y }));
@@ -246,23 +221,20 @@ export const MultiLabelRectilinearEditableEdge = memo(
               onDragStop={onTemporaryLineDragStop}
             />
           ))}
-        <EdgeLabelRenderer>
-          {beginLabel && (
-            <div style={labelContainerStyle(`${sourceLabelTranslation} translate(${source.x}px,${source.y}px)`)}>
-              <Label diagramElementId={id} label={beginLabel} faded={!!faded} />
-            </div>
-          )}
-          {label && edgeCenter && (
-            <div style={labelContainerStyle(`translate(${edgeCenter.x}px,${edgeCenter.y}px)`)}>
-              <Label diagramElementId={id} label={label} faded={!!faded} />
-            </div>
-          )}
-          {endLabel && (
-            <div style={labelContainerStyle(`${targetLabelTranslation} translate(${target.x}px,${target.y}px)`)}>
-              <Label diagramElementId={id} label={endLabel} faded={!!faded} />
-            </div>
-          )}
-        </EdgeLabelRenderer>
+        {data ? (
+          <DraggableEdgeLabels
+            id={id}
+            data={data}
+            selected={!!selected}
+            sourcePosition={sourcePosition}
+            targetPosition={targetPosition}
+            sourceX={sourceX}
+            sourceY={sourceY}
+            targetX={targetX}
+            targetY={targetY}
+            edgeCenter={edgeCenter}
+          />
+        ) : null}
       </>
     );
   }

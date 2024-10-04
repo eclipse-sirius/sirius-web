@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import java.util.List;
-
-import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
-import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
-import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 
 /**
- * Holds the layout data of the diagram.
+ * Input used to receive label layout data.
  *
- * @author sbegaudeau
+ * @author frouene
  */
-public record DiagramLayoutDataPayload(List<NodeLayoutData> nodeLayoutData, List<EdgeLayoutData> edgeLayoutData, List<LabelLayoutData> labelLayoutData) {
+public record LabelLayoutDataInput(String id, Position position) {
 
 }

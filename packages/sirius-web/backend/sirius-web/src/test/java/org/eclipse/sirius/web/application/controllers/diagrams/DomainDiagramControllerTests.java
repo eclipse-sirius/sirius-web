@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
@@ -153,7 +154,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable initialDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), initialPosition, initialSize, true, List.of());
-            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of());
+            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of(), List.of());
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
@@ -180,7 +181,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable modifyDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), modifiedPosition, modifiedSize, true, List.of());
-            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of());
+            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of(), List.of());
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
@@ -197,6 +198,98 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     assertThat(humanNodeLayout).isNotNull();
                     assertThat(humanNodeLayout.position()).isEqualTo(modifiedPosition);
                     assertThat(humanNodeLayout.size()).isEqualTo(modifiedSize);
+
+                    var modifiedDiagramMetadata = this.representationMetadataRepository.findById(UUID.fromString(diagramId.get())).get();
+                    var modifiedDiagramContent = this.representationContentRepository.findById(modifiedDiagramMetadata.getId()).get();
+                    assertThat(modifiedDiagramContent.getContent()).isNotEqualTo(initialDiagramContent.get().getContent());
+                }, () -> fail("Missing diagram"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(initialDiagramLayout)
+                .consumeNextWith(initialDiagramLayoutConsumer)
+                .then(modifyDiagramLayout)
+                .consumeNextWith(modifiedDiagramLayoutConsumer)
+                .then(() -> this.reload(diagramId.get(), initialDiagramMetadata.get(), initialDiagramContent.get()))
+                .consumeNextWith(initialDiagramLayoutConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a domain diagram on a studio, when moving a label and then reloading the previously saved state, then the label is back to its initial position")
+    public void givenDomainDiagramOnStudioWhenMovingLabelAndThenReloadingPreviousStateThenLabelBackToInitialPosition() {
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+
+        var initialPosition = new Position(50.0, 50.0);
+        var modifiedPosition = new Position(100.0, 100.0);
+
+        var diagramId = new AtomicReference<String>();
+        var currentRevisionId = new AtomicReference<UUID>();
+
+        var humansEdgeCenterLabelId = new AtomicReference<String>();
+        var initialDiagramMetadata = new AtomicReference<RepresentationMetadata>(null);
+        var initialDiagramContent = new AtomicReference<RepresentationContent>(null);
+
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(diagramPayload -> {
+                    currentRevisionId.set(diagramPayload.id());
+                    return diagramPayload.diagram();
+                })
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+                    var humansEdgeCenterLabel = new DiagramNavigator(diagram).edgeWithLabel("humans [0..*]").findCenterLabel();
+                    humansEdgeCenterLabelId.set(humansEdgeCenterLabel.getId());
+                }, () -> fail("Missing diagram"));
+
+        Runnable initialDiagramLayout = () -> {
+            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), initialPosition);
+            var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout));
+            var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
+            this.layoutDiagramMutationRunner.run(layoutInput);
+        };
+
+        Consumer<Object> initialDiagramLayoutConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(diagramPayload -> {
+                    currentRevisionId.set(diagramPayload.id());
+                    return diagramPayload.diagram();
+                })
+                .ifPresentOrElse(diagram -> {
+                    var humansLabelLayout = diagram.getLayoutData().labelLayoutData().get(humansEdgeCenterLabelId.get());
+                    assertThat(humansLabelLayout).isNotNull();
+                    assertThat(humansLabelLayout.position()).isEqualTo(initialPosition);
+                    var optionalRepresentationMetadata = this.representationMetadataRepository.findById(UUID.fromString(diagramId.get()));
+                    if (optionalRepresentationMetadata.isPresent()) {
+                        var representationMetadata = optionalRepresentationMetadata.get();
+                        initialDiagramMetadata.set(representationMetadata);
+                        this.representationContentRepository.findById(representationMetadata.getId()).ifPresent(initialDiagramContent::set);
+                    }
+                }, () -> fail("Missing diagram"));
+
+        Runnable modifyDiagramLayout = () -> {
+            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), modifiedPosition);
+            var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout));
+            var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
+            this.layoutDiagramMutationRunner.run(layoutInput);
+        };
+
+        Consumer<Object> modifiedDiagramLayoutConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(diagramPayload -> {
+                    currentRevisionId.set(diagramPayload.id());
+                    return diagramPayload.diagram();
+                })
+                .ifPresentOrElse(diagram -> {
+                    var humansLabelLayout = diagram.getLayoutData().labelLayoutData().get(humansEdgeCenterLabelId.get());
+                    assertThat(humansLabelLayout).isNotNull();
+                    assertThat(humansLabelLayout.position()).isEqualTo(modifiedPosition);
 
                     var modifiedDiagramMetadata = this.representationMetadataRepository.findById(UUID.fromString(diagramId.get())).get();
                     var modifiedDiagramContent = this.representationContentRepository.findById(modifiedDiagramMetadata.getId()).get();

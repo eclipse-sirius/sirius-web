@@ -116,6 +116,7 @@ Add the extension point `navigationBarMenuHeaderExtensionPoint` to make possible
 - https://github.com/eclipse-sirius/sirius-web/issues/5283[#5283] [diagram] Add support for the management of the appearance of outside labels
 - https://github.com/eclipse-sirius/sirius-web/issues/5045[#5045] [diagram] Add support for the management of the appearance of all properties for image nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/5047[#5047] [diagram] Add support for the management of the appearance of all properties for edges
+- https://github.com/eclipse-sirius/sirius-web/issues/4065[#4065] [diagram] Make outside and edge labels draggable in diagrams
 
 
 === Improvements

@@ -40,6 +40,7 @@ type Diagram implements Representation {
 type DiagramLayoutData {
   nodeLayoutData: [NodeLayoutData!]!
   edgeLayoutData: [EdgeLayoutData!]!
+  labelLayoutData: [LabelLayoutData!]!
 }
 
 type NodeLayoutData {
@@ -73,6 +74,11 @@ type EdgeLayoutData {
 enum HandleType {
   source
   target
+}
+
+type LabelLayoutData {
+  id: ID!
+  position: Position!
 }
 
 enum ViewModifier {
@@ -676,6 +682,7 @@ input LayoutDiagramInput {
 input DiagramLayoutDataInput {
   nodeLayoutData: [NodeLayoutDataInput!]!
   edgeLayoutData: [EdgeLayoutDataInput!]!
+  labelLayoutData: [LabelLayoutDataInput!]!
 }
 
 input NodeLayoutDataInput {
@@ -704,6 +711,11 @@ input EdgeLayoutDataInput {
   id: ID!
   bendingPoints: [PositionInput!]!
   edgeAnchorLayoutData: [EdgeAnchorLayoutDataInput!]!
+}
+
+input LabelLayoutDataInput {
+  id: ID!
+  position: PositionInput!
 }
 
 input PositionInput {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layoutdata;
 
-/**
- * The layout data of a label.
- *
- * @author sbegaudeau
- */
-public record LabelLayoutData(
-        String id,
-        Position position
-) {
-
+export interface UseLabelResetPositionValue {
+  removeEdgeLabelLayoutData: (edgeId: string) => void;
+  removeNodeLabelLayoutData: (nodeId: string) => void;
 }
