@@ -20,12 +20,11 @@ import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { isPaletteDivider, isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
-import { GQLPaletteEntry, GQLToolSection } from '../Palette.types';
-import { ToolListItem } from '../tool-list-item/ToolListItem';
-import { useDiagramPalette } from '../useDiagramPalette';
+import { isPaletteDivider, isTool, isToolSection } from './../draggable-palette/DraggablePalette';
+import { PaletteEntry, ToolSection } from './../draggable-palette/DraggablePalette.types';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
 import { PaletteToolSectionList } from './PaletteToolSectionList';
+import { ToolListItem } from './ToolListItem';
 
 const useStyle = makeStyles()((theme) => ({
   container: {
@@ -63,19 +62,14 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-const defaultStateValue: PaletteToolListStateValue = {
-  toolSection: null,
-};
+export const PaletteToolList = ({ paletteEntries, onToolClick, lastToolInvoked }: PaletteToolListProps) => {
+  const defaultValue: PaletteToolListStateValue = {
+    toolSection: null,
+  };
 
-export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) => {
-  const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
+  const [state, setState] = useState<PaletteToolListStateValue>(defaultValue);
 
-  const { getLastToolInvoked } = useDiagramPalette();
-  const lastToolInvoked = getLastToolInvoked(palette.id);
-
-  const { classes } = useStyle();
-
-  const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSection: GQLToolSection) => {
+  const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSection: ToolSection) => {
     event.stopPropagation();
     setState((prevState) => ({ ...prevState, toolSection }));
   };
@@ -84,11 +78,14 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
     setState((prevState) => ({ ...prevState, toolSection: null }));
   };
 
-  const listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
-    if (isSingleClickOnDiagramElementTool(paletteEntry)) {
-      return <ToolListItem onToolClick={onToolClick} tool={paletteEntry} key={'toolItem_' + paletteEntry.id} />;
+  const { classes } = useStyle();
+
+  const convertPaletteEntry = (paletteEntry: PaletteEntry): JSX.Element | null => {
+    let jsxElement: JSX.Element | null = null;
+    if (isTool(paletteEntry)) {
+      jsxElement = <ToolListItem onToolClick={onToolClick} tool={paletteEntry} key={'toolItem_' + paletteEntry.id} />;
     } else if (isToolSection(paletteEntry)) {
-      return (
+      jsxElement = (
         <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label}>
           <ListItemButton
             className={classes.listItemButton}
@@ -100,10 +97,10 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
         </Tooltip>
       );
     } else if (isPaletteDivider(paletteEntry)) {
-      return <Divider key={'divider_' + paletteEntry.id} />;
+      jsxElement = <Divider key={'divider_' + paletteEntry.id} />;
     }
-    return [];
-  });
+    return jsxElement;
+  };
 
   const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
     <>
@@ -117,7 +114,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
     <Box className={classes.container}>
       {lastUsedTool}
       <Box className={classes.toolListContainer} ref={containerRef}>
-        {palette.paletteEntries.filter(isToolSection).map((entry) => (
+        {paletteEntries.filter(isToolSection).map((entry) => (
           <Slide
             key={'slide_' + entry.id}
             direction={'left'}
@@ -127,7 +124,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
             mountOnEnter>
             <div className={classes.toolList}>
               <PaletteToolSectionList
-                toolSection={entry}
+                toolSection={entry as ToolSection}
                 onToolClick={onToolClick}
                 onBackToMainList={onBackToMainList}
               />
@@ -142,7 +139,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
           unmountOnExit
           mountOnEnter>
           <List className={classes.toolList} component="nav">
-            {listItemsRendered}
+            {paletteEntries.map(convertPaletteEntry)}
           </List>
         </Slide>
       </Box>

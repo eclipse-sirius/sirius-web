@@ -41,16 +41,16 @@ describe('Diagram - group palette', () => {
       diagram.getSelectedNodes('diagram', 'Wifi');
       diagram.getSelectedNodes('diagram', 'Central_Unit');
       diagram.getNodes('diagram', 'Wifi').click();
-      diagram.getGroupPalette().should('exist');
-      diagram.getGroupPalette().findByTestId('Align left').should('exist');
-      diagram.getGroupPalette().findByTestId('expand').click();
-      diagram.getGroupPalette().findByTestId('Arrange in column').click();
+      diagram.getPalette().should('exist');
+      diagram.getPalette().findByTestId('tool-Align left').should('exist');
+      diagram.getPalette().findByTestId('toolSection-Distribute elements').click();
+      diagram.getPalette().findByTestId('tool-Arrange in column').should('exist').click();
       diagram.fitToScreen();
-      diagram.getGroupPalette().should('not.exist');
+      diagram.getPalette().should('not.exist');
       diagram.getNodes('diagram', 'Wifi').click();
-      diagram.getGroupPalette().should('exist');
-      diagram.getGroupPalette().findByTestId('Align left').should('not.exist');
-      diagram.getGroupPalette().findByTestId('Arrange in column').should('exist');
+      diagram.getPalette().should('exist');
+      diagram.getPalette().findByTestId('Align left').should('not.exist');
+      diagram.getPalette().findByTestId('tool-Arrange in column').should('exist');
     });
 
     it('Then during multi selection the connection handles are not computed', () => {

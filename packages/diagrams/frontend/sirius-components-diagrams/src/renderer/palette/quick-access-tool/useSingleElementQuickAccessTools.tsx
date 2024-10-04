@@ -12,19 +12,20 @@
  *******************************************************************************/
 
 import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import { Edge, Node, useStoreApi } from '@xyflow/react';
-import { makeStyles } from 'tss-react/mui';
+import { Edge, Node } from '@xyflow/react';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
+import { Tool } from '../../Tool';
+import { DiagramPaletteToolContributionProps } from '../extensions/DiagramPaletteToolContribution.types';
 import { diagramPaletteToolExtensionPoint } from '../extensions/DiagramPaletteToolExtensionPoints';
-import { Tool } from './../../Tool';
-import { DiagramPaletteToolContributionProps } from './../extensions/DiagramPaletteToolContribution.types';
-import { AdjustSizeTool } from './AdjustSizeTool';
-import { FadeElementTool } from './FadeElementTool';
-import { PaletteQuickAccessToolBarProps } from './PaletteQuickAccessToolBar.types';
-import { PinUnPinTool } from './PinUnPinTool';
-import { ResetEditedEdgePathTool } from './ResetEditedEdgePathTool';
+import { AdjustSizeTool } from './../quick-access-tool/AdjustSizeTool';
+import { FadeElementTool } from './../quick-access-tool/FadeElementTool';
+import { PinUnPinTool } from './../quick-access-tool/PinUnPinTool';
+import { ResetEditedEdgePathTool } from './../quick-access-tool/ResetEditedEdgePathTool';
+import {
+  UseSingleElementQuickAccessToolProps,
+  UseSingleElementQuickAccessToolValue,
+} from './useSingleElementQuickAccessTools.types';
+
 const isPinnable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Node<NodeData> => {
   return !!diagramElement.data && 'pinned' in diagramElement.data;
 };
@@ -35,29 +36,14 @@ const isBendable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramEle
   return !!diagramElement.data && 'bendingPoints' in diagramElement.data && !!diagramElement.data.bendingPoints;
 };
 
-const useStyle = makeStyles()(() => ({
-  quickAccessTools: {
-    display: 'flex',
-    flexWrap: 'nowrap',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    overflowX: 'auto',
-  },
-}));
-
-export const PaletteQuickAccessToolBar = ({
+export const useSingleElementQuickAccessTools = ({
+  diagramElement,
   diagramElementId,
   quickAccessTools,
   onToolClick,
   x,
   y,
-}: PaletteQuickAccessToolBarProps) => {
-  const { classes } = useStyle();
-
-  const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
-  const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
-
+}: UseSingleElementQuickAccessToolProps): UseSingleElementQuickAccessToolValue => {
   const quickAccessToolComponents: JSX.Element[] = [];
   quickAccessTools.forEach((tool) =>
     quickAccessToolComponents.push(<Tool tool={tool} onClick={onToolClick} thumbnail key={'tool_' + tool.id} />)
@@ -111,14 +97,5 @@ export const PaletteQuickAccessToolBar = ({
       );
   }
 
-  if (quickAccessToolComponents.length > 0) {
-    return (
-      <>
-        <Box className={classes.quickAccessTools}>{quickAccessToolComponents}</Box>
-        <Divider />
-      </>
-    );
-  } else {
-    return null;
-  }
+  return { quickAccessToolComponents };
 };
