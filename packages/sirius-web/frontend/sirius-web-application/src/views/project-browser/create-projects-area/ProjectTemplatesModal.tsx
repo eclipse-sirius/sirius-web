@@ -56,8 +56,11 @@ const useProjectTemplatesModalStyles = makeStyles()((theme) => ({
   },
   templateCards: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
-    gridTemplateRows: '1fr 1fr 1fr 1fr',
+    gridTemplateColumns: '1fr 1fr 1fr 1fr',
+    gridTemplateRows: '1fr 1fr 1fr',
+    alignItems: 'center',
+    justifyItems: 'center',
+    gap: theme.spacing(4),
   },
   navigation: {
     justifySelf: 'center',

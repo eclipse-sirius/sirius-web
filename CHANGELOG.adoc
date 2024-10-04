@@ -93,6 +93,10 @@ never, always and if_children (to display the separator only if children exist).
 - https://github.com/eclipse-sirius/sirius-web/issues/3856[#3856] [trees] Add tree representation in the view DSL
 - https://github.com/eclipse-sirius/sirius-web/issues/4000[#4000] [trees] Add support for styled labels in view model for trees
 - https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [trees] Add mechanism to define actions in tree item context menu
+- https://github.com/eclipse-sirius/sirius-web/issues/4064[#4064] [sirius-web] Ensure that project template images fill the whole content part of the card.
+Project template images will now have a predictable size of 150px by 110px.
+This will allow specifier to create images that fir perfectly in the project template card.
+
 
 == v2024.9.0
 

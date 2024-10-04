@@ -13,58 +13,35 @@
 
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+import { CreateProjectAreaCard } from './CreateProjectAreaCard';
 
 const useUploadProjectCardStyles = makeStyles()((theme) => ({
-  projectCard: {
-    width: theme.spacing(30),
-    height: theme.spacing(18),
-    display: 'grid',
-    gridTemplateRows: '1fr min-content',
+  button: {
+    padding: '0px',
+    margin: '0px',
   },
-  projectCardActions: {
-    minWidth: 0,
-  },
-  projectCardLabel: {
-    textTransform: 'none',
-    fontWeight: 400,
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-  },
-  projectCardIcon: {
-    fontSize: theme.spacing(8),
-  },
-  uploadProjectCard: {
-    backgroundColor: theme.palette.divider,
+  projectCardContent: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: theme.palette.divider,
+  },
+  projectCardIcon: {
+    fontSize: theme.spacing(8),
   },
 }));
 
 export const UploadProjectCard = () => {
   const { classes } = useUploadProjectCardStyles();
   return (
-    <Button to={`/upload/project`} component={RouterLink} data-testid="upload">
-      <Card className={classes.projectCard}>
-        <CardContent className={classes.uploadProjectCard}>
+    <Button to={`/upload/project`} component={RouterLink} className={classes.button} data-testid="upload">
+      <CreateProjectAreaCard title="+ Upload project" description="Upload project">
+        <div className={classes.projectCardContent}>
           <CloudUploadOutlinedIcon className={classes.projectCardIcon} htmlColor="white" />
-        </CardContent>
-        <CardActions className={classes.projectCardActions}>
-          <Tooltip title={'Upload project'}>
-            <Typography variant="body1" className={classes.projectCardLabel}>
-              + Upload project
-            </Typography>
-          </Tooltip>
-        </CardActions>
-      </Card>
+        </div>
+      </CreateProjectAreaCard>
     </Button>
   );
 };

@@ -13,58 +13,35 @@
 
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+import { CreateProjectAreaCard } from './CreateProjectAreaCard';
 
 const useNewProjectCardStyles = makeStyles()((theme) => ({
-  projectCard: {
-    width: theme.spacing(30),
-    height: theme.spacing(18),
-    display: 'grid',
-    gridTemplateRows: '1fr min-content',
+  button: {
+    padding: '0px',
+    margin: '0px',
   },
-  projectCardActions: {
-    minWidth: 0,
-  },
-  projectCardLabel: {
-    textTransform: 'none',
-    fontWeight: 400,
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-  },
-  projectCardIcon: {
-    fontSize: theme.spacing(8),
-  },
-  blankProjectCard: {
-    backgroundColor: theme.palette.primary.main,
+  projectCardContent: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: theme.palette.primary.main,
+  },
+  projectCardIcon: {
+    fontSize: theme.spacing(8),
   },
 }));
 
 export const NewProjectCard = () => {
   const { classes } = useNewProjectCardStyles();
   return (
-    <Button to={`/new/project`} component={RouterLink} data-testid="create">
-      <Card className={classes.projectCard}>
-        <CardContent className={classes.blankProjectCard}>
+    <Button to={`/new/project`} component={RouterLink} className={classes.button} data-testid="create">
+      <CreateProjectAreaCard title="+ Blank project" description="Blank project">
+        <div className={classes.projectCardContent}>
           <AddIcon className={classes.projectCardIcon} htmlColor="white" />
-        </CardContent>
-        <CardActions className={classes.projectCardActions}>
-          <Tooltip title={'Blank project'}>
-            <Typography variant="body1" className={classes.projectCardLabel}>
-              + Blank project
-            </Typography>
-          </Tooltip>
-        </CardActions>
-      </Card>
+        </div>
+      </CreateProjectAreaCard>
     </Button>
   );
 };
