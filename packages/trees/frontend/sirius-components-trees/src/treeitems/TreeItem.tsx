@@ -96,7 +96,7 @@ const useTreeItemStyle = makeStyles()((theme) => ({
 }));
 
 export const getString = (styledString: GQLStyledString): string => {
-  return styledString.styledStringFragments.map((fragments) => fragments.text).join();
+  return styledString.styledStringFragments.map((fragments) => fragments.text).join('');
 };
 
 // The list of characters that will enable the direct edit mechanism.

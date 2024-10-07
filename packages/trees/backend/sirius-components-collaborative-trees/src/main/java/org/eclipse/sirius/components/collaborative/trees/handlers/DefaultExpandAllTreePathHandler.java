@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.trees.handlers;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
+import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.springframework.stereotype.Service;
@@ -60,24 +62,56 @@ public class DefaultExpandAllTreePathHandler {
         maxDepth = itemAncestors.size();
         var optionalTreeDescription = this.getTreeDescription(editingContext, tree.getDescriptionId());
         if (optionalTreeDescription.isPresent()) {
-            maxDepth = this.addAllContents(editingContext, optionalTreeDescription.get(), treeItemId, maxDepth, treeItemIdsToExpand, maxDepth);
+            int index = this.computeIndexOf(treeItemId, tree.getChildren());
+            var variableManager = new VariableManager();
+            variableManager.put(TreeRenderer.INDEX, index);
+            variableManager.put(TreeRenderer.ANCESTOR_IDS, itemAncestors);
+            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(TreeDescription.ID, treeItemId);
+            maxDepth = this.addAllContents(optionalTreeDescription.get(), treeItemId, maxDepth, treeItemIdsToExpand, maxDepth, variableManager);
         }
         return new ExpandAllTreePathSuccessPayload(input.id(), new TreePath(treeItemIdsToExpand.stream().toList(), maxDepth));
     }
 
-    private int addAllContents(IEditingContext editingContext, TreeDescription treeDescription, String treeItemId, int depth, Set<String> treeItemIdsToExpand, int startingDepth) {
+    private int computeIndexOf(String treeItemId, List<TreeItem> children) {
+        int index = -1;
+        for (int currentIndex = 0; currentIndex < children.size() && index < 0; currentIndex++) {
+            TreeItem currentItem = children.get(currentIndex);
+            if (treeItemId.equals(currentItem.getId())) {
+                index = currentIndex;
+            } else {
+                index = this.computeIndexOf(treeItemId, currentItem.getChildren());
+            }
+        }
+        return index;
+    }
+
+    private int addAllContents(TreeDescription treeDescription, String treeItemId, int depth, Set<String> treeItemIdsToExpand, int startingDepth, VariableManager variableManager) {
         var depthConsidered = depth;
         if (depthConsidered - startingDepth < MAX_EXPAND_DEPTH_INCREASE) {
-            var optionalObject = this.getTreeItemObject(editingContext, treeDescription, treeItemId);
+
+            var optionalObject = this.getTreeItemObject(treeDescription, variableManager);
             treeItemIdsToExpand.add(treeItemId);
-            if (optionalObject.isPresent() && this.hasChildren(treeDescription, optionalObject.get())) {
-                List<?> children = this.getChildren(editingContext, treeDescription, optionalObject.get(), treeItemId);
-                for (var child : children) {
-                    var optionalChildId = this.getTreeItemId(treeDescription, child);
-                    if (optionalChildId.isPresent()) {
-                        var childTreePathMaxDepth = depth + 1;
-                        childTreePathMaxDepth = this.addAllContents(editingContext, treeDescription, optionalChildId.get(), childTreePathMaxDepth, treeItemIdsToExpand, startingDepth);
-                        depthConsidered = Math.max(depthConsidered, childTreePathMaxDepth);
+            variableManager.put(TreeRenderer.EXPANDED, treeItemIdsToExpand.stream().toList());
+            if (optionalObject.isPresent()) {
+                variableManager.put(VariableManager.SELF, optionalObject.get());
+                if (this.hasChildren(treeDescription, variableManager)) {
+
+                    List<?> children = this.getChildren(treeDescription, variableManager);
+                    int index = 0;
+                    for (var child : children) {
+                        VariableManager childVariableManager = variableManager.createChild();
+                        childVariableManager.put(TreeRenderer.INDEX, index++);
+                        List<String> ancestors = new ArrayList<String>(childVariableManager.get(TreeRenderer.ANCESTOR_IDS, List.class).orElse(List.of()));
+                        ancestors.add(treeItemId);
+                        childVariableManager.put(TreeRenderer.ANCESTOR_IDS, ancestors);
+                        var optionalChildId = this.getTreeItemId(treeDescription, child);
+                        if (optionalChildId.isPresent()) {
+                            childVariableManager.put(TreeDescription.ID, optionalChildId.get());
+                            var childTreePathMaxDepth = depth + 1;
+                            childTreePathMaxDepth = this.addAllContents(treeDescription, optionalChildId.get(), childTreePathMaxDepth, treeItemIdsToExpand, startingDepth, childVariableManager);
+                            depthConsidered = Math.max(depthConsidered, childTreePathMaxDepth);
+                        }
                     }
                 }
             } else {
@@ -87,17 +121,11 @@ public class DefaultExpandAllTreePathHandler {
         return depthConsidered;
     }
 
-    private boolean hasChildren(TreeDescription treeDescription, Object object) {
-        var variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, object);
+    private boolean hasChildren(TreeDescription treeDescription, VariableManager variableManager) {
         return treeDescription.getHasChildrenProvider().apply(variableManager);
     }
 
-    private List<?> getChildren(IEditingContext editingContext, TreeDescription treeDescription, Object object, String treeItemId) {
-        var variableManager = new VariableManager();
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-        variableManager.put(VariableManager.SELF, object);
-        variableManager.put(TreeRenderer.EXPANDED, List.of(treeItemId)); // getChildren only returns children if self is expanded
+    private List<?> getChildren(TreeDescription treeDescription, VariableManager variableManager) {
         return treeDescription.getChildrenProvider().apply(variableManager);
     }
 
@@ -107,10 +135,7 @@ public class DefaultExpandAllTreePathHandler {
         return Optional.of(treeDescription.getTreeItemIdProvider().apply(variableManager));
     }
 
-    private Optional<Object> getTreeItemObject(IEditingContext editingContext, TreeDescription treeDescription, String id) {
-        var variableManager = new VariableManager();
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-        variableManager.put(TreeDescription.ID, id);
+    private Optional<Object> getTreeItemObject(TreeDescription treeDescription, VariableManager variableManager) {
         return Optional.ofNullable(treeDescription.getTreeItemObjectProvider().apply(variableManager));
     }
 
