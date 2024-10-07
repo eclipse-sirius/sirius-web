@@ -108,6 +108,7 @@ Project template images will now have a predictable size of 150px by 110px.
 This will allow specifier to create images that fir perfectly in the project template card.
 - https://github.com/eclipse-sirius/sirius-web/issues/3833[#3833] [gantt] Enhance Gantt to support Date and DateTime
 - https://github.com/eclipse-sirius/sirius-web/issues/4029[#4029] [sirius-web] Add Project Custom Images element to the exported APIs
+- https://github.com/eclipse-sirius/sirius-web/issues/4027[#4027] [forms] List widgets in read-only mode now still allow the selection of their items, but still prevent the invocation of the corresponding single or double-click handlers (which can perform mutations).
 
 
 == v2024.9.0
