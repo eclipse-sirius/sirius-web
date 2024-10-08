@@ -33,5 +33,5 @@ public interface IProjectSearchService {
 
     Page<Project> findAll(Pageable pageable);
 
-    List<Project> findAllByIds(List<UUID> projectIds);
+    Page<Project> findAllById(List<UUID> projectIds, Pageable pageable);
 }
