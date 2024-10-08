@@ -30,6 +30,7 @@ type BarChart implements Representation {
   style: BarChartStyle
   width: Int!
   height: Int!
+  yAxisLabel: String
 }
 
 type BarChartEntry {

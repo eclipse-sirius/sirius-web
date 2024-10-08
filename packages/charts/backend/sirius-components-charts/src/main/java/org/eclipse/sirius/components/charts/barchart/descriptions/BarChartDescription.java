@@ -47,6 +47,8 @@ public final class BarChartDescription implements IChartDescription {
 
     private int height;
 
+    private Function<VariableManager, String> yAxisLabelProvider;
+
     private BarChartDescription() {
         // prevent instantiation
     }
@@ -89,6 +91,10 @@ public final class BarChartDescription implements IChartDescription {
         return this.height;
     }
 
+    public Function<VariableManager, String> getYAxisLabelProvider() {
+        return this.yAxisLabelProvider;
+    }
+
     public static Builder newBarChartDescription(String id) {
         return new Builder(id);
     }
@@ -117,6 +123,8 @@ public final class BarChartDescription implements IChartDescription {
         private int width;
 
         private int height;
+
+        private Function<VariableManager, String> yAxisLabelProvider = variableManager -> null;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -162,6 +170,11 @@ public final class BarChartDescription implements IChartDescription {
             return this;
         }
 
+        public Builder yAxisLabelProvider(Function<VariableManager, String> yAxisLabelProvider) {
+            this.yAxisLabelProvider = Objects.requireNonNull(yAxisLabelProvider);
+            return this;
+        }
+
         public BarChartDescription build() {
             BarChartDescription barChartDescription = new BarChartDescription();
             barChartDescription.id = Objects.requireNonNull(this.id);
@@ -173,6 +186,7 @@ public final class BarChartDescription implements IChartDescription {
             barChartDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             barChartDescription.width = this.width;
             barChartDescription.height = this.height;
+            barChartDescription.yAxisLabelProvider = Objects.requireNonNull(this.yAxisLabelProvider);
             return barChartDescription;
         }
     }

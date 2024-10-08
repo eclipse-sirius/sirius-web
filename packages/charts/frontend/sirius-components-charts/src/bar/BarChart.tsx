@@ -35,11 +35,7 @@ export const BarChart = ({ chart }: BarChartProps) => {
     const yRange = [height - marginBottom, marginTop]; // [bottom, top]
 
     if (d3Container.current && chart) {
-      const {
-        entries: data,
-        metadata: { label: yLabel },
-        style,
-      } = chart;
+      const { entries: data, yAxisLabel, style } = chart;
       const fontSize = getFontSize(style);
       const fontStyle = getFontStyle(style);
       const fontWeight = getFontWeight(style);
@@ -98,7 +94,7 @@ export const BarChart = ({ chart }: BarChartProps) => {
             .attr('y', 10)
             .attr('fill', 'currentColor')
             .attr('text-anchor', 'start')
-            .text(yLabel)
+            .text(yAxisLabel)
         );
 
       const bar = svg

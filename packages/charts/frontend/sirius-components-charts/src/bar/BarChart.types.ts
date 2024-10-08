@@ -18,15 +18,11 @@ export interface BarChartProps {
 }
 
 export interface BarChartRepresentation {
-  metadata: RepresentationMetadata;
+  yAxisLabel: string | null;
   entries: BarChartRepresentationEntry[];
   style: BarChartStyle | null;
   width: number;
   height: number;
-}
-
-export interface RepresentationMetadata {
-  label: string;
 }
 
 export interface BarChartRepresentationEntry {

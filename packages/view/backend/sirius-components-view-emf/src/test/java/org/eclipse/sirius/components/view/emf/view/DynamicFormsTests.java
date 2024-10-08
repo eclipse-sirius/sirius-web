@@ -474,7 +474,7 @@ public class DynamicFormsTests {
         IChart chart = chartWidgetWithBarChart.getChart();
         assertThat(chart).isInstanceOf(BarChart.class);
         BarChart barChart = (BarChart) chart;
-        assertThat(barChart.getLabel()).isEqualTo("the values");
+        assertThat(barChart.getYAxisLabel()).isEqualTo("the values");
         List<BarChartEntry> barChartEntries = barChart.getEntries();
         this.checkBarChartEntry(barChartEntries, 0, "a", 1);
         this.checkBarChartEntry(barChartEntries, 1, "b", 3);

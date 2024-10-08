@@ -15,8 +15,8 @@ import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { GQLPieChart } from '@eclipse-sirius/sirius-components-forms';
 import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PieChartWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles()((theme) => ({
@@ -72,14 +72,14 @@ export const PieChartWidget = ({ widget }: PieChartWidgetProps) => {
 
   return (
     <div
-      data-testid={pieChartWidget.metadata.label}
+      data-testid={widget.label}
       onFocus={() => setSelected(true)}
       onBlur={() => setSelected(false)}
       ref={ref}
       tabIndex={0}>
       <div className={classes.propertySectionLabel}>
         <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-          {pieChartWidget.metadata.label}
+          {widget.label}
         </Typography>
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
