@@ -11,13 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider } from '@apollo/client/testing';
-
 import { cleanup, render } from '@testing-library/react';
+import React from 'react';
 import { afterEach, expect, test } from 'vitest';
 import {
   GQLBarChart,
   GQLBarChartEntry,
-  GQLChartMetadata,
   GQLChartWidget,
   GQLPieChart,
   GQLPieChartEntry,
@@ -25,6 +24,7 @@ import {
 import { ChartWidgetPropertySection } from '../ChartWidgetPropertySection';
 
 afterEach(() => cleanup());
+
 const pieChartentries: GQLPieChartEntry[] = [
   { key: 'a', value: 10 },
   { key: 'b', value: 15 },
@@ -32,20 +32,14 @@ const pieChartentries: GQLPieChartEntry[] = [
   { key: 'd', value: 20 },
 ];
 
-const pieChartMetadata: GQLChartMetadata = {
-  label: 'PieChartLabel',
-};
-
 const defaultPieChart: GQLPieChart = {
   __typename: 'PieChart',
-  metadata: pieChartMetadata,
   entries: pieChartentries,
   style: null,
 };
 
 const defaultPieChartWithStyle: GQLPieChart = {
   __typename: 'PieChart',
-  metadata: pieChartMetadata,
   entries: pieChartentries,
   style: {
     strokeWidth: 2,
@@ -61,7 +55,6 @@ const defaultPieChartWithStyle: GQLPieChart = {
 
 const defaultPieChartWithEmptyStyle: GQLPieChart = {
   __typename: 'PieChart',
-  metadata: pieChartMetadata,
   entries: pieChartentries,
   style: {
     strokeWidth: null,
@@ -81,20 +74,17 @@ const barChartentries: GQLBarChartEntry[] = [
   { key: 'c', value: 5 },
   { key: 'd', value: 20 },
 ];
-const barChartMetadata: GQLChartMetadata = {
-  label: 'values',
-};
+
 const defaultBarChart: GQLBarChart = {
   __typename: 'BarChart',
-  metadata: barChartMetadata,
   entries: barChartentries,
   style: null,
   width: 500,
   height: 250,
+  yAxisLabel: 'values',
 };
 const defaultBarChartWithStyle: GQLBarChart = {
   __typename: 'BarChart',
-  metadata: barChartMetadata,
   entries: barChartentries,
   style: {
     barsColor: 'Aquamarine',
@@ -106,11 +96,11 @@ const defaultBarChartWithStyle: GQLBarChart = {
   },
   width: 500,
   height: 250,
+  yAxisLabel: 'values',
 };
 
 const defaultBarChartWithEmptyStyle: GQLBarChart = {
   __typename: 'BarChart',
-  metadata: barChartMetadata,
   entries: barChartentries,
   style: {
     barsColor: '',
@@ -122,6 +112,7 @@ const defaultBarChartWithEmptyStyle: GQLBarChart = {
   },
   width: 500,
   height: 250,
+  yAxisLabel: 'values',
 };
 const defaultPieChartWidget: GQLChartWidget = {
   id: 'id',

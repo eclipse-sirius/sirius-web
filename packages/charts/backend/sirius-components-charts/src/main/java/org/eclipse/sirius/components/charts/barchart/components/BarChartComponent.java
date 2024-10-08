@@ -49,9 +49,9 @@ public class BarChartComponent implements IComponent {
         String targetObjectId = barChartDescription.getTargetObjectIdProvider().apply(variableManager);
         List<Number> values = barChartDescription.getValuesProvider().apply(variableManager);
         List<String> keys = barChartDescription.getKeysProvider().apply(variableManager);
+        String yAxisLabel = barChartDescription.getYAxisLabelProvider().apply(variableManager);
         BarChartStyle barChartStyle = barChartDescription.getStyleProvider().apply(variableManager);
 
-        // @formatter:off
         Builder builder = BarChartElementProps.newBarChartElementProps(id)
                 .label(label)
                 .descriptionId(barChartDescription.getId())
@@ -60,10 +60,12 @@ public class BarChartComponent implements IComponent {
                 .width(barChartDescription.getWidth())
                 .height(barChartDescription.getHeight())
                 .keys(keys);
-        // @formatter:on
 
         if (barChartStyle != null) {
             builder.style(barChartStyle);
+        }
+        if (yAxisLabel != null) {
+            builder.yAxisLabel(yAxisLabel);
         }
         BarChartElementProps barChartElementProps = builder.build();
         return new Element(BarChartElementProps.TYPE, barChartElementProps);

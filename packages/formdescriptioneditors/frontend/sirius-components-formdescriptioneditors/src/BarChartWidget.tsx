@@ -38,9 +38,6 @@ export const BarChartWidget = ({ widget }: BarChartWidgetProps) => {
   const barChartWidget = widget.chart as GQLBarChart;
 
   const chart: BarChartRepresentation = {
-    metadata: {
-      label: 'Frequency',
-    },
     entries: [
       { key: 'A', value: 0.08167 },
       { key: 'B', value: 0.01492 },
@@ -72,6 +69,7 @@ export const BarChartWidget = ({ widget }: BarChartWidgetProps) => {
     style: barChartWidget.style,
     width: barChartWidget.width,
     height: barChartWidget.height,
+    yAxisLabel: 'Frequency',
   };
   const [selected, setSelected] = useState<boolean>(false);
   const { selection } = useSelection();
@@ -89,7 +87,7 @@ export const BarChartWidget = ({ widget }: BarChartWidgetProps) => {
 
   return (
     <div
-      data-testid={barChartWidget.metadata.label}
+      data-testid={widget.label}
       onFocus={() => setSelected(true)}
       onBlur={() => setSelected(false)}
       ref={ref}

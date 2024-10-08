@@ -435,9 +435,10 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     @Override
     public Optional<AbstractControlDescription> caseBarChartDescription(org.eclipse.sirius.components.view.form.BarChartDescription viewBarChartDescription) {
-        String labelExpression = viewBarChartDescription.getYAxisLabelExpression();
+        String labelExpression = viewBarChartDescription.getLabelExpression();
         String keysExpression = viewBarChartDescription.getKeysExpression();
         String valuesExpression = viewBarChartDescription.getValuesExpression();
+        String yAxisLabelExpression = viewBarChartDescription.getYAxisLabelExpression();
         Function<VariableManager, BarChartStyle> styleProvider = new BarChartStyleProvider(this.interpreter, viewBarChartDescription);
 
         if (labelExpression == null || keysExpression == null || valuesExpression == null) {
@@ -452,7 +453,8 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .valuesProvider(this.getMultiValueProvider(valuesExpression, Number.class))
                 .styleProvider(styleProvider)
                 .width(viewBarChartDescription.getWidth())
-                .height(viewBarChartDescription.getHeight());
+                .height(viewBarChartDescription.getHeight())
+                .yAxisLabelProvider(this.getStringValueProvider(yAxisLabelExpression));
         return Optional.of(this.createChartWidgetDescription(viewBarChartDescription, builder.build()));
     }
 

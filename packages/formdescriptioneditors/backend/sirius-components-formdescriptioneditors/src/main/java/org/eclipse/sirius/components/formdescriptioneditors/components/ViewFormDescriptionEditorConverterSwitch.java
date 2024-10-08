@@ -563,7 +563,6 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
             return new BarChartStyleProvider(style).build();
         };
 
-        // @formatter:off
         IChartDescription chartDescription = BarChartDescription.newBarChartDescription(UUID.randomUUID().toString())
                 .label(Optional.ofNullable(viewBarChartDescription.getName()).orElse(""))
                 .labelProvider(vm -> this.getWidgetLabel(viewBarChartDescription, "BarChart"))
@@ -573,8 +572,9 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
                 .styleProvider(styleProvider)
                 .width(viewBarChartDescription.getWidth())
                 .height(viewBarChartDescription.getHeight())
+                .yAxisLabelProvider(vm -> this.getYAxisLabel(viewBarChartDescription, "Y Axis Label"))
                 .build();
-        // @formatter:on
+
         return this.createChartWidgetDescription(viewBarChartDescription, chartDescription);
     }
 
@@ -588,7 +588,6 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
             return new PieChartStyleProvider(style).build();
         };
 
-        // @formatter:off
         IChartDescription chartDescription =  PieChartDescription.newPieChartDescription(UUID.randomUUID().toString())
                 .label(this.getWidgetLabel(viewPieChartDescription, "PieChart"))
                 .targetObjectIdProvider(vm -> vm.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
@@ -596,7 +595,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
                 .valuesProvider(vm -> List.of())
                 .styleProvider(styleProvider)
                 .build();
-        // @formatter:on
+
         return this.createChartWidgetDescription(viewPieChartDescription, chartDescription);
     }
 
@@ -763,4 +762,15 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
         return helpText;
     }
 
+    public String getYAxisLabel(org.eclipse.sirius.components.view.form.BarChartDescription barChartDescription, String defaultLabel) {
+        String yAxisLabel = defaultLabel;
+        String name = barChartDescription.getName();
+        String labelExpression = barChartDescription.getYAxisLabelExpression();
+        if (labelExpression != null && !labelExpression.isBlank() && !labelExpression.startsWith(AQL_PREFIX)) {
+            yAxisLabel = labelExpression;
+        } else if (name != null && !name.isBlank()) {
+            yAxisLabel = name;
+        }
+        return yAxisLabel;
+    }
 }

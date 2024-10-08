@@ -48,6 +48,7 @@ public final class BarChart implements IChart {
 
     private int height;
 
+    private String yAxisLabel;
 
     private BarChart() {
         // Prevent instantiation
@@ -94,14 +95,18 @@ public final class BarChart implements IChart {
         return this.height;
     }
 
+    public String getYAxisLabel() {
+        return this.yAxisLabel;
+    }
+
     public static Builder newBarChart(String id) {
         return new Builder(id);
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, kind: {4}, width: {5}, height: {6}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label, this.kind, this.width, this.height);
+        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, kind: {4}, width: {5}, height: {6}, yAxisLabel:{7}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label, this.kind, this.width, this.height, this.yAxisLabel);
     }
 
     /**
@@ -129,6 +134,8 @@ public final class BarChart implements IChart {
         private int width;
 
         private int height;
+
+        private String yAxisLabel;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -169,6 +176,11 @@ public final class BarChart implements IChart {
             return this;
         }
 
+        public Builder yAxisLabel(String yAxisLabel) {
+            this.yAxisLabel = Objects.requireNonNull(yAxisLabel);
+            return this;
+        }
+
         public BarChart build() {
             BarChart barChart = new BarChart();
             barChart.id = Objects.requireNonNull(this.id);
@@ -177,9 +189,10 @@ public final class BarChart implements IChart {
             barChart.kind = Objects.requireNonNull(this.kind);
             barChart.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             barChart.entries = Objects.requireNonNull(this.entries);
-            barChart.style = this.style;
+            barChart.style = this.style; // Optional on purpose
             barChart.width = this.width;
             barChart.height = this.height;
+            barChart.yAxisLabel = this.yAxisLabel; // Optional on purpose
             return barChart;
         }
     }

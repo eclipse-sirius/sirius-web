@@ -47,6 +47,8 @@ public final class BarChartElementProps implements IProps {
 
     private int height;
 
+    private String yAxisLabel;
+
     private BarChartElementProps() {
         // prevent instantiation
     }
@@ -87,6 +89,10 @@ public final class BarChartElementProps implements IProps {
         return this.height;
     }
 
+    public String getYAxisLabel() {
+        return this.yAxisLabel;
+    }
+
     public static Builder newBarChartElementProps(String id) {
         return new Builder(id);
     }
@@ -115,6 +121,8 @@ public final class BarChartElementProps implements IProps {
         private int width;
 
         private int height;
+
+        private String yAxisLabel;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -160,6 +168,11 @@ public final class BarChartElementProps implements IProps {
             return this;
         }
 
+        public Builder yAxisLabel(String yAxisLabel) {
+            this.yAxisLabel = Objects.requireNonNull(yAxisLabel);
+            return this;
+        }
+
         public BarChartElementProps build() {
             BarChartElementProps barChartElementProps = new BarChartElementProps();
             barChartElementProps.id = Objects.requireNonNull(this.id);
@@ -171,6 +184,7 @@ public final class BarChartElementProps implements IProps {
             barChartElementProps.style = this.style; // Optional on purpose
             barChartElementProps.width = this.width;
             barChartElementProps.height = this.height;
+            barChartElementProps.yAxisLabel = this.yAxisLabel; // Optional on purpose
             return barChartElementProps;
         }
     }

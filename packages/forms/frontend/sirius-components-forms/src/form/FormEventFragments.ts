@@ -205,9 +205,6 @@ export const widgetFields = `
     chart {
       __typename
       ... on BarChart {
-        metadata {
-          label
-        }
         entries {
           key
           value
@@ -222,11 +219,9 @@ export const widgetFields = `
         }
         width
         height
+        yAxisLabel
       }
       ... on PieChart {
-        metadata {
-          label
-        }
         entries {
           key
           value

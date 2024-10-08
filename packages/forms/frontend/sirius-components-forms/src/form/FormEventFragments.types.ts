@@ -276,17 +276,13 @@ export interface GQLChartWidget extends GQLWidget {
 
 export type GQLChart = GQLBarChart | GQLPieChart;
 
-export interface GQLChartMetadata {
-  label: string;
-}
-
 export interface GQLBarChart {
   __typename: string;
-  metadata: GQLChartMetadata;
   entries: GQLBarChartEntry[];
   style: GQLBarChartStyle | null;
   width: number;
   height: number;
+  yAxisLabel: string | null;
 }
 
 export interface GQLFontStyle {
@@ -308,7 +304,6 @@ export interface GQLBarChartEntry {
 
 export interface GQLPieChart {
   __typename: string;
-  metadata: GQLChartMetadata;
   entries: GQLPieChartEntry[];
   style: GQLPieChartStyle | null;
 }
