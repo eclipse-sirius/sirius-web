@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -106,14 +107,18 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
                 String targetObjectId = this.objectService.getId(object);
                 if (representationDescription instanceof FormDescription formDescription) {
 
+                    var variableManager = new VariableManager();
+                    variableManager.put(VariableManager.SELF, object);
+                    variableManager.put(FormDescription.LABEL, createRepresentationInput.representationName());
+                    String label = formDescription.getLabelProvider().apply(variableManager);
+
                     Form form = Form.newForm(UUID.randomUUID().toString())
-                            .label(createRepresentationInput.representationName())
                             .targetObjectId(targetObjectId)
                             .descriptionId(representationDescription.getId())
                             .pages(List.of()) // We don't store form pages, it will be re-render by the FormProcessor.
                             .build();
 
-                    var representationMetadata = new RepresentationMetadata(form.getId(), form.getKind(), form.getLabel(), form.getDescriptionId());
+                    var representationMetadata = new RepresentationMetadata(form.getId(), form.getKind(), label, form.getDescriptionId());
                     this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, targetObjectId);
                     this.representationPersistenceService.save(createRepresentationInput, editingContext, form);
 

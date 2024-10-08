@@ -100,10 +100,8 @@ public final class TreeItem {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, editable: {4}, deletable: {5}, iconURL: {6}, hasChildren: {7}, expanded: {8}, childCount: {9}'}'";
-        return MessageFormat.format(pattern, this.getClass()
-                        .getSimpleName(), this.id, this.kind, this.label, this.editable, this.deletable, this.iconURL, this.hasChildren, this.expanded,
-                this.children.size());
+        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, editable: {4}, deletable: {5}, iconURL: {6}, hasChildren: {7}, expanded: {8}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.kind, this.label, this.editable, this.deletable, this.iconURL, this.hasChildren, this.expanded);
     }
 
     /**

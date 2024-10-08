@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.description.FormDesc
  * @author arichard
  */
 public interface IFormDescriptionEditorCreationService {
-    FormDescriptionEditor create(ICause cause, String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext);
+    FormDescriptionEditor create(ICause cause, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext);
 
     FormDescriptionEditor refresh(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext);
 
@@ -35,7 +35,7 @@ public interface IFormDescriptionEditorCreationService {
     class NoOp implements IFormDescriptionEditorCreationService {
 
         @Override
-        public FormDescriptionEditor create(ICause cause, String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
+        public FormDescriptionEditor create(ICause cause, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
             return null;
         }
 

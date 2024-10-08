@@ -49,7 +49,6 @@ public class DeckComponent implements IComponent {
         List<Lane> previousLanes = optionalPreviousDeck.map(Deck::lanes).orElse(List.of());
         String deckId = optionalPreviousDeck.map(Deck::getId).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = deckDescription.targetObjectIdProvider().apply(variableManager);
-        String label = optionalPreviousDeck.map(Deck::getLabel).orElseGet(() -> deckDescription.labelProvider().apply(variableManager));
         DeckStyle deckStyle = deckDescription.deckStyleProvider().apply(variableManager);
 
         List<Element> children = deckDescription.laneDescriptions()//
@@ -60,7 +59,7 @@ public class DeckComponent implements IComponent {
                 })//
                 .toList();
 
-        DeckElementProps deckElementProps = new DeckElementProps(deckId, deckDescription.getId(), targetObjectId, label, deckStyle, children);
+        DeckElementProps deckElementProps = new DeckElementProps(deckId, deckDescription.getId(), targetObjectId, deckStyle, children);
         return new Element(DeckElementProps.TYPE, deckElementProps);
     }
 

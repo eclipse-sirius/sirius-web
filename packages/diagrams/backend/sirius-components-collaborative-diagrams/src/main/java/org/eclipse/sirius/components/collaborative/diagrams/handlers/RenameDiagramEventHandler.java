@@ -59,11 +59,9 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -87,7 +85,7 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
             if (optionalDiagram.isPresent()) {
                 Diagram diagram = optionalDiagram.get();
 
-                Diagram renamedDiagram = Diagram.newDiagram(diagram).label(newLabel).build();
+                Diagram renamedDiagram = Diagram.newDiagram(diagram).build();
                 this.representationPersistenceService.save(renameRepresentationInput, editingContext, renamedDiagram);
                 diagramContext.update(renamedDiagram);
 

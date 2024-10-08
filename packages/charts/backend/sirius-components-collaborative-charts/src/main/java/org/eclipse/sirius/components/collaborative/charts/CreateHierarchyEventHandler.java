@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -106,8 +107,13 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
                 Object object = optionalObject.get();
                 HierarchyDescription representationDescription = optionalHierarchyDescription.get();
 
-                Hierarchy hierarchy = this.hierarchyCreationService.create(createRepresentationInput, createRepresentationInput.representationName(), object, representationDescription, editingContext);
-                var representationMetadata = new RepresentationMetadata(hierarchy.getId(), hierarchy.getKind(), hierarchy.getLabel(), hierarchy.getDescriptionId());
+                var variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, object);
+                variableManager.put(HierarchyDescription.LABEL, createRepresentationInput.representationName());
+                String label = representationDescription.getLabelProvider().apply(variableManager);
+
+                Hierarchy hierarchy = this.hierarchyCreationService.create(object, representationDescription, editingContext);
+                var representationMetadata = new RepresentationMetadata(hierarchy.getId(), hierarchy.getKind(), label, hierarchy.getDescriptionId());
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, hierarchy.getTargetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, hierarchy);
 

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.query;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -35,6 +36,8 @@ import org.eclipse.sirius.components.collaborative.dto.QueryBasedIntInput;
 import org.eclipse.sirius.components.collaborative.dto.QueryBasedIntSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.QueryBasedObjectInput;
 import org.eclipse.sirius.components.collaborative.dto.QueryBasedObjectSuccessPayload;
+import org.eclipse.sirius.components.collaborative.dto.QueryBasedObjectsInput;
+import org.eclipse.sirius.components.collaborative.dto.QueryBasedObjectsSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -63,10 +66,10 @@ public class EMFQueryServiceTests {
         };
         IQueryService queryService = new EMFQueryService(editingContextEPackageService, List.of());
 
-        QueryBasedIntInput input = new QueryBasedIntInput(UUID.randomUUID(), "aql:editingContext.allContents()->size()", Map.of());
+        QueryBasedObjectsInput input = new QueryBasedObjectsInput(UUID.randomUUID(), "aql:editingContext.allContents()", Map.of());
         IPayload payload = queryService.execute(editingContext, input);
-        assertTrue(payload instanceof QueryBasedIntSuccessPayload);
-        assertEquals(8, ((QueryBasedIntSuccessPayload) payload).result());
+        assertThat(payload).isInstanceOf(QueryBasedObjectsSuccessPayload.class);
+        assertThat(((QueryBasedObjectsSuccessPayload) payload).result()).size().isEqualTo(8);
     }
 
     @Test
@@ -101,7 +104,6 @@ public class EMFQueryServiceTests {
 
         IQueryService queryService = new EMFQueryService(editingContextEPackageService, List.of());
 
-        // @formatter:off
         EObject eObjectToRetrieve = editingContext.getDomain().getResourceSet()
                 .getResources().get(0)
                 .getContents().get(0);
@@ -112,7 +114,6 @@ public class EMFQueryServiceTests {
                 .findFirst();
 
         String id = optionalIDAdapter.map(IDAdapter::getId).map(Object::toString).orElse("");
-        // @formatter:on
 
         QueryBasedObjectInput input = new QueryBasedObjectInput(UUID.randomUUID(), "aql:editingContext.getObjectById('" + id + "')", Map.of());
         IPayload payload = queryService.execute(editingContext, input);

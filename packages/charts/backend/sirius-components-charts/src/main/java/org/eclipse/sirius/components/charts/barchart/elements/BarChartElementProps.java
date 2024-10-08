@@ -33,8 +33,6 @@ public final class BarChartElementProps implements IProps {
 
     private String descriptionId;
 
-    private String label;
-
     private String targetObjectId;
 
     private List<Number> values;
@@ -59,10 +57,6 @@ public final class BarChartElementProps implements IProps {
 
     public String getDescriptionId() {
         return this.descriptionId;
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public String getTargetObjectId() {
@@ -108,8 +102,6 @@ public final class BarChartElementProps implements IProps {
 
         private String descriptionId;
 
-        private String label;
-
         private String targetObjectId;
 
         private List<Number> values;
@@ -130,11 +122,6 @@ public final class BarChartElementProps implements IProps {
 
         public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
-            return this;
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
             return this;
         }
 
@@ -177,7 +164,6 @@ public final class BarChartElementProps implements IProps {
             BarChartElementProps barChartElementProps = new BarChartElementProps();
             barChartElementProps.id = Objects.requireNonNull(this.id);
             barChartElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
-            barChartElementProps.label = Objects.requireNonNull(this.label);
             barChartElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             barChartElementProps.values = Objects.requireNonNull(this.values);
             barChartElementProps.keys = Objects.requireNonNull(this.keys);

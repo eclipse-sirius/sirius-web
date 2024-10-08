@@ -171,6 +171,6 @@ public class DynamicDiagramsTests {
 
         IEditingContext editinContext = new IEditingContext.NoOp();
 
-        return diagramCreationService.create("Test Diagram", target, convertedDiagramDescription, editinContext);
+        return diagramCreationService.create(target, convertedDiagramDescription, editinContext);
     }
 }

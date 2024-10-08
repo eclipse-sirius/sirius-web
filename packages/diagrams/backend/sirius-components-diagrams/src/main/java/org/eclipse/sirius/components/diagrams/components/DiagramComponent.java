@@ -49,8 +49,6 @@ public class DiagramComponent implements IComponent {
         variableManager.put(DiagramComponentProps.PREVIOUS_DIAGRAM, optionalPreviousDiagram.orElse(null));
         variableManager.put(IDiagramEvent.DIAGRAM_EVENTS, this.props.getDiagramEvents());
 
-        String label = diagramDescription.getLabelProvider().apply(variableManager);
-
         String diagramId = optionalPreviousDiagram.map(Diagram::getId).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = diagramDescription.getTargetObjectIdProvider().apply(variableManager);
 
@@ -99,7 +97,6 @@ public class DiagramComponent implements IComponent {
         DiagramElementProps diagramElementProps = DiagramElementProps.newDiagramElementProps(diagramId)
                 .targetObjectId(targetObjectId)
                 .descriptionId(diagramDescription.getId())
-                .label(label)
                 .children(children)
                 .build();
         return new Element(DiagramElementProps.TYPE, diagramElementProps);

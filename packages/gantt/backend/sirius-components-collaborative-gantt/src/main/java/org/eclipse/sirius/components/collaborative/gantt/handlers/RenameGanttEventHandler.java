@@ -85,7 +85,7 @@ public class RenameGanttEventHandler implements IGanttEventHandler {
             if (optionalDiagram.isPresent()) {
                 Gantt currentGantt = optionalDiagram.get();
 
-                Gantt renamedGantt = Gantt.newGantt(currentGantt).label(newLabel).build();
+                Gantt renamedGantt = Gantt.newGantt(currentGantt).build();
                 this.representationPersistenceService.save(renameRepresentationInput, editingContext, renamedGantt);
 
                 payload = new RenameRepresentationSuccessPayload(ganttInput.id(), renamedGantt);

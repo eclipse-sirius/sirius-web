@@ -63,7 +63,6 @@ public class PushButtonEventHandlerTests {
             return new Success();
         };
 
-        // @formatter:off
         Button button = Button.newButton(id)
                 .label("label")
                 .pushButtonHandler(pushButtonHandler)
@@ -84,10 +83,8 @@ public class PushButtonEventHandlerTests {
         Form form = Form.newForm(FORM_ID)
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(List.of(page))
                 .build();
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override
@@ -124,7 +121,6 @@ public class PushButtonEventHandlerTests {
             return new Success();
         };
 
-        // @formatter:off
         Button button = Button.newButton(id)
                 .label("label")
                 .pushButtonHandler(pushButtonHandler)
@@ -145,10 +141,8 @@ public class PushButtonEventHandlerTests {
         Form form = Form.newForm(FORM_ID)
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(List.of(page))
                 .build();
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override

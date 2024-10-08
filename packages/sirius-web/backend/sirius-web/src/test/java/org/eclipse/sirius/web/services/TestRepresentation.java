@@ -35,11 +35,6 @@ public class TestRepresentation implements IRepresentation {
     }
 
     @Override
-    public String getLabel() {
-        return "Test";
-    }
-
-    @Override
     public String getKind() {
         return IRepresentation.KIND_PREFIX + this.getDescriptionId();
     }

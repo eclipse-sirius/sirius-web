@@ -110,7 +110,7 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
 
                 String label = createRepresentationInput.representationName();
 
-                FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.create(createRepresentationInput, label , object, representationDescription,
+                FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.create(createRepresentationInput, object, representationDescription,
                         editingContext);
                 var representationMetadata = new RepresentationMetadata(formDescriptionEditor.getId(), formDescriptionEditor.getKind(), label,
                         formDescriptionEditor.getDescriptionId());

@@ -49,6 +49,7 @@ import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.portals.GivenCreatedPortalSubscription;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -93,6 +94,9 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
             """;
 
     @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
     private PortalEventSubscriptionRunner portalEventSubscriptionRunner;
 
     @Autowired
@@ -121,8 +125,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
 
     @BeforeEach
     public void beforeEach() {
-        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream().map(IEditingContextEventProcessor::getEditingContextId)
-                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
+        this.givenInitialServerState.initialize();
     }
 
     @Test
@@ -221,7 +224,6 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 .map(PortalRefreshedEventPayload.class::cast)
                 .map(PortalRefreshedEventPayload::portal)
                 .ifPresentOrElse(portal -> {
-                    assertThat(portal.getLabel()).isEqualTo(SAMPLE_PORTAL);
                     assertThat(portal.getViews()).isEmpty();
                     assertThat(portal.getLayoutData()).isEmpty();
                     portalId.set(portal.getId());
@@ -274,7 +276,6 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 .map(PortalRefreshedEventPayload.class::cast)
                 .map(PortalRefreshedEventPayload::portal)
                 .ifPresentOrElse(portal -> {
-                    assertThat(portal.getLabel()).isEqualTo("Sample Portal");
                     assertThat(portal.getViews()).isEmpty();
                     assertThat(portal.getLayoutData()).isEmpty();
                 }, () -> fail("Missing Portal"));
@@ -306,7 +307,6 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 .map(PortalRefreshedEventPayload::portal)
                 .ifPresentOrElse(portal -> {
                     representationId.set(portal.getId());
-                    assertThat(portal.getLabel()).isEqualTo("Sample Portal");
                     assertThat(portal.getViews()).isEmpty();
                     assertThat(portal.getLayoutData()).isEmpty();
                 }, () -> fail("Missing Portal"));
@@ -316,7 +316,6 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 .map(PortalRefreshedEventPayload.class::cast)
                 .map(PortalRefreshedEventPayload::portal)
                 .ifPresentOrElse(portal -> {
-                    assertThat(portal.getLabel()).isEqualTo("Sample Portal");
                     assertThat(portal.getViews().size()).isEqualTo(1);
                     assertThat(portal.getLayoutData().size()).isEqualTo(1);
                 }, () -> fail("Missing Portal"));

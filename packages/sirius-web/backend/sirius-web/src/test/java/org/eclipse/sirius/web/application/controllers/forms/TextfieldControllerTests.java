@@ -26,12 +26,14 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.services.forms.FormWithReadOnlyTextfieldDescriptionProvider;
 import org.eclipse.sirius.web.services.forms.FormWithTextfieldDescriptionProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -65,6 +67,9 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private FormWithTextfieldDescriptionProvider formWithTextfieldDescriptionProvider;
+
+    @Autowired
+    private FormWithReadOnlyTextfieldDescriptionProvider formWithReadOnlyTextfieldDescriptionProvider;
 
     @Autowired
     private EditTextfieldMutationRunner editTextfieldMutationRunner;
@@ -161,10 +166,70 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                             .isReadOnly();
                 }, () -> fail("Missing form"));
 
+        Runnable tryEditReadOnlyTextField = () -> {
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), textfieldId.get(), "buck");
+            var result = this.editTextfieldMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+        };
+
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
                 .then(editTextfield)
                 .consumeNextWith(updatedFormContentConsumer)
+                .then(tryEditReadOnlyTextField)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    private Flux<Object> givenSubscriptionToReadOnlyTextfieldForm() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                this.formWithReadOnlyTextfieldDescriptionProvider.getRepresentationDescriptionId(),
+                StudioIdentifiers.DOMAIN_OBJECT.toString(),
+                "FormWithReadOnlyTextfield"
+        );
+        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+    }
+
+    @Test
+    @DisplayName("Given a readonly textfield widget, when it is edited, then an error is returned")
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenReadOnlyTextfieldWidgetWhenItIsEditedThenAnErrorIsReturned() {
+        var flux = this.givenSubscriptionToReadOnlyTextfieldForm();
+
+        var formId = new AtomicReference<String>();
+        var textfieldId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    formId.set(form.getId());
+
+                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+                    var textfield = groupNavigator.findWidget("Name", Textfield.class);
+
+                    assertThat(textfield).isReadOnly();
+
+                    textfieldId.set(textfield.getId());
+                }, () -> fail("Missing form"));
+
+        Runnable editTextfield = () -> {
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), textfieldId.get(), "buck");
+            var result = this.editTextfieldMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(editTextfield)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

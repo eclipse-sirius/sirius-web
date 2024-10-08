@@ -100,9 +100,10 @@ public class CreatePortalEventHandler implements IEditingContextEventHandler {
                     VariableManager variableManager = new VariableManager();
                     variableManager.put(VariableManager.SELF, object);
                     variableManager.put("name", createRepresentationInput.representationName());
+                    String label = portalDescription.getLabelProvider().apply(variableManager);
 
                     Portal portal = new PortalRenderer(variableManager, portalDescription).render();
-                    var representationMetadata = new RepresentationMetadata(portal.getId(), portal.getKind(), portal.getLabel(), portal.getDescriptionId());
+                    var representationMetadata = new RepresentationMetadata(portal.getId(), portal.getKind(), label, portal.getDescriptionId());
                     this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, portal.getTargetObjectId());
                     this.representationPersistenceService.save(createRepresentationInput, editingContext, portal);
 

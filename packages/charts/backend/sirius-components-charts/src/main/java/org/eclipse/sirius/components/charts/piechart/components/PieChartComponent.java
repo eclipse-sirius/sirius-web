@@ -45,14 +45,12 @@ public class PieChartComponent implements IComponent {
         Optional<PieChart> optionalPreviousPieChart = this.props.getPreviousPieChart();
 
         String id = optionalPreviousPieChart.map(PieChart::getId).orElseGet(() -> UUID.randomUUID().toString());
-        String label = Optional.ofNullable(pieChartDescription.getLabel()).orElse("");
         String targetObjectId = pieChartDescription.getTargetObjectIdProvider().apply(variableManager);
         List<Number> values = pieChartDescription.getValuesProvider().apply(variableManager);
         List<String> keys = pieChartDescription.getKeysProvider().apply(variableManager);
         PieChartStyle pieChartStyle = pieChartDescription.getStyleProvider().apply(variableManager);
 
         Builder builder = PieChartElementProps.newPieChartElementProps(id)
-                .label(label)
                 .descriptionId(pieChartDescription.getId())
                 .targetObjectId(targetObjectId)
                 .values(values)

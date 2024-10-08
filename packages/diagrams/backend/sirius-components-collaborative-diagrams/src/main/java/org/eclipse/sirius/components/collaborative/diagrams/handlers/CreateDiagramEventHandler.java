@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -106,8 +107,13 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
                 DiagramDescription diagramDescription = optionalDiagramDescription.get();
                 Object object = optionalObject.get();
 
-                Diagram diagram = this.diagramCreationService.create(createRepresentationInput.representationName(), object, diagramDescription, editingContext);
-                var representationMetadata = new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId());
+                var variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, object);
+                variableManager.put(DiagramDescription.LABEL, createRepresentationInput.representationName());
+                String label = diagramDescription.getLabelProvider().apply(variableManager);
+
+                Diagram diagram = this.diagramCreationService.create(object, diagramDescription, editingContext);
+                var representationMetadata = new RepresentationMetadata(diagram.getId(), diagram.getKind(), label, diagram.getDescriptionId());
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, diagram.getTargetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, diagram);
 

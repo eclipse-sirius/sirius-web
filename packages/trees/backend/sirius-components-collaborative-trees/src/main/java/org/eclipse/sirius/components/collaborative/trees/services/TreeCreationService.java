@@ -39,11 +39,11 @@ public class TreeCreationService {
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH).tag(Monitoring.NAME, "tree").register(meterRegistry);
     }
 
-    public Tree create(String label, Object targetObject, TreeDescription treeDescription, IEditingContext editingContext) {
-        return this.doRender(label, targetObject, editingContext, treeDescription);
+    public Tree create(Object targetObject, TreeDescription treeDescription, IEditingContext editingContext) {
+        return this.doRender(targetObject, editingContext, treeDescription);
     }
 
-    private Tree doRender(String label, Object targetObject, IEditingContext editingContext, TreeDescription treeDescription) {
+    private Tree doRender(Object targetObject, IEditingContext editingContext, TreeDescription treeDescription) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();

@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Studio } from '../../../usecases/Studio';
-import { Explorer } from '../../../workbench/Explorer';
 import { Details } from '../../../workbench/Details';
+import { Diagram } from '../../../workbench/Diagram';
+import { Explorer } from '../../../workbench/Explorer';
 
 describe('Diagram - list', () => {
   const domainName: string = 'diagramList';
@@ -33,20 +34,26 @@ describe('Diagram - list', () => {
 
       it('Then the node is correctly displayed with the proper separator', () => {
         const explorer = new Explorer();
+        const diagram = new Diagram();
         const details = new Details();
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('list{enter}');
         new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
+        diagram.fitToScreen();
         // Compartment list without label
-        cy.getByTestId('List - undefined').should('exist');
-        cy.getByTestId('List - undefined')
-          .invoke('css', 'border-width')
-          .then((borderWidth) => {
-            expect(borderWidth).to.eq('0px 0px 1px');
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('List - undefined')
+          .should('exist')
+          .invoke('attr', 'style')
+          .then((style) => {
+            expect(style).to.contain('border-width: 0px 0px 1px');
           });
         // Compartment freeform
-        cy.getByTestId('FreeForm - list').should('exist');
-        cy.getByTestId('FreeForm - list')
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('FreeForm - list')
+          .should('exist')
           .invoke('css', 'border-width')
           .then((borderWidth) => {
             expect(borderWidth).to.eq('0px');

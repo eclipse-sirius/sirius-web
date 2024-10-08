@@ -67,7 +67,6 @@ public class EditMultiSelectEventHandlerTests {
             return new Success();
         };
 
-        // @formatter:off
         SelectOption trueOption = SelectOption.newSelectOption(TRUE)
                 .label("True")
                 .build();
@@ -96,10 +95,8 @@ public class EditMultiSelectEventHandlerTests {
         Form form = Form.newForm(FORM_ID)
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(List.of(page))
                 .build();
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override
@@ -136,7 +133,6 @@ public class EditMultiSelectEventHandlerTests {
             return new Success();
         };
 
-        // @formatter:off
         SelectOption trueOption = SelectOption.newSelectOption(TRUE)
                 .label("True")
                 .build();
@@ -165,10 +161,8 @@ public class EditMultiSelectEventHandlerTests {
         Form form = Form.newForm(FORM_ID)
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(List.of(page))
                 .build();
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override

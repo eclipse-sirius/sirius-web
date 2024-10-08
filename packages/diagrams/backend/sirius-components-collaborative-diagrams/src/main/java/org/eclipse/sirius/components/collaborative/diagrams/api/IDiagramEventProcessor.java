@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,14 +20,5 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
  * @author sbegaudeau
  */
 public interface IDiagramEventProcessor extends IRepresentationEventProcessor {
-
-    /**
-     * Implementation which does nothing, used for mocks in unit tests.
-     *
-     * @author sbegaudeau
-     */
-    class NoOp extends IRepresentationEventProcessor.NoOp implements IDiagramEventProcessor {
-
-    }
 
 }

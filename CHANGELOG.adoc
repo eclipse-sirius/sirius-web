@@ -52,6 +52,8 @@ This is much more natural and closer to the behavior of usual languages, but cha
 + Use `org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService#findAllMetadataByTargetObjectId` instead of `org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService#findAllByTargetObjectId`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3679[#3679] [sirius-web] The service `hasChildren` requires the editing context like the aql service `getChildren`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3983[#3983] [tree] The `TreeDescription` must now implement a `dropTreeItemHandler`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3680[#3680] [core] The label has been removed from the content of all representations.
++ The label of a representation is available through its metadata that can be retrieve thanks to the service `IRepresentationMetadataSearchService` from sirius-web-domain or, `IRepresentationMetadataProvider` from sirius-components-collaborative.
 
 
 === Dependency update

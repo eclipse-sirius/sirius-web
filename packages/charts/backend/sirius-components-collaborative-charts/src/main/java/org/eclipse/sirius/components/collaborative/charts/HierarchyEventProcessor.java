@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -49,12 +50,15 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
 
     private final HierarchyCreationService hierarchyCreationService;
 
+    private final IRepresentationPersistenceService representationPersistenceService;
+
     private final HierarchyEventFlux hierarchyEventFlux;
 
     private final IRepresentationSearchService representationSearchService;
 
 
     public HierarchyEventProcessor(IEditingContext editingContext, HierarchyContext hierarchyContext, ISubscriptionManager subscriptionManager, HierarchyCreationService hierarchyCreationService,
+            IRepresentationPersistenceService representationPersistenceService,
             IRepresentationSearchService representationSearchService) {
         this.logger.trace("Creating the hierarchy event processor {}", hierarchyContext.getHierarchy().getId());
 
@@ -62,11 +66,13 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
         this.hierarchyContext = Objects.requireNonNull(hierarchyContext);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.hierarchyCreationService = Objects.requireNonNull(hierarchyCreationService);
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
-        Hierarchy hierarchy = this.hierarchyCreationService.refresh(null, editingContext, hierarchyContext).orElse(null);
+        Hierarchy hierarchy = this.hierarchyCreationService.refresh(editingContext, hierarchyContext).orElse(null);
+        this.representationPersistenceService.save(null, editingContext, hierarchy);
         hierarchyContext.update(hierarchy);
         this.hierarchyEventFlux = new HierarchyEventFlux(hierarchy);
 
@@ -91,7 +97,8 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
     @Override
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
-            Hierarchy refreshedHierarchy = this.hierarchyCreationService.refresh(changeDescription.getInput(), this.editingContext, this.hierarchyContext).orElse(null);
+            Hierarchy refreshedHierarchy = this.hierarchyCreationService.refresh(this.editingContext, this.hierarchyContext).orElse(null);
+            this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedHierarchy);
 
             this.logger.trace("Hierarchy refreshed: {}", refreshedHierarchy.getId());
 
@@ -119,12 +126,10 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
 
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
-        // @formatter:off
         return Flux.merge(
             this.hierarchyEventFlux.getFlux(input),
             this.subscriptionManager.getFlux(input)
         );
-        // @formatter:on
     }
 
     @Override

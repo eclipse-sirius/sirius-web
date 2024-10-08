@@ -48,7 +48,6 @@ public class ValidationElementFactory implements IElementFactory {
                 .toList();
 
         return Validation.newValidation(props.getId())
-                .label(props.getLabel())
                 .descriptionId(props.getDescriptionId())
                 .targetObjectId(props.getTargetObjectId())
                 .diagnostics(diagnostics)

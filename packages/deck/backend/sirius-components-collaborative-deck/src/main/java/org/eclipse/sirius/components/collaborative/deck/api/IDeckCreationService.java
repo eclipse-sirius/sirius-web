@@ -28,8 +28,6 @@ public interface IDeckCreationService {
     /**
      * Creates a new deck representation using the given parameters.
      *
-     * @param label
-     *            The label of the deck representation
      * @param targetObject
      *            The object used as the target
      * @param deckDescription
@@ -38,7 +36,7 @@ public interface IDeckCreationService {
      *            The editing context
      * @return A new deck representation
      */
-    Deck create(String label, Object targetObject, DeckDescription deckDescription, IEditingContext editingContext);
+    Deck create(Object targetObject, DeckDescription deckDescription, IEditingContext editingContext);
 
     /**
      * Refresh an existing deck.
@@ -65,7 +63,7 @@ public interface IDeckCreationService {
     class NoOp implements IDeckCreationService {
 
         @Override
-        public Deck create(String label, Object targetObject, DeckDescription deckDescription, IEditingContext editingContext) {
+        public Deck create(Object targetObject, DeckDescription deckDescription, IEditingContext editingContext) {
             return null;
         }
 

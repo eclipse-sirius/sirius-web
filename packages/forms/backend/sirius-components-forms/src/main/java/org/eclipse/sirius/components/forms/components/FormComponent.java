@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,12 +65,9 @@ public class FormComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         FormDescription formDescription = this.props.getFormDescription();
 
-        String label = formDescription.getLabelProvider().apply(variableManager);
-
         VariableManager idVariableManager = variableManager.createChild();
         idVariableManager.put(FormComponent.TARGET_OBJECT_ID, formDescription.getTargetObjectIdProvider().apply(variableManager));
         idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, formDescription.getId());
-        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = formDescription.getIdProvider().apply(idVariableManager);
 
         String targetObjectId = formDescription.getTargetObjectIdProvider().apply(variableManager);
@@ -102,7 +99,6 @@ public class FormComponent implements IComponent {
                 .toList();
 
         FormElementProps formElementProps = FormElementProps.newFormElementProps(id)
-                .label(label)
                 .targetObjectId(targetObjectId)
                 .descriptionId(formDescription.getId())
                 .children(children)
