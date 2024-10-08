@@ -31,8 +31,6 @@ public final class PieChartElementProps implements IProps {
 
     private String id;
 
-    private String label;
-
     private String targetObjectId;
 
     private String descriptionId;
@@ -49,10 +47,6 @@ public final class PieChartElementProps implements IProps {
 
     public String getId() {
         return this.id;
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public String getTargetObjectId() {
@@ -88,8 +82,6 @@ public final class PieChartElementProps implements IProps {
     public static final class Builder {
         private String id;
 
-        private String label;
-
         private String targetObjectId;
 
         private String descriptionId;
@@ -102,11 +94,6 @@ public final class PieChartElementProps implements IProps {
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
-            return this;
         }
 
         public Builder targetObjectId(String targetObjectId) {
@@ -137,7 +124,6 @@ public final class PieChartElementProps implements IProps {
         public PieChartElementProps build() {
             PieChartElementProps pieChartElementProps = new PieChartElementProps();
             pieChartElementProps.id = Objects.requireNonNull(this.id);
-            pieChartElementProps.label = Objects.requireNonNull(this.label);
             pieChartElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             pieChartElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             pieChartElementProps.values = Objects.requireNonNull(this.values);

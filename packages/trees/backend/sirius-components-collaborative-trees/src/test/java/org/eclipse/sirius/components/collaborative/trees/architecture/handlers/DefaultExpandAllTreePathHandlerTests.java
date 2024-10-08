@@ -92,7 +92,6 @@ public class DefaultExpandAllTreePathHandlerTests {
         Tree tree = Tree.newTree("treeId")
                 .targetObjectId("targetObjectId")
                 .descriptionId("descriptionId")
-                .label("label")
                 .children(List.of())
                 .build();
 

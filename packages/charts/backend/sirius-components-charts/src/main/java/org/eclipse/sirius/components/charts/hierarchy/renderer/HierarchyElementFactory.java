@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,23 +40,19 @@ public class HierarchyElementFactory implements IElementFactory {
     }
 
     private Hierarchy instantiateHierarchy(HierarchyElementProps props, List<Object> children) {
-        // @formatter:off
         List<HierarchyNode> nodes = children.stream()
                 .filter(HierarchyNode.class::isInstance)
                 .map(HierarchyNode.class::cast)
                 .toList();
-        // @formatter:on
 
-        return new Hierarchy(props.getId(), props.getDescriptionId(), props.getTargetObjectId(), props.getLabel(), props.getKind(), nodes);
+        return new Hierarchy(props.getId(), props.getDescriptionId(), props.getTargetObjectId(), props.getKind(), nodes);
     }
 
     private HierarchyNode instantiateNode(HierarchyNodeElementProps props, List<Object> children) {
-        // @formatter:off
         List<HierarchyNode> nodes = children.stream()
                 .filter(HierarchyNode.class::isInstance)
                 .map(HierarchyNode.class::cast)
                 .toList();
-        // @formatter:on
 
         return new HierarchyNode(props.getId(), props.getTargetObjectId(), props.getLabel(), nodes);
     }

@@ -104,9 +104,9 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
         var optionalRepresentation = this.representationSearchService.findById(optionalEditingContext.get(), MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY.toString(), Hierarchy.class);
         assertThat(optionalRepresentation).isPresent();
         var representation = optionalRepresentation.get();
-        var newHierarchy = new Hierarchy(UUID.randomUUID().toString(), representation.getDescriptionId(), representation.getTargetObjectId(), representation.getLabel(), representation.getKind(), representation.getChildNodes());
+        var newHierarchy = new Hierarchy(UUID.randomUUID().toString(), representation.getDescriptionId(), representation.getTargetObjectId(), representation.getKind(), representation.getChildNodes());
 
-        var representationMetadata = new RepresentationMetadata(newHierarchy.getId(), newHierarchy.getKind(), newHierarchy.getLabel(), newHierarchy.getDescriptionId());
+        var representationMetadata = new RepresentationMetadata(newHierarchy.getId(), newHierarchy.getKind(), "new Hierarchy", newHierarchy.getDescriptionId());
         this.representationMetadataPersistenceService.save(null, optionalEditingContext.get(), representationMetadata, newHierarchy.getTargetObjectId());
         this.representationPersistenceService.save(null, optionalEditingContext.get(), newHierarchy);
 

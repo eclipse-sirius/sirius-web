@@ -24,4 +24,17 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
  */
 public interface IRepresentationMetadataProvider {
     Optional<RepresentationMetadata> getMetadata(String representationId);
+
+    /**
+     * Empty implementation, used for mocks in unit tests.
+     *
+     * @author gcoutable
+     */
+    class NoOp implements IRepresentationMetadataProvider {
+
+        @Override
+        public Optional<RepresentationMetadata> getMetadata(String representationId) {
+            return Optional.empty();
+        }
+    }
 }

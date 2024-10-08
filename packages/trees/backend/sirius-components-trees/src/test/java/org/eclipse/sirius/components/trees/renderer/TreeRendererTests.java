@@ -59,7 +59,7 @@ public class TreeRendererTests {
         VariableManager variableManager = new VariableManager();
         Tree tree = new TreeRenderer(variableManager, description).render();
 
-        assertEquals(FAKE_ID, tree.getLabel());
+        assertEquals(FAKE_ID, tree.getId());
         assertEquals(1, tree.getChildren().size());
         this.assertTreeNode(tree.getChildren().get(0), ROOT_LABEL, 0);
 
@@ -81,7 +81,7 @@ public class TreeRendererTests {
         VariableManager variableManager = new VariableManager();
         Tree tree = new TreeRenderer(variableManager, description).render();
 
-        assertEquals(FAKE_ID, tree.getLabel());
+        assertEquals(FAKE_ID, tree.getId());
         assertEquals(1, tree.getChildren().size());
         TreeItem rootTreeItem = tree.getChildren().get(0);
         this.assertTreeNode(rootTreeItem, ROOT_LABEL, 2);
@@ -119,7 +119,7 @@ public class TreeRendererTests {
         VariableManager variableManager = new VariableManager();
         Tree tree = new TreeRenderer(variableManager, description).render();
 
-        assertEquals(FAKE_ID, tree.getLabel());
+        assertEquals(FAKE_ID, tree.getId());
         assertEquals(1, tree.getChildren().size());
         TreeItem rootTreeItem = tree.getChildren().get(0);
         this.assertTreeNode(rootTreeItem, ROOT_LABEL, 2);

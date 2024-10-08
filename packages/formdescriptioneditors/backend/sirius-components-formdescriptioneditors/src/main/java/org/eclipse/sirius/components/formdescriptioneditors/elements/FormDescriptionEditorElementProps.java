@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,8 +31,6 @@ public final class FormDescriptionEditorElementProps implements IProps {
 
     private String id;
 
-    private String label;
-
     private String targetObjectId;
 
     private String descriptionId;
@@ -45,10 +43,6 @@ public final class FormDescriptionEditorElementProps implements IProps {
 
     public String getId() {
         return this.id;
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public String getTargetObjectId() {
@@ -70,8 +64,8 @@ public final class FormDescriptionEditorElementProps implements IProps {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
+        String pattern = "{0} '{'id: {1}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id);
     }
 
     /**
@@ -83,8 +77,6 @@ public final class FormDescriptionEditorElementProps implements IProps {
     public static final class Builder {
         private String id;
 
-        private String label;
-
         private String targetObjectId;
 
         private String descriptionId;
@@ -93,11 +85,6 @@ public final class FormDescriptionEditorElementProps implements IProps {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
-            return this;
         }
 
         public Builder targetObjectId(String targetObjectId) {
@@ -118,7 +105,6 @@ public final class FormDescriptionEditorElementProps implements IProps {
         public FormDescriptionEditorElementProps build() {
             FormDescriptionEditorElementProps formDescriptionEditorElementProps = new FormDescriptionEditorElementProps();
             formDescriptionEditorElementProps.id = Objects.requireNonNull(this.id);
-            formDescriptionEditorElementProps.label = Objects.requireNonNull(this.label);
             formDescriptionEditorElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             formDescriptionEditorElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             formDescriptionEditorElementProps.children = Objects.requireNonNull(this.children);

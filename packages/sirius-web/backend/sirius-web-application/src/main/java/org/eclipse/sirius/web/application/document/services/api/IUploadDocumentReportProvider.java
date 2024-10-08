@@ -25,20 +25,4 @@ public interface IUploadDocumentReportProvider {
 
     String createReport(Resource resource);
 
-    /**
-     * Implementation which does nothing, used for mocks in unit tests.
-     *
-     * @author arichard
-     */
-    class NoOp implements IUploadDocumentReportProvider {
-
-        @Override
-        public boolean canHandle(Resource resource) {
-            return false;
-        }
-        @Override
-        public String createReport(Resource resource) {
-            return "";
-        }
-    }
 }

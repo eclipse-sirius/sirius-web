@@ -13,8 +13,8 @@
 package org.eclipse.sirius.components.collaborative.api;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.representations.IRepresentation;
 
 /**
  * Used to persist the representations.

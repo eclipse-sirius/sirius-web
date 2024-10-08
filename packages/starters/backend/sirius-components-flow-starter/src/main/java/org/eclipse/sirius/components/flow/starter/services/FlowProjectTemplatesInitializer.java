@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.springframework.stereotype.Service;
 
@@ -95,8 +96,13 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
                 DiagramDescription topographyDiagram = optionalTopographyDiagram.get();
                 Object semanticTarget = resource.getContents().get(0);
 
-                Diagram diagram = this.diagramCreationService.create(topographyDiagram.getLabel(), semanticTarget, topographyDiagram, editingContext);
-                var representationMetadata = new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId());
+                var variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, semanticTarget);
+                variableManager.put(DiagramDescription.LABEL, topographyDiagram.getLabel());
+                String label = topographyDiagram.getLabelProvider().apply(variableManager);
+
+                Diagram diagram = this.diagramCreationService.create(semanticTarget, topographyDiagram, editingContext);
+                var representationMetadata = new RepresentationMetadata(diagram.getId(), diagram.getKind(), label, diagram.getDescriptionId());
                 this.representationMetadataPersistenceService.save(cause, editingContext, representationMetadata, diagram.getTargetObjectId());
                 this.representationPersistenceService.save(cause, editingContext, diagram);
 

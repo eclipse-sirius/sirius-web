@@ -63,7 +63,6 @@ public class EditTextfieldEventHandlerTests {
             return new Success();
         };
 
-        // @formatter:off
         Textfield textfield = Textfield.newTextfield(id)
                 .label("label")
                 .value("Previous value")
@@ -85,10 +84,8 @@ public class EditTextfieldEventHandlerTests {
         Form form = Form.newForm(FORM_ID)
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(List.of(page))
                 .build();
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override
@@ -125,7 +122,6 @@ public class EditTextfieldEventHandlerTests {
             return new Success();
         };
 
-        // @formatter:off
         Textfield textfield = Textfield.newTextfield(id)
                 .label("label")
                 .value("Previous value")
@@ -147,10 +143,8 @@ public class EditTextfieldEventHandlerTests {
         Form form = Form.newForm(FORM_ID)
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(List.of(page))
                 .build();
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override

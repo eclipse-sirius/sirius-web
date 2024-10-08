@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.forms;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,6 +59,10 @@ public final class Page {
         return new Builder(id);
     }
 
+    public static  Builder newPage(Page page) {
+        return new Builder(page);
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, groupCount: {3}'}'";
@@ -82,6 +87,13 @@ public final class Page {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        private Builder(Page page) {
+            this.id = page.id;
+            this.label = page.label;
+            this.toolbarActions = new ArrayList<>(page.toolbarActions);
+            this.groups = new ArrayList<>(page.groups);
         }
 
         public Builder label(String label) {

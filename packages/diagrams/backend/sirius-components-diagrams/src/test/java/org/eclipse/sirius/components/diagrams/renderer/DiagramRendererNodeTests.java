@@ -84,7 +84,6 @@ public class DiagramRendererNodeTests {
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
-        assertThat(diagram.getLabel()).isEqualTo(DIAGRAM_LABEL);
         assertThat(diagram.getTargetObjectId()).isNotBlank();
 
         assertThat(diagram.getNodes()).hasSize(1);
@@ -116,7 +115,6 @@ public class DiagramRendererNodeTests {
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
-        assertThat(diagram.getLabel()).isEqualTo(DIAGRAM_LABEL);
         assertThat(diagram.getTargetObjectId()).isNotBlank();
 
         assertThat(diagram.getNodes()).hasSize(1);
@@ -151,7 +149,6 @@ public class DiagramRendererNodeTests {
 
         assertThat(diagram).isNotNull();
         assertThat(diagram.getId()).asString().isNotBlank();
-        assertThat(diagram.getLabel()).isEqualTo(DIAGRAM_LABEL);
         assertThat(diagram.getTargetObjectId()).isNotBlank();
 
         assertThat(diagram.getNodes()).hasSize(1);

@@ -106,7 +106,6 @@ public class GetNodeDescriptionsEventHandlerTests {
                 return Diagram.newDiagram(UUID.randomUUID().toString())
                         .descriptionId(DIAGRAM_DESCRIPTION_ID)
                         .edges(List.of())
-                        .label("")
                         .layoutData(new DiagramLayoutData(Map.of(), Map.of(), Map.of()))
                         .nodes(List.of())
                         .targetObjectId("")

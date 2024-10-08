@@ -55,7 +55,6 @@ public class CreateDiagramEventHandlerTests {
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
             public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
-                // @formatter:off
                 DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
                         .label("label")
                         .canCreatePredicate(variableManager -> Boolean.TRUE)
@@ -66,7 +65,6 @@ public class CreateDiagramEventHandlerTests {
                         .targetObjectIdProvider(variableManager -> "targetObjectId")
                         .dropHandler(variableManager -> new Failure(""))
                         .build();
-                // @formatter:on
 
                 return Optional.of(diagramDescription);
             }
@@ -75,7 +73,7 @@ public class CreateDiagramEventHandlerTests {
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
         IDiagramCreationService diagramCreationService = new IDiagramCreationService.NoOp() {
             @Override
-            public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
+            public Diagram create(Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
                 hasBeenCalled.set(true);
                 return new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
             }

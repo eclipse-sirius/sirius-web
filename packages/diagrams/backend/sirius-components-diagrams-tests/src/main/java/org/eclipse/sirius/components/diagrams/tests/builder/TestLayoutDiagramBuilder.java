@@ -78,7 +78,6 @@ public final class TestLayoutDiagramBuilder {
         return Diagram.newDiagram(Objects.requireNonNull(this.diagramId))
                 .nodes(nodes)
                 .edges(edges)
-                .label(Objects.requireNonNull(this.targetObjectId))
                 .descriptionId(DIAGRAM_DESCRIPTION_ID)
                 .targetObjectId(this.targetObjectId)
                 .build();

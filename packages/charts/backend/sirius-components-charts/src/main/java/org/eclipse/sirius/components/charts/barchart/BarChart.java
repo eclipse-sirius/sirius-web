@@ -34,8 +34,6 @@ public final class BarChart implements IChart {
 
     private String descriptionId;
 
-    private String label;
-
     private String kind;
 
     private String targetObjectId;
@@ -62,11 +60,6 @@ public final class BarChart implements IChart {
     @Override
     public String getDescriptionId() {
         return this.descriptionId;
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
     }
 
     @Override
@@ -105,8 +98,8 @@ public final class BarChart implements IChart {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, kind: {4}, width: {5}, height: {6}, yAxisLabel:{7}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label, this.kind, this.width, this.height, this.yAxisLabel);
+        String pattern = "{0} '{'id: {1}, descriptionId: {2}, kind: {3}, width: {4}, height: {5}, yAxisLabel:{6}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.kind, this.width, this.height, this.yAxisLabel);
     }
 
     /**
@@ -120,8 +113,6 @@ public final class BarChart implements IChart {
         private String id;
 
         private String descriptionId;
-
-        private String label;
 
         private String kind = KIND;
 
@@ -143,11 +134,6 @@ public final class BarChart implements IChart {
 
         public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
-            return this;
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
             return this;
         }
 
@@ -185,7 +171,6 @@ public final class BarChart implements IChart {
             BarChart barChart = new BarChart();
             barChart.id = Objects.requireNonNull(this.id);
             barChart.descriptionId = Objects.requireNonNull(this.descriptionId);
-            barChart.label = Objects.requireNonNull(this.label);
             barChart.kind = Objects.requireNonNull(this.kind);
             barChart.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             barChart.entries = Objects.requireNonNull(this.entries);

@@ -61,8 +61,8 @@ public class GanttCreationService implements IGanttCreationService {
     }
 
     @Override
-    public Gantt create(String label, Object targetObject, GanttDescription ganttDescription, IEditingContext editingContext) {
-        Gantt newGanttDiagram = this.doRender(label, targetObject, editingContext, ganttDescription, Optional.empty());
+    public Gantt create(Object targetObject, GanttDescription ganttDescription, IEditingContext editingContext) {
+        Gantt newGanttDiagram = this.doRender(targetObject, editingContext, ganttDescription, Optional.empty());
         return newGanttDiagram;
     }
 
@@ -76,17 +76,16 @@ public class GanttCreationService implements IGanttCreationService {
         if (optionalObject.isPresent() && optionalGanttDescription.isPresent()) {
             Object object = optionalObject.get();
             GanttDescription ganttDescription = optionalGanttDescription.get();
-            Gantt gantt = this.doRender(ganttContext.getGantt().getLabel(), object, editingContext, ganttDescription, Optional.of(ganttContext));
+            Gantt gantt = this.doRender(object, editingContext, ganttDescription, Optional.of(ganttContext));
             return Optional.of(gantt);
         }
         return Optional.empty();
     }
 
-    private Gantt doRender(String label, Object targetObject, IEditingContext editingContext, GanttDescription ganttDescription, Optional<GanttContext> optionalGanttContext) {
+    private Gantt doRender(Object targetObject, IEditingContext editingContext, GanttDescription ganttDescription, Optional<GanttContext> optionalGanttContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
-        variableManager.put(GanttDescription.LABEL, label);
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
