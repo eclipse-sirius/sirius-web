@@ -62,5 +62,15 @@ public class SelectionDialogDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for Multiple.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder multiple(java.lang.Boolean value) {
+        this.getSelectionDialogDescription().setMultiple(value);
+        return this;
+    }
+
 }
 

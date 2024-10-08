@@ -44,6 +44,8 @@ public final class SelectionDescription implements IRepresentationDescription {
 
     private Predicate<VariableManager> canCreatePredicate;
 
+    private boolean multiple;
+
     private TreeDescription treeDescription;
 
     private SelectionDescription() {
@@ -90,6 +92,10 @@ public final class SelectionDescription implements IRepresentationDescription {
         return this.treeDescription;
     }
 
+    public boolean isMultiple() {
+        return this.multiple;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -119,6 +125,8 @@ public final class SelectionDescription implements IRepresentationDescription {
         private Predicate<VariableManager> canCreatePredicate;
 
         private TreeDescription treeDescription;
+
+        private boolean multiple;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -159,6 +167,11 @@ public final class SelectionDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder multiple(boolean multiple) {
+            this.multiple = multiple;
+            return this;
+        }
+
         public SelectionDescription build() {
             SelectionDescription selectionDescription = new SelectionDescription();
             selectionDescription.id = Objects.requireNonNull(this.id);
@@ -169,6 +182,7 @@ public final class SelectionDescription implements IRepresentationDescription {
             selectionDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             selectionDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             selectionDescription.treeDescription = Objects.requireNonNull(this.treeDescription);
+            selectionDescription.multiple = this.multiple;
             return selectionDescription;
         }
 

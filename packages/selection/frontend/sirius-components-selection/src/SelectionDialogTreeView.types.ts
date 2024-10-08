@@ -15,6 +15,7 @@ export interface SelectionDialogTreeViewProps {
   editingContextId: string;
   treeDescriptionId: string;
   variables: DiagramDialogVariable[];
+  enableMultiSelection: boolean;
 }
 
 export interface SelectionDialogTreeViewState {
