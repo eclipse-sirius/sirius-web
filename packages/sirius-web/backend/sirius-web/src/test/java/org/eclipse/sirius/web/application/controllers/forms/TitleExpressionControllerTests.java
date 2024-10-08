@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
+
+import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -25,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventP
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithTitleExpressionDescriptionProvider;
+import org.eclipse.sirius.web.tests.graphql.RepresentationMetadataQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,6 +57,9 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenCreatedFormSubscription givenCreatedFormSubscription;
+
+    @Autowired
+    private RepresentationMetadataQueryRunner representationMetadataQueryRunner;
 
     @Autowired
     private FormWithTitleExpressionDescriptionProvider formWithTitleExpressionDescriptionProvider;
@@ -85,8 +92,11 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
-                    assertThat(form).hasLabel("FormWithTitleExpression");
+                    var result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", PapayaIdentifiers.PAPAYA_PROJECT, "representationId", form.getId()));
+                    String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
+                    assertThat(label).isEqualTo("FormWithTitleExpression");
                 }, () -> fail("Missing form"));
+
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

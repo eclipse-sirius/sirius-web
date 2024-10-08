@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author fbarbin
  */
-public record DeckElementProps(String id, String descriptionId, String targetObjectId, String label, DeckStyle style, List<Element> children) implements IProps {
+public record DeckElementProps(String id, String descriptionId, String targetObjectId, DeckStyle style, List<Element> children) implements IProps {
 
     public static final String TYPE = "Deck";
 
@@ -32,7 +32,6 @@ public record DeckElementProps(String id, String descriptionId, String targetObj
         Objects.requireNonNull(id);
         Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(targetObjectId);
-        Objects.requireNonNull(label);
         Objects.requireNonNull(children);
     }
 

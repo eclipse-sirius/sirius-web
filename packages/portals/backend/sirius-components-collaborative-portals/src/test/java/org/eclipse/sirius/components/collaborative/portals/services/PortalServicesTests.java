@@ -66,7 +66,6 @@ public class PortalServicesTests {
     public void testReferencesRepresentationOnEmptyPortal() {
         Portal emptyPortal = Portal.newPortal(PORTAL_ID)
                 .descriptionId(PORTAL_DESCRIPTION_ID)
-                .label("Empty Portal")
                 .targetObjectId(TARGET_OBJECT_ID)
                 .build();
         assertThat(this.services.referencesRepresentation(emptyPortal, null)).isFalse();
@@ -79,7 +78,6 @@ public class PortalServicesTests {
         var representationId = "someRepresentation";
         Portal simplePortal = Portal.newPortal(PORTAL_ID)
                 .descriptionId(PORTAL_DESCRIPTION_ID)
-                .label("Simple Portal")
                 .targetObjectId(TARGET_OBJECT_ID)
                 .views(List.of(PortalView.newPortalView("aView").representationId(representationId).build()))
                 .build();
@@ -119,7 +117,10 @@ public class PortalServicesTests {
         String viewId = "view-0";
         Portal portal = this.createSamplePortal(1);
         Portal newPortal = this.services.layout(portal, List.of(PortalViewLayoutData.newPortalViewLayoutData(viewId).x(2).y(2).width(4).height(4).build()));
-        var optionalLayout = newPortal.getLayoutData().stream().filter(layoutdata -> layoutdata.getPortalViewId().equals(viewId)).findFirst();
+
+        var optionalLayout = newPortal.getLayoutData().stream()
+                .filter(layoutdata -> layoutdata.getPortalViewId().equals(viewId))
+                .findFirst();
         assertThat(optionalLayout).isPresent();
         assertThat(optionalLayout.get()).extracting(PortalViewLayoutData::getX).isEqualTo(2);
         assertThat(optionalLayout.get()).extracting(PortalViewLayoutData::getY).isEqualTo(2);
@@ -129,7 +130,11 @@ public class PortalServicesTests {
 
     @Test
     public void testPreventDirectLoop() {
-        Portal portal = Portal.newPortal(PORTAL_ID).descriptionId(PORTAL_DESCRIPTION_ID).label(PORTAL_ID).targetObjectId(TARGET_OBJECT_ID).build();
+        Portal portal = Portal.newPortal(PORTAL_ID)
+                .descriptionId(PORTAL_DESCRIPTION_ID)
+                .targetObjectId(TARGET_OBJECT_ID)
+                .build();
+
         IRepresentationSearchService mockSearchService = new IRepresentationSearchService() {
             @Override
             public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
@@ -147,8 +152,15 @@ public class PortalServicesTests {
 
     @Test
     public void testPreventIndirectLoop() {
-        Portal portal1 = Portal.newPortal(PORTAL_ID + "_1").descriptionId(PORTAL_DESCRIPTION_ID).label(PORTAL_ID + "_1").targetObjectId(TARGET_OBJECT_ID).build();
-        Portal portal2 = Portal.newPortal(PORTAL_ID + "_2").descriptionId(PORTAL_DESCRIPTION_ID).label(PORTAL_ID + "_2").targetObjectId(TARGET_OBJECT_ID).build();
+        Portal portal1 = Portal.newPortal(PORTAL_ID + "_1")
+                .descriptionId(PORTAL_DESCRIPTION_ID)
+                .targetObjectId(TARGET_OBJECT_ID)
+                .build();
+
+        Portal portal2 = Portal.newPortal(PORTAL_ID + "_2")
+                .descriptionId(PORTAL_DESCRIPTION_ID)
+                .targetObjectId(TARGET_OBJECT_ID)
+                .build();
 
         Collection<Portal> portalsRepository = new ArrayList<>();
         portalsRepository.add(portal1);
@@ -185,7 +197,6 @@ public class PortalServicesTests {
         var layoutData = IntStream.range(0, nbViews).mapToObj(index -> PortalViewLayoutData.newPortalViewLayoutData("view-" + index).x(index).build()).toList();
         Portal portal = Portal.newPortal(PORTAL_ID)
                 .descriptionId(PORTAL_DESCRIPTION_ID)
-                .label("Portal")
                 .targetObjectId(TARGET_OBJECT_ID)
                 .views(views)
                 .layoutData(layoutData)

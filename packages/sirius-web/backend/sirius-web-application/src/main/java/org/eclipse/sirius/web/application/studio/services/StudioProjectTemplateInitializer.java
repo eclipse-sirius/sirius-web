@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.sirius.web.application.studio.services.api.IDefaultDomainResourceProvider;
@@ -110,8 +111,13 @@ public class StudioProjectTemplateInitializer implements IProjectTemplateInitial
                         DiagramDescription domainDiagramDescription = optionalDomainDiagramDescription.get();
                         Object semanticTarget = domainResource.getContents().get(0);
 
-                        Diagram diagram = this.diagramCreationService.create(domainDiagramDescription.getLabel(), semanticTarget, domainDiagramDescription, editingContext);
-                        var representationMetadata = new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId());
+                        var variableManager = new VariableManager();
+                        variableManager.put(VariableManager.SELF, semanticTarget);
+                        variableManager.put(DiagramDescription.LABEL, domainDiagramDescription.getLabel());
+                        String label = domainDiagramDescription.getLabelProvider().apply(variableManager);
+
+                        Diagram diagram = this.diagramCreationService.create(semanticTarget, domainDiagramDescription, editingContext);
+                        var representationMetadata = new RepresentationMetadata(diagram.getId(), diagram.getKind(), label, diagram.getDescriptionId());
                         this.representationMetadataPersistenceService.save(cause, editingContext, representationMetadata, diagram.getTargetObjectId());
                         this.representationPersistenceService.save(cause, editingContext, diagram);
 

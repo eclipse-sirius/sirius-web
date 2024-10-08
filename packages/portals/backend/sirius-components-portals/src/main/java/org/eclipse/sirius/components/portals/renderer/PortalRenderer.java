@@ -36,11 +36,9 @@ public class PortalRenderer {
 
     public Portal render() {
         String id = this.portalDescription.getIdProvider().apply(this.variableManager);
-        String label = this.portalDescription.getLabelProvider().apply(this.variableManager);
         String targetObjectId = this.portalDescription.getTargetObjectIdProvider().apply(this.variableManager);
 
         return Portal.newPortal(id)
-                .label(label)
                 .descriptionId(this.portalDescription.getId())
                 .targetObjectId(targetObjectId)
                 .build();

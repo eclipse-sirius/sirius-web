@@ -25,6 +25,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.graphql.RepresentationMetadataQueryRunner;
+import org.eclipse.sirius.web.tests.graphql.RepresentationsMetadataQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -56,6 +57,9 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
     @Autowired
     private AllRepresentationDescriptionsQueryRunner allRepresentationDescriptionsQueryRunner;
+
+    @Autowired
+    private RepresentationsMetadataQueryRunner representationsMetadataQueryRunner;
 
     @Autowired
     private IDomainEventCollector domainEventCollector;
@@ -138,6 +142,23 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         assertThat(representationIds)
             .contains(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString())
             .contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+    }
+
+    @Test
+    @DisplayName("Given many representation ids, when we ask for their metadata, then representation metadata are returned")
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenManyRepresentationIdsWhenWeAskForTheirMetadataThenTheRepresentationMetadataAreReturned() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                "representationIds", List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION)
+        );
+        var result = this.representationsMetadataQueryRunner.run(variables);
+
+        List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.label");
+        assertThat(representationIds)
+                .isNotEmpty()
+                .allMatch("Portal"::equals);
     }
 
     @Test

@@ -15,12 +15,13 @@ package org.eclipse.sirius.components.task.starter.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.emf.services.DefaultLabelService;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
+import org.eclipse.sirius.components.emf.services.DefaultLabelService;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
 import org.eclipse.sirius.components.task.TaskTag;
 import org.eclipse.sirius.ext.emf.edit.EditingDomainServices;
@@ -36,8 +37,8 @@ public class TaskLabelServiceDelegate extends DefaultLabelService implements ILa
 
     private final EditingDomainServices editingDomainServices = new EditingDomainServices();
 
-    public TaskLabelServiceDelegate(ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
-        super(labelFeatureProviderRegistry, composedAdapterFactory, List.of());
+    public TaskLabelServiceDelegate(List<IRepresentationMetadataProvider> representationMetadataProviders, ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
+        super(representationMetadataProviders, labelFeatureProviderRegistry, composedAdapterFactory, List.of());
     }
 
     @Override

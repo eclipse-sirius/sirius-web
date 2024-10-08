@@ -29,8 +29,6 @@ public interface IGanttCreationService {
     /**
      * Creates a new gantt diagram using the given parameters.
      *
-     * @param label
-     *            The label of the diagram
      * @param targetObject
      *            The object used as the target
      * @param ganttDescription
@@ -39,7 +37,7 @@ public interface IGanttCreationService {
      *            The editing context
      * @return A new gantt diagram
      */
-    Gantt create(String label, Object targetObject, GanttDescription ganttDescription, IEditingContext editingContext);
+    Gantt create(Object targetObject, GanttDescription ganttDescription, IEditingContext editingContext);
 
     /**
      * Refresh an existing gantt.
@@ -66,7 +64,7 @@ public interface IGanttCreationService {
     class NoOp implements IGanttCreationService {
 
         @Override
-        public Gantt create(String label, Object targetObject, GanttDescription ganttDescription, IEditingContext editingContext) {
+        public Gantt create(Object targetObject, GanttDescription ganttDescription, IEditingContext editingContext) {
             return null;
         }
 

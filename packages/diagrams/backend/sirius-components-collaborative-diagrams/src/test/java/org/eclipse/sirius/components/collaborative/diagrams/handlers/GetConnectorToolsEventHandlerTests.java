@@ -225,7 +225,6 @@ public class GetConnectorToolsEventHandlerTests {
 
     private Diagram getDiagram(String id, List<Node> nodes) {
         return Diagram.newDiagram(id)
-                .label(DIAGRAM_LABEL)
                 .descriptionId(DIAGRAM_DESCRIPTION_ID.toString())
                 .targetObjectId("diagramTargetObjectId")
                 .nodes(nodes)

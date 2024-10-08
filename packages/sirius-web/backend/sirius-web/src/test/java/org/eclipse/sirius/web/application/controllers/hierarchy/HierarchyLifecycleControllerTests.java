@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.charts.HierarchyRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
@@ -28,6 +27,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.services.hierarchy.GivenCreatedHierarchySubscription;
 import org.eclipse.sirius.web.services.hierarchy.HierarchyDescriptionProvider;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,6 +47,10 @@ import reactor.test.StepVerifier;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HierarchyLifecycleControllerTests extends AbstractIntegrationTests {
+
+    @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
     @Autowired
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
@@ -55,9 +59,7 @@ public class HierarchyLifecycleControllerTests extends AbstractIntegrationTests 
 
     @BeforeEach
     public void beforeEach() {
-        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                .map(IEditingContextEventProcessor::getEditingContextId)
-                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
+        this.givenInitialServerState.initialize();
     }
 
     @Test
@@ -74,7 +76,6 @@ public class HierarchyLifecycleControllerTests extends AbstractIntegrationTests 
                 .map(HierarchyRefreshedEventPayload.class::cast)
                 .map(HierarchyRefreshedEventPayload::hierarchy)
                 .ifPresentOrElse(hierarchy -> {
-                    assertThat(hierarchy.getLabel()).isEqualTo("Sample Hierarchy");
                     assertThat(hierarchy.getChildNodes()).isEmpty();
                 }, () -> fail("Missing hierarchy"));
         };

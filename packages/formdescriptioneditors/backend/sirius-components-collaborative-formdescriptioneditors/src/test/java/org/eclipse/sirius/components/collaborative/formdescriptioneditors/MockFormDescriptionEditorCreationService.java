@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorContext;
@@ -20,6 +21,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
+import org.eclipse.sirius.components.forms.Page;
 
 /**
  * Mock of the form description editor creation service.
@@ -37,7 +39,7 @@ public class MockFormDescriptionEditorCreationService implements IFormDescriptio
     }
 
     @Override
-    public FormDescriptionEditor create(ICause cause, String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
+    public FormDescriptionEditor create(ICause cause, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
         return this.formDescriptionEditor;
     }
 
@@ -45,11 +47,14 @@ public class MockFormDescriptionEditorCreationService implements IFormDescriptio
     public FormDescriptionEditor refresh(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext) {
         this.count = this.count + 1;
 
-        // @formatter:off
-        this.formDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(this.formDescriptionEditor)
+        Page updatedPage = Page.newPage(this.formDescriptionEditor.getPages().get(0))
                 .label(String.valueOf(this.count))
                 .build();
-        // @formatter:on
+
+        this.formDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(this.formDescriptionEditor)
+                .pages(List.of(updatedPage))
+                .build();
+
         return this.formDescriptionEditor;
     }
 

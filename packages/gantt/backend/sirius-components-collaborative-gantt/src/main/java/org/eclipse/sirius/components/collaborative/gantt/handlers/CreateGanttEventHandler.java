@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.description.GanttDescription;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -105,8 +106,13 @@ public class CreateGanttEventHandler implements IEditingContextEventHandler {
                 GanttDescription ganttDescription = optionalGanttDescription.get();
                 Object object = optionalObject.get();
 
-                Gantt gantt = this.ganttCreationService.create(createRepresentationInput.representationName(), object, ganttDescription, editingContext);
-                var representationMetadata = new RepresentationMetadata(gantt.getId(), gantt.getKind(), gantt.getLabel(), gantt.descriptionId());
+                var variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, object);
+                variableManager.put(GanttDescription.LABEL, createRepresentationInput.representationName());
+                String label = ganttDescription.labelProvider().apply(variableManager);
+
+                Gantt gantt = this.ganttCreationService.create(object, ganttDescription, editingContext);
+                var representationMetadata = new RepresentationMetadata(gantt.getId(), gantt.getKind(), label, gantt.descriptionId());
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, gantt.targetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, gantt);
 

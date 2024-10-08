@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -105,7 +105,6 @@ public class RemoveReferenceValueEventHandlerTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(Collections.singletonList(page))
                 .build();
 
@@ -183,7 +182,6 @@ public class RemoveReferenceValueEventHandlerTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(Collections.singletonList(page))
                 .build();
 

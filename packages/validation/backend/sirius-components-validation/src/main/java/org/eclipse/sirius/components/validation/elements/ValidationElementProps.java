@@ -31,8 +31,6 @@ public final class ValidationElementProps implements IProps {
 
     private String id;
 
-    private String label;
-
     private String descriptionId;
 
     private String targetObjectId;
@@ -45,10 +43,6 @@ public final class ValidationElementProps implements IProps {
 
     public String getId() {
         return this.id;
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public String getDescriptionId() {
@@ -70,8 +64,8 @@ public final class ValidationElementProps implements IProps {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
+        String pattern = "{0} '{'id: {1}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id);
     }
 
     /**
@@ -84,8 +78,6 @@ public final class ValidationElementProps implements IProps {
 
         private String id;
 
-        private String label;
-
         private String descriptionId;
 
         private String targetObjectId;
@@ -94,11 +86,6 @@ public final class ValidationElementProps implements IProps {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
-            return this;
         }
 
         public Builder descriptionId(String descriptionId) {
@@ -119,7 +106,6 @@ public final class ValidationElementProps implements IProps {
         public ValidationElementProps build() {
             ValidationElementProps validationElementProps = new ValidationElementProps();
             validationElementProps.id = Objects.requireNonNull(this.id);
-            validationElementProps.label = Objects.requireNonNull(this.label);
             validationElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             validationElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             validationElementProps.children = Objects.requireNonNull(this.children);

@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
+import org.eclipse.sirius.components.forms.Page;
 import org.junit.jupiter.api.Test;
 
 import reactor.test.StepVerifier;
@@ -47,9 +48,12 @@ public class FormDescriptionEditorEventProcessorTests {
 
     private static final FormDescriptionEditor INITIAL_TEST_FORMDESCRIPTIONEDITOR = FormDescriptionEditor.newFormDescriptionEditor(FORMDESCRIPTIONEDITOR_ID)
             .descriptionId(FORMDESCRIPTIONEDITOR_DESCRIPTION_ID)
-            .label(String.valueOf(0))
             .targetObjectId("targetObjectId")
-            .pages(List.of())
+            .pages(List.of(Page.newPage(UUID.randomUUID().toString())
+                    .label(String.valueOf(0))
+                    .groups(List.of())
+                    .build()
+            ))
             .build();
 
     private final IFormDescriptionEditorCreationService formDescriptionEditorCreationService = new MockFormDescriptionEditorCreationService(INITIAL_TEST_FORMDESCRIPTIONEDITOR);
@@ -65,7 +69,7 @@ public class FormDescriptionEditorEventProcessorTests {
         return representationEventPayload -> {
             if (representationEventPayload instanceof FormDescriptionEditorRefreshedEventPayload) {
                 FormDescriptionEditorRefreshedEventPayload payload = (FormDescriptionEditorRefreshedEventPayload) representationEventPayload;
-                return payload.formDescriptionEditor() != null && payload.formDescriptionEditor().getLabel().equals(String.valueOf(count));
+                return payload.formDescriptionEditor() != null && payload.formDescriptionEditor().getPages().get(0).getLabel().equals(String.valueOf(count));
             }
             return false;
         };

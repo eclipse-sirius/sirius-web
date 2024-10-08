@@ -66,7 +66,6 @@ public class EditRadioEventHandlerTests {
             return new Success();
         };
 
-        // @formatter:off
         RadioOption option = RadioOption.newRadioOption(OPTION_ID)
                 .label("Option label")
                 .selected(false)
@@ -93,10 +92,8 @@ public class EditRadioEventHandlerTests {
         Form form = Form.newForm(FORM_ID)
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(List.of(page))
                 .build();
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override
@@ -133,7 +130,6 @@ public class EditRadioEventHandlerTests {
             return new Success();
         };
 
-        // @formatter:off
         RadioOption option = RadioOption.newRadioOption(OPTION_ID)
                 .label("Option label")
                 .selected(false)
@@ -160,10 +156,8 @@ public class EditRadioEventHandlerTests {
         Form form = Form.newForm(FORM_ID)
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(List.of(page))
                 .build();
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override

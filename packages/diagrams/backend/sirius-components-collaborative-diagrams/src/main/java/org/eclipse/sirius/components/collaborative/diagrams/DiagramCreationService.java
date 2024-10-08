@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,25 +69,21 @@ public class DiagramCreationService implements IDiagramCreationService {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
         this.operationValidator = Objects.requireNonNull(operationValidator);
-        // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "diagram")
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
-    public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
-        // @formatter:off
+    public Diagram create(Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
         var allDiagramDescriptions = this.representationDescriptionSearchService.findAll(editingContext)
                 .values()
                 .stream()
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
                 .toList();
-        // @formatter:on
 
-        return this.doRender(label, targetObject, editingContext, diagramDescription, allDiagramDescriptions, Optional.empty());
+        return this.doRender(targetObject, editingContext, diagramDescription, allDiagramDescriptions, Optional.empty());
     }
 
     @Override
@@ -95,7 +91,6 @@ public class DiagramCreationService implements IDiagramCreationService {
         Diagram previousDiagram = diagramContext.getDiagram();
 
         var optionalObject = this.objectService.getObject(editingContext, previousDiagram.getTargetObjectId());
-        // @formatter:off
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, previousDiagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
@@ -106,22 +101,20 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
                 .toList();
-        // @formatter:on
 
         if (optionalObject.isPresent() && optionalDiagramDescription.isPresent()) {
             Object object = optionalObject.get();
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
-            Diagram diagram = this.doRender(previousDiagram.getLabel(), object, editingContext, diagramDescription, allDiagramDescriptions, Optional.of(diagramContext));
+            Diagram diagram = this.doRender(object, editingContext, diagramDescription, allDiagramDescriptions, Optional.of(diagramContext));
             return Optional.of(diagram);
         }
         return Optional.empty();
     }
 
-    private Diagram doRender(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<DiagramDescription> allDiagramDescriptions, Optional<IDiagramContext> optionalDiagramContext) {
+    private Diagram doRender(Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<DiagramDescription> allDiagramDescriptions, Optional<IDiagramContext> optionalDiagramContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
-        variableManager.put(DiagramDescription.LABEL, label);
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
@@ -133,7 +126,6 @@ public class DiagramCreationService implements IDiagramCreationService {
         List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(IDiagramContext::getViewCreationRequests).orElse(List.of());
         List<ViewDeletionRequest> viewDeletionRequests = optionalDiagramContext.map(IDiagramContext::getViewDeletionRequests).orElse(List.of());
         
-        //@formatter:off
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
@@ -143,7 +135,6 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .viewDeletionRequests(viewDeletionRequests)
                 .previousDiagram(optionalPreviousDiagram)
                 .diagramEvents(diagramEvents);
-        //@formatter:on
 
         DiagramComponentProps props = builder.build();
         Element element = new Element(DiagramComponent.class, props);

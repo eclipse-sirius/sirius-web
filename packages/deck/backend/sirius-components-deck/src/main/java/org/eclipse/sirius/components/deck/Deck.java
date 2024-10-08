@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  *
  * @author fbarbin
  */
-public record Deck(String id, String descriptionId, String targetObjectId, String label, DeckStyle style, List<Lane> lanes) implements IRepresentation {
+public record Deck(String id, String descriptionId, String targetObjectId, DeckStyle style, List<Lane> lanes) implements IRepresentation {
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Deck";
 
@@ -30,7 +30,6 @@ public record Deck(String id, String descriptionId, String targetObjectId, Strin
         Objects.requireNonNull(id);
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(descriptionId);
-        Objects.requireNonNull(label);
         Objects.requireNonNull(lanes);
     }
 
@@ -47,11 +46,6 @@ public record Deck(String id, String descriptionId, String targetObjectId, Strin
     @Override
     public String getDescriptionId() {
         return this.descriptionId;
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,8 +28,6 @@ public interface IDiagramCreationService {
     /**
      * Creates a new diagram using the given parameters.
      *
-     * @param label
-     *            The label of the diagram
      * @param targetObject
      *            The object used as the target
      * @param diagramDescription
@@ -38,7 +36,7 @@ public interface IDiagramCreationService {
      *            The editing context
      * @return A new diagram properly layouted and saved in the data store
      */
-    Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext);
+    Diagram create(Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext);
 
     /**
      * Refresh an existing diagram.
@@ -65,7 +63,7 @@ public interface IDiagramCreationService {
     class NoOp implements IDiagramCreationService {
 
         @Override
-        public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
+        public Diagram create(Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
             return null;
         }
 

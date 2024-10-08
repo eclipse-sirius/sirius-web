@@ -74,7 +74,6 @@ public class DiagramElementFactory implements IElementFactory {
             return Diagram.newDiagram(diagramElementProps.getId())
                     .targetObjectId(diagramElementProps.getTargetObjectId())
                     .descriptionId(diagramElementProps.getDescriptionId())
-                    .label(diagramElementProps.getLabel())
                     .nodes(nodes)
                     .edges(edges)
                     .build();

@@ -110,7 +110,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
         Diagram diagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
-        this.representationPersistenceService.save(null, parameters.editingContext(), diagram);
+        this.representationPersistenceService.save(null, this.editingContext, diagram);
         this.diagramContext.update(diagram);
         this.diagramEventFlux = new DiagramEventFlux(diagram);
 
@@ -226,17 +226,13 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
      */
     public boolean shouldRefresh(ChangeDescription changeDescription) {
         Diagram diagram = this.diagramContext.getDiagram();
-        // @formatter:off
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(this.editingContext, diagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
-        // @formatter:on
 
-        // @formatter:off
         return optionalDiagramDescription.flatMap(this.representationRefreshPolicyRegistry::getRepresentationRefreshPolicy)
                 .orElseGet(this::getDefaultRefreshPolicy)
                 .shouldRefresh(changeDescription);
-        // @formatter:on
     }
 
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
@@ -254,7 +250,6 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
-        // @formatter:off
         return Flux.merge(
             this.diagramEventFlux.getFlux(this.currentRevisionId, this.currentRevisionCause),
             this.subscriptionManager.getFlux(input)

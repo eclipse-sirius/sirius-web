@@ -35,8 +35,6 @@ public final class DiagramElementProps implements IProps {
 
     private String descriptionId;
 
-    private String label;
-
     private List<Element> children;
 
     private DiagramElementProps() {
@@ -53,10 +51,6 @@ public final class DiagramElementProps implements IProps {
 
     public String getDescriptionId() {
         return this.descriptionId;
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     @Override
@@ -87,8 +81,6 @@ public final class DiagramElementProps implements IProps {
 
         private String descriptionId;
 
-        private String label;
-
         private List<Element> children;
 
         private Builder(String id) {
@@ -105,11 +97,6 @@ public final class DiagramElementProps implements IProps {
             return this;
         }
 
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
-            return this;
-        }
-
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -120,7 +107,6 @@ public final class DiagramElementProps implements IProps {
             diagramElementProps.id = Objects.requireNonNull(this.id);
             diagramElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             diagramElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
-            diagramElementProps.label = Objects.requireNonNull(this.label);
             diagramElementProps.children = Objects.requireNonNull(this.children);
             return diagramElementProps;
         }

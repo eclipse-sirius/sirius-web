@@ -506,7 +506,6 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                         "id":"e81eec5c-42d6-491c-8bcc-9beb951356f8",
                         "kind":"siriusComponents://representation?type=Portal",
                         "descriptionId":"69030a1b-0b5f-3c1d-8399-8ca260e4a672",
-                        "label":"Portal",
                         "targetObjectId":"3237b215-ae23-48d7-861e-f542a4b9a4b8",
                         "views":[
                           {

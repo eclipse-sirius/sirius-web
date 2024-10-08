@@ -34,8 +34,6 @@ public final class PieChart implements IChart {
 
     private String descriptionId;
 
-    private String label;
-
     private String kind;
 
     private String targetObjectId;
@@ -56,11 +54,6 @@ public final class PieChart implements IChart {
     @Override
     public String getDescriptionId() {
         return this.descriptionId;
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
     }
 
     @Override
@@ -87,8 +80,8 @@ public final class PieChart implements IChart {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, kind: {4}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label, this.kind);
+        String pattern = "{0} '{'id: {1}, descriptionId: {2}, kind: {3}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.kind);
     }
 
     /**
@@ -102,8 +95,6 @@ public final class PieChart implements IChart {
         private String id;
 
         private String descriptionId;
-
-        private String label;
 
         private String kind = KIND;
 
@@ -119,11 +110,6 @@ public final class PieChart implements IChart {
 
         public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
-            return this;
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
             return this;
         }
 
@@ -145,7 +131,6 @@ public final class PieChart implements IChart {
         public PieChart build() {
             PieChart pieChart = new PieChart();
             pieChart.id = Objects.requireNonNull(this.id);
-            pieChart.label = Objects.requireNonNull(this.label);
             pieChart.descriptionId = Objects.requireNonNull(this.descriptionId);
             pieChart.kind = Objects.requireNonNull(this.kind);
             pieChart.targetObjectId = Objects.requireNonNull(this.targetObjectId);

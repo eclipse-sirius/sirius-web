@@ -83,7 +83,6 @@ public class EditCheckboxEventHandlerTests {
         Form form = Form.newForm(FORM_ID)
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(List.of(page))
                 .build();
 
@@ -142,7 +141,6 @@ public class EditCheckboxEventHandlerTests {
         Form form = Form.newForm(FORM_ID)
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(List.of(page))
                 .build();
 
