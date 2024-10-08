@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckCreationService;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.deck.Deck;
 import org.eclipse.sirius.components.deck.description.DeckDescription;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -50,6 +52,8 @@ public class CreateDeckEventHandler implements IEditingContextEventHandler {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
     private final IRepresentationPersistenceService representationPersistenceService;
 
     private final IDeckCreationService deckCreationService;
@@ -60,9 +64,10 @@ public class CreateDeckEventHandler implements IEditingContextEventHandler {
 
     private final Counter counter;
 
-    public CreateDeckEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
+    public CreateDeckEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService,
             IDeckCreationService diagramCreationService, IObjectService objectService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.deckCreationService = Objects.requireNonNull(diagramCreationService);
         this.objectService = Objects.requireNonNull(objectService);
@@ -101,11 +106,16 @@ public class CreateDeckEventHandler implements IEditingContextEventHandler {
                 DeckDescription deckDescription = optionalDeckDescription.get();
                 Object object = optionalObject.get();
 
-                Deck deckDiagram = this.deckCreationService.create(createRepresentationInput.representationName(), object, deckDescription, editingContext);
+                var variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, object);
+                variableManager.put(DeckDescription.LABEL, createRepresentationInput.representationName());
+                String label = deckDescription.labelProvider().apply(variableManager);
 
+                Deck deckDiagram = this.deckCreationService.create(object, deckDescription, editingContext);
+                var representationMetadata = new RepresentationMetadata(deckDiagram.id(), deckDiagram.getKind(), label, deckDiagram.descriptionId());
+                this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, deckDiagram.getTargetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, deckDiagram);
 
-                var representationMetadata = new RepresentationMetadata(deckDiagram.id(), deckDiagram.getKind(), deckDiagram.label(), deckDiagram.descriptionId());
                 payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }

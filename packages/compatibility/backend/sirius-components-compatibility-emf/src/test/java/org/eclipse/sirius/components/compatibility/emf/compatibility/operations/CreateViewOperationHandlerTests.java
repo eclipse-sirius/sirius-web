@@ -92,7 +92,6 @@ public class CreateViewOperationHandlerTests {
         Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())
                 .descriptionId(diagramDescription.getId())
                 .targetObjectId(UUID.randomUUID().toString())
-                .label("DiagramTest")
                 .nodes(new ArrayList<>())
                 .edges(List.of())
                 .build();

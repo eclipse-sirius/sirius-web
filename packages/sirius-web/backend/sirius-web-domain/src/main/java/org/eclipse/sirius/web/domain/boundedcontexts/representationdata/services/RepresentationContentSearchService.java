@@ -42,4 +42,9 @@ public class RepresentationContentSearchService implements IRepresentationConten
     public Optional<RepresentationContent> findContentByRepresentationMetadata(AggregateReference<RepresentationMetadata, UUID> representationMetadata) {
         return this.representationContentRepository.findContentByRepresentationMetadataId(representationMetadata.getId());
     }
+
+    @Override
+    public boolean contentExistsByRepresentationMetadata(AggregateReference<RepresentationMetadata, UUID> representationMetadata) {
+        return this.representationContentRepository.contentExistsByRepresentationMetadataId(representationMetadata.getId());
+    }
 }

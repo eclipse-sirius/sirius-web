@@ -163,7 +163,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
         TreeDescription treeDescription = TreeDescription.newTreeDescription("PortalContentsTree")
                 .idProvider(new WidgetIdProvider())
                 .targetObjectIdProvider(this::getTargetObjectId)
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Portal.class).map(Portal::getLabel).orElse("Portal") + " contents")
+                .labelProvider(variableManager -> variableManager.get("label", String.class).orElse("Portal") + " contents")
                 .iconURLProvider(variableManager -> List.of())
                 .childrenProvider(this::getChildren)
                 .nodeIdProvider(this::getNodeId)

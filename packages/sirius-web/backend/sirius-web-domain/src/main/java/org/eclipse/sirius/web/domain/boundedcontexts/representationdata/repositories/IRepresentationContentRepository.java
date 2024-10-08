@@ -36,4 +36,11 @@ public interface IRepresentationContentRepository extends ListPagingAndSortingRe
         """)
     Optional<RepresentationContent> findContentByRepresentationMetadataId(UUID representationMetadataId);
 
+    @Query("""
+        SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+        FROM representation_content representationContent
+        WHERE representationContent.representation_metadata_id = :representationMetadataId
+        """)
+    boolean contentExistsByRepresentationMetadataId(UUID representationMetadataId);
+
 }

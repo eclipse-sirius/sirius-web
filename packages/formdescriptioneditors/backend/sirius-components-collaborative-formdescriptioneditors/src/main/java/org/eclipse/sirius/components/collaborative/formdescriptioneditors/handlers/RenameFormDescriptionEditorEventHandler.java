@@ -55,11 +55,9 @@ public class RenameFormDescriptionEditorEventHandler implements IFormDescription
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -81,7 +79,6 @@ public class RenameFormDescriptionEditorEventHandler implements IFormDescription
             String newLabel = renameRepresentationInput.newLabel();
 
             FormDescriptionEditor renamedFormDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(formDescriptionEditorContext.getFormDescriptionEditor())
-                    .label(newLabel)
                     .pages(List.of()) // We don't store form description editor pages, it will be re-render by
                     // the FormDescriptionEditorProcessor.
                     .build();

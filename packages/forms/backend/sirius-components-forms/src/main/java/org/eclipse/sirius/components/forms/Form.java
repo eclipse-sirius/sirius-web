@@ -35,8 +35,6 @@ public final class Form implements IRepresentation {
 
     private String kind;
 
-    private String label;
-
     private String targetObjectId;
 
     private String descriptionId;
@@ -55,11 +53,6 @@ public final class Form implements IRepresentation {
     @Override
     public String getKind() {
         return this.kind;
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
     }
 
     @Override
@@ -86,8 +79,8 @@ public final class Form implements IRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, targetObjectId: {3}, descriptionId: {4} pageCount: {5}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.targetObjectId, this.descriptionId, this.pages.size());
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3} pageCount: {4}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.descriptionId, this.pages.size());
     }
 
     /**
@@ -100,8 +93,6 @@ public final class Form implements IRepresentation {
         private String id;
 
         private String kind = KIND;
-
-        private String label;
 
         private String targetObjectId;
 
@@ -117,13 +108,7 @@ public final class Form implements IRepresentation {
             this.id = form.getId();
             this.targetObjectId = form.getTargetObjectId();
             this.descriptionId = form.getDescriptionId();
-            this.label = form.getLabel();
             this.pages = new ArrayList<>(form.getPages());
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
-            return this;
         }
 
         public Builder targetObjectId(String targetObjectId) {
@@ -145,7 +130,6 @@ public final class Form implements IRepresentation {
             Form form = new Form();
             form.id = Objects.requireNonNull(this.id);
             form.kind = Objects.requireNonNull(this.kind);
-            form.label = Objects.requireNonNull(this.label);
             form.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             form.descriptionId = Objects.requireNonNull(this.descriptionId);
             form.pages = Objects.requireNonNull(this.pages);

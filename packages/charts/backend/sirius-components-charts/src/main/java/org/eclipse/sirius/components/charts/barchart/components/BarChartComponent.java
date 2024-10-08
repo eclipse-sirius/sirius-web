@@ -45,7 +45,6 @@ public class BarChartComponent implements IComponent {
         Optional<BarChart> optionalPreviousBarChart = this.props.getPreviousBarChart();
 
         String id = optionalPreviousBarChart.map(BarChart::getId).orElseGet(() -> UUID.randomUUID().toString());
-        String label = barChartDescription.getLabelProvider().apply(variableManager);
         String targetObjectId = barChartDescription.getTargetObjectIdProvider().apply(variableManager);
         List<Number> values = barChartDescription.getValuesProvider().apply(variableManager);
         List<String> keys = barChartDescription.getKeysProvider().apply(variableManager);
@@ -53,7 +52,6 @@ public class BarChartComponent implements IComponent {
         BarChartStyle barChartStyle = barChartDescription.getStyleProvider().apply(variableManager);
 
         Builder builder = BarChartElementProps.newBarChartElementProps(id)
-                .label(label)
                 .descriptionId(barChartDescription.getId())
                 .targetObjectId(targetObjectId)
                 .values(values)

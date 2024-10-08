@@ -34,8 +34,6 @@ public final class Validation implements IRepresentation {
 
     private String kind;
 
-    private String label;
-
     private String descriptionId;
 
     private String targetObjectId;
@@ -54,11 +52,6 @@ public final class Validation implements IRepresentation {
     @Override
     public String getDescriptionId() {
         return this.descriptionId;
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
     }
 
     @Override
@@ -81,8 +74,8 @@ public final class Validation implements IRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, descriptionId: {3} diagnosticCount: {4}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.descriptionId, this.diagnostics.size());
+        String pattern = "{0} '{'id: {1}, descriptionId: {2} diagnosticCount: {3}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.diagnostics.size());
     }
 
     /**
@@ -97,8 +90,6 @@ public final class Validation implements IRepresentation {
 
         private String kind = KIND;
 
-        private String label;
-
         private String descriptionId;
 
         private String targetObjectId;
@@ -107,11 +98,6 @@ public final class Validation implements IRepresentation {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
-            return this;
         }
 
         public Builder descriptionId(String descriptionId) {
@@ -133,7 +119,6 @@ public final class Validation implements IRepresentation {
             Validation validation = new Validation();
             validation.id = Objects.requireNonNull(this.id);
             validation.kind = Objects.requireNonNull(this.kind);
-            validation.label = Objects.requireNonNull(this.label);
             validation.descriptionId = Objects.requireNonNull(this.descriptionId);
             validation.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             validation.diagnostics = Objects.requireNonNull(this.diagnostics);

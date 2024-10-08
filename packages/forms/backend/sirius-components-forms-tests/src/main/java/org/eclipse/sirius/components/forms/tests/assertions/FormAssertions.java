@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.forms.tests.assertions;
 import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.DateTime;
-import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.Link;
 import org.eclipse.sirius.components.forms.MultiSelect;
@@ -35,9 +34,6 @@ import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
  * @author lfasani
  */
 public class FormAssertions extends Assertions {
-    public static FormAssert assertThat(Form form) {
-        return new FormAssert(form);
-    }
 
     public static PageAssert assertThat(Page page) {
         return new PageAssert(page);

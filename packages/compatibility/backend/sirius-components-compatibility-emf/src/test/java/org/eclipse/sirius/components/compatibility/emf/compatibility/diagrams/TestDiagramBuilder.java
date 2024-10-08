@@ -50,7 +50,6 @@ public class TestDiagramBuilder {
 
     public Diagram getDiagram(String id) {
         return Diagram.newDiagram(id)
-                .label("diagramLabel")
                 .descriptionId(UUID.randomUUID().toString())
                 .targetObjectId("diagramTargetObjectId")
                 .nodes(List.of())

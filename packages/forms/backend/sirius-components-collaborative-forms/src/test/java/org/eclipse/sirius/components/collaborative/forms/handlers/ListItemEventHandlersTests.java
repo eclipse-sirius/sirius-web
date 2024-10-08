@@ -93,7 +93,6 @@ public class ListItemEventHandlersTests {
         return Form.newForm(FORM_ID.toString())
                 .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label")
                 .pages(Collections.singletonList(page))
                 .build();
     }
@@ -129,7 +128,6 @@ public class ListItemEventHandlersTests {
             return new Success(changeKind, parameters);
         };
 
-        // @formatter:off
         ListItem listItem = getListItemWithDeleteHandler(listItemId, deleteHandler);
 
         List list = getList(LIST_ID, listItem, false);
@@ -139,7 +137,6 @@ public class ListItemEventHandlersTests {
         Page page = getPage(group);
 
         Form form = getForm(page);
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override
@@ -182,7 +179,6 @@ public class ListItemEventHandlersTests {
             return new Success(changeKind, parameters);
         };
 
-        // @formatter:off
         ListItem listItem = getListItemWithDeleteHandler(listItemId, deleteHandler);
 
         List list = getList(LIST_ID, listItem, true);
@@ -192,7 +188,6 @@ public class ListItemEventHandlersTests {
         Page page = getPage(group);
 
         Form form = getForm(page);
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override
@@ -230,7 +225,6 @@ public class ListItemEventHandlersTests {
             return new Success(changeKind, parameters);
         };
 
-        // @formatter:off
         ListItem listItem = getListItemWithClickHandler(listItemId, selectHandler);
 
         List list = getList(LIST_ID, listItem, false);
@@ -240,7 +234,6 @@ public class ListItemEventHandlersTests {
         Page page = getPage(group);
 
         Form form = getForm(page);
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override
@@ -283,7 +276,6 @@ public class ListItemEventHandlersTests {
             return new Success(changeKind, parameters);
         };
 
-        // @formatter:off
         ListItem listItem = getListItemWithClickHandler(listItemId, selectHandler);
 
         List list = getList(LIST_ID, listItem, true);
@@ -293,7 +285,6 @@ public class ListItemEventHandlersTests {
         Page page = getPage(group);
 
         Form form = getForm(page);
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override

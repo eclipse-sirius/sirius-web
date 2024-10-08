@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.application.controllers.forms;
 
 import static org.assertj.core.api.Assertions.fail;
-import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -27,6 +26,7 @@ import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithTitleExpressionDescriptionProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationMetadataLabelVerifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,6 +53,9 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenCreatedFormSubscription givenCreatedFormSubscription;
+
+    @Autowired
+    private RepresentationMetadataLabelVerifier representationMetadataLabelVerifier;
 
     @Autowired
     private FormWithTitleExpressionDescriptionProvider formWithTitleExpressionDescriptionProvider;
@@ -85,8 +88,9 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
-                    assertThat(form).hasLabel("FormWithTitleExpression");
+                    this.representationMetadataLabelVerifier.verify(PapayaIdentifiers.PAPAYA_PROJECT, form, "FormWithTitleExpression", "Missing form id");
                 }, () -> fail("Missing form"));
+
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.services.hierarchy.GivenCreatedHierarchySubscription;
 import org.eclipse.sirius.web.services.hierarchy.HierarchyDescriptionProvider;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationMetadataLabelVerifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,6 +54,9 @@ public class HierarchyLifecycleControllerTests extends AbstractIntegrationTests 
     @Autowired
     private GivenCreatedHierarchySubscription givenCreatedHierarchySubscription;
 
+    @Autowired
+    private RepresentationMetadataLabelVerifier representationMetadataLabelVerifier;
+
     @BeforeEach
     public void beforeEach() {
         this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
@@ -74,7 +78,7 @@ public class HierarchyLifecycleControllerTests extends AbstractIntegrationTests 
                 .map(HierarchyRefreshedEventPayload.class::cast)
                 .map(HierarchyRefreshedEventPayload::hierarchy)
                 .ifPresentOrElse(hierarchy -> {
-                    assertThat(hierarchy.getLabel()).isEqualTo("Sample Hierarchy");
+                    this.representationMetadataLabelVerifier.verify(TestIdentifiers.ECORE_SAMPLE_PROJECT, hierarchy, "Sample Hierarchy", "Missing hierarchy id");
                     assertThat(hierarchy.getChildNodes()).isEmpty();
                 }, () -> fail("Missing hierarchy"));
         };

@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
@@ -55,41 +54,35 @@ public class HierarchyCreationService {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.objectService = Objects.requireNonNull(objectService);
-        // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "hierarchy")
                 .register(meterRegistry);
-        // @formatter:on
     }
 
-    public Hierarchy create(ICause cause, String label, Object targetObject, HierarchyDescription hierarchyDescription, IEditingContext editingContext) {
-        Hierarchy newHierarchy = this.doRender(cause, label, targetObject, editingContext, hierarchyDescription, Optional.empty());
-        return newHierarchy;
+    public Hierarchy create(Object targetObject, HierarchyDescription hierarchyDescription, IEditingContext editingContext) {
+        return this.doRender(targetObject, editingContext, hierarchyDescription, Optional.empty());
     }
 
-    public Optional<Hierarchy> refresh(ICause cause, IEditingContext editingContext, HierarchyContext hierarchyContext) {
+    public Optional<Hierarchy> refresh(IEditingContext editingContext, HierarchyContext hierarchyContext) {
         Hierarchy previousHierarchy = hierarchyContext.getHierarchy();
         var optionalObject = this.objectService.getObject(editingContext, previousHierarchy.getTargetObjectId());
-        // @formatter:off
         var optionalHierarchyDescription = this.representationDescriptionSearchService.findById(editingContext, previousHierarchy.getDescriptionId())
                 .filter(HierarchyDescription.class::isInstance)
                 .map(HierarchyDescription.class::cast);
-        // @formatter:on
 
         if (optionalObject.isPresent() && optionalHierarchyDescription.isPresent()) {
             Object object = optionalObject.get();
             HierarchyDescription hierarchyDescription = optionalHierarchyDescription.get();
-            Hierarchy hierarchy = this.doRender(cause, previousHierarchy.getLabel(), object, editingContext, hierarchyDescription, Optional.of(hierarchyContext));
+            Hierarchy hierarchy = this.doRender(object, editingContext, hierarchyDescription, Optional.of(hierarchyContext));
             return Optional.of(hierarchy);
         }
         return Optional.empty();
     }
 
-    private Hierarchy doRender(ICause cause, String label, Object targetObject, IEditingContext editingContext, HierarchyDescription hierarchyDescription, Optional<HierarchyContext> optionalHierarchyContext) {
+    private Hierarchy doRender(Object targetObject, IEditingContext editingContext, HierarchyDescription hierarchyDescription, Optional<HierarchyContext> optionalHierarchyContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
-        variableManager.put(HierarchyDescription.LABEL, label);
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
@@ -99,8 +92,6 @@ public class HierarchyCreationService {
         Element element = new Element(HierarchyComponent.class, props);
 
         Hierarchy newHierarchy = new HierarchyRenderer().render(element);
-
-        this.representationPersistenceService.save(null, editingContext, newHierarchy);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);

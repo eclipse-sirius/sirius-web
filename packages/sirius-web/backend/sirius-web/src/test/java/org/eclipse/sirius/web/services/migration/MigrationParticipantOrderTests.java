@@ -18,8 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -35,6 +37,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -58,6 +61,9 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
 
     @Autowired
     private IRepresentationSearchService representationSearchService;
+
+    @Autowired
+    private IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
 
     @Autowired
     private IRepresentationPersistenceService representationPersistenceService;
@@ -99,9 +105,15 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
         var optionalRepresentation = this.representationSearchService.findById(optionalEditingContext.get(), MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY.toString(), Hierarchy.class);
         assertThat(optionalRepresentation).isPresent();
         var representation = optionalRepresentation.get();
-        var newHierarchy = new Hierarchy(UUID.randomUUID().toString(), representation.getDescriptionId(), representation.getTargetObjectId(), representation.getLabel(), representation.getKind(), representation.getChildNodes());
+        var newHierarchy = new Hierarchy(UUID.randomUUID().toString(), representation.getDescriptionId(), representation.getTargetObjectId(), representation.getKind(), representation.getChildNodes());
 
+        var representationMetadata = new RepresentationMetadata(newHierarchy.getId(), newHierarchy.getKind(), "new Hierarchy", newHierarchy.getDescriptionId());
+        representationMetadataPersistenceService.save(null, optionalEditingContext.get(), representationMetadata, newHierarchy.getTargetObjectId());
         this.representationPersistenceService.save(null, optionalEditingContext.get(), newHierarchy);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
         var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentByRepresentationMetadata(AggregateReference.to(UUID.fromString(newHierarchy.getId())));
         assertThat(optionalUpdatedRepresentationContent).isPresent();

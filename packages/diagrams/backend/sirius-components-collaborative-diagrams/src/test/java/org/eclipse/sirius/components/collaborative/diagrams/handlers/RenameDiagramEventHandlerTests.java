@@ -58,7 +58,6 @@ public class RenameDiagramEventHandlerTests {
         DiagramDescription diagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(UUID.randomUUID().toString(), List.of(), List.of(), List.of());
 
         Diagram diagram = Diagram.newDiagram(representationId)
-                .label(OLD_LABEL)
                 .descriptionId(diagramDescription.getId())
                 .targetObjectId(targetObjectId.toString())
                 .nodes(Collections.emptyList())
@@ -94,6 +93,5 @@ public class RenameDiagramEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(RenameRepresentationSuccessPayload.class);
-        assertThat(((RenameRepresentationSuccessPayload) payload).representation().getLabel()).isEqualTo(NEW_LABEL);
     }
 }

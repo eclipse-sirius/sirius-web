@@ -100,7 +100,6 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
 
             assertThat(this.actual.getTargetObjectId()).isEqualTo(diagram.getTargetObjectId());
             assertThat(this.actual.getDescriptionId()).isEqualTo(diagram.getDescriptionId());
-            assertThat(this.actual.getLabel()).isEqualTo(diagram.getLabel());
 
         } else {
             this.isNull();

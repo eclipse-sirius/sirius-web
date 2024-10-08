@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
@@ -36,9 +37,12 @@ import reactor.core.publisher.Sinks;
 @Service
 public class TestCreateRepresentationEventHandler implements IEditingContextEventHandler {
 
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
     private final IRepresentationPersistenceService representationPersistenceService;
 
-    public TestCreateRepresentationEventHandler(IRepresentationPersistenceService representationPersistenceService) {
+    public TestCreateRepresentationEventHandler(IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService) {
+        this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
     }
 
@@ -51,9 +55,10 @@ public class TestCreateRepresentationEventHandler implements IEditingContextEven
     public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         var test = new TestRepresentation();
 
+        var representationMetadata = new RepresentationMetadata(test.getId(), test.getKind(), "Test", test.getDescriptionId());
+        this.representationMetadataPersistenceService.save(input, editingContext, representationMetadata, test.getTargetObjectId());
         this.representationPersistenceService.save(input, editingContext, test);
 
-        var representationMetadata = new RepresentationMetadata(test.getId(), test.getKind(), test.getLabel(), test.getDescriptionId());
         payloadSink.tryEmitValue(new CreateRepresentationSuccessPayload(input.id(), representationMetadata));
         changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input));
     }

@@ -52,7 +52,7 @@ public class DeckElementFactory implements IElementFactory {
                 .filter(Lane.class::isInstance)//
                 .map(Lane.class::cast)//
                 .toList();
-        return new Deck(props.id(), props.descriptionId(), props.targetObjectId(), props.label(), props.style(), lanes);
+        return new Deck(props.id(), props.descriptionId(), props.targetObjectId(), props.style(), lanes);
     }
 
     private Lane instantiateLane(LaneElementProps props, List<Object> children) {

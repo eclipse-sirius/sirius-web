@@ -31,8 +31,6 @@ public class Hierarchy implements IRepresentation {
 
     private String targetObjectId;
 
-    private String label;
-
     private String kind;
 
     private List<HierarchyNode> childNodes;
@@ -41,11 +39,10 @@ public class Hierarchy implements IRepresentation {
         // Used by Jackson
     }
 
-    public Hierarchy(String id, String descriptionId, String targetObjectId, String label, String kind, List<HierarchyNode> childNodes) {
+    public Hierarchy(String id, String descriptionId, String targetObjectId, String kind, List<HierarchyNode> childNodes) {
         this.id = Objects.requireNonNull(id);
         this.descriptionId = Objects.requireNonNull(descriptionId);
         this.targetObjectId = Objects.requireNonNull(targetObjectId);
-        this.label = Objects.requireNonNull(label);
         this.kind = Objects.requireNonNull(kind);
         this.childNodes = Objects.requireNonNull(childNodes);
     }
@@ -66,11 +63,6 @@ public class Hierarchy implements IRepresentation {
     }
 
     @Override
-    public String getLabel() {
-        return this.label;
-    }
-
-    @Override
     public String getKind() {
         return this.kind;
     }
@@ -81,8 +73,8 @@ public class Hierarchy implements IRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}, label: {4}, kind: {5}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.descriptionId, this.label, this.kind);
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}, kind: {4}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.descriptionId, this.kind);
     }
 
 }
