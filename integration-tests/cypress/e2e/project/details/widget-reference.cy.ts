@@ -31,9 +31,9 @@ describe('Details - Widget-reference', () => {
 
     it('then diagnostic messages are display on widget reference', () => {
       const explorer = new Explorer();
-      explorer.expand('Flow');
-      explorer.expand('NewSystem');
-      explorer.expand('DataSource1');
+      explorer.expandWithDoubleClick('Flow');
+      explorer.expandWithDoubleClick('NewSystem');
+      explorer.expandWithDoubleClick('DataSource1');
       explorer.select('standard');
       const details = new Details();
       details.getReferenceWidget('Target').find('p[class*="Mui-error"]').should('not.exist');
@@ -64,9 +64,9 @@ describe('Details - Widget-reference', () => {
     after(() => cy.deleteProject(studioProjectId));
     it('check widget reference click navigation to filter tree item', () => {
       const explorer = new Explorer();
-      explorer.expand(domainName);
-      explorer.expand('Entity1');
-      explorer.expand('Entity2');
+      explorer.expandWithDoubleClick(domainName);
+      explorer.expandWithDoubleClick('Entity1');
+      explorer.expandWithDoubleClick('Entity2');
       explorer.select('linkedTo');
       cy.getByTestId('reference-value-Entity2').should('exist');
 

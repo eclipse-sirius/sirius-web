@@ -34,7 +34,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     // We should look again at this test with a more recent cypress version.
     it.skip('Then we can create views by Drag and Drop on an unsynchronized diagram', () => {
       const explorer = new Explorer();
-      explorer.expand('robot');
+      explorer.expandWithDoubleClick('robot');
       explorer.createRepresentation('System', 'Topography unsynchronized', 'diagram');
 
       const diagram = new Diagram();

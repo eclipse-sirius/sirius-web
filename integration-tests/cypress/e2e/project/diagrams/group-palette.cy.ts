@@ -25,7 +25,7 @@ describe('Diagram - group palette', () => {
         new Project().visit(projectId);
       });
       const explorer = new Explorer();
-      explorer.expand('robot');
+      explorer.expandWithDoubleClick('robot');
       explorer.createRepresentation('System', 'Topography', 'diagram');
     });
 

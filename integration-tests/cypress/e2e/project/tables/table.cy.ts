@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import { Project } from '../../../pages/Project';
-import { Explorer } from '../../../workbench/Explorer';
 import { Papaya } from '../../../usecases/Papaya';
+import { Explorer } from '../../../workbench/Explorer';
 
 describe('Tables', () => {
   context('Given a papaya project', () => {
@@ -25,9 +25,9 @@ describe('Tables', () => {
         project.visit(projectId);
         project.disableDeletionConfirmationDialog();
         const explorer = new Explorer();
-        explorer.expand('Papaya');
-        explorer.expand('Project Project');
-        explorer.expand('Component Component');
+        explorer.expandWithDoubleClick('Papaya');
+        explorer.expandWithDoubleClick('Project Project');
+        explorer.expandWithDoubleClick('Component Component');
       });
     });
 

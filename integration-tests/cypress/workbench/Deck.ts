@@ -34,8 +34,8 @@ export class Deck {
   public createDailyDeckRepresentation(rootElementName: string, deckRepresentationName) {
     const explorer = new Explorer();
     explorer.getTreeItemByLabel('Task Model').should('exist');
-    explorer.expand('Task Model');
-    explorer.expand('Company');
+    explorer.expandWithDoubleClick('Task Model');
+    explorer.expandWithDoubleClick('Company');
     explorer.createRepresentation(rootElementName, 'Deck Daily Representation', deckRepresentationName);
   }
 
@@ -53,9 +53,9 @@ export class Deck {
     project.visit(taskProjectId);
     project.disableDeletionConfirmationDialog();
     const explorer = new Explorer();
-    explorer.expand('Task Model');
-    explorer.expand('Company');
-    explorer.expand(projectName);
+    explorer.expandWithDoubleClick('Task Model');
+    explorer.expandWithDoubleClick('Company');
+    explorer.expandWithDoubleClick(projectName);
     new Explorer().getTreeItemByLabel(representationName).click();
   }
 

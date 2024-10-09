@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Project } from '../../../pages/Project';
+import { Flow } from '../../../usecases/Flow';
 import { Studio } from '../../../usecases/Studio';
 import { Details } from '../../../workbench/Details';
 import { Diagram } from '../../../workbench/Diagram';
 import { Explorer } from '../../../workbench/Explorer';
-import { Flow } from '../../../usecases/Flow';
 
 describe('Diagram - edges', () => {
   context.skip('Given a studio template', () => {
@@ -27,20 +27,20 @@ describe('Diagram - edges', () => {
         studioProjectId = createdProjectData.projectId;
         new Project().visit(createdProjectData.projectId);
         const explorer = new Explorer();
-        explorer.expand('DomainNewModel');
+        explorer.expandWithDoubleClick('DomainNewModel');
         cy.get('[title="domain::Domain"]').then(($div) => {
           domainName = $div.data().testid;
-          explorer.expand(`${domainName}`);
+          explorer.expandWithDoubleClick(`${domainName}`);
           explorer.createObject('Entity1', 'relations-Relation');
           const details = new Details();
           details.getCheckBox('Containment').check();
           details.openReferenceWidgetOptions('Target Type');
           details.selectReferenceWidgetOption('Entity2');
 
-          explorer.expand('ViewNewModel');
-          explorer.expand('View');
-          explorer.expand(`${domainName} Diagram Description`);
-          explorer.expand('Entity1 Node');
+          explorer.expandWithDoubleClick('ViewNewModel');
+          explorer.expandWithDoubleClick('View');
+          explorer.expandWithDoubleClick(`${domainName} Diagram Description`);
+          explorer.expandWithDoubleClick('Entity1 Node');
           details.openReferenceWidgetOptions('Reused Child Node Descriptions');
           details.selectReferenceWidgetOption('Entity2 Node');
           details.getTextField('Default Width Expression').type('290{enter}');
@@ -102,14 +102,14 @@ describe('Diagram - edges', () => {
         project.disableDeletionConfirmationDialog();
         const explorer = new Explorer();
         const details = new Details();
-        explorer.expand('DomainNewModel');
+        explorer.expandWithDoubleClick('DomainNewModel');
         cy.get('[title="domain::Domain"]').then(($div) => {
           domainName = $div.data().testid;
 
-          explorer.expand('ViewNewModel');
-          explorer.expand('View');
-          explorer.expand(`${domainName} Diagram Description`);
-          explorer.expand('Entity1 Node');
+          explorer.expandWithDoubleClick('ViewNewModel');
+          explorer.expandWithDoubleClick('View');
+          explorer.expandWithDoubleClick(`${domainName} Diagram Description`);
+          explorer.expandWithDoubleClick('Entity1 Node');
           details.getTextField('Default Width Expression').type('300{enter}');
           details.getTextField('Default Height Expression').type('50{enter}');
           explorer.delete('RectangularNodeStyleDescription');
@@ -180,7 +180,7 @@ describe('Diagram - edges', () => {
         project.disableDeletionConfirmationDialog();
         const explorer = new Explorer();
         const details = new Details();
-        explorer.expand('DomainNewModel');
+        explorer.expandWithDoubleClick('DomainNewModel');
         cy.get('[title="domain::Domain"]').then(($div) => {
           domainName = $div.data().testid;
           explorer.createObject(domainName, 'Entity');
@@ -201,10 +201,10 @@ describe('Diagram - edges', () => {
           details.selectReferenceWidgetOption('Entity2');
           details.getTextField('Name').type('{selectAll}entity2{enter}');
 
-          explorer.expand('ViewNewModel');
-          explorer.expand('View');
-          explorer.expand(`${domainName} Diagram Description`);
-          explorer.expand('Entity1 Node');
+          explorer.expandWithDoubleClick('ViewNewModel');
+          explorer.expandWithDoubleClick('View');
+          explorer.expandWithDoubleClick(`${domainName} Diagram Description`);
+          explorer.expandWithDoubleClick('Entity1 Node');
           details.openReferenceWidgetOptions('Reused Child Node Descriptions');
           details.selectReferenceWidgetOption('Entity2 Node');
           details.getTextField('Default Width Expression').type('300{enter}');
@@ -295,8 +295,8 @@ describe('Diagram - edges', () => {
         const project = new Project();
         project.visit(projectId);
         const explorer = new Explorer();
-        explorer.expand('Flow');
-        explorer.expand('NewSystem');
+        explorer.expandWithDoubleClick('Flow');
+        explorer.expandWithDoubleClick('NewSystem');
         explorer.selectRepresentation('Topography');
       });
     });
@@ -306,7 +306,7 @@ describe('Diagram - edges', () => {
     it('Check bend points are available when selecting an edge', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
-      explorer.expand('DataSource1');
+      explorer.expandWithDoubleClick('DataSource1');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
       explorer.select('standard');
       cy.getByTestId('bend-point-0');

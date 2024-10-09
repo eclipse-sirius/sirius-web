@@ -26,7 +26,7 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
         new Project().visit(projectId);
       });
       const explorer = new Explorer();
-      explorer.expand('robot');
+      explorer.expandWithDoubleClick('robot');
       explorer.createRepresentation('System', 'Topography', 'diagram');
 
       new Diagram().getNodes('diagram', 'Wifi').should('exist');

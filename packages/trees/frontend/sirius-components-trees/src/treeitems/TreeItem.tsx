@@ -22,14 +22,18 @@ import {
 import CropDinIcon from '@mui/icons-material/CropDin';
 import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { TreeItemProps, TreeItemState, PartHovered } from './TreeItem.types';
+import { PartHovered, TreeItemProps, TreeItemState } from './TreeItem.types';
 import { TreeItemAction } from './TreeItemAction';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { isFilterCandidate } from './filterTreeItem';
 import { useDropTreeItem } from './useDropTreeItem';
 
-const useTreeItemStyle = makeStyles()((theme) => ({
+interface TreeItemStyleProps {
+  depth: number;
+}
+
+const useTreeItemStyle = makeStyles<TreeItemStyleProps>()((theme, { depth }) => ({
   treeItemBefore: {
     height: '2px',
   },
@@ -45,6 +49,7 @@ const useTreeItemStyle = makeStyles()((theme) => ({
       borderColor: 'black',
       borderStyle: 'dotted',
     },
+    paddingLeft: `${24 * (depth - 1)}px`,
   },
   treeItemHover: {
     backgroundColor: theme.palette.action.hover,
@@ -92,10 +97,7 @@ const useTreeItemStyle = makeStyles()((theme) => ({
     fontWeight: 'bold',
   },
   ul: {
-    marginLeft: theme.spacing(3),
-  },
-  highlight: {
-    backgroundColor: theme.palette.navigation.leftBackground,
+    marginLeft: 0,
   },
 }));
 
@@ -121,7 +123,7 @@ export const TreeItem = ({
   markedItemIds,
   treeItemActionRender,
 }: TreeItemProps) => {
-  const { classes } = useTreeItemStyle();
+  const { classes } = useTreeItemStyle({ depth });
 
   const initialState: TreeItemState = {
     editingMode: false,
@@ -249,6 +251,12 @@ export const TreeItem = ({
         return;
       }
 
+      // Don't change the selection if the user clicked on the TreeItemArrow
+      const treeItemArrowTestId = `${getString(item.label)}-toggle`;
+      if ((event.target as HTMLElement).getAttribute('data-testid') === treeItemArrowTestId) {
+        return;
+      }
+
       if ((event.ctrlKey || event.metaKey) && enableMultiSelection) {
         event.stopPropagation();
         const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
@@ -349,20 +357,21 @@ export const TreeItem = ({
         />
         <div
           className={className}
-          draggable={true}
           onClick={onClick}
-          onDragStart={dragStart}
-          onDragOver={dragOver}
           onDragEnter={() => handleMouseEnter('item')}
           onDragExit={handleMouseLeave}
           onDrop={onDropItem}
           onMouseEnter={() => handleMouseEnter('item')}
-          onMouseLeave={handleMouseLeave}>
+          onMouseLeave={handleMouseLeave}
+          data-testid={`${label}-fullrow`}>
           <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${label}-toggle`} />
           <div
             ref={refDom}
             tabIndex={0}
             onKeyDown={onBeginEditing}
+            draggable
+            onDragStart={dragStart}
+            onDragOver={dragOver}
             data-treeitemid={item.id}
             data-treeitemlabel={label}
             data-treeitemkind={item.kind}
