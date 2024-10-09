@@ -16,7 +16,7 @@ import { NodeData } from '../../DiagramRenderer.types';
 import { DiagramPaletteToolContributionComponentProps } from '../DiagramPaletteToolContribution.types';
 import { GQLPalette, GQLTool } from '../Palette.types';
 
-export interface PaletteQuickAccessToolBarProps {
+export interface UsePaletteQuickAccessToolBarProps {
   x: number;
   y: number;
   diagramElementId: string;
@@ -25,4 +25,8 @@ export interface PaletteQuickAccessToolBarProps {
   onToolClick: (tool: GQLTool) => void;
   palette: GQLPalette | null;
   node: Node<NodeData> | undefined;
+}
+
+export interface UsePaletteQuickAccessToolBarValue {
+  element: JSX.Element | null;
 }

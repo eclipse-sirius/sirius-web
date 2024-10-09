@@ -33,8 +33,10 @@ import {
   PaletteProps,
   PaletteStyleProps,
 } from './Palette.types';
-import { PaletteQuickAccessToolBar } from './tool-list/PaletteQuickAccessToolBar';
+import { PaletteSearchField } from './searchField/PaletteSearchField';
+import { PaletteSearchResult } from './tool-list/PaletteSearchResult';
 import { PaletteToolList } from './tool-list/PaletteToolList';
+import { usePaletteQuickAccessToolBar } from './tool-list/usePaletteQuickAccessToolBar';
 import { diagramPaletteToolExtensionPoint } from './tool/DiagramPaletteToolExtensionPoints';
 import { usePalette } from './usePalette';
 
@@ -85,7 +87,9 @@ export const Palette = ({
   targetObjectId,
   onDirectEditClick,
   hideableDiagramElement,
+  onEscape,
 }: PaletteProps) => {
+  const [searchToolValue, setSearchToolValue] = useState<string>('');
   const { getNodes } = useReactFlow<NodeData, EdgeData>();
   const { domNode } = useStoreApi().getState();
   const { x: viewportWidth, y: viewportHeight } = computeDraggableBounds(domNode?.getBoundingClientRect());
@@ -126,6 +130,17 @@ export const Palette = ({
     paletteToolComponents.length;
   const { classes } = usePaletteStyle({ paletteWidth: `${paletteWidth}px`, paletteHeight: `${paletteHeight}px` });
 
+  const { element } = usePaletteQuickAccessToolBar({
+    diagramElementId: diagramElementId,
+    onToolClick: handleToolClick,
+    node,
+    palette,
+    paletteToolComponents,
+    x,
+    y,
+    hideableDiagramElement,
+  });
+
   const shouldRender = palette && (node || (!node && toolCount > 0));
   if (!shouldRender) {
     return null;
@@ -135,6 +150,9 @@ export const Palette = ({
     setControlledPosition(data);
   };
 
+  const onSearchFieldValueChanged = (newValue: string): void => {
+    setSearchToolValue(newValue);
+  };
   // If running in React Strict mode, ReactDOM.findDOMNode() is deprecated.
   // Unfortunately, in order for <Draggable> to work properly, it needs raw access
   // to the underlying DOM node. To avoid the warning, we pass a `nodeRef`
@@ -146,6 +164,13 @@ export const Palette = ({
     bottom: viewportHeight - paletteHeight,
     right: viewportWidth - paletteWidth,
   };
+
+  const paletteQuickAccessToolBar = element ? (
+    <>
+      {element} <Divider />
+    </>
+  ) : null;
+
   return (
     <Draggable
       nodeRef={nodeRef}
@@ -163,17 +188,14 @@ export const Palette = ({
           <DragIndicatorIcon />
         </Box>
         <Divider />
-        <PaletteQuickAccessToolBar
-          diagramElementId={diagramElementId}
-          onToolClick={handleToolClick}
-          node={node}
-          palette={palette}
-          paletteToolComponents={paletteToolComponents}
-          x={x}
-          y={y}
-          hideableDiagramElement={hideableDiagramElement}
-        />
-        <PaletteToolList palette={palette} onToolClick={handleToolClick} />
+        {paletteQuickAccessToolBar}
+        <PaletteSearchField onValueChanged={onSearchFieldValueChanged} onEscape={onEscape} />
+        <Divider />
+        {searchToolValue.length > 0 ? (
+          <PaletteSearchResult searchToolValue={searchToolValue} palette={palette} onToolClick={handleToolClick} />
+        ) : (
+          <PaletteToolList palette={palette} onToolClick={handleToolClick} />
+        )}
       </Paper>
     </Draggable>
   );
