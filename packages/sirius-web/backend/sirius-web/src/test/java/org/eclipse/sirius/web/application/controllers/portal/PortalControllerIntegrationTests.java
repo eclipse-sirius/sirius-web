@@ -29,16 +29,21 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
+import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.portals.dto.AddPortalViewInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.LayoutPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalViewLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.RemovePortalViewInput;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.graphql.tests.DeleteRepresentationMutationRunner;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.portals.Portal;
+import org.eclipse.sirius.components.portals.PortalView;
 import org.eclipse.sirius.components.portals.tests.graphql.AddPortalViewMutationRunner;
 import org.eclipse.sirius.components.portals.tests.graphql.LayoutPortalMutationRunner;
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
@@ -62,6 +67,7 @@ import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.execution.DataFetcherResult;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
@@ -119,6 +125,9 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private RemovePortalViewMutationRunner removePortalViewMutationRunner;
+
+    @Autowired
+    private DeleteRepresentationMutationRunner deleteRepresentationMutationRunner;
 
     @Autowired
     private IGraphQLRequestor graphQLRequestor;
@@ -257,6 +266,104 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
         StepVerifier.create(flux)
                 .consumeNextWith(initialPortalContentConsumer)
                 .then(addEmptyPortal)
+                .consumeNextWith(updatedPortalContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a portal, when we add an existing representation to the portal, then an error should be returned")
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenAPortalWhenWeAddAnExistingRepresentationToThePortalThenAnErrorShouldBeReturned() {
+        this.givenCommittedTransaction.commit();
+
+        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var flux = this.portalEventSubscriptionRunner.run(portalEventInput);
+
+        Runnable addExistingRepresentation = () -> {
+            var addPortalViewInput = new AddPortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(),
+                    TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString(), 0, 0, 200, 300);
+            var result = this.addPortalViewMutationRunner.run(addPortalViewInput);
+
+            String typename = JsonPath.read(result, "$.data.addPortalView.__typename");
+            assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+        };
+
+
+        StepVerifier.create(flux)
+                .then(addExistingRepresentation)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a portal with a representation, when we delete the representation, then the portal should be refreshed")
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenPortalWithRepresentationWhenWeDeleteTheRepresentationThenThePortalShouldBeRefreshed() {
+        this.givenCommittedTransaction.commit();
+
+        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var portalEventFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
+
+        var emptyPortalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+        var emptyPortalEventFlux = this.portalEventSubscriptionRunner.run(emptyPortalEventInput);
+
+        Consumer<Object> initialPortalContentConsumer = payload -> Optional.of(payload)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(PortalRefreshedEventPayload.class::isInstance)
+                .map(PortalRefreshedEventPayload.class::cast)
+                .map(PortalRefreshedEventPayload::portal)
+                .ifPresentOrElse(portal -> {
+                    assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+                    assertThat(portal.getViews()).map(PortalView::getRepresentationId).contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+                }, () -> fail("Missing portal"));
+
+        Consumer<Object> emptyPortalContentConsumer = payload -> Optional.of(payload)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(PortalRefreshedEventPayload.class::isInstance)
+                .map(PortalRefreshedEventPayload.class::cast)
+                .map(PortalRefreshedEventPayload::portal)
+                .ifPresentOrElse(portal -> {
+                    assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+                    assertThat(portal.getViews()).isEmpty();
+                    assertThat(portal.getLayoutData()).isEmpty();
+                }, () -> fail("Missing portal"));
+
+        Runnable removeExistingRepresentation = () -> {
+            var input = new DeleteRepresentationInput(UUID.randomUUID(), TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+            var result = this.deleteRepresentationMutationRunner.run(input);
+
+            TestTransaction.flagForCommit();
+            TestTransaction.end();
+            TestTransaction.start();
+
+            String typename = JsonPath.read(result, "$.data.deleteRepresentation.__typename");
+            assertThat(typename).isEqualTo(DeleteRepresentationSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedPortalContentConsumer = payload -> Optional.of(payload)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(PortalRefreshedEventPayload.class::isInstance)
+                .map(PortalRefreshedEventPayload.class::cast)
+                .map(PortalRefreshedEventPayload::portal)
+                .ifPresentOrElse(portal -> {
+                    assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+                    assertThat(portal.getViews()).isEmpty();
+                    assertThat(portal.getLayoutData()).isEmpty();
+                }, () -> fail("Missing portal"));
+
+        StepVerifier.create(Flux.merge(portalEventFlux, emptyPortalEventFlux))
+                .consumeNextWith(initialPortalContentConsumer)
+                .consumeNextWith(emptyPortalContentConsumer)
+                .then(removeExistingRepresentation)
                 .consumeNextWith(updatedPortalContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

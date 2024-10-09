@@ -118,7 +118,12 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
                             .pages(List.of()) // We don't store form pages, it will be re-render by the FormProcessor.
                             .build();
 
-                    var representationMetadata = new RepresentationMetadata(form.getId(), form.getKind(), label, form.getDescriptionId());
+                    var representationMetadata = RepresentationMetadata.newRepresentationMetadata(form.getId())
+                            .kind(form.getKind())
+                            .label(label)
+                            .descriptionId(form.getDescriptionId())
+                            .build();
+
                     this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, targetObjectId);
                     this.representationPersistenceService.save(createRepresentationInput, editingContext, form);
 

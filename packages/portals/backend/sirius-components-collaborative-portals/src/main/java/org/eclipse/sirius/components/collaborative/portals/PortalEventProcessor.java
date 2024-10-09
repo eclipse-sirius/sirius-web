@@ -22,12 +22,10 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
-import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalEventHandler;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.api.PortalContext;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.portals.dto.RenamePortalInput;
 import org.eclipse.sirius.components.collaborative.portals.services.PortalServices;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -90,15 +88,7 @@ public class PortalEventProcessor implements IPortalEventProcessor {
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
-        IRepresentationInput effectiveInput = representationInput;
-        if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
-            effectiveInput = new RenamePortalInput(renameRepresentationInput.id(),
-                                                   renameRepresentationInput.editingContextId(),
-                                                   renameRepresentationInput.representationId(),
-                                                   renameRepresentationInput.newLabel());
-        }
-
-        if (effectiveInput instanceof IPortalInput portalInput) {
+        if (representationInput instanceof IPortalInput portalInput) {
             Optional<IPortalEventHandler> optionalPortalEventHandler = this.portalEventHandlers.stream().filter(handler -> handler.canHandle(portalInput)).findFirst();
             if (optionalPortalEventHandler.isPresent()) {
                 IPortalEventHandler portalEventHandler = optionalPortalEventHandler.get();

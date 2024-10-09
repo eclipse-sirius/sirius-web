@@ -45,7 +45,13 @@ public class SelectionRepresentationMetadataProvider implements IRepresentationM
                     .filter(values -> !values.isEmpty())
                     .map(values -> values.get(0));
             if (optionalRepresentationDescriptionId.isPresent()) {
-                return Optional.of(new RepresentationMetadata(representationId, "SelectionRepresentation", "Selection Representation", optionalRepresentationDescriptionId.get()));
+                var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
+                        .kind("SelectionRepresentation")
+                        .label("Selection Representation")
+                        .descriptionId(optionalRepresentationDescriptionId.get())
+                        .build();
+
+                return Optional.of(representationMetadata);
             }
         }
         return Optional.empty();

@@ -60,7 +60,7 @@ public class GetRepresentationDescriptionEventHandler implements IEditingContext
             IRepresentationDescription representationDescription = this.representationMetadataProviders.stream()
                     .flatMap(provider -> provider.getMetadata(getRepresentationDescriptionInput.representationId()).stream())
                     .findFirst()
-                    .map(RepresentationMetadata::getDescriptionId)
+                    .map(RepresentationMetadata::descriptionId)
                     .flatMap(representationDescriptionId -> this.representationDescriptionSearchService.findById(editingContext, representationDescriptionId))
                     .orElse(null);
             var payload = new GetRepresentationDescriptionPayload(input.id(), representationDescription);

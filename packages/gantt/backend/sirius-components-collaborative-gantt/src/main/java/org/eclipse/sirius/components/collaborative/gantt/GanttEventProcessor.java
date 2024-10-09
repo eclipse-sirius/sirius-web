@@ -21,11 +21,9 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
-import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventHandler;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventProcessor;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttInput;
-import org.eclipse.sirius.components.collaborative.gantt.dto.input.RenameGanttInput;
 import org.eclipse.sirius.components.collaborative.gantt.service.GanttCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -100,12 +98,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
-        IRepresentationInput effectiveInput = representationInput;
-        if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
-            effectiveInput = new RenameGanttInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
-                    renameRepresentationInput.newLabel());
-        }
-        if (effectiveInput instanceof IGanttInput ganttInput) {
+        if (representationInput instanceof IGanttInput ganttInput) {
             Optional<IGanttEventHandler> optionalGanttEventHandler = this.ganttEventHandlers.stream().filter(handler -> handler.canHandle(ganttInput)).findFirst();
 
             if (optionalGanttEventHandler.isPresent()) {

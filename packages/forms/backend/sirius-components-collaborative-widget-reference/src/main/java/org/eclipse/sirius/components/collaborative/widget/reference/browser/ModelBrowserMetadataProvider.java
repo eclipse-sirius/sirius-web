@@ -31,9 +31,17 @@ public class ModelBrowserMetadataProvider implements IRepresentationMetadataProv
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
         RepresentationMetadata representationMetadata = null;
         if (representationId.startsWith(ModelBrowsersDescriptionProvider.MODEL_BROWSER_CONTAINER_PREFIX)) {
-            representationMetadata = new RepresentationMetadata(representationId, Tree.KIND, ModelBrowsersDescriptionProvider.REPRESENTATION_NAME, ModelBrowsersDescriptionProvider.CONTAINER_DESCRIPTION_ID);
+            representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
+                    .kind(Tree.KIND)
+                    .label(ModelBrowsersDescriptionProvider.REPRESENTATION_NAME)
+                    .descriptionId(ModelBrowsersDescriptionProvider.CONTAINER_DESCRIPTION_ID)
+                    .build();
         } else if (representationId.startsWith(ModelBrowsersDescriptionProvider.MODEL_BROWSER_REFERENCE_PREFIX)) {
-            representationMetadata = new RepresentationMetadata(representationId, Tree.KIND, ModelBrowsersDescriptionProvider.REPRESENTATION_NAME, ModelBrowsersDescriptionProvider.REFERENCE_DESCRIPTION_ID);
+            representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
+                    .kind(Tree.KIND)
+                    .label(ModelBrowsersDescriptionProvider.REPRESENTATION_NAME)
+                    .descriptionId(ModelBrowsersDescriptionProvider.REFERENCE_DESCRIPTION_ID)
+                    .build();
         }
         return Optional.ofNullable(representationMetadata);
     }
