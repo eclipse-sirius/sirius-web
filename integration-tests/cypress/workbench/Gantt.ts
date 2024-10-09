@@ -86,8 +86,8 @@ export class GanttTestHelper {
   public createGanttRepresentation(rootElementName: string, GanttRepresentationName) {
     const explorer = new Explorer();
     explorer.getTreeItemByLabel('Task Model').should('exist');
-    explorer.expand('Task Model');
-    explorer.expand('Company');
+    explorer.expandWithDoubleClick('Task Model');
+    explorer.expandWithDoubleClick('Company');
     explorer.createRepresentation(rootElementName, 'Gantt Representation', GanttRepresentationName);
   }
 
@@ -105,9 +105,9 @@ export class GanttTestHelper {
     project.visit(taskProjectId);
     project.disableDeletionConfirmationDialog();
     const explorer = new Explorer();
-    explorer.expand('Task Model');
-    explorer.expand('Company');
-    explorer.expand(projectName);
+    explorer.expandWithDoubleClick('Task Model');
+    explorer.expandWithDoubleClick('Company');
+    explorer.expandWithDoubleClick(projectName);
     new Explorer().getTreeItemByLabel(representationName).click();
   }
 

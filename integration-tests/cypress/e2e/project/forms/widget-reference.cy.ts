@@ -27,13 +27,13 @@ const createFormWithWidgetRef = (domainType: string, name: string, reference: st
   details.getTextField('Domain Type').type(domainType);
   details.getTextField('Name').type(`{selectall}${name}{enter}`);
   details.getTextField('Title Expression').type(`{selectall}${name}{enter}`);
-  explorer.expand(name);
-  explorer.expand('PageDescription');
+  explorer.expandWithDoubleClick(name);
+  explorer.expandWithDoubleClick('PageDescription');
   explorer.createObject('GroupDescription', 'children-ReferenceWidgetDescription');
   details.getTextField('Reference Name Expression').should('exist');
   details.getTextField('Label Expression').type('Test Widget Reference');
   details.getTextField('Reference Name Expression').type(`${reference}{enter}`);
-  explorer.collapse(name);
+  explorer.collapseWithDoubleClick(name);
 };
 describe('Forms Widget-reference', () => {
   context('Given a blank studio template', () => {
@@ -44,7 +44,7 @@ describe('Forms Widget-reference', () => {
       new Studio().createBlankStudioProjectWithView().then((createdProjectData) => {
         studioProjectId = createdProjectData.projectId;
         const explorer = new Explorer();
-        explorer.expand('ViewDocument');
+        explorer.expandWithDoubleClick('ViewDocument');
         createFormWithWidgetRef('flow::DataFlow', 'WidgetRefMonoValue', 'target');
         createFormWithWidgetRef('flow::CompositeProcessor', 'WidgetRefMultiValueNonContainment', 'incomingFlows');
         createFormWithWidgetRef('flow::System', 'WidgetRefContainment', 'powerOutputs');
@@ -64,9 +64,9 @@ describe('Forms Widget-reference', () => {
       it('Then widget reference mono-valued is available', () => {
         const explorer = new Explorer();
         const form = new Form();
-        explorer.expand('Flow');
-        explorer.expand('NewSystem');
-        explorer.expand('DataSource1');
+        explorer.expandWithDoubleClick('Flow');
+        explorer.expandWithDoubleClick('NewSystem');
+        explorer.expandWithDoubleClick('DataSource1');
         explorer.createRepresentation('standard', 'WidgetRefMonoValue', 'WidgetRefMonoValue');
         form.getForm().should('exist');
         form.getWidget('Test Widget Reference').should('exist');
@@ -103,8 +103,8 @@ describe('Forms Widget-reference', () => {
       it('Then widget reference multi-valued is available', () => {
         const explorer = new Explorer();
         const form = new Form();
-        explorer.expand('Flow');
-        explorer.expand('NewSystem');
+        explorer.expandWithDoubleClick('Flow');
+        explorer.expandWithDoubleClick('NewSystem');
         explorer.createRepresentation(
           'CompositeProcessor1',
           'WidgetRefMultiValueNonContainment',
@@ -142,7 +142,7 @@ describe('Forms Widget-reference', () => {
         form.getWidgetElement('Test Widget Reference', 'Test Widget Reference-clear').click();
         form.getWidgetElement('Test Widget Reference', 'reference-value-standard').should('not.exist');
 
-        explorer.expand('DataSource1');
+        explorer.expandWithDoubleClick('DataSource1');
         const dataTransferStandardExplorer = new DataTransfer();
         explorer.getTreeItemByLabel('standard').trigger('dragstart', { dataTransfer: dataTransferStandardExplorer });
         form.getWidget('Test Widget Reference').trigger('drop', { dataTransfer: dataTransferStandardExplorer });
@@ -162,7 +162,7 @@ describe('Forms Widget-reference', () => {
       it('Then widget reference containment is available', () => {
         const explorer = new Explorer();
         const form = new Form();
-        explorer.expand('Flow');
+        explorer.expandWithDoubleClick('Flow');
         explorer.createRepresentation('NewSystem', 'WidgetRefContainment', 'WidgetRefContainment');
         form.getForm().should('exist');
         form.getWidget('Test Widget Reference').should('exist');
@@ -243,8 +243,8 @@ describe('Forms Widget-reference', () => {
       it('Then widget reference non containment is available', () => {
         const explorer = new Explorer();
         const form = new Form();
-        explorer.expand('Flow');
-        explorer.expand('NewSystem');
+        explorer.expandWithDoubleClick('Flow');
+        explorer.expandWithDoubleClick('NewSystem');
         explorer.createRepresentation(
           'CompositeProcessor1',
           'WidgetRefMultiValueNonContainment',
@@ -280,7 +280,7 @@ describe('Forms Widget-reference', () => {
           .click();
         cy.getByTestId('create-modal').findByTestId('create-object').click();
         form.getWidgetElement('Test Widget Reference', 'reference-value-unused').should('exist');
-        explorer.expand('DataSource1');
+        explorer.expandWithDoubleClick('DataSource1');
         explorer.getTreeItemByLabel('unused').should('exist');
       });
     });
@@ -340,7 +340,7 @@ describe('Forms Widget-reference', () => {
       details.openReferenceWidgetOptions('Super Type');
       details.selectReferenceWidgetOption('SuperEntity1');
 
-      explorer.expand('ViewNewModel');
+      explorer.expandWithDoubleClick('ViewNewModel');
       createFormWithWidgetRef(`${domainName}::Entity1`, 'WidgetRefRepresentation', 'relation');
 
       new Studio().createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
@@ -401,7 +401,7 @@ describe('Forms Widget-reference', () => {
       const details = new Details();
       const form = new Form();
 
-      explorer.expand(domainName);
+      explorer.expandWithDoubleClick(domainName);
       explorer.createObject('Entity1', 'relations-Relation');
       details.getCheckBox('Containment').check();
       details.openReferenceWidgetOptions('Target Type');
@@ -411,14 +411,14 @@ describe('Forms Widget-reference', () => {
       details.openReferenceWidgetOptions('Target Type');
       details.selectReferenceWidgetOption('Entity1');
 
-      explorer.expand('ViewNewModel');
+      explorer.expandWithDoubleClick('ViewNewModel');
       explorer.createObject('View', 'descriptions-FormDescription');
       explorer.select('New Form Description');
       details.getTextField('Domain Type').type(`${domainName}::Entity1`);
       details.getTextField('Name').type(`{selectall}WidgetRefRepresentation{enter}`);
       details.getTextField('Title Expression').type(`{selectall}WidgetRefRepresentation{enter}`);
-      explorer.expand('WidgetRefRepresentation');
-      explorer.expand('PageDescription');
+      explorer.expandWithDoubleClick('WidgetRefRepresentation');
+      explorer.expandWithDoubleClick('PageDescription');
       explorer.createObject('Group Description', 'children-ReferenceWidgetDescription');
       details.getTextField('Reference Name Expression').should('exist');
       details.getTextField('Label Expression').type('Test Widget Reference linkedTo');

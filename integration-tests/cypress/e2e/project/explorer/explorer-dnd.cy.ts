@@ -31,17 +31,17 @@ describe('Explorer', () => {
     context('When we drop tree item in the explorer', () => {
       it('Then the object are moved', () => {
         const explorer = new Explorer();
-        explorer.expand('robot');
-        explorer.expand('System');
-        explorer.expand('Central_Unit');
+        explorer.expandWithDoubleClick('robot');
+        explorer.expandWithDoubleClick('System');
+        explorer.expandWithDoubleClick('Central_Unit');
         explorer.getTreeItemByLabel('Radar').should('not.exist');
 
-        explorer.expand('CompositeProcessor');
+        explorer.expandWithDoubleClick('CompositeProcessor');
         const dataTransfer = new DataTransfer();
         explorer.dragTreeItem('Radar', dataTransfer);
         explorer.dopOnTreeItem('Central_Unit', dataTransfer);
-        explorer.collapse('CompositeProcessor');
-        
+        explorer.collapseWithDoubleClick('CompositeProcessor');
+
         explorer.getTreeItemByLabel('Radar').should('exist');
       });
     });

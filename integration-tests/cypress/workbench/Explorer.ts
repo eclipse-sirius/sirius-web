@@ -28,12 +28,12 @@ export class Explorer {
     return this.getExplorerView().find('[data-treeitemid][data-testid="selected"]');
   }
 
-  public expand(treeItemLabel: string): void {
+  public expandWithDoubleClick(treeItemLabel: string): void {
     this.getTreeItemByLabel(treeItemLabel).should('have.attr', 'data-expanded', 'false');
     this.getTreeItemByLabel(treeItemLabel).dblclick();
   }
 
-  public collapse(treeItemLabel: string): void {
+  public collapseWithDoubleClick(treeItemLabel: string): void {
     this.getTreeItemByLabel(treeItemLabel).should('have.attr', 'data-expanded', 'true');
     this.getTreeItemByLabel(treeItemLabel).dblclick();
   }
@@ -70,6 +70,11 @@ export class Explorer {
   public select(treeItemLabel: string, multiSelection: boolean = false): void {
     this.getTreeItemByLabel(treeItemLabel).should('exist');
     this.getTreeItemByLabel(treeItemLabel).click({ ctrlKey: multiSelection });
+  }
+
+  public toggle(treeItemLabel: string): void {
+    this.getTreeItemByLabel(treeItemLabel).should('exist');
+    this.getTreeItemByLabel(treeItemLabel).getByTestId(`${treeItemLabel}-toggle`).click();
   }
 
   public selectRepresentation(treeItemLabel: string): void {

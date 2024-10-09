@@ -26,10 +26,10 @@ describe('Diagram - Node aspect ratio', () => {
         studioProjectId = createdProjectData.projectId;
         new Project().visit(createdProjectData.projectId);
         const explorer = new Explorer();
-        explorer.expand('DomainNewModel');
+        explorer.expandWithDoubleClick('DomainNewModel');
         cy.get('[title="domain::Domain"]').then(($div) => {
           domainName = $div.data().testid;
-          explorer.expand(`${domainName}`);
+          explorer.expandWithDoubleClick(`${domainName}`);
         });
       })
     );
@@ -42,9 +42,9 @@ describe('Diagram - Node aspect ratio', () => {
 
       it('Then node default size is used for node creation', () => {
         const explorer = new Explorer();
-        explorer.expand('ViewNewModel');
-        explorer.expand('View');
-        explorer.expand(`${domainName} Diagram Description`);
+        explorer.expandWithDoubleClick('ViewNewModel');
+        explorer.expandWithDoubleClick('View');
+        explorer.expandWithDoubleClick(`${domainName} Diagram Description`);
         explorer.select('Entity1 Node');
         const details = new Details();
         details.getTextField('Default Width Expression').type('200');
@@ -97,9 +97,9 @@ describe('Diagram - Node aspect ratio', () => {
           details.openReferenceWidgetOptions('Target Type');
           details.selectReferenceWidgetOption('SubNode');
 
-          explorer.expand('ViewNewModel');
-          explorer.expand('View');
-          explorer.expand(`${domainName} Diagram Description`);
+          explorer.expandWithDoubleClick('ViewNewModel');
+          explorer.expandWithDoubleClick('View');
+          explorer.expandWithDoubleClick(`${domainName} Diagram Description`);
 
           explorer.createObject(`${domainName} Diagram Description`, 'nodeDescriptions-NodeDescription');
 
