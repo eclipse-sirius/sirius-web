@@ -36,23 +36,23 @@ describe('Diagram - collapsible node', () => {
 
           const explorer = new Explorer();
           const details = new Details();
-          explorer.expand('DomainNewModel');
+          explorer.expandWithDoubleClick('DomainNewModel');
           cy.get('[title="domain::Domain"]').then(($div) => {
             domainName = $div.data().testid;
-            explorer.expand(domainName);
+            explorer.expandWithDoubleClick(domainName);
             explorer.createObject('Entity1', 'relations-Relation');
             details.getCheckBox('Containment').check();
             details.openReferenceWidgetOptions('Target Type');
             details.selectReferenceWidgetOption('Entity2');
-            explorer.expand('ViewNewModel');
-            explorer.expand('View');
-            explorer.expand(`${domainName} Diagram Description`);
+            explorer.expandWithDoubleClick('ViewNewModel');
+            explorer.expandWithDoubleClick('View');
+            explorer.expandWithDoubleClick(`${domainName} Diagram Description`);
             explorer.select('Entity1 Node');
             details.getCheckBox('Collapsible').check();
             details.openReferenceWidgetOptions('Reused Child Node Descriptions');
             details.selectReferenceWidgetOption('Entity2 Node');
-            explorer.expand('Entity1 Node');
-            explorer.expand('aql:self.name');
+            explorer.expandWithDoubleClick('Entity1 Node');
+            explorer.expandWithDoubleClick('aql:self.name');
             explorer.select('InsideLabelStyle');
             details.getCheckBox('With Header').check();
             details.getCheckBox('Display Header Separator').check();

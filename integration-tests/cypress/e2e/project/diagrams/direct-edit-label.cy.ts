@@ -38,11 +38,11 @@ describe('Diagram - Direct edit label', () => {
           explorer.getTreeItemByLabel('DomainNewModel').dblclick();
           cy.get('[title="domain::Domain"]').then(($div) => {
             domainName = $div.data().testid;
-            explorer.expand('ViewNewModel');
-            explorer.expand('View');
-            explorer.expand(`${domainName} Diagram Description`);
-            explorer.expand('Entity1 Node');
-            explorer.expand('NodePalette');
+            explorer.expandWithDoubleClick('ViewNewModel');
+            explorer.expandWithDoubleClick('View');
+            explorer.expandWithDoubleClick(`${domainName} Diagram Description`);
+            explorer.expandWithDoubleClick('Entity1 Node');
+            explorer.expandWithDoubleClick('NodePalette');
             explorer.delete('Edit Label');
             explorer.select('LinkedTo Edge');
             new Details().getTextField('Center Label Expression').type('Edge center{enter}');

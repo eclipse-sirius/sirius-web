@@ -27,10 +27,10 @@ describe.skip('Diagram - Graphical-dnd', () => {
         studioProjectId = createdProjectData.projectId;
         new Project().visit(createdProjectData.projectId);
         const explorer = new Explorer();
-        explorer.expand('DomainNewModel');
+        explorer.expandWithDoubleClick('DomainNewModel');
         cy.get('[title="domain::Domain"]').then(($div) => {
           domainName = $div.data().testid;
-          explorer.expand(`${domainName}`);
+          explorer.expandWithDoubleClick(`${domainName}`);
         });
       })
     );
@@ -49,10 +49,10 @@ describe.skip('Diagram - Graphical-dnd', () => {
         details.openReferenceWidgetOptions('Target Type');
         details.selectReferenceWidgetOption('Entity1');
 
-        explorer.expand('ViewNewModel');
-        explorer.expand('View');
-        explorer.expand(`${domainName} Diagram Description`);
-        explorer.expand('Entity2 Node');
+        explorer.expandWithDoubleClick('ViewNewModel');
+        explorer.expandWithDoubleClick('View');
+        explorer.expandWithDoubleClick(`${domainName} Diagram Description`);
+        explorer.expandWithDoubleClick('Entity2 Node');
         details.openReferenceWidgetOptions('Reused Child Node Descriptions');
         details.selectReferenceWidgetOption('Entity1 Node');
         explorer.createObject('NodePalette', 'dropNodeTool-DropNodeTool');
