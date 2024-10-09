@@ -40,12 +40,13 @@ public class RepresentationMetadataPersistenceService implements IRepresentation
     @Transactional
     public void save(ICause cause, IEditingContext editingContext, org.eclipse.sirius.components.core.RepresentationMetadata representationMetadata, String targetObjectId) {
         var optionalProjectId = new UUIDParser().parse(editingContext.getId());
-        var optionalRepresentationId = new UUIDParser().parse(representationMetadata.getId());
+        var optionalRepresentationId = new UUIDParser().parse(representationMetadata.id());
+
         if (optionalProjectId.isPresent() && optionalRepresentationId.isPresent()) {
             var projectId = optionalProjectId.get();
             var representationId = optionalRepresentationId.get();
-            this.representationMetadataCreationService.create(cause, representationId, projectId, representationMetadata.getLabel(), representationMetadata.getKind(),
-                    representationMetadata.getDescriptionId(), targetObjectId);
+            this.representationMetadataCreationService.create(cause, representationId, projectId, representationMetadata.label(), representationMetadata.kind(),
+                    representationMetadata.descriptionId(), targetObjectId);
         }
     }
 }

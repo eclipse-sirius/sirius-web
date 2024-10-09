@@ -155,7 +155,6 @@ public class FormEventProcessor implements IFormEventProcessor {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof IFormInput formInput) {
-
             Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 
             if (optionalFormEventHandler.isPresent()) {
@@ -165,7 +164,6 @@ public class FormEventProcessor implements IFormEventProcessor {
                 this.logger.warn("No handler found for event: {}", formInput);
             }
         } else if (representationInput instanceof ITableInput tableInput) {
-
             Optional<ITableEventHandler> optionalTableEventHandler = this.tableEventHandlers.stream().filter(handler -> handler.canHandle(tableInput)).findFirst();
 
             if (optionalTableEventHandler.isPresent()) {
@@ -212,13 +210,6 @@ public class FormEventProcessor implements IFormEventProcessor {
                 .map(TableWidgetDescription::getTableDescription)
                 .filter(tableDescription -> tableDescriptionId.equals(tableDescription.getId()))
                 .findFirst();
-    }
-
-    private Optional<FormDescription> findFormDescription(String formDescriptionId) {
-        return this.representationDescriptionSearchService
-                .findById(editingContext, formDescriptionId)
-                .filter(FormDescription.class::isInstance)
-                .map(FormDescription.class::cast);
     }
 
     @Override

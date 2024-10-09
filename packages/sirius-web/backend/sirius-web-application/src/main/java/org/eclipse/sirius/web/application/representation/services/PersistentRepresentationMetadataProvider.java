@@ -39,7 +39,11 @@ public class PersistentRepresentationMetadataProvider implements IRepresentation
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
         return new UUIDParser().parse(representationId)
                 .flatMap(this.representationMetadataSearchService::findMetadataById)
-                .map(representation -> new RepresentationMetadata(representation.getId().toString(), representation.getKind(), representation.getLabel(), representation.getDescriptionId()));
+                .map(representation -> RepresentationMetadata.newRepresentationMetadata(representation.getId().toString())
+                        .kind(representation.getKind())
+                        .label(representation.getLabel())
+                        .descriptionId(representation.getDescriptionId())
+                        .build());
     }
 
 }

@@ -112,7 +112,12 @@ public class CreateGanttEventHandler implements IEditingContextEventHandler {
                 String label = ganttDescription.labelProvider().apply(variableManager);
 
                 Gantt gantt = this.ganttCreationService.create(object, ganttDescription, editingContext);
-                var representationMetadata = new RepresentationMetadata(gantt.getId(), gantt.getKind(), label, gantt.descriptionId());
+                var representationMetadata = RepresentationMetadata.newRepresentationMetadata(gantt.getId())
+                        .kind(gantt.getKind())
+                        .label(label)
+                        .descriptionId(gantt.descriptionId())
+                        .build();
+
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, gantt.targetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, gantt);
 

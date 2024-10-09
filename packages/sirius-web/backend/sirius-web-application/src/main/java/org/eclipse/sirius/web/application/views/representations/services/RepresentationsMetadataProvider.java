@@ -28,7 +28,13 @@ public class RepresentationsMetadataProvider implements IRepresentationMetadataP
     @Override
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
         if (representationId.startsWith(RepresentationsFormDescriptionProvider.PREFIX)) {
-            return Optional.of(new RepresentationMetadata(representationId, Form.KIND, RepresentationsFormDescriptionProvider.TITLE, RepresentationsFormDescriptionProvider.FORM_DESCRIPTION_ID));
+            var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
+                    .kind(Form.KIND)
+                    .label(RepresentationsFormDescriptionProvider.TITLE)
+                    .descriptionId(RepresentationsFormDescriptionProvider.FORM_DESCRIPTION_ID)
+                    .build();
+
+            return Optional.of(representationMetadata);
         }
         return Optional.empty();
     }

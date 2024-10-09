@@ -113,7 +113,12 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
                 String label = representationDescription.getLabelProvider().apply(variableManager);
 
                 Hierarchy hierarchy = this.hierarchyCreationService.create(object, representationDescription, editingContext);
-                var representationMetadata = new RepresentationMetadata(hierarchy.getId(), hierarchy.getKind(), label, hierarchy.getDescriptionId());
+                var representationMetadata = RepresentationMetadata.newRepresentationMetadata(hierarchy.getId())
+                        .kind(hierarchy.getKind())
+                        .label(label)
+                        .descriptionId(hierarchy.getDescriptionId())
+                        .build();
+
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, hierarchy.getTargetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, hierarchy);
 

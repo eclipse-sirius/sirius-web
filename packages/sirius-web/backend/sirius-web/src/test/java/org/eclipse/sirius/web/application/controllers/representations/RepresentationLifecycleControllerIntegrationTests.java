@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
@@ -23,8 +24,8 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSucce
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
-import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.CreateRepresentationMutationRunner;
 import org.eclipse.sirius.components.graphql.tests.DeleteRepresentationMutationRunner;
 import org.eclipse.sirius.components.graphql.tests.RenameRepresentationMutationRunner;
@@ -32,13 +33,14 @@ import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscripti
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentCreatedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataDeletedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.services.TestRepresentationDescription;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
+import org.eclipse.sirius.web.tests.graphql.RepresentationMetadataQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,6 +70,9 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
 
     @Autowired
     private IGivenCommittedTransaction givenCommittedTransaction;
+
+    @Autowired
+    private RepresentationMetadataQueryRunner representationMetadataQueryRunner;
 
     @Autowired
     private CreateRepresentationMutationRunner createRepresentationMutationRunner;
@@ -144,12 +149,21 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
 
             TestTransaction.flagForCommit();
             TestTransaction.end();
+            TestTransaction.start();
 
             String typename = JsonPath.read(result, "$.data.renameRepresentation.__typename");
-            assertThat(typename).isEqualTo(RenameRepresentationSuccessPayload.class.getSimpleName());
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
-            assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(RepresentationContentUpdatedEvent.class::isInstance);
+            assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(RepresentationMetadataUpdatedEvent.class::isInstance);
+
+            result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), "representationId", TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+            String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
+            assertThat(label).isEqualTo("new name");
+
+            TestTransaction.flagForCommit();
+            TestTransaction.end();
+            TestTransaction.start();
         };
 
         StepVerifier.create(flux)

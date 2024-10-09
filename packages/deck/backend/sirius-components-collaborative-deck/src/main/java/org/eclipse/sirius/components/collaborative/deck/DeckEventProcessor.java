@@ -25,9 +25,7 @@ import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventProcessor;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckInput;
-import org.eclipse.sirius.components.collaborative.deck.dto.input.RenameDeckInput;
 import org.eclipse.sirius.components.collaborative.deck.service.DeckCreationService;
-import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -103,12 +101,7 @@ public class DeckEventProcessor implements IDeckEventProcessor {
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
-        IRepresentationInput effectiveInput = representationInput;
-        if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
-            effectiveInput = new RenameDeckInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
-                    renameRepresentationInput.newLabel());
-        }
-        if (effectiveInput instanceof IDeckInput deckInput) {
+        if (representationInput instanceof IDeckInput deckInput) {
             Optional<IDeckEventHandler> optionalDeckEventHandler = this.deckEventHandlers.stream().filter(handler -> handler.canHandle(deckInput)).findFirst();
 
             if (optionalDeckEventHandler.isPresent()) {

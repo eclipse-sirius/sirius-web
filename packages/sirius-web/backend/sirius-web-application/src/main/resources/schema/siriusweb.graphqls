@@ -118,7 +118,7 @@ input RenameRepresentationInput {
   newLabel: String!
 }
 
-union RenameRepresentationPayload = ErrorPayload | RenameRepresentationSuccessPayload
+union RenameRepresentationPayload = ErrorPayload | SuccessPayload
 
 type RenameRepresentationSuccessPayload {
   id: ID!

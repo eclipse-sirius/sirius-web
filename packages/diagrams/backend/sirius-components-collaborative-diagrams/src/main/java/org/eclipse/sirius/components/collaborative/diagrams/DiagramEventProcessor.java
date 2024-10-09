@@ -35,8 +35,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshed
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.RenameDiagramInput;
-import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -161,12 +159,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
             return;
         }
 
-        IRepresentationInput effectiveInput = representationInput;
-        if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
-            effectiveInput = new RenameDiagramInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
-                    renameRepresentationInput.newLabel());
-        }
-        if (effectiveInput instanceof IDiagramInput diagramInput) {
+        if (representationInput instanceof IDiagramInput diagramInput) {
             Optional<IDiagramEventHandler> optionalDiagramEventHandler = this.diagramEventHandlers.stream().filter(handler -> handler.canHandle(diagramInput)).findFirst();
 
             if (optionalDiagramEventHandler.isPresent()) {

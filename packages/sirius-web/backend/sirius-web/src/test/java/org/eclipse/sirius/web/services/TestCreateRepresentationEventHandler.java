@@ -55,7 +55,12 @@ public class TestCreateRepresentationEventHandler implements IEditingContextEven
     public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         var test = new TestRepresentation();
 
-        var representationMetadata = new RepresentationMetadata(test.getId(), test.getKind(), "Test", test.getDescriptionId());
+        var representationMetadata = RepresentationMetadata.newRepresentationMetadata(test.getId())
+                .kind(test.getKind())
+                .label("Test")
+                .descriptionId(test.getDescriptionId())
+                .build();
+
         this.representationMetadataPersistenceService.save(input, editingContext, representationMetadata, test.getTargetObjectId());
         this.representationPersistenceService.save(input, editingContext, test);
 

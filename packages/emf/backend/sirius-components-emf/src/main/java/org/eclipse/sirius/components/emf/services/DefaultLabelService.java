@@ -87,7 +87,7 @@ public class DefaultLabelService implements IDefaultLabelService {
                     .flatMap(provider -> provider.getMetadata(representation.getId()).stream())
                     .findFirst();
             if (optionalRepresentationMetadata.isPresent()) {
-                label = optionalRepresentationMetadata.get().getLabel();
+                label = optionalRepresentationMetadata.get().label();
             }
         } else if (object instanceof Resource resource) {
             label = this.getResourceLabel(resource);
