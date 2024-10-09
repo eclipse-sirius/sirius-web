@@ -28,7 +28,11 @@ import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { isFilterCandidate } from './filterTreeItem';
 
-const useTreeItemStyle = makeStyles()((theme) => ({
+interface TreeItemStyleProps {
+  depth: number;
+}
+
+const useTreeItemStyle = makeStyles<TreeItemStyleProps>()((theme, { depth }) => ({
   treeItem: {
     display: 'flex',
     flexDirection: 'row',
@@ -41,6 +45,7 @@ const useTreeItemStyle = makeStyles()((theme) => ({
       borderColor: 'black',
       borderStyle: 'dotted',
     },
+    paddingLeft: `${24 * (depth - 1)}px`,
   },
   treeItemHover: {
     backgroundColor: theme.palette.action.hover,
@@ -88,10 +93,7 @@ const useTreeItemStyle = makeStyles()((theme) => ({
     fontWeight: 'bold',
   },
   ul: {
-    marginLeft: theme.spacing(3),
-  },
-  highlight: {
-    backgroundColor: theme.palette.navigation.leftBackground,
+    marginLeft: 0,
   },
 }));
 
@@ -116,7 +118,7 @@ export const TreeItem = ({
   markedItemIds,
   treeItemActionRender,
 }: TreeItemProps) => {
-  const { classes } = useTreeItemStyle();
+  const { classes } = useTreeItemStyle({ depth });
 
   const initialState: TreeItemState = {
     editingMode: false,
@@ -322,14 +324,13 @@ export const TreeItem = ({
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
     currentTreeItem = (
       <>
-        <div className={className} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div className={className} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={onClick}>
           <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${label}-toggle`} />
           <div
             ref={refDom}
             tabIndex={0}
             onKeyDown={onBeginEditing}
             draggable={true}
-            onClick={onClick}
             onDragStart={dragStart}
             onDragOver={dragOver}
             data-treeitemid={item.id}
