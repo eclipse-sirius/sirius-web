@@ -199,6 +199,7 @@ Introduce new `IRewriteProxiesResourceFilter` interface, to register resource fi
 +
 image:doc/screenshots/treeItemLabelStyled.jpg[StyledString, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3963[#3963] [core] Add support for optional GraphQLCodeRegistry post-processing/transformation.
+- https://github.com/eclipse-sirius/sirius-web/issues/4043[#4043] [sirius-web] Add/restore support for back/forward browser actions
 
 === Improvements
 
