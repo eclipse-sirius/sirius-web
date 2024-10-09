@@ -72,6 +72,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.urlParser = Objects.requireNonNull(urlParser);
     }
+
     @Override
     public List<IRepresentationDescription> convert(DialogDescription dialogDescription, AQLInterpreter interpreter) {
         List<IRepresentationDescription> representationDescriptions = new ArrayList<>();
@@ -112,9 +113,9 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
      * Create the TreeDescription attached to the SelectionDescription.
      *
      * @param selectionDescription
-     *            the SelectionDialogDescription.
+     *         the SelectionDialogDescription.
      * @param interpreter
-     *            the AQL interpreter.
+     *         the AQL interpreter.
      * @return The {@link TreeDescription}
      */
     private TreeDescription createTreeDescription(SelectionDialogDescription selectionDescription, AQLInterpreter interpreter) {
@@ -294,8 +295,8 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                 //Set the targetObject as the SELF value.
                 //The targetObjectId is provided by the frontend in the treeId.
                 this.getTargetObjectId(variableManager)
-                    .flatMap(targetObjectId -> this.objectService.getObject(optionalEditingContext.get(), targetObjectId))
-                    .ifPresent(targetObject -> variableManager.put(VariableManager.SELF, targetObject));
+                        .flatMap(targetObjectId -> this.objectService.getObject(optionalEditingContext.get(), targetObjectId))
+                        .ifPresent(targetObject -> variableManager.put(VariableManager.SELF, targetObject));
 
                 String elementsExpression = selectionDialogTreeDescription.getElementsExpression();
                 Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementsExpression);

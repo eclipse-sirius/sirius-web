@@ -17,6 +17,7 @@ export interface TreeItemProps {
   editingContextId: string;
   treeId: string;
   item: GQLTreeItem;
+  itemIndex: number;
   depth: number;
   onExpand: (id: string, depth: number) => void;
   onExpandAll: (treeItem: GQLTreeItem) => void;
@@ -31,5 +32,7 @@ export interface TreeItemProps {
 export interface TreeItemState {
   editingMode: boolean;
   editingKey: string | null;
-  isHovered: boolean;
+  partHovered: PartHovered | null;
 }
+
+export type PartHovered = 'before' | 'item';

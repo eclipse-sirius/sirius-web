@@ -22,17 +22,21 @@ import {
 import CropDinIcon from '@mui/icons-material/CropDin';
 import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { TreeItemProps, TreeItemState } from './TreeItem.types';
+import { TreeItemProps, TreeItemState, PartHovered } from './TreeItem.types';
 import { TreeItemAction } from './TreeItemAction';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { isFilterCandidate } from './filterTreeItem';
+import { useDropTreeItem } from './useDropTreeItem';
 
 const useTreeItemStyle = makeStyles()((theme) => ({
+  treeItemBefore: {
+    height: '2px',
+  },
   treeItem: {
     display: 'flex',
     flexDirection: 'row',
-    height: '24px',
+    height: '22px',
     gap: theme.spacing(0.5),
     alignItems: 'center',
     userSelect: 'none',
@@ -106,6 +110,7 @@ export const TreeItem = ({
   editingContextId,
   treeId,
   item,
+  itemIndex,
   depth,
   onExpand,
   onExpandAll,
@@ -121,7 +126,7 @@ export const TreeItem = ({
   const initialState: TreeItemState = {
     editingMode: false,
     editingKey: null,
-    isHovered: false,
+    partHovered: null,
   };
 
   const [state, setState] = useState<TreeItemState>(initialState);
@@ -130,17 +135,14 @@ export const TreeItem = ({
   const refDom = useRef() as any;
 
   const { selection, setSelection } = useSelection();
+  const onDropTreeItem = useDropTreeItem(editingContextId, treeId);
 
-  const handleMouseEnter = () => {
-    setState((prevState) => {
-      return { ...prevState, isHovered: true };
-    });
+  const handleMouseEnter = (partHovered: PartHovered) => {
+    setState((prevState) => ({ ...prevState, partHovered }));
   };
 
   const handleMouseLeave = () => {
-    setState((prevState) => {
-      return { ...prevState, isHovered: false };
-    });
+    setState((prevState) => ({ ...prevState, partHovered: null }));
   };
 
   const onTreeItemAction = () => {
@@ -161,13 +163,14 @@ export const TreeItem = ({
   if (item.expanded && item.children) {
     content = (
       <ul className={classes.ul}>
-        {item.children.map((childItem) => {
+        {item.children.map((childItem, index) => {
           return (
             <li key={childItem.id}>
               <TreeItem
                 editingContextId={editingContextId}
                 treeId={treeId}
                 item={childItem}
+                itemIndex={index}
                 depth={depth + 1}
                 onExpand={onExpand}
                 onExpandAll={onExpandAll}
@@ -193,7 +196,7 @@ export const TreeItem = ({
     className = `${className} ${classes.selected}`;
     dataTestid = 'selected';
   }
-  if (state.isHovered && item.selectable) {
+  if (state.partHovered === 'item' && item.selectable) {
     className = `${className} ${classes.treeItemHover}`;
   }
   useEffect(() => {
@@ -296,7 +299,21 @@ export const TreeItem = ({
   };
 
   const dragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
-    event.stopPropagation();
+    event.preventDefault();
+  };
+
+  const onDropItem: React.DragEventHandler<HTMLDivElement> = (event) => {
+    const dragSourcesStringified = event.dataTransfer.getData(DRAG_SOURCES_TYPE);
+    const selectedIds = JSON.parse(dragSourcesStringified).map((entry: SelectionEntry) => entry.id);
+    onDropTreeItem(selectedIds, item.id, -1);
+    event.preventDefault();
+  };
+
+  const onDropBefore: React.DragEventHandler<HTMLDivElement> = (event) => {
+    const dragSourcesStringified = event.dataTransfer.getData(DRAG_SOURCES_TYPE);
+    const selectedIds = JSON.parse(dragSourcesStringified).map((entry: SelectionEntry) => entry.id);
+    onDropTreeItem(selectedIds, item.id, itemIndex);
+    event.preventDefault();
   };
 
   let tooltipText = '';
@@ -323,12 +340,23 @@ export const TreeItem = ({
     currentTreeItem = (
       <>
         <div
+          className={`${state.partHovered === 'before' ? classes.treeItemHover : ''} ${classes.treeItemBefore}`}
+          onDrop={onDropBefore}
+          onDragEnter={() => handleMouseEnter('before')}
+          onDragExit={handleMouseLeave}
+          onDragOver={dragOver}
+          data-testid={`${dataTestid}-drop-before`}
+        />
+        <div
           className={className}
           draggable={true}
           onClick={onClick}
           onDragStart={dragStart}
           onDragOver={dragOver}
-          onMouseEnter={handleMouseEnter}
+          onDragEnter={() => handleMouseEnter('item')}
+          onDragExit={handleMouseLeave}
+          onDrop={onDropItem}
+          onMouseEnter={() => handleMouseEnter('item')}
           onMouseLeave={handleMouseLeave}>
           <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${label}-toggle`} />
           <div
@@ -362,7 +390,7 @@ export const TreeItem = ({
                     onExpandAll: onExpandAll,
                     readOnly: readOnly,
                     onEnterEditingMode: enterEditingMode,
-                    isHovered: state.isHovered,
+                    isHovered: state.partHovered === 'item',
                   })
                 ) : (
                   <TreeItemAction
@@ -374,7 +402,7 @@ export const TreeItem = ({
                     onExpandAll={onExpandAll}
                     readOnly={readOnly}
                     onEnterEditingMode={enterEditingMode}
-                    isHovered={state.isHovered}
+                    isHovered={state.partHovered === 'item'}
                   />
                 )}
               </div>

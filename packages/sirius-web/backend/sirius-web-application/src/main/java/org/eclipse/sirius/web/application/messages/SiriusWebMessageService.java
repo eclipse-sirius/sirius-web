@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,36 +10,40 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.trees.services;
+package org.eclipse.sirius.web.application.messages;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.trees.services.api.ICollaborativeTreeMessageService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation of the collaborative tree message service.
+ * Implementation of the sirius web message service.
  *
- * @author sbegaudeau
+ * @author frouene
  */
 @Service
-public class CollaborativeTreeMessageService implements ICollaborativeTreeMessageService {
+public class SiriusWebMessageService implements ISiriusWebMessageService {
 
     private final MessageSourceAccessor messageSourceAccessor;
 
-    public CollaborativeTreeMessageService(@Qualifier("collaborativeTreeMessageSourceAccessor") MessageSourceAccessor messageSourceAccessor) {
+    public SiriusWebMessageService(@Qualifier("siriusWebApplicationMessageSourceAccessor") MessageSourceAccessor messageSourceAccessor) {
         this.messageSourceAccessor = Objects.requireNonNull(messageSourceAccessor);
     }
 
     @Override
-    public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName });
+    public String unavailableFeature() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.UNAVAILABLE_FEATURE);
     }
 
     @Override
-    public String noDropProvider() {
-        return this.messageSourceAccessor.getMessage("NO_DROP_PROVIDER");
+    public String alreadySetFeature() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.ALREADY_SET_FEATURE);
+    }
+
+    @Override
+    public String invalidDroppedObject() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.INVALID_DROPPED_OBJECT);
     }
 }

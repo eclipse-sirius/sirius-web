@@ -280,8 +280,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
             StyledString styledString = this.objectService.getStyledLabel(self);
             if (!styledString.toString().isBlank()) {
                 return styledString;
-            }
-            else {
+            } else {
                 var kind = this.objectService.getKind(self);
                 label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
             }

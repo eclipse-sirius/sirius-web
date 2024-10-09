@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,33 +10,40 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.trees.services.api;
+package org.eclipse.sirius.web.application.messages;
 
 /**
- * Interface of the collaborative tree message service.
+ * Interface of the sirius web message service.
  *
- * @author sbegaudeau
+ * @author frouene
  */
-public interface ICollaborativeTreeMessageService {
+public interface ISiriusWebMessageService {
 
-    String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
+    String unavailableFeature();
 
-    String noDropProvider();
+    String alreadySetFeature();
+
+    String invalidDroppedObject();
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
-     * @author sbegaudeau
+     * @author frouene
      */
-    class NoOp implements ICollaborativeTreeMessageService {
+    class NoOp implements ISiriusWebMessageService {
 
         @Override
-        public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
+        public String unavailableFeature() {
             return "";
         }
 
         @Override
-        public String noDropProvider() {
+        public String alreadySetFeature() {
+            return "";
+        }
+
+        @Override
+        public String invalidDroppedObject() {
             return "";
         }
 

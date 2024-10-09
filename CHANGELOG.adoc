@@ -35,6 +35,8 @@ The new option ALWAYS allows the separator to be displayed in every case.
 - https://github.com/eclipse-sirius/sirius-web/issues/4050[#4050] [sirius-web] `IUploadFileLoader` must now return an `IResult`.
 This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [trees] The tree item id passed to `ITreeQueryService.findTreeItem` is no longer a UUID but is now a String.
+- https://github.com/eclipse-sirius/sirius-web/issues/3678[#3678] [core] Remove `IRepresentationMetadataSearchService#findByRepresentation`, use `IRepresentationMetadataSearchService#findByRepresentationId` instead.
+- https://github.com/eclipse-sirius/sirius-web/issues/3983[#3983] [trees] The `TreeDescription` must now implement a `dropTreeItemHandler`.
 
 === Dependency update
 
@@ -68,6 +70,8 @@ The new endpoints are:
 description (optional).
 ** deleteProject (`POST /api/rest/projects/{projectId}`): Delete the project with the given id (projectId).
 ** updateProject (`PUT /projects/{projectId}`): Update the project with the given id (projectId).
+- https://github.com/eclipse-sirius/sirius-web/issues/3983[#3983] [trees] Add drag and drop support for explorer
+
 
 === Improvements
 

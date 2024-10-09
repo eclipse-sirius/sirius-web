@@ -153,7 +153,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                 var kind = this.objectService.getKind(self);
                 label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
             }
-        }  else if (self instanceof Setting setting) {
+        } else if (self instanceof Setting setting) {
             label = setting.getEStructuralFeature().getName();
         }
         return StyledString.of(label);
