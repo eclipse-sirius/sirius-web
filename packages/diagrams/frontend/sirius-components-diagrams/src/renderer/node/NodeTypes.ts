@@ -11,13 +11,30 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Node, NodeProps } from '@xyflow/react';
+import { FC } from 'react';
 import { FreeFormNode } from './FreeFormNode';
+import { FreeFormNodeData } from './FreeFormNode.types';
 import { IconLabelNode } from './IconLabelNode';
+import { IconLabelNodeData } from './IconsLabelNode.types';
 import { ListNode } from './ListNode';
-import { DiagramNodeTypes } from './NodeTypes.types';
+import { ListNodeData } from './ListNode.types';
 
-export const nodeTypes: DiagramNodeTypes = {
+export const nodeTypes: NodeComponentsMap = {
   freeFormNode: FreeFormNode,
-  listNode: ListNode,
   iconLabelNode: IconLabelNode,
+  listNode: ListNode,
+};
+
+export interface NodeDataMap {
+  freeFormNode: FreeFormNodeData;
+  iconLabelNode: IconLabelNodeData;
+  listNode: ListNodeData;
+}
+export type NodeComponentsMap = {
+  [K in keyof NodeDataMap]: FC<NodeProps<Node<NodeDataMap[K], K>>>;
+};
+
+export type NodePropsMap = {
+  [K in keyof NodeDataMap]: NodeProps<Node<NodeDataMap[K], K>>;
 };

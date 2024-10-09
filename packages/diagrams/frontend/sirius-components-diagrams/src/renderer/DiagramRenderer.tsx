@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import { Selection, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
-import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -28,7 +27,8 @@ import {
   ReactFlow,
   ReactFlowProps,
   applyNodeChanges,
-} from 'reactflow';
+} from '@xyflow/react';
+import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { NodeTypeContext } from '../contexts/NodeContext';
@@ -36,7 +36,7 @@ import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { useDiagramDescription } from '../contexts/useDiagramDescription';
 import { convertDiagram } from '../converter/convertDiagram';
 import { useStore } from '../representation/useStore';
-import { Diagram, DiagramRendererProps, NodeData, ReactFlowPropsCustomizer } from './DiagramRenderer.types';
+import { Diagram, DiagramRendererProps, EdgeData, NodeData, ReactFlowPropsCustomizer } from './DiagramRenderer.types';
 import { diagramRendererReactFlowPropsCustomizerExtensionPoint } from './DiagramRendererExtensionPoints';
 import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
@@ -62,7 +62,6 @@ import { RawDiagram } from './layout/layout.types';
 import { useLayout } from './layout/useLayout';
 import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
 import { useMoveChange } from './move/useMoveChange';
-import { DiagramNodeType } from './node/NodeTypes.types';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { GroupPalette } from './palette/group-tool/GroupPalette';
@@ -76,7 +75,7 @@ import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useShiftSelection } from './selection/useShiftSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
-import 'reactflow/dist/style.css';
+import '@xyflow/react/dist/style.css';
 
 const GRID_STEP: number = 10;
 
@@ -121,9 +120,11 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodeTypes } = useNodeType();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
-  const { fitToScreen } = useInitialFitToScreen();
+
   const { setSelection } = useSelection();
   const { edgeType, setEdgeType } = useEdgeType();
+
+  useInitialFitToScreen();
 
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
@@ -139,12 +140,11 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         .filter((edge) => selectedEdgeIds.includes(edge.id))
         .forEach((edge) => (edge.selected = true));
 
-      setNodes(convertedDiagram.nodes);
       setEdges(convertedDiagram.edges);
-      fitToScreen();
+      setNodes(convertedDiagram.nodes);
     } else if (cause === 'refresh') {
       const previousDiagram: RawDiagram = {
-        nodes: nodes as Node<NodeData, DiagramNodeType>[],
+        nodes,
         edges,
       };
       layout(previousDiagram, convertedDiagram, diagramRefreshedEventPayload.referencePosition, (laidOutDiagram) => {
@@ -155,8 +155,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           .filter((edge) => selectedEdgeIds.includes(edge.id))
           .forEach((edge) => (edge.selected = true));
 
-        setNodes(laidOutDiagram.nodes);
         setEdges(laidOutDiagram.edges);
+        setNodes(laidOutDiagram.nodes);
         closeAllPalettes();
 
         synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
@@ -165,7 +165,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   }, [diagramRefreshedEventPayload, diagramDescription, edgeType]);
 
   useEffect(() => {
-    setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, updatable: !!edge.selected })));
+    setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, reconnectable: !!edge.selected })));
   }, [edges.map((edge) => edge.id + edge.selected).join()]);
 
   const { onShiftSelection, setShiftSelection } = useShiftSelection();
@@ -185,20 +185,20 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     resetHelperLines,
   } = useHelperLines();
 
-  const handleNodesChange: OnNodesChange = useCallback(
-    (changes: NodeChange[]) => {
+  const handleNodesChange: OnNodesChange<Node<NodeData>> = useCallback(
+    (changes: NodeChange<Node<NodeData>>[]) => {
       const noReadOnlyChanges = filterReadOnlyChanges(changes);
-      const isResetChange = changes.find((change) => change.type === 'reset');
+      const isResetChange = changes.find((change) => change.type === 'replace');
       if (
         isResetChange ||
         (noReadOnlyChanges.length === 1 &&
           noReadOnlyChanges[0]?.type === 'dimensions' &&
           typeof noReadOnlyChanges[0].resizing !== 'boolean')
       ) {
-        setNodes((oldNodes) => applyNodeChanges(noReadOnlyChanges, oldNodes));
+        setNodes((oldNodes) => applyNodeChanges<Node<NodeData>>(noReadOnlyChanges, oldNodes));
       } else {
         resetHelperLines(changes);
-        let transformedNodeChanges: NodeChange[] = transformBorderNodeChanges(noReadOnlyChanges, nodes);
+        let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges, nodes);
         transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
         transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
         transformedNodeChanges = applyHelperLines(transformedNodeChanges);
@@ -206,17 +206,17 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
 
         newNodes = applyMoveChange(transformedNodeChanges, newNodes);
-        newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+        newNodes = applyHandleChange(transformedNodeChanges, newNodes);
 
-        layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+        layoutOnBoundsChange(transformedNodeChanges, newNodes);
         setNodes(newNodes);
       }
     },
     [layoutOnBoundsChange, getNodes, getEdges]
   );
 
-  const handleEdgesChange: OnEdgesChange = useCallback(
-    (changes: EdgeChange[]) => {
+  const handleEdgesChange: OnEdgesChange<Edge<EdgeData>> = useCallback(
+    (changes: EdgeChange<Edge<EdgeData>>[]) => {
       onEdgesChange(changes);
     },
     [onEdgesChange]
@@ -262,7 +262,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   }, [isDiagramElementPaletteOpened, isDiagramPaletteOpened]);
 
   const handleDiagramElementCLick = useCallback(
-    (event: React.MouseEvent<Element, MouseEvent>, element: Node | Edge) => {
+    (event: React.MouseEvent<Element, MouseEvent>, element: Node<NodeData> | Edge<EdgeData>) => {
       diagramPaletteOnDiagramElementClick();
       elementPaletteOnDiagramElementClick(event, element);
       groupPaletteOnDiagramElementClick(event, element);
@@ -286,7 +286,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
 
   const handleNodeDrag = useCallback(
-    (event: ReactMouseEvent, node: Node, nodes: Node[]) => {
+    (event: ReactMouseEvent, node: Node<NodeData>, nodes: Node<NodeData>[]) => {
       onNodeDrag(event, node, nodes);
       closeAllPalettes();
     },
@@ -295,20 +295,20 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { nodesDraggable } = useNodesDraggable();
 
-  let reactFlowProps: ReactFlowProps = {
+  let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
     nodes: nodes,
     nodeTypes: nodeTypes,
     onNodesChange: handleNodesChange,
     edges: edges,
     edgeTypes: edgeTypes,
-    edgesUpdatable: !readOnly,
+    edgesReconnectable: !readOnly,
     onKeyDown: onKeyDown,
     onConnect: onConnect,
     onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,
     connectionLineComponent: ConnectionLine,
     onEdgesChange: handleEdgesChange,
-    onEdgeUpdate: reconnectEdge,
+    onReconnect: reconnectEdge,
     onPaneClick: handlePaneClick,
     onEdgeClick: handleDiagramElementCLick,
     onNodeClick: handleDiagramElementCLick,

@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Grid, JumpPointFinder, DiagonalMovement } from 'pathfinding';
-import { Node, Position, XYPosition } from 'reactflow';
+import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
+import { DiagonalMovement, Grid, JumpPointFinder } from 'pathfinding';
+import { NodeData } from '../../DiagramRenderer.types';
 
 type PointInfo = {
   x: number;
@@ -179,7 +180,7 @@ const createGrid = (
   return { grid, start, end };
 };
 
-const getBoundingBoxes = (nodes: Node[], nodePadding = 5, roundTo = 10) => {
+const getBoundingBoxes = (nodes: InternalNode<Node<NodeData>>[], nodePadding = 5, roundTo = 10) => {
   let xMax = Number.MIN_SAFE_INTEGER;
   let yMax = Number.MIN_SAFE_INTEGER;
   let xMin = Number.MAX_SAFE_INTEGER;
@@ -189,7 +190,7 @@ const getBoundingBoxes = (nodes: Node[], nodePadding = 5, roundTo = 10) => {
     const width = node.width ?? 1;
     const height = node.height ?? 1;
 
-    const { x = 0, y = 0 } = node.positionAbsolute || {};
+    const { x = 0, y = 0 } = node.internals.positionAbsolute || {};
 
     const topLeft = { x: x - nodePadding, y: y - nodePadding };
     const bottomLeft = { x: x - nodePadding, y: y + height + nodePadding };

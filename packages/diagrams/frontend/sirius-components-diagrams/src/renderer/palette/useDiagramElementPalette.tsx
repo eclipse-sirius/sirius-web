@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
+import { Edge, Node, XYPosition, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
-import { Edge, Node, XYPosition, useReactFlow, useStoreApi } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramElementPaletteContext } from './DiagramElementPaletteContext';
 import { DiagramElementPaletteContextValue } from './DiagramElementPaletteContext.types';
@@ -29,29 +30,28 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
   const { x, y, isOpened, hideDiagramElementPalette, showDiagramElementPalette } =
     useContext<DiagramElementPaletteContextValue>(DiagramElementPaletteContext);
   const store = useStoreApi();
-  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
+
+  const { selection } = useSelection();
 
   const onDiagramElementClick = useCallback(
-    (event: React.MouseEvent<Element, MouseEvent>, elementClicked: Node | Edge) => {
+    (event: React.MouseEvent<Element, MouseEvent>, elementClicked: Node<NodeData> | Edge<EdgeData>) => {
       const { domNode } = store.getState();
       const element = domNode?.getBoundingClientRect();
       const palettePosition = computePalettePosition(event, element);
-      const selectedElement = [
-        ...getNodes().filter((node) => node.selected),
-        ...getEdges().filter((edge) => edge.selected),
-      ];
       if (
         !event.altKey &&
-        selectedElement.length === 1 &&
-        selectedElement[0] &&
-        selectedElement[0].id === elementClicked.id
+        !event.ctrlKey &&
+        !(
+          !!selection.entries.find((selection) => selection.id === elementClicked.data?.targetObjectId) &&
+          selection.entries.length > 1
+        )
       ) {
         showDiagramElementPalette(palettePosition.x, palettePosition.y);
       } else {
         hideDiagramElementPalette();
       }
     },
-    [showDiagramElementPalette, hideDiagramElementPalette]
+    [showDiagramElementPalette, hideDiagramElementPalette, selection]
   );
 
   return {

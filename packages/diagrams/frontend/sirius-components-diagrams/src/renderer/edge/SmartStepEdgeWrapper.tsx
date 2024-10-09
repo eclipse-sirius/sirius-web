@@ -10,24 +10,34 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import {
+  Edge,
+  EdgeProps,
+  InternalNode,
+  Node,
+  Position,
+  getSmoothStepPath,
+  useInternalNode,
+  useReactFlow,
+  useStoreApi,
+} from '@xyflow/react';
 import { memo, useContext, useMemo } from 'react';
-import { EdgeProps, Node, Position, getSmoothStepPath, useReactFlow, useStoreApi } from 'reactflow';
-import { NodeData, EdgeData } from '../DiagramRenderer.types';
-import { getHandleCoordinatesByPosition } from './EdgeLayout';
-import { MultiLabelEdge } from './MultiLabelEdge';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
+import { getHandleCoordinatesByPosition } from './EdgeLayout';
+import { MultiLabelEdge } from './MultiLabelEdge';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { getSmartEdge } from './smart-edge/getSmartEdge';
 
 const roundToNearestTen = (num: number): number => Math.round(num / 10) * 10;
 
 const isAncestorOf = (child: Node, candidate: Node, nodeById: (arg0: string) => Node | undefined): boolean => {
-  if (child.parentNode === candidate.id) {
+  if (child.parentId === candidate.id) {
     return true;
   } else {
-    const childParent: Node | undefined = child.parentNode ? nodeById(child.parentNode) : undefined;
+    const childParent: Node | undefined = child.parentId ? nodeById(child.parentId) : undefined;
     return childParent !== undefined && isAncestorOf(childParent, candidate, nodeById);
   }
 };
@@ -42,8 +52,8 @@ const getAncestors = (
     return ancestors;
   }
   ancestors.push(node);
-  if (node.parentNode || node.id === maxAncestorToSearch?.id) {
-    const parentNode = nodes.find((n) => n.id === node.parentNode);
+  if (node.parentId || node.id === maxAncestorToSearch?.id) {
+    const parentNode = nodes.find((n) => n.id === node.parentId);
     return getAncestors(parentNode, nodes, maxAncestorToSearch, ancestors);
   } else {
     return ancestors;
@@ -54,8 +64,8 @@ const getLowestCommunAncestor = (node: Node, nodes: Node[], ancestorIds: string[
   if (ancestorIds.includes(node.id)) {
     return node;
   }
-  if (node.parentNode) {
-    const parentNode = nodes.find((n) => n.id === node.parentNode);
+  if (node.parentId) {
+    const parentNode = nodes.find((n) => n.id === node.parentId);
     if (parentNode) {
       return getLowestCommunAncestor(parentNode, nodes, ancestorIds);
     } else {
@@ -71,16 +81,22 @@ function findLowestCommonAncestor(nodes, sourceNode, targetNode) {
   return getLowestCommunAncestor(targetNode, nodes, sourceAncestorIds);
 }
 
-export const SmartStepEdgeWrapper = memo((props: EdgeProps<MultiLabelEdgeData>) => {
+const isNodeInternal = (node: InternalNode<Node<NodeData>> | undefined): node is InternalNode<Node<NodeData>> => {
+  return !!node;
+};
+
+export const SmartStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
   const { source, target, markerEnd, markerStart, sourcePosition, targetPosition, sourceHandleId, targetHandleId } =
     props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
-  const { getNodes } = useReactFlow<NodeData, EdgeData>();
-  const nodes = getNodes();
-  const { nodeInternals } = useStoreApi().getState();
+  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const nodeLookup = storeApi.getState().nodeLookup;
 
-  const sourceNode = nodeInternals.get(source);
-  const targetNode = nodeInternals.get(target);
+  const nodes = getNodes();
+
+  const sourceNode = useInternalNode<Node<NodeData>>(source);
+  const targetNode = useInternalNode<Node<NodeData>>(target);
 
   if (!sourceNode || !targetNode) {
     return null;
@@ -149,14 +165,14 @@ export const SmartStepEdgeWrapper = memo((props: EdgeProps<MultiLabelEdgeData>) 
       break;
   }
 
-  const nodeHierarchy = nodes.map((node) => node.id + node.parentNode).join();
+  const nodeHierarchy = nodes.map((node) => node.id + node.parentId).join();
 
   const lowestCommonAncestor = useMemo(() => findLowestCommonAncestor(nodes, sourceNode, targetNode), [nodeHierarchy]);
 
   const sourceAncestorIds: string[] = useMemo(
     () =>
       getAncestors(
-        nodes.find((n) => n.id === sourceNode.parentNode),
+        nodes.find((n) => n.id === sourceNode.parentId),
         nodes,
         lowestCommonAncestor
       ).map((node) => node.id),
@@ -166,7 +182,7 @@ export const SmartStepEdgeWrapper = memo((props: EdgeProps<MultiLabelEdgeData>) 
   const targetAncestorIds: string[] = useMemo(
     () =>
       getAncestors(
-        nodes.find((n) => n.id === targetNode.parentNode),
+        nodes.find((n) => n.id === targetNode.parentId),
         nodes,
         lowestCommonAncestor
       ).map((node) => node.id),
@@ -179,17 +195,17 @@ export const SmartStepEdgeWrapper = memo((props: EdgeProps<MultiLabelEdgeData>) 
         if (node.id === sourceNode.id || node.id === targetNode.id) {
           return true;
         }
-        if (sourceNode.data.isBorderNode && node.id === sourceNode.parentNode) {
-          return !targetAncestorIds.includes(sourceNode.parentNode);
+        if (sourceNode.data.isBorderNode && node.id === sourceNode.parentId) {
+          return !targetAncestorIds.includes(sourceNode.parentId);
         }
-        if (targetNode.data.isBorderNode && node.id === targetNode.parentNode) {
-          return !sourceAncestorIds.includes(targetNode.parentNode);
+        if (targetNode.data.isBorderNode && node.id === targetNode.parentId) {
+          return !sourceAncestorIds.includes(targetNode.parentId);
         }
-        const sourceAncestorSiblings = sourceAncestorIds.includes(node.parentNode ?? '');
-        const targetAncestorSiblings = targetAncestorIds.includes(node.parentNode ?? '');
+        const sourceAncestorSiblings = sourceAncestorIds.includes(node.parentId ?? '');
+        const targetAncestorSiblings = targetAncestorIds.includes(node.parentId ?? '');
         const isDirectAncestor = sourceAncestorIds.includes(node.id) || targetAncestorIds.includes(node.id);
         return (
-          (sourceAncestorSiblings || targetAncestorSiblings || node.parentNode === lowestCommonAncestor) &&
+          (sourceAncestorSiblings || targetAncestorSiblings || node.parentId === lowestCommonAncestor) &&
           !isDirectAncestor
         );
       })
@@ -202,7 +218,11 @@ export const SmartStepEdgeWrapper = memo((props: EdgeProps<MultiLabelEdgeData>) 
     .join();
 
   const getSmartEdgeResponse = useMemo(() => {
-    const nodesToConsider: Node[] = nodes.filter((node) => nodeIdsToConsider.includes(node.id));
+    const nodesToConsider: Node<NodeData>[] = nodes.filter((node) => nodeIdsToConsider.includes(node.id));
+    const internalNodesToConsider: InternalNode<Node<NodeData>>[] = nodesToConsider
+      .map((node) => nodeLookup.get(node.id))
+      .filter(isNodeInternal);
+
     return getSmartEdge({
       sourceX,
       sourceY,
@@ -210,7 +230,7 @@ export const SmartStepEdgeWrapper = memo((props: EdgeProps<MultiLabelEdgeData>) 
       targetX,
       targetY,
       targetPosition,
-      nodes: nodesToConsider,
+      nodes: internalNodesToConsider,
     });
   }, [
     nodeIdsToConsider.join(),

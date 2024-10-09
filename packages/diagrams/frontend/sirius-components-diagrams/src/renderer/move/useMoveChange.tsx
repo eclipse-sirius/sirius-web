@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Node, NodeChange, NodePositionChange } from '@xyflow/react';
 import { useCallback } from 'react';
-import { Node, NodeChange, NodePositionChange } from 'reactflow';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
@@ -23,30 +23,35 @@ const applyPositionChangeToParentIfUndraggable = (
   movedNode: Node<NodeData>,
   nodes: Node<NodeData>[],
   change: NodePositionChange
-): NodeChange => {
-  const parentNode = nodes.find((node) => movedNode?.parentNode === node.id);
+): NodeChange<Node<NodeData>> => {
+  const parentNode = nodes.find((node) => movedNode?.parentId === node.id);
   if (parentNode && change.position && isListData(parentNode) && !parentNode.data.areChildNodesDraggable) {
-    change.id = parentNode.id;
-    change.position.x = parentNode.position.x + (change.position.x - movedNode.position.x);
-    change.position.y = parentNode.position.y + (change.position.y - movedNode.position.y);
-    return applyPositionChangeToParentIfUndraggable(parentNode, nodes, change);
+    if (change.dragging) {
+      change.id = parentNode.id;
+      change.position.x = parentNode.position.x + (change.position.x - movedNode.position.x);
+      change.position.y = parentNode.position.y + (change.position.y - movedNode.position.y);
+      return applyPositionChangeToParentIfUndraggable(parentNode, nodes, change);
+    } else {
+      change.position = undefined;
+      return change;
+    }
   } else {
     return change;
   }
 };
 
-const isMove = (change: NodeChange): change is NodePositionChange =>
-  change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
+const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
+  change.type === 'position' && typeof change.dragging === 'boolean';
 
 export const useMoveChange = (): UseMoveChangeValue => {
   const { getNodes } = useStore();
 
   const transformUndraggableListNodeChanges = useCallback(
-    (changes: NodeChange[]): NodeChange[] => {
+    (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
       return changes.map((change) => {
         if (isMove(change)) {
           const movedNode = getNodes().find((node) => change.id === node.id);
-          if (movedNode?.parentNode && !movedNode.data.isBorderNode) {
+          if (movedNode?.parentId && !movedNode.data.isBorderNode) {
             applyPositionChangeToParentIfUndraggable(movedNode, getNodes(), change);
           }
           if (movedNode?.data.pinned) {
@@ -59,7 +64,7 @@ export const useMoveChange = (): UseMoveChangeValue => {
     [getNodes]
   );
 
-  const applyMoveChange = (changes: NodeChange[], nodes: Node<NodeData>[]): Node<NodeData>[] => {
+  const applyMoveChange = (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): Node<NodeData>[] => {
     changes.forEach((change) => {
       if (isMove(change)) {
         const movedNode = nodes.find((node) => node.id === change.id);

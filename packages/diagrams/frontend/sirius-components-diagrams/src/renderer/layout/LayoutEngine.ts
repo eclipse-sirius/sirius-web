@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Dimensions, Node } from 'reactflow';
+import { Dimensions, Node } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { FreeFormNodeLayoutHandler } from './FreeFormNodeLayoutHandler';
@@ -39,7 +39,7 @@ export class LayoutEngine implements ILayoutEngine {
         handler.canHandle(node)
       );
       if (nodeLayoutHandler) {
-        const directChildren = visibleNodes.filter((visibleNode) => visibleNode.parentNode === node.id);
+        const directChildren = visibleNodes.filter((visibleNode) => visibleNode.parentId === node.id);
         nodeLayoutHandler.handle(
           this,
           previousDiagram,

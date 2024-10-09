@@ -26,9 +26,9 @@ import {
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@mui/material/styles';
+import { Node, NodeProps, NodeResizer } from '@xyflow/react';
 import React, { memo, useContext } from 'react';
-import { NodeProps, NodeResizer } from 'reactflow';
-import { EllipseNodeData } from './EllipseNode.types';
+import { EllipseNodeData, NodeComponentsMap } from './EllipseNode.types';
 
 const ellipseNodeStyle = (
   theme: Theme,
@@ -68,8 +68,8 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   };
 };
 
-export const EllipseNode: React.FC<NodeProps<EllipseNodeData>> = memo(
-  ({ data, id, selected, dragging }: NodeProps<EllipseNodeData>) => {
+export const EllipseNode: NodeComponentsMap['ellipseNode'] = memo(
+  ({ data, id, selected, dragging }: NodeProps<Node<EllipseNodeData>>) => {
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const theme = useTheme();
     const { onDrop, onDragOver } = useDrop();

@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { Edge, Node, OnNodeDrag, XYPosition, useReactFlow, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
-import { Node, NodeDragHandler, XYPosition, useReactFlow, useStoreApi } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
@@ -67,7 +67,7 @@ const getNodeDepth = (node: Node<NodeData>, intersections: Node<NodeData>[]): nu
   let nodeHierarchy: Node<NodeData> | undefined = node;
   while (nodeHierarchy) {
     nodeDepth++;
-    nodeHierarchy = intersections.find((node) => node.id === nodeHierarchy?.parentNode);
+    nodeHierarchy = intersections.find((node) => node.id === nodeHierarchy?.parentId);
   }
   return nodeDepth;
 };
@@ -97,10 +97,10 @@ const useDropNodeMutation = () => {
 
   const invokeMutation = useCallback(
     (
-      droppedNode: Node,
+      droppedNode: Node<NodeData>,
       targetElementId: string | null,
       dropPosition: XYPosition,
-      onDragCancelled: (node: Node) => void
+      onDragCancelled: (node: Node<NodeData>) => void
     ): void => {
       const input: GQLDropNodeInput = {
         id: crypto.randomUUID(),
@@ -126,20 +126,20 @@ const useDropNodeMutation = () => {
 };
 
 export const useDropNode = (): UseDropNodeValue => {
-  const { droppableOnDiagram, initialPosition, initialPositionAbsolute, draggedNodeId, initializeDrop, resetDrop } =
+  const { droppableOnDiagram, initialPosition, draggedNodeId, initializeDrop, resetDrop } =
     useContext<DropNodeContextValue>(DropNodeContext);
 
   const { diagramDescription } = useDiagramDescription();
   const onDropNode = useDropNodeMutation();
-  const { getNodes, getIntersectingNodes, screenToFlowPosition } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getIntersectingNodes, screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { setNodes } = useStore();
-  const storeApi = useStoreApi();
+  const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
-  const getNodeById = (id: string) => storeApi.getState().nodeInternals.get(id);
+  const getNodeById = (id: string) => storeApi.getState().nodeLookup.get(id);
 
   const getDraggableNode = (node: Node<NodeData>): Node<NodeData> => {
-    if (node.parentNode) {
-      const parentNode = getNodeById(node.parentNode);
+    if (node.parentId) {
+      const parentNode = getNodeById(node.parentId);
       if (parentNode && isListData(parentNode) && !parentNode.data.areChildNodesDraggable) {
         return getDraggableNode(parentNode);
       }
@@ -147,7 +147,7 @@ export const useDropNode = (): UseDropNodeValue => {
     return node;
   };
 
-  const onNodeDragStart: NodeDragHandler = useCallback(
+  const onNodeDragStart: OnNodeDrag<Node<NodeData>> = useCallback(
     (_event, node, nodes) => {
       if (!node || nodes.length > 1) {
         // Drag on multi selection is not supported yet
@@ -160,8 +160,7 @@ export const useDropNode = (): UseDropNodeValue => {
       );
       const compatibleNodes = getNodes()
         .filter(
-          (candidate) =>
-            !candidate.hidden && !isDescendantOf(computedNode, candidate, storeApi.getState().nodeInternals)
+          (candidate) => !candidate.hidden && !isDescendantOf(computedNode, candidate, storeApi.getState().nodeLookup)
         )
         .filter((candidate) =>
           dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
@@ -170,7 +169,6 @@ export const useDropNode = (): UseDropNodeValue => {
 
       initializeDrop({
         initialPosition: computedNode.position,
-        initialPositionAbsolute: computedNode.positionAbsolute || null,
         droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
         draggedNodeId: computedNode.id,
       });
@@ -178,9 +176,12 @@ export const useDropNode = (): UseDropNodeValue => {
       setNodes((nds) =>
         nds.map((n) => {
           if (compatibleNodes.includes(n.id)) {
-            n.data = {
-              ...n.data,
-              isDropNodeCandidate: true,
+            return {
+              ...n,
+              data: {
+                ...n.data,
+                isDropNodeCandidate: true,
+              },
             };
           }
           return n;
@@ -190,7 +191,7 @@ export const useDropNode = (): UseDropNodeValue => {
     [getNodes]
   );
 
-  const onNodeDrag: NodeDragHandler = useCallback(
+  const onNodeDrag: OnNodeDrag<Node<NodeData>> = useCallback(
     (_event, node, nodes) => {
       if (!node || nodes.length > 1) {
         // Drag on multi selection is not supported yet
@@ -204,7 +205,7 @@ export const useDropNode = (): UseDropNodeValue => {
         const newParentId =
           [...intersections]
             .filter(
-              (intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, storeApi.getState().nodeInternals)
+              (intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, storeApi.getState().nodeLookup)
             )
             .sort((n1, n2) => getNodeDepth(n2, intersections) - getNodeDepth(n1, intersections))[0]?.id || null;
 
@@ -214,14 +215,20 @@ export const useDropNode = (): UseDropNodeValue => {
           setNodes((nds) =>
             nds.map((n) => {
               if (n.id === newParentId) {
-                n.data = {
-                  ...n.data,
-                  isDropNodeTarget: true,
+                return {
+                  ...n,
+                  data: {
+                    ...n.data,
+                    isDropNodeTarget: true,
+                  },
                 };
               } else if (n.data.isDropNodeTarget && n.id !== newParentId) {
-                n.data = {
-                  ...n.data,
-                  isDropNodeTarget: false,
+                return {
+                  ...n,
+                  data: {
+                    ...n.data,
+                    isDropNodeTarget: false,
+                  },
                 };
               }
               return n;
@@ -233,7 +240,7 @@ export const useDropNode = (): UseDropNodeValue => {
     [droppableOnDiagram, draggedNodeId, getNodes]
   );
 
-  const onNodeDragStop: NodeDragHandler = useCallback(
+  const onNodeDragStop: OnNodeDrag<Node<NodeData>> = useCallback(
     (event) => {
       const draggedNode = getNodes().find((node) => node.id === draggedNodeId) || null;
       const dropPosition = screenToFlowPosition({
@@ -246,11 +253,11 @@ export const useDropNode = (): UseDropNodeValue => {
         const isDropOnNode: boolean = !!targetNode;
 
         const isDropOnSameParent: boolean =
-          isDropOnNode && !!draggedNode?.parentNode && draggedNode.parentNode === targetNode?.id;
+          isDropOnNode && !!draggedNode?.parentId && draggedNode.parentId === targetNode?.id;
 
-        const isDropFromDiagramToDiagram: boolean = !isDropOnNode && !draggedNode?.parentNode;
+        const isDropFromDiagramToDiagram: boolean = !isDropOnNode && !draggedNode?.parentId;
         const isBorderNodeDrop: boolean =
-          draggedNode.data.isBorderNode && (!isDropOnNode || draggedNode.parentNode === targetNode?.id);
+          draggedNode.data.isBorderNode && (!isDropOnNode || draggedNode.parentId === targetNode?.id);
 
         const isValidDropOnNode: boolean = isDropOnNode && !!targetNode?.data.isDropNodeCandidate;
         const isValidDropOnDiagram: boolean = !isDropOnNode && droppableOnDiagram;
@@ -272,10 +279,13 @@ export const useDropNode = (): UseDropNodeValue => {
         setNodes((nds) =>
           nds.map((n) => {
             if (n.data.isDropNodeCandidate || n.data.isDropNodeTarget) {
-              n.data = {
-                ...n.data,
-                isDropNodeCandidate: false,
-                isDropNodeTarget: false,
+              return {
+                ...n,
+                data: {
+                  ...n.data,
+                  isDropNodeCandidate: false,
+                  isDropNodeTarget: false,
+                },
               };
             }
             return n;
@@ -283,21 +293,20 @@ export const useDropNode = (): UseDropNodeValue => {
         );
       }
     },
-    [droppableOnDiagram, initialPosition, initialPositionAbsolute, draggedNodeId, getNodes]
+    [droppableOnDiagram, initialPosition, draggedNodeId, getNodes]
   );
 
   const cancelDrop = (node: Node<NodeData>) => {
-    if (initialPosition && initialPositionAbsolute) {
+    if (initialPosition) {
       setNodes((nds) =>
         nds.map((n) => {
           if (n.id === node.id) {
-            n.position = initialPosition;
-            n.positionAbsolute = initialPositionAbsolute;
-            n.data = {
-              ...n.data,
+            return {
+              ...n,
+              position: initialPosition,
+              dragging: false,
             };
           }
-          n.dragging = false;
           return n;
         })
       );

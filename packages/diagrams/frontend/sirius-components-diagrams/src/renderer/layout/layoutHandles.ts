@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeInternals, Position, XYPosition } from 'reactflow';
+import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { GQLDiagramDescription } from '../../representation/DiagramRepresentation.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters, getNodeCenter, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
@@ -74,15 +75,15 @@ const populateHandleIdToOtherEndNode: PopulateHandleIdToOtherHandNode = (
   handesIdToOtherEndNode
 ) => {
   edges.forEach((edge) => {
-    if (edge.sourceNode && edge.targetNode && edge.sourceHandle && edge.targetHandle) {
+    if (edge.source && edge.target && edge.sourceHandle && edge.targetHandle) {
       if (handlesId.find((id) => id === edge.sourceHandle)) {
-        const node = nodes.find((n) => n.id === edge.targetNode?.id);
+        const node = nodes.find((n) => n.id === edge.target);
         if (node) {
           handesIdToOtherEndNode.set(edge.sourceHandle, node);
         }
       }
       if (handlesId.find((id) => id === edge.targetHandle)) {
-        const node = nodes.find((n) => n.id === edge.sourceNode?.id);
+        const node = nodes.find((n) => n.id === edge.source);
         if (node) {
           handesIdToOtherEndNode.set(edge.targetHandle, node);
         }
@@ -91,13 +92,16 @@ const populateHandleIdToOtherEndNode: PopulateHandleIdToOtherHandNode = (
   });
 };
 
-const layoutHandleIndex = (diagram: RawDiagram, nodeInternals: NodeInternals) => {
+const layoutHandleIndex = (diagram: RawDiagram, nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>) => {
   const handleIdToOtherEndNode: Map<string, Node<NodeData>> = new Map<string, Node<NodeData>>();
   const nodeIdToNodeCenter: Map<string, XYPosition> = new Map<string, XYPosition>();
   diagram.nodes.forEach((node) => {
     const handlesId = getHandlesIdsFromNode(node);
     populateHandleIdToOtherEndNode(diagram.edges, diagram.nodes, handlesId, handleIdToOtherEndNode);
-    nodeIdToNodeCenter.set(node.id, getNodeCenter(node, nodeInternals));
+    const internalNode = nodeLookup.get(node.id);
+    if (internalNode) {
+      nodeIdToNodeCenter.set(node.id, getNodeCenter(internalNode, nodeLookup));
+    }
   });
 
   const nodeIdToConnectionHandle: Map<string, ConnectionHandle[]> = new Map<string, ConnectionHandle[]>();
@@ -131,17 +135,17 @@ const layoutHandleIndex = (diagram: RawDiagram, nodeInternals: NodeInternals) =>
 const layoutHandlePosition = (
   diagram: RawDiagram,
   diagramDescription: GQLDiagramDescription,
-  nodeInternals: NodeInternals
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
 ) => {
   diagram.edges.forEach((edge) => {
-    const { sourceNode: sourceEdgeNode, targetNode: targetEdgeNode, sourceHandle, targetHandle } = edge;
-    const sourceNode = diagram.nodes.find((node) => node.id === sourceEdgeNode?.id);
-    const targetNode = diagram.nodes.find((node) => node.id === targetEdgeNode?.id);
+    const { source: sourceEdgeNode, target: targetEdgeNode, sourceHandle, targetHandle } = edge;
+    const sourceNode = nodeLookup.get(sourceEdgeNode);
+    const targetNode = nodeLookup.get(targetEdgeNode);
     if (sourceNode && targetNode && sourceHandle && targetHandle) {
       const { sourcePosition, targetPosition } = getEdgeParameters(
         sourceNode,
         targetNode,
-        nodeInternals,
+        nodeLookup,
         diagramDescription.arrangeLayoutDirection
       );
 
@@ -166,11 +170,11 @@ const layoutHandlePosition = (
         );
 
         diagram.nodes = diagram.nodes.map((node) => {
-          if (edge.sourceNode && edge.targetNode) {
-            if (edge.sourceNode.id === node.id) {
+          if (edge.source && edge.target) {
+            if (edge.source === node.id) {
               node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
             }
-            if (edge.targetNode.id === node.id) {
+            if (edge.target === node.id) {
               node.data = { ...node.data, connectionHandles: targetConnectionHandles };
             }
           }
@@ -184,8 +188,8 @@ const layoutHandlePosition = (
 export const layoutHandles = (
   diagram: RawDiagram,
   diagramDescription: GQLDiagramDescription,
-  nodeInternals: NodeInternals
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
 ) => {
-  layoutHandlePosition(diagram, diagramDescription, nodeInternals);
-  layoutHandleIndex(diagram, nodeInternals);
+  layoutHandlePosition(diagram, diagramDescription, nodeLookup);
+  layoutHandleIndex(diagram, nodeLookup);
 };

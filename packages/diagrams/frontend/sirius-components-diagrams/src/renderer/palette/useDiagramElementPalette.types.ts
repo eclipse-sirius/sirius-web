@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, Edge } from 'reactflow';
+import { Edge, Node } from '@xyflow/react';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 
 export interface UseDiagramElementPaletteValue {
   x: number | null;
@@ -18,5 +19,8 @@ export interface UseDiagramElementPaletteValue {
   isOpened: boolean;
   hideDiagramElementPalette: () => void;
   showDiagramElementPalette: (x: number, y: number) => void;
-  onDiagramElementClick: (event: React.MouseEvent<Element, MouseEvent>, elementClicked: Node | Edge) => void;
+  onDiagramElementClick: (
+    event: React.MouseEvent<Element, MouseEvent>,
+    elementClicked: Node<NodeData> | Edge<EdgeData>
+  ) => void;
 }

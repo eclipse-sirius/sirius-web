@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { CoordinateExtent, Node, XYPosition } from 'reactflow';
+import { CoordinateExtent, Node, XYPosition } from '@xyflow/react';
+import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { borderNodeOffset, borderNodeReferencePositionRatio } from './layoutParams';
-import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 
 export const isEastBorderNode = (borderNode: Node<NodeData>): boolean => {
   return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePosition.EAST;
@@ -47,7 +47,7 @@ export const computeBorderNodeExtents = (nodes: Node<NodeData, DiagramNodeType>[
   nodes
     .filter((node) => node.data.isBorderNode)
     .forEach((borderNode) => {
-      const parentNode = nodes.find((node) => node.id === borderNode.parentNode);
+      const parentNode = nodes.find((node) => node.id === borderNode.parentId);
       if (parentNode) {
         borderNode.extent = getBorderNodeExtent(parentNode, borderNode);
       }
@@ -58,7 +58,7 @@ export const computeBorderNodePositions = (nodes: Node<NodeData, DiagramNodeType
   nodes
     .filter((node) => node.data.isBorderNode)
     .forEach((borderNode) => {
-      const parentNode = nodes.find((node) => node.id === borderNode.parentNode);
+      const parentNode = nodes.find((node) => node.id === borderNode.parentId);
       if (parentNode) {
         const newPosition = findBorderNodePosition(borderNode.position, borderNode, parentNode);
         borderNode.data.borderNodePosition = newPosition ?? BorderNodePosition.EAST;

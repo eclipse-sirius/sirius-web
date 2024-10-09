@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { useUpdateNodeInternals } from '@xyflow/react';
 import { useEffect, useRef } from 'react';
-import { useUpdateNodeInternals } from 'reactflow';
 import { ConnectionHandle } from './ConnectionHandles.types';
 
 export const useRefreshConnectionHandles = (id: string, connectionHandles: ConnectionHandle[]) => {

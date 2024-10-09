@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Edge, Node, XYPosition, useKeyPress, useStoreApi } from '@xyflow/react';
 import { useCallback, useEffect, useState } from 'react';
-import { Edge, Node, XYPosition, useKeyPress, useStoreApi } from 'reactflow';
+import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { UseGroupPaletteState, UseGroupPaletteValue } from './useGroupPalette.types';
 
 const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds?: DOMRect): XYPosition => {
@@ -34,7 +35,7 @@ export const useGroupPalette = (): UseGroupPaletteValue => {
   }, [escapePressed]);
 
   const onDiagramElementClick = useCallback(
-    (event: React.MouseEvent<Element, MouseEvent>, refElement: Node | Edge | null) => {
+    (event: React.MouseEvent<Element, MouseEvent>, refElement: Node<NodeData> | Edge<EdgeData> | null) => {
       const { domNode } = store.getState();
       const element = domNode?.getBoundingClientRect();
       const palettePosition = computePalettePosition(event, element);

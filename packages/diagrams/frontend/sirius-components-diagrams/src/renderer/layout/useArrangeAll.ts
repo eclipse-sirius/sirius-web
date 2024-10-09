@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { useContext } from 'react';
-import { Edge, Node, useReactFlow, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
@@ -38,7 +38,7 @@ function reverseOrdreMap<K, V>(map: Map<K, V>): Map<K, V> {
 const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData, string>[]> => {
   const subNodes: Map<string, Node<NodeData, string>[]> = new Map<string, Node<NodeData, string>[]>();
   for (const node of nodes.filter((n) => !n.hidden)) {
-    const parentNodeId: string = node.parentNode ?? 'root';
+    const parentNodeId: string = node.parentId ?? 'root';
     if (!subNodes.has(parentNodeId)) {
       subNodes.set(parentNodeId, []);
     }
@@ -118,7 +118,7 @@ const computeLabels = (
 };
 
 export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>): UseArrangeAllValue => {
-  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const viewport = useViewport();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
@@ -240,7 +240,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
     await applyElkOnSubNodes(subNodes, nodes).then(async (nodes: Node<NodeData, string>[]) => {
       const laidOutNodesWithElk: Node<NodeData, string>[] = nodes.reverse();
       laidOutNodesWithElk.filter((laidOutNode) => {
-        const parentNode = nodes.find((node) => node.id === laidOutNode.parentNode);
+        const parentNode = nodes.find((node) => node.id === laidOutNode.parentId);
         return !parentNode || !isListData(parentNode);
       });
 

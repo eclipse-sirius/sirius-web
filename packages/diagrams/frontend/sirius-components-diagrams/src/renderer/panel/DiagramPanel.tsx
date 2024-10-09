@@ -12,10 +12,6 @@
  *******************************************************************************/
 
 import { ComponentExtension, ShareRepresentationModal, useComponents } from '@eclipse-sirius/sirius-components-core';
-import CircularProgress from '@mui/material/CircularProgress';
-import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
-import Tooltip from '@mui/material/Tooltip';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
@@ -28,8 +24,12 @@ import TonalityIcon from '@mui/icons-material/Tonality';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
+import { Edge, Node, Panel, useNodesInitialized, useReactFlow } from '@xyflow/react';
 import { memo, useContext, useEffect, useState } from 'react';
-import { Panel, useNodesInitialized, useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
@@ -68,7 +68,7 @@ export const DiagramPanel = memo(
       diagramPanelActionExtensionPoint
     );
 
-    const { getNodes, getEdges, zoomIn, zoomOut, fitView } = useReactFlow<NodeData, EdgeData>();
+    const { getNodes, getEdges, zoomIn, zoomOut, fitView } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
     const getAllElementsIds = () => [...getNodes().map((elem) => elem.id), ...getEdges().map((elem) => elem.id)];
     const getSelectedNodes = () => getNodes().filter((node) => node.selected);
@@ -78,12 +78,18 @@ export const DiagramPanel = memo(
     const nodesInitialized = useNodesInitialized();
     useEffect(() => {
       if (nodesInitialized && state.arrangeAllDone) {
-        fitView({ duration: 400 });
+        fitView({ duration: 400, nodes: getNodes() });
         setState((prevState) => ({ ...prevState, arrangeAllDone: false }));
       }
     }, [nodesInitialized, state.arrangeAllDone]);
 
-    const handleFitToScreen = () => fitView({ duration: 200, nodes: getSelectedNodes() });
+    const handleFitToScreen = () => {
+      if (getSelectedNodes().length) {
+        fitView({ duration: 200, nodes: getSelectedNodes() });
+      } else {
+        fitView({ duration: 200, nodes: getNodes() });
+      }
+    };
     const handleZoomIn = () => zoomIn({ duration: 200 });
     const handleZoomOut = () => zoomOut({ duration: 200 });
     const handleShare = () => setState((prevState) => ({ ...prevState, dialogOpen: 'Share' }));

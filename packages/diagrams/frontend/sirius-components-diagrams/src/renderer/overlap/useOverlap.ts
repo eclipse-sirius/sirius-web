@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Node } from '@xyflow/react';
 import { useCallback, useState } from 'react';
-import { Node } from 'reactflow';
+import { NodeData } from '../DiagramRenderer.types';
 import { UseOverlapValue } from './useOverlap.types';
 
 const nodesOverlap = (nodeA: Node, nodeB: Node): boolean => {
@@ -24,7 +25,7 @@ const nodesOverlap = (nodeA: Node, nodeB: Node): boolean => {
 
 const getIntersectingNodes = (node: Node, nodes: Node[]): Node[] => {
   return nodes.filter((n) => {
-    if (n.parentNode !== node.parentNode || n.id === node.id) {
+    if (n.parentId !== node.parentId || n.id === node.id) {
       return false;
     }
     return nodesOverlap(node, n);
@@ -34,7 +35,11 @@ const getIntersectingNodes = (node: Node, nodes: Node[]): Node[] => {
 export const useOverlap = (): UseOverlapValue => {
   const [enabled, setEnabled] = useState<boolean>(true);
 
-  const applyOverlap = (movingNode: Node, nodes: Node[], direction: 'horizontal' | 'vertical' = 'horizontal'): void => {
+  const applyOverlap = (
+    movingNode: Node<NodeData>,
+    nodes: Node<NodeData>[],
+    direction: 'horizontal' | 'vertical' = 'horizontal'
+  ): void => {
     getIntersectingNodes(movingNode, nodes).forEach((node) => {
       const overlapNode = nodes.find((n) => n.id === node.id);
       if (overlapNode) {
@@ -70,7 +75,7 @@ export const useOverlap = (): UseOverlapValue => {
   };
 
   const resolveNodeOverlap = useCallback(
-    (nodes: Node[], direction: 'horizontal' | 'vertical'): Node[] => {
+    (nodes: Node<NodeData>[], direction: 'horizontal' | 'vertical'): Node<NodeData>[] => {
       if (enabled) {
         nodes.filter((node) => !node.data.pinned).forEach((node) => applyOverlap(node, nodes, direction));
       }

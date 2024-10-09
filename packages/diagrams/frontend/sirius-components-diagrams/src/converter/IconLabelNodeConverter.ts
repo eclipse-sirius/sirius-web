@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, XYPosition } from 'reactflow';
+import { Node, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
@@ -27,7 +27,7 @@ import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { isListLayoutStrategy } from './convertDiagram';
-import { convertOutsideLabels, convertInsideLabel } from './convertLabel';
+import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -98,7 +98,7 @@ const toIconLabelNode = (
   };
 
   if (gqlParentNode) {
-    node.parentNode = gqlParentNode.id;
+    node.parentId = gqlParentNode.id;
   }
 
   const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];

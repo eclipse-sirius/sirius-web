@@ -13,19 +13,19 @@
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {
+  ComponentExtension,
+  useComponents,
   useDeletionConfirmationDialog,
   useMultiToast,
-  useComponents,
-  ComponentExtension,
 } from '@eclipse-sirius/sirius-components-core';
+import AdjustIcon from '@mui/icons-material/Adjust';
+import TonalityIcon from '@mui/icons-material/Tonality';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
-import { makeStyles } from 'tss-react/mui';
-import AdjustIcon from '@mui/icons-material/Adjust';
-import TonalityIcon from '@mui/icons-material/Tonality';
+import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { useReactFlow, useViewport } from 'reactflow';
+import { makeStyles } from 'tss-react/mui';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDialog } from '../../dialog/useDialog';
@@ -65,8 +65,8 @@ import {
   PaletteState,
 } from './Palette.types';
 import { ToolSection } from './tool-section/ToolSection';
-import { diagramPaletteToolExtensionPoint } from './tool/DiagramPaletteToolExtensionPoints';
 import { DiagramPaletteToolComponentProps } from './tool/DiagramPaletteTool.types';
+import { diagramPaletteToolExtensionPoint } from './tool/DiagramPaletteToolExtensionPoints';
 
 const usePaletteStyle = makeStyles()((theme) => ({
   palette: {
@@ -224,7 +224,7 @@ export const Palette = ({
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { pinDiagramElements } = usePinDiagramElements();
   const { adjustSize } = useAdjustSize();
-  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
   const { addErrorMessage, addMessages } = useMultiToast();

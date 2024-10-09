@@ -11,11 +11,26 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { DiagramEdgeTypes } from './EdgeTypes.types';
-import { SmoothStepEdgeWrapper } from './SmoothStepEdgeWrapper';
+import { Edge, EdgeProps } from '@xyflow/react';
+import { FC } from 'react';
+import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { SmartStepEdgeWrapper } from './SmartStepEdgeWrapper';
+import { SmoothStepEdgeWrapper } from './SmoothStepEdgeWrapper';
 
-export const edgeTypes: DiagramEdgeTypes = {
+export const edgeTypes: EdgeComponentsMap = {
   smartStepEdge: SmartStepEdgeWrapper,
   smoothStepEdge: SmoothStepEdgeWrapper,
+};
+
+export interface EdgeDataMap {
+  smartStepEdge: MultiLabelEdgeData;
+  smoothStepEdge: MultiLabelEdgeData;
+}
+
+export type EdgeComponentsMap = {
+  [K in keyof EdgeDataMap]: FC<EdgeProps<Edge<EdgeDataMap[K], K>>>;
+};
+
+export type EdgePropsMap = {
+  [K in keyof EdgeDataMap]: EdgeProps<Edge<EdgeDataMap[K], K>>;
 };

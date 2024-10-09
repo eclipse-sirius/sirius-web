@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node } from 'reactflow';
+import { Edge, Node } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLLabel } from '../graphql/subscription/labelFragment.types';
@@ -22,7 +22,7 @@ import {
   ILayoutStrategy,
   ListLayoutStrategy,
 } from '../graphql/subscription/nodeFragment.types';
-import { Diagram, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
+import { Diagram, EdgeData, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { DiagramEdgeType } from '../renderer/edge/EdgeTypes.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
@@ -41,10 +41,10 @@ const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
   let depth = 0;
 
-  let parentNode = node?.parentNode ? nodeId2node.get(node.parentNode) : undefined;
+  let parentNode = node?.parentId ? nodeId2node.get(node.parentId) : undefined;
   while (parentNode) {
     depth = depth + 1;
-    parentNode = parentNode.parentNode ? nodeId2node.get(parentNode.parentNode) : undefined;
+    parentNode = parentNode.parentId ? nodeId2node.get(parentNode.parentId) : undefined;
   }
 
   return depth;
@@ -134,13 +134,13 @@ export const convertDiagram = (
     diagramDescription.nodeDescriptions
   );
 
-  const nodeId2node = new Map<string, Node>();
+  const nodeId2node = new Map<string, Node<NodeData>>();
   nodes.forEach((node) => nodeId2node.set(node.id, node));
 
   const nodeId2Depth = new Map<string, number>();
   nodes.forEach((node) => nodeId2Depth.set(node.id, nodeDepth(nodeId2node, node.id)));
   let usedHandles: string[] = [];
-  const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
+  const edges: Edge<EdgeData>[] = gqlDiagram.edges.map((gqlEdge) => {
     const sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
     const targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
     const data: MultiLabelEdgeData = {
@@ -202,7 +202,7 @@ export const convertDiagram = (
       targetHandle: targetHandle?.id,
       sourceNode: sourceNode,
       targetNode: targetNode,
-      updatable: false,
+      reconnectable: false,
     };
   });
 
@@ -211,14 +211,14 @@ export const convertDiagram = (
     edges,
   };
 
-  const nodeInternals = new Map();
+  const nodeLookUp = new Map();
   nodes.forEach((node) => {
-    nodeInternals.set(node.id, node);
+    nodeLookUp.set(node.id, node);
   });
 
   computeBorderNodeExtents(rawDiagram.nodes);
   computeBorderNodePositions(rawDiagram.nodes);
-  layoutHandles(rawDiagram, diagramDescription, nodeInternals);
+  layoutHandles(rawDiagram, diagramDescription, nodeLookUp);
 
   return {
     nodes: rawDiagram.nodes,

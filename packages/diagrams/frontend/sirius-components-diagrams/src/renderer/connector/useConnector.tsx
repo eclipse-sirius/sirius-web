@@ -12,10 +12,10 @@
  *******************************************************************************/
 
 import { Theme, useTheme } from '@mui/material/styles';
-import { useCallback, useContext } from 'react';
 import {
   Connection,
   Edge,
+  Node,
   OnConnect,
   OnConnectEnd,
   OnConnectStart,
@@ -23,7 +23,8 @@ import {
   useReactFlow,
   useStoreApi,
   useUpdateNodeInternals,
-} from 'reactflow';
+} from '@xyflow/react';
+import { useCallback, useContext } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters } from '../edge/EdgeLayout';
@@ -51,22 +52,23 @@ export const useConnector = (): UseConnectorValue => {
     setIsNewConnection,
   } = useContext<ConnectorContextValue>(ConnectorContext);
 
-  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
-  const { getNode, setEdges } = reactFlowInstance;
+  const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { setEdges } = reactFlowInstance;
 
   const theme = useTheme();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
   const updateNodeInternals = useUpdateNodeInternals();
   const { diagramDescription } = useDiagramDescription();
-  const store = useStoreApi();
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { nodeLookup } = store.getState();
 
   const isConnectionInProgress = () => {
-    const connectionNodeId = store.getState().connectionNodeId;
+    const connectionNodeId = store.getState().connection.fromNode?.id;
     return (!!connectionNodeId && isNewConnection) || !!connection;
   };
 
   const isReconnectionInProgress = () => {
-    const connectionNodeId = store.getState().connectionNodeId;
+    const connectionNodeId = store.getState().connection.fromNode?.id;
     return !!connectionNodeId && !isNewConnection;
   };
 
@@ -75,7 +77,7 @@ export const useConnector = (): UseConnectorValue => {
   }, []);
 
   const onConnectStart: OnConnectStart = useCallback(
-    (_event: React.MouseEvent | React.TouchEvent, params: OnConnectStartParams) => {
+    (_event: MouseEvent | TouchEvent, params: OnConnectStartParams) => {
       hideDiagramElementPalette();
       resetConnection();
       if (params.nodeId) {
@@ -104,13 +106,13 @@ export const useConnector = (): UseConnectorValue => {
   }, []);
 
   const addTempConnectionLine = () => {
-    const sourceNode = getNode(connection?.source ?? '');
-    const targetNode = getNode(connection?.target ?? '');
+    const sourceNode = nodeLookup.get(connection?.source ?? '');
+    const targetNode = nodeLookup.get(connection?.target ?? '');
     if (sourceNode && targetNode && !!connection) {
       const { targetPosition, sourcePosition } = getEdgeParameters(
         sourceNode,
         targetNode,
-        store.getState().nodeInternals,
+        store.getState().nodeLookup,
         diagramDescription.arrangeLayoutDirection
       );
 
@@ -122,7 +124,7 @@ export const useConnector = (): UseConnectorValue => {
         targetHandle: `handle--${connection.target}--temp--${targetPosition}`,
         type: 'smoothstep',
         animated: true,
-        updatable: false,
+        reconnectable: false,
         style: tempConnectionLineStyle(theme),
         zIndex: 2002,
       };

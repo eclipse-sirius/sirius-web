@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useContext, useEffect, useState } from 'react';
-import { useReactFlow } from 'reactflow';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
@@ -38,7 +38,7 @@ export const useLayout = (): UseLayoutValue => {
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const [state, setState] = useState<UseLayoutState>(initialState);
 
-  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+  const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const layoutAreaPrepared = () => {
     const currentStep = 'LAYOUT';
@@ -58,7 +58,7 @@ export const useLayout = (): UseLayoutValue => {
         while (parentNode) {
           processedReferencePosition.position.x -= parentNode.position.x;
           processedReferencePosition.position.y -= parentNode.position.y;
-          parentNode = reactFlowInstance.getNode(parentNode.parentNode ?? '');
+          parentNode = reactFlowInstance.getNode(parentNode.parentId ?? '');
         }
       }
 

@@ -13,11 +13,11 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
+import { BaseEdge, Edge, EdgeLabelRenderer, Position } from '@xyflow/react';
 import { memo, useMemo } from 'react';
-import { BaseEdge, EdgeLabelRenderer, Position } from 'reactflow';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
-import { MultiLabelEdgeProps } from './MultiLabelEdge.types';
+import { MultiLabelEdgeData, MultiLabelEdgeProps } from './MultiLabelEdge.types';
 
 const multiLabelEdgeStyle = (
   theme: Theme,
@@ -77,7 +77,7 @@ export const MultiLabelEdge = memo(
     edgeCenterX,
     edgeCenterY,
     svgPathString,
-  }: MultiLabelEdgeProps) => {
+  }: MultiLabelEdgeProps<Edge<MultiLabelEdgeData>>) => {
     const { beginLabel, endLabel, label, faded } = data || {};
     const theme = useTheme();
 
@@ -91,8 +91,8 @@ export const MultiLabelEdge = memo(
           id={id}
           path={svgPathString}
           style={edgeStyle}
-          markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 1)}--selected)` : markerEnd}
-          markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 1)}--selected)` : markerStart}
+          markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 2)}--selected')` : markerEnd}
+          markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
         />
         {selected ? (
           <DiagramElementPalette

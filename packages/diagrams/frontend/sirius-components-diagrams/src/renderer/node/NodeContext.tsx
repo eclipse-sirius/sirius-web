@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Node } from '@xyflow/react';
 import React, { useState } from 'react';
-import { Node } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { NodeContextProviderProps, NodeContextProviderState, NodeContextValue } from './NodeContext.types';
 const defaultValue: NodeContextValue = {

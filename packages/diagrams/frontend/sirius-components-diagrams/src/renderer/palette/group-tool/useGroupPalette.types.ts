@@ -11,14 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, XYPosition } from 'reactflow';
+import { Edge, Node, XYPosition } from '@xyflow/react';
+import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 
 export interface UseGroupPaletteValue {
   position: XYPosition | null;
   isOpened: boolean;
   refElementId: string | null;
   hideGroupPalette: () => void;
-  onDiagramElementClick: (event: React.MouseEvent<Element, MouseEvent>, element: Node | Edge | null) => void;
+  onDiagramElementClick: (
+    event: React.MouseEvent<Element, MouseEvent>,
+    element: Node<NodeData> | Edge<EdgeData> | null
+  ) => void;
 }
 
 export interface UseGroupPaletteState {
