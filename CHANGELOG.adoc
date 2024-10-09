@@ -44,6 +44,8 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/3679[#3679] [sirius-web] aql service `hasChildren` requires the editing context like the aql service `getChildren`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3680[#3680] [core] The label has been removed from the content of all representations.
 + The label of a representation is available through its metadata that can be retrieve thanks to the service `IRepresentationMetadataSearchService` from sirius-web-domain or, `IRepresentationMetadataProvider` from sirius-components-collaborative.
+- https://github.com/eclipse-sirius/sirius-web/issues/3681[#3681] [sirius-web] Replace all representation specific rename event handlers by `RenameRepresentationEventHandler`.
++ It means that an application that only use sirius-components should provide its own means to rename a representation.
 
 === Dependency update
 
@@ -69,6 +71,7 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/4073[#4073] [trees] Add missing variables `ancestorIds` and `index` to variable manager used in the default expand all handler.
 - https://github.com/eclipse-sirius/sirius-web/issues/4077[#4077] [charts] Remove metadata from Charts widgets.
 Charts' metadata is only relevant when Charts are used as Representations.
+- https://github.com/eclipse-sirius/sirius-web/issues/3681[#3681] [core] Fix the representation rename
 
 === New Features
 

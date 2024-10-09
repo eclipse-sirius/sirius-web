@@ -30,7 +30,13 @@ public class ExplorerMetadataProvider implements IRepresentationMetadataProvider
     @Override
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
         if (representationId.startsWith(ExplorerDescriptionProvider.PREFIX)) {
-            return Optional.of(new RepresentationMetadata(representationId, Tree.KIND, ExplorerDescriptionProvider.REPRESENTATION_NAME, ExplorerDescriptionProvider.DESCRIPTION_ID));
+            var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
+                    .kind(Tree.KIND)
+                    .label(ExplorerDescriptionProvider.REPRESENTATION_NAME)
+                    .descriptionId(ExplorerDescriptionProvider.DESCRIPTION_ID)
+                    .build();
+
+            return Optional.of(representationMetadata);
         }
         return Optional.empty();
     }

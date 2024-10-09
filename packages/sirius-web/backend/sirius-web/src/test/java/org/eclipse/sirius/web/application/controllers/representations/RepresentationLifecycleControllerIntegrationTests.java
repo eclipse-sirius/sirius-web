@@ -32,9 +32,9 @@ import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscripti
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentCreatedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataDeletedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataUpdateEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.services.TestRepresentationDescription;
@@ -150,7 +150,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
             assertThat(typename).isEqualTo(RenameRepresentationSuccessPayload.class.getSimpleName());
 
             assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
-            assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(RepresentationContentUpdatedEvent.class::isInstance);
+            assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(RepresentationMetadataUpdateEvent.class::isInstance);
         };
 
         StepVerifier.create(flux)
