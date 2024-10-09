@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DiagramDialogVariable } from '@eclipse-sirius/sirius-components-diagrams';
 import { TreeItemActionProps, TreeView } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
@@ -37,15 +38,12 @@ const initialState: SelectionDialogTreeViewState = {
 export const SelectionDialogTreeView = ({
   editingContextId,
   treeDescriptionId,
-  targetObjectId,
+  variables,
 }: SelectionDialogTreeViewProps) => {
   const { classes } = useTreeStyle();
   const [state, setState] = useState<SelectionDialogTreeViewState>(initialState);
 
-  const treeId = `selection://?treeDescriptionId=${encodeURIComponent(
-    treeDescriptionId
-  )}&targetObjectId=${encodeURIComponent(targetObjectId)}`;
-
+  const treeId = `selection://?treeDescriptionId=${encodeURIComponent(treeDescriptionId)}${encodeVariables(variables)}`;
   const { tree } = useSelectionDialogTreeSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
 
   const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
@@ -89,4 +87,13 @@ const SelectionDialogTreeItemAction = ({ onExpandAll, item, isHovered }: TreeIte
       <UnfoldMoreIcon style={{ fontSize: 12 }} />
     </IconButton>
   );
+};
+
+const encodeVariables = (variables: DiagramDialogVariable[]): string => {
+  let encodedVariables = '';
+  if (variables.length > 0) {
+    encodedVariables =
+      '&' + variables.map((variable) => variable.name + '=' + encodeURIComponent(variable.value)).join('&');
+  }
+  return encodedVariables;
 };

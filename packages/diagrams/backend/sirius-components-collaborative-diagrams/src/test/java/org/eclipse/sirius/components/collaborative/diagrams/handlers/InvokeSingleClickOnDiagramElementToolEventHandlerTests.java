@@ -25,6 +25,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.ToolService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -241,7 +243,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
         var tool = this.createTool(TOOL_ID, false, List.of(nodeDescription), DIALOG_DESCRIPTION_ID, toolHandler);
 
-        var toolService = new IToolService.NoOp() {
+        var toolService = new ToolService(new IRepresentationDescriptionSearchService.NoOp(), objectService) {
             @Override
             public Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId) {
                 return Optional.of(tool);

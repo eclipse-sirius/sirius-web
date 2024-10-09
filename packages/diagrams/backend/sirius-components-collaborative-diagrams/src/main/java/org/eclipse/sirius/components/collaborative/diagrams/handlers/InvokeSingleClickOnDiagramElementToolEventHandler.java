@@ -61,7 +61,6 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagramEventHandler {
 
-    private static final String OBJECT_ID_ARRAY_SEPARATOR = ",";
 
     private final Logger logger = LoggerFactory.getLogger(InvokeSingleClickOnDiagramElementToolEventHandler.class);
 
@@ -142,9 +141,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         if (self.isPresent()) {
             VariableManager variableManager = this.populateVariableManager(editingContext, diagramContext, node, edge, self);
             var dialogDescriptionId = tool.getDialogDescriptionId();
-            if (dialogDescriptionId != null) {
-                variables.forEach(toolVariable -> this.handleToolVariable(toolVariable, editingContext, variableManager));
-            }
+            this.toolService.addToolVariablesInVariableManager(variables, editingContext, variableManager);
 
             //We do not apply the tool if a dialog is defined but no variables have been provided
             if (dialogDescriptionId == null || !variables.isEmpty()) {
@@ -152,26 +149,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
             }
         }
         return result;
-    }
-
-    private void handleToolVariable(ToolVariable toolvariable, IEditingContext editingContext, VariableManager variableManager) {
-        switch (toolvariable.type()) {
-            case STRING -> variableManager.put(toolvariable.name(), toolvariable.value());
-            case OBJECT_ID -> {
-                var optionalObject = this.objectService.getObject(editingContext, toolvariable.value());
-                variableManager.put(toolvariable.name(), optionalObject.orElse(null));
-            }
-            case OBJECT_ID_ARRAY -> {
-                String value = toolvariable.value();
-                List<String> objectsIds = List.of(value.split(OBJECT_ID_ARRAY_SEPARATOR));
-                List<Object> objects = objectsIds.stream()
-                        .map(objectId -> this.objectService.getObject(editingContext, objectId))
-                        .map(optionalObject -> optionalObject.orElse(null))
-                        .toList();
-                variableManager.put(toolvariable.name(), objects);
-            }
-            default -> this.logger.warn("Unexpected value: " + toolvariable.type());
-        }
     }
 
     private Optional<Object> getCurrentContext(IEditingContext editingContext, String diagramElementId, SingleClickOnDiagramElementTool tool, Diagram diagram, Optional<Node> node,

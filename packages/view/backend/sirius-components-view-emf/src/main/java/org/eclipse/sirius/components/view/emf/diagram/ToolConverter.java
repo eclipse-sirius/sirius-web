@@ -205,6 +205,7 @@ public class ToolConverter {
                     child.put("nodeDescription", nodeDescription);
                     return this.execute(converterContext, convertedNodes, edgeTool, child);
                 })
+                .dialogDescriptionId(this.diagramIdProvider.getId(edgeTool.getDialogDescription()))
                 .build();
     }
 

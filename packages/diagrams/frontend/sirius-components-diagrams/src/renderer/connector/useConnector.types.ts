@@ -28,6 +28,21 @@ export interface UseConnectorValue {
   candidates: GQLNodeDescription[];
 }
 
+export interface GQLTool {
+  id: string;
+  label: string;
+  iconURL: string[];
+  __typename: string;
+}
+
+export interface GQLToolVariable {
+  name: string;
+  value: string;
+  type: GQLToolVariableType;
+}
+
+export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
+
 export interface GQLGetToolSectionsData {
   viewer: GQLViewer;
 }
@@ -70,15 +85,9 @@ export interface GQLToolSection {
   tools: GQLTool[];
   __typename: string;
 }
-
-export interface GQLTool {
-  id: string;
-  label: string;
-  imageURL: string;
-  __typename: string;
-}
 export interface GQLSingleClickOnTwoDiagramElementsTool extends GQLTool {
   candidates: GQLSingleClickOnTwoDiagramElementsCandidate[];
+  dialogDescriptionId: string;
 }
 export interface GQLSingleClickOnTwoDiagramElementsCandidate {
   sources: GQLNodeDescription[];

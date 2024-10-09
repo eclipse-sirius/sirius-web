@@ -94,5 +94,15 @@ public class EdgeToolBuilder {
         return this;
     }
 
+    /**
+     * Setter for DialogDescription.
+     *
+     * @generated
+     */
+    public EdgeToolBuilder dialogDescription(org.eclipse.sirius.components.view.diagram.DialogDescription value) {
+        this.getEdgeTool().setDialogDescription(value);
+        return this;
+    }
+
 }
 

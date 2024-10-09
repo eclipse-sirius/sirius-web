@@ -17,7 +17,7 @@ import { DialogContextValue } from './DialogContext.types';
 import { UseDialogValue } from './useDialog.types';
 
 export const useDialog = (): UseDialogValue => {
-  const { showDialog } = useContext<DialogContextValue>(DialogContext);
+  const { showDialog, isOpened } = useContext<DialogContextValue>(DialogContext);
 
-  return { showDialog };
+  return { showDialog, isOpened };
 };

@@ -16,6 +16,21 @@ export interface ContextualPaletteStyleProps {
   toolCount: number;
 }
 
+export interface GQLTool {
+  id: string;
+  label: string;
+  iconURL: string[];
+  __typename: string;
+}
+
+export interface GQLToolVariable {
+  name: string;
+  value: string;
+  type: GQLToolVariableType;
+}
+
+export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
+
 export interface PaletteProps {
   x: number;
   y: number;
@@ -75,20 +90,6 @@ export interface GQLInvokeSingleClickOnDiagramElementToolInput {
   startingPositionX: number;
   startingPositionY: number;
   variables: GQLToolVariable[];
-}
-export interface GQLToolVariable {
-  name: string;
-  value: string;
-  type: GQLToolVariableType;
-}
-
-export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
-
-export interface GQLTool {
-  id: string;
-  label: string;
-  iconURL: string[];
-  __typename: string;
 }
 
 export interface GQLSingleClickOnDiagramElementTool extends GQLTool {

@@ -245,19 +245,26 @@ public class ViewPaletteProvider implements IPaletteProvider {
     private ITool createEdgeTool(EdgeTool viewEdgeTool, DiagramDescription diagramDescription, NodeDescription nodeDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         String toolId = this.idProvider.apply(viewEdgeTool).toString();
         List<String> iconURLProvider = this.edgeToolIconURLProvider(viewEdgeTool, interpreter, variableManager);
+        String dialogDescriptionId = "";
+        if (viewEdgeTool.getDialogDescription() != null) {
+            dialogDescriptionId = this.diagramIdProvider.getId(viewEdgeTool.getDialogDescription());
+        }
+
+        List<SingleClickOnTwoDiagramElementsCandidate> candidates = List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
+                .sources(List.of(nodeDescription))
+                .targets(viewEdgeTool.getTargetElementDescriptions().stream()
+                        .filter(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance)
+                        .map(viewDiagramElementDescription -> this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, this.diagramIdProvider.getId(viewDiagramElementDescription)))
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .toList())
+                .build());
 
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(viewEdgeTool.getName())
                 .iconURL(iconURLProvider)
-                .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                        .sources(List.of(nodeDescription))
-                        .targets(viewEdgeTool.getTargetElementDescriptions().stream()
-                                .filter(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance)
-                                .map(viewDiagramElementDescription -> this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, this.diagramIdProvider.getId(viewDiagramElementDescription)))
-                                .filter(Optional::isPresent)
-                                .map(Optional::get)
-                                .toList())
-                        .build()))
+                .candidates(candidates)
+                .dialogDescriptionId(dialogDescriptionId)
                 .build();
     }
 
