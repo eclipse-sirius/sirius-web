@@ -322,19 +322,16 @@ export const TreeItem = ({
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
     currentTreeItem = (
       <>
-        <div
-          className={className}
-          draggable={true}
-          onClick={onClick}
-          onDragStart={dragStart}
-          onDragOver={dragOver}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}>
+        <div className={className} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${label}-toggle`} />
           <div
             ref={refDom}
             tabIndex={0}
             onKeyDown={onBeginEditing}
+            draggable={true}
+            onClick={onClick}
+            onDragStart={dragStart}
+            onDragOver={dragOver}
             data-treeitemid={item.id}
             data-treeitemlabel={label}
             data-treeitemkind={item.kind}
