@@ -349,10 +349,7 @@ export const TreeItem = ({
         />
         <div
           className={className}
-          draggable={true}
           onClick={onClick}
-          onDragStart={dragStart}
-          onDragOver={dragOver}
           onDragEnter={() => handleMouseEnter('item')}
           onDragExit={handleMouseLeave}
           onDrop={onDropItem}
@@ -363,6 +360,10 @@ export const TreeItem = ({
             ref={refDom}
             tabIndex={0}
             onKeyDown={onBeginEditing}
+            draggable={true}
+            onClick={onClick}
+            onDragStart={dragStart}
+            onDragOver={dragOver}
             data-treeitemid={item.id}
             data-treeitemlabel={label}
             data-treeitemkind={item.kind}

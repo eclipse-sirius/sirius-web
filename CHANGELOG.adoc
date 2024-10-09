@@ -25,7 +25,8 @@
 
 === Bug fixes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/1062[#1062] [explorer] It is now possible to expand or collapse items in the explorer without selecting them by clicking directly on the expand/collapse arrow icon.
+This was first fixed in 2022.3.0 but broken in 2024.3.0; it is now fixed again.
 
 === New Features
 
@@ -143,7 +144,6 @@ Charts' metadata is only relevant when Charts are used as Representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/4148[#4148] [diagram] Fix an issue when moving child node in free form container.
 - https://github.com/eclipse-sirius/sirius-web/issues/4154[#4154] [diagram] Restore feedback while resizing a list container
 - https://github.com/eclipse-sirius/sirius-web/issues/4141[#4141] [sirius-web] Fix a bug where opening a representation from its URL or from the onboarding area no longer revealed it in the Explorer view.
-
 
 === New Features
 
