@@ -13,9 +13,11 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
-import { memo, useMemo } from 'react';
-import { BaseEdge, EdgeLabelRenderer, Position } from 'reactflow';
+import React, { memo, useMemo } from 'react';
+import Draggable, { DraggableData } from 'react-draggable';
+import { BaseEdge, EdgeLabelRenderer, Position, useViewport } from 'reactflow';
 import { Label } from '../Label';
+import { useLabelMove } from '../move/useLabelMove';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { MultiLabelEdgeProps } from './MultiLabelEdge.types';
 
@@ -80,10 +82,19 @@ export const MultiLabelEdge = memo(
   }: MultiLabelEdgeProps) => {
     const { beginLabel, endLabel, label, faded } = data || {};
     const theme = useTheme();
-
+    const { zoom } = useViewport();
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
     const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
     const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
+    const { onEdgeLabelMoveStop } = useLabelMove();
+
+    const onStop = (_e, eventData: DraggableData, labelPosition: 'begin' | 'center' | 'end') => {
+      onEdgeLabelMoveStop(eventData, id, labelPosition);
+    };
+
+    const beginLabelNodeRef = React.useRef<HTMLInputElement | null>(null);
+    const centerLabelNodeRef = React.useRef<HTMLInputElement | null>(null);
+    const endLabelNodeRef = React.useRef<HTMLInputElement | null>(null);
 
     return (
       <>
@@ -103,19 +114,44 @@ export const MultiLabelEdge = memo(
         ) : null}
         <EdgeLabelRenderer>
           {beginLabel && (
-            <div style={labelContainerStyle(`${sourceLabelTranslation} translate(${sourceX}px,${sourceY}px)`)}>
-              <Label diagramElementId={id} label={beginLabel} faded={!!faded} />
-            </div>
+            <Draggable
+              position={{ x: beginLabel.position.x, y: beginLabel.position.y }}
+              positionOffset={{ x: sourceX, y: sourceY }}
+              onStop={(_e, eventData) => onStop(_e, eventData, 'begin')}
+              scale={zoom}
+              nodeRef={beginLabelNodeRef}>
+              <div
+                style={labelContainerStyle(`${sourceLabelTranslation} translate(${sourceX}px,${sourceY}px)`)}
+                ref={beginLabelNodeRef}>
+                <Label diagramElementId={id} label={beginLabel} faded={!!faded} highlighted={selected} />
+              </div>
+            </Draggable>
           )}
           {label && (
-            <div style={labelContainerStyle(`translate(${edgeCenterX}px,${edgeCenterY}px)`)}>
-              <Label diagramElementId={id} label={label} faded={!!faded} />
-            </div>
+            <Draggable
+              position={{ x: label.position.x, y: label.position.y }}
+              positionOffset={{ x: edgeCenterX, y: edgeCenterY }}
+              onStop={(_e, eventData) => onStop(_e, eventData, 'center')}
+              scale={zoom}
+              nodeRef={centerLabelNodeRef}>
+              <div style={labelContainerStyle(`translate(${edgeCenterX}px,${edgeCenterY}px)`)} ref={centerLabelNodeRef}>
+                <Label diagramElementId={id} label={label} faded={!!faded} highlighted={selected} />
+              </div>
+            </Draggable>
           )}
           {endLabel && (
-            <div style={labelContainerStyle(`${targetLabelTranslation} translate(${targetX}px,${targetY}px)`)}>
-              <Label diagramElementId={id} label={endLabel} faded={!!faded} />
-            </div>
+            <Draggable
+              position={{ x: endLabel.position.x, y: endLabel.position.y }}
+              positionOffset={{ x: targetX, y: targetY }}
+              onStop={(_e, eventData) => onStop(_e, eventData, 'end')}
+              scale={zoom}
+              nodeRef={endLabelNodeRef}>
+              <div
+                style={labelContainerStyle(`${targetLabelTranslation} translate(${targetX}px,${targetY}px)`)}
+                ref={endLabelNodeRef}>
+                <Label diagramElementId={id} label={endLabel} faded={!!faded} highlighted={selected} />
+              </div>
+            </Draggable>
           )}
         </EdgeLabelRenderer>
       </>

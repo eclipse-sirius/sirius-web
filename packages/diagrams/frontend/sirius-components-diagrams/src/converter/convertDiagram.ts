@@ -13,7 +13,7 @@
 
 import { Edge, Node } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
-import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
+import { GQLDiagram, GQLLabelLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLLabel } from '../graphql/subscription/labelFragment.types';
 import {
   GQLNode,
@@ -50,7 +50,7 @@ const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   return depth;
 };
 
-const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): EdgeLabel => {
+const convertEdgeLabel = (gqlEdgeLabel: GQLLabel, gqlLabelLayoutData: GQLLabelLayoutData[]): EdgeLabel => {
   return {
     id: gqlEdgeLabel.id,
     text: gqlEdgeLabel.text,
@@ -60,6 +60,10 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): EdgeLabel => {
     },
     contentStyle: {
       ...convertContentStyle(gqlEdgeLabel.style),
+    },
+    position: gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === gqlEdgeLabel.id)?.position ?? {
+      x: 0,
+      y: 0,
     },
   };
 };
@@ -153,13 +157,13 @@ export const convertDiagram = (
     };
 
     if (gqlEdge.beginLabel) {
-      data.beginLabel = convertEdgeLabel(gqlEdge.beginLabel);
+      data.beginLabel = convertEdgeLabel(gqlEdge.beginLabel, gqlDiagram.layoutData.labelLayoutData);
     }
     if (gqlEdge.centerLabel) {
-      data.label = convertEdgeLabel(gqlEdge.centerLabel);
+      data.label = convertEdgeLabel(gqlEdge.centerLabel, gqlDiagram.layoutData.labelLayoutData);
     }
     if (gqlEdge.endLabel) {
-      data.endLabel = convertEdgeLabel(gqlEdge.endLabel);
+      data.endLabel = convertEdgeLabel(gqlEdge.endLabel, gqlDiagram.layoutData.labelLayoutData);
     }
 
     const sourceHandle = sourceNode?.data.connectionHandles

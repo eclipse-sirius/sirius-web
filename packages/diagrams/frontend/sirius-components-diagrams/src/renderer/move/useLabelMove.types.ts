@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DraggableData } from 'react-draggable';
 
-import { EdgeLabel, InsideLabel, OutsideLabel } from './DiagramRenderer.types';
-
-export interface LabelProps {
-  diagramElementId: string;
-  label: EdgeLabel | InsideLabel | OutsideLabel;
-  faded: boolean;
-  highlighted?: boolean;
+export interface UseLabelMoveValue {
+  onNodeLabelMoveStop: (eventData: DraggableData, nodeId: string) => void;
+  onEdgeLabelMoveStop: (eventData: DraggableData, edgeId: string, labelPosition: 'begin' | 'center' | 'end') => void;
 }

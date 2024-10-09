@@ -62,7 +62,7 @@ const toImageNode = (
     targetObjectKind,
     descriptionId,
     insideLabel: null,
-    outsideLabels: convertOutsideLabels(outsideLabels),
+    outsideLabels: convertOutsideLabels(outsideLabels, gqlDiagram.layoutData.labelLayoutData),
     imageURL: style.imageURL,
     style: {
       borderColor: style.borderColor,
@@ -107,12 +107,11 @@ const toImageNode = (
     node.parentNode = gqlParentNode.id;
   }
 
-  const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];
-  if (nodeLayoutData) {
+  if (gqlNodeLayoutData) {
     const {
       position,
       size: { height, width },
-    } = nodeLayoutData;
+    } = gqlNodeLayoutData;
     node.position = position;
     node.height = height;
     node.width = width;

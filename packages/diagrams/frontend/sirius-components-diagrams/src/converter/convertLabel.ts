@@ -19,6 +19,7 @@ import {
 import { OutsideLabels, InsideLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { AlignmentMap } from './convertDiagram.types';
 import { convertLineStyle } from './convertDiagram';
+import { GQLLabelLayoutData } from '../graphql/subscription/diagramFragment.types';
 
 export const convertInsideLabel = (
   gqlInsideLabel: GQLInsideLabel | undefined,
@@ -106,7 +107,10 @@ export const convertInsideLabel = (
   return insideLabel;
 };
 
-export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): OutsideLabels => {
+export const convertOutsideLabels = (
+  gqlOutsideLabels: GQLOutsideLabel[],
+  gqlLabelLayoutData: GQLLabelLayoutData[]
+): OutsideLabels => {
   const outsideLabels: OutsideLabels = {};
   const reducer = (allOutsideLabels: OutsideLabels, gqlOutsideLabel: GQLOutsideLabel): OutsideLabels => {
     const {
@@ -130,6 +134,7 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
         ...convertContentStyle(labelStyle),
       },
       overflowStrategy,
+      position: gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === id)?.position ?? { x: 0, y: 0 },
     };
 
     return allOutsideLabels;
