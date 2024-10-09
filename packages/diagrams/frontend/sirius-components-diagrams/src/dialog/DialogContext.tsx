@@ -15,7 +15,7 @@ import { useData } from '@eclipse-sirius/sirius-components-core';
 import React, { useContext, useState } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
-import { GQLToolVariable } from '../renderer/palette/Palette.types';
+import { GQLToolVariable } from '../renderer/palette/usePalette.types';
 import { DialogContextProviderState, DialogContextValue } from './DialogContext.types';
 import { diagramDialogContributionExtensionPoint } from './DialogContextExtensionPoints';
 import { DiagramDialogComponentProps, DiagramDialogContribution } from './DialogContextExtensionPoints.types';

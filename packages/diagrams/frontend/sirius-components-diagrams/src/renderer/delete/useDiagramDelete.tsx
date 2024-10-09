@@ -25,7 +25,7 @@ import {
   GQLDeleteFromDiagramVariables,
   GQLDeletionPolicy,
   GQLErrorPayload,
-} from '../palette/Palette.types';
+} from '../palette/usePalette.types';
 import { UseDiagramDeleteValue } from './useDiagramDelete.types';
 
 export const deleteFromDiagramMutation = gql`

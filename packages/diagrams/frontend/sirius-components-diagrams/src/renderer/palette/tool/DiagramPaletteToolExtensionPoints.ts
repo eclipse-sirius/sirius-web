@@ -10,10 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { DiagramPaletteToolComponentProps } from './DiagramPaletteTool.types';
 
-export const diagramPaletteToolExtensionPoint: ComponentExtensionPoint<DiagramPaletteToolComponentProps> = {
+import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { DiagramPaletteToolContributionProps } from '../DiagramPaletteToolContribution.types';
+
+export const diagramPaletteToolExtensionPoint: DataExtensionPoint<Array<DiagramPaletteToolContributionProps>> = {
   identifier: 'diagramPalette#tool',
-  FallbackComponent: () => null,
+  fallback: [],
 };

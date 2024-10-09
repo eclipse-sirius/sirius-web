@@ -59,14 +59,24 @@ export interface GQLDiagramDescription extends GQLRepresentationDescription {
 
 export interface GQLPalette {
   id: string;
+  paletteEntries: GQLPaletteEntry[];
+}
+
+export interface GQLPaletteEntry {
+  id: string;
+  __typename: string;
+}
+export interface GQLPaletteDivider extends GQLPaletteEntry {}
+
+export interface GQLToolSection extends GQLPaletteEntry {
+  label: string;
+  iconURL: string[];
   tools: GQLTool[];
-  toolSections: GQLToolSection[];
 }
 
 export interface GQLToolSection {
   id: string;
   label: string;
-  imageURL: string;
   tools: GQLTool[];
   __typename: string;
 }

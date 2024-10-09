@@ -10,18 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import { GQLToolVariable } from '../renderer/palette/usePalette.types';
+/**
+ * The common interface for elements displayed in the palette.
+ * @author fbarbin
+ */
+public interface IPaletteEntry {
 
-export interface DiagramDialogContribution {
-  canHandle: (dialogDescriptionId: string) => boolean;
-  component: React.ComponentType<DiagramDialogComponentProps>;
-}
-
-export interface DiagramDialogComponentProps {
-  editingContextId: string;
-  dialogDescriptionId: string;
-  targetObjectId: string;
-  onClose: () => void;
-  onFinish: (variables: GQLToolVariable[]) => void;
+    String id();
 }

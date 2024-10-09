@@ -260,8 +260,18 @@ type Size {
 
 type Palette {
   id: ID!
-  tools: [Tool]!
-  toolSections: [ToolSection]!
+  quickAccessTools: [Tool]!
+  paletteEntries: [PaletteEntry]!
+}
+
+union PaletteEntry =
+    ToolSection
+  | SingleClickOnDiagramElementTool
+  | SingleClickOnTwoDiagramElementsTool
+  | PaletteDivider
+
+type PaletteDivider {
+  id: ID!
 }
 
 type ToolSection {

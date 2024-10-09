@@ -21,11 +21,12 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.PaletteDivider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
@@ -37,10 +38,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
-import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
-import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
@@ -118,10 +116,10 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 palette = this.getDiagramPalette(diagramDescription, viewDiagramDescription, variableManager, interpreter);
             } else if (diagramElement instanceof Node && diagramElementDescription instanceof NodeDescription nodeDescription) {
                 variableManager.put(Node.SELECTED_NODE, diagramElement);
-                palette = this.getNodePalette(editingContext, diagramDescription, nodeDescription, this.createExtraToolSections(diagramElementDescription, diagramElement), variableManager, interpreter);
+                palette = this.getNodePalette(editingContext, diagramDescription, diagramElement, nodeDescription, variableManager, interpreter);
             } else if (diagramElement instanceof Edge && diagramElementDescription instanceof EdgeDescription edgeDescription) {
                 variableManager.put(Edge.SELECTED_EDGE, diagramElement);
-                palette = this.getEdgePalette(editingContext, edgeDescription, this.createExtraToolSections(diagramElementDescription, diagramElement), variableManager, interpreter);
+                palette = this.getEdgePalette(editingContext, edgeDescription, diagramElement, variableManager, interpreter);
             }
         }
         return palette;
@@ -134,14 +132,19 @@ public class ViewPaletteProvider implements IPaletteProvider {
         if (sourceElementId.isPresent()) {
             String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + sourceElementId.get();
 
+            List<IPaletteEntry> paletteEntries = new ArrayList<>();
+            toolFinder.findNodeTools(viewDiagramDescription).stream()
+            .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
+            .map(tool -> this.createDiagramRootNodeTool(tool, variableManager, interpreter))
+            .forEach(paletteEntries::add);
+
+            toolFinder.findToolSections(viewDiagramDescription).stream()
+            .map(toolSection -> this.createToolSection(toolSection, variableManager, interpreter))
+            .forEach(paletteEntries::add);
+
             diagramPalette = Palette.newPalette(diagramPaletteId)
-                    .tools(toolFinder.findNodeTools(viewDiagramDescription).stream()
-                            .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                            .map(tool -> this.createDiagramRootNodeTool(tool, variableManager, interpreter))
-                            .toList())
-                    .toolSections(toolFinder.findToolSections(viewDiagramDescription).stream()
-                            .map(toolSection -> this.createToolSection(toolSection, variableManager, interpreter))
-                            .toList())
+                    .quickAccessTools(List.of())
+                    .paletteEntries(paletteEntries)
                     .build();
         }
         return diagramPalette;
@@ -185,37 +188,41 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
-    private Palette getNodePalette(IEditingContext editingContext, DiagramDescription diagramDescription, NodeDescription nodeDescription, List<ToolSection> extraToolSections, VariableManager variableManager, AQLInterpreter interpreter) {
-        Optional<String> sourceElementId = this.getSourceElementId(nodeDescription.getId());
+    private Palette getNodePalette(IEditingContext editingContext, DiagramDescription diagramDescription, Object diagramElement, NodeDescription nodeDescription, VariableManager variableManager, AQLInterpreter interpreter) {
 
+        Optional<String> sourceElementId = this.getSourceElementId(nodeDescription.getId());
         Palette nodePalette = null;
         var toolFinder = new ToolFinder();
         if (sourceElementId.isPresent()) {
             var optionalNodeDescription = this.viewDiagramDescriptionSearchService.findViewNodeDescriptionById(editingContext, nodeDescription.getId());
 
             if (optionalNodeDescription.isPresent()) {
+                var paletteDefaultToolsProvider = new PaletteDefaultToolsProvider();
+                List<ToolSection> extraToolSections = paletteDefaultToolsProvider.createExtraToolSections(nodeDescription, diagramElement);
+                List<ITool> extraTools = paletteDefaultToolsProvider.createExtraTools(nodeDescription, diagramElement);
                 org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription = optionalNodeDescription.get();
 
-                var tools = new ArrayList<ITool>();
-                tools.addAll(toolFinder.findNodeTools(viewNodeDescription).stream()
+                var paletteEntries = new ArrayList<IPaletteEntry>();
+                toolFinder.findNodeTools(viewNodeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
-                        .toList());
-                tools.addAll(toolFinder.findEdgeTools(viewNodeDescription).stream()
+                        .forEach(paletteEntries::add);
+                toolFinder.findEdgeTools(viewNodeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, nodeDescription, variableManager, interpreter))
-                        .toList());
+                        .forEach(paletteEntries::add);
 
-                var toolSections = new ArrayList<ToolSection>();
-                toolSections.addAll(toolFinder.findToolSections(viewNodeDescription).stream()
+                toolFinder.findToolSections(viewNodeDescription).stream()
                         .map(nodeToolSection -> this.createToolSection(nodeToolSection, diagramDescription, nodeDescription, variableManager, interpreter))
-                        .toList());
-                toolSections.addAll(extraToolSections);
+                        .forEach(paletteEntries::add);
+
+                paletteEntries.add(new PaletteDivider(UUID.randomUUID().toString()));
+                paletteEntries.addAll(extraToolSections);
 
                 String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + sourceElementId.get();
                 nodePalette = Palette.newPalette(nodePaletteId)
-                        .tools(tools)
-                        .toolSections(toolSections)
+                        .quickAccessTools(extraTools)
+                        .paletteEntries(paletteEntries)
                         .build();
             }
         }
@@ -261,7 +268,8 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
-    private Palette getEdgePalette(IEditingContext editingContext, EdgeDescription edgeDescription, List<ToolSection> extraToolSections, VariableManager variableManager, AQLInterpreter interpreter) {
+    private Palette getEdgePalette(IEditingContext editingContext, EdgeDescription edgeDescription, Object diagramElement, VariableManager variableManager, AQLInterpreter interpreter) {
+        List<ToolSection> extraToolSections = new PaletteDefaultToolsProvider().createExtraToolSections(edgeDescription, diagramElement);
         Palette edgePalette = null;
         var toolFinder = new ToolFinder();
         Optional<String> optionalSourceElementId = this.getSourceElementId(edgeDescription.getId());
@@ -272,19 +280,22 @@ public class ViewPaletteProvider implements IPaletteProvider {
             if (optionalEdgeDescription.isPresent()) {
                 org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
 
-                var toolSections = new ArrayList<ToolSection>();
-                toolSections.addAll(toolFinder.findToolSections(viewEdgeDescription).stream()
+                List<IPaletteEntry> paletteEntries = new ArrayList<>();
+                toolFinder.findToolSections(viewEdgeDescription).stream()
                         .map(edgeToolSection -> this.createToolSection(edgeToolSection, variableManager, interpreter))
-                        .toList());
-                toolSections.addAll(extraToolSections);
+                        .forEach(paletteEntries::add);
+
+                toolFinder.findNodeTools(viewEdgeDescription).stream()
+                .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
+                .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
+                .forEach(paletteEntries::add);
+
+                paletteEntries.addAll(extraToolSections);
 
                 String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId;
                 edgePalette = Palette.newPalette(edgePaletteId)
-                        .tools(toolFinder.findNodeTools(viewEdgeDescription).stream()
-                                .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                                .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
-                                .toList())
-                        .toolSections(toolSections)
+                        .quickAccessTools(List.of())
+                        .paletteEntries(paletteEntries)
                         .build();
 
             }
@@ -308,159 +319,6 @@ public class ViewPaletteProvider implements IPaletteProvider {
     private Optional<String> getSourceElementId(String descriptionId) {
         var parameters = this.urlParser.getParameterValues(descriptionId);
         return Optional.ofNullable(parameters.get(IRepresentationDescriptionIdProvider.SOURCE_ELEMENT_ID)).orElse(List.of()).stream().findFirst();
-    }
-
-    private List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement) {
-        List<ToolSection> extraToolSections = new ArrayList<>();
-
-        List<IDiagramElementDescription> targetDescriptions = new ArrayList<>();
-        boolean unsynchronizedMapping = false;
-        if (diagramElementDescription instanceof NodeDescription nodeDescription) {
-            targetDescriptions.add(nodeDescription);
-            unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(nodeDescription.getSynchronizationPolicy());
-        } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
-            targetDescriptions.addAll(edgeDescription.getSourceNodeDescriptions());
-            unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(((EdgeDescription) diagramElementDescription).getSynchronizationPolicy());
-        }
-
-        // Graphical Delete Tool for unsynchronized mapping only (the handler is never called)
-        if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
-            if (this.hasLabelEditTool(diagramElementDescription)) {
-                // Edit Tool (the handler is never called)
-                var editToolSection = this.createExtraEditLabelEditTool(targetDescriptions);
-                extraToolSections.add(editToolSection);
-            }
-            if (unsynchronizedMapping) {
-                // Graphical Delete Tool (the handler is never called)
-                var graphicalDeleteToolSection = this.createExtraGraphicalDeleteTool(targetDescriptions);
-                extraToolSections.add(graphicalDeleteToolSection);
-            }
-            if (this.hasDeleteTool(diagramElementDescription)) {
-                // Semantic Delete Tool (the handler is never called)
-                var semanticDeleteToolSection = this.createExtraSemanticDeleteTool(targetDescriptions);
-                extraToolSections.add(semanticDeleteToolSection);
-            }
-            if (this.isCollapsible(diagramElementDescription, diagramElement)) {
-                // Collapse or expand Tool (the handler is never called)
-                var expandCollapseToolSection = this.createExtraExpandCollapseTool(targetDescriptions, diagramElement);
-                extraToolSections.add(expandCollapseToolSection);
-            }
-        }
-        return extraToolSections;
-    }
-
-    private ToolSection createExtraExpandCollapseTool(List<IDiagramElementDescription> targetDescriptions, Object diagramElement) {
-        var expandCollapseToolSectionBuilder = ToolSection.newToolSection("expand-collapse-section")
-                .label("")
-                .iconURL(List.of())
-                .tools(List.of());
-
-        if (diagramElement instanceof Node node) {
-            List<ITool> collapsingTools = new ArrayList<>();
-            SingleClickOnDiagramElementTool collapseTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("collapse")
-                    .label("Collapse")
-                    .iconURL(List.of(DiagramImageConstants.COLLAPSE_SVG))
-                    .targetDescriptions(targetDescriptions)
-                    .appliesToDiagramRoot(false)
-                    .build();
-
-            SingleClickOnDiagramElementTool expandTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("expand")
-                    .label("Expand")
-                    .iconURL(List.of(DiagramImageConstants.EXPAND_SVG))
-                    .targetDescriptions(targetDescriptions)
-                    .appliesToDiagramRoot(false)
-                    .build();
-
-            switch (node.getCollapsingState()) {
-                case EXPANDED -> collapsingTools.add(collapseTool);
-                case COLLAPSED -> collapsingTools.add(expandTool);
-                default -> {
-                    // Nothing on purpose
-                }
-            }
-            expandCollapseToolSectionBuilder.tools(collapsingTools);
-        }
-        return expandCollapseToolSectionBuilder.build();
-    }
-
-    private ToolSection createExtraSemanticDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
-        SingleClickOnDiagramElementTool semanticDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
-                .label("Delete from model")
-                .iconURL(List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG))
-                .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
-                .build();
-
-        return ToolSection.newToolSection("semantic-delete-section")
-                .label("")
-                .iconURL(List.of())
-                .tools(List.of(semanticDeleteTool))
-                .build();
-    }
-
-    private ToolSection createExtraGraphicalDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
-        SingleClickOnDiagramElementTool graphicalDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("graphical-delete")
-                .label("Delete from diagram")
-                .iconURL(List.of(DiagramImageConstants.GRAPHICAL_DELETE_SVG))
-                .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
-                .build();
-
-        return ToolSection.newToolSection("graphical-delete-section")
-                .label("")
-                .iconURL(List.of())
-                .tools(List.of(graphicalDeleteTool))
-                .build();
-    }
-
-    private boolean isCollapsible(Object diagramElementDescription, Object diagramElement) {
-        if (diagramElementDescription instanceof NodeDescription nodeDescription && diagramElement instanceof Node) {
-            return nodeDescription.isCollapsible();
-        }
-        return false;
-    }
-
-    private boolean hasLabelEditTool(Object diagramElementDescription) {
-        boolean result = true;
-        if (diagramElementDescription instanceof NodeDescription nodeDescription) {
-            result = nodeDescription.getLabelEditHandler() != null;
-        } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
-            if (edgeDescription.getLabelEditHandler() instanceof IViewEdgeLabelEditHandler viewEdgeLabelEditHandler) {
-                result = viewEdgeLabelEditHandler.hasLabelEditTool(EdgeLabelKind.CENTER_LABEL);
-            } else {
-                result = false;
-            }
-        }
-        return result;
-    }
-
-    private ToolSection createExtraEditLabelEditTool(List<IDiagramElementDescription> targetDescriptions) {
-        SingleClickOnDiagramElementTool editTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit")
-                .label("Edit")
-                .iconURL(List.of(DiagramImageConstants.EDIT_SVG))
-                .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
-                .build();
-
-        return ToolSection.newToolSection("edit-section")
-                .label("")
-                .iconURL(List.of())
-                .tools(List.of(editTool))
-                .build();
-    }
-
-    private boolean hasDeleteTool(Object diagramElementDescription) {
-        boolean result = true;
-        if (diagramElementDescription instanceof NodeDescription nodeDescription) {
-            if (nodeDescription.getDeleteHandler() instanceof IViewNodeDeleteHandler viewNodeDeleteHandler) {
-                result = viewNodeDeleteHandler.hasSemanticDeleteTool();
-            }
-        } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
-            if (edgeDescription.getDeleteHandler() instanceof IViewNodeDeleteHandler viewElementDeleteHandler) {
-                result = viewElementDeleteHandler.hasSemanticDeleteTool();
-            }
-        }
-        return result;
     }
 
     private boolean checkPrecondition(Tool tool, VariableManager variableManager, AQLInterpreter interpreter) {

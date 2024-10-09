@@ -10,18 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import { GQLToolVariable } from '../renderer/palette/usePalette.types';
+import java.util.Objects;
 
-export interface DiagramDialogContribution {
-  canHandle: (dialogDescriptionId: string) => boolean;
-  component: React.ComponentType<DiagramDialogComponentProps>;
-}
+/**
+ * Represents a divider between tools or tool sections in the palette.
+ * @author fbarbin
+ */
+public record PaletteDivider(String id) implements IPaletteEntry {
 
-export interface DiagramDialogComponentProps {
-  editingContextId: string;
-  dialogDescriptionId: string;
-  targetObjectId: string;
-  onClose: () => void;
-  onFinish: (variables: GQLToolVariable[]) => void;
+    public PaletteDivider {
+        Objects.requireNonNull(id);
+    }
 }

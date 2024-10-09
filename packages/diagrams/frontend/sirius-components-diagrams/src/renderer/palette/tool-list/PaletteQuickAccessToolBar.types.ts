@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,16 +12,17 @@
  *******************************************************************************/
 
 import { Node } from 'reactflow';
-import { NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../../DiagramRenderer.types';
+import { DiagramPaletteToolContributionComponentProps } from '../DiagramPaletteToolContribution.types';
+import { GQLPalette, GQLTool } from '../Palette.types';
 
-export interface DiagramPaletteToolContributionProps {
-  canHandle: (node: Node<NodeData>) => boolean;
-  component: React.ComponentType<DiagramPaletteToolContributionComponentProps>;
-}
-
-export interface DiagramPaletteToolContributionComponentProps {
+export interface PaletteQuickAccessToolBarProps {
   x: number;
   y: number;
   diagramElementId: string;
-  key: string;
+  hideableDiagramElement?: boolean;
+  paletteToolComponents: React.ComponentType<DiagramPaletteToolContributionComponentProps>[];
+  onToolClick: (tool: GQLTool) => void;
+  palette: GQLPalette | null;
+  node: Node<NodeData> | undefined;
 }

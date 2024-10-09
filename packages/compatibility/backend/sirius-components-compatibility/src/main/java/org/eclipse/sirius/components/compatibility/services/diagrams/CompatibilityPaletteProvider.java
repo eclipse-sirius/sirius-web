@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
@@ -95,7 +96,7 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
                 .map(org.eclipse.sirius.diagram.description.DiagramDescription.class::cast)
                 .findFirst();
 
-        List<ToolSection> toolSections = new ArrayList<>();
+        List<IPaletteEntry> toolSections = new ArrayList<>();
         if (optionalSiriusDiagramDescription.isPresent()) {
             org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription = optionalSiriusDiagramDescription.get();
             List<ToolSection> filteredToolSections = this.getToolSectionFromDiagramDescriptionToolSection(diagramDescription).stream()
@@ -107,7 +108,7 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
             toolSections.addAll(this.createExtraToolSections(diagramElementDescription));
         }
         String paletteId = "siriusComponents://palette?diagramId=" + optionalVsmElementId.get();
-        return Palette.newPalette(paletteId).tools(List.of()).toolSections(toolSections).build();
+        return Palette.newPalette(paletteId).quickAccessTools(List.of()).paletteEntries(toolSections).build();
     }
 
     private List<ToolSection> getToolSectionFromDiagramDescriptionToolSection(DiagramDescription diagramDescription) {

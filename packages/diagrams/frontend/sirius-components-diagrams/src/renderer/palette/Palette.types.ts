@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLMessage } from '../Tool.types';
 
 export interface ContextualPaletteStyleProps {
   toolCount: number;
@@ -25,67 +24,12 @@ export interface PaletteProps {
   hideableDiagramElement?: boolean;
 }
 
-export interface PaletteState {
-  expandedToolSectionId: string | null;
+export interface PaletteStyleProps {
+  paletteWidth: string;
+  paletteHeight: string;
 }
 
-export interface GQLErrorPayload
-  extends GQLInvokeSingleClickOnDiagramElementToolPayload,
-    GQLDeleteFromDiagramPayload,
-    GQLUpdateCollapsingStatePayload {
-  message: string;
-  messages: GQLMessage[];
-}
-
-export interface GQLInvokeSingleClickOnDiagramElementToolData {
-  invokeSingleClickOnDiagramElementTool: GQLInvokeSingleClickOnDiagramElementToolPayload;
-}
-
-export interface GQLInvokeSingleClickOnDiagramElementToolPayload {
-  __typename: string;
-}
-
-export interface GQLInvokeSingleClickOnDiagramElementToolSuccessPayload
-  extends GQLInvokeSingleClickOnDiagramElementToolPayload {
-  id: string;
-  newSelection: GQLWorkbenchSelection;
-  messages: GQLMessage[];
-}
-
-export interface GQLWorkbenchSelection {
-  entries: GQLWorkbenchSelectionEntry[];
-}
-
-export interface GQLWorkbenchSelectionEntry {
-  id: string;
-  label: string;
-  kind: string;
-}
-
-export interface GQLInvokeSingleClickOnDiagramElementToolVariables {
-  input: GQLInvokeSingleClickOnDiagramElementToolInput;
-}
-
-export interface GQLInvokeSingleClickOnDiagramElementToolInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  diagramElementId: string;
-  toolId: string;
-  startingPositionX: number;
-  startingPositionY: number;
-  variables: GQLToolVariable[];
-}
-export interface GQLToolVariable {
-  name: string;
-  value: string;
-  type: GQLToolVariableType;
-}
-
-export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
-
-export interface GQLTool {
-  id: string;
+export interface GQLTool extends GQLPaletteEntry {
   label: string;
   iconURL: string[];
   __typename: string;
@@ -96,104 +40,20 @@ export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   dialogDescriptionId: string;
 }
 
-export interface GQLGetToolSectionsVariables {
-  editingContextId: string;
-  diagramId: string;
-  diagramElementId: string;
-}
-
-export interface GQLGetToolSectionsData {
-  viewer: GQLViewer;
-}
-
-export interface GQLViewer {
-  editingContext: GQLEditingContext;
-}
-
-export interface GQLEditingContext {
-  representation: GQLRepresentationMetadata;
-}
-
-export interface GQLRepresentationMetadata {
+export interface GQLPalette {
   id: string;
-  label: string;
-  kind: string;
-  description: GQLRepresentationDescription;
+  quickAccessTools: GQLTool[];
+  paletteEntries: GQLPaletteEntry[];
 }
 
-export interface GQLRepresentationDescription {
+export interface GQLPaletteEntry {
   id: string;
   __typename: string;
 }
+export interface GQLPaletteDivider extends GQLPaletteEntry {}
 
-export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  palette: GQLPalette;
-}
-
-export interface GQLPalette {
-  id: string;
-  tools: GQLTool[];
-  toolSections: GQLToolSection[];
-}
-
-export interface GQLToolSection {
-  id: string;
+export interface GQLToolSection extends GQLPaletteEntry {
   label: string;
   iconURL: string[];
   tools: GQLTool[];
-}
-
-export interface GQLDeleteFromDiagramVariables {
-  input: GQLDeleteFromDiagramInput;
-}
-
-export interface GQLDeleteFromDiagramInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  nodeIds: string[];
-  edgeIds: string[];
-  deletionPolicy: GQLDeletionPolicy;
-}
-
-export interface GQLDeleteFromDiagramData {
-  deleteFromDiagram: GQLDeleteFromDiagramPayload;
-}
-
-export interface GQLDeleteFromDiagramPayload {
-  __typename: string;
-}
-
-export interface GQLDeleteFromDiagramSuccessPayload extends GQLDeleteFromDiagramPayload {
-  messages: GQLMessage[];
-}
-
-export enum GQLDeletionPolicy {
-  SEMANTIC = 'SEMANTIC',
-  GRAPHICAL = 'GRAPHICAL',
-}
-
-export enum GQLCollapsingState {
-  EXPANDED = 'EXPANDED',
-  COLLAPSED = 'COLLAPSED',
-}
-
-export interface GQLUpdateCollapsingStateVariables {
-  input: GQLUpdateCollapsingStateInput;
-}
-
-export interface GQLUpdateCollapsingStateInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  diagramElementId: string;
-  collapsingState: GQLCollapsingState;
-}
-
-export interface GQLUpdateCollapsingStateData {
-  collapseExpandDiagramElement: GQLUpdateCollapsingStatePayload;
-}
-
-export interface GQLUpdateCollapsingStatePayload {
-  __typename: string;
 }

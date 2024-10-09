@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLToolVariable } from '../renderer/palette/Palette.types';
+import { GQLToolVariable } from '../renderer/palette/usePalette.types';
 
 export interface DialogContextValue {
   showDialog: (

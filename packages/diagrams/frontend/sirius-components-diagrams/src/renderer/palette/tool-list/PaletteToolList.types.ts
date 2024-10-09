@@ -11,17 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLToolVariable } from '../renderer/palette/usePalette.types';
+import { GQLPalette, GQLTool, GQLToolSection } from '../Palette.types';
 
-export interface DiagramDialogContribution {
-  canHandle: (dialogDescriptionId: string) => boolean;
-  component: React.ComponentType<DiagramDialogComponentProps>;
+export interface PaletteToolListProps {
+  onToolClick: (tool: GQLTool) => void;
+  palette: GQLPalette;
 }
 
-export interface DiagramDialogComponentProps {
-  editingContextId: string;
-  dialogDescriptionId: string;
-  targetObjectId: string;
-  onClose: () => void;
-  onFinish: (variables: GQLToolVariable[]) => void;
+export interface PaletteToolListStateValue {
+  toolSection: GQLToolSection | null;
 }
