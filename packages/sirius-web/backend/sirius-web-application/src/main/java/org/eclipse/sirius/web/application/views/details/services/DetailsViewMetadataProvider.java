@@ -30,7 +30,13 @@ public class DetailsViewMetadataProvider implements IRepresentationMetadataProvi
     @Override
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
         if (representationId.startsWith("details://")) {
-            return Optional.of(new RepresentationMetadata(representationId, Form.KIND, "Properties", PropertiesEventProcessorFactory.DETAILS_VIEW_ID));
+            var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
+                    .kind(Form.KIND)
+                    .label("Properties")
+                    .descriptionId(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
+                    .build();
+
+            return Optional.of(representationMetadata);
         }
         return Optional.empty();
     }

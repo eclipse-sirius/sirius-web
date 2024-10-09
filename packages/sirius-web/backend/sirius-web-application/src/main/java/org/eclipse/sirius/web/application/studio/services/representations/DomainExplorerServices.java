@@ -75,7 +75,7 @@ public class DomainExplorerServices {
     public String getKind(Object self) {
         String kind = "";
         if (self instanceof RepresentationMetadata representationMetadata) {
-            kind = representationMetadata.getKind();
+            kind = representationMetadata.kind();
         } else if (self instanceof Resource) {
             kind = DOCUMENT_KIND;
         } else if (self instanceof SettingWrapper) {
@@ -188,7 +188,7 @@ public class DomainExplorerServices {
         String label = "";
 
         if (self instanceof RepresentationMetadata representationMetadata) {
-            label = representationMetadata.getLabel();
+            label = representationMetadata.label();
         } else if (self instanceof Resource resource) {
             label = this.getResourceLabel(resource);
         } else if (self instanceof EObject) {
@@ -206,7 +206,7 @@ public class DomainExplorerServices {
     public String getTreeItemId(Object self) {
         String id = null;
         if (self instanceof RepresentationMetadata representationMetadata) {
-            id = representationMetadata.getId();
+            id = representationMetadata.id();
         } else if (self instanceof Resource resource) {
             id = resource.getURI().path().substring(1);
         } else if (self instanceof EObject) {
@@ -261,7 +261,7 @@ public class DomainExplorerServices {
             imageURL = this.objectService.getImagePath(self);
         } else if (self instanceof RepresentationMetadata representationMetadata) {
             imageURL = this.representationImageProviders.stream()
-                    .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
+                    .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.kind()))
                     .flatMap(Optional::stream)
                     .toList();
         } else if (self instanceof Resource) {

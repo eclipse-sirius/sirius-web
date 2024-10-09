@@ -21,13 +21,11 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPol
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
-import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorContext;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorCreationService;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventHandler;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventProcessor;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorInput;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.RenameFormDescriptionEditorInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -99,14 +97,8 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
-        IRepresentationInput effectiveInput = representationInput;
-        if (representationInput instanceof RenameRepresentationInput) {
-            RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) representationInput;
-            effectiveInput = new RenameFormDescriptionEditorInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
-                    renameRepresentationInput.newLabel());
-        }
-        if (effectiveInput instanceof IFormDescriptionEditorInput) {
-            IFormDescriptionEditorInput formDescriptionEditorInput = (IFormDescriptionEditorInput) effectiveInput;
+        if (representationInput instanceof IFormDescriptionEditorInput) {
+            IFormDescriptionEditorInput formDescriptionEditorInput = (IFormDescriptionEditorInput) representationInput;
 
             Optional<IFormDescriptionEditorEventHandler> optionalFormEventHandler = this.formDescriptionEditorEventHandlers.stream().filter(handler -> handler.canHandle(formDescriptionEditorInput))
                     .findFirst();
