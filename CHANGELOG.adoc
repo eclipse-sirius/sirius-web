@@ -44,6 +44,8 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [trees] The tree item id passed to `ITreeQueryService.findTreeItem` is no longer a UUID but is now a String.
 - https://github.com/eclipse-sirius/sirius-web/issues/4077[#4077] [charts] Remove `interface RepresentationMetadata` from `BarChart.types.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3840[#3840] [diagram] Migrate to ReactFlow 12, if you have components that uses the library then you'll need to update them.
+- https://github.com/eclipse-sirius/sirius-web/issues/2399[#2399] [core] When executing successive model operations inside a tool, the execution context (variables, in particular `self`) of all sibling operations now stays the same.
+This is much more natural and closer to the behavior of usual languages, but change the behavior.
 
 
 === Dependency update
@@ -72,6 +74,8 @@ This allows an error to be displayed when there is a problem during uploading
 Charts' metadata is only relevant when Charts are used as Representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/3904[#3904] [form] Fix an issue where textfield did not update to reflect backend-set value when it matched the initial value.
 - https://github.com/eclipse-sirius/sirius-web/issues/3836[#3836] [gantt] Prevent task.description from resetting after gantt task change.
+- https://github.com/eclipse-sirius/sirius-web/issues/2399[#2399] [core] When executing successive sibling model operations inside a tool, their execution context (in particular the value of `self`) now stays the same.
+
 
 === New Features
 

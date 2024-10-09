@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,6 @@ public class OperationInterpreter implements IOperationInterpreter {
             Optional<VariableManager> newContext = this.executeOperation(operation, currentContext);
             if (newContext.isEmpty()) {
                 return Optional.empty();
-            } else {
-                currentContext = newContext.get();
             }
         }
         return Optional.of(currentContext);
