@@ -28,7 +28,10 @@ const useTreeItemArrowStyle = makeStyles()(() => ({
 export const TreeItemArrow = ({ item, depth, onExpand, 'data-testid': dataTestid }: TreeItemArrowProps) => {
   const { classes } = useTreeItemArrowStyle();
   if (item.hasChildren) {
-    const onClick = () => onExpand(item.id, depth);
+    const onClick: React.MouseEventHandler = (event) => {
+      event.stopPropagation();
+      onExpand(item.id, depth);
+    };
     if (item.expanded) {
       return (
         <ExpandMoreIcon className={classes.arrow} style={{ fontSize: 20 }} onClick={onClick} data-testid={dataTestid} />

@@ -29,7 +29,11 @@ import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { isFilterCandidate } from './filterTreeItem';
 import { useDropTreeItem } from './useDropTreeItem';
 
-const useTreeItemStyle = makeStyles()((theme) => ({
+interface TreeItemStyleProps {
+  depth: number;
+}
+
+const useTreeItemStyle = makeStyles<TreeItemStyleProps>()((theme, { depth }) => ({
   treeItemBefore: {
     height: '2px',
   },
@@ -45,6 +49,7 @@ const useTreeItemStyle = makeStyles()((theme) => ({
       borderColor: 'black',
       borderStyle: 'dotted',
     },
+    paddingLeft: `${24 * (depth - 1)}px`,
   },
   treeItemHover: {
     backgroundColor: theme.palette.action.hover,
@@ -92,10 +97,7 @@ const useTreeItemStyle = makeStyles()((theme) => ({
     fontWeight: 'bold',
   },
   ul: {
-    marginLeft: theme.spacing(3),
-  },
-  highlight: {
-    backgroundColor: theme.palette.navigation.leftBackground,
+    marginLeft: 0,
   },
 }));
 
@@ -121,7 +123,7 @@ export const TreeItem = ({
   markedItemIds,
   treeItemActionRender,
 }: TreeItemProps) => {
-  const { classes } = useTreeItemStyle();
+  const { classes } = useTreeItemStyle({ depth });
 
   const initialState: TreeItemState = {
     editingMode: false,
@@ -361,7 +363,6 @@ export const TreeItem = ({
             tabIndex={0}
             onKeyDown={onBeginEditing}
             draggable={true}
-            onClick={onClick}
             onDragStart={dragStart}
             onDragOver={dragOver}
             data-treeitemid={item.id}
