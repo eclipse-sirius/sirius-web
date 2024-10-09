@@ -47,6 +47,8 @@ import {
   UsePaletteValue,
 } from './usePalette.types';
 
+import { useDiagramPalette } from './useDiagramPalette';
+
 const ToolFields = gql`
   fragment ToolFields on Tool {
     __typename
@@ -315,6 +317,8 @@ export const usePalette = ({
     showDialog(tool.dialogDescriptionId, targetObjectId, onConfirm);
   };
 
+  const { setLastToolInvoked } = useDiagramPalette();
+
   const handleToolClick = (tool: GQLTool) => {
     switch (tool.id) {
       case 'edit':
@@ -343,6 +347,9 @@ export const usePalette = ({
           }
         }
         break;
+    }
+    if (palette) {
+      setLastToolInvoked(palette.id, tool);
     }
   };
   return { handleToolClick, palette };

@@ -24,8 +24,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
 import { GQLPaletteEntry, GQLSingleClickOnDiagramElementTool, GQLTool } from '../Palette.types';
+import { usePaletteEntryTooltip } from '../usePaletteEntryTooltip';
 import { HighlightedLabelProps, PaletteSearchResultProps } from './PaletteSearchResult.types';
-import { usePaletteEntryTooltip } from './usePaletteEntryTooltip';
 
 const convertToToolList = (entry: GQLPaletteEntry): GQLSingleClickOnDiagramElementTool[] => {
   if (isSingleClickOnDiagramElementTool(entry)) {

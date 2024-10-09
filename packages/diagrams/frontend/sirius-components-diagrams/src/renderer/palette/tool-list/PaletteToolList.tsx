@@ -10,25 +10,31 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
-import { GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
+import { GQLPaletteEntry, GQLToolSection } from '../Palette.types';
+import { ToolListItem } from '../tool-list-item/ToolListItem';
+import { useDiagramPalette } from '../useDiagramPalette';
+import { usePaletteEntryTooltip } from '../usePaletteEntryTooltip';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
 import { PaletteToolSectionList } from './PaletteToolSectionList';
-import { usePaletteEntryTooltip } from './usePaletteEntryTooltip';
 
 const useStyle = makeStyles()((theme) => ({
+  container: {
+    display: 'grid',
+    gridTemplateRows: `repeat(2,min-content) 1fr`,
+    overflowY: 'auto',
+    overflowX: 'hidden',
+  },
   toolListContainer: {
     display: 'grid',
     overflowY: 'auto',
@@ -70,11 +76,6 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
     setState((prevState) => ({ ...prevState, toolSection }));
   };
 
-  const handleToolClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tool: GQLTool) => {
-    event.stopPropagation();
-    onToolClick(tool);
-  };
-
   const onBackToMainList = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
     setState((prevState) => ({ ...prevState, toolSection: null }));
@@ -85,25 +86,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
   const convertPaletteEntry = (paletteEntry: GQLPaletteEntry): JSX.Element | null => {
     let jsxElement: JSX.Element | null = null;
     if (isSingleClickOnDiagramElementTool(paletteEntry)) {
-      jsxElement = (
-        <Tooltip
-          enterDelay={tooltipEnterDelay}
-          placement={tooltipPlacement}
-          title={paletteEntry.label}
-          key={'tooltip_' + paletteEntry.id}>
-          <ListItemButton className={classes.listItemButton} onClick={(event) => handleToolClick(event, paletteEntry)}>
-            <ListItemIcon className={classes.listItemIcon}>
-              <IconOverlay
-                iconURL={paletteEntry.iconURL}
-                alt={paletteEntry.label}
-                customIconHeight={16}
-                customIconWidth={16}
-              />
-            </ListItemIcon>
-            <ListItemText primary={paletteEntry.label} className={classes.listItemText} />
-          </ListItemButton>
-        </Tooltip>
-      );
+      jsxElement = <ToolListItem onToolClick={onToolClick} tool={paletteEntry} key={'toolItem_' + paletteEntry.id} />;
     } else if (isToolSection(paletteEntry)) {
       jsxElement = (
         <Tooltip
@@ -125,39 +108,51 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
     return jsxElement;
   };
 
+  const { getLastToolInvoked } = useDiagramPalette();
+  const lastToolInvoked = getLastToolInvoked(palette.id);
+  const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
+    <>
+      <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} />
+      <Divider />
+    </>
+  ) : null;
+
   const containerRef = React.useRef<HTMLElement>(null);
   return (
-    <Box className={classes.toolListContainer} ref={containerRef}>
-      {palette.paletteEntries.filter(isToolSection).map((entry) => (
+    <Box className={classes.container}>
+      {lastUsedTool}
+      <Box className={classes.toolListContainer} ref={containerRef}>
+        {palette.paletteEntries.filter(isToolSection).map((entry) => (
+          <Slide
+            key={'slide_' + entry.id}
+            direction={'left'}
+            in={state.toolSection?.id === entry.id}
+            container={containerRef.current}
+            unmountOnExit
+            mountOnEnter>
+            <div className={classes.toolList}>
+              <PaletteToolSectionList
+                toolSection={entry as GQLToolSection}
+                onToolClick={onToolClick}
+                onBackToMainList={onBackToMainList}
+                tooltipDelay={tooltipEnterDelay}
+                tooltipPlacement={tooltipPlacement}
+              />
+            </div>
+          </Slide>
+        ))}
         <Slide
-          key={'slide_' + entry.id}
-          direction={'left'}
-          in={state.toolSection?.id === entry.id}
+          direction={'right'}
+          in={state.toolSection === null}
           container={containerRef.current}
+          appear={false}
           unmountOnExit
           mountOnEnter>
-          <div className={classes.toolList}>
-            <PaletteToolSectionList
-              toolSection={entry as GQLToolSection}
-              onToolClick={handleToolClick}
-              onBackToMainList={onBackToMainList}
-              tooltipDelay={tooltipEnterDelay}
-              tooltipPlacement={tooltipPlacement}
-            />
-          </div>
+          <List className={classes.toolList} component="nav">
+            {palette?.paletteEntries.map(convertPaletteEntry)}
+          </List>
         </Slide>
-      ))}
-      <Slide
-        direction={'right'}
-        in={state.toolSection === null}
-        container={containerRef.current}
-        appear={false}
-        unmountOnExit
-        mountOnEnter>
-        <List className={classes.toolList} component="nav">
-          {palette?.paletteEntries.map(convertPaletteEntry)}
-        </List>
-      </Slide>
+      </Box>
     </Box>
   );
 };
