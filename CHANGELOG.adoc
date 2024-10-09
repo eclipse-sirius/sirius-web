@@ -35,6 +35,8 @@ The new option ALWAYS allows the separator to be displayed in every case.
 - https://github.com/eclipse-sirius/sirius-web/issues/4050[#4050] [sirius-web] `IUploadFileLoader` must now return an `IResult`.
 This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [trees] The tree item id passed to `ITreeQueryService.findTreeItem` is no longer a UUID but is now a String.
+- https://github.com/eclipse-sirius/sirius-web/issues/2399[#2399] [core] When executing successive model operations inside a tool, the execution context (variables, in particular `self`) of all sibling operations now stays the same.
+This is much more natural and closer to the behavior of usual languages, but change the behavior.
 
 === Dependency update
 
@@ -56,6 +58,7 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/4051[#4051] Error when deleting Resource that use EReference.isContainer feature
 - https://github.com/eclipse-sirius/sirius-web/issues/3958[#3958] [trees] Prevent expand all action to loop indefinitely.
 - https://github.com/eclipse-sirius/sirius-web/issues/4073[#4073] [trees] Add missing variables `ancestorIds` and `index` to variable manager used in the default expand all handler.
+- https://github.com/eclipse-sirius/sirius-web/issues/2399[#2399] [core] When executing successive sibling model operations inside a tool, their execution context (in particular the value of `self`) now stays the same.
 
 === New Features
 
